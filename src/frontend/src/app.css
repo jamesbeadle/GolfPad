@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.modal-backdrop {
+  z-index: 1000;
+}
+
+.modal {
+  position: fixed !important;
+  z-index: 9999 !important;
+  background-color: rgba(36, 37, 41, 0.7) !important;
+}
+
+[data-tid="busy"] {
+  background-color: rgba(36, 37, 41, 0.7) !important;
+  z-index: 99999 !important;
+}
+
+.modal .content {
+  left: 0 !important;
+  right: 0 !important;
+  background-color: #161819 !important;
+  border-radius: 8px;
+  border: 1px solid #2e323a !important;
+}
+
+.modal .container {
+  border-radius: 0px !important;
+}
+
+.file-upload-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+.btn-file-upload {
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  display: block;
+}
+
+.times-button {
+  @apply text-white text-3xl;
+}
+
+input[type="file"] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.modal-backdrop {
+  z-index: 1000;
+}
+
+/* global.css */
+:root {
+  --dialog-width: 90% !important;
+  --dialog-max-width: 600px !important;
+  --dialog-min-height: 100px !important;
+  --dialog-height: auto !important;
+  --dialog-max-height: 80vh !important;
+  --dialog-border-radius: 1px !important;
+}
+
+input {
+  background-color: #194b63 !important;
+  color: white !important;
+}
+
+/* Extra small devices (portrait phones, less than 480px) */
+@media (min-width: 480px) {
+}
+
+/* Small devices (landscape phones, 640px and up) */
+@media (min-width: 640px) {
+  /* Your CSS here */
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  /* Your CSS here */
+}
+
+/* Large devices (desktops, 1024px and up) */
+@media (min-width: 1024px) {
+  /* Your CSS here */
+}
+
+/* Extra large devices (large desktops, 1280px and up) */
+@media (min-width: 1280px) {
+  /* Your CSS here */
+}
+
+/* 2XL devices (larger desktops, 1536px and up) */
+@media (min-width: 1536px) {
+  /* Your CSS here */
+}
+
+/* 3XL devices (extra large desktops, 1920px and up) */
+@media (min-width: 1920px) {
+  /* Your CSS here */
+}
+
+.horizontal-divider {
+  min-height: 2px;
+  @apply flex-shrink-0 h-px bg-Brand5w self-stretch;
+}

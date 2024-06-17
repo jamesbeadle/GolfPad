@@ -1,0 +1,6 @@
+[dependencies]
+base = "0.11.0"
+array = "https://github.com/aviate-labs/array.mo"
+StableTrieMap = "https://github.com/NatLabs/StableTrieMap"
+StableBuffer = "https://github.com/canscale/StableBuffer"
+itertools = "0.2.1"
