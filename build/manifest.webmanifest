@@ -1,0 +1,23 @@
+{
+  "name": "opencare",
+  "short_name": "opencare",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#101111",
+  "background_color": "#101111",
+  "description": "OpenCare is a decentralised social care platform.",
+  "orientation": "landscape-primary",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "https://f2lwq-yaaaa-aaaal-qjfca-cai.raw.icp0.io/favicons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://f2lwq-yaaaa-aaaal-qjfca-cai.raw.icp0.io/favicons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
