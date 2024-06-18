@@ -20,6 +20,8 @@
   const init = async () => await Promise.all([syncAuthStore()]);
   
   $: links = $authSignedInStore ? [
+    { name: 'My Games', href: '/my-games' },
+    { name: 'Profile', href: '/profile' },
     { name: 'Connect', href: '#' },
   ] : 
   [
@@ -27,7 +29,7 @@
   ];
 
   let lessImportantOptions = [
-    { name: 'Lightpaper', href: '/lightpaper' }
+    { name: 'Whitepaper', href: '/whitepaper' }
   ];
 
   const syncAuthStore = async () => {
@@ -131,19 +133,19 @@
     <Spinner />
   </div>
 {:then _}
-  <div class="menu-row flex items-center bg-Brand2b text-white w-full p-2">
+  <div class="menu-row flex items-center bg-BrandGreenBlue text-white w-full p-2">
     <button on:click={handleButtonClick} class="flex items-center">
       <MenuIcon fill='#FFFFFF' className="w-5 m-1" />
     </button>
     <div class="ml-auto">
       <a class="flex flex-row items-center ml-auto" href="/">
         <p class="text-sm mt-1">GolfPad</p>
-        <LogoIcon fill='#FFFFFF' className="w-4 mx-1" />
+        <LogoIcon fill='#FFFFFF' className="w-6 mx-1" />
       </a>
     </div>
   </div>
 
-<aside class="bg-Brand2 p-4" bind:this={sidebar} class:expanded={expanded}>
+<aside class="bg-BrandDarkGreen p-4" bind:this={sidebar} class:expanded={expanded}>
   <div class="p-2">
     <div class="p-2 flex justify-between items-center">
       <h2 class="text-xl font-bold p-2">Options</h2>
@@ -161,12 +163,12 @@
           {#if option.name === 'Connect'}
 
             {#if $authSignedInStore}
-              <a href={option.href} class="block rounded hover:bg-Brand1b px-4 py-2" on:click={handleLogout}>Disconnect</a>
+              <a href={option.href} class="block rounded hover:bg-BrandLightGreen px-4 py-2" on:click={handleLogout}>Disconnect</a>
             {:else}
-              <a href={option.href} class="block rounded hover:bg-Brand1b px-4 py-2" on:click={handleLogin}>Connect</a>
+              <a href={option.href} class="block rounded hover:bg-BrandLightGreen px-4 py-2" on:click={handleLogin}>Connect</a>
             {/if}
           {:else}
-            <a href={option.href} class="block rounded hover:bg-Brand1b px-4 py-2">{option.name}</a>
+            <a href={option.href} class="block rounded hover:bg-BrandLightGreen px-4 py-2">{option.name}</a>
           {/if}
         </li>
       {/each}
@@ -177,7 +179,7 @@
     <ul class="space-y-2 text-xs">
       {#each lessImportantOptions as option}
         <li>
-          <a href={option.href} class="block rounded hover:bg-Brand2b px-4 py-2">{option.name}</a>
+          <a href={option.href} class="block rounded hover:bg-BrandLightGreen px-4 py-2">{option.name}</a>
         </li>
       {/each}
     </ul>

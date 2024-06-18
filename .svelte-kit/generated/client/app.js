@@ -22,12 +22,12 @@ export const dictionary = {
 		"/bands": [3],
 		"/build-it": [4],
 		"/call-it": [5],
-		"/lightpaper": [6],
-		"/mulligans": [7],
+		"/mulligans": [6],
+		"/my-games": [7],
 		"/profile": [8],
 		"/prophet": [9],
 		"/randomiser": [10],
-		"/rules": [11]
+		"/whitepaper": [11]
 	};
 
 export const hooks = {

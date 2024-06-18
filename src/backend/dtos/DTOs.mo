@@ -56,11 +56,22 @@ module DTOs {
 
     };
 
-    public type GameLeaderboardDTO = {
-
+    public type GetUserGamesDTO = {
+        limit : Nat;
+        offset : Nat;
+        gameType: T.GameType;
+        status: T.GameStatus;
     };
 
-    public type GetGameHistoryDTO = {
-
+    public type GameDTO = {
+        id: Nat;
+        gameType: T.GameType;
+        rounds: [T.Round];
+        entryRequirement: T.EntryRequirement;
+        prizeSetup: T.PrizeSetup;
+        status: T.GameStatus;
+        courseId: T.CourseId;
     };
+
+    
 }

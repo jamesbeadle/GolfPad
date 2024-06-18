@@ -7,9 +7,9 @@
     <div class="p-4">
         <div class="flex flex-row items-center">
             <LogoIcon fill='#FFFFFF' className="w-6 mr-2" />
-            <p class="text-xl">GolfPad Lightpaper</p>
+            <p class="text-xl">GolfPad Whitepaper</p>
         </div>
-        <div class="bg-Brand1 w-full p-4 mt-4 rounded-lg border-solid border-Brand1 border-2">
+        <div class="bg-BrandGreen w-full p-4 mt-4 rounded-lg border-solid border-BrandDarkGreen text-Brand2 border-2">
             <b class="text-lg"><u>The Mission</u></b>
             <p class="mt-2">GolfPad was created for the golfer looking for alternative game formats to play alongside the standard strokeplay round they may be having.
                 Our first 5 game formats have been designed to make golf a lot more fun, allowing you to compete based on your golf game's unique skill areas over just your final total score.

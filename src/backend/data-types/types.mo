@@ -69,6 +69,8 @@ module Types {
     rounds: [Round];
     entryRequirement: EntryRequirement;
     prizeSetup: PrizeSetup;
+    status: GameStatus;
+    courseId: CourseId;
   };
 
   public type GameType = {
@@ -78,6 +80,12 @@ module Types {
     #NextUp;
     #BuildIt;
     #CallIt;
+  };
+
+  public type GameStatus = {
+    #Unplayed;
+    #Active;
+    #Complete;
   };
 
   public type EntryRequirement = {

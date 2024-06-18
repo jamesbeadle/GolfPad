@@ -116,5 +116,5 @@ input {
 
 .horizontal-divider {
   min-height: 2px;
-  @apply flex-shrink-0 h-px bg-Brand2b self-stretch;
+  @apply flex-shrink-0 h-px bg-BrandGreen self-stretch;
 }

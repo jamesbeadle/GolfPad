@@ -39,11 +39,7 @@ module {
         return #err(#NotFound);
     };
 
-    public func getGameLeaderboard(principalId: T.PrincipalId, dto: DTOs.GetGameLeaderboardDTO) : Result.Result<DTOs.GameLeaderboardDTO, T.Error> {
-        return #err(#NotFound);
-    };
-
-    public func getGameHistory(principalId: T.PrincipalId, dto: DTOs.GetGameHistoryDTO) : Result.Result<DTOs.GameLeaderboardDTO, T.Error> {
+    public func getUserGames(principalId: T.PrincipalId, dto: DTOs.GetUserGamesDTO) : Result.Result<[DTOs.GameDTO], T.Error> {
         return #err(#NotFound);
     };
   };
