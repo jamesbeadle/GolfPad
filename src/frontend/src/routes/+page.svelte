@@ -15,12 +15,12 @@ import Layout from "./Layout.svelte";
 <Layout>    
     <div class="p-4">
         <div class="flex flex-row items-center">
-            <p class="text-2xl">Welcome to OpenCare</p>
-            <LogoIcon fill='#FFFFFF' className="w-10 ml-4" />
+            <p class="text-2xl mt-1">Welcome to GolfPad</p>
+            <LogoIcon fill='#FFFFFF' className="w-7 ml-2" />
         </div>
-        <p class="my-2">The future of social care.</p>
+        <p class="my-2">Enhance your social golfing experience.</p>
         <a href="/lightpaper">
-            <button class="bg-Brand1b my-2 px-4 py-2 rounded-sm">Lightpaper</button>
+            <button class="bg-Brand2e my-2 px-4 py-2 text-Brand1e rounded-md">Lightpaper</button>
         </a>
     </div>
 </Layout>

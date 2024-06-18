@@ -7,10 +7,11 @@ import CourseManager "managers/course-manager";
 import GameManager "managers/game-manager";
 
 actor Self {
+
   private let userManager = UserManager.UserManager();
   private let courseManager = CourseManager.CourseManager();
   private let gameManager = GameManager.GameManager();
-
+  
 
   //User public endpoints:
   
@@ -37,7 +38,6 @@ actor Self {
 
   public shared query ({ caller }) func getCourse(courseId: T.CourseId) : async Result.Result<DTOs.CourseDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
     return courseManager.getCourse(courseId);
   };
     
@@ -78,8 +78,6 @@ actor Self {
   public shared ({ caller }) func addGameScore(dto: DTOs.AddGameScoreDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    //anyone in the group can add it unless score updated by creator of game then cannot be overridden
-    
     return gameManager.addGameScore(principalId, dto);
   };
 
@@ -104,16 +102,20 @@ actor Self {
   
   //stable storage
 
-  //TODO: Add stable variables
-  //users
-  //unique usernames
-  //courses
-  //games
-
+  private stable var stable_users: [T.User] = [];
+  private stable var stable_courses: [T.Course] = [];
+  private stable var stable_games: [T.Game] = [];
+  
   system func preupgrade() {
+    stable_users := userManager.getStableUsers();
+    stable_courses := courseManager.getStableCourses();
+    stable_games := gameManager.getStableGames();
   };
 
   system func postupgrade() {
+    userManager.setStableUsers(stable_users);
+    courseManager.setStableCourses(stable_courses);
+    gameManager.setStableGames(stable_games);
   };
 
 };

@@ -1,0 +1,1 @@
+export { default as component } from "../../../../src/frontend/src/routes/lightpaper/+page.svelte";

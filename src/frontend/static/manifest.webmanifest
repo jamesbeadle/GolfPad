@@ -1,11 +1,11 @@
 {
-  "name": "opencare",
-  "short_name": "opencare",
+  "name": "golfpad",
+  "short_name": "golfpad",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#101111",
   "background_color": "#101111",
-  "description": "OpenCare is a decentralised social care platform.",
+  "description": "GolfPad is where golf meets Web3.",
   "orientation": "landscape-primary",
   "prefer_related_applications": false,
   "icons": [
