@@ -118,3 +118,11 @@ input {
   min-height: 2px;
   @apply flex-shrink-0 h-px bg-BrandGreen self-stretch;
 }
+
+.btn-view {
+  @apply bg-BrandPurple px-4 py-2 rounded-md border border-BrandDarkPurple;
+}
+
+.btn-add {
+  @apply bg-BrandDeepGreen px-4 py-2 rounded-md border border-BrandPurple;
+}

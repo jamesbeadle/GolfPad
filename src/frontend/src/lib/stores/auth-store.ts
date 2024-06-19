@@ -17,7 +17,7 @@ let authClient: AuthClient | undefined | null;
 
 const NNS_IC_ORG_ALTERNATIVE_ORIGIN = "https://golfpad.xyz";
 const NNS_IC_APP_DERIVATION_ORIGIN =
-  "https://f2lwq-yaaaa-aaaal-qjfca-cai.icp0.io";
+  "https://gw4gh-taaaa-aaaal-qjfia-cai.icp0.io";
 
 const isNnsAlternativeOrigin = () => {
   if (typeof window === "undefined") return false;

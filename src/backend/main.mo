@@ -90,13 +90,15 @@ actor Self {
   public shared ({ caller }) func getGameLeaderboard(dto: DTOs.GetGameLeaderboardDTO) : async Result.Result<DTOs.GameLeaderboardDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return gameManager.getGameLeaderboard(principalId, dto);
+    return #err(#NotFound); //TODO
+    //return gameManager.getGameLeaderboard(principalId, dto);
   };
 
   public shared ({ caller }) func getGameHistory(dto: DTOs.GetGameHistoryDTO) : async Result.Result<DTOs.GameLeaderboardDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return gameManager.getGameHistory(principalId, dto);
+    return #err(#NotFound); //TODO
+    //return gameManager.getGameHistory(principalId, dto);
   };
 
   

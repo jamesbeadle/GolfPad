@@ -38,6 +38,14 @@ module DTOs {
 
     };
 
+    public type GameLeaderboardDTO = {
+
+    };
+
+    public type GetGameHistoryDTO = {
+
+    };
+
     public type CreateUserDTO = {
         username: Text;
         displayName: Text;

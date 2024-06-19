@@ -53,7 +53,6 @@ export default {
         BrandPurple: "#393240",
         BrandBluePurple: "#223280",
 
-
         Brand1: "#85B4F2",
         Brand1b: "#8DC3F2",
         Brand1c: "#A7F205",
