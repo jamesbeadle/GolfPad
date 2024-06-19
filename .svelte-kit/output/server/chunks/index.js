@@ -3425,7 +3425,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "oikor4"
+  version_hash: "1rig4f0"
 };
 async function get_hooks() {
   return {};
@@ -3866,7 +3866,7 @@ const Page$5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="p-4"><div class="flex flex-col bg-BrandGold rounded-md rounded-b-lg border border-BrandBlue"><div class="flex flex-row items-center px-4 border-b border-b-BrandGreen justify-between"><div class="flex items-center">${validate_component(Logo_icon, "LogoIcon").$$render(
+      return `<div class="p-4"><div class="flex flex-col bg-BrandGold rounded-md rounded-b-lg"><div class="flex flex-row items-center px-4 border-b border-b-BrandGreen justify-between"><div class="flex items-center">${validate_component(Logo_icon, "LogoIcon").$$render(
         $$result,
         {
           fill: "#FFFFFF",
@@ -3874,7 +3874,7 @@ const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
         },
         {},
         {}
-      )} <p class="text-base text-BrandBlue" data-svelte-h="svelte-1143thu">My Games</p></div> <button class="btn-add my-2" data-svelte-h="svelte-qnor2o">New Game</button></div> <div class="w-full bg-BrandDeepGreen p-4 rounded-b-md flex flex-col text-sm" data-svelte-h="svelte-1j7j9xp"><div class="flex flex-row space-x-2"><div class="w-1/12"><p>Date</p></div> <div class="w-2/12"><p>Game</p></div> <div class="w-3/12"><p>Course</p></div> <div class="w-4/12"><p>Players</p></div> <div class="w-1/12"><p>Result</p></div> <div class="w-1/12"><p></p></div></div> <div class="horizontal-divider my-2"></div> <div class="flex flex-row text-sm space-x-2 items-center"><div class="w-1/12"><p>25/06/2024</p></div> <div class="w-2/12"><p>Bands</p></div> <div class="w-3/12"><p>Leathearhead Golf Club</p></div> <div class="w-4/12"><p>J. Beadle (18), K. Howlett (18), G. Beadle (21), G. Robinson (28)</p></div> <div class="w-1/12"><p>Unplayed</p></div> <div class="w-1/12 flex flex-col items-center"><button class="btn-view">View</button></div></div> <div class="horizontal-divider my-2"></div></div></div></div>`;
+      )} <p class="text-base text-BrandBlue" data-svelte-h="svelte-1143thu">My Games</p></div> <button class="btn-add my-2" data-svelte-h="svelte-qnor2o">New Game</button></div> <div class="w-full bg-BrandDeepGreen p-4 rounded-b-md flex flex-col text-sm" data-svelte-h="svelte-19m1bl9"><div class="flex flex-row space-x-2"><div class="w-1/12"><p>Date</p></div> <div class="w-2/12"><p>Game</p></div> <div class="w-3/12"><p>Course</p></div> <div class="w-4/12"><p>Players</p></div> <div class="w-1/12"><p>Result</p></div> <div class="w-1/12"><p></p></div></div> <div class="horizontal-divider my-2"></div> <p>No data.</p> <div class="horizontal-divider my-2"></div></div></div></div>`;
     }
   })}`;
 });
@@ -3894,60 +3894,15 @@ const Page$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="p-4"><div class="flex flex-row items-center">${validate_component(Logo_icon, "LogoIcon").$$render($$result, { fill: "#FFFFFF", className: "w-6 mr-2" }, {}, {})} <p class="text-xl" data-svelte-h="svelte-11am9o9">GolfPad Whitepaper</p></div> <div class="bg-BrandGreen w-full p-4 mt-4 rounded-lg border-solid border-BrandDarkGreen text-Brand2 border-2" data-svelte-h="svelte-16h34xd"><b class="text-lg"><u>The Mission</u></b> <p class="mt-2">GolfPad was created for the golfer looking for alternative game formats to play alongside the standard strokeplay round they may be having.
-                Our first 5 game formats have been designed to make golf a lot more fun, allowing you to compete based on your golf game&#39;s unique skill areas over just your final total score.</p> <p class="mt-2 mb-4">Phase 1 of GolfPad is the enhanced gamification of a golf round using on of our unique games. 
-                Phase 2 is the organisation of golf clubs into DAOs withing the GolfPad framework, enhancing the club membership experience.</p> <b class="text-lg"><u>Our Games</u></b> <p class="mt-2 mb-4">Phase 1 of the GolfPad launch is with our 6 unique games. 
-                These games give a golfer, their friends &amp; club a chance to particpiate in new challenges, refreshing their golf experience. 
-                Our games are listed below:</p> <b class="text-lg"><u>Bands</u></b> <p class="mt-2 mb-4">&#39;Bands&#39; is all about predicting those purple patches in golf, the times you know you are on fire. 
-                Whether you start well or only get going towards the end, playing well at the right time is what counts.</p> <p class="mt-2 mb-4">[Bands Rules]
-
-      //Pick ranges of 3 holes
-      //can&#39;t pick the same group of 3 holes and they must be consecutive
-
-      //Won&#39;t double bogey or worse
-      //Won&#39;t bogie or worse
-      //Be par or under (handicap adjusted)
-      //Be under par (handicap adjusted)
-      //Will hit 2/3 fairways
-      //Will hit 2/3 greens
-      //Will 1 putt 2/3 greens
-      //Won&#39;t lose a ball
-      //Won&#39;t enter a bunker (on any hole)</p> <b class="text-lg"><u>Prophet</u></b> <p class="mt-2 mb-4">&#39;Prophet&#39; goes a step further than Bands with predicting what will happen in your golf round. 
-                Within prophet you select specific holes across a range of categories. 
-                Prophet helps train a golfer to think about the individual shot and wider game in general.</p>
-
-            //predict your exact score a hole for small points
-      //pick 9 holes you will get a net par or better
-      //pick 3 holes you will get a net birdie or better
-      //pick your best hole
-      //pick your worst hole
-      //pick 3 fairways you will hit
-      //pick 3 holes in which you will reach the green in regulation (handicap adjusted, assumes 2 shots per green)
-      //any 3 holes you 1 putt
-
-            <b class="text-lg"><u>Mulligans</u></b> <p class="mt-2 mb-4">Game Description
-
-      //Get a certain number of mulligans to start with
-      //if you make them count you can get more but if you waste them you get less
-    //start with 1 mulligan every 3 holes
-      //hit handicap or better on the hole you use the mulligan then get another mulligan on the following hole only
-      //hit bogey or worse (hanidcap adjusted then you have to wait for the next 3rd hole interval to get a mulligan)
-        //taking a mulligan on a first hole for instant would mean you have to start well to get one on the second hole
-      //you can either take the original shot or the mulligan shot without penalty interchangeably
-    //</p> <b class="text-lg"><u>Next Up</u></b> <p class="mt-2 mb-4">Game Description
-
-      //the holes are divided up randomly and a player is selected on each tee to lead the way, 
-      //any players who beat them on the hole get points
-      //you can only get points if you are attempting to beat a player
-      //if no one beats you then you get points
-      //remainder</p> <b class="text-lg"><u>Call It</u></b> <p class="mt-2 mb-4">Game Description</p> <b class="text-lg"><u>Build It</u></b> <p class="mt-2 mb-4">Game Description
-
-      //Setup a team where you build a card
-      //Play against other teams on a course
-      //Set the game up for a period or multiple periods of time
-        //best score card over a date range, month, year etc
-    //team games involving alternate shots</p> <div class="horizontal-divider my-2 mb-4"></div> <b class="text-lg"><u>Contract Center</u></b> <b class="text-lg"></b> <p class="mt-2 mb-4">You can fill contracts by accessing the &#39;Contract Center&#39; through the side navigation panel.</p> <p class="mt-2 mb-4">Phase 2 of GolfPad is to give golf clubs to chance to organise under a DAO structure, enabling to reap the rewards of decentralised governance of their golf clubs rules. 
-                Organisating on GolfPad will give the club&#39;s players access to unique games that span their membership, all members and formats.</p> </div></div>`;
+      return `<div class="p-4"><div class="flex flex-col bg-BrandGold rounded-md rounded-b-lg"><div class="flex flex-row items-center px-4 border-b border-b-BrandGreen justify-between"><div class="flex items-center">${validate_component(Logo_icon, "LogoIcon").$$render(
+        $$result,
+        {
+          fill: "#FFFFFF",
+          className: "w-8 mr-2 my-2"
+        },
+        {},
+        {}
+      )} <p class="text-base text-BrandBlue" data-svelte-h="svelte-1dntc4p">GolfPad Whitepaper</p></div></div> <div class="w-full bg-BrandDeepGreen p-4 rounded-b-md flex flex-col text-sm" data-svelte-h="svelte-1bm2txd"><p>Coming soon.</p></div></div></div>`;
     }
   })}`;
 });

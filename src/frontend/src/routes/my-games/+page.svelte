@@ -39,26 +39,7 @@
                     </div>
                 </div>
                 <div class="horizontal-divider my-2" />
-                <div class="flex flex-row text-sm space-x-2 items-center">
-                    <div class="w-1/12">
-                        <p>25/06/2024</p>
-                    </div>
-                    <div class="w-2/12">
-                        <p>Bands</p>
-                    </div>
-                    <div class="w-3/12">
-                        <p>Leathearhead Golf Club</p>
-                    </div>
-                    <div class="w-4/12">
-                        <p>J. Beadle (18), K. Howlett (18), G. Beadle (21), G. Robinson (28)</p>
-                    </div>
-                    <div class="w-1/12">
-                        <p>Unplayed</p>
-                    </div>
-                    <div class="w-1/12 flex flex-col items-center">
-                        <button class="btn-view">View</button>
-                    </div>
-                </div>
+                <p>No data.</p>
                 <div class="horizontal-divider my-2" />
             </div>
         </div>
