@@ -1,35 +1,31 @@
 <script>
-    export let className = "";
-    export let fill = ""
-  </script>
-    <svg xmlns="http://www.w3.org/2000/svg"
-    class={className}
-    fill="none"
-    viewBox="0 0 200 200">
-    
-    <defs>
-      <linearGradient id="grass-sky" x1="0" y1="1" x2="0" y2="0">
-        <stop offset="50%" stop-color="#014023" />
-        <stop offset="50%" stop-color="#010C40" />
-      </linearGradient>
-    </defs>
-    <circle cx="100" cy="100" r="100" fill="url(#grass-sky)" />
+  export let className = "";
+  export let fill = ""
+</script>
+<svg xmlns="http://www.w3.org/2000/svg"
+  class={className}
+  fill="none"
+  viewBox="0 0 200 200">    
+  <defs>
+    <linearGradient id="grass-sky" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="50%" stop-color="#2D7B66" />
+      <stop offset="50%" stop-color="#2D5D7A" />
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="100" fill="url(#grass-sky)" />
       
-    <!-- Golf Ball -->
-    <circle cx="100" cy="100" r="50" fill="#FFFFFF" stroke-width="4"/>
-    
-    <!-- Dimples on Golf Ball -->
-    <defs>
-      <pattern id="dimples" patternUnits="userSpaceOnUse" width="9.4" height="9.4">
-        <circle cx="0.94" cy="0.94" r="0.75" fill="#A69258" />
-      </pattern>
-    </defs>
-    <circle cx="100" cy="100" r="50" fill="url(#dimples)" />
-
-    <circle cx="100" cy="100" r="51" fill="none" stroke="#010C40" stroke-width="2"/>
-
-
-    <circle cx="100" cy="100" r="99" stroke="#6373BF" stroke-width="2"/>
-
+  <!-- Golf Ball -->
+  <circle cx="100" cy="100" r="50" fill="#FFFFFF" stroke-width="1"/>
   
-    </svg>
+  <!-- Dimples on Golf Ball -->
+  <defs>
+    <pattern id="dimples" patternUnits="userSpaceOnUse" width="10" height="10">
+      <circle cx="1" cy="1" r="1" fill="#2D5D7A" />
+    </pattern>
+  </defs>
+  <circle cx="100" cy="100" r="46" fill="url(#dimples)" />
+
+  <circle cx="100" cy="100" r="50" fill="none" stroke="#2D5D7A" stroke-width="4"/>
+
+  <circle cx="100" cy="100" r="99.5" stroke="#D9EDFA" stroke-width="1"/>
+</svg>
