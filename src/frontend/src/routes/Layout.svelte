@@ -163,12 +163,12 @@
           {#if option.name === 'Connect'}
 
             {#if $authSignedInStore}
-              <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen px-4 py-2" on:click={handleLogout}>Disconnect</a>
+              <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen hover:text-GolfPadGreen px-4 py-2" on:click={handleLogout}>Disconnect</a>
             {:else}
-              <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen px-4 py-2" on:click={handleLogin}>Connect</a>
+              <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen hover:text-GolfPadGreen px-4 py-2" on:click={handleLogin}>Connect</a>
             {/if}
           {:else}
-            <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen px-4 py-2">{option.name}</a>
+            <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen hover:text-GolfPadGreen px-4 py-2">{option.name}</a>
           {/if}
         </li>
       {/each}

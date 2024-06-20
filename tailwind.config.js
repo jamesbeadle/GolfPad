@@ -44,7 +44,7 @@ export default {
         GolfPadDarkGreen: "#243B35",
         GolfPadLightGreen: "#D9FAF1",
         GolfPadYellow: "#FAF0D9",
-        GolfPadDarkRed: "#7A3F2D"
+        GolfPadDarkRed: "#7A3F2D",
       },
     },
   },
