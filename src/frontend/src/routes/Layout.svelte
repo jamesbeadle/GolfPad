@@ -133,7 +133,7 @@
     <Spinner />
   </div>
 {:then _}
-  <div class="menu-row flex items-center bg-BrandGreenBlue text-white w-full p-2">
+  <div class="menu-row flex items-center bg-GolfPadDarkGreen text-white w-full p-2">
     <button on:click={handleButtonClick} class="flex items-center">
       <MenuIcon fill='#FFFFFF' className="w-5 m-1" />
     </button>
@@ -145,7 +145,7 @@
     </div>
   </div>
 
-<aside class="bg-BrandDarkGreen p-4" bind:this={sidebar} class:expanded={expanded}>
+<aside class="bg-GolfPadGreen p-4" bind:this={sidebar} class:expanded={expanded}>
   <div class="p-2">
     <div class="p-2 flex justify-between items-center">
       <h2 class="text-xl font-bold p-2">Options</h2>
@@ -163,12 +163,12 @@
           {#if option.name === 'Connect'}
 
             {#if $authSignedInStore}
-              <a href={option.href} class="block rounded hover:bg-BrandLightGreen px-4 py-2" on:click={handleLogout}>Disconnect</a>
+              <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen px-4 py-2" on:click={handleLogout}>Disconnect</a>
             {:else}
-              <a href={option.href} class="block rounded hover:bg-BrandLightGreen px-4 py-2" on:click={handleLogin}>Connect</a>
+              <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen px-4 py-2" on:click={handleLogin}>Connect</a>
             {/if}
           {:else}
-            <a href={option.href} class="block rounded hover:bg-BrandLightGreen px-4 py-2">{option.name}</a>
+            <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen px-4 py-2">{option.name}</a>
           {/if}
         </li>
       {/each}
@@ -179,7 +179,7 @@
     <ul class="space-y-2 text-xs">
       {#each lessImportantOptions as option}
         <li>
-          <a href={option.href} class="block rounded hover:bg-BrandLightGreen px-4 py-2">{option.name}</a>
+          <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen px-4 py-2">{option.name}</a>
         </li>
       {/each}
     </ul>

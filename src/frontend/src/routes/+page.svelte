@@ -16,11 +16,11 @@ import Layout from "./Layout.svelte";
     <div class="p-4">
         <div class="flex flex-row items-center">
             <p class="text-2xl mt-1">Welcome to GolfPad</p>
-            <LogoIcon fill='#FFFFFF' className="w-96 ml-2" />
+            <LogoIcon fill='#FFFFFF' className="w-8 ml-2" />
         </div>
         <p class="my-2">Enhance your social golfing experience.</p>
         <a href="/whitepaper">
-            <button class="bg-Brand2e my-2 px-4 py-2 text-BrandBlue rounded-md">Whitepaper</button>
+            <button class="bg-GolfPadLightGreen my-2 px-4 py-2 text-GolfPadBlue rounded-md">Whitepaper</button>
         </a>
     </div>
 </Layout>
