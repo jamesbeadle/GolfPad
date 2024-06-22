@@ -7,6 +7,7 @@ module Types {
   public type ImageId = Nat;
   public type HoleNumber = Nat8;
   public type CourseId = Text;
+  public type GameId = Nat;
 
   public type Error = {
     #NotFound;
@@ -24,6 +25,11 @@ module Types {
     username: Text;
     profilePicture: ?Blob;
     profilePictureFileExtension: Text;
+    upcomingGames: [GameId];
+    activeGames: [GameId];
+    completedGames: [GameId];
+    
+    
   };
 
   public type Course = {
@@ -64,7 +70,7 @@ module Types {
   //gamification golf types
 
   public type Game = {
-    id: Nat;
+    id: GameId;
     gameType: GameType;
     rounds: [Round];
     entryRequirement: EntryRequirement;

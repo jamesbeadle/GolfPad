@@ -17,7 +17,14 @@ module {
     };
         
     public func createGame(principalId: T.PrincipalId, dto: DTOs.CreateGameDTO) : Result.Result<(), T.Error> {
-        return #err(#NotFound);
+      
+      //check game type
+      //create game 
+      //add game reference to each user
+      
+
+
+        return #err(#NotFound); 
     };
 
     public func sendGameInvite(principalId: T.PrincipalId, dto: DTOs.InviteGolferDTO) : Result.Result<(), T.Error>{
