@@ -51,7 +51,11 @@ module {
         return #err(#NotFound);
     };
 
-    public func getUserGames(principalId: T.PrincipalId, dto: DTOs.GetUserGamesDTO) : Result.Result<[DTOs.GameDTO], T.Error> {
+    public func getGames(principalId: T.PrincipalId, dto: DTOs.GetGamesDTO) : Result.Result<[DTOs.GameDTO], T.Error> {
+        return #err(#NotFound);
+    };
+
+    public func getLeaderboard(dto: DTOs.GetLeaderboardDTO) : Result.Result<DTOs.LeaderboardDTO, T.Error> {
         return #err(#NotFound);
     };
   };

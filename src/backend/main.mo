@@ -99,18 +99,15 @@ actor Self {
     return gameManager.getScorecard(principalId, dto);
   };
 
-  public shared ({ caller }) func getGameLeaderboard(dto: DTOs.GetGameLeaderboardDTO) : async Result.Result<DTOs.GameLeaderboardDTO, T.Error> {
+  public shared ({ caller }) func getGameLeaderboard(dto: DTOs.GetLeaderboardDTO) : async Result.Result<DTOs.LeaderboardDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return #err(#NotFound); //TODO
-    //return gameManager.getGameLeaderboard(principalId, dto);
+    return gameManager.getLeaderboard(dto);
   };
 
-  public shared ({ caller }) func getGames(dto: DTOs.GetGamesDTO) : async Result.Result<DTOs.GameLeaderboardDTO, T.Error> {
+  public shared ({ caller }) func getGames(dto: DTOs.GetGamesDTO) : async Result.Result<[DTOs.GameDTO], T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return #err(#NotFound); //TODO
-    //return gameManager.getGameHistory(principalId, dto);
+    return gameManager.getGames(principalId, dto);
   };
 
   //stable storage

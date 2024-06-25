@@ -37,11 +37,11 @@ module DTOs {
 
     };
 
-    public type GetGameLeaderboardDTO = {
+    public type GetLeaderboardDTO = {
 
     };
 
-    public type GameLeaderboardDTO = {
+    public type LeaderboardDTO = {
 
     };
 
