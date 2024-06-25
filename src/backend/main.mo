@@ -33,6 +33,12 @@ actor Self {
     return userManager.updateUser(principalId, dto);
   };
 
+  public shared ({ caller }) func addFriend(dto: DTOs.AddFriendDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return userManager.addFriend(principalId, dto);
+  };
+
 
   //Course public endpoints:
 
@@ -66,13 +72,19 @@ actor Self {
   public shared ({ caller }) func sendGameInvite(dto: DTOs.InviteGolferDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return gameManager.createGame(principalId, dto);
+    return gameManager.sendGameInvite(principalId, dto);
   };
 
   public shared ({ caller }) func aceceptGameInvite(dto: DTOs.AccepteGameInviteDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return gameManager.createGame(principalId, dto);
+    return gameManager.aceceptGameInvite(principalId, dto);
+  };
+
+  public shared ({ caller }) func updateGameStatus(dto: DTOs.UpdateGameStatusDTO) : async Result.Result<(), T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return gameManager.updateGameStatus(principalId, dto);
   };
 
   public shared ({ caller }) func addGameScore(dto: DTOs.AddGameScoreDTO) : async Result.Result<(), T.Error> {
@@ -94,14 +106,13 @@ actor Self {
     //return gameManager.getGameLeaderboard(principalId, dto);
   };
 
-  public shared ({ caller }) func getGameHistory(dto: DTOs.GetGameHistoryDTO) : async Result.Result<DTOs.GameLeaderboardDTO, T.Error> {
+  public shared ({ caller }) func getGames(dto: DTOs.GetGamesDTO) : async Result.Result<DTOs.GameLeaderboardDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return #err(#NotFound); //TODO
     //return gameManager.getGameHistory(principalId, dto);
   };
 
-  
   //stable storage
 
   private stable var stable_users: [T.User] = [];

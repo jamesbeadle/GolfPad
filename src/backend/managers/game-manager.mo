@@ -35,6 +35,11 @@ module {
         return #err(#NotFound);
     };
 
+    public func updateGameStatus(principalId: T.PrincipalId, dto: DTOs.UpdateGameStatusDTO) : Result.Result<(), T.Error> {
+        
+        return #err(#NotFound);
+    };
+
     public func addGameScore(principalId: T.PrincipalId, dto: DTOs.AddGameScoreDTO) : Result.Result<(), T.Error> {
         
         //anyone in the group can add it unless score updated by creator of game then cannot be overridden

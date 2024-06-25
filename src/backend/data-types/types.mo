@@ -8,6 +8,8 @@ module Types {
   public type HoleNumber = Nat8;
   public type CourseId = Text;
   public type GameId = Nat;
+  public type DateTime = Int;
+  public type Handicap = Nat16;
 
   public type Error = {
     #NotFound;

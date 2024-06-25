@@ -119,6 +119,11 @@ input {
   @apply flex-shrink-0 h-px bg-GolfPadLightGreen self-stretch;
 }
 
+.horizontal-divider-dark {
+  min-height: 2px;
+  @apply flex-shrink-0 h-px bg-GolfPadDarkGreen self-stretch;
+}
+
 .btn-view {
   @apply bg-GolfPadDarkGreen px-4 py-2 rounded-md border border-GolfPadDarkGreen;
 }

@@ -19,7 +19,10 @@ module DTOs {
     };
 
     public type CreateGameDTO = {
-
+        gameType: T.GameType;
+        players: [T.PrincipalId];
+        invites: [T.PrincipalId];
+        gameDate: T.DateTime;
     };
 
     public type InviteGolferDTO = {
@@ -42,8 +45,8 @@ module DTOs {
 
     };
 
-    public type GetGameHistoryDTO = {
-
+    public type GetGamesDTO = {
+        status: T.GameStatus;
     };
 
     public type CreateUserDTO = {
@@ -51,6 +54,8 @@ module DTOs {
         displayName: Text;
         profilePicture: Blob;
         profilePictureExtension: Text;
+        handicap: T.Handicap;
+        homeCourseId: T.CourseId;
     };
 
     public type UpdateUserDTO = {
@@ -58,6 +63,10 @@ module DTOs {
         displayName: Text;
         profilePicture: Blob;
         profilePictureExtension: Text;
+    };
+
+    public type AddFriendDTO = {
+
     };
     
     public type UserDTO = {
@@ -79,6 +88,10 @@ module DTOs {
         prizeSetup: T.PrizeSetup;
         status: T.GameStatus;
         courseId: T.CourseId;
+    };
+
+    public type UpdateGameStatusDTO = {
+
     };
 
     

@@ -27,6 +27,10 @@ module {
     public func updateUser(principalId: T.PrincipalId, dto: DTOs.UpdateUserDTO) : Result.Result<(), T.Error> {
       return #err(#NotFound);
     };
+
+    public func addFriend(principalId: T.PrincipalId, dto: DTOs.AddFriendDTO) : Result.Result<(), T.Error>{
+      return #err(#NotFound);
+    };
     
   };
 };
