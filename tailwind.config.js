@@ -38,12 +38,13 @@ export default {
     },
     extend: {
       colors: {
+        GolfPadYellow: "#F4C802",
+        GolfPadForest: "#1C4932",
         GolfPadGreen: "#2D7B66",
         GolfPadBlue: "#2D5D7A",
         GolfPadLightBlue: "#D9EDFA",
         GolfPadDarkGreen: "#243B35",
         GolfPadLightGreen: "#D9FAF1",
-        GolfPadYellow: "#FAF0D9",
         GolfPadDarkRed: "#7A3F2D",
       },
     },

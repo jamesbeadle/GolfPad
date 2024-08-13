@@ -19,14 +19,14 @@ export const server_loads = [];
 
 export const dictionary = {
 		"/": [2],
-		"/bands": [3],
-		"/build-it": [4],
-		"/call-it": [5],
-		"/mulligans": [6],
+		"/bands-new": [3],
+		"/build-it-new": [4],
+		"/call-it-new": [5],
+		"/mulligans-new": [6],
 		"/my-games": [7],
-		"/profile": [8],
-		"/prophet": [9],
-		"/randomiser": [10],
+		"/next-up-new": [8],
+		"/profile": [9],
+		"/prophet-new": [10],
 		"/whitepaper": [11]
 	};
 

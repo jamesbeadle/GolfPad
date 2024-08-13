@@ -13,14 +13,28 @@ import Layout from "./Layout.svelte";
     }
 </script>
 <Layout>    
-    <div class="p-4">
-        <div class="flex flex-row items-center">
-            <p class="text-2xl mt-1">Welcome to GolfPad</p>
-            <LogoIcon fill='#FFFFFF' className="w-8 ml-2" />
+    <div class="background h-screen relative flex items-center justify-center overflow-hidden">
+
+        <div class="absolute top-4 left-4 z-10">
+            <button class="bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md">
+                +
+            </button>
         </div>
-        <p class="my-2">Enhance your social golfing experience.</p>
-        <a href="/whitepaper">
-            <button class="bg-GolfPadLightGreen my-2 px-4 py-2 text-GolfPadBlue rounded-md">Whitepaper</button>
-        </a>
+        <div class="absolute top-4 right-4 z-10">
+            <span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span>
+        </div>
+        <div class="text-center px-4 z-10">
+            <h1 class="font-bold text-GolfPadForest mb-1">WELCOME TO GOLFPAD</h1>
+            <h2 class="text-5xl md:text-6xl font-extrabold text-black mb-6 leading-tight">THE FUTURE OF GOLF STARTS HERE</h2>
+            <button class="bg-GolfPadForest text-GolfPadYellow py-3 px-12 rounded-full text-lg font-semibold shadow-lg" on:click="{handleLogin}">CONNECT</button>
+        </div>
+        <div class="absolute bottom-4 left-4 z-10">
+            <a href="#" class="text-black text-sm font-medium">WHITEPAPER</a>
+        </div>
+        <div class="absolute bottom-0 left-0 w-full z-0">
+            <img src="golfball.png" alt="Golf Ball" class="w-full h-auto object-cover">
+        </div>
+    
     </div>
+
 </Layout>

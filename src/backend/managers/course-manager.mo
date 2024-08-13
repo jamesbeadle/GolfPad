@@ -17,15 +17,20 @@ module {
     };
     
     public func getCourse(courseId: T.CourseId) : Result.Result<DTOs.CourseDTO, T.Error> {
+      //TODO: Checks
       return #err(#NotFound);
     };
       
     public func createCourse(principalId: T.PrincipalId, dto: DTOs.CreateCourseDTO) : Result.Result<(), T.Error> {
+      //TODO: Checks
+      //
+      //TODO: add the next stable course id shiz
       return #err(#NotFound);
     };
 
     public func updateCourse(principalId: T.PrincipalId, dto: DTOs.UpdateCourseDTO) : Result.Result<(), T.Error> {
       return #err(#NotFound);
+      //TODO: Checks
     };
   };
 };

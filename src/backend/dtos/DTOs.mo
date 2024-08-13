@@ -15,7 +15,7 @@ module DTOs {
     };
 
     public type AddGameScoreDTO = {
-
+        gameId: T.GameId;
     };
 
     public type CreateGameDTO = {
@@ -23,6 +23,9 @@ module DTOs {
         players: [T.PrincipalId];
         invites: [T.PrincipalId];
         gameDate: T.DateTime;
+        entryRequirement: T.EntryRequirement;
+        courseId: T.CourseId;
+        prizeSetup: T.PrizeSetup;
     };
 
     public type InviteGolferDTO = {

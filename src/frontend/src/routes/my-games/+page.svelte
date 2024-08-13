@@ -1,12 +1,22 @@
 <script lang="ts">
-    import LogoIcon from "$lib/icons/logo-icon.svelte";
+    import ShowSelectGameModal from "$lib/components/games/show-select-game-modal.svelte";
+import LogoIcon from "$lib/icons/logo-icon.svelte";
     import Layout from "../Layout.svelte";
+
+    let showSelectGameModal = false;
+
+    function showSelectGame(){
+        showSelectGameModal = true;
+    };
     
     //let games: GameDTO[] = [];
 
 
 </script>
-<Layout>    
+<Layout> 
+    {#if showSelectGameModal}
+        <ShowSelectGameModal visible={showSelectGameModal} closeModal={() => showSelectGameModal = false} />
+    {/if}
     <div class="p-4">
         <div class="flex flex-col bg-GolfPadYellow rounded-md rounded-b-lg">
             <div class="flex flex-row items-center px-4 border-b border-b-GolfPadGreen justify-between">
@@ -14,7 +24,7 @@
                     <LogoIcon fill='#FFFFFF' className="w-8 mr-2 my-2" />
                     <p class="text-base text-GolfPadBlue">My Games</p>
                 </div>
-                <button class="btn-add my-2">New Game</button>
+                <button on:click={showSelectGame} class="btn-add my-2">New Game</button>
             </div>
             
             <div class="w-full bg-GolfPadGreen p-4 rounded-b-md flex flex-col text-sm">

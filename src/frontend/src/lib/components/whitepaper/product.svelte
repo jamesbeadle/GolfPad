@@ -5,7 +5,7 @@
 
   <p class="text-xl mt-4">Players</p>
   <p>
-    GolfPad initially comes with 5 new games for players to enjoy when playing a round. 
+    GolfPad initially comes with 6 new games for players to enjoy when playing a round. 
     Each of the games are explained below.
   </p>
 
