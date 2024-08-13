@@ -74,7 +74,7 @@ module DTOs {
 
     };
 
-    public type GetFriendRequestsDTO = {
+    public type ListFriendRequestsDTO = {
 
     };
 
@@ -142,15 +142,19 @@ module DTOs {
 
     };
 
-    public type AddGolferCourse = {
+    public type AddGolferCourseDTO = {
 
     };
 
-    public type DeleteGolferCourse = {
+    public type DeleteGolferCourseDTO = {
 
     };
 
     public type AddCustomCourseDTO = {
+
+    };
+
+    public type UpdateCustomCourseDTO = {
 
     };
 

@@ -16,22 +16,101 @@ module {
     public func setStableUsers(stable_users: [T.User]){
       users := List.fromArray(stable_users);
     };
-    /*
-    public func getUser(principalId: T.PrincipalId) : Result.Result<DTOs.UserDTO, T.Error> {
-      return #err(#NotFound);
-    };
       
-    public func createUser(principalId: T.PrincipalId, dto: DTOs.CreateUserDTO) : Result.Result<(), T.Error> {
+    public func createProfile(principalId: T.PrincipalId, dto: DTOs.CreateProfileDTO) : Result.Result<(), T.Error> {
       //TODO: Checks
       return #err(#NotFound);
     };
 
-    public func updateUser(principalId: T.PrincipalId, dto: DTOs.UpdateUserDTO) : Result.Result<(), T.Error> {
+    public func updateProfile(principalId: T.PrincipalId, dto: DTOs.UpdateProfileDTO) : Result.Result<(), T.Error> {
       //TODO: Checks
       return #err(#NotFound);
     };
 
-    public func addFriend(principalId: T.PrincipalId, dto: DTOs.AddFriendDTO) : Result.Result<(), T.Error>{
+    public func updateProfilePicture(principalId: T.PrincipalId, dto: DTOs.UpdateProfilePictureDTO) : Result.Result<(), T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func getProfile(principalId: T.PrincipalId) : Result.Result<DTOs.ProfileDTO, T.Error> {
+      return #err(#NotFound);
+    };
+
+    public func getBuzz(principalId: T.PrincipalId, dto: DTOs.GetGolferBuzzDTO) : Result.Result<DTOs.GolferBuzzDTO, T.Error> {
+      return #err(#NotFound);
+    };
+
+    public func createYardageSet(principalId: T.PrincipalId, dto: DTOs.CreateYardageSetDTO) : Result.Result<(), T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func updateYardageSet(principalId: T.PrincipalId, dto: DTOs.UpdateYardageSetDTO) : Result.Result<(), T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func deleteYardageSet(principalId: T.PrincipalId, dto: DTOs.DeleteYardageSetDTO) : Result.Result<(), T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func getYardageSet(principalId: T.PrincipalId, dto: DTOs.GetYardageSetDTO) : Result.Result<DTOs.YardageSetDTO, T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func addYardageSetClub(principalId: T.PrincipalId, dto: DTOs.AddYardageSetClubDTO) : Result.Result<(), T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func deleteYardageSetClub(principalId: T.PrincipalId, dto: DTOs.DeleteYardageSetClubDTO) : Result.Result<(), T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func updateYardage(principalId: T.PrincipalId, dto: DTOs.AddYardageDTO) : Result.Result<(), T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func listGolfers(dto: DTOs.ListGolfersDTO) : Result.Result<DTOs.GolfersDTO, T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func listFriendRequests(principalId: T.PrincipalId, dto: DTOs.ListFriendRequestsDTO) : Result.Result<DTOs.FriendRequestsDTO, T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func acceptFriendRequest(principalId: T.PrincipalId, dto: DTOs.AcceptFriendRequestDTO) : Result.Result<(), T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func rejectFriendRequest(principalId: T.PrincipalId, dto: DTOs.RejectFriendRequestDTO) : Result.Result<(), T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func sendFriendRequest(principalId: T.PrincipalId, dto: DTOs.SendFriendRequestDTO) : Result.Result<(), T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func getGolfer(principalId: T.PrincipalId, dto: DTOs.GetGolferDTO) : Result.Result<DTOs.GolferDTO, T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func getGolferGameHistory(principalId: T.PrincipalId, dto: DTOs.GetGolferGameHistoryDTO) : Result.Result<DTOs.GolferGameHistoryDTO, T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func getMyGames(principalId: T.PrincipalId, dto: DTOs.GetMyGamesDTO) : Result.Result<DTOs.MyGamesDTO, T.Error> {
       //TODO: Checks
       return #err(#NotFound);
     };
@@ -42,19 +121,11 @@ module {
     //TODO: Check all users exist
       //todo user array function to check cross of both arrays equals starting value
 
-      for(id in Iter.fromArray(userIds)){
-        
-      };
 
       return true;
     };
 
-    public func addGameReferences(gameId: T.GameId, dto: DTOs.CreateGameDTO){
-//TODO: Checks
-      
-     //add game reference to each user
-    };
-    */
+
     
   };
 };
