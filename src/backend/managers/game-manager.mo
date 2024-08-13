@@ -8,7 +8,7 @@ import DTOs "../dtos/DTOs";
 
 module {
   public class GameManager() {
-
+    /*
     private var games: List.List<T.Game> = List.fromArray([]);
     private var nextGameId: T.GameId = 1;
 
@@ -225,6 +225,7 @@ module {
     private func calculateBuildIt(game: T.Game){
       
     };
+  */
   };
 };
 

@@ -2,30 +2,164 @@ import T "../data-types/types";
 
 module DTOs {
 
-    public type CourseDTO = {
+    public type CreateProfileDTO = {
 
     };
 
-    public type CreateCourseDTO = {
+    public type UpdateProfileDTO = {
 
     };
 
-    public type UpdateCourseDTO = {
+    public type UpdateProfilePictureDTO = {
 
     };
 
-    public type AddGameScoreDTO = {
-        gameId: T.GameId;
+    public type ProfileDTO = {
+
+    };
+
+    public type GetGolferBuzzDTO = {
+
+    };
+
+    public type GolferBuzzDTO = {
+
+    };
+
+    public type GetUpcomingGamesDTO = {
+
+    };
+
+    public type UpcomingGamesDTO = {
+
+    };
+
+    public type CreateYardageSetDTO = {
+
+    };
+
+    public type UpdateYardageSetDTO = {
+
+    };
+
+    public type DeleteYardageSetDTO = {
+
+    };
+
+    public type GetYardageSetDTO = {
+
+    };
+
+    public type YardageSetDTO = {
+
+    };
+
+    public type AddYardageSetClubDTO = {
+
+    };
+
+    public type DeleteYardageSetClubDTO = {
+
+    };
+
+    public type AddYardageDTO = {
+
+    };
+
+    public type ListGolfersDTO = {
+
+    };
+
+    public type GolfersDTO = {
+
+    };
+
+    public type GetFriendRequestsDTO = {
+
+    };
+
+    public type FriendRequestsDTO = {
+
+    };
+
+    public type AcceptFriendRequestDTO = {
+
+    };
+
+    public type RejectFriendRequestDTO = {
+
+    };
+
+    public type SendFriendRequestDTO = {
+
+    };
+
+    public type GetGolferDTO = {
+
+    };
+
+    public type GolferDTO = {
+
+    };
+
+    public type GetGolferGameHistoryDTO = {
+
+    };
+
+    public type GolferGameHistoryDTO = {
+
+    };
+
+    public type GetMyGamesDTO = {
+
+    };
+
+    public type MyGamesDTO = {
+
+    };
+
+    public type GetGameDTO = {
+
+    };
+
+    public type GameDTO = {
+
+    };
+
+    public type ListCoursesDTO = {
+
+    };
+
+    public type CoursesDTO = {
+
+    };
+
+    public type ListGolferCoursesDTO = {
+
+    };
+
+    public type GolferCoursesDTO = {
+
+    };
+
+    public type AddGolferCourse = {
+
+    };
+
+    public type DeleteGolferCourse = {
+
+    };
+
+    public type AddCustomCourseDTO = {
+
+    };
+
+    public type DeleteCustomCourseDTO = {
+
     };
 
     public type CreateGameDTO = {
-        gameType: T.GameType;
-        players: [T.PrincipalId];
-        invites: [T.PrincipalId];
-        gameDate: T.DateTime;
-        entryRequirement: T.EntryRequirement;
-        courseId: T.CourseId;
-        prizeSetup: T.PrizeSetup;
+
     };
 
     public type InviteGolferDTO = {
@@ -36,66 +170,19 @@ module DTOs {
 
     };
 
-    public type GetScorecardDTO = {
+    public type AddGameScoreDTO = {
 
     };
 
-    public type GetLeaderboardDTO = {
+    public type BandsPredictionDTO = {
 
     };
 
-    public type LeaderboardDTO = {
+    public type ProphetPredictionDTO = {
 
     };
 
-    public type GetGamesDTO = {
-        status: T.GameStatus;
-    };
 
-    public type CreateUserDTO = {
-        username: Text;
-        displayName: Text;
-        profilePicture: Blob;
-        profilePictureExtension: Text;
-        handicap: T.Handicap;
-        homeCourseId: T.CourseId;
-    };
 
-    public type UpdateUserDTO = {
-        username: Text;
-        displayName: Text;
-        profilePicture: Blob;
-        profilePictureExtension: Text;
-    };
 
-    public type AddFriendDTO = {
-
-    };
-    
-    public type UserDTO = {
-
-    };
-
-    public type GetUserGamesDTO = {
-        limit : Nat;
-        offset : Nat;
-        gameType: T.GameType;
-        status: T.GameStatus;
-    };
-
-    public type GameDTO = {
-        id: Nat;
-        gameType: T.GameType;
-        rounds: [T.Round];
-        entryRequirement: T.EntryRequirement;
-        prizeSetup: T.PrizeSetup;
-        status: T.GameStatus;
-        courseId: T.CourseId;
-    };
-
-    public type UpdateGameStatusDTO = {
-
-    };
-
-    
 }

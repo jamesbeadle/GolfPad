@@ -5,7 +5,7 @@ import DTOs "../dtos/DTOs";
 
 module {
   public class CourseManager() {
-    
+    /*
     private var courses: List.List<T.Course> = List.fromArray([]);
 
     public func getStableCourses() : [T.Course] {
@@ -32,6 +32,7 @@ module {
       return #err(#NotFound);
       //TODO: Checks
     };
+    */
   };
 };
 

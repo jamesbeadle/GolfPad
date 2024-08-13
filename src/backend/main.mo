@@ -35,17 +35,12 @@ actor Self {
     return golferManager.getUpcomingGames(Principal.toText(caller));
   };
 
-  public shared query ({ caller }) func getGolfer(principalId: Text) : async Result.Result<DTOs.ProfileDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    return golferManager.getGolfer(principalId);
-  };
-
-  public shared query ({ caller }) func getGolferBuzz(dto: GetGolferBuzzDTO) : async Result.Result<DTOs.GolferBuzzDTO, T.Error> {
+  public shared query ({ caller }) func getGolferBuzz(dto: DTOs.GetGolferBuzzDTO) : async Result.Result<DTOs.GolferBuzzDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     return golferManager.getBuzz(Principal.toText(caller));
   };
 
-  public shared query ({ caller }) func getUpcomingGames(dto: GetUpcomingGamesDTO) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
+  public shared query ({ caller }) func getUpcomingGames(dto: DTOs.GetUpcomingGamesDTO) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     return golferManager.getUpcomingGames(Principal.toText(caller));
   };
@@ -68,7 +63,7 @@ actor Self {
     return userManager.deleteYardageSet(principalId, dto);
   };
 
-  public shared query ({ caller }) func getYardageSet(dto: T.GetYardageSetDTO) : async Result.Result<DTOs.YardageSetDTO, T.Error> {
+  public shared query ({ caller }) func getYardageSet(dto: DTOs.GetYardageSetDTO) : async Result.Result<DTOs.YardageSetDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return golferManager.getYardageSet(principalId, dto);
@@ -80,10 +75,10 @@ actor Self {
     return userManager.addYardageSetClub(principalId, dto);
   };
     
-  public shared ({ caller }) func removeYardageSetClub(dto: DTOs.RemoveYardageSetClubDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func deleteYardageSetClub(dto: DTOs.DeleteYardageSetClubDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return userManager.removeYardageSetClub(principalId, dto);
+    return userManager.deleteYardageSetClub(principalId, dto);
   };
     
   public shared ({ caller }) func updateYardage(dto: DTOs.AddYardageDTO) : async Result.Result<(), T.Error> {
@@ -91,99 +86,99 @@ actor Self {
     let principalId = Principal.toText(caller);
     return userManager.updateYardage(principalId, dto);
   };
-  
-  //search golfers
-  //get friend requests
-  //accept friend request
-  //reject friend request
-  //send friend request
-  //get golfer details
-  //get golfer game history
-  
-  //get my games
-  //get game details
 
-
-
-
-
-
-  //search courses
-  //create home course
-  //update home course
-  
-  //get golf course
-  //edit golf course
-  
-  
-
-
-
-  //create mulligans game
-  //get mulligans game
-  //update mulligans game
-  //delete mulligans game
-  //add mulligans score
-  //update mulligans score
-
-  //create bands game
-  //get bands game
-  //update bands game
-  //delete bands game
-  //add bands prediction
-  //update bands prediction
-  //add bands score
-  //update bands score
-
-  //create prophet game
-  //add prophpet prediction
-  //add prophet result
-  //get prophet game
-
-  //next up
-
-  //biuld it
-
-
-  
-
-  //User public endpoints:
-  
-  public shared query ({ caller }) func getUser() : async Result.Result<DTOs.UserDTO, T.Error> {
+  public shared query ({ caller }) func listGolfers(dto: DTOs.ListGolfersDTO) : async Result.Result<DTOs.GolfersDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return userManager.getUser(principalId);
+    return golferManager.listGolfers(dto);
   };
 
-  public shared ({ caller }) func addFriend(dto: DTOs.AddFriendDTO) : async Result.Result<(), T.Error> {
+  public shared query ({ caller }) func getFriendRequests(dto: DTOs.GetFriendRequestsDTO) : async Result.Result<DTOs.FriendRequestsDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return userManager.addFriend(principalId, dto);
-  };
-
-
-  //Course public endpoints:
-
-  public shared query ({ caller }) func getCourse(courseId: T.CourseId) : async Result.Result<DTOs.CourseDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    return courseManager.getCourse(courseId);
+    return golferManager.getFriendRequests(principalId, dto);
   };
     
-  public shared ({ caller }) func createCourse(dto: DTOs.CreateCourseDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func acceptFriendRequest(dto: DTOs.AcceptFriendRequestDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return courseManager.createCourse(principalId, dto);
+    return userManager.acceptFriendRequest(principalId, dto);
   };
-
-  public shared ({ caller }) func updateCourse(dto: DTOs.UpdateCourseDTO) : async Result.Result<(), T.Error> {
+    
+  public shared ({ caller }) func rejectFriendRequest(dto: DTOs.RejectFriendRequestDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return courseManager.updateCourse(principalId, dto);
+    return userManager.acceptFriendRequest(principalId, dto);
+  };
+    
+  public shared ({ caller }) func sendFriendRequest(dto: DTOs.SendFriendRequestDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return userManager.sendFriendRequest(principalId, dto);
   };
 
+  public shared query ({ caller }) func getGolfer(dto: DTOs.GetGolferDTO) : async Result.Result<DTOs.GolferDTO, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    return golferManager.getGolfer(dto);
+  };
 
-  //Game public endpoints:
+  public shared query ({ caller }) func getGolferGameHistory(dto: DTOs.GetGolferGameHistoryDTO) : async Result.Result<DTOs.GolferGameHistoryDTO, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    return golferManager.getGolferGameHistory(dto);
+  };
+    
+  public shared query ({ caller }) func getMyGames(dto: DTOs.GetMyGamesDTO) : async Result.Result<DTOs.MyGamesDTO, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return userManager.getMyGames(principalId, dto);
+  };
+    
+  public shared query ({ caller }) func getGame(dto: DTOs.GetGameDTO) : async Result.Result<DTOs.GameDTO, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return userManager.getGame(principalId, dto);
+  };
 
+  public shared query ({ caller }) func listCourses(dto: DTOs.ListCoursesDTO) : async Result.Result<DTOs.CoursesDTO, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    return golferManager.listCourses(dto);
+  };
+
+  public shared query ({ caller }) func listGolferCourses(dto: DTOs.ListGolferCoursesDTO) : async Result.Result<DTOs.GolferCoursesDTO, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return golferManager.listGolferCourses(principalId, dto);
+  };
+    
+  public shared ({ caller }) func addGolferCourse(dto: DTOs.AddGolferCourse) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return userManager.addGolferCourse(principalId, dto);
+  };
+    
+  public shared ({ caller }) func deleteGolferCourse(dto: DTOs.DeleteGolferCourse) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return userManager.deleteGolferCourse(principalId, dto);
+  };
+    
+  public shared ({ caller }) func addCustomCourse(dto: DTOs.AddCustomCourseDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return userManager.addCustomCourse(principalId, dto);
+  };
+    
+  public shared ({ caller }) func updateCustomCourse(dto: DTOs.AddCustomCourseDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return userManager.updateCustomCourse(principalId, dto);
+  };
+    
+  public shared ({ caller }) func deleteCustomCourse(dto: DTOs.DeleteCustomCourseDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return userManager.deleteCustomCourse(principalId, dto);
+  };
+  
   public shared ({ caller }) func createGame(dto: DTOs.CreateGameDTO) : async Result.Result<(), T.Error> {
      assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
@@ -212,22 +207,17 @@ actor Self {
     return #ok;
   };
 
+
   public shared ({ caller }) func sendGameInvite(dto: DTOs.InviteGolferDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return gameManager.sendGameInvite(principalId, dto);
   };
 
-  public shared ({ caller }) func aceceptGameInvite(dto: DTOs.AccepteGameInviteDTO) : async Result.Result<(), T.Error>{
+  public shared ({ caller }) func acceptGameInvite(dto: DTOs.AccepteGameInviteDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return gameManager.aceceptGameInvite(principalId, dto);
-  };
-
-  public shared ({ caller }) func updateGameStatus(dto: DTOs.UpdateGameStatusDTO) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return gameManager.updateGameStatus(principalId, dto);
+    return gameManager.acceptGameInvite(principalId, dto);
   };
 
   public shared ({ caller }) func addGameScore(dto: DTOs.AddGameScoreDTO) : async Result.Result<(), T.Error> {
@@ -236,21 +226,16 @@ actor Self {
     return gameManager.addGameScore(principalId, dto);
   };
 
-  public shared ({ caller }) func getScorecard(dto: DTOs.GetScorecardDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func submitBandsPrediction(dto: DTOs.BandsPredictionDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return gameManager.getScorecard(principalId, dto);
+    return gameManager.submitBandsPrediction(principalId, dto);
   };
 
-  public shared ({ caller }) func getGameLeaderboard(dto: DTOs.GetLeaderboardDTO) : async Result.Result<DTOs.LeaderboardDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    return gameManager.getLeaderboard(dto);
-  };
-
-  public shared ({ caller }) func getGames(dto: DTOs.GetGamesDTO) : async Result.Result<[DTOs.GameDTO], T.Error> {
+  public shared ({ caller }) func submitProphetPrediction(dto: DTOs.ProphetPredictionDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return gameManager.getGames(principalId, dto);
+    return gameManager.submitProphetPrediction(principalId, dto);
   };
 
   //stable storage

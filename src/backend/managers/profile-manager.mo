@@ -16,7 +16,7 @@ module {
     public func setStableUsers(stable_users: [T.User]){
       users := List.fromArray(stable_users);
     };
-    
+    /*
     public func getUser(principalId: T.PrincipalId) : Result.Result<DTOs.UserDTO, T.Error> {
       return #err(#NotFound);
     };
@@ -54,6 +54,7 @@ module {
       
      //add game reference to each user
     };
+    */
     
   };
 };
