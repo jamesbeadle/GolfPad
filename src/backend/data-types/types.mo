@@ -17,21 +17,22 @@ module Types {
     #NotAuthorized;
     #NotAllowed;
     #DecodeError;
-    #InvalidData;
+    #OutOfRange;
+    #TooLong;
     #NotEnoughFunds;
     #PaymentError;
   };
 
-  public type User = {
-    userId: PrincipalId;
+  public type Profile = {
+    profileId: PrincipalId;
     username: Text;
     profilePicture: ?Blob;
     profilePictureFileExtension: Text;
+    handicap: Float;
+    homeCourseId: CourseId;
     upcomingGames: [GameId];
     activeGames: [GameId];
     completedGames: [GameId];
-    
-    
   };
 
   public type Course = {

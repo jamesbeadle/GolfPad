@@ -1,33 +1,120 @@
 import Result "mo:base/Result";
 import List "mo:base/List";
 import Iter "mo:base/Iter";
+import TrieMap "mo:base/TrieMap";
+import Text "mo:base/Text";
+import Bool "mo:base/Bool";
+import Principal "mo:base/Principal";
+import Buffer "mo:base/Buffer";
 import T "../data-types/types";
 import DTOs "../dtos/DTOs";
+import Management "../utilities/Management";
+import ProfileCanister "../canister-definitions/profile-canister";
+import Utilities "../utilities/Utilities";
+import Environment "../utilities/Environment";
+import Cycles "mo:base/ExperimentalCycles";
 
 module {
   public class ProfileManager() {
 
-    private var users: List.List<T.User> = List.fromArray([]);
-
-    public func getStableUsers() : [T.User]{
-      return List.toArray(users);
+    private var profileCanisterIndex: TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
+    private var activeCanisterId: T.CanisterId = "";
+    private var usernames : TrieMap.TrieMap<T.PrincipalId, Text> = TrieMap.TrieMap<T.PrincipalId, Text>(Text.equal, Text.hash);
+    private var uniqueProfileCanisterIds : List.List<T.CanisterId> = List.nil();
+    private var totalProfiles : Nat = 0;
+    
+    public func getStableProfileCanisterIndex() : [(T.PrincipalId, T.CanisterId)]{
+      return Iter.toArray(profileCanisterIndex.entries());
     };
 
-    public func setStableUsers(stable_users: [T.User]){
-      users := List.fromArray(stable_users);
+    public func setStableProfileCanisterIndex(stable_profile_canister_index: [(T.PrincipalId, T.CanisterId)]){
+      let canisterIds : TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
+
+      for (canisterId in Iter.fromArray(stable_profile_canister_index)) {
+        canisterIds.put(canisterId);
+      };
+      profileCanisterIndex := canisterIds;
+    };
+
+    public func getStableActiveCanisterId() : T.CanisterId {
+      return activeCanisterId;
+    };
+
+    public func setStableActiveCanisterId(stable_active_canister_id: T.CanisterId){
+      activeCanisterId := stable_active_canister_id;
+    };  
+
+    public func getStableUsernames() : [(T.PrincipalId, Text)] {
+      return Iter.toArray(usernames.entries());
+    };
+
+    public func setStableUsernames(stable_usernames : [(T.PrincipalId, Text)]) : () {
+      let usernames_map : TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
+
+      for (username in Iter.fromArray(stable_usernames)) {
+        usernames_map.put(username);
+      };
+      usernames := usernames_map;
+    };
+
+    public func getStableUniqueProfileCanisterIds() : [T.CanisterId] {
+      return List.toArray(uniqueProfileCanisterIds);
+    };
+
+    public func setStableUniqueProfileCanisterIds(stable_unique_profile_canister_ids : [T.CanisterId]) : () {
+      let canisterIdBuffer = Buffer.fromArray<T.CanisterId>([]);
+
+      for (canisterId in Iter.fromArray(stable_unique_profile_canister_ids)) {
+        canisterIdBuffer.add(canisterId);
+      };
+      uniqueProfileCanisterIds := List.fromArray(Buffer.toArray(canisterIdBuffer));
+    };
+
+    public func getStableTotalProfiles() : Nat {
+      return totalProfiles;
+    };
+
+    public func setStableTotalProfiles(stable_total_profiles : Nat) : () {
+      totalProfiles := stable_total_profiles;
     };
       
-    public func createProfile(principalId: T.PrincipalId, dto: DTOs.CreateProfileDTO) : Result.Result<(), T.Error> {
-      //TODO: Checks
-      return #err(#NotFound);
+    public func saveProfile(principalId: T.PrincipalId, dto: DTOs.SaveProfileDTO) : async Result.Result<(), T.Error> {
+      
+      let existingProfileCanisterId = profileCanisterIndex.get(principalId);
+      switch(existingProfileCanisterId){
+        case null{
+          if(Text.size(dto.username) < 5 or Text.size(dto.username) > 20){
+            return #err(#TooLong);
+          };
+
+          if(dto.handicap < -54 or dto.handicap > 54){
+            return #err(#OutOfRange);
+          };
+
+          var profile_canister = actor (activeCanisterId) : actor {
+            isFull : () -> async Bool;
+            saveProfile : (dto: DTOs.SaveProfileDTO) -> async Result.Result<(), T.Error>;
+          };
+
+
+          let canisterFull = await profile_canister.isFull();
+          if(canisterFull){
+            activeCanisterId := await createNewProfileCanister();
+            profile_canister := actor (activeCanisterId) : actor {
+              isFull : () -> async Bool;
+              saveProfile : (dto: DTOs.SaveProfileDTO) -> async Result.Result<(), T.Error>;
+            };
+          };
+
+          return await profile_canister.saveProfile(dto);
+        };
+        case _ {
+          return #err(#AlreadyExists);
+        }
+      };
     };
 
-    public func updateProfile(principalId: T.PrincipalId, dto: DTOs.UpdateProfileDTO) : Result.Result<(), T.Error> {
-      //TODO: Checks
-      return #err(#NotFound);
-    };
-
-    public func updateProfilePicture(principalId: T.PrincipalId, dto: DTOs.UpdateProfilePictureDTO) : Result.Result<(), T.Error> {
+    public func saveProfileProfilePicture(principalId: T.PrincipalId, dto: DTOs.SaveProfilePictureDTO) : async Result.Result<(), T.Error> {
       //TODO: Checks
       return #err(#NotFound);
     };
@@ -123,6 +210,27 @@ module {
 
 
       return true;
+    };
+
+    private func createNewProfileCanister() : async Text {
+      Cycles.add<system>(10_000_000_000_000);
+      let canister = await ProfileCanister._ProfileCanister();
+      let IC : Management.Management = actor (Environment.Default);
+      let principal = ?Principal.fromText(Environment.BACKEND_CANISTER_ID);
+      let _ = await Utilities.updateCanister_(canister, principal, IC);
+
+      let canister_principal = Principal.fromActor(canister);
+      let canisterId = Principal.toText(canister_principal);
+
+      if (canisterId == "") {
+        return canisterId;
+      };
+
+      let uniqueCanisterIdBuffer = Buffer.fromArray<T.CanisterId>(List.toArray(uniqueProfileCanisterIds));
+      uniqueCanisterIdBuffer.add(canisterId);
+      uniqueProfileCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
+      activeCanisterId := canisterId;
+      return canisterId;
     };
 
 

@@ -12,22 +12,16 @@ actor Self {
   private let courseManager = CourseManager.CourseManager();
   private let gameManager = GameManager.GameManager();
     
-  public shared ({ caller }) func createProfile(dto: DTOs.CreateProfileDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func saveProfile(dto: DTOs.SaveProfileDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return profileManager.createProfile(principalId, dto);
+    return await profileManager.saveProfile(principalId, dto);
   };
 
-  public shared ({ caller }) func updateProfile(dto: DTOs.UpdateProfileDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func saveProfileProfilePicture(dto: DTOs.SaveProfilePictureDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return profileManager.updateProfile(principalId, dto);
-  };
-
-  public shared ({ caller }) func updateProfilePicture(dto: DTOs.UpdateProfilePictureDTO) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return profileManager.updateProfilePicture(principalId, dto);
+    return await profileManager.saveProfileProfilePicture(principalId, dto);
   };
 
   public shared query ({ caller }) func getProfile() : async Result.Result<DTOs.ProfileDTO, T.Error> {
@@ -185,32 +179,9 @@ actor Self {
   };
   
   public shared ({ caller }) func createGame(dto: DTOs.CreateGameDTO) : async Result.Result<(), T.Error> {
-     assert not Principal.isAnonymous(caller);
+    assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    /*
-
-    let usersExist = profileManager.checkUsersExist(dto.invites);
-
-    if(not usersExist){
-      return #err(#NotFound);
-    };
-
-    let response = gameManager.createGame(principalId, dto);
-    switch(response){
-      case (#ok response){
-
-        let gameId: T.GameId = response;
-
-        userManager.addGameReferences(gameId, dto);
-
-        return #ok;
-      };
-      case (#err response){
-        return #err(#InvalidData);
-      };
-    };  
-*/
-    return #ok;
+    return gameManager.createGame(principalId, dto);
   };
 
 
@@ -246,19 +217,32 @@ actor Self {
 
   //stable storage
 
-  private stable var stable_users: [T.User] = [];
+  private stable var stable_profile_canister_index: [(T.PrincipalId, T.CanisterId)] = [];
+  private stable var stable_active_canister_id: T.CanisterId = "";
+
+  private stable var stable_usernames : [(T.PrincipalId, Text)] = [];
+  private stable var stable_unique_profile_canister_ids : [T.CanisterId] = [];
+  private stable var stable_total_profiles : Nat = 0;
+  
+
   private stable var stable_courses: [T.Course] = [];
   private stable var stable_games: [T.Game] = [];
   private stable var stable_next_game_id = 1;
   
   system func preupgrade() {
-    stable_users := profileManager.getStableUsers();
+    stable_profile_canister_index := profileManager.getStableProfileCanisterIndex();
+    stable_active_canister_id := profileManager.getStableActiveCanisterId();
+
     stable_courses := courseManager.getStableCourses();
     stable_games := gameManager.getStableGames();
   };
 
   system func postupgrade() {
-    profileManager.setStableUsers(stable_users);
+    profileManager.setStableProfileCanisterIndex(stable_profile_canister_index);
+    profileManager.setStableUniqueProfileCanisterIds(stable_unique_profile_canister_ids);
+    profileManager.setStableActiveCanisterId(stable_active_canister_id);
+    profileManager.setStableUsernames(stable_usernames);
+    profileManager.setStableTotalProfiles(stable_total_profiles);
     courseManager.setStableCourses(stable_courses);
     gameManager.setStableGames(stable_games);
     gameManager.setStableNextGameId(stable_next_game_id);

@@ -12,6 +12,44 @@ module {
     private var games: List.List<T.Game> = List.fromArray([]);
     private var nextGameId: T.GameId = 1;
 
+
+    public func createGame(principalId: T.PrincipalId, dto: DTOs.CreateGameDTO) : Result.Result<(), T.Error> {
+
+      //TODO: Checks
+      //TODO: check game setup is valid
+
+
+      
+        //check game type
+        //a valid game selection
+        //date in the future
+        //more than one player
+        //check course exists
+
+  /*
+      let gamesBuffer = Buffer.fromArray<T.Game>(List.toArray(games));
+      let newGame: T.Game = {
+        courseId = dto.courseId;
+        entryRequirement = dto.entryRequirement;
+        gameType = dto.gameType;
+        id = nextGameId;
+        prizeSetup = dto.prizeSetup;
+        rounds = [];
+        status = #Unplayed;
+        events = [];
+        predictions = [];
+      };
+      gamesBuffer.add(newGame);
+
+      games := List.fromArray(Buffer.toArray<T.Game>(gamesBuffer));
+
+      nextGameId := nextGameId + 1;
+      
+      return #ok(newGame.id); 
+      */
+      return #err(#NotFound);
+    };
+
     public func getUpcomingGames(principalId: T.PrincipalId, dto: DTOs.GetUpcomingGamesDTO) : Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
       return #err(#NotFound);
     };
@@ -63,6 +101,8 @@ module {
     public func setStableNextGameId(stable_next_game_id: T.GameId){
       nextGameId := stable_next_game_id;
     };
+
+    
 
   };
 };

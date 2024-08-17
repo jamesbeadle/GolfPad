@@ -2,20 +2,24 @@ import T "../data-types/types";
 
 module DTOs {
 
-    public type CreateProfileDTO = {
-
+    public type SaveProfileDTO = {
+        username: Text;
+        handicap: Float;
     };
 
     public type UpdateProfileDTO = {
-
+        username: Text;
+        handicap: Float;
     };
 
-    public type UpdateProfilePictureDTO = {
-
+    public type SaveProfilePictureDTO = {
+        profilePicture: Blob;
+        profilePictureExtension: Text;
     };
 
     public type ProfileDTO = {
-
+        principalId: T.PrincipalId;
+        username: Text;
     };
 
     public type GetGolferBuzzDTO = {
