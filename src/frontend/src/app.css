@@ -20,7 +20,7 @@
 .modal .content {
   left: 0 !important;
   right: 0 !important;
-  background-color: #161819 !important;
+  background-color: #F4C802 !important;
   border-radius: 8px;
   border: 1px solid #2e323a !important;
 }
@@ -47,7 +47,7 @@
 }
 
 .times-button {
-  @apply text-white text-3xl;
+  @apply text-black text-3xl;
 }
 
 input[type="file"] {

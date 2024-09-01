@@ -1,27 +1,44 @@
+<div class="space-y-4 text-base">
 
-<div class="flex flex-col space-y-2 text-base">
-  <h1 class="text-xl condensed">Vision</h1>
-    
+  <h2 class="text-cta md:text-2xl font-black text-black mb-4 condensed tracking-tight leading-tight">VISION</h2>
+  <div class="flex items-center">
+    <div class="flex-1 pr-4">
+      <p>
+        <span class="font-extrabold text-black condensed">GOLFPAD</span> is where the beautiful game of golf enters Web3. 
+      </p>
+      <p class="mt-2">
+        Designed to enhance gameplay for players of all levels, 
+        <span class="font-extrabold text-black condensed">GOLFPAD</span> introduces new games, tools and features to expand your game. 
+        We  also want to enrich the social and club experience, aiming to make the world of golf an even more vibrant community sport.
+      </p>
+    </div>
+    <div class="flex-shrink-0">
+      <img src="panel-bg.png" alt="vision" class="w-64 h-auto rounded-lg shadow-md" />
+    </div>
+  </div>
+
   <p>
-  	GolfPad is the Web3 evolution that golf needs. 
-    Designed to enhance gameplay for players of all levels, GolfPad introduces innovative features to expand your game. 
-    It also enriches the social and club experience, offering unique games that make this already vibrant community sport even more engaging.
+    Many people who love golf can be inconsistent golfers, it's a game that usually requires a lot of practice. 
+    Central to <span class="font-extrabold text-black condensed">GOLFPAD</span> are a our initial 4 new golf game formats, designed to expand on the individual achievements of your round.  
+    Whether a beginner or advanced golfer, everything we build has been designed to help you enjoy becoming a better golfer.
   </p>
 
   <p>
-  	Central to GolfPad are a variety of new golf game types, offering players a fresh perspective on their rounds. These games break up the traditional round of golf, providing beginners and intermediate golfers with a more engaging experience. Advanced players will find these games beneficial for refining their skills or maintaining interest when playing against less challenging opponents.
+    We are starting with new games but we plan to make <span class="font-extrabold text-black condensed">GOLFPAD</span> 
+    the home of everything golf from playing to coaching. 
   </p>
 
   <p>
-  	GolfPad offers a range of tools for players to manage their rounds, from recording club yardages to writing course notes. For golf clubs, GolfPad’s CMS allows for efficient management of memberships, calendars, and tournaments. Clubs can easily set up events, promote green fees, and sell event tickets to a wide audience of golfers.
+    <span class="font-extrabold text-black condensed">GOLFPAD</span> will operate as a DAO, 
+    owning and managing the worldwide dataset of golf courses. It will use this 100% on-chain data as a foundation to deliver a range of golf related features and applications.
   </p>
 
   <p>
-    Golf coaches can use GolfPad to establish their own golf schools, managing their lesson schedules and allowing students to pay in cryptocurrency. Coaches can also create a subscription-based lesson service, enabling golfers to subscribe to content that will help improve their game.
+    <span class="font-extrabold text-black condensed">GOLFPAD</span> will provide golfers and golf clubs with a range of tools, initially launching with Yardage Sets.
+     This useful feature will allow golfers to keep track of how far they hit each club, saving multiple sets for the yardages you hit in different environments.
   </p>
 
   <p>
-    We aim to make GolfPad the home of community golf.
+    We aim to make <span class="font-extrabold text-black condensed">GOLFPAD</span> the home of community golf.
   </p>
-
 </div>

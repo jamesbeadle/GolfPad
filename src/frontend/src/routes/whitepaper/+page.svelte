@@ -53,17 +53,22 @@
             {#if activeTab === name.toLowerCase()}
               <div class="flex flex-col">
   
-                <div class="flex flex-col text-xs">
+
+                <div class="flex">
+                  <svelte:component this={component} />
+                </div> 
+
+                <div class="flex flex-col text-xs my-4">
                   <div class="flex flex-row space-x-2">
                     <button
-                      class="w-1/2 py-2 px-4 rounded-l bg-GolfPadYellow text-black disabled:bg-GolfPadDarkGreen disabled:text-white"
+                      class="w-1/2 py-2 px-4 rounded bg-GolfPadYellow text-black disabled:bg-GolfPadDarkGreen disabled:text-white"
                       on:click={prevTab}
                       disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
                     >
                       Prior Section
                     </button>
                     <button
-                      class="w-1/2 py-2 px-4 rounded-r bg-GolfPadYellow text-black disabled:bg-GolfPadDarkGreen disabled:text-white"
+                      class="w-1/2 py-2 px-4 rounded bg-GolfPadYellow text-black disabled:bg-GolfPadDarkGreen disabled:text-white"
                       on:click={nextTab}
                       disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
                     >
@@ -76,16 +81,6 @@
                     {/each}
                   </div>
                 </div>
-
-                <!-- Content for the section -->
-                <div class="horizontal-divider" />
-                <div class="flex my-4">
-                  <svelte:component this={component} />
-                </div>
-                <div class="horizontal-divider" />
-  
-  
-  
               </div>
             {/if}
           {/each}
