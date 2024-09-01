@@ -67,11 +67,11 @@
 
     <meta content="#2CE3A6" name="theme-color" />
     
-		<link href="/_app/immutable/assets/index.Bz-nz82C.css" rel="stylesheet">
-		<link rel="modulepreload" href="/_app/immutable/entry/start.rFHVPaT7.js">
-		<link rel="modulepreload" href="/_app/immutable/chunks/index.DaBd1zFl.js">
-		<link rel="modulepreload" href="/_app/immutable/chunks/vendor.BsO2_pcS.js">
-		<link rel="modulepreload" href="/_app/immutable/entry/app.BC9e3gss.js">
+		<link href="/_app/immutable/assets/index.CCj0jOpc.css" rel="stylesheet">
+		<link rel="modulepreload" href="/_app/immutable/entry/start.CPVTcftU.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/index.AL7_6eOs.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/vendor.Bp8FYdqI.js">
+		<link rel="modulepreload" href="/_app/immutable/entry/app.GNyQJCjG.js">
 
     <style>
       html,
@@ -87,16 +87,28 @@
         font-weight: 400;
         src: url("/MonaSans-Regular.woff2") format("woff2");
       }
+      @font-face {
+        font-display: swap;
+        font-family: "Mona Sans Condensed";
+        font-style: normal;
+        font-weight: 400;
+        src: url("/MonaSansCondensed-Regular.woff2")
+          format("woff2");
+      }
+      @font-face {
+        font-display: swap;
+        font-family: "Mona Sans Condensed Extra Bold";
+        font-style: normal;
+        font-weight: 400;
+        src: url("/MonaSansCondensed-ExtraBold.woff2")
+          format("woff2");
+      }
       body {
         font-family: "Mona Sans", sans-serif !important;
         color: white !important;
         height: 100vh;
         margin: 0;
-        background-image: url("/background.jpg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
+        background-color: #f4c802;
       }
 
       #app-spinner {
@@ -220,15 +232,15 @@
     <div style="display: contents">
 			<script>
 				{
-					__sveltekit_1pfsja4 = {
+					__sveltekit_15dicdy = {
 						base: ""
 					};
 
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("/_app/immutable/entry/start.rFHVPaT7.js"),
-						import("/_app/immutable/entry/app.BC9e3gss.js")
+						import("/_app/immutable/entry/start.CPVTcftU.js"),
+						import("/_app/immutable/entry/app.GNyQJCjG.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element);
 					});

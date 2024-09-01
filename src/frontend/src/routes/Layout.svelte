@@ -5,13 +5,10 @@
   import { authStore, type AuthSignInParams, type AuthStoreData } from "$lib/stores/auth-store";
   import { BusyScreen, Spinner } from "@dfinity/gix-components";
   import { fade } from "svelte/transition";
-  import LogoIcon from "$lib/icons/logo-icon.svelte";
   import "../app.css";
-  import MenuIcon from "$lib/icons/menu-icon.svelte";
   import { authSignedInStore } from "$lib/derived/auth.derived";
   import { goto } from "$app/navigation";
-    import { page } from "$app/stores";
-
+  
   let expanded = false;
   let worker: { syncAuthIdle: (auth: AuthStoreData) => void } | undefined;
   let buttonHeight = 0;
@@ -20,19 +17,6 @@
 
   const init = async () => await Promise.all([syncAuthStore()]);
   
-  $: links = $authSignedInStore ? [
-    { name: 'My Games', href: '/my-games' },
-    { name: 'Profile', href: '/profile' },
-    { name: 'Connect', href: '#' },
-  ] : 
-  [
-    { name: 'Connect', href: '#' },
-  ];
-
-  let lessImportantOptions = [
-    { name: 'Whitepaper', href: '/whitepaper' }
-  ];
-
   const syncAuthStore = async () => {
     if (!browser) {
       return;
@@ -45,57 +29,13 @@
     }
   };
 
-  const updateSidebarHeight = () => {
-    if(heightSet){
-      return;
-    }
-    if (browser) {
-      requestAnimationFrame(() => {
-        const button = document.querySelector(".menu-row");
-        if (button) {
-          buttonHeight = button.clientHeight;
-          const sidebarHeight = window.innerHeight - buttonHeight;
-          document.documentElement.style.setProperty('--sidebar-height', `${sidebarHeight}px`);
-          heightSet = true;
-        }
-      });
-    }
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    updateSidebarHeight();
-    if (browser && expanded && sidebar && !sidebar.contains(event.target as Node)) {
-      expanded = false;
-    }
-  };
-
-  const handleButtonClick = (event: MouseEvent) => {
-    event.stopPropagation();
-    expanded = !expanded;
-  };
-
-  const handleCloseButtonClick = (event: MouseEvent) => {
-    event.stopPropagation();
-    expanded = false;
-  };
-
   onMount(async () => {
-    worker = await initAuthWorker();
-    if (browser) {
-      window.addEventListener('resize', updateSidebarHeight);
-      document.addEventListener('click', handleClickOutside);
-    }
-    requestAnimationFrame(() => {
-      updateSidebarHeight();
-    });
-
+    
+   
   });
 
   onDestroy(() => {
-    if (browser) {
-      document.removeEventListener('click', handleClickOutside);
-      window.removeEventListener('resize', updateSidebarHeight);
-    }
+    
   });
 
   $: worker, $authStore, (() => worker?.syncAuthIdle($authStore))();
@@ -126,6 +66,7 @@
     authStore.signOut();
     goto("/");
   }
+  
 </script>
 
 <svelte:window on:storage={syncAuthStore} />
@@ -135,67 +76,31 @@
   </div>
 {:then _}
   
-{#if $page.url.pathname != "/"}
+<div class="flex h-screen flex-col">
+  <!-- Header Section -->
+  <div class="bg-GolfPadYellow flex-none relative h-[80px]"> <!-- Set the height of the header here -->
+      <div class="absolute top-4 left-4 z-10">
+          <button class="bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md">
+              +
+          </button>
+      </div>
+      <div class="absolute top-4 right-4 z-10">
+          <span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span>
+      </div>
+  </div>
 
-<div class="menu-row flex items-center bg-GolfPadDarkGreen text-white w-full p-2">
-  <button on:click={handleButtonClick} class="flex items-center">
-    <MenuIcon fill='#FFFFFF' className="w-5 m-1" />
-  </button>
-  <div class="ml-auto">
-    <a class="flex flex-row items-center ml-auto" href="/">
-      <p class="text-sm mt-1">GolfPad</p>
-      <LogoIcon fill='#FFFFFF' className="w-6 mx-1" />
-    </a>
+  <!-- Main White Section -->
+  <div class="bg-white flex-1 flex items-center justify-center overflow-hidden">
+      <slot />
+  </div>
+
+  <div class="bg-GolfPadYellow flex-none relative h-[50px]"> 
+      <div class="absolute bottom-4 left-4 z-10">
+          <a href="/whitepaper" class="text-black text-sm font-medium">WHITEPAPER</a>
+      </div>
   </div>
 </div>
 
-<aside class="bg-GolfPadGreen p-4" bind:this={sidebar} class:expanded={expanded}>
-<div class="p-2">
-  <div class="p-2 flex justify-between items-center">
-    <h2 class="text-xl font-bold p-2">Options</h2>
-    <button on:click={handleCloseButtonClick} class="close-button">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-      </svg>
-    </button>
-  </div>
-  
-  <ul class="mt-4 space-y-2">
-    {#each links as option}
-      <li>
-        
-        {#if option.name === 'Connect'}
-
-          {#if $authSignedInStore}
-            <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen hover:text-GolfPadGreen px-4 py-2" on:click={handleLogout}>Disconnect</a>
-          {:else}
-            <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen hover:text-GolfPadGreen px-4 py-2" on:click={handleLogin}>Connect</a>
-          {/if}
-        {:else}
-          <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen hover:text-GolfPadGreen px-4 py-2">{option.name}</a>
-        {/if}
-      </li>
-    {/each}
-  </ul>
-</div>
-<div class="less-important p-2">
-  <div class="horizontal-divider my-2" />
-  <ul class="space-y-2 text-xs">
-    {#each lessImportantOptions as option}
-      <li>
-        <a href={option.href} class="block rounded hover:bg-GolfPadLightGreen px-4 py-2">{option.name}</a>
-      </li>
-    {/each}
-  </ul>
-</div>
-</aside>
-
-{/if}
-<div class="flex">
-  <div class="flex-1">
-    <slot />
-  </div>
-</div>
 {/await}
 
 <BusyScreen />

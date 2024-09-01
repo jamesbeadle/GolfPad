@@ -114,14 +114,13 @@ input {
   /* Your CSS here */
 }
 
-.condensed{
-  font-family: 'Mona Sans Condensed';
-  font-weight: 800;
+.condensed {
+  font-family: "Mona Sans Condensed Extra Bold";
 }
 
 .horizontal-divider {
   min-height: 2px;
-  @apply flex-shrink-0 h-px bg-GolfPadLightGreen self-stretch;
+  @apply flex-shrink-0 h-px bg-GolfPadGreen self-stretch;
 }
 
 .horizontal-divider-dark {

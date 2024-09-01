@@ -7,10 +7,10 @@ function __memo(fn) {
 return {
 	appDir: "_app",
 	appPath: "_app",
-	assets: new Set([".DS_Store",".ic-assets.json",".well-known/ic-domains",".well-known/ii-alternative-origins","Rubik-Regular.woff2","background.jpg","favicons/.DS_Store","favicons/apple-touch-icon.png","favicons/browserconfig.xml","favicons/favicon-16x16.png","favicons/favicon-32x32.png","favicons/favicon.ico","favicons/icon-192x192.png","favicons/icon-512x512.png","favicons/mstile-150x150.png","favicons/safari-pinned-tab.svg","manifest.webmanifest","meta-share.jpg","placeholder.png"]),
-	mimeTypes: {".json":"application/json",".woff2":"font/woff2",".jpg":"image/jpeg",".png":"image/png",".xml":"text/xml",".svg":"image/svg+xml",".webmanifest":"application/manifest+json"},
+	assets: new Set([".DS_Store",".ic-assets.json",".well-known/ic-domains",".well-known/ii-alternative-origins","MonaSans-Regular.woff2","MonaSansCondensed-ExtraBold.woff2","MonaSansCondensed-Regular.woff2","favicons/.DS_Store","favicons/apple-touch-icon.png","favicons/browserconfig.xml","favicons/favicon-16x16.png","favicons/favicon-32x32.png","favicons/favicon.ico","favicons/icon-192x192.png","favicons/icon-512x512.png","favicons/mstile-150x150.png","favicons/safari-pinned-tab.svg","golfball.png","manifest.webmanifest","meta-share.jpg","placeholder.png"]),
+	mimeTypes: {".json":"application/json",".woff2":"font/woff2",".png":"image/png",".xml":"text/xml",".svg":"image/svg+xml",".webmanifest":"application/manifest+json",".jpg":"image/jpeg"},
 	_: {
-		client: {"start":"_app/immutable/entry/start.rFHVPaT7.js","app":"_app/immutable/entry/app.BC9e3gss.js","imports":["_app/immutable/entry/start.rFHVPaT7.js","_app/immutable/chunks/index.DaBd1zFl.js","_app/immutable/chunks/vendor.BsO2_pcS.js","_app/immutable/entry/app.BC9e3gss.js","_app/immutable/chunks/index.DaBd1zFl.js","_app/immutable/chunks/vendor.BsO2_pcS.js"],"stylesheets":["_app/immutable/assets/index.Bz-nz82C.css","_app/immutable/assets/index.Bz-nz82C.css"],"fonts":[],"uses_env_dynamic_public":false},
+		client: {"start":"_app/immutable/entry/start.CPVTcftU.js","app":"_app/immutable/entry/app.GNyQJCjG.js","imports":["_app/immutable/entry/start.CPVTcftU.js","_app/immutable/chunks/index.AL7_6eOs.js","_app/immutable/chunks/vendor.Bp8FYdqI.js","_app/immutable/entry/app.GNyQJCjG.js","_app/immutable/chunks/index.AL7_6eOs.js","_app/immutable/chunks/vendor.Bp8FYdqI.js"],"stylesheets":["_app/immutable/assets/index.CCj0jOpc.css","_app/immutable/assets/index.CCj0jOpc.css"],"fonts":[],"uses_env_dynamic_public":false},
 		nodes: [
 			__memo(() => import('./nodes/0.js')),
 			__memo(() => import('./nodes/1.js')),
@@ -34,29 +34,29 @@ return {
 				endpoint: null
 			},
 			{
-				id: "/bands",
-				pattern: /^\/bands\/?$/,
+				id: "/bands-new",
+				pattern: /^\/bands-new\/?$/,
 				params: [],
 				page: { layouts: [0,], errors: [1,], leaf: 3 },
 				endpoint: null
 			},
 			{
-				id: "/build-it",
-				pattern: /^\/build-it\/?$/,
+				id: "/build-it-new",
+				pattern: /^\/build-it-new\/?$/,
 				params: [],
 				page: { layouts: [0,], errors: [1,], leaf: 4 },
 				endpoint: null
 			},
 			{
-				id: "/call-it",
-				pattern: /^\/call-it\/?$/,
+				id: "/call-it-new",
+				pattern: /^\/call-it-new\/?$/,
 				params: [],
 				page: { layouts: [0,], errors: [1,], leaf: 5 },
 				endpoint: null
 			},
 			{
-				id: "/mulligans",
-				pattern: /^\/mulligans\/?$/,
+				id: "/mulligans-new",
+				pattern: /^\/mulligans-new\/?$/,
 				params: [],
 				page: { layouts: [0,], errors: [1,], leaf: 6 },
 				endpoint: null
@@ -69,22 +69,22 @@ return {
 				endpoint: null
 			},
 			{
-				id: "/profile",
-				pattern: /^\/profile\/?$/,
+				id: "/next-up-new",
+				pattern: /^\/next-up-new\/?$/,
 				params: [],
 				page: { layouts: [0,], errors: [1,], leaf: 8 },
 				endpoint: null
 			},
 			{
-				id: "/prophet",
-				pattern: /^\/prophet\/?$/,
+				id: "/profile",
+				pattern: /^\/profile\/?$/,
 				params: [],
 				page: { layouts: [0,], errors: [1,], leaf: 9 },
 				endpoint: null
 			},
 			{
-				id: "/randomiser",
-				pattern: /^\/randomiser\/?$/,
+				id: "/prophet-new",
+				pattern: /^\/prophet-new\/?$/,
 				params: [],
 				page: { layouts: [0,], errors: [1,], leaf: 10 },
 				endpoint: null

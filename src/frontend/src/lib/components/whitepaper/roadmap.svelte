@@ -1,5 +1,5 @@
-<div class="flex flex-col space-y-2">
-  <h1 class="text-2xl">Roadmap</h1>
+<div class="flex flex-col space-y-2 text-base">
+  <h1 class="text-xl condensed">Roadmap</h1>
     
   <p>
       August 2024: Launch of our first 5 unique games.

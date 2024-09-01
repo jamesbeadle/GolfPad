@@ -1,5 +1,5 @@
-<div class="flex flex-col">
-  <h1 class="text-2xl">Product</h1>
+<div class="flex flex-col space-y-2 text-base">
+  <h1 class="text-xl condensed">Product</h1>
     
   <p>GolfPad has features for clubs, players and professional golf instructors. Below is a summary of what you can expect when using the app:</p>
 

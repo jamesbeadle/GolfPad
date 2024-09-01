@@ -87,14 +87,23 @@
         font-family: "Mona Sans Condensed";
         font-style: normal;
         font-weight: 400;
-        src: url("%sveltekit.assets%/MonaSansCondensed-Regular.woff2") format("woff2");
+        src: url("%sveltekit.assets%/MonaSansCondensed-Regular.woff2")
+          format("woff2");
+      }
+      @font-face {
+        font-display: swap;
+        font-family: "Mona Sans Condensed Extra Bold";
+        font-style: normal;
+        font-weight: 400;
+        src: url("%sveltekit.assets%/MonaSansCondensed-ExtraBold.woff2")
+          format("woff2");
       }
       body {
         font-family: "Mona Sans", sans-serif !important;
         color: white !important;
         height: 100vh;
         margin: 0;
-        background-color: #F4C802;
+        background-color: #f4c802;
       }
 
       #app-spinner {

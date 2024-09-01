@@ -42,32 +42,28 @@
   </script>
   
   <Layout>
-    <div class="p-2">
-      <div class="flex flex-col bg-GolfPadGreen rounded-md rounded-b-lg xs:text-lg sm:text-xl">
-        <div class="flex flex-row items-center px-4 border-b border-b-GolfPadGreen justify-between">
-          <div class="flex items-center">
-            <BlackLogoIcon className="w-4 xs:w-6 sm:w-8 mx-1 xs:mx-2 sm:mx-3 my-2" />
-            <p class="p-2 xs:p-3 sm:p-4">GolfPad Whitepaper</p>
-          </div>
-        </div>
-  
-        <div class="w-full bg-GolfPadLightGreen p-4 rounded-b-md flex flex-col text-sm xs:text-base sm:text-lg text-black">
-          
+    <div class="p-2 px-4 text-black h-full w-full">
+
+      <h2 class="text-cta md:text-5xl font-black text-black mb-4 mt-3 condensed tracking-tight leading-tight">GOLFPAD WHITEPAPER</h2>
+      <div class="w-full flex flex-row">
+        <img src="hero.png" alt="hero" class="w-1/3" />
+        <div class="w-2/3 px-2">
+         
           {#each tabs as { name, component }}
             {#if activeTab === name.toLowerCase()}
               <div class="flex flex-col">
   
-                <div class="flex flex-col sm:hidden text-xs">
-                  <div class="flex flex-row">
+                <div class="flex flex-col text-xs">
+                  <div class="flex flex-row space-x-2">
                     <button
-                      class="w-1/2 py-2 px-4 rounded-l bg-GolfPadDarkGreen text-white disabled:bg-GolfPadYellow disabled:text-black"
+                      class="w-1/2 py-2 px-4 rounded-l bg-GolfPadYellow text-black disabled:bg-GolfPadDarkGreen disabled:text-white"
                       on:click={prevTab}
                       disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
                     >
                       Prior Section
                     </button>
                     <button
-                      class="w-1/2 py-2 px-4 rounded-r bg-GolfPadDarkGreen text-white disabled:bg-GolfPadYellow disabled:text-black"
+                      class="w-1/2 py-2 px-4 rounded-r bg-GolfPadYellow text-black disabled:bg-GolfPadDarkGreen disabled:text-white"
                       on:click={nextTab}
                       disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
                     >
@@ -79,104 +75,28 @@
                       <div class="pip" class:is-active={isActiveTab(index)}></div>
                     {/each}
                   </div>
-  
                 </div>
-  
-                <div class="hidden sm:flex flex-col text-xs  mb-4">
-                  <div class="flex flex-row items-center justify-between">
-                    <button
-                      class="py-2 px-4 rounded flex-grow bg-GolfPadDarkGreen text-white disabled:bg-GolfPadYellow disabled:text-black"
-                      on:click={prevTab}
-                      disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
-                    >
-                      Prior Section
-                    </button>
-                    <div class="flex-grow flex flex-row justify-center">
-                      {#each tabs as _, index}
-                        <div class="pip" class:is-active={isActiveTab(index)}></div>
-                      {/each}
-                    </div>
-                    <button
-                      class="py-2 px-4 rounded flex-grow bg-GolfPadDarkGreen text-white disabled:bg-GolfPadYellow disabled:text-black"
-                      on:click={nextTab}
-                      disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
-                    >
-                      Next Section
-                    </button>
-                  </div>
-                </div>
-                
-  
+
+                <!-- Content for the section -->
                 <div class="horizontal-divider" />
                 <div class="flex my-4">
                   <svelte:component this={component} />
                 </div>
                 <div class="horizontal-divider" />
   
-                <div class="flex flex-col sm:hidden">
-                  <div class="flex flex-row justify-center my-4">
-                    {#each tabs as _, index}
-                      <div class="pip" class:is-active={isActiveTab(index)}></div>
-                    {/each}
-                  </div>
-                  
-                  
-                  <div class="flex flex-col sm:hidden text-xs">
-                    <div class="flex flex-row">
-                      <button
-                        class="w-1/2 py-2 px-4 rounded-l bg-GolfPadDarkGreen text-white disabled:bg-GolfPadYellow disabled:text-black"
-                        on:click={prevTab}
-                        disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
-                      >
-                        Prior Section
-                      </button>
-                      <button
-                        class="w-1/2 py-2 px-4 rounded-r bg-GolfPadDarkGreen text-white disabled:bg-GolfPadYellow disabled:text-black"
-                        on:click={nextTab}
-                        disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
-                      >
-                        Next Section
-                      </button>
-                    </div>
-    
-                  </div>
-                  
-                </div>
-  
-  
-                <div class="hidden sm:flex flex-col text-xs  mt-4">
-                  <div class="flex flex-row items-center justify-between">
-                    <button
-                      class="text-white py-2 px-4 rounded flex-grow bg-GolfPadDarkGreen text-white disabled:bg-GolfPadYellow disabled:text-black"
-                      on:click={prevTab}
-                      disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
-                    >
-                      Prior Section
-                    </button>
-                    <div class="flex-grow flex flex-row justify-center">
-                      {#each tabs as _, index}
-                        <div class="pip" class:is-active={isActiveTab(index)}></div>
-                      {/each}
-                    </div>
-                    <button
-                      class="py-2 px-4 rounded flex-grow bg-GolfPadDarkGreen text-white disabled:bg-GolfPadYellow disabled:text-black"
-                      on:click={nextTab}
-                      disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
-                    >
-                      Next Section
-                    </button>
-                  </div>
-                </div>
-  
   
   
               </div>
             {/if}
           {/each}
-        </div>
+
+
+        </div>  
       </div>
+      
     </div>
   </Layout>
+  
   
   <style>
     .pip {
@@ -198,4 +118,3 @@
       }
     }
   </style>
-  

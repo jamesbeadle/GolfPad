@@ -1,5 +1,5 @@
-<div class="flex flex-col space-y-2">
-    <h1 class="text-2xl">Marketing</h1>
+<div class="flex flex-col space-y-2 text-base">
+    <h1 class="text-xl condensed">Marketing</h1>
     
     <p>
         Waterway Labs are travelling the UK and will visit as many golf courses as possible on the way. 

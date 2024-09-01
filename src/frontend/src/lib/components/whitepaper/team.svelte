@@ -1,5 +1,5 @@
-<div class="flex flex-col space-y-2">
-  <h1 class="text-2xl">Team</h1>
+<div class="flex flex-col space-y-2 text-base">
+  <h1 class="text-xl condensed">Team</h1>
   <p>
     Waterway Labs have a team of keen golfers. 
     The team have experience of being long time club members along with playing courses with friends on an adhoc basis.
