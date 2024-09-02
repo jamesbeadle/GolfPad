@@ -1,9 +1,13 @@
 <script lang="ts">
-    import Mulligans from "./mulligans.svelte";
-
-
+    import Bands from "./bands.svelte";
+    import BuildIt from "./build-it.svelte";
+  import Mulligans from "./mulligans.svelte";
+    import NextUp from "./next-up.svelte";
   let showMulligans = false;
-
+  let showBands = false;
+  let showBuildIt = false;
+  let showNextUp = false;
+  
   function openMulligans(){
     showMulligans = true;
   }
@@ -11,10 +15,46 @@
   function closeMulligans(){
     showMulligans = false;
   }
+  
+  function openBands(){
+    showBands = true;
+  }
+
+  function closeBands(){
+    showBands = false;
+  }
+  
+  function openBuildIt(){
+    showBuildIt = true;
+  }
+
+  function closeBuiltIt(){
+    showBuildIt = false;
+  }
+  
+  function openNextUp(){
+    showNextUp = true;
+  }
+
+  function closeNextUp(){
+    showNextUp = false;
+  }
 </script>
 
 {#if showMulligans}
   <Mulligans closeModal={closeMulligans} visible={showMulligans} />
+{/if}
+
+{#if showBands}
+  <Bands closeModal={closeBands} visible={showBands} />
+{/if}
+
+{#if showBuildIt}
+  <BuildIt closeModal={closeBuiltIt} visible={showBuildIt} />
+{/if}
+
+{#if showNextUp}
+  <NextUp closeModal={closeNextUp} visible={showNextUp} />
 {/if}
 
 <div class="flex flex-col space-y-2 text-base">
@@ -36,17 +76,17 @@
     <div class="w-1/4 flex flex-col space-y-2">
       <img src="bands.png" alt="bands" class="w-full" />
       <p class="condensed text-lg">BANDS</p>
-      <button class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
+      <button on:click={openBands} class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
     </div>
     <div class="w-1/4 flex flex-col space-y-2">
       <img src="build-it.png" alt="build-it" class="w-full" />
       <p class="condensed text-lg">BUILD IT</p>
-      <button class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
+      <button on:click={openBuildIt} class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
     </div>
     <div class="w-1/4 flex flex-col space-y-2">
       <img src="next-up.png" alt="next-up" class="w-full" />
       <p class="condensed text-lg">NEXT UP</p>
-      <button class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
+      <button on:click={openNextUp} class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
     </div>
   </div>
 </div>

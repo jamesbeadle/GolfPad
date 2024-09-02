@@ -15,9 +15,9 @@ import Layout from "./Layout.svelte";
 <Layout>    
    
   <div class="text-center px-4 z-10">
-    <h1 class="font-bold text-GolfPadForest mb-1">WELCOME TO GOLFPAD</h1>
+    <h1 class="font-bold text-GolfPadForest mb-1">WELCOME TO <span class="condensed">GOLFPAD</span></h1>
     <h2 class="text-cta md:text-6xl font-black text-black mb-6 condensed tracking-tight leading-tight mx-16">THE FUTURE OF GOLF STARTS HERE</h2>
-    <button class="bg-GolfPadForest text-GolfPadYellow py-3 px-12 text-lg font-semibold shadow-lg" on:click="{handleLogin}">CONNECT</button>
+    <button disabled class="bg-GolfPadForest text-GolfPadYellow py-3 px-12 text-lg font-semibold shadow-lg" on:click="{handleLogin}">COMING SOON</button>
 </div>
 <div class="absolute bottom-0 left-0 w-full z-0">
     <img src="golfball.png" alt="Golf Ball" class="w-full h-auto object-cover">

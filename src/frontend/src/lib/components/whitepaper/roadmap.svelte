@@ -2,15 +2,9 @@
   <h1 class="text-xl condensed">Roadmap</h1>
     
   <p>
-      August 2024: Launch of our first 5 unique games.
+      2024: Launch of our first 4 unique games, allowing the world to begin enjoying our new game formats.
   </p>
   <p>
-    October 2024: Launch of club membership features.
-  </p>
-  <p>
-    January 2024: Launch of golf coaching features.
-  </p>
-  <p>
-    April 2025: Launch of GolfPad advertising for external organisations.
+    2025 Onwards: Continued promotion of <span class="condensed">GOLFPAD</span>, utilising Launch of club membership, golf coaching, worldwide tournaments, mini games  and advertising features.
   </p>
 </div>

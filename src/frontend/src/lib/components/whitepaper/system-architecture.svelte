@@ -2,6 +2,6 @@
     <h1 class="text-xl condensed">System Architecture</h1>
     
     <p>
-        Full details of the GolfPad multi-canister architecture will be released after testing is complete.
+        Full details of the <span class="condensed">GOLFPAD</span> multi-canister architecture will be released after testing is complete.
     </p>
 </div>

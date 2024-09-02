@@ -1,13 +1,12 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import { browser } from "$app/environment";
-  import { initAuthWorker } from "$lib/services/worker.auth.services";
   import { authStore, type AuthSignInParams, type AuthStoreData } from "$lib/stores/auth-store";
   import { BusyScreen, Spinner } from "@dfinity/gix-components";
-  import { fade } from "svelte/transition";
   import "../app.css";
   import { authSignedInStore } from "$lib/derived/auth.derived";
   import { goto } from "$app/navigation";
+    import { fade } from "svelte/transition";
   
   let expanded = false;
   let worker: { syncAuthIdle: (auth: AuthStoreData) => void } | undefined;
@@ -29,9 +28,10 @@
     }
   };
 
+  $: isHomepage = browser && window.location.pathname === "/";
+
   onMount(async () => {
     
-   
   });
 
   onDestroy(() => {
@@ -61,12 +61,10 @@
     authStore.signIn(params);
   }
 
-
   function handleLogout() {
     authStore.signOut();
     goto("/");
   }
-  
 </script>
 
 <svelte:window on:storage={syncAuthStore} />
@@ -76,9 +74,9 @@
   </div>
 {:then _}
   
-<div class="flex h-screen flex-col">
+<div class="flex h-screen flex-col relative">
   <!-- Header Section -->
-  <div class="bg-GolfPadYellow flex-none relative h-[80px]"> <!-- Set the height of the header here -->
+  <div class="bg-GolfPadYellow flex-none relative h-[80px]">
       <div class="absolute top-4 left-4 z-10">
           <button class="bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md">
               +
@@ -89,16 +87,19 @@
       </div>
   </div>
 
-  <!-- Main White Section -->
-  <div class="bg-white flex-1 flex items-center justify-center overflow-hidden">
+  <!-- Main Section -->
+  <div class="{isHomepage ? 'bg-GolfPadYellow' : 'bg-white'} flex-1 flex items-center justify-center overflow-hidden relative">
       <slot />
   </div>
 
+  <!-- Footer: Only show if not on homepage -->
+  {#if !isHomepage}
   <div class="bg-GolfPadYellow flex-none relative h-[50px]"> 
       <div class="absolute bottom-4 left-4 z-10">
           <a href="/whitepaper" class="text-black text-sm font-medium">WHITEPAPER</a>
       </div>
   </div>
+  {/if}
 </div>
 
 {/await}
