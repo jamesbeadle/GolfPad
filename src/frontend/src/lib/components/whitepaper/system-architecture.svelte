@@ -1,4 +1,4 @@
-<div class="flex flex-col space-y-2 text-base">
+<div class="flex flex-col space-y-4 text-base">
     <h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">SYSTEM ARCHITECTURE</h2>
  
     <p>

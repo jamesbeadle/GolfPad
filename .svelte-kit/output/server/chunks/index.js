@@ -3426,7 +3426,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "vd8lqr"
+  version_hash: "1deie2a"
 };
 async function get_hooks() {
   return {};
@@ -3943,11 +3943,11 @@ const Vision = create_ssr_component(($$result, $$props, $$bindings, slots) => {
      This useful feature will allow golfers to keep track of how far they hit each club, saving multiple sets for the yardages you hit in different environments.</p> <p>We aim to make <span class="font-extrabold text-black condensed">GOLFPAD</span> the home of community golf.</p></div>`;
 });
 const Product = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${``} ${``} ${``} ${``} <div class="flex flex-col space-y-2 text-base"><h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight" data-svelte-h="svelte-1vi2u8k">PRODUCT</h2> <p data-svelte-h="svelte-1ucazku">We want GolfPad to have everything a user needs to play, learn and socialise with the world&#39;s community of golfers. 
+  return `${``} ${``} ${``} ${``} <div class="flex flex-col space-y-4 text-base"><h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight" data-svelte-h="svelte-1vi2u8k">PRODUCT</h2> <p data-svelte-h="svelte-1ucazku">We want GolfPad to have everything a user needs to play, learn and socialise with the world&#39;s community of golfers. 
     We will introduce users to 4 new games initially, showing how new formats introduce a new dimension of fun.</p> <p data-svelte-h="svelte-1ip4exd">Our first 4 games will be released in the following order and are described in the following sections:</p> <div class="w-full flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-2"><div class="w-full md:w-1/4 flex flex-col space-y-2"><img src="mulligans.png" alt="mulligans" class="w-full"> <p class="condensed text-3xl md:text-lg text-center" data-svelte-h="svelte-ka1xdq">MULLIGANS</p> <button class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs" data-svelte-h="svelte-evty1l">Info</button></div> <div class="w-full md:w-1/4 flex flex-col space-y-2"><img src="bands.png" alt="bands" class="w-full"> <p class="condensed text-3xl md:text-lg text-center" data-svelte-h="svelte-1oh3gak">BANDS</p> <button class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs" data-svelte-h="svelte-g3ptgv">Info</button></div> <div class="w-full md:w-1/4 flex flex-col space-y-2"><img src="build-it.png" alt="build-it" class="w-full"> <p class="condensed text-3xl md:text-lg text-center" data-svelte-h="svelte-rwep13">BUILD IT</p> <button class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs" data-svelte-h="svelte-bkkypg">Info</button></div> <div class="w-full md:w-1/4 flex flex-col space-y-2"><img src="next-up.png" alt="next-up" class="w-full"> <p class="condensed text-3xl md:text-lg text-center" data-svelte-h="svelte-eslhli">NEXT UP</p> <button class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs" data-svelte-h="svelte-10d6a93">Info</button></div></div></div>`;
 });
 const Dao = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<div class="flex flex-col space-y-2 text-base" data-svelte-h="svelte-1fcnv38"><h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">The GOLFPAD DAO</h2> <p>The <span class="condensed">GOLFPAD</span> DAO will be used to govern our valuable worldwide golf dataset. 
+  return `<div class="flex flex-col space-y-4 text-base" data-svelte-h="svelte-dfpju6"><h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">The GOLFPAD DAO</h2> <p>The <span class="condensed">GOLFPAD</span> DAO will be used to govern our valuable worldwide golf dataset. 
         As a new golfer discovers the platform and adds their home course, a proposal can be raised to make their course official. 
         This consensus backed dataset of worldwide courses will serve as the foundation for a range of Golf apps within the <span class="condensed">GOLFPAD</span> ecosystem.</p> <p>The DAO will be decentralised and governed using the utility token, $GOLF. The $GOLF token will be used throughout the <span class="condensed">GOLFPAD</span> ecosystem, initially ensuring we have zero 3rd party dependencies.</p> <p>Future features will enable golfers, coaches and clubs to use their golf tokens as we bring additional areas of golf 100% on-chain.</p> <p>We will enable coaches to provide lessons and subscription based content through our upcoming <span class="condensed">GOLF SCHOOL</span> features.</p> <p>Golf clubs will have the opportunity to manage memberships, events and take payments all on a completely secure, tamper-proof blockchain.</p> <div class="horizontal-divider-dark"></div> <p>Tokenomics at decentralisation:</p> <ul><li>SNS Sale Participants: 25%</li> <li>Waterway Labs: 16.8%</li> <li>OpenFPL Neuron Holders: 3.6%</li> <li>OpenFPL Supporters Club: 3.6%</li> <li><span class="condensed">GOLFPAD</span> Treasury: 51%</li></ul></div>`;
 });
@@ -3956,7 +3956,11 @@ const Marketing = create_ssr_component(($$result, $$props, $$bindings, slots) =>
       We will approach a course and ask to become the featured course for a day, adding them to the platform whilst showcasing their course in the best way possible.</p></div>`;
 });
 const Roadmap = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<div class="flex flex-col space-y-2 text-base" data-svelte-h="svelte-1bxqp4f"><h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">ROADMAP</h2> <p>2024: Launch of our first 4 unique games, allowing the world to begin enjoying our new game formats. Promotion will begin using our floating <span class="condensed">GOLFPAD MINIPUTT</span> course in the UK.</p> <p>2025: We will release features for professionals to build their own golf school, earn from subscribers and distribute tipes i The first IRL <span>GOLFPAD</span> mini golf competition will take place as the promotional events begin.</p> <p>2025 Onwards: Continued promotion of <span class="condensed">GOLFPAD</span>, utilising Launch of club membership, golf coaching, worldwide tournaments, mini games  and advertising features.</p></div>`;
+  return `<div class="flex flex-col space-y-4 text-base" data-svelte-h="svelte-jd4zrw"><h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">ROADMAP</h2> <div class="w-full mt-4"><img src="roadmap.png" alt="boat" class="w-full h-64 md:h-72 lg:h-80 rounded-md shadow-md object-cover object-center"></div> <p>2024: Launch of our first 4 unique games, allowing the world to begin enjoying our new game formats. 
+      Promotion will begin using our floating <span class="condensed">GOLFPAD MINIPUTT</span> course in the UK.
+      We will begin signing up golf courses around the world to be showcased within the <span class="condensed">GOLFPAD</span> platform.</p> <p>2025: We will extend <span class="condensed">GOLFPAD</span> features to provide professional golf coaches with the tools required to build their own golf school. 
+    These tools will enable coaches to manage the students they train and offer users around the world a content based subscription service filled with golf training videos.
+  </p><p>2025 Onwards: Continued promotion of <span class="condensed">GOLFPAD</span>, introducing real world golf tournaments, mini games and advertising features.</p></div>`;
 });
 const Team = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   const teamMembers = [
@@ -3991,7 +3995,7 @@ const Team = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   })}</div></div>`;
 });
 const System_architecture = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<div class="flex flex-col space-y-2 text-base" data-svelte-h="svelte-1ed8rgh"><h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">SYSTEM ARCHITECTURE</h2> <p>Full details of the <span class="condensed">GOLFPAD</span> multi-canister architecture will be released after testing is complete.</p></div>`;
+  return `<div class="flex flex-col space-y-4 text-base" data-svelte-h="svelte-16of30z"><h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">SYSTEM ARCHITECTURE</h2> <p>Full details of the <span class="condensed">GOLFPAD</span> multi-canister architecture will be released after testing is complete.</p></div>`;
 });
 const css = {
   code: ".pip.svelte-15z1qdc{width:10px;height:10px;background-color:gray;border-radius:50%;margin:0 2px}.pip.is-active.svelte-15z1qdc{--tw-bg-opacity:1;background-color:rgb(45 93 122 / var(--tw-bg-opacity))}@media(min-width: 640px){.pip.svelte-15z1qdc{width:12px;height:12px}}",
