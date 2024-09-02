@@ -4,7 +4,7 @@
     import { goto, afterNavigate } from "$app/navigation";
     import { page } from "$app/stores";
   
-    type Route = 'home' | 'whitepaper';
+    type Route = 'home' | 'whitepaper' | 'team' | 'game-rules';
   
     export let expanded: boolean = false;
     export let selectedRoute: Route = 'home';
@@ -12,7 +12,9 @@
   
     const navItems = writable<{ name: string; route: Route }[]>([
       { name: 'HOME', route: 'home' },
-      { name: 'WHITEPAPER', route: 'whitepaper' }
+      { name: 'WHITEPAPER', route: 'whitepaper' },
+      { name: 'GAME RULES', route: 'game-rules' },
+      { name: 'TEAM', route: 'team' }
     ]);
   
     function selectRoute(route: Route) {
@@ -35,11 +37,23 @@
     }
 
     $: {
-        if ($page.url.pathname === '/') {
-            selectedRoute = 'home';
-        } else if ($page.url.pathname === '/whitepaper') {
-            selectedRoute = 'whitepaper';
-        }
+      switch($page.url.pathname){
+        case '/':
+          selectedRoute = 'home';
+          break;
+        case '/whitepaper':
+          selectedRoute = 'whitepaper';
+          break;
+        case '/team':
+          selectedRoute = 'team';
+          break;
+        case '/game-rules':
+          selectedRoute = 'game-rules';
+          break;
+        default:
+          selectedRoute = 'home';
+          break;
+      }
     }
 </script>
   

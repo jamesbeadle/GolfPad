@@ -14,10 +14,8 @@
     </defs>
     <circle cx="100" cy="100" r="100" fill="url(#grass-sky)" />
       
-    <!-- Golf Ball -->
     <circle cx="100" cy="100" r="50" fill="#FFFFFF" stroke-width="4"/>
     
-    <!-- Dimples on Golf Ball -->
     <defs>
       <pattern id="dimples" patternUnits="userSpaceOnUse" width="9.4" height="9.4">
         <circle cx="0.94" cy="0.94" r="0.75" fill="#A69258" />

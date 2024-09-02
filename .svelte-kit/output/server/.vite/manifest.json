@@ -15,7 +15,7 @@
       "_vendor.js"
     ],
     "css": [
-      "_app/immutable/assets/index.RHWQ-I2N.css"
+      "_app/immutable/assets/index.B5h2FXDo.css"
     ]
   },
   "_vendor.js": {
@@ -125,6 +125,24 @@
     "file": "entries/pages/prophet-new/_page.svelte.js",
     "name": "entries/pages/prophet-new/_page.svelte",
     "src": "src/frontend/src/routes/prophet-new/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "src/frontend/src/routes/rules/+page.svelte": {
+    "file": "entries/pages/rules/_page.svelte.js",
+    "name": "entries/pages/rules/_page.svelte",
+    "src": "src/frontend/src/routes/rules/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "src/frontend/src/routes/team/+page.svelte": {
+    "file": "entries/pages/team/_page.svelte.js",
+    "name": "entries/pages/team/_page.svelte",
+    "src": "src/frontend/src/routes/team/+page.svelte",
     "isEntry": true,
     "imports": [
       "_index.js"

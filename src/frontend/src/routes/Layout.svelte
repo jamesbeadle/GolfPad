@@ -98,10 +98,9 @@
     </div>
   </div>
 
-  <!-- Navigation Overlay -->
   <NavOverlay {expanded} {selectedRoute} {toggleNav}/>
 
-  <div class="{isHomepage ? 'bg-GolfPadYellow' : 'bg-white'} flex-1 flex items-center justify-center relative">
+  <div class="{isHomepage ? 'bg-GolfPadYellow  items-center justify-center relative' : 'bg-white'} flex-1 flex">
     <slot />
   </div>
 

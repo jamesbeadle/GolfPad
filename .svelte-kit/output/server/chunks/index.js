@@ -3426,7 +3426,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "obanxv"
+  version_hash: "12pmpb1"
 };
 async function get_hooks() {
   return {};
@@ -3861,42 +3861,42 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     }();
   }(init2())} ${validate_component(BusyScreen, "BusyScreen").$$render($$result, {}, {}, {})}`;
 });
-const Page$9 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$b = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<div class="text-center px-4 z-10"><h1 class="font-bold text-GolfPadForest mb-1" data-svelte-h="svelte-xn834m">WELCOME TO <span class="condensed">GOLFPAD</span></h1> <h2 class="text-3xl md:text-6xl font-black text-black mb-6 condensed tracking-tight leading-tight mx-16" data-svelte-h="svelte-1h9vpre">THE FUTURE OF GOLF STARTS HERE</h2> <button disabled class="bg-GolfPadForest text-GolfPadYellow py-3 px-12 text-lg font-semibold shadow-lg" data-svelte-h="svelte-9j4ep6">COMING SOON</button> <p class="text-black" data-svelte-h="svelte-1fnq6qp">-</p> <a class="text-sm condensed text-black" href="/whitepaper" data-svelte-h="svelte-14adlii">WHITEPAPER</a></div> <div class="absolute bottom-0 left-0 w-full z-0" data-svelte-h="svelte-uaw0ps"><img src="golfball.png" alt="Golf Ball" class="w-full h-auto object-cover"></div>`;
     }
   })}`;
 });
-const Page$8 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$a = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<p data-svelte-h="svelte-1u28trd">Welcome to bands.</p>`;
     }
   })}`;
 });
-const Page$7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$9 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<p data-svelte-h="svelte-aq459n">Build It coming soon.</p>`;
     }
   })}`;
 });
-const Page$6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$8 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<p data-svelte-h="svelte-1qr7k1">Call It coming soon.</p>`;
     }
   })}`;
 });
-const Page$5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<p data-svelte-h="svelte-pqh7oa">Mulligans coming soon.</p>`;
     }
   })}`;
 });
-const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `${``} <div class="p-4"><div class="flex flex-col bg-GolfPadYellow rounded-md rounded-b-lg"><div class="flex flex-row items-center px-4 border-b border-b-GolfPadGreen justify-between"><div class="flex items-center">${validate_component(Logo_icon, "LogoIcon").$$render(
@@ -3911,26 +3911,98 @@ const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     }
   })}`;
 });
-const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<p data-svelte-h="svelte-1yaqo4i">Next Up coming soon.</p>`;
     }
   })}`;
 });
-const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<div class="p-4"><div class="flex flex-row items-center">${validate_component(Logo_icon, "LogoIcon").$$render($$result, { fill: "#FFFFFF", className: "w-6 mr-2" }, {}, {})} <p class="text-xl" data-svelte-h="svelte-14za60w">Profile Coming Soon</p></div></div>`;
     }
   })}`;
 });
-const Page$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<p data-svelte-h="svelte-c22g1c">Prohphet coming soon.</p>`;
     }
   })}`;
+});
+const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return ``;
+});
+const Page$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  const teamMembers = [
+    {
+      name: "Zoe Duffy",
+      title: "Managing Director",
+      image: "zoe.jpg",
+      handicap: 8,
+      bio: [
+        "Zoe has been instrumental in leading our team towards success. With a background in management and a passion for golf, Zoe ensures that our operations are always on par with the best in the industry.",
+        "In addition to her leadership role, Zoe is an avid golfer who regularly competes in local tournaments, bringing her competitive spirit to both the course and the boardroom."
+      ]
+    },
+    {
+      name: "Kelly Howlett",
+      title: "Head of Operations",
+      image: "kelly.jpeg",
+      handicap: 12,
+      bio: [
+        "Kelly is the backbone of our daily operations, making sure everything runs smoothly. Her organizational skills and attention to detail are unparalleled.",
+        "As a keen golfer, Kelly balances her work with her love for the sport, often spending weekends on the green perfecting her swing."
+      ]
+    },
+    {
+      name: "James Beadle",
+      title: "Development Manager",
+      image: "james.jpg",
+      handicap: 10,
+      bio: [
+        "James oversees all of our development projects, ensuring that our software meets the highest standards. His technical expertise is matched only by his love for golf.",
+        "When he's not coding, you can find James on the course, where he enjoys strategizing his next big project while perfecting his short game."
+      ]
+    },
+    {
+      name: "George Robinson",
+      title: "Community Manager",
+      image: "george.jpg",
+      handicap: 15,
+      bio: [
+        "George is our go-to person for all things community-related. His ability to connect with users and understand their needs makes him an invaluable part of our team.",
+        "Off the course, George enjoys organizing golf events and helping others improve their game, making him a true ambassador for the sport."
+      ]
+    },
+    {
+      name: "Josh Wray",
+      title: "Head of Promotion",
+      image: "josh.jpg",
+      handicap: 7,
+      bio: [
+        "Josh is the creative force behind our promotional strategies. His innovative ideas and deep understanding of the market help us reach new heights.",
+        "A competitive golfer, Josh brings the same level of creativity and focus to the course as he does to his work, making him a formidable opponent both on and off the green."
+      ]
+    },
+    {
+      name: "Dfinity Designer",
+      title: "Head of Design",
+      image: "dfd.jpg",
+      handicap: 9,
+      bio: [
+        "Our design head, known for their attention to detail, ensures that every aspect of our product is visually stunning and user-friendly.",
+        "They are also a passionate golfer, believing that both design and golf require precision, patience, and a keen eye for detail."
+      ]
+    }
+  ];
+  return `<div class="flex flex-col space-y-6 text-base"><h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight" data-svelte-h="svelte-q6qrde">OUR TEAM</h2> <p class="text-lg leading-relaxed" data-svelte-h="svelte-1l2axck">Waterway Labs have a team of keen golfers. The team has experience of being long-time club members along with playing courses with friends on an ad-hoc basis. Using the team&#39;s domain knowledge will ensure that <span class="condensed">GOLFPAD</span> contains everything a golfer expects from an all-in-one golf solution and more.</p> <p class="text-lg leading-relaxed" data-svelte-h="svelte-115cfux">The Waterway Labs team is in the process of expansion, bringing on a new Managing Director &amp; Head of Operations in June 2024.</p> <h2 class="text-2xl font-semibold" data-svelte-h="svelte-6wauv7">Meet the Team</h2> <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${each(teamMembers, (member) => {
+    return `<div class="bg-gray-100 p-6 rounded-lg shadow-lg space-y-4"><div class="flex items-center space-x-4"><div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0"><img${add_attribute("src", `team/${member.image}`, 0)}${add_attribute("alt", member.name, 0)} class="w-full h-full object-cover"></div> <div><h3 class="text-xl font-medium">${escape(member.name)}</h3> <p class="text-sm text-gray-500">${escape(member.title)}</p> <p class="text-sm text-gray-600">Handicap: ${escape(member.handicap)}</p> </div></div> <div class="text-sm text-gray-700 space-y-2">${each(member.bio, (paragraph) => {
+      return `<p>${escape(paragraph)}</p>`;
+    })}</div> </div>`;
+  })}</div></div>`;
 });
 const Vision = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `<div class="space-y-4 text-base" data-svelte-h="svelte-1kk1cba"><h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">VISION</h2> <div class="flex flex-col md:flex-row items-center"><div class="flex-1 md:pr-4 mb-4 md:mb-0"><p><span class="font-extrabold text-black condensed">GOLFPAD</span> is where the beautiful game of golf enters Web3.</p> <p class="mt-2">Designed to enhance gameplay for players of all levels, 
@@ -4039,7 +4111,7 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 export {
   Error$1 as E,
   Layout$1 as L,
-  Page$9 as P,
+  Page$b as P,
   Server as S,
   set_building as a,
   set_manifest as b,
@@ -4049,15 +4121,17 @@ export {
   set_read_implementation as f,
   get_hooks as g,
   set_safe_public_env as h,
-  Page$8 as i,
-  Page$7 as j,
-  Page$6 as k,
-  Page$5 as l,
-  Page$4 as m,
-  Page$3 as n,
+  Page$a as i,
+  Page$9 as j,
+  Page$8 as k,
+  Page$7 as l,
+  Page$6 as m,
+  Page$5 as n,
   options as o,
-  Page$2 as p,
-  Page$1 as q,
-  Page as r,
-  set_assets as s
+  Page$4 as p,
+  Page$3 as q,
+  Page$2 as r,
+  set_assets as s,
+  Page$1 as t,
+  Page as u
 };

@@ -20,8 +20,8 @@
         />
         <div class="flex flex-col space-y-2 text-lg leading-relaxed">
           <p><span class="condensed">NEXT UP</span> is built around going first on the tee, needing to win the holes assigned to you.</p>
-          <p>A player gets 3 points for successfully defending a hole, an opponent will get 1 if they can beat them.</p>
-          <p>Whoever tees off first is randomized equally throughout the round. Any remaining holes are assigned to the player with the lowest score at the time of tee off, allowing them to successfully defend the hole and potentially get back into the game.</p>
+          <p>A golfer gets 3 points for successfully defending a hole, an opponent will get 1 if they can beat them.</p>
+          <p>Whoever tees off first is randomized equally throughout the round. Any remaining holes are assigned to the golfer with the lowest score at the time of tee off, allowing them to successfully defend the hole and potentially get back into the game.</p>
           <p><span class="condensed">NEXT UP</span> trains you to get good off the tee, when it matters most.</p>
         </div>
       </div>

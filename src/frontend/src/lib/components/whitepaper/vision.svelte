@@ -14,7 +14,7 @@
         <span class="font-extrabold text-black condensed">GOLFPAD</span> is where the beautiful game of golf enters Web3. 
       </p>
       <p class="mt-2">
-        Designed to enhance gameplay for players of all levels, 
+        Designed to enhance gameplay for golfers of all levels, 
         <span class="font-extrabold text-black condensed">GOLFPAD</span> introduces new games, tools and features to expand your game. 
         We also want to enrich the social and club experience, aiming to make the world of golf an even more vibrant community sport.
       </p>

@@ -39,7 +39,7 @@ import LogoIcon from "$lib/icons/logo-icon.svelte";
                         <p>Course</p>
                     </div>
                     <div class="w-4/12">
-                        <p>Players</p>
+                        <p>Golfers</p>
                     </div>
                     <div class="w-1/12">
                         <p>Result</p>
