@@ -1,3 +1,10 @@
+<script lang="ts">
+  import { onMount } from "svelte";
+
+  onMount(() => {
+      window.scrollTo(0, 0);
+  });
+</script>
 <div class="space-y-4 text-base">
   <h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">VISION</h2>
   

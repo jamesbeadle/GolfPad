@@ -3,12 +3,17 @@
   import BuildIt from "./modals/build-it.svelte";
   import Mulligans from "./modals/mulligans.svelte";
   import NextUp from "./modals/next-up.svelte";
+  import { onMount } from "svelte";
 
   let showMulligans = false;
   let showBands = false;
   let showBuildIt = false;
   let showNextUp = false;
   
+  onMount(() => {
+      window.scrollTo(0, 0);
+  });
+
   function openMulligans(){
     showMulligans = true;
   }

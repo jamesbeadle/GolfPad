@@ -1,10 +1,18 @@
+
 <script lang="ts">
+  import { onMount } from "svelte";
+
+  onMount(() => {
+      window.scrollTo(0, 0);
+  });
+  
   const teamMembers = [
     { name: "Zoe Duffy", title: "Managing Director", image: "zoe.jpg"  },
     { name: "Kelly Howlett", title: "Head of Operations", image: "kelly.jpeg" },
     { name: "James Beadle", title: "Development Manager", image: "james.jpg"  },
     { name: "George Robinson", title: "Community Manager", image: "george.jpg"  },
-    { name: "Josh Wray", title: "Head of Promotion", image: "josh.jpg"  }
+    { name: "Josh Wray", title: "Head of Promotion", image: "josh.jpg"  },
+    { name: "Dfinity Designer", title: "Head of Design", image: "dfd.jpg"  }
   ];
 </script>
 
