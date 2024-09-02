@@ -1,25 +1,26 @@
 <div class="space-y-4 text-base">
-
-  <h2 class="text-cta md:text-2xl font-black text-black mb-4 condensed tracking-tight leading-tight">VISION</h2>
-  <div class="flex items-center">
-    <div class="flex-1 pr-4">
+  <h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">VISION</h2>
+  
+  <div class="flex flex-col md:flex-row items-center">
+    <div class="flex-1 md:pr-4 mb-4 md:mb-0">
       <p>
         <span class="font-extrabold text-black condensed">GOLFPAD</span> is where the beautiful game of golf enters Web3. 
       </p>
       <p class="mt-2">
         Designed to enhance gameplay for players of all levels, 
         <span class="font-extrabold text-black condensed">GOLFPAD</span> introduces new games, tools and features to expand your game. 
-        We  also want to enrich the social and club experience, aiming to make the world of golf an even more vibrant community sport.
+        We also want to enrich the social and club experience, aiming to make the world of golf an even more vibrant community sport.
       </p>
     </div>
-    <div class="flex-shrink-0">
-      <img src="panel-bg.png" alt="vision" class="w-64 h-auto rounded-lg shadow-md" />
+    
+    <div class="flex-shrink-0 w-full md:w-auto">
+      <img src="panel-bg.png" alt="vision" class="w-full h-auto md:w-64 rounded-lg shadow-md" />
     </div>
   </div>
 
   <p>
     Many people who love golf can be inconsistent golfers, it's a game that usually requires a lot of practice. 
-    Central to <span class="font-extrabold text-black condensed">GOLFPAD</span> are a our initial 4 new golf game formats, designed to expand on the individual achievements of your round.  
+    Central to <span class="font-extrabold text-black condensed">GOLFPAD</span> are our initial 4 new golf game formats, designed to expand on the individual achievements of your round.  
     Whether a beginner or advanced golfer, everything we build has been designed to help you enjoy becoming a better golfer.
   </p>
 

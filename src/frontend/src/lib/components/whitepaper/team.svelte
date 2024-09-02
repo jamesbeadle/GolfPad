@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Placeholder data for team members
   const teamMembers = [
     { name: "Zoe Duffy", title: "Managing Director", image: "zoe.jpg"  },
     { name: "Kelly Howlett", title: "Head of Operations", image: "kelly.jpeg" },
@@ -10,8 +9,8 @@
 </script>
 
 <div class="flex flex-col space-y-6 text-base">
-  <h1 class="text-3xl font-bold">Our Team</h1>
-
+  <h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">OUR TEAM</h2>
+ 
   <p class="text-lg leading-relaxed">
     Waterway Labs have a team of keen golfers. The team have experience of being long time club members along with playing courses with friends on an adhoc basis. Using the team's domain knowledge will ensure that <span class="condensed">GOLFPAD</span> contains everything a golfer expects from an all-in-one golf solution and more.
   </p>

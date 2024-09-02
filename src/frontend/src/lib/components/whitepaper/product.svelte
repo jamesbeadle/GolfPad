@@ -1,8 +1,9 @@
 <script lang="ts">
-    import Bands from "./bands.svelte";
-    import BuildIt from "./build-it.svelte";
-  import Mulligans from "./mulligans.svelte";
-    import NextUp from "./next-up.svelte";
+  import Bands from "./modals/bands.svelte";
+  import BuildIt from "./modals/build-it.svelte";
+  import Mulligans from "./modals/mulligans.svelte";
+  import NextUp from "./modals/next-up.svelte";
+
   let showMulligans = false;
   let showBands = false;
   let showBuildIt = false;
@@ -58,7 +59,7 @@
 {/if}
 
 <div class="flex flex-col space-y-2 text-base">
-  <h1 class="text-xl condensed">Product</h1>
+  <h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">PRODUCT</h2>
     
   <p>We want GolfPad to have everything a user needs to play, learn and socialise with the world's community of golfers. 
     We will introduce users to 4 new games initially, showing how new formats introduce a new dimension of fun. 
@@ -67,25 +68,25 @@
     Our first 4 games will be released in the following order and are described in the following sections:
   </p>
 
-  <div class="w-full flex flex-row space-x-2">
-    <div class="w-1/4 flex flex-col space-y-2">
+  <div class="w-full flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-2">
+    <div class="w-full md:w-1/4 flex flex-col space-y-2">
       <img src="mulligans.png" alt="mulligans" class="w-full" />
-      <p class="condensed text-lg">MULLIGANS</p>
+      <p class="condensed text-3xl md:text-lg text-center">MULLIGANS</p>
       <button on:click={openMulligans} class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
     </div>
-    <div class="w-1/4 flex flex-col space-y-2">
+    <div class="w-full md:w-1/4 flex flex-col space-y-2">
       <img src="bands.png" alt="bands" class="w-full" />
-      <p class="condensed text-lg">BANDS</p>
+      <p class="condensed text-3xl md:text-lg text-center">BANDS</p>
       <button on:click={openBands} class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
     </div>
-    <div class="w-1/4 flex flex-col space-y-2">
+    <div class="w-full md:w-1/4 flex flex-col space-y-2">
       <img src="build-it.png" alt="build-it" class="w-full" />
-      <p class="condensed text-lg">BUILD IT</p>
+      <p class="condensed text-3xl md:text-lg text-center">BUILD IT</p>
       <button on:click={openBuildIt} class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
     </div>
-    <div class="w-1/4 flex flex-col space-y-2">
+    <div class="w-full md:w-1/4 flex flex-col space-y-2">
       <img src="next-up.png" alt="next-up" class="w-full" />
-      <p class="condensed text-lg">NEXT UP</p>
+      <p class="condensed text-3xl md:text-lg text-center">NEXT UP</p>
       <button on:click={openNextUp} class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
     </div>
   </div>

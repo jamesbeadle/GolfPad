@@ -1,21 +1,20 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
+  import { onMount, onDestroy, afterUpdate } from "svelte";
   import { browser } from "$app/environment";
   import { authStore, type AuthSignInParams, type AuthStoreData } from "$lib/stores/auth-store";
   import { BusyScreen, Spinner } from "@dfinity/gix-components";
   import "../app.css";
   import { authSignedInStore } from "$lib/derived/auth.derived";
   import { goto } from "$app/navigation";
-    import { fade } from "svelte/transition";
-  
+  import { fade } from "svelte/transition";
+  import NavOverlay from "$lib/components/shared/navigation.svelte";
+
   let expanded = false;
   let worker: { syncAuthIdle: (auth: AuthStoreData) => void } | undefined;
-  let buttonHeight = 0;
-  let sidebar: HTMLElement;
-  let heightSet = false;
 
+  let selectedRoute: 'home' | 'whitepaper' = 'home';
   const init = async () => await Promise.all([syncAuthStore()]);
-  
+
   const syncAuthStore = async () => {
     if (!browser) {
       return;
@@ -31,12 +30,10 @@
   $: isHomepage = browser && window.location.pathname === "/";
 
   onMount(async () => {
-    
+    expanded = false;
   });
 
-  onDestroy(() => {
-    
-  });
+  onDestroy(() => {});
 
   $: worker, $authStore, (() => worker?.syncAuthIdle($authStore))();
 
@@ -53,7 +50,6 @@
     spinner?.remove();
   })();
 
-
   function handleLogin() {
     let params: AuthSignInParams = {
       domain: import.meta.env.VITE_AUTH_PROVIDER_URL,
@@ -65,39 +61,56 @@
     authStore.signOut();
     goto("/");
   }
+
+  function toggleNav(): void {
+    expanded = !expanded;
+    console.log(expanded)
+  }
+
+  function selectRoute(route: 'home' | 'whitepaper'): void {
+    selectedRoute = route;
+    expanded = false;
+    goto(`/${route}`);
+  }
 </script>
 
 <svelte:window on:storage={syncAuthStore} />
+
 {#await init()}
   <div in:fade>
     <Spinner />
   </div>
 {:then _}
   
-<div class="flex h-screen flex-col relative">
-  <!-- Header Section -->
-  <div class="bg-GolfPadYellow flex-none relative h-[80px]">
-      <div class="absolute top-4 left-4 z-10">
-          <button class="bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md">
-              +
-          </button>
-      </div>
-      <div class="absolute top-4 right-4 z-10">
-          <span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span>
-      </div>
+<div class="flex min-h-screen flex-col relative">
+  <div class="flex-none h-[80px] relative">
+    <div class="absolute top-4 left-4 z-10">
+      <button
+        on:click={toggleNav}
+        class="bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md">
+        +
+      </button>
+    </div>
+    <div class="absolute top-4 right-4 z-10">
+      <a href="/">
+        <span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span>
+      </a>
+    </div>
   </div>
 
-  <!-- Main Section -->
-  <div class="{isHomepage ? 'bg-GolfPadYellow' : 'bg-white'} flex-1 flex items-center justify-center overflow-hidden relative">
-      <slot />
+  <!-- Navigation Overlay -->
+  <NavOverlay {expanded} {selectedRoute} {toggleNav}/>
+
+  <div class="{isHomepage ? 'bg-GolfPadYellow' : 'bg-white'} flex-1 flex items-center justify-center relative">
+    <slot />
   </div>
 
-  <!-- Footer: Only show if not on homepage -->
   {#if !isHomepage}
-  <div class="bg-GolfPadYellow flex-none relative h-[50px]"> 
-      <div class="absolute bottom-4 left-4 z-10">
-          <a href="/whitepaper" class="text-black text-sm font-medium">WHITEPAPER</a>
-      </div>
+  <div class="bg-GolfPadYellow flex-none relative h-[50px] mt-auto">
+    <div class="absolute bottom-4 left-4 z-10">
+      <a href="/whitepaper" class="text-black text-sm font-medium">WHITEPAPER |</a> 
+      <a href="/team" class="text-black text-sm font-medium">TEAM</a> 
+    </div>
   </div>
   {/if}
 </div>
@@ -105,20 +118,3 @@
 {/await}
 
 <BusyScreen />
-
-<style>
-  aside {
-    position: absolute;
-    left: -500px;
-    transition: all 0.5s;
-    height: var(--sidebar-height);
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  aside.expanded {
-    left: 0px;
-  }
-</style>

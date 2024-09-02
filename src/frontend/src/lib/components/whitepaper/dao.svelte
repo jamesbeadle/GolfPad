@@ -1,6 +1,6 @@
 <div class="flex flex-col space-y-2 text-base">
-    <h1 class="text-xl condensed">The GolfPad DAO</h1>
-    
+    <h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">The GOLFPAD DAO</h2>
+  
     <p>
         The <span class="condensed">GOLFPAD</span> DAO will be used to govern our valuable worldwide golf dataset. 
         As a new golfer discovers the platform and adds their home course, a proposal can be raised to make their course official. 
