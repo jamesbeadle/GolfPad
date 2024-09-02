@@ -3426,7 +3426,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1raqvh0"
+  version_hash: "vd8lqr"
 };
 async function get_hooks() {
   return {};
@@ -3956,7 +3956,7 @@ const Marketing = create_ssr_component(($$result, $$props, $$bindings, slots) =>
       We will approach a course and ask to become the featured course for a day, adding them to the platform whilst showcasing their course in the best way possible.</p></div>`;
 });
 const Roadmap = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<div class="flex flex-col space-y-2 text-base" data-svelte-h="svelte-12ttnxe"><h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">ROADMAP</h2> <p>2024: Launch of our first 4 unique games, allowing the world to begin enjoying our new game formats.</p> <p>2025 Onwards: Continued promotion of <span class="condensed">GOLFPAD</span>, utilising Launch of club membership, golf coaching, worldwide tournaments, mini games  and advertising features.</p></div>`;
+  return `<div class="flex flex-col space-y-2 text-base" data-svelte-h="svelte-1bxqp4f"><h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">ROADMAP</h2> <p>2024: Launch of our first 4 unique games, allowing the world to begin enjoying our new game formats. Promotion will begin using our floating <span class="condensed">GOLFPAD MINIPUTT</span> course in the UK.</p> <p>2025: We will release features for professionals to build their own golf school, earn from subscribers and distribute tipes i The first IRL <span>GOLFPAD</span> mini golf competition will take place as the promotional events begin.</p> <p>2025 Onwards: Continued promotion of <span class="condensed">GOLFPAD</span>, utilising Launch of club membership, golf coaching, worldwide tournaments, mini games  and advertising features.</p></div>`;
 });
 const Team = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   const teamMembers = [
