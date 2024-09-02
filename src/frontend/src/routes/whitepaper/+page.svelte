@@ -44,7 +44,7 @@
 
 <Layout>
   <div class="p-2 px-4 text-black h-full w-full">
-    <h2 class="text-cta md:text-5xl font-black text-black mb-4 mt-3 condensed tracking-tight leading-tight">
+    <h2 class="text-3xl md:text-5xl font-black text-black mb-4 mt-3 condensed tracking-tight leading-tight">
       GOLFPAD WHITEPAPER
     </h2>
     <div class="w-full flex flex-col md:flex-row">

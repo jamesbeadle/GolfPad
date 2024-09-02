@@ -45,17 +45,8 @@
   
 <style>
     .nav-overlay {
-      @apply bg-GolfPadYellow;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 50;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+    @apply bg-GolfPadYellow fixed top-0 left-0 w-screen h-full z-50 flex flex-col justify-between overflow-x-hidden;
+  }
   
     .nav-item {
       transform: translateY(-100%);
@@ -80,7 +71,7 @@
 </style>
   
 {#if expanded}
-<div class="">
+
     <div class="flex min-h-screen flex-col relative nav-overlay" in:fade={{ duration: 300 }} out:fade={{ duration: 300 }}>
       
       <div class="absolute top-4 left-4 z-10">
@@ -101,14 +92,14 @@
           <div class="nav-item expanded">
             <button
               on:click={() => selectRoute(item.route)}
-              class="text-6xl font-bold condensed {selectedRoute === item.route ? 'text-white' : 'text-black'}">
+              class="text-3xl lg:text-6xl font-bold condensed {selectedRoute === item.route ? 'text-white' : 'text-black'}">
               {item.name}
             </button>
           </div>
         {/each}
       </div>
   
-      <div class="flex justify-between items-center p-5">
+      <div class="flex justify-between items-center p-5 text-xs lg:text-base">
         <div class="social-links">
           <a href="https://twitter.com" target="_blank">TWITTER</a>
           <a href="https://openchat.com" target="_blank">OPENCHAT</a>
@@ -120,5 +111,4 @@
         </div>
       </div>
     </div>
-</div>
 {/if}
