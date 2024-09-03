@@ -20,10 +20,8 @@
         </div>
       
         <div class="flex grid grid-cols-3 gap-1 items-center w-full">
-            <button class="text-center p-4 bg-GolfPadLightGreen text-GolfPadDarkGreen rounded" on:click={() => playGame('bands')}>Bands</button>   
             <button class="text-center p-4 bg-GolfPadLightGreen text-GolfPadDarkGreen rounded" on:click={() => playGame('mulligans')}>Mulligans</button>   
-            <button class="text-center p-4 bg-GolfPadLightGreen text-GolfPadDarkGreen rounded" on:click={() => playGame('prophet')}>Prophet</button>   
-            <button class="text-center p-4 bg-GolfPadLightGreen text-GolfPadDarkGreen rounded" on:click={() => playGame('call-it')}>Call It</button>   
+            <button class="text-center p-4 bg-GolfPadLightGreen text-GolfPadDarkGreen rounded" on:click={() => playGame('bands')}>Bands</button>   
             <button class="text-center p-4 bg-GolfPadLightGreen text-GolfPadDarkGreen rounded" on:click={() => playGame('build-it')}>Build It</button>   
             <button class="text-center p-4 bg-GolfPadLightGreen text-GolfPadDarkGreen rounded" on:click={() => playGame('next-up')}>Next Up</button>   
         </div>

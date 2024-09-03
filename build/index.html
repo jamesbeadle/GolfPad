@@ -29,7 +29,6 @@
 
     <link crossorigin="anonymous" href="/manifest.webmanifest" rel="manifest" />
 
-    <!-- Favicon -->
     <link
       rel="icon"
       type="image/png"
@@ -44,7 +43,6 @@
     />
     <link rel="shortcut icon" href="/favicons/favicon.ico" />
 
-    <!-- iOS meta tags & icons -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="#2CE3A6" />
     <meta name="apple-mobile-web-app-title" content="GOLFPAD" />
@@ -58,20 +56,44 @@
       color="#2CE3A6"
     />
 
-    <!-- MS -->
     <meta name="msapplication-TileColor" content="#101111" />
     <meta
       name="msapplication-config"
       content="/favicons/browserconfig.xml"
     />
 
+    <!-- Preloaded images -->
+    <link rel="preload" href="/golfball.png" as="image" />
+    <link rel="preload" href="/golfball_mobile.png" as="image" />
+    <link rel="preload" href="/boat.png" as="image" />
+    <link rel="preload" href="/hero.png" as="image" />
+    <link rel="preload" href="/panel-bg.png" as="image" />
+    <link rel="preload" href="/roadmap.png" as="image" />
+    <link rel="preload" href="/token.png" as="image" />
+
+    <link rel="preload" href="/bands.png" as="image" />
+    <link rel="preload" href="/bands-game.png" as="image" />
+    <link rel="preload" href="/build-it.png" as="image" />
+    <link rel="preload" href="/build-it-game.png" as="image" />
+    <link rel="preload" href="/next-up.png" as="image" />
+    <link rel="preload" href="/next-up-game.png" as="image" />
+    <link rel="preload" href="/mulligans.png" as="image" />
+    <link rel="preload" href="/mulligans-game.png" as="image" />
+
+    <link rel="preload" href="/team/dfd.jpg" as="image" />
+    <link rel="preload" href="/team/george.jpg" as="image" />
+    <link rel="preload" href="/team/james.jpg" as="image" />
+    <link rel="preload" href="/team/josh.jpg" as="image" />
+    <link rel="preload" href="/team/kelly.jpeg" as="image" />
+    <link rel="preload" href="/team/zoe.jpg" as="image" />
+
     <meta content="#2CE3A6" name="theme-color" />
     
-		<link href="/_app/immutable/assets/index.B5h2FXDo.css" rel="stylesheet">
-		<link rel="modulepreload" href="/_app/immutable/entry/start.BC5Q83zR.js">
-		<link rel="modulepreload" href="/_app/immutable/chunks/index.Bl2xzmj3.js">
-		<link rel="modulepreload" href="/_app/immutable/chunks/vendor.DAPb1f8w.js">
-		<link rel="modulepreload" href="/_app/immutable/entry/app.LOfjbxKT.js">
+		<link href="/_app/immutable/assets/index.prZuCQfy.css" rel="stylesheet">
+		<link rel="modulepreload" href="/_app/immutable/entry/start.DFRHsAtp.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/index.CvulEMMK.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/vendor.CVCYeHPJ.js">
+		<link rel="modulepreload" href="/_app/immutable/entry/app.D_bPInEh.js">
 
     <style>
       html,
@@ -232,15 +254,15 @@
     <div style="display: contents">
 			<script>
 				{
-					__sveltekit_12pmpb1 = {
+					__sveltekit_4o2e9k = {
 						base: ""
 					};
 
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("/_app/immutable/entry/start.BC5Q83zR.js"),
-						import("/_app/immutable/entry/app.LOfjbxKT.js")
+						import("/_app/immutable/entry/start.DFRHsAtp.js"),
+						import("/_app/immutable/entry/app.D_bPInEh.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element);
 					});

@@ -116,12 +116,12 @@
       <div class="flex justify-between items-center p-5 text-xs lg:text-base">
         <div class="social-links">
           <a href="https://twitter.com" target="_blank">TWITTER</a>
-          <a href="https://openchat.com" target="_blank">OPENCHAT</a>
+          <a href="https://oc.app" target="_blank">OPENCHAT</a>
           <a href="https://youtube.com" target="_blank">YOUTUBE</a>
         </div>
         
         <div>
-          <img src="path-to-profile-icon.png" alt="Profile" class="w-12 h-12 rounded-full" />
+          <img src="placeholder.png" alt="Profile" class="w-12 h-12 rounded-full" />
         </div>
       </div>
     </div>

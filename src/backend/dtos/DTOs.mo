@@ -167,7 +167,10 @@ module DTOs {
     };
 
     public type CreateGameDTO = {
-
+        courseType: T.CourseType;
+        courseId: T.CourseId;
+        gameType: T.GameType;
+        inviteIds: [T.PrincipalId];
     };
 
     public type InviteGolferDTO = {
@@ -183,10 +186,6 @@ module DTOs {
     };
 
     public type BandsPredictionDTO = {
-
-    };
-
-    public type ProphetPredictionDTO = {
 
     };
 

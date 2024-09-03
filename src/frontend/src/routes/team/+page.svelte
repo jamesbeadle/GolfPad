@@ -13,8 +13,11 @@
         image: "zoe.jpg",
         handicap: 'Unknown',
         bio: [
-            "Zoe has been instrumental in leading our team towards success. With a background in management and a passion for golf, Zoe ensures that our operations are always on par with the best in the industry.",
-            "In addition to her leadership role, Zoe is an avid golfer who regularly competes in local tournaments, bringing her competitive spirit to both the course and the boardroom."
+            "With a robust background in the software development and technology industries, Zoe brings a wealth of experience to her role as Managing Director.",
+            "Her career spans over 20 years, during which she has cultivated expertise in sales, customer success, and marketing, driving growth and innovation across multiple organisations.",
+            "A passionate advocate for supporting women in tech, Zoe is committed to fostering an inclusive and diverse workplace where everyone can thrive.",
+            "She believes in empowering the next generation of female leaders and actively mentors women seeking to advance their careers in technology.",
+            "Outside of her professional life, Zoe is a dedicated mum to two children. She balances her dynamic career with a love for running, cycling, and exploring the great outdoors."
         ]
         },
         { 
@@ -23,8 +26,9 @@
         image: "kelly.jpeg",
         handicap: 18,
         bio: [
-            "Kelly is the backbone of our daily operations, making sure everything runs smoothly. Her organizational skills and attention to detail are unparalleled.",
-            "As a keen golfer, Kelly balances her work with her love for the sport, often spending weekends on the green perfecting her swing."
+            "Kelly is head of Operations at Waterway Labs, ensuring our dynamic UK based team can work together smoothly. Kelly turns our vision to bring real world users to the Internet Computer into a reality with his dedication to our UK marketing strategy. Kelly lives with our unofficial head of security, Trevor, both of whom can be found touring the UK in the OpenFPL podcast studio.",
+            "Kelly studied Ecology and Conservation and Natural History in Cambridge, building extensive experience in geotechnical engineering in his professional career. Kelly has worked on large-scale projects throughout Europe and the United States, specialising in utilising advanced technology to acheive wide ranging goals.",
+            "Kelly has always had a passion for sports, previously being sponsored as a professional kiter. Nowadays he prefers to keep his feet on the ground, enjoying a game of football or round of golf."
         ]
         },
         { 
@@ -33,8 +37,10 @@
         image: "james.jpg",
         handicap: 18,
         bio: [
-            "James oversees all of our development projects, ensuring that our software meets the highest standards. His technical expertise is matched only by his love for golf.",
-            "When he's not coding, you can find James on the course, where he enjoys strategizing his next big project while perfecting his short game."
+            "James oversees all of our development projects, ensuring that our software meets the highest standards.", 
+            "James has over 15 years experience delivering projects for worldwide brands, including Ford, Coca Cola & GSK.",
+            "The Internet Computer blockchain attracted James due it's ability to create a more equitable future for people. James believes passionately about using this new technology to create truly decentralised services.",
+            "When he's not coding, you can find James on his narrowboat, where he enjoys thinking about his next big project while perfecting his short game."
         ]
         },
         { 
@@ -43,8 +49,8 @@
         image: "george.jpg",
         handicap: 24,
         bio: [
-            "George is our go-to person for all things community-related. His ability to connect with users and understand their needs makes him an invaluable part of our team.",
-            "Off the course, George enjoys organizing golf events and helping others improve their game, making him a true ambassador for the sport."
+          "George is our go-to person for all things community-related. His ability to connect with users and understand their needs makes him an invaluable part of our team.",
+          "Needing something to do during the football offseason, George picked up golf at the start of the 2024 summer. If he’s not on the course or the driving range, he’ll be at the club bar!"
         ]
         },
         { 
@@ -53,8 +59,10 @@
         image: "josh.jpg",
         handicap: 28,
         bio: [
-            "Josh is the creative force behind our promotional strategies. His innovative ideas and deep understanding of the market help us reach new heights.",
-            "A competitive golfer, Josh brings the same level of creativity and focus to the course as he does to his work, making him a formidable opponent both on and off the green."
+            "Josh brings a wealth of experience from a background in the pharmaceutical industry, where attention to detail and a deep understanding of complex technologies were essential.",
+            "Over the past five years, Josh has shifted focus towards blockchain technology, with a particular interest in the Internet Computer (ICP) ecosystem.",
+            "Josh's passion for innovation and emerging technologies has driven their success in promoting and growing blockchain projects.",
+            "As Head of Promotion at Waterway Labs, Josh leverages this expertise to build strong relationships, drive engagement, and enhance the visibility of our cutting-edge initiatives within the tech community and beyond."
         ]
         },
         { 
@@ -71,9 +79,9 @@
 </script>
 <Layout>
     <div class="flex flex-col space-y-6 text-base text-black p-4">
-        <h2 class="text-3xl md:text-5xl font-black text-black mb-4 mt-3 condensed tracking-tight leading-tight">
-        OUR TEAM
-        </h2>
+      <h2 class="text-3xl md:text-5xl font-black text-black mb-4 mt-3 condensed tracking-tight leading-tight">
+      OUR TEAM
+      </h2>
       
     
       <p class="text-lg leading-relaxed">

@@ -35,6 +35,11 @@ module Types {
     completedGames: [GameId];
   };
 
+  public type CourseType = {
+    #Custom;
+    #Official;
+  };
+
   public type Course = {
     id: Nat;
     name: Text;
@@ -76,8 +81,6 @@ module Types {
     id: GameId;
     gameType: GameType;
     rounds: [Round];
-    entryRequirement: EntryRequirement;
-    prizeSetup: PrizeSetup;
     status: GameStatus;
     courseId: CourseId;
     predictions: [GamePrediction];
@@ -86,11 +89,9 @@ module Types {
 
   public type GamePrediction = {
     #Bands : BandsPrediction;
-    #Prophet : ProphetPrediction;
     #Mulligans : MulligansPrediction;
     #NextUp: {};
     #BuildIt: {};
-    #CallIt: CallItPrediction;
   };
 
   public type BandsPrediction = {
@@ -106,15 +107,7 @@ module Types {
     underParStartHole: HoleNumber;
   };
 
-  public type ProphetPrediction = {
-
-  };
-
   public type MulligansPrediction = {
-
-  };
-
-  public type CallItPrediction = {
 
   };
 
@@ -150,11 +143,9 @@ module Types {
 
   public type GameType = {
     #Bands;
-    #Prophet;
     #Mulligans;
     #NextUp;
     #BuildIt;
-    #CallIt;
   };
 
   public type GameStatus = {

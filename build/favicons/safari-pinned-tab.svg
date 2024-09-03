@@ -2,33 +2,21 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
  "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
 
-    <svg xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 200 200">
-    
-    <defs>
-      <linearGradient id="grass-sky" x1="0" y1="1" x2="0" y2="0">
-        <stop offset="50%" stop-color="#014023" />
-        <stop offset="50%" stop-color="#010C40" />
-      </linearGradient>
-    </defs>
-    <circle cx="100" cy="100" r="100" fill="url(#grass-sky)" />
-      
-    <!-- Golf Ball -->
-    <circle cx="100" cy="100" r="50" fill="#FFFFFF" stroke-width="4"/>
-    
-    <!-- Dimples on Golf Ball -->
-    <defs>
-      <pattern id="dimples" patternUnits="userSpaceOnUse" width="9.4" height="9.4">
-        <circle cx="0.94" cy="0.94" r="0.75" fill="#A69258" />
-      </pattern>
-    </defs>
-    <circle cx="100" cy="100" r="50" fill="url(#dimples)" />
+    <svg width="92" height="92" viewBox="0 0 92 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="46" cy="46" r="46" fill="#101111"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M88.4831 52.689C88.8235 50.5093 89.0002 48.2753 89.0002 46.0001C89.0002 22.2518 69.7484 3 46.0001 3C22.2518 3 3 22.2518 3 46.0001C3 48.2753 3.17671 50.5093 3.51714 52.689H88.4831Z" fill="#F4C802"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M82.2825 52.689C82.7531 50.3647 83 47.9608 83 45.5C83 25.3416 66.4345 9 46 9C25.5655 9 9 25.3416 9 45.5C9 47.9608 9.24686 50.3647 9.71747 52.689H82.2825Z" fill="#F4C802"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M75.2515 52.689C75.7413 50.5381 76 48.2992 76 46C76 29.4315 62.5685 16 46 16C29.4315 16 16 29.4315 16 46C16 48.2992 16.2587 50.5381 16.7485 52.689H75.2515Z" fill="#F4C802"/>
+<mask id="mask0_311_2158" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="3" width="86" height="86">
+<circle cx="46" cy="46" r="43" fill="#101111"/>
+</mask>
+<g mask="url(#mask0_311_2158)">
+<rect x="-29" y="46" width="149" height="66" fill="#70B354"/>
+<path d="M43.3429 88.0557C43.3784 88.6068 43.8227 89.0554 44.375 89.0554H48.625C49.1773 89.0554 49.6216 88.6068 49.6571 88.0557C50.0262 82.3243 53.5474 77.3577 58.6771 74.5507C58.8744 74.4427 59 74.237 59 74.0121V74.0121C59 73.5548 58.5104 73.2608 58.0973 73.4569C54.9063 74.9722 50.8784 75.8764 46.5 75.8764C42.1216 75.8764 38.0937 74.9722 34.9027 73.4569C34.4896 73.2608 34 73.5548 34 74.0121V74.0121C34 74.237 34.1256 74.4427 34.3229 74.5507C39.4526 77.3577 42.9738 82.3243 43.3429 88.0557Z" fill="#101111"/>
+<path d="M43.375 76.8765C43.375 76.3242 43.8227 75.8765 44.375 75.8765H48.625C49.1773 75.8765 49.625 76.3242 49.625 76.8765V105C49.625 105.552 49.1773 106 48.625 106H44.375C43.8227 106 43.375 105.552 43.375 105V76.8765Z" fill="#101111"/>
+</g>
+<circle cx="46" cy="46" r="20" fill="white"/>
+<circle cx="46" cy="46" r="26" fill="#101111"/>
+<circle cx="46" cy="46" r="22" fill="white"/>
+</svg>
 
-    <circle cx="100" cy="100" r="51" fill="none" stroke="#010C40" stroke-width="2"/>
-
-
-    <circle cx="100" cy="100" r="99" stroke="#6373BF" stroke-width="2"/>
-
-  
-    </svg>

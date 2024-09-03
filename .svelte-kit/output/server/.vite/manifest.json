@@ -15,7 +15,7 @@
       "_vendor.js"
     ],
     "css": [
-      "_app/immutable/assets/index.B5h2FXDo.css"
+      "_app/immutable/assets/index.prZuCQfy.css"
     ]
   },
   "_vendor.js": {
@@ -85,6 +85,15 @@
       "_index.js"
     ]
   },
+  "src/frontend/src/routes/game-rules/+page.svelte": {
+    "file": "entries/pages/game-rules/_page.svelte.js",
+    "name": "entries/pages/game-rules/_page.svelte",
+    "src": "src/frontend/src/routes/game-rules/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
   "src/frontend/src/routes/mulligans-new/+page.svelte": {
     "file": "entries/pages/mulligans-new/_page.svelte.js",
     "name": "entries/pages/mulligans-new/_page.svelte",
@@ -125,15 +134,6 @@
     "file": "entries/pages/prophet-new/_page.svelte.js",
     "name": "entries/pages/prophet-new/_page.svelte",
     "src": "src/frontend/src/routes/prophet-new/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_index.js"
-    ]
-  },
-  "src/frontend/src/routes/rules/+page.svelte": {
-    "file": "entries/pages/rules/_page.svelte.js",
-    "name": "entries/pages/rules/_page.svelte",
-    "src": "src/frontend/src/routes/rules/+page.svelte",
     "isEntry": true,
     "imports": [
       "_index.js"

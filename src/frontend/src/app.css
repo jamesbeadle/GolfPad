@@ -118,6 +118,10 @@ input {
   font-family: "Mona Sans Condensed Extra Bold";
 }
 
+.semi-bold {
+  font-family: "Mona Sans Semi Bold";
+}
+
 .horizontal-divider {
   min-height: 2px;
   @apply flex-shrink-0 h-px bg-GolfPadGreen self-stretch;

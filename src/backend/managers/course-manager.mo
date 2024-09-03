@@ -8,6 +8,14 @@ module {
     
     private var courses: List.List<T.Course> = List.fromArray([]);
 
+    public func customCourseExists(courseId: T.CourseId) : Bool {
+      return false; //TODO
+    };
+
+    public func officialCourseExists(courseId: T.CourseId) : Bool {
+      return false; //TODO
+    };
+
     public func listCourses(dto: DTOs.ListCoursesDTO) : Result.Result<DTOs.CoursesDTO, T.Error> {
       //TODO: Checks
       return #err(#NotFound);

@@ -15,38 +15,47 @@ module {
 
     public func createGame(principalId: T.PrincipalId, dto: DTOs.CreateGameDTO) : Result.Result<(), T.Error> {
 
-      //TODO: Checks
-      //TODO: check game setup is valid
+      //check the people invited to play are your friends
 
+      //check date of game is in the today or later
 
-      
-        //check game type
-        //a valid game selection
-        //date in the future
-        //more than one player
-        //check course exists
+      switch(dto.gameType){
+        case (#Mulligans game){
+          
+      //check the correct number of people have been invited to play
+        //max 3 including yourself
+        };
+        case (#Bands game){
 
-  /*
-      let gamesBuffer = Buffer.fromArray<T.Game>(List.toArray(games));
+      //check the correct number of people have been invited to play
+        //max 3 including yourself
+        };
+        case (#BuildIt game){
+
+        //since team game only one opponent team should have been selected
+        };
+        case (#NextUp game){
+
+      //check the correct number of people have been invited to play
+        //max 3 including yourself
+        }
+      };
+
       let newGame: T.Game = {
         courseId = dto.courseId;
-        entryRequirement = dto.entryRequirement;
+        events = [];
         gameType = dto.gameType;
-        id = nextGameId;
-        prizeSetup = dto.prizeSetup;
+        id = 0;
+        predictions = [];
         rounds = [];
         status = #Unplayed;
-        events = [];
-        predictions = [];
       };
-      gamesBuffer.add(newGame);
 
-      games := List.fromArray(Buffer.toArray<T.Game>(gamesBuffer));
+      //create game canister instance and create game
 
-      nextGameId := nextGameId + 1;
-      
-      return #ok(newGame.id); 
-      */
+      //send invites to the game
+
+
       return #err(#NotFound);
     };
 
@@ -69,18 +78,12 @@ module {
         return #err(#NotFound);
     };
 
-    public func addGameScore(principalId: T.PrincipalId, dto: DTOs.AddGameScoreDTO) : Result.Result<(), T.Error> {
-        return #err(#NotFound);
-
-    };
-
     public func submitBandsPrediction(principalId: T.PrincipalId, dto: DTOs.BandsPredictionDTO) : Result.Result<(), T.Error>{
       //TODO: Checks
         return #err(#NotFound);
     };
 
-    public func submitProphetPrediction(principalId: T.PrincipalId, dto: DTOs.ProphetPredictionDTO) : Result.Result<(), T.Error>{
-      //TODO: Checks
+    public func addGameScore(principalId: T.PrincipalId, dto: DTOs.AddGameScoreDTO) : Result.Result<(), T.Error> {
         return #err(#NotFound);
     };
 

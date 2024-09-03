@@ -62,6 +62,31 @@
       content="%sveltekit.assets%/favicons/browserconfig.xml"
     />
 
+    <!-- Preloaded images -->
+    <link rel="preload" href="/golfball.png" as="image" />
+    <link rel="preload" href="/golfball_mobile.png" as="image" />
+    <link rel="preload" href="/boat.png" as="image" />
+    <link rel="preload" href="/hero.png" as="image" />
+    <link rel="preload" href="/panel-bg.png" as="image" />
+    <link rel="preload" href="/roadmap.png" as="image" />
+    <link rel="preload" href="/token.png" as="image" />
+
+    <link rel="preload" href="/bands.png" as="image" />
+    <link rel="preload" href="/bands-game.png" as="image" />
+    <link rel="preload" href="/build-it.png" as="image" />
+    <link rel="preload" href="/build-it-game.png" as="image" />
+    <link rel="preload" href="/next-up.png" as="image" />
+    <link rel="preload" href="/next-up-game.png" as="image" />
+    <link rel="preload" href="/mulligans.png" as="image" />
+    <link rel="preload" href="/mulligans-game.png" as="image" />
+
+    <link rel="preload" href="/team/dfd.jpg" as="image" />
+    <link rel="preload" href="/team/george.jpg" as="image" />
+    <link rel="preload" href="/team/james.jpg" as="image" />
+    <link rel="preload" href="/team/josh.jpg" as="image" />
+    <link rel="preload" href="/team/kelly.jpeg" as="image" />
+    <link rel="preload" href="/team/zoe.jpg" as="image" />
+
     <meta content="#2CE3A6" name="theme-color" />
     %sveltekit.head%
 
@@ -78,6 +103,14 @@
         font-style: normal;
         font-weight: 400;
         src: url("%sveltekit.assets%/MonaSans-Regular.woff2") format("woff2");
+      }
+      @font-face {
+        font-display: swap;
+        font-family: "Mona Sans Semi Bold";
+        font-style: normal;
+        font-weight: 400;
+        src: url("%sveltekit.assets%/MonaSans-SemiBold.woff2")
+          format("woff2");
       }
       @font-face {
         font-display: swap;
