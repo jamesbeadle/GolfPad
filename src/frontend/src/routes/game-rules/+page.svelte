@@ -12,7 +12,7 @@
 
 <Layout>
     <div class="p-4 text-black w-full max-w-4xl mx-auto">
-        <h2 class="text-2xl md:text-4xl font-black text-black mb-6 mt-3 tracking-tight leading-tight">
+        <h2 class="text-2xl md:text-4xl font-black text-black mb-6 mt-3">
             GAMEPLAY RULES
         </h2>
 

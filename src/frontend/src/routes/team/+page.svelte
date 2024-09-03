@@ -50,6 +50,7 @@
         handicap: 24,
         bio: [
           "George is our go-to person for all things community-related. His ability to connect with users and understand their needs makes him an invaluable part of our team.",
+          "George has been in crypto for almost 5 years, specifically championing the unique features of ICP since 2021.",
           "Needing something to do during the football offseason, George picked up golf at the start of the 2024 summer. If he’s not on the course or the driving range, he’ll be at the club bar!"
         ]
         },
@@ -71,15 +72,16 @@
         image: "dfd.jpg",
         handicap: 18,
         bio: [
-            "Our design head, known for their attention to detail, ensures that every aspect of our product is visually stunning and user-friendly.",
-            "They are also a passionate golfer, believing that both design and golf require precision, patience, and a keen eye for detail."
+            "We believe we have the best designer in the world. Dfinity Designer maps out the user journey from start to finish, always ensuring a simple yet stunning product is created.",
+            "Dfinity Designer's work can be enjoyed throughout the ICP blockchain, having designed a range of applications including OpenChat and OpenFPL.",
+            "Dfinity Designer is also a keen golfer, making it even easier for him to design the perfect golf platform."
         ]
         }
     ];
 </script>
 <Layout>
     <div class="flex flex-col space-y-6 text-base text-black p-4">
-      <h2 class="text-3xl md:text-5xl font-black text-black mb-4 mt-3 condensed tracking-tight leading-tight">
+      <h2 class="text-3xl md:text-5xl font-black text-black mb-4 mt-3 condensed">
       OUR TEAM
       </h2>
       

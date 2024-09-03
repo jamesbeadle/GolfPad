@@ -6,7 +6,7 @@
   });
 </script>
 <div class="flex flex-col space-y-4">
-    <h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">MARKETING</h2>
+    <h2 class="text-2xl font-black text-black condensed">MARKETING</h2>
     
     <p>
       Waterway Labs are an expanding tech company with a focus on real world events to introduce people to the Internet Computer blockchain. 

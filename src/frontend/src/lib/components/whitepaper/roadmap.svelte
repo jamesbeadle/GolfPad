@@ -6,7 +6,7 @@
   });
 </script>
 <div class="flex flex-col space-y-4 text-base">
-  <h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">ROADMAP</h2>
+  <h2 class="text-2xl font-black text-black condensed">ROADMAP</h2>
 
   <div class="w-full mt-4">
     <img 

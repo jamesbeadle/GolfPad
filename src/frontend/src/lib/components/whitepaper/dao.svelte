@@ -9,7 +9,7 @@
 <div class="flex flex-col items-center space-y-6 p-4 bg-gray-50 text-gray-900 w-full">
     <img src="token.png" alt="Golfpad Token" class="w-20 h-20 rounded-full shadow-lg">
 
-    <h2 class="text-3xl font-extrabold text-center text-green-600 tracking-tight leading-tight">
+    <h2 class="text-3xl font-extrabold text-center">
         The <span class="font-extrabold text-black condensed">GOLFPAD</span> DAO
     </h2>
 

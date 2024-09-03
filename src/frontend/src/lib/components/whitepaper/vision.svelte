@@ -6,7 +6,7 @@
   });
 </script>
 <div class="space-y-4 text-base">
-  <h2 class="text-2xl font-black text-black condensed tracking-tight leading-tight">VISION</h2>
+  <h2 class="text-2xl font-black text-black condensed">VISION</h2>
   
   <div class="flex flex-col md:flex-row items-center">
     <div class="flex-1 md:pr-4 mb-4 md:mb-0">

@@ -40,11 +40,15 @@
   function isActiveTab(index: number): boolean {
     return tabs[index].name.toLowerCase() === activeTab;
   }
+
+  function setActiveTab(index: number): void {
+    activeTab = tabs[index].name.toLowerCase();
+  }
 </script>
 
 <Layout>
   <div class="p-2 px-4 text-black h-full w-full">
-    <h2 class="text-3xl md:text-5xl font-black text-black mb-4 mt-3 condensed tracking-tight leading-tight">
+    <h2 class="text-3xl md:text-5xl font-black text-black mb-4 mt-3 condensed">
       GOLFPAD WHITEPAPER
     </h2>
     <div class="w-full flex flex-col md:flex-row">
@@ -56,7 +60,7 @@
       />
 
       <div class="w-full md:w-3/4 px-2 mt-4 md:mt-0">
-        {#each tabs as { name, component }}
+        {#each tabs as { name, component }, index}
           {#if activeTab === name.toLowerCase()}
             <div class="flex flex-col">
               <div class="flex">
@@ -70,7 +74,7 @@
                     on:click={prevTab}
                     disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
                   >
-                    Prior Section
+                    Previous Section
                   </button>
                   <button
                     class="w-1/2 py-2 px-4 rounded bg-GolfPadYellow text-black disabled:bg-GolfPadDarkGreen disabled:text-white"
@@ -82,7 +86,12 @@
                 </div>
                 <div class="flex flex-row justify-center my-4">
                   {#each tabs as _, index}
-                    <div class="pip" class:is-active={isActiveTab(index)}></div>
+                    <button 
+                      class="pip" 
+                      class:is-active={isActiveTab(index)} 
+                      on:click={() => setActiveTab(index)}
+                      aria-label={`Go to ${tabs[index].name} section`}
+                    ></button>
                   {/each}
                 </div>
               </div>
@@ -101,6 +110,8 @@
     background-color: gray;
     border-radius: 50%;
     margin: 0 2px;
+    cursor: pointer;
+    border: none;
   }
   
   .pip.is-active {

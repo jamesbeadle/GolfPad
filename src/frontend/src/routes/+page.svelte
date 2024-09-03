@@ -16,7 +16,7 @@ import Layout from "./Layout.svelte";
    
   <div class="text-center px-4 z-10">
     <h1 class="font-bold text-GolfPadForest mb-1">WELCOME TO <span class="condensed">GOLFPAD</span></h1>
-    <h2 class="text-3xl md:text-6xl font-black text-black mb-6 condensed tracking-tight leading-tight mx-16">THE FUTURE OF GOLF STARTS HERE</h2>
+    <h2 class="text-3xl md:text-6xl font-black text-black mb-6 condensed leading-tight mx-16">THE FUTURE OF GOLF STARTS HERE</h2>
     
     <a  href="/whitepaper">
         <button class="bg-GolfPadForest text-GolfPadYellow py-3 px-12 text-lg font-semibold shadow-lg">WHITEPAPER</button>
