@@ -13,6 +13,7 @@ import Principal "mo:base/Principal";
 import Int "mo:base/Int";
 import Management "Management";
 import Cycles "mo:base/ExperimentalCycles";
+import Char "mo:base/Char";
 
 module {
 
@@ -309,6 +310,17 @@ module {
 
       let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       return Text.concat(Text.concat(Text.concat(Int.toText(day), " "), monthNames[month - 1]), Text.concat(" ", Int.toText(year)));
+  };
+
+  public func toLowercase(t: Text.Text): Text.Text {
+    func charToLower(c: Char): Char {
+      if (Char.isUppercase(c)) {
+        Char.fromNat32(Char.toNat32(c) + 32)
+      } else {
+        c
+      }
+    };
+    Text.map(t, charToLower)
   };
 
 };

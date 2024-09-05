@@ -20,6 +20,9 @@ module DTOs {
     public type GolferDTO = {
         principalId: T.PrincipalId;
         username: Text;
+        golferPicture: ?Blob;
+        golferPictureExtension: Text;
+        handicap: ?T.Handicap;
     };
 
     public type GetGolferBuzzDTO = {
@@ -38,16 +41,14 @@ module DTOs {
 
     };
 
-    public type CreateYardageSetDTO = {
-
-    };
-
-    public type UpdateYardageSetDTO = {
-
+    public type SaveYardageSetDTO = {
+        id: ?T.YardageSetId;
+        name: Text;
+        clubs: [T.YardageClub];
     };
 
     public type DeleteYardageSetDTO = {
-
+        id: Nat;
     };
 
     public type GetYardageSetDTO = {
@@ -58,8 +59,11 @@ module DTOs {
 
     };
 
-    public type AddYardageSetClubDTO = {
-
+    public type SaveYardageSetClubDTO = {
+        index: ?T.ClubIndex;
+        yardageSetId: T.YardageSetId;
+        name: Text;
+        yardage: Nat16;
     };
 
     public type DeleteYardageSetClubDTO = {
@@ -71,7 +75,7 @@ module DTOs {
     };
 
     public type ListGolfersDTO = {
-
+        searchTerm: Text;
     };
 
     public type MyGolferDTO = {
@@ -79,7 +83,15 @@ module DTOs {
     };
 
     public type GolfersDTO = {
+        golfers: [GolferSummaryDTO];
+    };
 
+    public type GolferSummaryDTO = {
+        golferPrincipalId: T.PrincipalId;
+        golferName: Text;
+        golferPicture: ?Blob;
+        golferPictureExtension: Text;
+        handicap: ?T.Handicap;
     };
 
     public type ListFriendRequestsDTO = {
@@ -107,7 +119,7 @@ module DTOs {
     };
 
     public type GetGolferDTO = {
-
+        golferPrincipalId: T.PrincipalId;
     };
 
     public type GetGolferGameHistoryDTO = {
