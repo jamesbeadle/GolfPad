@@ -12,23 +12,39 @@ actor Self {
   private let courseManager = CourseManager.CourseManager();
   private let gameManager = GameManager.GameManager();
     
-  public shared ({ caller }) func saveProfile(dto: DTOs.SaveProfileDTO) : async Result.Result<(), T.Error> {
+  //Golfer Functions
+
+  public shared ({ caller }) func saveGolfer(dto: DTOs.SaveGolferDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return await golferManager.saveProfile(principalId, dto);
+    return await golferManager.saveGolfer(principalId, dto);
   };
 
-  public shared ({ caller }) func saveProfileProfilePicture(dto: DTOs.SaveProfilePictureDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func saveGolferPicture(dto: DTOs.SaveGolferPictureDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return await golferManager.saveProfileProfilePicture(principalId, dto);
+    return await golferManager.saveGolferPicture(principalId, dto);
   };
 
-  public shared query ({ caller }) func getProfile() : async Result.Result<DTOs.ProfileDTO, T.Error> {
+  public shared query ({ caller }) func getMyGolfer() : async Result.Result<DTOs.MyGolferDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return golferManager.getProfile(principalId);
+    return golferManager.getMyGolfer(principalId);
   };
+
+  public shared query ({ caller }) func getGolfer(dto: DTOs.GetGolferDTO) : async Result.Result<DTOs.GolferDTO, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return golferManager.getGolfer(principalId, dto);
+  };
+
+  public shared query ({ caller }) func getGolferGameHistory(dto: DTOs.GetGolferGameHistoryDTO) : async Result.Result<DTOs.GolferGameHistoryDTO, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return golferManager.getGolferGameHistory(principalId, dto);
+  };
+
+  //Homepage DTOs
 
   public shared query ({ caller }) func getGolferBuzz(dto: DTOs.GetGolferBuzzDTO) : async Result.Result<DTOs.GolferBuzzDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
@@ -41,6 +57,8 @@ actor Self {
     let principalId = Principal.toText(caller);
     return gameManager.getUpcomingGames(principalId, dto);
   };
+
+  //Yardage Sets
     
   public shared ({ caller }) func createYardageSet(dto: DTOs.CreateYardageSetDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
@@ -84,6 +102,8 @@ actor Self {
     return golferManager.updateYardage(principalId, dto);
   };
 
+  //Friend requests
+
   public shared query ({ caller }) func listGolfers(dto: DTOs.ListGolfersDTO) : async Result.Result<DTOs.GolfersDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     return golferManager.listGolfers(dto);
@@ -113,29 +133,7 @@ actor Self {
     return golferManager.sendFriendRequest(principalId, dto);
   };
 
-  public shared query ({ caller }) func getGolfer(dto: DTOs.GetGolferDTO) : async Result.Result<DTOs.GolferDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return golferManager.getGolfer(principalId, dto);
-  };
-
-  public shared query ({ caller }) func getGolferGameHistory(dto: DTOs.GetGolferGameHistoryDTO) : async Result.Result<DTOs.GolferGameHistoryDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return golferManager.getGolferGameHistory(principalId, dto);
-  };
-    
-  public shared query ({ caller }) func getMyGames(dto: DTOs.GetMyGamesDTO) : async Result.Result<DTOs.MyGamesDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return golferManager.getMyGames(principalId, dto);
-  };
-    
-  public shared query ({ caller }) func getGame(dto: DTOs.GetGameDTO) : async Result.Result<DTOs.GameDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return gameManager.getGame(principalId, dto);
-  };
+  //Golf courses
 
   public shared query ({ caller }) func listCourses(dto: DTOs.ListCoursesDTO) : async Result.Result<DTOs.CoursesDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
@@ -177,7 +175,21 @@ actor Self {
     let principalId = Principal.toText(caller);
     return courseManager.deleteCustomCourse(principalId, dto);
   };
-  
+
+  //Game
+    
+  public shared query ({ caller }) func getMyGames(dto: DTOs.GetMyGamesDTO) : async Result.Result<DTOs.MyGamesDTO, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return golferManager.getMyGames(principalId, dto);
+  };
+    
+  public shared query ({ caller }) func getGame(dto: DTOs.GetGameDTO) : async Result.Result<DTOs.GameDTO, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return gameManager.getGame(principalId, dto);
+  };
+
   public shared ({ caller }) func createGame(dto: DTOs.CreateGameDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
@@ -191,7 +203,7 @@ actor Self {
       };
     };
 
-    assert golferManager.hasFriends(dto.inviteIds);
+    assert await golferManager.hasFriends(principalId, dto.inviteIds);
     
     return gameManager.createGame(principalId, dto);
   };
@@ -220,14 +232,32 @@ actor Self {
     return gameManager.submitBandsPrediction(principalId, dto);
   };
 
+  public shared ({ caller }) func createTeam(dto: DTOs.CreateTeamDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return gameManager.createTeam(principalId, dto);
+  };
+    
+  public shared query ({ caller }) func getTeam(dto: DTOs.GetTeamDTO) : async Result.Result<DTOs.TeamDTO, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return gameManager.getTeam(principalId, dto);
+  };
+
+  public shared ({ caller }) func updateTeam(dto: DTOs.UpdateTeamDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return gameManager.updateTeam(principalId, dto);
+  };
+
   //stable storage
 
-  private stable var stable_profile_canister_index: [(T.PrincipalId, T.CanisterId)] = [];
+  private stable var stable_golfer_canister_index: [(T.PrincipalId, T.CanisterId)] = [];
   private stable var stable_active_canister_id: T.CanisterId = "";
 
   private stable var stable_usernames : [(T.PrincipalId, Text)] = [];
-  private stable var stable_unique_profile_canister_ids : [T.CanisterId] = [];
-  private stable var stable_total_profiles : Nat = 0;
+  private stable var stable_unique_golfer_canister_ids : [T.CanisterId] = [];
+  private stable var stable_total_golfers : Nat = 0;
   
 
   private stable var stable_courses: [T.Course] = [];
@@ -235,7 +265,7 @@ actor Self {
   private stable var stable_next_game_id = 1;
   
   system func preupgrade() {
-    stable_profile_canister_index := golferManager.getStableProfileCanisterIndex();
+    stable_golfer_canister_index := golferManager.getStableGolferCanisterIndex();
     stable_active_canister_id := golferManager.getStableActiveCanisterId();
 
     stable_courses := courseManager.getStableCourses();
@@ -243,11 +273,11 @@ actor Self {
   };
 
   system func postupgrade() {
-    golferManager.setStableProfileCanisterIndex(stable_profile_canister_index);
-    golferManager.setStableUniqueProfileCanisterIds(stable_unique_profile_canister_ids);
+    golferManager.setStableGolferCanisterIndex(stable_golfer_canister_index);
+    golferManager.setStableUniqueGolferCanisterIds(stable_unique_golfer_canister_ids);
     golferManager.setStableActiveCanisterId(stable_active_canister_id);
     golferManager.setStableUsernames(stable_usernames);
-    golferManager.setStableTotalProfiles(stable_total_profiles);
+    golferManager.setStableTotalGolfers(stable_total_golfers);
     courseManager.setStableCourses(stable_courses);
     gameManager.setStableGames(stable_games);
     gameManager.setStableNextGameId(stable_next_game_id);

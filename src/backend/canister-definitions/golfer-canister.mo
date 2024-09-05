@@ -17,7 +17,7 @@ import Environment "../utilities/Environment";
 import T "../data-types/types";
 import Utilities "../utilities/Utilities";
 
-actor class _ProfileCanister() {
+actor class _GolferCanister() {
 
   private var profileGroupIndexes : TrieMap.TrieMap<T.PrincipalId, Nat8> = TrieMap.TrieMap<T.PrincipalId, Nat8>(Text.equal, Text.hash);
 
@@ -39,5 +39,14 @@ actor class _ProfileCanister() {
   private stable var activeGroupIndex : Nat8 = 0;
   private stable var totalProfiles = 0;
 
+
+  public shared ({caller}) func hasFriends(golferPrincipalId: T.PrincipalId, inviteIds: [T.PrincipalId]) : async Bool{
+
+    
+
+
+
+    return false;
+  }
 
 };

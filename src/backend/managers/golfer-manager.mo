@@ -9,7 +9,7 @@ import Buffer "mo:base/Buffer";
 import T "../data-types/types";
 import DTOs "../dtos/DTOs";
 import Management "../utilities/Management";
-import ProfileCanister "../canister-definitions/profile-canister";
+import GolferCanister "../canister-definitions/golfer-canister";
 import Utilities "../utilities/Utilities";
 import Environment "../utilities/Environment";
 import Cycles "mo:base/ExperimentalCycles";
@@ -17,23 +17,23 @@ import Cycles "mo:base/ExperimentalCycles";
 module {
   public class GolferManager() {
 
-    private var profileCanisterIndex: TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
+    private var golferCanisterIndex: TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
     private var activeCanisterId: T.CanisterId = "";
     private var usernames : TrieMap.TrieMap<T.PrincipalId, Text> = TrieMap.TrieMap<T.PrincipalId, Text>(Text.equal, Text.hash);
-    private var uniqueProfileCanisterIds : List.List<T.CanisterId> = List.nil();
-    private var totalProfiles : Nat = 0;
+    private var uniqueGolferCanisterIds : List.List<T.CanisterId> = List.nil();
+    private var totalGolfers : Nat = 0;
     
-    public func getStableProfileCanisterIndex() : [(T.PrincipalId, T.CanisterId)]{
-      return Iter.toArray(profileCanisterIndex.entries());
+    public func getStableGolferCanisterIndex() : [(T.PrincipalId, T.CanisterId)]{
+      return Iter.toArray(golferCanisterIndex.entries());
     };
 
-    public func setStableProfileCanisterIndex(stable_profile_canister_index: [(T.PrincipalId, T.CanisterId)]){
+    public func setStableGolferCanisterIndex(stable_golfer_canister_index: [(T.PrincipalId, T.CanisterId)]){
       let canisterIds : TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
 
-      for (canisterId in Iter.fromArray(stable_profile_canister_index)) {
+      for (canisterId in Iter.fromArray(stable_golfer_canister_index)) {
         canisterIds.put(canisterId);
       };
-      profileCanisterIndex := canisterIds;
+      golferCanisterIndex := canisterIds;
     };
 
     public func getStableActiveCanisterId() : T.CanisterId {
@@ -57,45 +57,36 @@ module {
       usernames := usernames_map;
     };
 
-    public func getStableUniqueProfileCanisterIds() : [T.CanisterId] {
-      return List.toArray(uniqueProfileCanisterIds);
+    public func getStableUniqueGolferCanisterIds() : [T.CanisterId] {
+      return List.toArray(uniqueGolferCanisterIds);
     };
 
-    public func setStableUniqueProfileCanisterIds(stable_unique_profile_canister_ids : [T.CanisterId]) : () {
+    public func setStableUniqueGolferCanisterIds(stable_unique_golfer_canister_ids : [T.CanisterId]) : () {
       let canisterIdBuffer = Buffer.fromArray<T.CanisterId>([]);
 
-      for (canisterId in Iter.fromArray(stable_unique_profile_canister_ids)) {
+      for (canisterId in Iter.fromArray(stable_unique_golfer_canister_ids)) {
         canisterIdBuffer.add(canisterId);
       };
-      uniqueProfileCanisterIds := List.fromArray(Buffer.toArray(canisterIdBuffer));
+      uniqueGolferCanisterIds := List.fromArray(Buffer.toArray(canisterIdBuffer));
     };
 
-    public func getStableTotalProfiles() : Nat {
-      return totalProfiles;
+    public func getStableTotalGolfers() : Nat {
+      return totalGolfers;
     };
 
-    public func setStableTotalProfiles(stable_total_profiles : Nat) : () {
-      totalProfiles := stable_total_profiles;
+    public func setStableTotalGolfers(stable_total_golfers : Nat) : () {
+      totalGolfers := stable_total_golfers;
     };
-
-
-
-
-    public func hasFriends(inviteIds: [T.PrincipalId]) : Bool {
-      return false; //TODO
-    };
-
-
 
 
 
 
 
       
-    public func saveProfile(principalId: T.PrincipalId, dto: DTOs.SaveProfileDTO) : async Result.Result<(), T.Error> {
+    public func saveGolfer(principalId: T.PrincipalId, dto: DTOs.SaveGolferDTO) : async Result.Result<(), T.Error> {
       
-      let existingProfileCanisterId = profileCanisterIndex.get(principalId);
-      switch(existingProfileCanisterId){
+      let existingGolferCanisterId = golferCanisterIndex.get(principalId);
+      switch(existingGolferCanisterId){
         case null{
           if(Text.size(dto.username) < 5 or Text.size(dto.username) > 20){
             return #err(#TooLong);
@@ -105,22 +96,22 @@ module {
             return #err(#OutOfRange);
           };
 
-          var profile_canister = actor (activeCanisterId) : actor {
+          var golfer_canister = actor (activeCanisterId) : actor {
             isFull : () -> async Bool;
-            saveProfile : (dto: DTOs.SaveProfileDTO) -> async Result.Result<(), T.Error>;
+            saveGolfer : (dto: DTOs.SaveGolferDTO) -> async Result.Result<(), T.Error>;
           };
 
 
-          let canisterFull = await profile_canister.isFull();
+          let canisterFull = await golfer_canister.isFull();
           if(canisterFull){
-            activeCanisterId := await createNewProfileCanister();
-            profile_canister := actor (activeCanisterId) : actor {
+            activeCanisterId := await createNewGolferCanister();
+            golfer_canister := actor (activeCanisterId) : actor {
               isFull : () -> async Bool;
-              saveProfile : (dto: DTOs.SaveProfileDTO) -> async Result.Result<(), T.Error>;
+              saveGolfer : (dto: DTOs.SaveGolferDTO) -> async Result.Result<(), T.Error>;
             };
           };
 
-          return await profile_canister.saveProfile(dto);
+          return await golfer_canister.saveGolfer(dto);
         };
         case _ {
           return #err(#AlreadyExists);
@@ -128,12 +119,16 @@ module {
       };
     };
 
-    public func saveProfileProfilePicture(principalId: T.PrincipalId, dto: DTOs.SaveProfilePictureDTO) : async Result.Result<(), T.Error> {
+    public func saveGolferPicture(principalId: T.PrincipalId, dto: DTOs.SaveGolferPictureDTO) : async Result.Result<(), T.Error> {
       //TODO: Checks
       return #err(#NotFound);
     };
 
-    public func getProfile(principalId: T.PrincipalId) : Result.Result<DTOs.ProfileDTO, T.Error> {
+    public func getMyGolfer(principalId: T.PrincipalId) : Result.Result<DTOs.MyGolferDTO, T.Error> {
+      return #err(#NotFound);
+    };
+
+    public func getGolfer(principalId: T.PrincipalId, dto: DTOs.GetGolferDTO) : Result.Result<DTOs.GolferDTO, T.Error> {
       return #err(#NotFound);
     };
 
@@ -201,9 +196,22 @@ module {
       return #err(#NotFound);
     };
 
-    public func getGolfer(principalId: T.PrincipalId, dto: DTOs.GetGolferDTO) : Result.Result<DTOs.GolferDTO, T.Error> {
-      //TODO: Checks
-      return #err(#NotFound);
+    public func hasFriends(golferPrincipalId: T.PrincipalId, inviteIds: [T.PrincipalId]) : async Bool {
+      
+       let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
+
+       switch(golferCanisterId){
+        case (?foundCanisterId){
+          let golfer_canister = actor (foundCanisterId) : actor {
+            hasFriends : (golferPrincipalId: T.PrincipalId, inviteIds: [T.PrincipalId]) -> async Bool;
+          };
+
+          return await golfer_canister.hasFriends(golferPrincipalId, inviteIds);
+        };
+        case (null){
+          return false;
+        }
+       };
     };
 
     public func getGolferGameHistory(principalId: T.PrincipalId, dto: DTOs.GetGolferGameHistoryDTO) : Result.Result<DTOs.GolferGameHistoryDTO, T.Error> {
@@ -226,9 +234,9 @@ module {
       return true;
     };
 
-    private func createNewProfileCanister() : async Text {
+    private func createNewGolferCanister() : async Text {
       Cycles.add<system>(10_000_000_000_000);
-      let canister = await ProfileCanister._ProfileCanister();
+      let canister = await GolferCanister._GolferCanister();
       let IC : Management.Management = actor (Environment.Default);
       let principal = ?Principal.fromText(Environment.BACKEND_CANISTER_ID);
       let _ = await Utilities.updateCanister_(canister, principal, IC);
@@ -240,9 +248,9 @@ module {
         return canisterId;
       };
 
-      let uniqueCanisterIdBuffer = Buffer.fromArray<T.CanisterId>(List.toArray(uniqueProfileCanisterIds));
+      let uniqueCanisterIdBuffer = Buffer.fromArray<T.CanisterId>(List.toArray(uniqueGolferCanisterIds));
       uniqueCanisterIdBuffer.add(canisterId);
-      uniqueProfileCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
+      uniqueGolferCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
       activeCanisterId := canisterId;
       return canisterId;
     };

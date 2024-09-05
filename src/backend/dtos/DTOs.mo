@@ -2,22 +2,22 @@ import T "../data-types/types";
 
 module DTOs {
 
-    public type SaveProfileDTO = {
+    public type SaveGolferDTO = {
         username: Text;
         handicap: Float;
     };
 
-    public type UpdateProfileDTO = {
+    public type UpdateGolferDTO = {
         username: Text;
         handicap: Float;
     };
 
-    public type SaveProfilePictureDTO = {
-        profilePicture: Blob;
-        profilePictureExtension: Text;
+    public type SaveGolferPictureDTO = {
+        golferPicture: Blob;
+        golferPictureExtension: Text;
     };
 
-    public type ProfileDTO = {
+    public type GolferDTO = {
         principalId: T.PrincipalId;
         username: Text;
     };
@@ -74,6 +74,10 @@ module DTOs {
 
     };
 
+    public type MyGolferDTO = {
+
+    };
+
     public type GolfersDTO = {
 
     };
@@ -98,11 +102,11 @@ module DTOs {
 
     };
 
-    public type GetGolferDTO = {
+    public type GetMyGolferDTO = {
 
     };
 
-    public type GolferDTO = {
+    public type GetGolferDTO = {
 
     };
 
@@ -189,7 +193,21 @@ module DTOs {
 
     };
 
+    public type CreateTeamDTO = {
 
+    };
+
+    public type GetTeamDTO = {
+
+    };
+
+    public type TeamDTO = {
+
+    };
+
+    public type UpdateTeamDTO = {
+
+    }
 
 
 }

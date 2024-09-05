@@ -14,7 +14,7 @@ module {
 
 
     public func createGame(principalId: T.PrincipalId, dto: DTOs.CreateGameDTO) : Result.Result<(), T.Error> {
-
+      
       //check the people invited to play are your friends
 
       //check date of game is in the today or later
@@ -86,6 +86,22 @@ module {
     public func addGameScore(principalId: T.PrincipalId, dto: DTOs.AddGameScoreDTO) : Result.Result<(), T.Error> {
         return #err(#NotFound);
     };
+
+    public func createTeam(principalId: T.PrincipalId, dto: DTOs.CreateTeamDTO  ) : Result.Result<(), T.Error>{
+      //TODO: Checks
+        return #err(#NotFound);
+    };
+
+    public func getTeam(principalId: T.PrincipalId, dto: DTOs.GetTeamDTO) : Result.Result<DTOs.TeamDTO, T.Error> {
+      //TODO: Checks
+      return #err(#NotFound);
+    };
+
+    public func updateTeam(principalId: T.PrincipalId, dto: DTOs.UpdateTeamDTO  ) : Result.Result<(), T.Error>{
+      //TODO: Checks
+        return #err(#NotFound);
+    };
+    
 
     //Stable variable backup:
     
