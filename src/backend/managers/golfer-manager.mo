@@ -15,7 +15,6 @@ import Environment "../utilities/Environment";
 import Cycles "mo:base/ExperimentalCycles";
 import Array "mo:base/Array";
 import Blob "mo:base/Blob";
-import Trie "mo:base/Trie";
 
 module {
   public class GolferManager() {
@@ -431,14 +430,38 @@ module {
       };
     };
 
-    public func getBuzz(principalId: T.PrincipalId, dto: DTOs.GetGolferBuzzDTO) : Result.Result<DTOs.GolferBuzzDTO, T.Error> {
-        
-      //TODO: Get combined buzz for a golfer
-        //go through all their games
-        //go through their friends games
-        //get info and consolidate
-      
-      return #err(#NotFound);
+    public func getBuzz(principalId: T.PrincipalId, dto: DTOs.GetGolferBuzzDTO) : async Result.Result<DTOs.GolferBuzzDTO, T.Error> {
+      let existingGolferCanisterId = golferCanisterIndex.get(principalId);
+      switch(existingGolferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            getBuzz : (principalId: T.PrincipalId, dto: DTOs.GetGolferBuzzDTO) -> async Result.Result<DTOs.GolferBuzzDTO, T.Error>;
+          };
+
+          return await golfer_canister.getBuzz(principalId, dto);
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
+    };
+
+    public func getUpcomingGames(principalId: T.PrincipalId, dto: DTOs.GetUpcomingGamesDTO) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
+      let existingGolferCanisterId = golferCanisterIndex.get(principalId);
+      switch(existingGolferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            getUpcomingGames : (principalId: T.PrincipalId, dto: DTOs.GetUpcomingGamesDTO) -> async Result.Result<DTOs.UpcomingGamesDTO, T.Error>;
+          };
+
+          return await golfer_canister.getUpcomingGames(principalId, dto);
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
     };
 
     public func hasFriends(golferPrincipalId: T.PrincipalId, inviteIds: [T.PrincipalId]) : async Bool {

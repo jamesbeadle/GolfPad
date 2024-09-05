@@ -45,16 +45,16 @@ actor Self {
 
   //Homepage DTOs
 
-  public shared query ({ caller }) func getGolferBuzz(dto: DTOs.GetGolferBuzzDTO) : async Result.Result<DTOs.GolferBuzzDTO, T.Error> {
+  public shared ({ caller }) func getGolferBuzz(dto: DTOs.GetGolferBuzzDTO) : async Result.Result<DTOs.GolferBuzzDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return golferManager.getBuzz(principalId, dto);
+    return await golferManager.getBuzz(principalId, dto);
   };
 
-  public shared query ({ caller }) func getUpcomingGames(dto: DTOs.GetUpcomingGamesDTO) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
+  public shared ({ caller }) func getUpcomingGames(dto: DTOs.GetUpcomingGamesDTO) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return gameManager.getUpcomingGames(principalId, dto);
+    return await golferManager.getUpcomingGames(principalId, dto);
   };
 
   //Yardage Sets
