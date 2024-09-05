@@ -22,102 +22,79 @@ module {
     private var usernames : TrieMap.TrieMap<T.PrincipalId, Text> = TrieMap.TrieMap<T.PrincipalId, Text>(Text.equal, Text.hash);
     private var uniqueGolferCanisterIds : List.List<T.CanisterId> = List.nil();
     private var totalGolfers : Nat = 0;
-    
-    public func getStableGolferCanisterIndex() : [(T.PrincipalId, T.CanisterId)]{
-      return Iter.toArray(golferCanisterIndex.entries());
-    };
-
-    public func setStableGolferCanisterIndex(stable_golfer_canister_index: [(T.PrincipalId, T.CanisterId)]){
-      let canisterIds : TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
-
-      for (canisterId in Iter.fromArray(stable_golfer_canister_index)) {
-        canisterIds.put(canisterId);
-      };
-      golferCanisterIndex := canisterIds;
-    };
-
-    public func getStableActiveCanisterId() : T.CanisterId {
-      return activeCanisterId;
-    };
-
-    public func setStableActiveCanisterId(stable_active_canister_id: T.CanisterId){
-      activeCanisterId := stable_active_canister_id;
-    };  
-
-    public func getStableUsernames() : [(T.PrincipalId, Text)] {
-      return Iter.toArray(usernames.entries());
-    };
-
-    public func setStableUsernames(stable_usernames : [(T.PrincipalId, Text)]) : () {
-      let usernames_map : TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
-
-      for (username in Iter.fromArray(stable_usernames)) {
-        usernames_map.put(username);
-      };
-      usernames := usernames_map;
-    };
-
-    public func getStableUniqueGolferCanisterIds() : [T.CanisterId] {
-      return List.toArray(uniqueGolferCanisterIds);
-    };
-
-    public func setStableUniqueGolferCanisterIds(stable_unique_golfer_canister_ids : [T.CanisterId]) : () {
-      let canisterIdBuffer = Buffer.fromArray<T.CanisterId>([]);
-
-      for (canisterId in Iter.fromArray(stable_unique_golfer_canister_ids)) {
-        canisterIdBuffer.add(canisterId);
-      };
-      uniqueGolferCanisterIds := List.fromArray(Buffer.toArray(canisterIdBuffer));
-    };
-
-    public func getStableTotalGolfers() : Nat {
-      return totalGolfers;
-    };
-
-    public func setStableTotalGolfers(stable_total_golfers : Nat) : () {
-      totalGolfers := stable_total_golfers;
-    };
-
-
-
-
-
       
     public func saveGolfer(principalId: T.PrincipalId, dto: DTOs.SaveGolferDTO) : async Result.Result<(), T.Error> {
       
+      if(Text.size(dto.username) < 5 or Text.size(dto.username) > 20){
+        return #err(#TooLong);
+      };
+
+      if(dto.handicap < -54 or dto.handicap > 54){
+        return #err(#OutOfRange);
+      };
+
+      //check username not already taken
+
+
+
       let existingGolferCanisterId = golferCanisterIndex.get(principalId);
       switch(existingGolferCanisterId){
-        case null{
-          if(Text.size(dto.username) < 5 or Text.size(dto.username) > 20){
-            return #err(#TooLong);
+        case (?foundCanisterId){
+          let golfer_canister = actor (Environment.BACKEND_CANISTER_ID) : actor {
+            saveGolfer : (principal: T.PrincipalId, dto: DTOs.SaveGolferDTO) -> async ()
           };
-
-          if(dto.handicap < -54 or dto.handicap > 54){
-            return #err(#OutOfRange);
-          };
-
-          var golfer_canister = actor (activeCanisterId) : actor {
-            isFull : () -> async Bool;
-            saveGolfer : (dto: DTOs.SaveGolferDTO) -> async Result.Result<(), T.Error>;
-          };
-
-
-          let canisterFull = await golfer_canister.isFull();
-          if(canisterFull){
-            activeCanisterId := await createNewGolferCanister();
-            golfer_canister := actor (activeCanisterId) : actor {
-              isFull : () -> async Bool;
-              saveGolfer : (dto: DTOs.SaveGolferDTO) -> async Result.Result<(), T.Error>;
-            };
-          };
-
-          return await golfer_canister.saveGolfer(dto);
+          await golfer_canister.saveGolfer(principalId, dto);
+          return #ok();
         };
-        case _ {
-          return #err(#AlreadyExists);
+        case (null){
+            if(activeCanisterId == ""){
+              activeCanisterId := await createGolfersCanister();
+            };
+
+            var golfer_canister = actor (activeCanisterId) : actor {
+              isCanisterFull : () -> async Bool;
+              saveGolfer : (principal: T.PrincipalId, dto: DTOs.SaveGolferDTO) -> async ();  
+            };
+
+            let isCanisterFull = await golfer_canister.isCanisterFull();
+            if(isCanisterFull){
+              activeCanisterId := await createGolfersCanister();
+              golfer_canister := actor (activeCanisterId) : actor {
+                isCanisterFull : () -> async Bool;
+                saveGolfer : (principal: T.PrincipalId, dto: DTOs.SaveGolferDTO) -> async ();  
+              };
+            };
+
+            await golfer_canister.saveGolfer(principalId, dto);
+            return #ok();
         }
-      };
+      };    
     };
+
+    private func createGolfersCanister() : async Text {
+      Cycles.add<system>(10_000_000_000_000);
+      let canister = await GolferCanister._GolferCanister();
+      let IC : Management.Management = actor (Environment.Default);
+      let principal = ?Principal.fromText(Environment.BACKEND_CANISTER_ID);
+      let _ = await Utilities.updateCanister_(canister, principal, IC);
+
+      let canister_principal = Principal.fromActor(canister);
+      let canisterId = Principal.toText(canister_principal);
+
+      if (canisterId == "") {
+        return canisterId;
+      };
+
+      let uniqueCanisterIdBuffer = Buffer.fromArray<T.CanisterId>(List.toArray(uniqueGolferCanisterIds));
+      uniqueCanisterIdBuffer.add(canisterId);
+      uniqueGolferCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
+      activeCanisterId := canisterId;
+      return canisterId;
+    };
+
+
+
+    
 
     public func saveGolferPicture(principalId: T.PrincipalId, dto: DTOs.SaveGolferPictureDTO) : async Result.Result<(), T.Error> {
       //TODO: Checks
@@ -234,27 +211,62 @@ module {
       return true;
     };
 
-    private func createNewGolferCanister() : async Text {
-      Cycles.add<system>(10_000_000_000_000);
-      let canister = await GolferCanister._GolferCanister();
-      let IC : Management.Management = actor (Environment.Default);
-      let principal = ?Principal.fromText(Environment.BACKEND_CANISTER_ID);
-      let _ = await Utilities.updateCanister_(canister, principal, IC);
+    //stable storage getters and setters
 
-      let canister_principal = Principal.fromActor(canister);
-      let canisterId = Principal.toText(canister_principal);
-
-      if (canisterId == "") {
-        return canisterId;
-      };
-
-      let uniqueCanisterIdBuffer = Buffer.fromArray<T.CanisterId>(List.toArray(uniqueGolferCanisterIds));
-      uniqueCanisterIdBuffer.add(canisterId);
-      uniqueGolferCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
-      activeCanisterId := canisterId;
-      return canisterId;
+    public func getStableGolferCanisterIndex() : [(T.PrincipalId, T.CanisterId)]{
+      return Iter.toArray(golferCanisterIndex.entries());
     };
 
+    public func setStableGolferCanisterIndex(stable_golfer_canister_index: [(T.PrincipalId, T.CanisterId)]){
+      let canisterIds : TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
+
+      for (canisterId in Iter.fromArray(stable_golfer_canister_index)) {
+        canisterIds.put(canisterId);
+      };
+      golferCanisterIndex := canisterIds;
+    };
+
+    public func getStableActiveCanisterId() : T.CanisterId {
+      return activeCanisterId;
+    };
+
+    public func setStableActiveCanisterId(stable_active_canister_id: T.CanisterId){
+      activeCanisterId := stable_active_canister_id;
+    };  
+
+    public func getStableUsernames() : [(T.PrincipalId, Text)] {
+      return Iter.toArray(usernames.entries());
+    };
+
+    public func setStableUsernames(stable_usernames : [(T.PrincipalId, Text)]) : () {
+      let usernames_map : TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
+
+      for (username in Iter.fromArray(stable_usernames)) {
+        usernames_map.put(username);
+      };
+      usernames := usernames_map;
+    };
+
+    public func getStableUniqueGolferCanisterIds() : [T.CanisterId] {
+      return List.toArray(uniqueGolferCanisterIds);
+    };
+
+    public func setStableUniqueGolferCanisterIds(stable_unique_golfer_canister_ids : [T.CanisterId]) : () {
+      let canisterIdBuffer = Buffer.fromArray<T.CanisterId>([]);
+
+      for (canisterId in Iter.fromArray(stable_unique_golfer_canister_ids)) {
+        canisterIdBuffer.add(canisterId);
+      };
+      uniqueGolferCanisterIds := List.fromArray(Buffer.toArray(canisterIdBuffer));
+    };
+
+    public func getStableTotalGolfers() : Nat {
+      return totalGolfers;
+    };
+
+    public func setStableTotalGolfers(stable_total_golfers : Nat) : () {
+      totalGolfers := stable_total_golfers;
+    };
 
     
   };
