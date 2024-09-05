@@ -323,4 +323,21 @@ module {
     Text.map(t, charToLower)
   };
 
+  public func trimStartToLength(t : Text, length : Nat) : Text {
+    let cs = Text.toIter(t); 
+    var result = "";
+    var count = 0;
+
+    label charLoop for (c in cs) {
+        if (count < length) {
+            result #= Text.fromChar(c);
+            count += 1;
+        } else {
+            break charLoop;
+        }
+    };
+
+    return result;
+  };
+
 };

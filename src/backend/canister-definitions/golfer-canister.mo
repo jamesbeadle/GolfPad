@@ -51,5 +51,9 @@ actor class _GolferCanister() {
 
   ///TODO: Checks - move add yardage club checks and all checks in here for single call
       
+  //todo when accepting friend request or adding one update friendRequestCount
+
+  //TODO: Checks on accepting friend requests
+  //Rejct too
 
 };

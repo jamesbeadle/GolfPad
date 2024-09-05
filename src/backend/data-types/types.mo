@@ -37,7 +37,8 @@ module Types {
     upcomingGames: [GameId];
     activeGames: [GameId];
     completedGames: [GameId];
-    yardageSets: [YardageSet]
+    yardageSets: [YardageSet];
+    friendRequestCount: Nat;
   };
 
   public type YardageSet = {
