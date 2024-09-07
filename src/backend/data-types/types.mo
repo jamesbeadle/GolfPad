@@ -39,7 +39,8 @@ module Types {
     activeGames: [GameId];
     completedGames: [GameId];
     yardageSets: [YardageSet];
-    friendRequestCount: Nat;
+    friendRequests: [FriendRequest];
+    friends: [PrincipalId];
   };
 
   public type YardageSet = {
@@ -52,6 +53,11 @@ module Types {
     index: ClubIndex;
     name: Text;
     yards: Nat16;
+  };
+
+  public type FriendRequest = {
+    requestedBy : PrincipalId;
+    requestedOn: Int;
   };
 
   public type CourseType = {

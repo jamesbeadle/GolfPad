@@ -105,6 +105,12 @@ actor Self {
   public shared ({ caller }) func acceptFriendRequest(dto: DTOs.AcceptFriendRequestDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
+
+
+
+          //TODO: Check the friend request actually exists before accepting
+
+
     return await golferManager.acceptFriendRequest(principalId, dto);
   };
     
@@ -112,6 +118,7 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return await golferManager.rejectFriendRequest(principalId, dto);
+          //TODO: Check the friend request actually exists before rejecting
   };
     
   public shared ({ caller }) func sendFriendRequest(dto: DTOs.SendFriendRequestDTO) : async Result.Result<(), T.Error> {

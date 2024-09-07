@@ -11,6 +11,7 @@ import Result "mo:base/Result";
 import Text "mo:base/Text";
 import Timer "mo:base/Timer";
 import TrieMap "mo:base/TrieMap";
+import Time "mo:base/Time";
 
 import DTOs "../dtos/DTOs";
 import Environment "../utilities/Environment";
@@ -531,46 +532,304 @@ actor class _GolferCanister() {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert principalId == Environment.BACKEND_CANISTER_ID;
+
+    var groupIndex: ?Nat8 = null;
+    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
+      if(golferGroupIndex.0 == principalId){
+        groupIndex := ?golferGroupIndex.1;
+      }
+    };
+    switch(groupIndex){
+      case (null){ return #err(#NotFound); };
+      case (?foundGroupIndex){
+        let golfer = findGolfer(foundGroupIndex, principalId);
+
+        switch(golfer){
+          case (null) { #err(#NotFound); };
+          case (?foundGolfer){
+
+
+            let dto: DTOs.FriendRequestsDTO = {
+              friendRequests = Array.map<T.FriendRequest, DTOs.FriendRequestDTO>(foundGolfer.friendRequests, 
+                func(friendRequest: T.FriendRequest){
+                  return {
+                    principalId = friendRequest.requestedBy;
+                    requestTime = friendRequest.requestedOn;
+                  }
+                }
+              );
+            };
+            return #ok(dto);
+          }
+        };
+      };
+    };
   };
+
   public shared ({caller}) func acceptFriendRequest(principalId: T.PrincipalId, dto: DTOs.AcceptFriendRequestDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert principalId == Environment.BACKEND_CANISTER_ID;
+
+    var groupIndex: ?Nat8 = null;
+    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
+      if(golferGroupIndex.0 == principalId){
+        groupIndex := ?golferGroupIndex.1;
+      }
+    };
+    switch(groupIndex){
+      case (null){ return #err(#NotFound); };
+      case (?foundGroupIndex){
+        let golfer = findGolfer(foundGroupIndex, principalId);
+
+        switch(golfer){
+          case (null) { #err(#NotFound); };
+          case (?foundGolfer){
+
+            var updatedFriendsBuffer = Buffer.fromArray<T.PrincipalId>(foundGolfer.friends);
+            updatedFriendsBuffer.add(dto.requestedBy);
+            
+            let updatedGolfer: T.Golfer = {
+              principalId = foundGolfer.principalId;
+              username = foundGolfer.username;
+              profilePicture = foundGolfer.profilePicture;
+              profilePictureFileExtension = foundGolfer.profilePictureFileExtension;
+              handicap = foundGolfer.handicap;
+              homeCourseId = foundGolfer.homeCourseId;
+              upcomingGames = foundGolfer.upcomingGames;
+              activeGames = foundGolfer.activeGames;
+              completedGames = foundGolfer.completedGames;
+              yardageSets = foundGolfer.yardageSets;  
+              friendRequests = Array.filter<T.FriendRequest>(foundGolfer.friendRequests, func(request: T.FriendRequest) {
+                request.requestedBy != dto.requestedBy
+              });
+              friends = Buffer.toArray(updatedFriendsBuffer);
+            };
+
+            updateGolfer(foundGroupIndex, updatedGolfer);
+          }
+        };
+      };
+    };
   };
   public shared ({caller}) func rejectFriendRequest(principalId: T.PrincipalId, dto: DTOs.RejectFriendRequestDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert principalId == Environment.BACKEND_CANISTER_ID;
+
+    var groupIndex: ?Nat8 = null;
+    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
+      if(golferGroupIndex.0 == principalId){
+        groupIndex := ?golferGroupIndex.1;
+      }
+    };
+    switch(groupIndex){
+      case (null){ return #err(#NotFound); };
+      case (?foundGroupIndex){
+        let golfer = findGolfer(foundGroupIndex, principalId);
+
+        switch(golfer){
+          case (null) { #err(#NotFound); };
+          case (?foundGolfer){
+            
+            let updatedGolfer: T.Golfer = {
+              principalId = foundGolfer.principalId;
+              username = foundGolfer.username;
+              profilePicture = foundGolfer.profilePicture;
+              profilePictureFileExtension = foundGolfer.profilePictureFileExtension;
+              handicap = foundGolfer.handicap;
+              homeCourseId = foundGolfer.homeCourseId;
+              upcomingGames = foundGolfer.upcomingGames;
+              activeGames = foundGolfer.activeGames;
+              completedGames = foundGolfer.completedGames;
+              yardageSets = foundGolfer.yardageSets;  
+              friendRequests = Array.filter<T.FriendRequest>(foundGolfer.friendRequests, func(request: T.FriendRequest) {
+                request.requestedBy != dto.requestedBy
+              });
+              friends = foundGolfer.friends;
+            };
+
+            updateGolfer(foundGroupIndex, updatedGolfer);
+          }
+        };
+      };
+    };
   };
+
   public shared ({caller}) func sendFriendRequest(principalId: T.PrincipalId, dto: DTOs.SendFriendRequestDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert principalId == Environment.BACKEND_CANISTER_ID;
+
+    var groupIndex: ?Nat8 = null;
+    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
+      if(golferGroupIndex.0 == principalId){
+        groupIndex := ?golferGroupIndex.1;
+      }
+    };
+    switch(groupIndex){
+      case (null){ return #err(#NotFound); };
+      case (?foundGroupIndex){
+        let golfer = findGolfer(foundGroupIndex, dto.requestedFriend);
+
+
+        switch(golfer){
+          case (null) { #err(#NotFound); };
+          case (?foundGolfer){
+
+            let friendRequestsBuffer = Buffer.fromArray<T.FriendRequest>(foundGolfer.friendRequests);
+            friendRequestsBuffer.add({ requestedBy = principalId; requestedOn = Time.now() });
+            let updatedGolfer: T.Golfer = {
+              principalId = foundGolfer.principalId;
+              username = foundGolfer.username;
+              profilePicture = foundGolfer.profilePicture;
+              profilePictureFileExtension = foundGolfer.profilePictureFileExtension;
+              handicap = foundGolfer.handicap;
+              homeCourseId = foundGolfer.homeCourseId;
+              upcomingGames = foundGolfer.upcomingGames;
+              activeGames = foundGolfer.activeGames;
+              completedGames = foundGolfer.completedGames;
+              yardageSets = foundGolfer.yardageSets;  
+              friendRequests = Buffer.toArray(friendRequestsBuffer);
+              friends = foundGolfer.friends;
+            };
+
+            updateGolfer(foundGroupIndex, updatedGolfer);
+          }
+        };
+
+      };
+    };
   };
   public shared ({caller}) func getGolferGameHistory(principalId: T.PrincipalId, dto: DTOs.GetGolferGameHistoryDTO) : async Result.Result<DTOs.GolferGameHistoryDTO, T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert principalId == Environment.BACKEND_CANISTER_ID;
+
+    var groupIndex: ?Nat8 = null;
+    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
+      if(golferGroupIndex.0 == principalId){
+        groupIndex := ?golferGroupIndex.1;
+      }
+    };
+    switch(groupIndex){
+      case (null){ return #err(#NotFound); };
+      case (?foundGroupIndex){
+        let golfer = findGolfer(foundGroupIndex, principalId);
+
+        switch(golfer){
+          case (null) { #err(#NotFound); };
+          case (?foundGolfer){
+            
+          }
+        };
+
+      };
+    };
   };
   public shared ({caller}) func getMyGames(principalId: T.PrincipalId, dto: DTOs.GetMyGamesDTO) : async Result.Result<DTOs.MyGamesDTO, T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert principalId == Environment.BACKEND_CANISTER_ID;
+
+    var groupIndex: ?Nat8 = null;
+    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
+      if(golferGroupIndex.0 == principalId){
+        groupIndex := ?golferGroupIndex.1;
+      }
+    };
+    switch(groupIndex){
+      case (null){ return #err(#NotFound); };
+      case (?foundGroupIndex){
+        let golfer = findGolfer(foundGroupIndex, principalId);
+
+        switch(golfer){
+          case (null) { #err(#NotFound); };
+          case (?foundGolfer){
+            
+          }
+        };
+
+      };
+    };
   };
   public shared ({caller}) func getBuzz(principalId: T.PrincipalId, dto: DTOs.GetGolferBuzzDTO) : async Result.Result<DTOs.GolferBuzzDTO, T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert principalId == Environment.BACKEND_CANISTER_ID;
+
+    var groupIndex: ?Nat8 = null;
+    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
+      if(golferGroupIndex.0 == principalId){
+        groupIndex := ?golferGroupIndex.1;
+      }
+    };
+    switch(groupIndex){
+      case (null){ return #err(#NotFound); };
+      case (?foundGroupIndex){
+        let golfer = findGolfer(foundGroupIndex, principalId);
+
+        switch(golfer){
+          case (null) { #err(#NotFound); };
+          case (?foundGolfer){
+            
+          }
+        };
+
+      };
+    };
   };
   public shared ({caller}) func getUpcomingGames(principalId: T.PrincipalId, dto: DTOs.GetUpcomingGamesDTO) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert principalId == Environment.BACKEND_CANISTER_ID;
+
+    var groupIndex: ?Nat8 = null;
+    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
+      if(golferGroupIndex.0 == principalId){
+        groupIndex := ?golferGroupIndex.1;
+      }
+    };
+    switch(groupIndex){
+      case (null){ return #err(#NotFound); };
+      case (?foundGroupIndex){
+        let golfer = findGolfer(foundGroupIndex, principalId);
+
+        switch(golfer){
+          case (null) { #err(#NotFound); };
+          case (?foundGolfer){
+            
+          }
+        };
+
+      };
+    };
   };
   public shared ({caller}) func hasFriends(golferPrincipalId: T.PrincipalId, inviteIds: [T.PrincipalId]) : async Bool{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert principalId == Environment.BACKEND_CANISTER_ID;
+
+    var groupIndex: ?Nat8 = null;
+    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
+      if(golferGroupIndex.0 == principalId){
+        groupIndex := ?golferGroupIndex.1;
+      }
+    };
+    switch(groupIndex){
+      case (null){ return #err(#NotFound); };
+      case (?foundGroupIndex){
+        let golfer = findGolfer(foundGroupIndex, principalId);
+
+        switch(golfer){
+          case (null) { #err(#NotFound); };
+          case (?foundGolfer){
+            
+          }
+        };
+
+      };
+    };
   };
 
   private func findGolfer(golferGroupIndex: Nat8, golferPrincipalId: T.PrincipalId) : ?T.Golfer {

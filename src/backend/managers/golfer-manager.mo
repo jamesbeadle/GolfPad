@@ -354,7 +354,8 @@ module {
             acceptFriendRequest : (principalId: T.PrincipalId, dto: DTOs.AcceptFriendRequestDTO) -> async Result.Result<(), T.Error>;
           };
 
-          return await golfer_canister.acceptFriendRequest(principalId, dto);
+          await golfer_canister.acceptFriendRequest(principalId, dto);
+          return await golfer_canister.acceptFriendRequest(dto.requestedBy, dto);
         };
         case (null){
           return #err(#NotFound);

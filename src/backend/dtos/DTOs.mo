@@ -101,18 +101,24 @@ module DTOs {
     };
 
     public type FriendRequestsDTO = {
+        friendRequests: [FriendRequestDTO];
+    };
 
+    public type FriendRequestDTO = {
+        principalId: T.PrincipalId;
+        requestTime: Int;
     };
 
     public type AcceptFriendRequestDTO = {
-
+        requestedBy: T.PrincipalId;
     };
 
     public type RejectFriendRequestDTO = {
-
+        requestedBy: T.PrincipalId;
     };
 
     public type SendFriendRequestDTO = {
+        requestedFriend: T.PrincipalId;
 
     };
 
