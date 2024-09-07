@@ -227,7 +227,11 @@ module DTOs {
 
     public type UpdateTeamDTO = {
 
-    }
+    };
+
+    public type AddOfficialGolfCourseDTO = {
+        
+    };
 
 
 }

@@ -488,6 +488,24 @@ module {
        };
     };
 
+    public func friendRequestExists(golferPrincipalId: T.PrincipalId, requestedById: T.PrincipalId) : async Bool {
+      
+       let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
+
+       switch(golferCanisterId){
+        case (?foundCanisterId){
+          let golfer_canister = actor (foundCanisterId) : actor {
+            friendRequestExists : (golferPrincipalId: T.PrincipalId, requestedById: T.PrincipalId) -> async Bool;
+          };
+
+          return await golfer_canister.friendRequestExists(golferPrincipalId, requestedById);
+        };
+        case (null){
+          return false;
+        }
+       };
+    };
+
     private func createGolfersCanister() : async Text {
       Cycles.add<system>(10_000_000_000_000);
       let canister = await GolferCanister._GolferCanister();

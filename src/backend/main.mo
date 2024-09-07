@@ -5,6 +5,7 @@ import T "data-types/types";
 import GolferManager "managers/golfer-manager";
 import CourseManager "managers/course-manager";
 import GameManager "managers/game-manager";
+import Environment "utilities/Environment";
 
 actor Self {
 
@@ -105,12 +106,7 @@ actor Self {
   public shared ({ caller }) func acceptFriendRequest(dto: DTOs.AcceptFriendRequestDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-
-
-
-          //TODO: Check the friend request actually exists before accepting
-
-
+    assert await golferManager.friendRequestExists(principalId, dto.requestedBy);
     return await golferManager.acceptFriendRequest(principalId, dto);
   };
     
@@ -118,7 +114,6 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return await golferManager.rejectFriendRequest(principalId, dto);
-          //TODO: Check the friend request actually exists before rejecting
   };
     
   public shared ({ caller }) func sendFriendRequest(dto: DTOs.SendFriendRequestDTO) : async Result.Result<(), T.Error> {
@@ -242,6 +237,21 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return gameManager.updateTeam(principalId, dto);
+  };
+
+  //DAO Validation & Execution Functions
+
+  public shared query ({ caller }) func validateAddOfficialGolfCourse(dto : DTOs.AddOfficialGolfCourseDTO) : async T.RustResult {
+    assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
+    
+    //Todo when functionality available: Make cross subnet call to governance canister to see if proposal already exists
+
+    return courseManager.validateAddOfficialGolfCourse(dto);
+  };
+
+  public shared ({ caller }) func executeAddOfficialGolfCourse(dto : DTOs.AddOfficialGolfCourseDTO) : async () {
+    assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
+    return await courseManager.executeAddOfficialGolfCourse(dto);
   };
 
   //stable storage

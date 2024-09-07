@@ -43,7 +43,9 @@ module {
 
     public func updateCustomCourse(principalId: T.PrincipalId, dto: DTOs.UpdateCustomCourseDTO) : Result.Result<(), T.Error> {
       //TODO: Checks
-      return #err(#NotFound);
+
+      //TODO: make sure you store changes in a history of course and getting a course needs a reference to the version in which the card relates to
+      return #err(#NotFound); 
     };
 
     public func deleteCustomCourse(principalId: T.PrincipalId, dto: DTOs.DeleteCustomCourseDTO) : Result.Result<(), T.Error> {
@@ -57,6 +59,17 @@ module {
 
     public func setStableCourses(stable_courses: [T.Course]){
       courses := List.fromArray(stable_courses);
+    };
+
+
+
+    public func validateAddOfficialGolfCourse(dto : DTOs.AddOfficialGolfCourseDTO) : T.RustResult {
+      return #Err("Invalid: Cannot find relegated club.");  
+      //return #Ok("Proposal Valid");
+    };
+
+    public func executeAddOfficialGolfCourse(dto : DTOs.AddOfficialGolfCourseDTO) : async () {
+      //todo implement
     };
   };
 };

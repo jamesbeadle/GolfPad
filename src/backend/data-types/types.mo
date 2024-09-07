@@ -12,6 +12,7 @@ module Types {
   public type Handicap = Nat16;
   public type YardageSetId = Nat16;
   public type ClubIndex = Nat16;
+  public type RustResult = { #Ok : Text; #Err : Text };
 
   public type Error = {
     #NotFound;
