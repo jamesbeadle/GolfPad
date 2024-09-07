@@ -31,8 +31,13 @@ module {
         return #err(#TooLong);
       };
 
-      if(dto.handicap < -54 or dto.handicap > 54){
-        return #err(#OutOfRange);
+      switch(dto.handicap){
+        case (null){};
+        case (?foundHandicap){
+          if(foundHandicap < -54 or foundHandicap > 54){
+            return #err(#OutOfRange);
+          };
+        }
       };
 
       let invalidUsername = isUsernameTaken(dto.username, principalId);
@@ -138,11 +143,11 @@ module {
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getMyGolfer : (principalId: T.PrincipalId) -> async DTOs.MyGolferDTO;
+            getMyGolfer : (principalId: T.PrincipalId) -> async Result.Result<DTOs.MyGolferDTO, T.Error>;
           };
 
           let golfer = await golfer_canister.getMyGolfer(principalId);
-          return #ok(golfer);
+          return golfer;
         };
         case (null){
           return #err(#NotFound);
@@ -156,11 +161,11 @@ module {
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getGolfer : (principalId: T.PrincipalId) -> async DTOs.GolferDTO;
+            getGolfer : (principalId: T.PrincipalId) -> async Result.Result<DTOs.GolferDTO, T.Error>;
           };
 
           let golfer = await golfer_canister.getGolfer(dto.golferPrincipalId);
-          return #ok(golfer);
+          return golfer;
         };
         case (null){
           return #err(#NotFound);
@@ -354,7 +359,7 @@ module {
             acceptFriendRequest : (principalId: T.PrincipalId, dto: DTOs.AcceptFriendRequestDTO) -> async Result.Result<(), T.Error>;
           };
 
-          await golfer_canister.acceptFriendRequest(principalId, dto);
+          let _  = await golfer_canister.acceptFriendRequest(principalId, dto);
           return await golfer_canister.acceptFriendRequest(dto.requestedBy, dto);
         };
         case (null){

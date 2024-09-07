@@ -81,7 +81,6 @@ actor class _GolferCanister() {
         let newGolfer: T.Golfer = {
           activeGames = [];
           completedGames = [];
-          friendRequestCount = 0;
           handicap = dto.handicap;
           homeCourseId = 0;
           principalId = principalId;
@@ -90,6 +89,8 @@ actor class _GolferCanister() {
           upcomingGames = [];
           username = dto.username;
           yardageSets = [];
+          friendRequests = [];
+          friends = [];
         };
 
         addGolfer(newGolfer);
@@ -101,7 +102,6 @@ actor class _GolferCanister() {
             let updatedGolfer: T.Golfer = {
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
-              friendRequestCount = foundGolfer.friendRequestCount;
               handicap = dto.handicap;
               homeCourseId = foundGolfer.homeCourseId;
               principalId = foundGolfer.principalId;
@@ -109,7 +109,9 @@ actor class _GolferCanister() {
               profilePictureFileExtension = foundGolfer.profilePictureFileExtension;
               upcomingGames = foundGolfer.upcomingGames;
               username = dto.username;
-              yardageSets = foundGolfer.yardageSets
+              yardageSets = foundGolfer.yardageSets;
+              friendRequests = foundGolfer.friendRequests;
+              friends = foundGolfer.friends;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
           };
@@ -152,7 +154,6 @@ actor class _GolferCanister() {
         let newGolfer: T.Golfer = {
           activeGames = [];
           completedGames = [];
-          friendRequestCount = 0;
           handicap = null;
           homeCourseId = 0;
           principalId = principalId;
@@ -161,6 +162,8 @@ actor class _GolferCanister() {
           upcomingGames = [];
           username = "";
           yardageSets = [];
+          friendRequests = [];
+          friends = [];
         };
 
         addGolfer(newGolfer);
@@ -172,7 +175,6 @@ actor class _GolferCanister() {
             let updatedGolfer: T.Golfer = {
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
-              friendRequestCount = foundGolfer.friendRequestCount;
               handicap = foundGolfer.handicap;
               homeCourseId = foundGolfer.homeCourseId;
               principalId = foundGolfer.principalId;
@@ -180,7 +182,9 @@ actor class _GolferCanister() {
               profilePictureFileExtension = dto.golferPictureExtension;
               upcomingGames = foundGolfer.upcomingGames;
               username = foundGolfer.username;
-              yardageSets = foundGolfer.yardageSets
+              yardageSets = foundGolfer.yardageSets;
+              friendRequests = foundGolfer.friendRequests;
+              friends = foundGolfer.friends;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
           };
@@ -192,20 +196,23 @@ actor class _GolferCanister() {
       };
     };
   }; 
-  public shared ({caller}) func getMyGolfer(principalId: T.PrincipalId) : async DTOs.MyGolferDTO{
+  public shared ({caller}) func getMyGolfer(principalId: T.PrincipalId) : async Result.Result<DTOs.MyGolferDTO, T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert principalId == Environment.BACKEND_CANISTER_ID;
+            #err(#NotFound); //TODO: Need to implement
 
 
 
 
   };
-  public shared ({caller}) func getGolfer(principalId: T.PrincipalId) : async DTOs.GolferDTO{
+  public shared ({caller}) func getGolfer(principalId: T.PrincipalId) : async Result.Result<DTOs.GolferDTO, T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert principalId == Environment.BACKEND_CANISTER_ID;
+            #err(#NotFound); //TODO: Need to implement
   };
+
   public shared ({caller}) func saveYardageSet(principal: T.PrincipalId, dto: DTOs.SaveYardageSetDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
@@ -270,7 +277,6 @@ actor class _GolferCanister() {
             let updatedGolfer: T.Golfer = {
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
-              friendRequestCount = foundGolfer.friendRequestCount;
               handicap = foundGolfer.handicap;
               homeCourseId = foundGolfer.homeCourseId;
               principalId = foundGolfer.principalId;
@@ -279,6 +285,8 @@ actor class _GolferCanister() {
               upcomingGames = foundGolfer.upcomingGames;
               username = foundGolfer.username;
               yardageSets = updatedYardageSets;
+              friendRequests = foundGolfer.friendRequests;
+              friends = foundGolfer.friends;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
 
@@ -317,7 +325,6 @@ actor class _GolferCanister() {
             let updatedGolfer: T.Golfer = {
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
-              friendRequestCount = foundGolfer.friendRequestCount;
               handicap = foundGolfer.handicap;
               homeCourseId = foundGolfer.homeCourseId;
               principalId = foundGolfer.principalId;
@@ -326,6 +333,8 @@ actor class _GolferCanister() {
               upcomingGames = foundGolfer.upcomingGames;
               username = foundGolfer.username;
               yardageSets = updatedYardageSets;
+              friendRequests = foundGolfer.friendRequests;
+              friends = foundGolfer.friends;
             };
             
             updateGolfer(foundGroupIndex, updatedGolfer);
@@ -446,7 +455,6 @@ actor class _GolferCanister() {
             let updatedGolfer: T.Golfer = {
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
-              friendRequestCount = foundGolfer.friendRequestCount;
               handicap = foundGolfer.handicap;
               homeCourseId = foundGolfer.homeCourseId;
               principalId = foundGolfer.principalId;
@@ -455,6 +463,8 @@ actor class _GolferCanister() {
               upcomingGames = foundGolfer.upcomingGames;
               username = foundGolfer.username;
               yardageSets = updatedYardageSets;
+              friendRequests = foundGolfer.friendRequests;
+              friends = foundGolfer.friends;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
           
@@ -509,7 +519,6 @@ actor class _GolferCanister() {
             let updatedGolfer: T.Golfer = {
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
-              friendRequestCount = foundGolfer.friendRequestCount;
               handicap = foundGolfer.handicap;
               homeCourseId = foundGolfer.homeCourseId;
               principalId = foundGolfer.principalId;
@@ -518,6 +527,8 @@ actor class _GolferCanister() {
               upcomingGames = foundGolfer.upcomingGames;
               username = foundGolfer.username;
               yardageSets = updatedYardageSets;
+              friendRequests = foundGolfer.friendRequests;
+              friends = foundGolfer.friends;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
           
@@ -720,7 +731,7 @@ actor class _GolferCanister() {
         switch(golfer){
           case (null) { #err(#NotFound); };
           case (?foundGolfer){
-            
+            #err(#NotFound); //TODO NOT IMPLEMENTED
           }
         };
 
@@ -746,7 +757,7 @@ actor class _GolferCanister() {
         switch(golfer){
           case (null) { #err(#NotFound); };
           case (?foundGolfer){
-            
+            #err(#NotFound); //TODO NOT IMPLEMENTED
           }
         };
 
@@ -772,10 +783,9 @@ actor class _GolferCanister() {
         switch(golfer){
           case (null) { #err(#NotFound); };
           case (?foundGolfer){
-            
+            #err(#NotFound); //TODO: Need to implement
           }
         };
-
       };
     };
   };
@@ -798,7 +808,7 @@ actor class _GolferCanister() {
         switch(golfer){
           case (null) { #err(#NotFound); };
           case (?foundGolfer){
-            
+            #err(#NotFound); //TODO NOT IMPLEMENTED
           }
         };
 
@@ -817,19 +827,19 @@ actor class _GolferCanister() {
       }
     };
     switch(groupIndex){
-      case (null){ return #err(#NotFound); };
+      case (null){ };
       case (?foundGroupIndex){
         let golfer = findGolfer(foundGroupIndex, principalId);
 
         switch(golfer){
-          case (null) { #err(#NotFound); };
+          case (null) {  };
           case (?foundGolfer){
-            
+            return false //TODO NOT IMPLEMENTED
           }
         };
-
       };
     };
+    return false;
   };
 
   private func findGolfer(golferGroupIndex: Nat8, golferPrincipalId: T.PrincipalId) : ?T.Golfer {
