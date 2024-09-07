@@ -2,6 +2,11 @@ import T "../data-types/types";
 
 module DTOs {
 
+    public type PaginationFilters = {
+        limit : Nat;
+        offset : Nat;
+    };
+
     public type SaveGolferDTO = {
         username: Text;
         handicap: ?T.Handicap;
@@ -100,10 +105,6 @@ module DTOs {
         handicap: ?T.Handicap;
     };
 
-    public type ListFriendRequestsDTO = {
-
-    };
-
     public type FriendRequestsDTO = {
         friendRequests: [FriendRequestDTO];
     };
@@ -158,12 +159,7 @@ module DTOs {
 
     };
 
-    public type ListCoursesDTO = {
-        //pagination todo
-    };
-
     public type CoursesDTO = {
-        //TODO: pagination
         courses: [GolfCourseDTO];
     };
 

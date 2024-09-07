@@ -333,13 +333,13 @@ module {
     };
 
 
-    public func listFriendRequests(principalId: T.PrincipalId, dto: DTOs.ListFriendRequestsDTO) : async Result.Result<DTOs.FriendRequestsDTO, T.Error> {
+    public func listFriendRequests(principalId: T.PrincipalId, dto: DTOs.PaginationFilters) : async Result.Result<DTOs.FriendRequestsDTO, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            listFriendRequests : (principalId: T.PrincipalId, dto: DTOs.ListFriendRequestsDTO) -> async Result.Result<DTOs.FriendRequestsDTO, T.Error>;
+            listFriendRequests : (principalId: T.PrincipalId, dto: DTOs.PaginationFilters) -> async Result.Result<DTOs.FriendRequestsDTO, T.Error>;
           };
 
           return await golfer_canister.listFriendRequests(principalId, dto);
@@ -524,13 +524,13 @@ module {
     };
 
       
-    public func listCourses(golferPrincipalId: T.PrincipalId, dto: DTOs.ListCoursesDTO) : async Result.Result<DTOs.CoursesDTO, T.Error> {
+    public func listCourses(golferPrincipalId: T.PrincipalId, dto: DTOs.PaginationFilters) : async Result.Result<DTOs.CoursesDTO, T.Error> {
       let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
 
        switch(golferCanisterId){
         case (?foundCanisterId){
           let golfer_canister = actor (foundCanisterId) : actor {
-            listCourses : (golferPrincipalId: T.PrincipalId, dto: DTOs.ListCoursesDTO) -> async Result.Result<DTOs.CoursesDTO, T.Error>;
+            listCourses : (golferPrincipalId: T.PrincipalId, dto: DTOs.PaginationFilters) -> async Result.Result<DTOs.CoursesDTO, T.Error>;
           };
 
           return await golfer_canister.listCourses(golferPrincipalId, dto);

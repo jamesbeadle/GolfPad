@@ -12,7 +12,7 @@ module {
       return false; //TODO
     };
 
-    public func listOfficialCourses(dto: DTOs.ListCoursesDTO) : Result.Result<DTOs.CoursesDTO, T.Error> {
+    public func listOfficialCourses(dto: DTOs.PaginationFilters) : Result.Result<DTOs.CoursesDTO, T.Error> {
       //TODO: Checks
       return #err(#NotFound);
     };

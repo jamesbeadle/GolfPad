@@ -1,16 +1,12 @@
 import Array "mo:base/Array";
 import Buffer "mo:base/Buffer";
-import Cycles "mo:base/ExperimentalCycles";
 import Iter "mo:base/Iter";
-import List "mo:base/List";
 import Nat8 "mo:base/Nat8";
 import Option "mo:base/Option";
 import Order "mo:base/Order";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
-import Text "mo:base/Text";
 import Timer "mo:base/Timer";
-import TrieMap "mo:base/TrieMap";
 import Time "mo:base/Time";
 
 import DTOs "../dtos/DTOs";
@@ -19,8 +15,6 @@ import T "../data-types/types";
 import Utilities "../utilities/Utilities";
 
 actor class _GolferCanister() {
-
-  private var golferGroupIndexes : TrieMap.TrieMap<T.PrincipalId, Nat8> = TrieMap.TrieMap<T.PrincipalId, Nat8>(Text.equal, Text.hash);
 
   private stable var stable_golfer_group_indexes: [(T.PrincipalId, Nat8)] = [];
   private stable var golferGroup1: [T.Golfer] = [];
@@ -35,14 +29,17 @@ actor class _GolferCanister() {
   private stable var golferGroup10: [T.Golfer] = [];
   private stable var golferGroup11: [T.Golfer] = [];
   private stable var golferGroup12: [T.Golfer] = [];
-  private stable let cyclesCheckInterval: Nat = Utilities.getHour() * 24;
-  private stable var cyclesCheckTimerId: ?Timer.TimerId = null;
+  
+  
   private stable var activeGroupIndex: Nat8 = 0;
   private stable var totalGolfers = 0;
   private stable var MAX_GOLFERS_PER_GROUP: Nat = 1000;
   private stable var MAX_GOLFERS_PER_CANISTER: Nat = 12000;
   private stable var canisterFull = false;
-
+  
+  private stable let cyclesCheckInterval: Nat = Utilities.getHour() * 24;
+  private stable var cyclesCheckTimerId: ?Timer.TimerId = null; //TODO: Implement
+  
   public shared ({caller}) func isCanisterFull() : async Bool{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
@@ -600,10 +597,12 @@ actor class _GolferCanister() {
     };
   };
   
-  public shared ({caller}) func listFriendRequests(golferPrincipalId: T.PrincipalId, dto: DTOs.ListFriendRequestsDTO) : async Result.Result<DTOs.FriendRequestsDTO, T.Error>{
+  public shared ({caller}) func listFriendRequests(golferPrincipalId: T.PrincipalId, dto: DTOs.PaginationFilters) : async Result.Result<DTOs.FriendRequestsDTO, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+
+    //TODO: implement pagination
 
     var groupIndex: ?Nat8 = null;
     for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
@@ -621,7 +620,7 @@ actor class _GolferCanister() {
           case (?foundGolfer){
 
 
-            let dto: DTOs.FriendRequestsDTO = {
+            let friendRequests: DTOs.FriendRequestsDTO = {
               friendRequests = Array.map<T.FriendRequest, DTOs.FriendRequestDTO>(foundGolfer.friendRequests, 
                 func(friendRequest: T.FriendRequest){
                   return {
@@ -631,7 +630,7 @@ actor class _GolferCanister() {
                 }
               );
             };
-            return #ok(dto);
+            return #ok(friendRequests);
           }
         };
       };
@@ -782,6 +781,8 @@ actor class _GolferCanister() {
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+
+    //Todo: with pagination? same for all
 
     var groupIndex: ?Nat8 = null;
     for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
@@ -1171,10 +1172,12 @@ actor class _GolferCanister() {
     };
   };
 
-  public shared query ({ caller }) func listCourses(golferPrincipalId: T.PrincipalId, dto: DTOs.ListCoursesDTO) : async Result.Result<DTOs.CoursesDTO, T.Error> {
+  public shared query ({ caller }) func listCourses(golferPrincipalId: T.PrincipalId, dto: DTOs.PaginationFilters) : async Result.Result<DTOs.CoursesDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+
+    //TODO: Add pagination
 
     var groupIndex: ?Nat8 = null;
     for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
