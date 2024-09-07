@@ -10,8 +10,8 @@ module Types {
   public type GameId = Nat;
   public type DateTime = Int;
   public type Handicap = Nat16;
-  public type YardageSetId = Nat8;
-  public type ClubIndex = Nat8;
+  public type YardageSetId = Nat16;
+  public type ClubIndex = Nat16;
 
   public type Error = {
     #NotFound;
@@ -25,14 +25,15 @@ module Types {
     #NotEnoughFunds;
     #PaymentError;
     #InvalidProfilePicture;
+    #CanisterFull;
   };
 
   public type Golfer = {
-    profileId: PrincipalId;
+    principalId: PrincipalId;
     username: Text;
     profilePicture: ?Blob;
     profilePictureFileExtension: Text;
-    handicap: Float;
+    handicap: ?Float;
     homeCourseId: CourseId;
     upcomingGames: [GameId];
     activeGames: [GameId];
@@ -42,6 +43,7 @@ module Types {
   };
 
   public type YardageSet = {
+    id: YardageSetId;
     name: Text;
     clubs: [YardageClub];
   };

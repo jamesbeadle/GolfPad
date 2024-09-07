@@ -4,7 +4,7 @@ module DTOs {
 
     public type SaveGolferDTO = {
         username: Text;
-        handicap: Float;
+        handicap: ?Float;
     };
 
     public type UpdateGolferDTO = {
@@ -48,11 +48,11 @@ module DTOs {
     };
 
     public type DeleteYardageSetDTO = {
-        id: Nat;
+        id: T.YardageSetId;
     };
 
     public type GetYardageSetDTO = {
-
+        id: T.YardageSetId;
     };
 
     public type YardageSetDTO = {
@@ -63,10 +63,12 @@ module DTOs {
         index: ?T.ClubIndex;
         yardageSetId: T.YardageSetId;
         name: Text;
-        yardage: Nat16;
+        yards: Nat16;
     };
 
     public type DeleteYardageSetClubDTO = {
+        index: T.ClubIndex;
+        yardageSetId: T.YardageSetId;
 
     };
 

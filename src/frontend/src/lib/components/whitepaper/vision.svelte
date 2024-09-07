@@ -14,7 +14,8 @@
         <span class="font-extrabold text-black condensed">GOLFPAD</span> is where the beautiful game of golf enters Web3. 
       </p>
       <p class="mt-2">
-        Designed to enhance gameplay for golfers of all levels, 
+        GolfPad will position itself to be the decentralised authority on golf by utilising the power of a DAO to create a revolution in how golfers play each other from new game formats to a more accurate handicap calculation system.
+        GolfPad will introduce itself to users with features designed to enhance gameplay for golfers of all levels. 
         <span class="font-extrabold text-black condensed">GOLFPAD</span> introduces new games, tools and features to expand your game. 
         We also want to enrich the social and club experience, aiming to make the world of golf an even more vibrant community sport.
       </p>
