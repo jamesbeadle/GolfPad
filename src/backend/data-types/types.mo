@@ -6,12 +6,13 @@ module Types {
   public type CalendarMonth = Nat8;
   public type ImageId = Nat;
   public type HoleNumber = Nat8;
-  public type CourseId = Nat;
+  public type GolfCourseId = Nat;
   public type GameId = Nat;
   public type DateTime = Int;
-  public type Handicap = Nat16;
+  public type Handicap = Int16;
   public type YardageSetId = Nat16;
   public type ClubIndex = Nat16;
+  public type CourseHistoryId = Nat16;
   public type RustResult = { #Ok : Text; #Err : Text };
 
   public type Error = {
@@ -34,14 +35,15 @@ module Types {
     username: Text;
     profilePicture: ?Blob;
     profilePictureFileExtension: Text;
-    handicap: ?Float;
-    homeCourseId: CourseId;
+    handicap: ?Handicap;
+    homeCourseId: GolfCourseId;
     upcomingGames: [GameId];
     activeGames: [GameId];
     completedGames: [GameId];
     yardageSets: [YardageSet];
     friendRequests: [FriendRequest];
     friends: [PrincipalId];
+    courses: [GolfCourse];
   };
 
   public type YardageSet = {
@@ -66,10 +68,32 @@ module Types {
     #Official;
   };
 
-  public type Course = {
+  public type GolfCourse = {
     id: Nat;
     name: Text;
+    teeGroups: [TeeGroup];
+    dateAdded: Int;
+    status: CourseStatus;
+  };
+
+  public type CourseStatus = {
+    #Active;
+    #Hidden;
+    #Restricted;
+    #Excluded;
+  };
+
+  public type TeeGroup = {
+    name: Text;
+    colour: Text;
+    added: Int;
+    difficultyIndex: Nat8;
     holes: [Hole];
+  };
+
+  public type GolfCourseSnapshot = {
+    courseId: GolfCourseId;
+    teeGroup: TeeGroup;
   };
 
   public type Hole = {
@@ -84,11 +108,12 @@ module Types {
     colour: Text;
     yardage: Nat;
     par: Nat8;
+    strokeIndex: Nat8;
   };
 
   public type Round = {
     playerId: PrincipalId;
-    courseId: CourseId;
+    courseId: GolfCourseId;
     holeScores: [HoleScore];
   };
 
@@ -99,7 +124,9 @@ module Types {
     recordedBy: PrincipalId;
   };
 
-  
+
+
+
 
   //gamification golf types
 
@@ -108,9 +135,10 @@ module Types {
     gameType: GameType;
     rounds: [Round];
     status: GameStatus;
-    courseId: CourseId;
+    courseId: GolfCourseId;
     predictions: [GamePrediction];
     events: [GolferEvent];
+    courseSnapshot: GolfCourseSnapshot;
   };
 
   public type GamePrediction = {
@@ -189,11 +217,5 @@ module Types {
     token: CanisterId;
     prizePool: Nat;
   };
-  
-
-  //Todo Phase 2: Official golf types to handle club competitions
-  
-
-
 
 };

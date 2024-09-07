@@ -5,17 +5,20 @@ module Environment {
   public let NNS_LEDGER_CANISTER_ID = "ryjl3-tyaaa-aaaaa-aaaba-cai"; 
   public let ICP_COINS_CANISTER_ID = "u45jl-liaaa-aaaam-abppa-cai";
 
-  /* //TODO:Replace with environment variables
+  //TODO: update post deploy
+
+  //IC
+
+  /* 
     public let DFX_NETWORK = "ic";
-    public let BACKEND_CANISTER_ID = "bboqb-jiaaa-aaaal-qb6ea-cai";
-    public let FRONTEND_CANISTER_ID = "bgpwv-eqaaa-aaaal-qb6eq-cai";
+    public let BACKEND_CANISTER_ID = "elbip-aiaaa-aaaal-qjfhq-cai";
+    public let FRONTEND_CANISTER_ID = "gw4gh-taaaa-aaaal-qjfia-cai";
     public let SNS_GOVERNANCE_CANISTER_ID = "";
   */
 
-  
-  //local
+  //Local
   public let DFX_NETWORK = "local";
-  public let BACKEND_CANISTER_ID = "bd3sg-teaaa-aaaaa-qaaba-cai";
-  public let FRONTEND_CANISTER_ID = "be2us-64aaa-aaaaa-qaabq-cai";
+  public let BACKEND_CANISTER_ID = "";
+  public let FRONTEND_CANISTER_ID = "";
   public let SNS_GOVERNANCE_CANISTER_ID = "";
 };

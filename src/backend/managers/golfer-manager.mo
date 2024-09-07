@@ -34,7 +34,7 @@ module {
       switch(dto.handicap){
         case (null){};
         case (?foundHandicap){
-          if(foundHandicap < -54 or foundHandicap > 54){
+          if(foundHandicap < -540 or foundHandicap > 540){
             return #err(#OutOfRange);
           };
         }
@@ -502,6 +502,75 @@ module {
         };
         case (null){
           return false;
+        }
+       };
+    };
+
+    public func customCourseExists(golferPrincipalId: T.PrincipalId, courseId: T.GolfCourseId) : async Bool {
+      let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
+
+       switch(golferCanisterId){
+        case (?foundCanisterId){
+          let golfer_canister = actor (foundCanisterId) : actor {
+            customCourseExists : (golferPrincipalId: T.PrincipalId, courseId: T.GolfCourseId) -> async Bool;
+          };
+
+          return await golfer_canister.customCourseExists(golferPrincipalId, courseId);
+        };
+        case (null){
+          return false;
+        }
+       };
+    };
+
+      
+    public func listCourses(golferPrincipalId: T.PrincipalId, dto: DTOs.ListCoursesDTO) : async Result.Result<DTOs.CoursesDTO, T.Error> {
+      let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
+
+       switch(golferCanisterId){
+        case (?foundCanisterId){
+          let golfer_canister = actor (foundCanisterId) : actor {
+            listCourses : (golferPrincipalId: T.PrincipalId, dto: DTOs.ListCoursesDTO) -> async Result.Result<DTOs.CoursesDTO, T.Error>;
+          };
+
+          return await golfer_canister.listCourses(golferPrincipalId, dto);
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+       };
+    };
+      
+    public func saveGolfCourse(golferPrincipalId: T.PrincipalId, dto: DTOs.SaveGolfCourse) : async Result.Result<(), T.Error> {
+      let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
+
+       switch(golferCanisterId){
+        case (?foundCanisterId){
+          let golfer_canister = actor (foundCanisterId) : actor {
+            saveGolfCourse : (golferPrincipalId: T.PrincipalId, dto: DTOs.SaveGolfCourse) -> async Result.Result<(), T.Error>;
+          };
+
+          return await golfer_canister.saveGolfCourse(golferPrincipalId, dto);
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+       };
+    };
+      
+    public func deleteGolfCourse(golferPrincipalId: T.PrincipalId, dto: DTOs.DeleteGolfCourseDTO) : async Result.Result<(), T.Error> {
+      let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
+
+       switch(golferCanisterId){
+        case (?foundCanisterId){
+          let golfer_canister = actor (foundCanisterId) : actor {
+            deleteGolfCourse : (golferPrincipalId: T.PrincipalId, dto: DTOs.DeleteGolfCourseDTO) -> async Result.Result<(), T.Error>;
+          };
+
+          return await golfer_canister.deleteGolfCourse(golferPrincipalId, dto);
+        };
+        case (null){
+          return #err(#NotFound);
         }
        };
     };

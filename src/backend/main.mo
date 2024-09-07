@@ -3,14 +3,14 @@ import Principal "mo:base/Principal";
 import DTOs "dtos/DTOs";
 import T "data-types/types";
 import GolferManager "managers/golfer-manager";
-import CourseManager "managers/course-manager";
+import GolfCourseManager "managers/golf-course-manager";
 import GameManager "managers/game-manager";
 import Environment "utilities/Environment";
 
 actor Self {
 
   private let golferManager = GolferManager.GolferManager();
-  private let courseManager = CourseManager.CourseManager();
+  private let courseManager = GolfCourseManager.GolfCourseManager();
   private let gameManager = GameManager.GameManager();
     
   //Golfer Functions
@@ -124,47 +124,24 @@ actor Self {
 
   //Golf courses
 
-  public shared query ({ caller }) func listCourses(dto: DTOs.ListCoursesDTO) : async Result.Result<DTOs.CoursesDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    return courseManager.listCourses(dto);
-  };
-
-  public shared query ({ caller }) func listGolferCourses(dto: DTOs.ListGolferCoursesDTO) : async Result.Result<DTOs.GolferCoursesDTO, T.Error> {
+  public shared ({ caller }) func listCourses(dto: DTOs.ListCoursesDTO) : async Result.Result<DTOs.CoursesDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return courseManager.listGolferCourses(principalId, dto);
+    return await golferManager.listCourses(principalId, dto);
   };
     
-  public shared ({ caller }) func addGolferCourse(dto: DTOs.AddGolferCourseDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func saveGolfCourse(dto: DTOs.AddGolfCourseDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return courseManager.addGolferCourse(principalId, dto);
+    return await golferManager.saveGolfCourse(principalId, dto);
   };
     
-  public shared ({ caller }) func deleteGolferCourse(dto: DTOs.DeleteGolferCourseDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func deleteGolfCourse(dto: DTOs.DeleteGolfCourseDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return courseManager.deleteGolferCourse(principalId, dto);
+    return await golferManager.deleteGolfCourse(principalId, dto);
   };
-    
-  public shared ({ caller }) func addCustomCourse(dto: DTOs.AddCustomCourseDTO) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return courseManager.addCustomCourse(principalId, dto);
-  };
-    
-  public shared ({ caller }) func updateCustomCourse(dto: DTOs.UpdateCustomCourseDTO) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return courseManager.updateCustomCourse(principalId, dto);
-  };
-    
-  public shared ({ caller }) func deleteCustomCourse(dto: DTOs.DeleteCustomCourseDTO) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return courseManager.deleteCustomCourse(principalId, dto);
-  };
-
+      
   //Game
     
   public shared ({ caller }) func getMyGames(dto: DTOs.GetMyGamesDTO) : async Result.Result<DTOs.MyGamesDTO, T.Error> {
@@ -185,7 +162,7 @@ actor Self {
     
     switch(dto.courseType){
       case (#Custom){
-        assert courseManager.customCourseExists(dto.courseId);
+        assert await golferManager.customCourseExists(principalId, dto.courseId);
       };
       case (#Official){
         assert courseManager.officialCourseExists(dto.courseId);
@@ -241,17 +218,30 @@ actor Self {
 
   //DAO Validation & Execution Functions
 
-  public shared query ({ caller }) func validateAddOfficialGolfCourse(dto : DTOs.AddOfficialGolfCourseDTO) : async T.RustResult {
+  public shared query ({ caller }) func validateAddGolfCourse(dto : DTOs.AddGolfCourseDTO) : async T.RustResult {
     assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
     
     //Todo when functionality available: Make cross subnet call to governance canister to see if proposal already exists
 
-    return courseManager.validateAddOfficialGolfCourse(dto);
+    return courseManager.validateAddGolfCourse(dto);
   };
 
-  public shared ({ caller }) func executeAddOfficialGolfCourse(dto : DTOs.AddOfficialGolfCourseDTO) : async () {
+  public shared ({ caller }) func executeAddGolfCourse(dto : DTOs.AddGolfCourseDTO) : async () {
     assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
-    return await courseManager.executeAddOfficialGolfCourse(dto);
+    return await courseManager.executeAddGolfCourse(dto);
+  };
+
+  public shared query ({ caller }) func validateUpdateGolfCourse(dto : DTOs.UpdateGolfCourseDTO) : async T.RustResult {
+    assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
+    
+    //Todo when functionality available: Make cross subnet call to governance canister to see if proposal already exists
+
+    return courseManager.validateUpdateGolfCourse(dto);
+  };
+
+  public shared ({ caller }) func executeUpdateGolfCourse(dto : DTOs.UpdateGolfCourseDTO) : async () {
+    assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
+    return await courseManager.executeUpdateGolfCourse(dto);
   };
 
   //stable storage
@@ -264,7 +254,7 @@ actor Self {
   private stable var stable_total_golfers : Nat = 0;
   
 
-  private stable var stable_courses: [T.Course] = [];
+  private stable var stable_courses: [T.GolfCourse] = [];
   private stable var stable_games: [T.Game] = [];
   private stable var stable_next_game_id = 1;
   

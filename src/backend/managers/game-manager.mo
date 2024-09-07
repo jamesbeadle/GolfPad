@@ -3,6 +3,7 @@ import List "mo:base/List";
 import Buffer "mo:base/Buffer";
 import Iter "mo:base/Iter";
 import Array "mo:base/Array";
+import Time "mo:base/Time";
 import T "../data-types/types";
 import DTOs "../dtos/DTOs";
 
@@ -49,6 +50,17 @@ module {
         predictions = [];
         rounds = [];
         status = #Unplayed;
+        courseSnapshot = {
+          courseId = 0;
+          dateAdded = Time.now(); holes = []; id = 0; name = ""; 
+          teeGroup = {
+            added = 0;
+            colour = "";
+            difficultyIndex = 0;
+            holes = [];
+            name = "";
+          }; //todo
+        }
       };
 
       //create game canister instance and create game
