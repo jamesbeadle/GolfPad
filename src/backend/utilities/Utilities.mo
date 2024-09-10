@@ -43,6 +43,15 @@ module {
     Nat32.fromNat(Nat32.toNat(key) % (2 ** 32 -1));
   };
 
+  public let eqNat = func(a : Nat, b : Nat) : Bool {
+    a == b;
+  };
+
+  public let hashNat = func(key : Nat) : Hash.Hash {
+    Nat32.fromNat(key % (2 ** 32 -1));
+  };
+
+
   public func unixTimeToMonth(unixTime : Int) : Nat8 {
 
     let secondsInADay = 86400;

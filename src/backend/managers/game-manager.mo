@@ -4,15 +4,18 @@ import Buffer "mo:base/Buffer";
 import Iter "mo:base/Iter";
 import Array "mo:base/Array";
 import Time "mo:base/Time";
+import TrieMap "mo:base/TrieMap";
+import Text "mo:base/Text";
 import T "../data-types/types";
 import DTOs "../dtos/DTOs";
 
 module {
   public class GameManager() {
-    
-    private var games: List.List<T.Game> = List.fromArray([]);
-    private var nextGameId: T.GameId = 1;
 
+    private var gameCanisterIndex: TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
+    private var activeCanisterId: T.CanisterId = "";
+    private var uniqueGameCanisterIds : List.List<T.CanisterId> = List.nil();
+    private var totalGames : Nat = 0;
 
     public func createGame(principalId: T.PrincipalId, dto: DTOs.CreateGameDTO) : Result.Result<(), T.Error> {
       
@@ -117,20 +120,50 @@ module {
 
     //Stable variable backup:
     
-    public func getStableGames() : [T.Game] {
-      return List.toArray(games);
+    
+
+    //stable storage getters and setters
+
+    public func getStableCanisterIndex() : [(T.PrincipalId, T.CanisterId)]{
+      return Iter.toArray(gameCanisterIndex.entries());
     };
 
-    public func setStableGames(stable_games: [T.Game]){
-      games := List.fromArray(stable_games);
+    public func setStableCanisterIndex(stable_game_canister_index: [(T.PrincipalId, T.CanisterId)]){
+      let canisterIds : TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
+
+      for (canisterId in Iter.fromArray(stable_game_canister_index)) {
+        canisterIds.put(canisterId);
+      };
+      gameCanisterIndex := canisterIds;
     };
 
-    public func getStableNextGameId() : T.GameId {
-      return nextGameId;
+    public func getStableActiveCanisterId() : T.CanisterId {
+      return activeCanisterId;
     };
 
-    public func setStableNextGameId(stable_next_game_id: T.GameId){
-      nextGameId := stable_next_game_id;
+    public func setStableActiveCanisterId(stable_active_canister_id: T.CanisterId){
+      activeCanisterId := stable_active_canister_id;
+    };  
+
+    public func getStableUniqueCanisterIds() : [T.CanisterId] {
+      return List.toArray(uniqueGameCanisterIds);
+    };
+
+    public func setStableUniqueCanisterIds(stable_unique_canister_ids : [T.CanisterId]) : () {
+      let canisterIdBuffer = Buffer.fromArray<T.CanisterId>([]);
+
+      for (canisterId in Iter.fromArray(stable_unique_canister_ids)) {
+        canisterIdBuffer.add(canisterId);
+      };
+      uniqueGameCanisterIds := List.fromArray(Buffer.toArray(canisterIdBuffer));
+    };
+
+    public func getStableTotalGames() : Nat {
+      return totalGames;
+    };
+
+    public func setStableTotalGames(stable_total_games : Nat) : () {
+      totalGames := stable_total_games;
     };
 
     

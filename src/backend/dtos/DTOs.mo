@@ -30,10 +30,6 @@ module DTOs {
         handicap: ?T.Handicap;
     };
 
-    public type GetGolferBuzzDTO = {
-
-    };
-
     public type GolferBuzzDTO = {
 
     };
@@ -47,17 +43,17 @@ module DTOs {
     };
 
     public type SaveYardageSetDTO = {
-        id: ?T.YardageSetId;
+        yardageSetId: ?T.YardageSetId;
         name: Text;
         clubs: [T.YardageClub];
     };
 
     public type DeleteYardageSetDTO = {
-        id: T.YardageSetId;
+        yardageSetId: T.YardageSetId;
     };
 
     public type GetYardageSetDTO = {
-        id: T.YardageSetId;
+        yardageSetId: T.YardageSetId;
     };
 
     public type YardageSetDTO = {
@@ -135,20 +131,11 @@ module DTOs {
         golferPrincipalId: T.PrincipalId;
     };
 
-    public type GetGolferGameHistoryDTO = {
-
-    };
-
-    public type GolferGameHistoryDTO = {
-
-    };
-
-    public type GetMyGamesDTO = {
-
-    };
-
-    public type MyGamesDTO = {
-
+    public type GolferGameSummariesDTO = {
+        entries: [T.GameSummary];
+        totalEntries: Nat;
+        limit: Nat;
+        offset: Nat;
     };
 
     public type GetGameDTO = {
@@ -207,7 +194,8 @@ module DTOs {
     };
 
     public type AddGolfCourseDTO = {
-        
+        name: Text;
+        initialTeeGroup: T.TeeGroup;
     };
 
     public type UpdateGolfCourseDTO = {
@@ -215,22 +203,22 @@ module DTOs {
     };
 
     public type SaveGolfCourseDTO = {
-        id: ?T.GolfCourseId;
+        courseId: ?T.GolfCourseId;
         holes: [T.Hole];
         name: Text;
         teeGroup: ?T.TeeGroup;
     };
 
     public type DeleteGolfCourseDTO = {
-        id: T.GolfCourseId;
+        courseId: T.GolfCourseId;
     };
 
     public type GetGolfCourseDTO = {
-        id: T.GolfCourseId;
+        courseId: T.GolfCourseId;
     };
 
     public type GolfCourseDTO = {
-        id: T.GolfCourseId;
+        courseId: T.GolfCourseId;
         name: Text;
         tees: [T.TeeGroup];
     }

@@ -24,6 +24,7 @@ module {
     private var usernames : TrieMap.TrieMap<T.PrincipalId, Text> = TrieMap.TrieMap<T.PrincipalId, Text>(Text.equal, Text.hash);
     private var uniqueGolferCanisterIds : List.List<T.CanisterId> = List.nil();
     private var totalGolfers : Nat = 0;
+    
       
     public func saveGolfer(principalId: T.PrincipalId, dto: DTOs.SaveGolferDTO) : async Result.Result<(), T.Error> {
       
@@ -402,16 +403,16 @@ module {
       };
     };
 
-    public func getGolferGameHistory(principalId: T.PrincipalId, dto: DTOs.GetGolferGameHistoryDTO) : async Result.Result<DTOs.GolferGameHistoryDTO, T.Error> {
+    public func getGolferGameSummaries(principalId: T.PrincipalId, dto: DTOs.PaginationFilters) : async Result.Result<DTOs.GolferGameSummariesDTO, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getGolferGameHistory : (principalId: T.PrincipalId, dto: DTOs.GetGolferGameHistoryDTO) -> async Result.Result<DTOs.GolferGameHistoryDTO, T.Error>;
+            getGolferGameSummaries : (principalId: T.PrincipalId, dto: DTOs.PaginationFilters) -> async Result.Result<DTOs.GolferGameSummariesDTO, T.Error>;
           };
 
-          return await golfer_canister.getGolferGameHistory(principalId, dto);
+          return await golfer_canister.getGolferGameSummaries(principalId, dto);
         };
         case (null){
           return #err(#NotFound);
@@ -419,30 +420,13 @@ module {
       };
     };
 
-    public func getMyGames(principalId: T.PrincipalId, dto: DTOs.GetMyGamesDTO) : async Result.Result<DTOs.MyGamesDTO, T.Error> {
+    public func getBuzz(principalId: T.PrincipalId, dto: DTOs.PaginationFilters) : async Result.Result<DTOs.GolferBuzzDTO, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getMyGames : (principalId: T.PrincipalId, dto: DTOs.GetMyGamesDTO) -> async Result.Result<DTOs.MyGamesDTO, T.Error>;
-          };
-
-          return await golfer_canister.getMyGames(principalId, dto);
-        };
-        case (null){
-          return #err(#NotFound);
-        }
-      };
-    };
-
-    public func getBuzz(principalId: T.PrincipalId, dto: DTOs.GetGolferBuzzDTO) : async Result.Result<DTOs.GolferBuzzDTO, T.Error> {
-      let existingGolferCanisterId = golferCanisterIndex.get(principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
-
-          let golfer_canister = actor (foundCanisterId) : actor {
-            getBuzz : (principalId: T.PrincipalId, dto: DTOs.GetGolferBuzzDTO) -> async Result.Result<DTOs.GolferBuzzDTO, T.Error>;
+            getBuzz : (principalId: T.PrincipalId, dto: DTOs.PaginationFilters) -> async Result.Result<DTOs.GolferBuzzDTO, T.Error>;
           };
 
           return await golfer_canister.getBuzz(principalId, dto);
@@ -598,11 +582,11 @@ module {
 
     //stable storage getters and setters
 
-    public func getStableGolferCanisterIndex() : [(T.PrincipalId, T.CanisterId)]{
+    public func getStableCanisterIndex() : [(T.PrincipalId, T.CanisterId)]{
       return Iter.toArray(golferCanisterIndex.entries());
     };
 
-    public func setStableGolferCanisterIndex(stable_golfer_canister_index: [(T.PrincipalId, T.CanisterId)]){
+    public func setStableCanisterIndex(stable_golfer_canister_index: [(T.PrincipalId, T.CanisterId)]){
       let canisterIds : TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
 
       for (canisterId in Iter.fromArray(stable_golfer_canister_index)) {
@@ -632,14 +616,14 @@ module {
       usernames := usernames_map;
     };
 
-    public func getStableUniqueGolferCanisterIds() : [T.CanisterId] {
+    public func getStableUniqueCanisterIds() : [T.CanisterId] {
       return List.toArray(uniqueGolferCanisterIds);
     };
 
-    public func setStableUniqueGolferCanisterIds(stable_unique_golfer_canister_ids : [T.CanisterId]) : () {
+    public func setStableUniqueCanisterIds(stable_unique_canister_ids : [T.CanisterId]) : () {
       let canisterIdBuffer = Buffer.fromArray<T.CanisterId>([]);
 
-      for (canisterId in Iter.fromArray(stable_unique_golfer_canister_ids)) {
+      for (canisterId in Iter.fromArray(stable_unique_canister_ids)) {
         canisterIdBuffer.add(canisterId);
       };
       uniqueGolferCanisterIds := List.fromArray(Buffer.toArray(canisterIdBuffer));

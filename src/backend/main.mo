@@ -38,15 +38,15 @@ actor Self {
     return await golferManager.getGolfer(dto);
   };
 
-  public shared ({ caller }) func getGolferGameHistory(dto: DTOs.GetGolferGameHistoryDTO) : async Result.Result<DTOs.GolferGameHistoryDTO, T.Error> {
+  public shared ({ caller }) func getGolferGameHistory(dto: DTOs.PaginationFilters) : async Result.Result<DTOs.GolferGameSummariesDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return await golferManager.getGolferGameHistory(principalId, dto);
+    return await golferManager.getGolferGameSummaries(principalId, dto);
   };
 
   //Homepage DTOs
 
-  public shared ({ caller }) func getGolferBuzz(dto: DTOs.GetGolferBuzzDTO) : async Result.Result<DTOs.GolferBuzzDTO, T.Error> {
+  public shared ({ caller }) func getGolferBuzz(dto: DTOs.PaginationFilters) : async Result.Result<DTOs.GolferBuzzDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return await golferManager.getBuzz(principalId, dto);
@@ -144,10 +144,10 @@ actor Self {
       
   //Game
     
-  public shared ({ caller }) func getMyGames(dto: DTOs.GetMyGamesDTO) : async Result.Result<DTOs.MyGamesDTO, T.Error> {
+  public shared ({ caller }) func getMyGames(dto: DTOs.PaginationFilters) : async Result.Result<DTOs.GolferGameSummariesDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return await golferManager.getMyGames(principalId, dto);
+    return await golferManager.getGolferGameSummaries(principalId, dto);
   };
     
   public shared query ({ caller }) func getGame(dto: DTOs.GetGameDTO) : async Result.Result<DTOs.GameDTO, T.Error> {
@@ -165,7 +165,7 @@ actor Self {
         assert await golferManager.customCourseExists(principalId, dto.courseId);
       };
       case (#Official){
-        assert courseManager.officialCourseExists(dto.courseId);
+        assert courseManager.courseExists(dto.courseId);
       };
     };
 
@@ -247,34 +247,61 @@ actor Self {
   //stable storage
 
   private stable var stable_golfer_canister_index: [(T.PrincipalId, T.CanisterId)] = [];
-  private stable var stable_active_canister_id: T.CanisterId = "";
+  private stable var stable_golf_course_canister_index: [(T.GolfCourseId, T.CanisterId)] = [];
+  private stable var stable_game_canister_index: [(T.PrincipalId, T.CanisterId)] = [];
+  
+  private stable var stable_active_golfer_canister_id: T.CanisterId = "";
+  private stable var stable_active_golf_course_canister_id: T.CanisterId = "";
+  private stable var stable_active_game_canister_id: T.CanisterId = "";
 
   private stable var stable_usernames : [(T.PrincipalId, Text)] = [];
-  private stable var stable_unique_golfer_canister_ids : [T.CanisterId] = [];
-  private stable var stable_total_golfers : Nat = 0;
+  private stable var stable_golf_course_names : [(T.GolfCourseId, Text)] = [];
   
+  private stable var stable_unique_golfer_canister_ids : [T.CanisterId] = [];
+  private stable var stable_unique_golf_course_canister_ids : [T.CanisterId] = [];
+  private stable var stable_unique_game_canister_ids : [T.CanisterId] = [];
 
-  private stable var stable_courses: [T.GolfCourse] = [];
-  private stable var stable_games: [T.Game] = [];
-  private stable var stable_next_game_id = 1;
+  private stable var stable_total_golfers : Nat = 0;
+  private stable var stable_total_golf_courses : Nat = 0;
+  private stable var stable_total_games : Nat = 0;
   
   system func preupgrade() {
-    stable_golfer_canister_index := golferManager.getStableGolferCanisterIndex();
-    stable_active_canister_id := golferManager.getStableActiveCanisterId();
+    stable_golfer_canister_index := golferManager.getStableCanisterIndex();
+    stable_golf_course_canister_index := courseManager.getStableCanisterIndex();
+    stable_game_canister_index := gameManager.getStableCanisterIndex();
+    
+    stable_active_golfer_canister_id := golferManager.getStableActiveCanisterId();
+    stable_active_golf_course_canister_id := courseManager.getStableActiveCanisterId();
+    stable_active_game_canister_id := gameManager.getStableActiveCanisterId();
 
-    stable_courses := courseManager.getStableCourses();
-    stable_games := gameManager.getStableGames();
+    stable_usernames := golferManager.getStableUsernames();
+    stable_golf_course_names := courseManager.getStableGolfCourseNames();
+    
+    stable_unique_golfer_canister_ids := golferManager.getStableUniqueCanisterIds();
+    stable_unique_golf_course_canister_ids := courseManager.getStableUniqueCanisterIds();
+    stable_unique_game_canister_ids := gameManager.getStableUniqueCanisterIds();
+
+    stable_total_golfers := golferManager.getStableTotalGolfers();
+    stable_total_golf_courses := courseManager.getStableTotalGolfCourses();
+    stable_total_games := gameManager.getStableTotalGames();
   };
 
   system func postupgrade() {
-    golferManager.setStableGolferCanisterIndex(stable_golfer_canister_index);
-    golferManager.setStableUniqueGolferCanisterIds(stable_unique_golfer_canister_ids);
-    golferManager.setStableActiveCanisterId(stable_active_canister_id);
+    
+    golferManager.setStableCanisterIndex(stable_golfer_canister_index);
+    courseManager.setStableCanisterIndex(stable_golf_course_canister_index);
+    gameManager.setStableCanisterIndex(stable_game_canister_index);
+    
+    golferManager.setStableActiveCanisterId(stable_active_golfer_canister_id);
+    courseManager.setStableActiveCanisterId(stable_active_golf_course_canister_id);
+    gameManager.setStableActiveCanisterId(stable_active_game_canister_id);
+
     golferManager.setStableUsernames(stable_usernames);
-    golferManager.setStableTotalGolfers(stable_total_golfers);
-    courseManager.setStableCourses(stable_courses);
-    gameManager.setStableGames(stable_games);
-    gameManager.setStableNextGameId(stable_next_game_id);
+    courseManager.setStableGolfCourseNames(stable_golf_course_names);
+    
+    golferManager.setStableUniqueCanisterIds(stable_unique_golfer_canister_ids);
+    courseManager.setStableUniqueCanisterIds(stable_unique_golf_course_canister_ids);
+    gameManager.setStableUniqueCanisterIds(stable_unique_game_canister_ids);
   };
 
 };

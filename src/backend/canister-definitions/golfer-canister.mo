@@ -6,8 +6,8 @@ import Option "mo:base/Option";
 import Order "mo:base/Order";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
-import Timer "mo:base/Timer";
 import Time "mo:base/Time";
+import List "mo:base/List";
 
 import DTOs "../dtos/DTOs";
 import Environment "../utilities/Environment";
@@ -37,14 +37,11 @@ actor class _GolferCanister() {
   private stable var MAX_GOLFERS_PER_CANISTER: Nat = 12000;
   private stable var canisterFull = false;
   
-  private stable let cyclesCheckInterval: Nat = Utilities.getHour() * 24;
-  private stable var cyclesCheckTimerId: ?Timer.TimerId = null; //TODO: Implement
-  
   public shared ({caller}) func isCanisterFull() : async Bool{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
-    return (totalGolfers >= 12000);
+    return (totalGolfers >= MAX_GOLFERS_PER_CANISTER);
   };
 
   public shared ({caller}) func saveGolfer(golferPrincipalId: T.PrincipalId, dto: DTOs.SaveGolferDTO) : async Result.Result<(), T.Error>{
@@ -89,6 +86,9 @@ actor class _GolferCanister() {
           friendRequests = [];
           friends = [];
           courses = [];
+          gameSummaries = [];
+          buzzFeed = [];
+          scheduledGames = [];
         };
 
         addGolfer(newGolfer);
@@ -111,6 +111,9 @@ actor class _GolferCanister() {
               friendRequests = foundGolfer.friendRequests;
               friends = foundGolfer.friends;
               courses = foundGolfer.courses;
+              gameSummaries = foundGolfer.gameSummaries;
+              buzzFeed = foundGolfer.buzzFeed;
+              scheduledGames = foundGolfer.scheduledGames;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
           };
@@ -164,6 +167,9 @@ actor class _GolferCanister() {
           friendRequests = [];
           friends = [];
           courses = [];
+          gameSummaries = [];
+          buzzFeed = [];
+          scheduledGames = [];
         };
 
         addGolfer(newGolfer);
@@ -186,6 +192,9 @@ actor class _GolferCanister() {
               friendRequests = foundGolfer.friendRequests;
               friends = foundGolfer.friends;
               courses = foundGolfer.courses;
+              gameSummaries = foundGolfer.gameSummaries;
+              buzzFeed = foundGolfer.buzzFeed;
+              scheduledGames = foundGolfer.scheduledGames;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
           };
@@ -286,7 +295,7 @@ actor class _GolferCanister() {
             
             var updatedYardageSets: [T.YardageSet] = [];
             
-            switch(dto.id){
+            switch(dto.yardageSetId){
               case (null){
                 var yardageSetBuffer = Buffer.fromArray<T.YardageSet>([]);
                 yardageSetBuffer := Buffer.fromArray(foundGolfer.yardageSets);
@@ -341,6 +350,9 @@ actor class _GolferCanister() {
               friendRequests = foundGolfer.friendRequests;
               friends = foundGolfer.friends;
               courses = foundGolfer.courses;
+              gameSummaries = foundGolfer.gameSummaries;
+              buzzFeed = foundGolfer.buzzFeed;
+              scheduledGames = foundGolfer.scheduledGames;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
 
@@ -373,7 +385,7 @@ actor class _GolferCanister() {
           case (?foundGolfer){
 
             let updatedYardageSets = Array.filter<T.YardageSet>(foundGolfer.yardageSets, func(yardageSet: T.YardageSet){
-              yardageSet.id != dto.id
+              yardageSet.id != dto.yardageSetId
             });
             
             let updatedGolfer: T.Golfer = {
@@ -390,6 +402,9 @@ actor class _GolferCanister() {
               friendRequests = foundGolfer.friendRequests;
               friends = foundGolfer.friends;
               courses = foundGolfer.courses;
+              gameSummaries = foundGolfer.gameSummaries;
+              buzzFeed = foundGolfer.buzzFeed;
+              scheduledGames = foundGolfer.scheduledGames;
             };
             
             updateGolfer(foundGroupIndex, updatedGolfer);
@@ -423,7 +438,7 @@ actor class _GolferCanister() {
           case (?foundGolfer){
 
             let yardageSet = Array.find<T.YardageSet>(foundGolfer.yardageSets, func(yardageSet: T.YardageSet){
-              yardageSet.id == dto.id
+              yardageSet.id == dto.yardageSetId
             });
             switch(yardageSet){
               case (null){ return #err(#NotFound) };
@@ -523,6 +538,9 @@ actor class _GolferCanister() {
               friendRequests = foundGolfer.friendRequests;
               friends = foundGolfer.friends;
               courses = foundGolfer.courses;
+              gameSummaries = foundGolfer.gameSummaries;
+              buzzFeed = foundGolfer.buzzFeed;
+              scheduledGames = foundGolfer.scheduledGames;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
           
@@ -587,6 +605,9 @@ actor class _GolferCanister() {
               friendRequests = foundGolfer.friendRequests;
               friends = foundGolfer.friends;
               courses = foundGolfer.courses;
+              gameSummaries = foundGolfer.gameSummaries;
+              buzzFeed = foundGolfer.buzzFeed;
+              scheduledGames = foundGolfer.scheduledGames;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
           
@@ -601,8 +622,6 @@ actor class _GolferCanister() {
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
-
-    //TODO: implement pagination
 
     var groupIndex: ?Nat8 = null;
     for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
@@ -619,9 +638,11 @@ actor class _GolferCanister() {
           case (null) { #err(#NotFound); };
           case (?foundGolfer){
 
+            let droppedEntries = List.drop<T.FriendRequest>(List.fromArray(foundGolfer.friendRequests), dto.offset);
+            let paginatedEntries = List.take<T.FriendRequest>(droppedEntries, dto.limit);
 
             let friendRequests: DTOs.FriendRequestsDTO = {
-              friendRequests = Array.map<T.FriendRequest, DTOs.FriendRequestDTO>(foundGolfer.friendRequests, 
+              friendRequests = Array.map<T.FriendRequest, DTOs.FriendRequestDTO>(List.toArray(paginatedEntries), 
                 func(friendRequest: T.FriendRequest){
                   return {
                     principalId = friendRequest.requestedBy;
@@ -676,6 +697,9 @@ actor class _GolferCanister() {
               });
               friends = Buffer.toArray(updatedFriendsBuffer);
               courses = foundGolfer.courses;
+              gameSummaries = foundGolfer.gameSummaries;
+              buzzFeed = foundGolfer.buzzFeed;
+              scheduledGames = foundGolfer.scheduledGames;
             };
 
             updateGolfer(foundGroupIndex, updatedGolfer);
@@ -721,6 +745,9 @@ actor class _GolferCanister() {
               });
               friends = foundGolfer.friends;
               courses = foundGolfer.courses;
+              gameSummaries = foundGolfer.gameSummaries;
+              buzzFeed = foundGolfer.buzzFeed;
+              scheduledGames = foundGolfer.scheduledGames;
             };
 
             updateGolfer(foundGroupIndex, updatedGolfer);
@@ -767,6 +794,9 @@ actor class _GolferCanister() {
               friendRequests = Buffer.toArray(friendRequestsBuffer);
               friends = foundGolfer.friends;
               courses = foundGolfer.courses;
+              gameSummaries = foundGolfer.gameSummaries;
+              buzzFeed = foundGolfer.buzzFeed;
+              scheduledGames = foundGolfer.scheduledGames;
             };
 
             updateGolfer(foundGroupIndex, updatedGolfer);
@@ -777,12 +807,10 @@ actor class _GolferCanister() {
     };
   };
 
-  public shared ({caller}) func getGolferGameHistory(golferPrincipalId: T.PrincipalId, dto: DTOs.GetGolferGameHistoryDTO) : async Result.Result<DTOs.GolferGameHistoryDTO, T.Error>{
+  public shared ({caller}) func getGolferGameSummaries(golferPrincipalId: T.PrincipalId, dto: DTOs.PaginationFilters) : async Result.Result<DTOs.GolferGameSummariesDTO, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
-
-    //Todo: with pagination? same for all
 
     var groupIndex: ?Nat8 = null;
     for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
@@ -798,7 +826,15 @@ actor class _GolferCanister() {
         switch(golfer){
           case (null) { #err(#NotFound); };
           case (?foundGolfer){
-            #err(#NotFound); //TODO NOT IMPLEMENTED
+
+            let droppedEntries = List.drop<T.GameSummary>(List.fromArray(foundGolfer.gameSummaries), dto.offset);
+            let paginatedEntries = List.take<T.GameSummary>(droppedEntries, dto.limit);
+            return #ok({
+              entries = List.toArray(paginatedEntries);
+              limit = dto.limit; 
+              offset = dto.offset;
+              totalEntries = Array.size(foundGolfer.gameSummaries);
+            });
           }
         };
 
@@ -806,7 +842,7 @@ actor class _GolferCanister() {
     };
   };
 
-  public shared ({caller}) func getMyGames(golferPrincipalId: T.PrincipalId, dto: DTOs.GetMyGamesDTO) : async Result.Result<DTOs.MyGamesDTO, T.Error>{
+  public shared ({caller}) func getBuzz(golferPrincipalId: T.PrincipalId, dto: DTOs.PaginationFilters) : async Result.Result<DTOs.GolferBuzzDTO, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -825,41 +861,22 @@ actor class _GolferCanister() {
         switch(golfer){
           case (null) { #err(#NotFound); };
           case (?foundGolfer){
-            #err(#NotFound); //TODO NOT IMPLEMENTED
-          }
-        };
 
-      };
-    };
-  };
-
-  public shared ({caller}) func getBuzz(golferPrincipalId: T.PrincipalId, dto: DTOs.GetGolferBuzzDTO) : async Result.Result<DTOs.GolferBuzzDTO, T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let backendPrincipalId = Principal.toText(caller);
-    assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
-
-    var groupIndex: ?Nat8 = null;
-    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
-      if(golferGroupIndex.0 == golferPrincipalId){
-        groupIndex := ?golferGroupIndex.1;
-      }
-    };
-    switch(groupIndex){
-      case (null){ return #err(#NotFound); };
-      case (?foundGroupIndex){
-        let golfer = findGolfer(foundGroupIndex, golferPrincipalId);
-
-        switch(golfer){
-          case (null) { #err(#NotFound); };
-          case (?foundGolfer){
-            #err(#NotFound); //TODO: Need to implement
+            let droppedEntries = List.drop<T.BuzzFeedItem>(List.fromArray(foundGolfer.buzzFeed), dto.offset);
+            let paginatedEntries = List.take<T.BuzzFeedItem>(droppedEntries, dto.limit);
+            return #ok({
+              entries = List.toArray(paginatedEntries);
+              limit = dto.limit; 
+              offset = dto.offset;
+              totalEntries = Array.size(foundGolfer.buzzFeed);
+            });
           }
         };
       };
     };
   };
 
-  public shared ({caller}) func getUpcomingGames(golferPrincipalId: T.PrincipalId, dto: DTOs.GetUpcomingGamesDTO) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error>{
+  public shared ({caller}) func getUpcomingGames(golferPrincipalId: T.PrincipalId, dto: DTOs.PaginationFilters) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -878,10 +895,17 @@ actor class _GolferCanister() {
         switch(golfer){
           case (null) { #err(#NotFound); };
           case (?foundGolfer){
-            #err(#NotFound); //TODO NOT IMPLEMENTED
+
+            let droppedEntries = List.drop<T.BuzzFeedItem>(List.fromArray(foundGolfer.buzzFeed), dto.offset);
+            let paginatedEntries = List.take<T.BuzzFeedItem>(droppedEntries, dto.limit);
+            return #ok({
+              entries = List.toArray(paginatedEntries);
+              limit = dto.limit; 
+              offset = dto.offset;
+              totalEntries = Array.size(foundGolfer.buzzFeed);
+            });
           }
         };
-
       };
     };
   };
@@ -977,7 +1001,7 @@ actor class _GolferCanister() {
             
             var updatedGolfCourses: [T.GolfCourse] = [];
             
-            switch(dto.id){
+            switch(dto.courseId){
               case (null){
                 var golfCourseBuffer = Buffer.fromArray<T.GolfCourse>([]);
                 golfCourseBuffer := Buffer.fromArray(foundGolfer.courses);
@@ -1070,6 +1094,9 @@ actor class _GolferCanister() {
               friendRequests = foundGolfer.friendRequests;
               friends = foundGolfer.friends;
               courses = updatedGolfCourses;
+              gameSummaries = foundGolfer.gameSummaries;
+              buzzFeed = foundGolfer.buzzFeed;
+              scheduledGames = foundGolfer.scheduledGames;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
 
@@ -1102,7 +1129,7 @@ actor class _GolferCanister() {
           case (?foundGolfer){
 
             let updatedGolfCourses = Array.filter<T.GolfCourse>(foundGolfer.courses, func(course: T.GolfCourse){
-              course.id != dto.id
+              course.id != dto.courseId
             });
             
             let updatedGolfer: T.Golfer = {
@@ -1119,6 +1146,9 @@ actor class _GolferCanister() {
               friendRequests = foundGolfer.friendRequests;
               friends = foundGolfer.friends;
               courses = updatedGolfCourses;
+              gameSummaries = foundGolfer.gameSummaries;
+              buzzFeed = foundGolfer.buzzFeed;
+              scheduledGames = foundGolfer.scheduledGames;
             };
             
             updateGolfer(foundGroupIndex, updatedGolfer);
@@ -1152,13 +1182,13 @@ actor class _GolferCanister() {
           case (?foundGolfer){
 
             let golfCourse = Array.find<T.GolfCourse>(foundGolfer.courses, func(course: T.GolfCourse){
-              course.id == dto.id
+              course.id == dto.courseId
             });
             switch(golfCourse){
               case (null){ return #err(#NotFound) };
               case (?foundGolfCourse){ 
                 #ok({
-                id = foundGolfCourse.id; 
+                courseId = foundGolfCourse.id; 
                 name = foundGolfCourse.name;
                 tees = foundGolfCourse.teeGroups;
               }); }
@@ -1177,8 +1207,6 @@ actor class _GolferCanister() {
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
 
-    //TODO: Add pagination
-
     var groupIndex: ?Nat8 = null;
     for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
       if(golferGroupIndex.0 == golferPrincipalId){
@@ -1192,13 +1220,17 @@ actor class _GolferCanister() {
         switch(golfer){
           case (?foundGolfer){
 
-            let courses = Array.map<T.GolfCourse, DTOs.GolfCourseDTO>(foundGolfer.courses, func(course: T.GolfCourse){
+            let droppedEntries = List.drop<T.GolfCourse>(List.fromArray(foundGolfer.courses), dto.offset);
+            let paginatedEntries = List.take<T.GolfCourse>(droppedEntries, dto.limit);
+
+            let courses = Array.map<T.GolfCourse, DTOs.GolfCourseDTO>(List.toArray(paginatedEntries), func(course: T.GolfCourse){
             return {
-                  id = course.id;
+                  courseId = course.id;
                   name = course.name;
                   tees = course.teeGroups;
                  }
             });
+            
             return #ok({courses = courses});
           };
           case (null){
@@ -1388,6 +1420,7 @@ actor class _GolferCanister() {
         return #err(#NotFound);
       }
     };
+    totalGolfers += 1;
     return #ok();
   };
 

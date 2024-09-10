@@ -40,10 +40,39 @@ module Types {
     upcomingGames: [GameId];
     activeGames: [GameId];
     completedGames: [GameId];
+    gameSummaries: [GameSummary];
+    scheduledGames: [GameSummary];
     yardageSets: [YardageSet];
     friendRequests: [FriendRequest];
     friends: [PrincipalId];
     courses: [GolfCourse];
+    buzzFeed: [BuzzFeedItem]
+  };
+
+  public type BuzzFeedItem = {
+    gameType: GameType;
+    date: Int;
+    course: GolfCourseId;
+    players: [Golfer];
+    feedItemType: BuzzFeedItemType;
+    //TOOD: Need a property to show score based on game types
+      //mulligans is a score of up to 2 people, 1 up so both players and score like 1 up
+      //build it
+      //next up
+      //bands
+        //when a certain bands acheivement happens the best one for your round goes on your friends buzz
+  };
+
+  public type BuzzFeedItemType = {
+    #Game;
+    #GameEvent;
+  };
+
+  public type GameSummary = {
+    gameType: GameType;
+    players: [PrincipalId];
+    status: GameStatus;
+    date: Int;
   };
 
   public type YardageSet = {
