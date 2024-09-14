@@ -28,6 +28,10 @@ module DTOs {
         golferPicture: ?Blob;
         golferPictureExtension: Text;
         handicap: ?T.Handicap;
+        upcomingGames: [T.GameId];
+        activeGames: [T.GameId];
+        completedGames: [T.GameId];
+        gameInvites: [T.GameInvite];
     };
 
     public type GolferBuzzDTO = {
@@ -139,11 +143,22 @@ module DTOs {
     };
 
     public type GetGameDTO = {
-
+        gameId: T.GameId;
     };
 
     public type GameDTO = {
-
+        id: T.GameId;
+        gameType: T.GameType;
+        scoreDetail: ?T.GameScoreDetail;
+        status: T.GameStatus;
+        courseId: T.GolfCourseId;
+        predictions: [T.GamePrediction];
+        events: [T.GolferEvent];
+        courseSnapshot: T.GolfCourseSnapshot;
+        teeOffTime: Int;
+        playerIds: [T.PrincipalId];
+        invites: [T.PrincipalId];
+        winner: T.PrincipalId;
     };
 
     public type CoursesDTO = {
@@ -155,51 +170,63 @@ module DTOs {
     };
 
     public type CreateGameDTO = {
+        createdById: T.PrincipalId;
         courseType: T.CourseType;
         courseId: T.GolfCourseId;
         gameType: T.GameType;
         inviteIds: [T.PrincipalId];
+        teeOffTime: Int;
+        teeGroup: Text;
     };
 
-    public type InviteGolferDTO = {
+    public type InviteGolfersDTO = {
+        gameId: T.GameId;
+        invitedGolferIds: [T.PrincipalId];
+    };
 
+    public type AddGameInvitesDTO = {
+        gameId: T.GameId;
+        golferIds: [T.PrincipalId];
     };
 
     public type AccepteGameInviteDTO = {
-
+        gameId: T.GameId;
+        acceptedById: T.PrincipalId;
     };
 
     public type AddGameScoreDTO = {
+        submittedById: T.PrincipalId;
+        gameId: T.GameId;
+        detail: AddScoreDetailDTO;
+    };
 
+    public type AddScoreDetailDTO = {
+        #MulligansAddScoreDTO : MulligansAddScoreDTO;
+    };
+
+    public type MulligansAddScoreDTO = {
+        hole: T.HoleNumber;
+        golferId: T.PrincipalId;
+        golfer1MulliganUsed: Bool;
+        golfer2MulliganUsed: Bool;
+        holeWinner: T.PrincipalId;
     };
 
     public type BandsPredictionDTO = {
 
     };
 
-    public type CreateTeamDTO = {
-
-    };
-
-    public type GetTeamDTO = {
-
-    };
-
-    public type TeamDTO = {
-
-    };
-
-    public type UpdateTeamDTO = {
-
-    };
-
     public type AddGolfCourseDTO = {
         name: Text;
         initialTeeGroup: T.TeeGroup;
+        holes: [T.Hole]
     };
 
     public type UpdateGolfCourseDTO = {
-        
+        courseId: T.GolfCourseId;
+        name: Text;
+        updateTeeGroup: T.TeeGroup;
+        holes: [T.Hole];
     };
 
     public type SaveGolfCourseDTO = {
@@ -221,7 +248,13 @@ module DTOs {
         courseId: T.GolfCourseId;
         name: Text;
         tees: [T.TeeGroup];
-    }
+        activeVersion: T.GolfCourseVersion;
+    };
 
-
+    public type GolfCourseSnaphotDTO = {
+        id: Nat;
+        name: Text;
+        teeGroup: T.TeeGroup;
+        courseVersion: T.GolfCourseVersion;
+    };
 }

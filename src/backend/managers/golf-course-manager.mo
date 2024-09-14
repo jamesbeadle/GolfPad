@@ -5,9 +5,15 @@ import Option "mo:base/Option";
 import Text "mo:base/Text";
 import Iter "mo:base/Iter";
 import Buffer "mo:base/Buffer";
+import Principal "mo:base/Principal";
 import T "../data-types/types";
 import DTOs "../dtos/DTOs";
 import Utilities "../utilities/Utilities";
+import Management "../utilities/Management";
+import GolfCoursesCanister "../canister-definitions/golf-courses-canister";
+import Environment "../utilities/Environment";
+import Cycles "mo:base/ExperimentalCycles";
+import Array "mo:base/Array";
 
 module {
   public class GolfCourseManager() {
@@ -72,37 +78,71 @@ module {
       };
     };
 
-
-
-
-
     public func validateAddGolfCourse(dto : DTOs.AddGolfCourseDTO) : T.RustResult {
       
-      //check course name
-      //check course hole count == 18
+      if(Text.size(dto.name) > 100){
+        return #Err("Golf Course name too long, max 100 characters.");
+      };
 
-      
-      
-      return #Err("Invalid: Cannot find golf course.");  
-      //return #Ok("Proposal Valid");
+      if(Array.size(dto.holes) != 18){
+        return #Err("Golf Course must have 18 holes");
+      };
+
+      return #Ok("Proposal Valid");
     };
 
     public func executeAddGolfCourse(dto : DTOs.AddGolfCourseDTO) : async () {
-      //TODO: implement
+      var golf_course_canister = actor (activeCanisterId) : actor {
+        getLatestId : () -> async T.GolfCourseId;
+        addGolfCourse : (dto: DTOs.AddGolfCourseDTO) -> async ();
+        isCanisterFull : () -> async Bool;
+      };
 
+      let isCanisterFull = await golf_course_canister.isCanisterFull(); 
 
+      if(isCanisterFull){
+        let latestId = await golf_course_canister.getLatestId();
+        let nextId: T.GameId = latestId + 1;
+        
+        await createNewCanister(nextId);
+
+        golf_course_canister := actor (activeCanisterId) : actor {
+          getLatestId : () -> async T.GolfCourseId;
+          addGolfCourse : (dto: DTOs.AddGolfCourseDTO) -> async ();
+          isCanisterFull : () -> async Bool;
+       };
+
+      };
+
+      return await golf_course_canister.addGolfCourse(dto);
     };
 
     public func validateUpdateGolfCourse(dto : DTOs.UpdateGolfCourseDTO) : T.RustResult {
-      return #Err("Invalid: Cannot find golf course.");  
-      //return #Ok("Proposal Valid");
+      
+      if(Text.size(dto.name) > 100){
+        return #Err("Golf Course name too long, max 100 characters.");
+      };
+
+      if(Array.size(dto.holes) != 18){
+        return #Err("Golf Course must have 18 holes");
+      };
+
+      return #Ok("Proposal Valid");
     };
 
     public func executeUpdateGolfCourse(dto : DTOs.UpdateGolfCourseDTO) : async () {
-      //TODO: implement
+
+      let golfCourseCanisterId = golfCourseCanisterIndex.get(dto.courseId);
+      switch(golfCourseCanisterId){
+        case (?foundCanisterId){
+          let golf_course_canister = actor (foundCanisterId) : actor {
+            updateGolfCourse : (dto: DTOs.UpdateGolfCourseDTO) -> async ();
+          };
+          return await golf_course_canister.updateGolfCourse(dto);
+        };
+        case _ { }
+      };     
     };
-
-
 
     //stable storage getters and setters
 
@@ -160,6 +200,35 @@ module {
     public func setStableTotalGolfCourses(stable_total_golf_courses : Nat) : () {
       totalGolfCourses := stable_total_golf_courses;
     };
+
+
+
+  private func createNewCanister(nextId: T.GolfCourseId) : async (){
+    Cycles.add<system>(10_000_000_000_000);
+    let canister = await GolfCoursesCanister._GolfCoursesCanister();
+    let IC : Management.Management = actor (Environment.Default);
+    let principal = ?Principal.fromText(Environment.BACKEND_CANISTER_ID);
+    let _ = await Utilities.updateCanister_(canister, principal, IC);
+
+    let canister_principal = Principal.fromActor(canister);
+    let canisterId = Principal.toText(canister_principal);
+
+    if (canisterId == "") {
+      return;
+    };
+
+    var new_canister = actor (canisterId) : actor {
+      updateNextId : (nextId: T.GameId) -> async ();
+    };
+
+    await new_canister.updateNextId(nextId);
+
+    let uniqueCanisterIdBuffer = Buffer.fromArray<T.CanisterId>(List.toArray(uniqueGolfCourseCanisterIds));
+    uniqueCanisterIdBuffer.add(canisterId);
+    uniqueGolfCourseCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
+    activeCanisterId := canisterId;
+    return;
+  };
   };
 };
 

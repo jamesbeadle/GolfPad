@@ -1,5 +1,9 @@
 import Result "mo:base/Result";
 import Principal "mo:base/Principal";
+import Time "mo:base/Time";
+import Option "mo:base/Option";
+import Array "mo:base/Array";
+import Iter "mo:base/Iter";
 import DTOs "dtos/DTOs";
 import T "data-types/types";
 import GolferManager "managers/golfer-manager";
@@ -12,7 +16,7 @@ actor Self {
   private let golferManager = GolferManager.GolferManager();
   private let courseManager = GolfCourseManager.GolfCourseManager();
   private let gameManager = GameManager.GameManager();
-    
+  
   //Golfer Functions
 
   public shared ({ caller }) func saveGolfer(dto: DTOs.SaveGolferDTO) : async Result.Result<(), T.Error> {
@@ -150,14 +154,16 @@ actor Self {
     return await golferManager.getGolferGameSummaries(principalId, dto);
   };
     
-  public shared query ({ caller }) func getGame(dto: DTOs.GetGameDTO) : async Result.Result<DTOs.GameDTO, T.Error> {
+  public shared ({ caller }) func getGame(dto: DTOs.GetGameDTO) : async Result.Result<DTOs.GameDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return gameManager.getGame(principalId, dto);
+    return await gameManager.getGame(dto);
   };
 
   public shared ({ caller }) func createGame(dto: DTOs.CreateGameDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
+    assert dto.teeOffTime > Time.now();
+    
     let principalId = Principal.toText(caller);
     
     switch(dto.courseType){
@@ -170,50 +176,128 @@ actor Self {
     };
 
     assert await golferManager.hasFriends(principalId, dto.inviteIds);
-    
-    return gameManager.createGame(principalId, dto);
+
+    var golfCourse: ?DTOs.GolfCourseDTO = null;
+
+    switch(dto.courseType){
+      case (#Custom){
+        let result = await golferManager.getGolfCourse(principalId, dto.courseId);
+        switch(result){
+          case (#ok foundCourse){
+            golfCourse := ?foundCourse;
+          };
+          case (#err _){
+            return #err(#NotFound);
+          }
+        }
+      };
+      case (#Official){
+        let result = await courseManager.getCourse({courseId = dto.courseId});
+        switch(result){
+          case (#ok foundCourse){
+            golfCourse := ?foundCourse;
+          };
+          case (#err _){
+            return #err(#NotFound);
+          }
+        }
+      }
+    };
+
+    switch(golfCourse){
+      case (?foundCourse){
+        let teeGroup = Array.find<T.TeeGroup>(foundCourse.tees, func(teeGroup: T.TeeGroup){
+          teeGroup.name == dto.teeGroup;
+        });
+
+        switch(teeGroup){
+          case (?foundTeeGroup){
+            let result = await gameManager.createGame(dto, {
+              id = foundCourse.courseId;
+              courseVersion = foundCourse.activeVersion;
+              name = foundCourse.name;
+              teeGroup = foundTeeGroup;
+            });
+
+            switch(result){
+              case (#ok gameId){
+                return await golferManager.addGame(principalId, gameId, dto.inviteIds);
+              };
+              case (#err _){
+                return #err(#CreateGameError);
+              }
+            };
+          };
+          case (null){
+            return #err(#CreateGameError);
+          }
+        };
+
+      };
+      case (null){
+        return #err(#NotFound);
+      }
+    };
   };
 
-  public shared ({ caller }) func sendGameInvite(dto: DTOs.InviteGolferDTO) : async Result.Result<(), T.Error>{
+  public shared ({ caller }) func sendGameInvites(dto: DTOs.InviteGolfersDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return gameManager.sendGameInvite(principalId, dto);
+    assert Option.isNull(Array.find<T.PrincipalId>(dto.invitedGolferIds, func(golferId: T.PrincipalId){ golferId == principalId }));
+    
+    let existingGame = await gameManager.getGame({ gameId = dto.gameId });
+
+    switch(existingGame){
+      case (#ok game) {
+
+        assert game.status == #Unplayed;
+
+        for(golferPrincipalId in Iter.fromArray(dto.invitedGolferIds)){
+          assert Option.isNull(Array.find<T.PrincipalId>(game.playerIds, func(playerId: T.PrincipalId){ playerId ==  golferPrincipalId}));
+        };
+
+        for(golferPrincipalId in Iter.fromArray(dto.invitedGolferIds)){
+      
+          let invitedGolfer = await golferManager.getGolfer({
+            golferPrincipalId = golferPrincipalId;
+          });
+        
+          switch(invitedGolfer){
+            case (#ok foundGolfer){
+              assert Option.isNull(Array.find<T.GameId>(foundGolfer.upcomingGames, func(foundGameId: T.GameId){
+                foundGameId == game.id
+              }));
+              
+              assert Option.isNull(Array.find<T.GameInvite>(foundGolfer.gameInvites, func(foundInvite: T.GameInvite){
+                foundInvite.gameId == game.id
+              }));        
+            };
+            case (#err _) {
+              return #err(#NotFound);
+            }
+          };
+        };
+
+        return await gameManager.addGameInvites({gameId = dto.gameId; golferIds = dto.invitedGolferIds});
+      };
+      case (#err _) {
+        return #err(#NotFound);
+      };
+    };
   };
 
   public shared ({ caller }) func acceptGameInvite(dto: DTOs.AccepteGameInviteDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return gameManager.acceptGameInvite(principalId, dto);
+    assert principalId == dto.acceptedById;
+    return await gameManager.acceptGameInvite(dto);
   };
 
   public shared ({ caller }) func addGameScore(dto: DTOs.AddGameScoreDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return gameManager.addGameScore(principalId, dto);
-  };
-
-  public shared ({ caller }) func submitBandsPrediction(dto: DTOs.BandsPredictionDTO) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return gameManager.submitBandsPrediction(principalId, dto);
-  };
-
-  public shared ({ caller }) func createTeam(dto: DTOs.CreateTeamDTO) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return gameManager.createTeam(principalId, dto);
-  };
-    
-  public shared query ({ caller }) func getTeam(dto: DTOs.GetTeamDTO) : async Result.Result<DTOs.TeamDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return gameManager.getTeam(principalId, dto);
-  };
-
-  public shared ({ caller }) func updateTeam(dto: DTOs.UpdateTeamDTO) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return gameManager.updateTeam(principalId, dto);
+    assert principalId == dto.submittedById;
+    return await gameManager.addGameScore(dto);
   };
 
   //DAO Validation & Execution Functions
@@ -248,7 +332,7 @@ actor Self {
 
   private stable var stable_golfer_canister_index: [(T.PrincipalId, T.CanisterId)] = [];
   private stable var stable_golf_course_canister_index: [(T.GolfCourseId, T.CanisterId)] = [];
-  private stable var stable_game_canister_index: [(T.PrincipalId, T.CanisterId)] = [];
+  private stable var stable_game_canister_index: [(T.GameId, T.CanisterId)] = [];
   
   private stable var stable_active_golfer_canister_id: T.CanisterId = "";
   private stable var stable_active_golf_course_canister_id: T.CanisterId = "";

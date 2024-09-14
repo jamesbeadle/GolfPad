@@ -1,4 +1,5 @@
 import Result "mo:base/Result";
+import Cycles "mo:base/ExperimentalCycles";
 import List "mo:base/List";
 import Iter "mo:base/Iter";
 import TrieMap "mo:base/TrieMap";
@@ -12,7 +13,6 @@ import Management "../utilities/Management";
 import GolferCanister "../canister-definitions/golfer-canister";
 import Utilities "../utilities/Utilities";
 import Environment "../utilities/Environment";
-import Cycles "mo:base/ExperimentalCycles";
 import Array "mo:base/Array";
 import Blob "mo:base/Blob";
 
@@ -56,18 +56,24 @@ module {
         };
         case (null){
             if(activeCanisterId == ""){
-              activeCanisterId := await createGolfersCanister();
+              await createNewCanister();
             };
 
             var golfer_canister = actor (activeCanisterId) : actor {
+              getLatestId : () -> async T.GameId;
               isCanisterFull : () -> async Bool;
               saveGolfer : (principal: T.PrincipalId, dto: DTOs.SaveGolferDTO) -> async Result.Result<(), T.Error>;  
             };
 
-            let isCanisterFull = await golfer_canister.isCanisterFull();
+            let isCanisterFull = await golfer_canister.isCanisterFull(); 
+        
             if(isCanisterFull){
-              activeCanisterId := await createGolfersCanister();
+              let latestId = await golfer_canister.getLatestId();
+              let nextId: T.GameId = latestId + 1;
+              
+              await createNewCanister();
               golfer_canister := actor (activeCanisterId) : actor {
+                getLatestId : () -> async T.GameId;
                 isCanisterFull : () -> async Bool;
                 saveGolfer : (principal: T.PrincipalId, dto: DTOs.SaveGolferDTO) -> async Result.Result<(), T.Error>;  
               };
@@ -108,7 +114,7 @@ module {
         };
         case (null){
             if(activeCanisterId == ""){
-              activeCanisterId := await createGolfersCanister();
+              await createNewCanister();
             };
 
             var golfer_canister = actor (activeCanisterId) : actor {
@@ -118,10 +124,12 @@ module {
 
             let isCanisterFull = await golfer_canister.isCanisterFull();
             if(isCanisterFull){
-              activeCanisterId := await createGolfersCanister();
+              await createNewCanister();
+             
               golfer_canister := actor (activeCanisterId) : actor {
-                isCanisterFull : () -> async Bool;
                 saveGolferPicture : (principal: T.PrincipalId, dto: DTOs.SaveGolferPictureDTO) -> async Result.Result<(), T.Error>;  
+                getLatestId : () -> async T.GameId;
+                isCanisterFull : () -> async Bool;
               };
             };
 
@@ -190,25 +198,7 @@ module {
           return await golfer_canister.saveYardageSet(principalId, dto);
         };
         case (null){
-          if(activeCanisterId == ""){
-            activeCanisterId := await createGolfersCanister();
-          };
-
-          var golfer_canister = actor (activeCanisterId) : actor {
-            isCanisterFull : () -> async Bool;
-            saveYardageSet : (principal: T.PrincipalId, dto: DTOs.SaveYardageSetDTO) -> async Result.Result<(), T.Error> 
-          };
-
-          let isCanisterFull = await golfer_canister.isCanisterFull();
-          if(isCanisterFull){
-            activeCanisterId := await createGolfersCanister();
-            golfer_canister := actor (activeCanisterId) : actor {
-              isCanisterFull : () -> async Bool;
-              saveYardageSet : (principal: T.PrincipalId, dto: DTOs.SaveYardageSetDTO) -> async Result.Result<(), T.Error>    
-            };
-          };
-
-          return await golfer_canister.saveYardageSet(principalId, dto);
+          return #err(#NotFound);        
         }
       }; 
     };
@@ -490,6 +480,23 @@ module {
        };
     };
 
+    public func getGolfCourse(golferPrincipalId: T.PrincipalId, courseId: T.GolfCourseId) : async Result.Result<DTOs.GolfCourseDTO, T.Error>{
+      
+      let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
+
+      switch(golferCanisterId){
+        case (?foundCanisterId){
+          let golfer_canister = actor (foundCanisterId) : actor {
+            getGolfCourse : (golferPrincipalId: T.PrincipalId, dto: DTOs.GetGolfCourseDTO) -> async Result.Result<DTOs.GolfCourseDTO, T.Error>;
+          };
+          return await golfer_canister.getGolfCourse(golferPrincipalId, { courseId = courseId  });
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
+    };
+
     public func customCourseExists(golferPrincipalId: T.PrincipalId, courseId: T.GolfCourseId) : async Bool {
       let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
 
@@ -559,7 +566,7 @@ module {
        };
     };
 
-    private func createGolfersCanister() : async Text {
+    private func createNewCanister() : async (){
       Cycles.add<system>(10_000_000_000_000);
       let canister = await GolferCanister._GolferCanister();
       let IC : Management.Management = actor (Environment.Default);
@@ -570,14 +577,35 @@ module {
       let canisterId = Principal.toText(canister_principal);
 
       if (canisterId == "") {
-        return canisterId;
+        return;
       };
 
       let uniqueCanisterIdBuffer = Buffer.fromArray<T.CanisterId>(List.toArray(uniqueGolferCanisterIds));
       uniqueCanisterIdBuffer.add(canisterId);
       uniqueGolferCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
       activeCanisterId := canisterId;
-      return canisterId;
+      return;
+    };
+
+    public func addGame(invitedByPrincipalId: T.PrincipalId, gameId: T.GameId, inviteIds: [T.PrincipalId]) : async Result.Result<(), T.Error>{
+      for(principalId in Iter.fromArray(inviteIds)){
+        let golferCanisterId = golferCanisterIndex.get(principalId);
+
+        switch(golferCanisterId){
+          case (?foundCanisterId){
+
+            let golfer_canister = actor (foundCanisterId) : actor {
+              addGameInvite : (invitedByPrincipalId: T.PrincipalId, invitedPrincipalId: T.PrincipalId, gameId: T.GameId) -> async Result.Result<(), T.Error>
+            };
+          
+            return await golfer_canister.addGameInvite(invitedByPrincipalId, principalId, gameId);
+          };
+          case _ {
+            return #err(#NotFound);
+          }
+        };
+      };
+      return #ok();
     };
 
     //stable storage getters and setters

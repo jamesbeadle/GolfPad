@@ -6,130 +6,188 @@ import Array "mo:base/Array";
 import Time "mo:base/Time";
 import TrieMap "mo:base/TrieMap";
 import Text "mo:base/Text";
+import Principal "mo:base/Principal";
 import T "../data-types/types";
 import DTOs "../dtos/DTOs";
+import Management "../utilities/Management";
+import GameCanister "../canister-definitions/game-canister";
+import Utilities "../utilities/Utilities";
+import Environment "../utilities/Environment";
+import Cycles "mo:base/ExperimentalCycles";
+import Option "mo:base/Option";
 
 module {
   public class GameManager() {
 
-    private var gameCanisterIndex: TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
+    private var gameCanisterIndex: TrieMap.TrieMap<T.GameId, T.CanisterId> = TrieMap.TrieMap<T.GameId, T.CanisterId>(Utilities.eqNat, Utilities.hashNat);
     private var activeCanisterId: T.CanisterId = "";
     private var uniqueGameCanisterIds : List.List<T.CanisterId> = List.nil();
     private var totalGames : Nat = 0;
 
-    public func createGame(principalId: T.PrincipalId, dto: DTOs.CreateGameDTO) : Result.Result<(), T.Error> {
+    public func createGame(dto: DTOs.CreateGameDTO, courseSnapshot: DTOs.GolfCourseSnaphotDTO) : async Result.Result<T.GameId, T.Error> {
       
-      //check the people invited to play are your friends
-
-      //check date of game is in the today or later
+      assert Option.isNull(Array.find<T.PrincipalId>(dto.inviteIds, func(playerId: T.PrincipalId){ playerId == dto.createdById  }));
+      
+      let totalPlayers = 1 + Array.size(dto.inviteIds); 
 
       switch(dto.gameType){
-        case (#Mulligans game){
-          
-      //check the correct number of people have been invited to play
-        //max 3 including yourself
+        case (#Mulligans){
+          assert totalPlayers == 1;
         };
-        case (#Bands game){
-
-      //check the correct number of people have been invited to play
-        //max 3 including yourself
+        case (#Bands){
+          assert totalPlayers >= 1 and totalPlayers <= 4;
         };
-        case (#BuildIt game){
-
-        //since team game only one opponent team should have been selected
+        case (#NextUp){
+          assert totalPlayers >= 1 and totalPlayers <= 4;
         };
-        case (#NextUp game){
+        case _ {
+          return #err(#NotFound);
+        } 
+      };
 
-      //check the correct number of people have been invited to play
-        //max 3 including yourself
+      var game_canister = actor (activeCanisterId) : actor {
+        createGame : (dto: DTOs.CreateGameDTO, courseSnapshot: DTOs.GolfCourseSnaphotDTO) -> async Result.Result<T.GameId, T.Error>;
+        getLatestId : () -> async T.GameId;
+        isCanisterFull : () -> async Bool;
+      };
+
+      switch(activeCanisterId){
+        case "" {
+          await createNewCanister(1);
+          game_canister := actor (activeCanisterId) : actor {
+            createGame : (dto: DTOs.CreateGameDTO, courseSnapshot: DTOs.GolfCourseSnaphotDTO) -> async Result.Result<T.GameId, T.Error>;
+            getLatestId : () -> async T.GameId;
+            isCanisterFull : () -> async Bool;
+          };
+        };
+        case _ {
+          let isCanisterFull = await game_canister.isCanisterFull(); 
+          if(isCanisterFull){
+            let latestId = await game_canister.getLatestId();
+            let nextId: T.GameId = latestId + 1;
+            await createNewCanister(nextId);
+            game_canister := actor (activeCanisterId) : actor {
+              createGame : (dto: DTOs.CreateGameDTO, courseSnapshot: DTOs.GolfCourseSnaphotDTO) -> async Result.Result<T.GameId, T.Error>;
+              getLatestId : () -> async T.GameId;
+              isCanisterFull : () -> async Bool;
+            };
+          };
         }
       };
 
-      let newGame: T.Game = {
-        courseId = dto.courseId;
-        events = [];
-        gameType = dto.gameType;
-        id = 0;
-        predictions = [];
-        rounds = [];
-        status = #Unplayed;
-        courseSnapshot = {
-          courseId = 0;
-          dateAdded = Time.now(); holes = []; id = 0; name = ""; 
-          teeGroup = {
-            added = 0;
-            colour = "";
-            difficultyIndex = 0;
-            holes = [];
-            name = "";
-          }; //todo
-        }
+      return await game_canister.createGame(dto, courseSnapshot);
+    };
+
+    public func getGame(dto: DTOs.GetGameDTO) : async Result.Result<DTOs.GameDTO, T.Error> {
+      let gameCanisterId = gameCanisterIndex.get(dto.gameId);
+      switch(gameCanisterId){
+        case (?foundCanisterId){
+          let game_canister = actor (foundCanisterId) : actor {
+            getGame : (dto: DTOs.GetGameDTO) -> async Result.Result<DTOs.GameDTO, T.Error>;
+          };
+          return await game_canister.getGame(dto);
+        };
+        case _ { }
+      };     
+      return #err(#NotFound);
+    };
+
+    public func addGameInvites(dto: DTOs.AddGameInvitesDTO) : async Result.Result<(), T.Error>{
+      let gameCanisterId = gameCanisterIndex.get(dto.gameId);
+      switch(gameCanisterId){
+        case (?foundCanisterId){
+          let game_canister = actor (foundCanisterId) : actor {
+            addGameInvites : (dto: DTOs.AddGameInvitesDTO) -> async Result.Result<(), T.Error>;
+          };
+          return await game_canister.addGameInvites(dto);
+        };
+        case _ { }
+      };  
+      return #err(#NotFound);
+    };
+
+    public func acceptGameInvite( dto: DTOs.AccepteGameInviteDTO) : async Result.Result<(), T.Error>{
+      let gameCanisterId = gameCanisterIndex.get(dto.gameId);
+      switch(gameCanisterId){
+        case (?foundCanisterId){
+          let game_canister = actor (foundCanisterId) : actor {
+            acceptGameInvite : (dto: DTOs.AccepteGameInviteDTO) -> async Result.Result<(), T.Error>;
+          };
+          return await game_canister.acceptGameInvite(dto);
+        };
+        case _ { }
+      };  
+      return #err(#NotFound);
+    };
+
+    public func addGameScore(dto: DTOs.AddGameScoreDTO) :async  Result.Result<(), T.Error> {
+      
+      let existingGame = await getGame({ gameId = dto.gameId });
+
+      switch(existingGame){
+        case (#ok foundGame){
+
+          let playerInGame = Option.isSome(Array.find<T.PrincipalId>(foundGame.playerIds, func(playerId: T.PrincipalId){
+            playerId == dto.submittedById;
+          }));
+
+          if(not playerInGame){
+            return #err(#NotAllowed);
+          };
+
+          let gameCanisterId = gameCanisterIndex.get(foundGame.id);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let game_canister = actor (foundCanisterId) : actor {
+                addGameScore : (dto: DTOs.AddGameScoreDTO) -> async Result.Result<(), T.Error>;
+              };
+              return await game_canister.addGameScore(dto);
+            };
+            case _ { }
+          };  
+          return #err(#NotFound);
+        };
+        case (#err _) { return #err(#NotFound) };
+      };
+      
+      
+    };
+
+    private func createNewCanister(nextId: T.GameId) : async (){
+      Cycles.add<system>(10_000_000_000_000);
+      let canister = await GameCanister._GameCanister();
+      let IC : Management.Management = actor (Environment.Default);
+      let principal = ?Principal.fromText(Environment.BACKEND_CANISTER_ID);
+      let _ = await Utilities.updateCanister_(canister, principal, IC);
+
+      let canister_principal = Principal.fromActor(canister);
+      let canisterId = Principal.toText(canister_principal);
+
+      if (canisterId == "") {
+        return;
       };
 
-      //create game canister instance and create game
+      var new_canister = actor (canisterId) : actor {
+        updateNextId : (nextId: T.GameId) -> async ();
+      };
 
-      //send invites to the game
+      await new_canister.updateNextId(nextId);
 
-
-      return #err(#NotFound);
-    };
-
-    public func getUpcomingGames(principalId: T.PrincipalId, dto: DTOs.GetUpcomingGamesDTO) : Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
-      return #err(#NotFound);
-    };
-
-    public func getGame(principalId: T.PrincipalId, dto: DTOs.GetGameDTO) : Result.Result<DTOs.GameDTO, T.Error> {
-      //TODO: Checks
-      return #err(#NotFound);
-    };
-
-    public func sendGameInvite(principalId: T.PrincipalId, dto: DTOs.InviteGolferDTO) : Result.Result<(), T.Error>{
-      //TODO: Checks
-        return #err(#NotFound);
-    };
-
-    public func acceptGameInvite(principalId: T.PrincipalId, dto: DTOs.AccepteGameInviteDTO) : Result.Result<(), T.Error>{
-      //TODO: Checks
-        return #err(#NotFound);
-    };
-
-    public func submitBandsPrediction(principalId: T.PrincipalId, dto: DTOs.BandsPredictionDTO) : Result.Result<(), T.Error>{
-      //TODO: Checks
-        return #err(#NotFound);
-    };
-
-    public func addGameScore(principalId: T.PrincipalId, dto: DTOs.AddGameScoreDTO) : Result.Result<(), T.Error> {
-        return #err(#NotFound);
-    };
-
-    public func createTeam(principalId: T.PrincipalId, dto: DTOs.CreateTeamDTO  ) : Result.Result<(), T.Error>{
-      //TODO: Checks
-        return #err(#NotFound);
-    };
-
-    public func getTeam(principalId: T.PrincipalId, dto: DTOs.GetTeamDTO) : Result.Result<DTOs.TeamDTO, T.Error> {
-      //TODO: Checks
-      return #err(#NotFound);
-    };
-
-    public func updateTeam(principalId: T.PrincipalId, dto: DTOs.UpdateTeamDTO  ) : Result.Result<(), T.Error>{
-      //TODO: Checks
-        return #err(#NotFound);
+      let uniqueCanisterIdBuffer = Buffer.fromArray<T.CanisterId>(List.toArray(uniqueGameCanisterIds));
+      uniqueCanisterIdBuffer.add(canisterId);
+      uniqueGameCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
+      activeCanisterId := canisterId;
+      return;
     };
     
-
-    //Stable variable backup:
-    
-    
-
     //stable storage getters and setters
 
-    public func getStableCanisterIndex() : [(T.PrincipalId, T.CanisterId)]{
+    public func getStableCanisterIndex() : [(T.GameId, T.CanisterId)]{
       return Iter.toArray(gameCanisterIndex.entries());
     };
 
-    public func setStableCanisterIndex(stable_game_canister_index: [(T.PrincipalId, T.CanisterId)]){
-      let canisterIds : TrieMap.TrieMap<T.PrincipalId, T.CanisterId> = TrieMap.TrieMap<T.PrincipalId, T.CanisterId>(Text.equal, Text.hash);
+    public func setStableCanisterIndex(stable_game_canister_index: [(T.GameId, T.CanisterId)]){
+      let canisterIds : TrieMap.TrieMap<T.GameId, T.CanisterId> = TrieMap.TrieMap<T.GameId, T.CanisterId>(Utilities.eqNat, Utilities.hashNat);
 
       for (canisterId in Iter.fromArray(stable_game_canister_index)) {
         canisterIds.put(canisterId);

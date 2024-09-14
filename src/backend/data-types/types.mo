@@ -13,6 +13,8 @@ module Types {
   public type YardageSetId = Nat16;
   public type ClubIndex = Nat16;
   public type CourseHistoryId = Nat16;
+  public type GolfCourseVersion = Nat8;
+  
   public type RustResult = { #Ok : Text; #Err : Text };
 
   public type Error = {
@@ -28,6 +30,7 @@ module Types {
     #PaymentError;
     #InvalidProfilePicture;
     #CanisterFull;
+    #CreateGameError;
   };
 
   public type Golfer = {
@@ -46,7 +49,13 @@ module Types {
     friendRequests: [FriendRequest];
     friends: [PrincipalId];
     courses: [GolfCourse];
-    buzzFeed: [BuzzFeedItem]
+    buzzFeed: [BuzzFeedItem];
+    gameInvites: [GameInvite];
+  };
+
+  public type GameInvite = {
+    inviteFrom: PrincipalId;
+    gameId: GameId;
   };
 
   public type BuzzFeedItem = {
@@ -103,6 +112,17 @@ module Types {
     teeGroups: [TeeGroup];
     dateAdded: Int;
     status: CourseStatus;
+    history: [HistoricalGolfCourse];
+    activeVersion: GolfCourseVersion;
+  };
+
+  public type HistoricalGolfCourse = {
+    id: Nat;
+    index: GolfCourseVersion;
+    name: Text;
+    teeGroups: [TeeGroup];
+    dateAdded: Int;
+    status: CourseStatus;
   };
 
   public type CourseStatus = {
@@ -116,12 +136,13 @@ module Types {
     name: Text;
     colour: Text;
     added: Int;
-    difficultyIndex: Nat8;
+    strokeIndex: Nat8;
     holes: [Hole];
   };
 
   public type GolfCourseSnapshot = {
     courseId: GolfCourseId;
+    courseVersion: GolfCourseVersion;
     teeGroup: TeeGroup;
   };
 
@@ -162,12 +183,34 @@ module Types {
   public type Game = {
     id: GameId;
     gameType: GameType;
-    rounds: [Round];
+    scoreDetail: ?GameScoreDetail;
     status: GameStatus;
     courseId: GolfCourseId;
     predictions: [GamePrediction];
     events: [GolferEvent];
     courseSnapshot: GolfCourseSnapshot;
+    teeOffTime: Int;
+    playerIds: [PrincipalId];
+    invites: [PrincipalId];
+    winner: PrincipalId;
+  };
+
+  public type GameScoreDetail = {
+      #MulligansScores: MulligansScores;
+  };
+
+  public type MulligansScores = {
+    results: [MulligansHoleResult];
+    golfer1HolesWonCount: Nat8;
+    golfer2HolesWonCount: Nat8;
+    winner: PrincipalId;
+  };
+
+  public type MulligansHoleResult = {
+    holeNumber: HoleNumber;
+    winner: PrincipalId;
+    golfer1MulliganUsed: Bool;
+    golfer2MulliganUsed: Bool;
   };
 
   public type GamePrediction = {

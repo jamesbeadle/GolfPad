@@ -89,6 +89,7 @@ actor class _GolferCanister() {
           gameSummaries = [];
           buzzFeed = [];
           scheduledGames = [];
+          gameInvites = [];
         };
 
         addGolfer(newGolfer);
@@ -114,6 +115,7 @@ actor class _GolferCanister() {
               gameSummaries = foundGolfer.gameSummaries;
               buzzFeed = foundGolfer.buzzFeed;
               scheduledGames = foundGolfer.scheduledGames;
+              gameInvites = foundGolfer.gameInvites;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
           };
@@ -170,6 +172,7 @@ actor class _GolferCanister() {
           gameSummaries = [];
           buzzFeed = [];
           scheduledGames = [];
+          gameInvites = [];
         };
 
         addGolfer(newGolfer);
@@ -195,6 +198,7 @@ actor class _GolferCanister() {
               gameSummaries = foundGolfer.gameSummaries;
               buzzFeed = foundGolfer.buzzFeed;
               scheduledGames = foundGolfer.scheduledGames;
+              gameInvites = foundGolfer.gameInvites;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
           };
@@ -264,6 +268,10 @@ actor class _GolferCanister() {
               golferPicture = foundGolfer.profilePicture;
               golferPictureExtension = foundGolfer.profilePictureFileExtension;
               handicap = foundGolfer.handicap;
+              activeGames = foundGolfer.activeGames;
+              completedGames = foundGolfer.completedGames;
+              upcomingGames = foundGolfer.upcomingGames;
+              gameInvites = foundGolfer.gameInvites;
             };
             return #ok(dto);
           };
@@ -353,6 +361,7 @@ actor class _GolferCanister() {
               gameSummaries = foundGolfer.gameSummaries;
               buzzFeed = foundGolfer.buzzFeed;
               scheduledGames = foundGolfer.scheduledGames;
+              gameInvites = foundGolfer.gameInvites;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
 
@@ -405,6 +414,7 @@ actor class _GolferCanister() {
               gameSummaries = foundGolfer.gameSummaries;
               buzzFeed = foundGolfer.buzzFeed;
               scheduledGames = foundGolfer.scheduledGames;
+              gameInvites = foundGolfer.gameInvites;
             };
             
             updateGolfer(foundGroupIndex, updatedGolfer);
@@ -541,6 +551,7 @@ actor class _GolferCanister() {
               gameSummaries = foundGolfer.gameSummaries;
               buzzFeed = foundGolfer.buzzFeed;
               scheduledGames = foundGolfer.scheduledGames;
+              gameInvites = foundGolfer.gameInvites;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
           
@@ -608,6 +619,7 @@ actor class _GolferCanister() {
               gameSummaries = foundGolfer.gameSummaries;
               buzzFeed = foundGolfer.buzzFeed;
               scheduledGames = foundGolfer.scheduledGames;
+              gameInvites = foundGolfer.gameInvites;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
           
@@ -700,6 +712,7 @@ actor class _GolferCanister() {
               gameSummaries = foundGolfer.gameSummaries;
               buzzFeed = foundGolfer.buzzFeed;
               scheduledGames = foundGolfer.scheduledGames;
+              gameInvites = foundGolfer.gameInvites;
             };
 
             updateGolfer(foundGroupIndex, updatedGolfer);
@@ -748,6 +761,7 @@ actor class _GolferCanister() {
               gameSummaries = foundGolfer.gameSummaries;
               buzzFeed = foundGolfer.buzzFeed;
               scheduledGames = foundGolfer.scheduledGames;
+              gameInvites = foundGolfer.gameInvites;
             };
 
             updateGolfer(foundGroupIndex, updatedGolfer);
@@ -797,6 +811,7 @@ actor class _GolferCanister() {
               gameSummaries = foundGolfer.gameSummaries;
               buzzFeed = foundGolfer.buzzFeed;
               scheduledGames = foundGolfer.scheduledGames;
+              gameInvites = foundGolfer.gameInvites;
             };
 
             updateGolfer(foundGroupIndex, updatedGolfer);
@@ -982,6 +997,10 @@ actor class _GolferCanister() {
   };
 
   public shared ({caller}) func saveGolfCourse(golferPrincipalId: T.PrincipalId, dto: DTOs.SaveGolfCourseDTO) : async Result.Result<(), T.Error>{
+    
+     //TODO an update for the course should snapshot the existing one as a change has been made 
+
+    
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -1033,6 +1052,8 @@ actor class _GolferCanister() {
                   id = nextId;
                   dateAdded = Time.now();
                   status = #Active;
+                  history = [];
+                  activeVersion = 1;
                 };
                 golfCourseBuffer.add(newGolfCourse);
                 updatedGolfCourses := Buffer.toArray(golfCourseBuffer);
@@ -1053,7 +1074,7 @@ actor class _GolferCanister() {
                             return {
                               added = teeGroup.added;
                               colour = updatedTeeGroup.colour;
-                              difficultyIndex = updatedTeeGroup.difficultyIndex;
+                              strokeIndex = updatedTeeGroup.strokeIndex;
                               holes = updatedTeeGroup.holes;
                               name = updatedTeeGroup.name;
                             };
@@ -1071,6 +1092,8 @@ actor class _GolferCanister() {
                       id = course.id;
                       dateAdded = course.dateAdded;
                       status = #Active;
+                      history = course.history;
+                      activeVersion = course.activeVersion;
                     };
                     return updatedGolfCourse;
                   } else {
@@ -1097,6 +1120,7 @@ actor class _GolferCanister() {
               gameSummaries = foundGolfer.gameSummaries;
               buzzFeed = foundGolfer.buzzFeed;
               scheduledGames = foundGolfer.scheduledGames;
+              gameInvites = foundGolfer.gameInvites;
             };
             updateGolfer(foundGroupIndex, updatedGolfer);
 
@@ -1149,6 +1173,7 @@ actor class _GolferCanister() {
               gameSummaries = foundGolfer.gameSummaries;
               buzzFeed = foundGolfer.buzzFeed;
               scheduledGames = foundGolfer.scheduledGames;
+              gameInvites = foundGolfer.gameInvites;
             };
             
             updateGolfer(foundGroupIndex, updatedGolfer);
@@ -1191,6 +1216,7 @@ actor class _GolferCanister() {
                 courseId = foundGolfCourse.id; 
                 name = foundGolfCourse.name;
                 tees = foundGolfCourse.teeGroups;
+                activeVersion = foundGolfCourse.activeVersion;
               }); }
             };
           };
@@ -1228,6 +1254,7 @@ actor class _GolferCanister() {
                   courseId = course.id;
                   name = course.name;
                   tees = course.teeGroups;
+                  activeVersion = course.activeVersion;
                  }
             });
             
@@ -1272,6 +1299,61 @@ actor class _GolferCanister() {
       };
     };
     return false;
+  };
+
+  public shared ({caller}) func addGameInvite(invitedByPrincipalId: T.PrincipalId, invitedPrincipalId: T.PrincipalId, gameId: T.GameId) : async Result.Result<(), T.Error>{
+
+    assert not Principal.isAnonymous(caller);
+    let backendPrincipalId = Principal.toText(caller);
+    assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+
+    var groupIndex: ?Nat8 = null;
+    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
+      if(golferGroupIndex.0 == invitedPrincipalId){
+        groupIndex := ?golferGroupIndex.1;
+      }
+    };
+    switch(groupIndex){
+      case (null){ return #err(#NotFound); };
+      case (?foundGroupIndex){
+        let golfer = findGolfer(foundGroupIndex, invitedPrincipalId);
+        switch(golfer){
+          case (?foundGolfer){
+
+            let gameInvitesBuffer = Buffer.fromArray<T.GameInvite>(foundGolfer.gameInvites);
+
+            gameInvitesBuffer.add({
+              gameId = gameId;
+              inviteFrom = invitedByPrincipalId;
+            });
+
+            let updatedGolfer: T.Golfer = {
+              activeGames = foundGolfer.activeGames;
+              completedGames = foundGolfer.completedGames;
+              handicap = foundGolfer.handicap;
+              homeCourseId = foundGolfer.homeCourseId;
+              principalId = foundGolfer.principalId;
+              profilePicture = foundGolfer.profilePicture;
+              profilePictureFileExtension = foundGolfer.profilePictureFileExtension;
+              upcomingGames = foundGolfer.upcomingGames;
+              username = foundGolfer.username;
+              yardageSets = foundGolfer.yardageSets;
+              friendRequests = foundGolfer.friendRequests;
+              friends = foundGolfer.friends;
+              courses = foundGolfer.courses;
+              gameSummaries = foundGolfer.gameSummaries;
+              buzzFeed = foundGolfer.buzzFeed;
+              scheduledGames = foundGolfer.scheduledGames;
+              gameInvites = Buffer.toArray(gameInvitesBuffer);
+            };
+            updateGolfer(foundGroupIndex, updatedGolfer);
+          };
+          case (null){
+            return #err(#NotFound);
+          }
+        }
+      };
+    };
   };
 
   private func findGolfer(golferGroupIndex: Nat8, golferPrincipalId: T.PrincipalId) : ?T.Golfer {

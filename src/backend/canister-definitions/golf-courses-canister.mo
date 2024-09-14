@@ -2,18 +2,13 @@ import Array "mo:base/Array";
 import Buffer "mo:base/Buffer";
 import Iter "mo:base/Iter";
 import Nat8 "mo:base/Nat8";
-import Option "mo:base/Option";
-import Order "mo:base/Order";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
-import Timer "mo:base/Timer";
 import Time "mo:base/Time";
-import List "mo:base/List";
 
 import DTOs "../dtos/DTOs";
 import Environment "../utilities/Environment";
 import T "../data-types/types";
-import Utilities "../utilities/Utilities";
 
 actor class _GolfCoursesCanister() {
 
@@ -159,6 +154,8 @@ actor class _GolfCoursesCanister() {
       name = dto.name;
       status = #Active;
       teeGroups = [dto.initialTeeGroup];
+      history = [];
+      activeVersion = 1;
     };
     
     var golfCourseBuffer = Buffer.fromArray<T.GolfCourse>([]);
@@ -214,459 +211,454 @@ actor class _GolfCoursesCanister() {
         golfCourseGroup10 := Buffer.toArray(golfCourseBuffer);
       };
       case(10){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup1);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup11);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup1 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup11 := Buffer.toArray(golfCourseBuffer);
       };
       case (11){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup2);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup12);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup2 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup12 := Buffer.toArray(golfCourseBuffer);
       };
       case (12){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup3);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup13);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup3 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup13 := Buffer.toArray(golfCourseBuffer);
       };
       case (13){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup4);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup14);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup4 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup14 := Buffer.toArray(golfCourseBuffer);
       };
       case (14){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup5);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup15);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup5 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup15 := Buffer.toArray(golfCourseBuffer);
       };
       case (15){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup6);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup16);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup6 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup16 := Buffer.toArray(golfCourseBuffer);
       };
       case (16){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup7);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup17);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup7 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup17 := Buffer.toArray(golfCourseBuffer);
       };
       case (17){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup8);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup18);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup8 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup18 := Buffer.toArray(golfCourseBuffer);
       };
       case (18){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup9);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup19);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup9 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup19 := Buffer.toArray(golfCourseBuffer);
       };
       case (19){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup10);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup20);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup10 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup20 := Buffer.toArray(golfCourseBuffer);
       };
       case(20){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup1);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup21);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup1 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup21 := Buffer.toArray(golfCourseBuffer);
       };
       case (21){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup2);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup22);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup2 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup22 := Buffer.toArray(golfCourseBuffer);
       };
       case (22){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup3);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup23);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup3 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup23 := Buffer.toArray(golfCourseBuffer);
       };
       case (23){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup4);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup24);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup4 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup24 := Buffer.toArray(golfCourseBuffer);
       };
       case (24){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup5);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup25);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup5 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup25 := Buffer.toArray(golfCourseBuffer);
       };
       case (25){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup6);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup26);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup6 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup26 := Buffer.toArray(golfCourseBuffer);
       };
       case (26){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup7);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup27);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup7 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup27 := Buffer.toArray(golfCourseBuffer);
       };
       case (27){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup8);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup28);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup8 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup28 := Buffer.toArray(golfCourseBuffer);
       };
       case (28){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup9);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup29);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup9 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup29 := Buffer.toArray(golfCourseBuffer);
       };
       case (29){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup10);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup30);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup10 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup30 := Buffer.toArray(golfCourseBuffer);
       };
       case(30){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup1);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup31);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup1 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup31 := Buffer.toArray(golfCourseBuffer);
       };
       case (31){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup2);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup32);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup2 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup32 := Buffer.toArray(golfCourseBuffer);
       };
       case (32){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup3);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup33);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup3 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup33 := Buffer.toArray(golfCourseBuffer);
       };
       case (33){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup4);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup34);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup4 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup34 := Buffer.toArray(golfCourseBuffer);
       };
       case (34){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup5);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup35);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup5 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup35 := Buffer.toArray(golfCourseBuffer);
       };
       case (35){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup6);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup36);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup6 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup36 := Buffer.toArray(golfCourseBuffer);
       };
       case (36){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup7);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup37);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup7 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup37 := Buffer.toArray(golfCourseBuffer);
       };
       case (37){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup8);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup38);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup8 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup38 := Buffer.toArray(golfCourseBuffer);
       };
       case (38){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup9);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup39);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup9 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup39 := Buffer.toArray(golfCourseBuffer);
       };
       case (39){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup10);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup40);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup10 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup40 := Buffer.toArray(golfCourseBuffer);
       };
       case(40){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup1);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup41);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup1 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup41 := Buffer.toArray(golfCourseBuffer);
       };
       case (41){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup2);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup42);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup2 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup42 := Buffer.toArray(golfCourseBuffer);
       };
       case (42){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup3);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup43);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup3 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup43 := Buffer.toArray(golfCourseBuffer);
       };
       case (43){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup4);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup44);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup4 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup44 := Buffer.toArray(golfCourseBuffer);
       };
       case (44){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup5);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup45);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup5 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup45 := Buffer.toArray(golfCourseBuffer);
       };
       case (45){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup6);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup46);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup6 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup46 := Buffer.toArray(golfCourseBuffer);
       };
       case (46){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup7);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup47);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup7 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup47 := Buffer.toArray(golfCourseBuffer);
       };
       case (47){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup8);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup48);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup8 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup48 := Buffer.toArray(golfCourseBuffer);
       };
       case (48){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup9);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup49);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup9 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup49 := Buffer.toArray(golfCourseBuffer);
       };
       case (49){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup10);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup50);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup10 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup50 := Buffer.toArray(golfCourseBuffer);
       };
       case(50){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup1);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup51);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup1 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup51 := Buffer.toArray(golfCourseBuffer);
       };
       case (51){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup2);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup52);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup2 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup52 := Buffer.toArray(golfCourseBuffer);
       };
       case (52){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup3);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup53);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup3 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup53 := Buffer.toArray(golfCourseBuffer);
       };
       case (53){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup4);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup54);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup4 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup54 := Buffer.toArray(golfCourseBuffer);
       };
       case (54){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup5);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup55);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup5 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup55 := Buffer.toArray(golfCourseBuffer);
       };
       case (55){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup6);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup56);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup6 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup56 := Buffer.toArray(golfCourseBuffer);
       };
       case (56){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup7);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup57);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup7 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup57 := Buffer.toArray(golfCourseBuffer);
       };
       case (57){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup8);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup58);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup8 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup58 := Buffer.toArray(golfCourseBuffer);
       };
       case (58){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup9);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup59);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup9 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup59 := Buffer.toArray(golfCourseBuffer);
       };
       case (59){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup10);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup60);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup10 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup60 := Buffer.toArray(golfCourseBuffer);
       };
       case(60){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup1);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup61);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup1 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup61 := Buffer.toArray(golfCourseBuffer);
       };
       case (61){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup2);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup62);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup2 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup62 := Buffer.toArray(golfCourseBuffer);
       };
       case (62){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup3);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup63);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup3 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup63 := Buffer.toArray(golfCourseBuffer);
       };
       case (63){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup4);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup64);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup4 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup64 := Buffer.toArray(golfCourseBuffer);
       };
       case (64){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup5);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup65);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup5 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup65 := Buffer.toArray(golfCourseBuffer);
       };
       case (65){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup6);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup66);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup6 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup66 := Buffer.toArray(golfCourseBuffer);
       };
       case (66){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup7);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup67);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup7 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup67 := Buffer.toArray(golfCourseBuffer);
       };
       case (67){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup8);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup68);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup8 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup68 := Buffer.toArray(golfCourseBuffer);
       };
       case (68){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup9);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup69);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup9 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup69 := Buffer.toArray(golfCourseBuffer);
       };
       case (69){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup10);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup70);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup10 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup70 := Buffer.toArray(golfCourseBuffer);
       };
       case(70){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup1);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup71);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup1 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup71 := Buffer.toArray(golfCourseBuffer);
       };
       case (71){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup2);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup72);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup2 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup72 := Buffer.toArray(golfCourseBuffer);
       };
       case (72){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup3);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup73);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup3 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup73 := Buffer.toArray(golfCourseBuffer);
       };
       case (73){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup4);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup74);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup4 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup74 := Buffer.toArray(golfCourseBuffer);
       };
       case (74){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup5);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup75);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup5 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup75 := Buffer.toArray(golfCourseBuffer);
       };
       case (75){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup6);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup76);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup6 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup76 := Buffer.toArray(golfCourseBuffer);
       };
       case (76){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup7);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup77);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup7 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup77 := Buffer.toArray(golfCourseBuffer);
       };
       case (77){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup8);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup78);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup8 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup78 := Buffer.toArray(golfCourseBuffer);
       };
       case (78){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup9);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup79);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup9 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup79 := Buffer.toArray(golfCourseBuffer);
       };
       case (79){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup10);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup80);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup10 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup80 := Buffer.toArray(golfCourseBuffer);
       };
       case(80){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup1);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup81);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup1 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup81 := Buffer.toArray(golfCourseBuffer);
       };
       case (81){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup2);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup82);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup2 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup82 := Buffer.toArray(golfCourseBuffer);
       };
       case (82){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup3);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup83);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup3 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup83 := Buffer.toArray(golfCourseBuffer);
       };
       case (83){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup4);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup84);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup4 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup84 := Buffer.toArray(golfCourseBuffer);
       };
       case (84){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup5);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup85);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup5 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup85 := Buffer.toArray(golfCourseBuffer);
       };
       case (85){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup6);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup86);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup6 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup86 := Buffer.toArray(golfCourseBuffer);
       };
       case (86){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup7);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup87);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup7 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup87 := Buffer.toArray(golfCourseBuffer);
       };
       case (87){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup8);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup88);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup8 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup88 := Buffer.toArray(golfCourseBuffer);
       };
       case (88){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup9);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup89);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup9 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup89 := Buffer.toArray(golfCourseBuffer);
       };
       case (89){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup10);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup90);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup10 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup90 := Buffer.toArray(golfCourseBuffer);
       };
       case(90){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup1);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup91);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup1 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup91 := Buffer.toArray(golfCourseBuffer);
       };
       case (91){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup2);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup92);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup2 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup92 := Buffer.toArray(golfCourseBuffer);
       };
       case (92){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup3);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup93);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup3 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup93 := Buffer.toArray(golfCourseBuffer);
       };
       case (93){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup4);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup94);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup4 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup94 := Buffer.toArray(golfCourseBuffer);
       };
       case (94){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup5);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup95);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup5 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup95 := Buffer.toArray(golfCourseBuffer);
       };
       case (95){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup6);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup96);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup6 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup96 := Buffer.toArray(golfCourseBuffer);
       };
       case (96){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup7);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup97);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup7 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup97 := Buffer.toArray(golfCourseBuffer);
       };
       case (97){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup8);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup98);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup8 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup98 := Buffer.toArray(golfCourseBuffer);
       };
       case (98){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup9);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup99);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup9 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup99 := Buffer.toArray(golfCourseBuffer);
       };
       case (99){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup10);
+        golfCourseBuffer := Buffer.fromArray(golfCourseGroup100);
         golfCourseBuffer.add(newCourse);
-        golfCourseGroup10 := Buffer.toArray(golfCourseBuffer);
-      };
-      case (100){
-        golfCourseBuffer := Buffer.fromArray(golfCourseGroup10);
-        golfCourseBuffer.add(newCourse);
-        golfCourseGroup10 := Buffer.toArray(golfCourseBuffer);
+        golfCourseGroup100 := Buffer.toArray(golfCourseBuffer);
       };
       case _ { 
         return #err(#CanisterFull);
@@ -1224,6 +1216,7 @@ actor class _GolfCoursesCanister() {
               courseId = foundGolfCourse.id;
               name = foundGolfCourse.name;
               tees = foundGolfCourse.teeGroups;
+              activeVersion = foundGolfCourse.activeVersion;
             });
           };
           case (null){
@@ -1885,5 +1878,6 @@ actor class _GolfCoursesCanister() {
       }
     }
   };
+
 
 };
