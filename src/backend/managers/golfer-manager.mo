@@ -133,9 +133,9 @@ module {
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
           let golfer_canister = actor (foundCanisterId) : actor {
-            saveGolferPicture : (principal: T.PrincipalId, dto: DTOs.UpdateGolferPictureDTO) -> async Result.Result<(), T.Error>
+            updateGolferPicture : (principal: T.PrincipalId, dto: DTOs.UpdateGolferPictureDTO) -> async Result.Result<(), T.Error>
           };
-          return await golfer_canister.saveGolferPicture(principalId, dto);
+          return await golfer_canister.updateGolferPicture(principalId, dto);
         };
         case (null){
           if(activeCanisterId == ""){
@@ -144,7 +144,7 @@ module {
 
           var golfer_canister = actor (activeCanisterId) : actor {
             isCanisterFull : () -> async Bool;
-            saveGolferPicture : (principal: T.PrincipalId, dto: DTOs.UpdateGolferPictureDTO) -> async Result.Result<(), T.Error>;  
+            updateGolferPicture : (principal: T.PrincipalId, dto: DTOs.UpdateGolferPictureDTO) -> async Result.Result<(), T.Error>;  
           };
 
           let isCanisterFull = await golfer_canister.isCanisterFull();
@@ -152,13 +152,12 @@ module {
             await createNewCanister();
             
             golfer_canister := actor (activeCanisterId) : actor {
-              saveGolferPicture : (principal: T.PrincipalId, dto: DTOs.UpdateGolferPictureDTO) -> async Result.Result<(), T.Error>;  
-              getLatestId : () -> async T.GameId;
+              updateGolferPicture : (principal: T.PrincipalId, dto: DTOs.UpdateGolferPictureDTO) -> async Result.Result<(), T.Error>;  
               isCanisterFull : () -> async Bool;
             };
           };
 
-          return await golfer_canister.saveGolferPicture(principalId, dto);
+          return await golfer_canister.updateGolferPicture(principalId, dto);
         }
       };    
 
@@ -442,13 +441,13 @@ module {
       };
     };
 
-    public func getUpcomingGames(principalId: T.PrincipalId, dto: DTOs.UpcomingGamesDTO) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
+    public func getUpcomingGames(principalId: T.PrincipalId, dto: DTOs.PaginationFilters) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getUpcomingGames : (principalId: T.PrincipalId, dto: DTOs.UpcomingGamesDTO) -> async Result.Result<DTOs.UpcomingGamesDTO, T.Error>;
+            getUpcomingGames : (golferPrincipalId: T.PrincipalId, dto: DTOs.PaginationFilters) -> async Result.Result<DTOs.UpcomingGamesDTO, T.Error>;
           };
 
           return await golfer_canister.getUpcomingGames(principalId, dto);

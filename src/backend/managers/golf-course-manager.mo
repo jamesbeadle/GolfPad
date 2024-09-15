@@ -67,10 +67,10 @@ module {
         case (?foundCanisterId){
 
           let golfCourse_canister = actor (foundCanisterId) : actor {
-            getGolfCourse : (courseId: T.GolfCourseId) -> async Result.Result<DTOs.GolfCourseDTO, T.Error>;
+            getGolfCourse : (dto: DTOs.GetGolfCourseDTO) -> async Result.Result<DTOs.GolfCourseDTO, T.Error>;
           };
 
-          return await golfCourse_canister.getGolfCourse(courseId);
+          return await golfCourse_canister.getGolfCourse({ courseId = courseId });
         };
         case (null){
           return #err(#NotFound);
@@ -94,7 +94,7 @@ module {
     public func executeAddGolfCourse(dto : DTOs.CreateGolfCourseDTO) : async () {
       var golf_course_canister = actor (activeCanisterId) : actor {
         getLatestId : () -> async T.GolfCourseId;
-        addGolfCourse : (dto: DTOs.CreateGolfCourseDTO) -> async ();
+        createGolfCourse : (dto: DTOs.CreateGolfCourseDTO) -> async Result.Result<(), T.Error>;
         isCanisterFull : () -> async Bool;
       };
 
@@ -108,13 +108,13 @@ module {
 
         golf_course_canister := actor (activeCanisterId) : actor {
           getLatestId : () -> async T.GolfCourseId;
-          addGolfCourse : (dto: DTOs.CreateGolfCourseDTO) -> async ();
+          createGolfCourse : (dto: DTOs.CreateGolfCourseDTO) -> async Result.Result<(), T.Error>;
           isCanisterFull : () -> async Bool;
        };
 
       };
 
-      return await golf_course_canister.addGolfCourse(dto);
+      let _ = await golf_course_canister.createGolfCourse(dto);
     };
 
     public func validateUpdateGolfCourse(dto : DTOs.UpdateGolfCourseDTO) : T.RustResult {
@@ -141,9 +141,9 @@ module {
       switch(golfCourseCanisterId){
         case (?foundCanisterId){
           let golf_course_canister = actor (foundCanisterId) : actor {
-            updateGolfCourse : (dto: DTOs.UpdateGolfCourseDTO) -> async ();
+            updateGolfCourse : (dto: DTOs.UpdateGolfCourseDTO) -> async Result.Result<(), T.Error>;
           };
-          return await golf_course_canister.updateGolfCourse(dto);
+          let _ = await golf_course_canister.updateGolfCourse(dto);
         };
         case _ { }
       };     

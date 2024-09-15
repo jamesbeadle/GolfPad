@@ -62,7 +62,7 @@ actor Self {
     return await golferManager.getBuzz(principalId, dto);
   };
 
-  public shared ({ caller }) func getUpcomingGames(dto: DTOs.UpcomingGamesDTO) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
+  public shared ({ caller }) func getUpcomingGames(dto: DTOs.PaginationFilters) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return await golferManager.getUpcomingGames(principalId, dto);

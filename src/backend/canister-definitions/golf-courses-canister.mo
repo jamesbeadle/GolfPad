@@ -14,6 +14,12 @@ actor class _GolfCoursesCanister() {
 
   private stable var stable_golf_course_group_indexes: [(T.GolfCourseId, Nat8)] = [];
   
+  private stable var activeGroupIndex: Nat8 = 0;
+  private stable var nextCourseId: T.GolfCourseId = 1;
+  private stable var totalGolfCourses = 0;
+  private stable var MAX_GOLF_COURSES_PER_GROUP: Nat = 50;
+  private stable var MAX_GOLF_COURSES_PER_CANISTER: Nat = 5000;
+
   private stable var golfCourseGroup1: [T.GolfCourse] = [];
   private stable var golfCourseGroup2: [T.GolfCourse] = [];
   private stable var golfCourseGroup3: [T.GolfCourse] = [];
@@ -115,13 +121,6 @@ actor class _GolfCoursesCanister() {
   private stable var golfCourseGroup99: [T.GolfCourse] = [];
   private stable var golfCourseGroup100: [T.GolfCourse] = [];
 
-  private stable var activeGroupIndex: Nat8 = 0;
-  private stable var totalGolfCourses = 0;
-  private stable var MAX_GOLF_COURSES_PER_GROUP: Nat = 50;
-  private stable var MAX_GOLF_COURSES_PER_CANISTER: Nat = 5000;
-  private stable var canisterFull = false;
-
-  private stable var nextCourseId: T.GolfCourseId = 1;
 
   //Public endpoints:
 
@@ -157,6 +156,21 @@ actor class _GolfCoursesCanister() {
     };
   };
 
+  public shared ({ caller }) func getLatestId() : async T.GolfCourseId{
+    assert not Principal.isAnonymous(caller);
+    let backendPrincipalId = Principal.toText(caller);
+    assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+    return nextCourseId - 1;
+  };
+
+  public shared ({ caller }) func updateNextId(nextId: T.GolfCourseId) : async (){
+    assert not Principal.isAnonymous(caller);
+    let backendPrincipalId = Principal.toText(caller);
+    assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+
+    nextCourseId := nextId;
+  };
+
   public shared ({caller}) func createGolfCourse(dto: DTOs.CreateGolfCourseDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
@@ -171,13 +185,12 @@ actor class _GolfCoursesCanister() {
     };
 
     if(activeGroupIndex > 99){
-      canisterFull := true;
       return #err(#CanisterFull);
     };
 
     let newCourse: T.GolfCourse = {
       dateAdded = Time.now();
-      id = nextCourseId;
+      id = nextCourseId; 
       name = dto.name;
       status = #Active;
       teeGroups = [dto.initialTeeGroup];

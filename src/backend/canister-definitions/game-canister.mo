@@ -15,8 +15,8 @@ actor class _GameCanister() {
 
   private stable var stable_game_group_indexes: [(T.GameId, Nat8)] = [];
 
-  private var activeGroupIndex: Nat8 = 1;
-  private var nextGameId: T.GameId = 0;
+  private var activeGroupIndex: Nat8 = 0;
+  private var nextGameId: T.GameId = 1;
   private var totalGames = 0;
   private stable var MAX_GAMES_PER_GROUP: Nat = 250000;
   private stable var MAX_GAMES_PER_CANISTER: Nat = 12500000;
@@ -939,10 +939,6 @@ actor class _GameCanister() {
     }
   };
 
-  private func addGame(gameGroupIndex: Nat8, newGame: T.Game) : Result.Result<(), T.Error> {
-    return #err(#NotFound); //TODO
-  };
-
   private func saveGame(gameGroupIndex: Nat8, updatedGame: T.Game) : Result.Result<(), T.Error> {
     switch(gameGroupIndex){
       case 0{
@@ -1400,10 +1396,6 @@ actor class _GameCanister() {
       }
     };
     return #ok();
-  };
-
-  private func removeGame(gameGroupIndex: Nat8, gameId: T.GameId) : Result.Result<(), T.Error>{
-    return #err(#NotFound); //TODO
   };
 
   private func getGameCountInGroup(groupIndex: Nat8) : Nat {
