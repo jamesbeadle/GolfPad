@@ -304,6 +304,12 @@ actor Self {
     return await gameManager.addGameScore(principalId, dto);
   };
 
+  public shared ({ caller }) func beginGame(dto: DTOs.BeginGameDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return await gameManager.beginGame(principalId, dto);
+  };
+
   //DAO Validation & Execution Functions
 
   public shared query ({ caller }) func validateAddGolfCourse(dto : DTOs.CreateGolfCourseDTO) : async T.RustResult {

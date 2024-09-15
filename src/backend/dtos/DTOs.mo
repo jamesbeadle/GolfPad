@@ -155,9 +155,12 @@ module DTOs {
         teeGroup: Text;
     };
 
+    public type BeginGameDTO = {
+        gameId: T.GameId;
+    };
+
     public type UpdateGameDTO = {
         gameId: T.GameId;
-
     };
 
     public type DeleteGameDTO = {

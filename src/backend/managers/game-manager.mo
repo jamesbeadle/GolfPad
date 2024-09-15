@@ -151,6 +151,36 @@ module {
       
     };
 
+    public func beginGame(golferPrincipalId: T.PrincipalId, dto: DTOs.BeginGameDTO) : async Result.Result<(), T.Error> {
+      let existingGame = await getGame({ gameId = dto.gameId });
+
+      switch(existingGame){
+        case (#ok foundGame){
+          
+          if(foundGame.status != #Unplayed){
+            return #err(#NotAllowed);
+          };
+
+          if(golferPrincipalId != foundGame.playerIds[0]){
+            return #err(#NotAllowed);
+          };
+
+          let gameCanisterId = gameCanisterIndex.get(foundGame.id);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let game_canister = actor (foundCanisterId) : actor {
+                beginGame : (dto: DTOs.BeginGameDTO) -> async Result.Result<(), T.Error>;
+              };
+              return await game_canister.beginGame(dto);
+            };
+            case _ { }
+          };  
+          return #err(#NotFound);
+        };
+        case (#err _) { return #err(#NotFound) };
+      };
+    };
+
     private func createNewCanister(nextId: T.GameId) : async (){
       Cycles.add<system>(10_000_000_000_000);
       let canister = await GameCanister._GameCanister();

@@ -629,6 +629,50 @@ actor class _GameCanister() {
     };
   };
 
+  public shared ({ caller }) func beginGame(dto: DTOs.BeginGameDTO) : async Result.Result<(), T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let backendPrincipalId = Principal.toText(caller);
+    assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+
+    var groupIndex: ?Nat8 = null;
+    for (gameGroupIndex in Iter.fromArray(stable_game_group_indexes)) {
+      if(gameGroupIndex.0 == dto.gameId){
+        groupIndex := ?gameGroupIndex.1;
+      }
+    };
+    switch(groupIndex){
+      case (?foundGroupIndex){
+        let game = await getGame({gameId = dto.gameId});
+        switch(game){
+          case (#ok foundGame){
+            
+            let updatedGame: T.Game = {
+              courseId = foundGame.courseId;
+              courseSnapshot = foundGame.courseSnapshot;
+              events = foundGame.events;
+              gameType = foundGame.gameType;
+              id = foundGame.id;
+              invites = foundGame.invites;
+              playerIds = foundGame.playerIds;
+              predictions = foundGame.predictions;
+              scoreDetail = foundGame.scoreDetail;
+              status = #Active;
+              teeOffTime = foundGame.teeOffTime;
+              winner = foundGame.winner;
+            };
+            saveGame(foundGroupIndex, updatedGame);
+          };
+          case (#err _){
+            return #err(#NotFound);
+          }
+        };
+      };
+      case (null){
+        return #err(#NotFound);
+      }
+    };
+  };
+
   //Private functions:
 
   private func findGame(gameGroupIndex: Nat8, gameId: T.GameId) : ?T.Game {

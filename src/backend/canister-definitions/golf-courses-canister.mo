@@ -217,8 +217,7 @@ actor class _GolfCoursesCanister() {
       case (?foundGroupIndex){
         let golfCourse = findGolfCourse(foundGroupIndex, dto.courseId);
         switch(golfCourse){
-          case (?foundGolfCourse){
-    
+          case (?foundGolfCourse){    
             let golfCourseHistoryBuffer = Buffer.fromArray<T.HistoricalGolfCourse>(foundGolfCourse.history);
             golfCourseHistoryBuffer.add({
               dateAdded = foundGolfCourse.dateAdded;
