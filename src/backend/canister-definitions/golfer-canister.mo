@@ -77,7 +77,7 @@ actor class _GolferCanister() {
     };
   };
 
-  public shared ({caller}) func createGolfer(golferPrincipalId: T.PrincipalId, dto: DTOs.SaveGolferDTO) : async Result.Result<(), T.Error>{
+  public shared ({caller}) func createGolfer(golferPrincipalId: T.PrincipalId, dto: DTOs.CreateGolferDTO) : Result.Result<(), T.Error>{
     
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
@@ -161,11 +161,11 @@ actor class _GolferCanister() {
     };
   };  
 
-  public shared ({caller}) func updateGolfer(golferPrincipalId: T.PrincipalId, dto: DTOs.SaveGolferDTO) : async Result.Result<(), T.Error>{
+  public shared ({caller}) func updateGolfer(golferPrincipalId: T.PrincipalId, dto: DTOs.UpdateGolferDTO) : Result.Result<(), T.Error>{
 
   };
 
-  public shared ({caller}) func deleteGolfer(golferPrincipalId: T.PrincipalId, dto: DTOs.SaveGolferDTO) : async Result.Result<(), T.Error>{
+  public shared ({caller}) func deleteGolfer(golferPrincipalId: T.PrincipalId, dto: DTOs.DeleteGolferDTO) : async Result.Result<(), T.Error>{
 
   };
   

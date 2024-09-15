@@ -7,20 +7,43 @@ module DTOs {
         offset : Nat;
     };
 
-    public type SaveGolferDTO = {
-        username: Text;
-        handicap: ?T.Handicap;
+    //Golf Course DTOs
+
+    public type GolfCourseDTO = {
+        courseId: T.GolfCourseId;
+        name: Text;
+        tees: [T.TeeGroup];
+        activeVersion: T.GolfCourseVersion;
     };
 
-    public type UpdateGolferDTO = {
-        username: Text;
-        handicap: Float;
+    public type GetGolfCourseDTO = {
+        courseId: T.GolfCourseId;
     };
 
-    public type SaveGolferPictureDTO = {
-        golferPicture: Blob;
-        golferPictureExtension: Text;
+    public type CreateGolfCourseDTO = {
+        name: Text;
+        initialTeeGroup: T.TeeGroup;
+        holes: [T.Hole]
     };
+
+    public type UpdateGolfCourseDTO = {
+        courseId: T.GolfCourseId;
+        name: Text;
+        updatedTeeGroup: ?T.TeeGroup;
+    };
+
+    public type DeleteGolfCourseDTO = {
+        courseId: T.GolfCourseId;
+    };
+
+    public type GolfCourseSnaphotDTO = {
+        id: Nat;
+        name: Text;
+        teeGroup: T.TeeGroup;
+        courseVersion: T.GolfCourseVersion;
+    };
+
+    //Golfer DTOs
 
     public type GolferDTO = {
         principalId: T.PrincipalId;
@@ -34,20 +57,45 @@ module DTOs {
         gameInvites: [T.GameInvite];
     };
 
-    public type GolferBuzzDTO = {
+    public type GetGolferDTO = {
+        golferPrincipalId: T.PrincipalId;
+    };
+
+    public type CreateGolferDTO = {
+        //todo 
+    };
+
+    public type UpdateGolferDTO = {
+        username: Text;
+        handicap: ?T.Handicap;
+    };
+
+    public type DeleteGolferDTO = {
+        golferPrincipalId: T.PrincipalId;
+    };
+
+    public type UpdateGolferPictureDTO = {
+        golferPicture: Blob;
+        golferPictureExtension: Text;
+    };
+
+    //Yardage Set DTOs
+
+    public type YardageSetDTO = {
 
     };
 
-    public type GetUpcomingGamesDTO = {
-
+    public type GetYardageSetDTO = {
+        yardageSetId: T.YardageSetId;
     };
 
-    public type UpcomingGamesDTO = {
-
+    public type CreateYardageSetDTO = {
+        name: Text;
+        clubs: [T.YardageClub];
     };
 
-    public type SaveYardageSetDTO = {
-        yardageSetId: ?T.YardageSetId;
+    public type UpdateYardageSetDTO = {
+        yardageSetId: T.YardageSetId;
         name: Text;
         clubs: [T.YardageClub];
     };
@@ -56,16 +104,14 @@ module DTOs {
         yardageSetId: T.YardageSetId;
     };
 
-    public type GetYardageSetDTO = {
-        yardageSetId: T.YardageSetId;
-    };
+    //Yardage Set Club DTOs
 
-    public type YardageSetDTO = {
+    public type CreateYardageSetClubDTO = {
 
     };
 
-    public type SaveYardageSetClubDTO = {
-        index: ?T.ClubIndex;
+    public type UpdateYardageSetClubDTO = {
+        index: T.ClubIndex;
         yardageSetId: T.YardageSetId;
         name: Text;
         yards: Nat16;
@@ -77,74 +123,7 @@ module DTOs {
 
     };
 
-    public type CreateYardageDTO = {
-
-    };
-
-    public type ListGolfersDTO = {
-        searchTerm: Text;
-    };
-
-    public type MyGolferDTO = {
-        principalId: T.PrincipalId;
-        username: Text;
-        golferPicture: ?Blob;
-        golferPictureExtension: Text;
-        handicap: ?T.Handicap;
-    };
-
-    public type GolfersDTO = {
-        golfers: [GolferSummaryDTO];
-    };
-
-    public type GolferSummaryDTO = {
-        golferPrincipalId: T.PrincipalId;
-        golferName: Text;
-        golferPicture: ?Blob;
-        golferPictureExtension: Text;
-        handicap: ?T.Handicap;
-    };
-
-    public type FriendRequestsDTO = {
-        friendRequests: [FriendRequestDTO];
-    };
-
-    public type FriendRequestDTO = {
-        principalId: T.PrincipalId;
-        requestTime: Int;
-    };
-
-    public type AcceptFriendRequestDTO = {
-        requestedBy: T.PrincipalId;
-    };
-
-    public type RejectFriendRequestDTO = {
-        requestedBy: T.PrincipalId;
-    };
-
-    public type SendFriendRequestDTO = {
-        requestedFriend: T.PrincipalId;
-
-    };
-
-    public type GetMyGolferDTO = {
-
-    };
-
-    public type GetGolferDTO = {
-        golferPrincipalId: T.PrincipalId;
-    };
-
-    public type GolferGameSummariesDTO = {
-        entries: [T.GameSummary];
-        totalEntries: Nat;
-        limit: Nat;
-        offset: Nat;
-    };
-
-    public type GetGameDTO = {
-        gameId: T.GameId;
-    };
+    //Game DTOs
 
     public type GameDTO = {
         id: T.GameId;
@@ -161,12 +140,8 @@ module DTOs {
         winner: T.PrincipalId;
     };
 
-    public type CoursesDTO = {
-        courses: [GolfCourseDTO];
-    };
-
-    public type SaveGolfCourse = {
-
+    public type GetGameDTO = {
+        gameId: T.GameId;
     };
 
     public type CreateGameDTO = {
@@ -179,20 +154,103 @@ module DTOs {
         teeGroup: Text;
     };
 
+    public type UpdateGameDTO = {
+
+    };
+
+    public type DeleteGameDTO = {
+
+    };
+
+    //Friend Request DTOs
+    
+    public type FriendRequestsDTO = {
+        friendRequests: [FriendRequestDTO];
+    };
+
+    public type FriendRequestDTO = {
+        principalId: T.PrincipalId;
+        requestTime: Int;
+    };
+
+    public type SendFriendRequestDTO = {
+        requestedFriend: T.PrincipalId;
+    };
+
+    public type AcceptFriendRequestDTO = {
+        requestedBy: T.PrincipalId;
+    };
+
+    public type RejectFriendRequestDTO = {
+        requestedBy: T.PrincipalId;
+    };
+
+    //Game Invite DTOs
+
+
     public type InviteGolfersDTO = {
         gameId: T.GameId;
         invitedGolferIds: [T.PrincipalId];
     };
 
-    public type CreateGameInvitesDTO = {
-        gameId: T.GameId;
-        golferIds: [T.PrincipalId];
-    };
-
     public type AccepteGameInviteDTO = {
         gameId: T.GameId;
-        acceptedById: T.PrincipalId;
     };
+
+    public type RejectGameInviteDTO = {
+        gameId: T.GameId;
+    };
+
+    //Dashboard DTOs
+    
+    public type GolferBuzzDTO = {
+
+    };
+
+    public type UpcomingGamesDTO = {
+
+    };
+
+    public type ListGolfersDTO = {
+        searchTerm: Text;
+    };
+
+    public type GolfersDTO = {
+        golfers: [GolferSummaryDTO];
+    };
+
+    public type MyGolferDTO = {
+        principalId: T.PrincipalId;
+        username: Text;
+        golferPicture: ?Blob;
+        golferPictureExtension: Text;
+        handicap: ?T.Handicap;
+    };
+
+    public type GolferSummaryDTO = {
+        golferPrincipalId: T.PrincipalId;
+        golferName: Text;
+        golferPicture: ?Blob;
+        golferPictureExtension: Text;
+        handicap: ?T.Handicap;
+    };
+
+    public type GetMyGolferDTO = {
+
+    };
+
+    public type GolferGameSummariesDTO = {
+        entries: [T.GameSummary];
+        totalEntries: Nat;
+        limit: Nat;
+        offset: Nat;
+    };
+
+    public type CoursesDTO = {
+        courses: [GolfCourseDTO];
+    };
+
+    //Gameplay DTOs
 
     public type CreateGameScoreDTO = {
         submittedById: T.PrincipalId;
@@ -212,48 +270,4 @@ module DTOs {
         holeWinner: T.PrincipalId;
     };
 
-    public type BandsPredictionDTO = {
-
-    };
-
-    public type CreateGolfCourseDTO = {
-        name: Text;
-        initialTeeGroup: T.TeeGroup;
-        holes: [T.Hole]
-    };
-
-    public type UpdateGolfCourseDTO = {
-        courseId: T.GolfCourseId;
-        name: Text;
-        updatedTeeGroup: ?T.TeeGroup;
-    };
-
-    public type SaveGolfCourseDTO = {
-        courseId: ?T.GolfCourseId;
-        holes: [T.Hole];
-        name: Text;
-        teeGroup: ?T.TeeGroup;
-    };
-
-    public type DeleteGolfCourseDTO = {
-        courseId: T.GolfCourseId;
-    };
-
-    public type GetGolfCourseDTO = {
-        courseId: T.GolfCourseId;
-    };
-
-    public type GolfCourseDTO = {
-        courseId: T.GolfCourseId;
-        name: Text;
-        tees: [T.TeeGroup];
-        activeVersion: T.GolfCourseVersion;
-    };
-
-    public type GolfCourseSnaphotDTO = {
-        id: Nat;
-        name: Text;
-        teeGroup: T.TeeGroup;
-        courseVersion: T.GolfCourseVersion;
-    };
 }
