@@ -77,7 +77,7 @@ module DTOs {
 
     };
 
-    public type AddYardageDTO = {
+    public type CreateYardageDTO = {
 
     };
 
@@ -184,7 +184,7 @@ module DTOs {
         invitedGolferIds: [T.PrincipalId];
     };
 
-    public type AddGameInvitesDTO = {
+    public type CreateGameInvitesDTO = {
         gameId: T.GameId;
         golferIds: [T.PrincipalId];
     };
@@ -194,7 +194,7 @@ module DTOs {
         acceptedById: T.PrincipalId;
     };
 
-    public type AddGameScoreDTO = {
+    public type CreateGameScoreDTO = {
         submittedById: T.PrincipalId;
         gameId: T.GameId;
         detail: AddScoreDetailDTO;
@@ -216,7 +216,7 @@ module DTOs {
 
     };
 
-    public type AddGolfCourseDTO = {
+    public type CreateGolfCourseDTO = {
         name: Text;
         initialTeeGroup: T.TeeGroup;
         holes: [T.Hole]

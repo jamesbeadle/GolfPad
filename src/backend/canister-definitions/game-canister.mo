@@ -628,7 +628,7 @@ actor class _GameCanister() {
     };
   };
 
-
+  //Private functions:
 
   private func findGame(gameGroupIndex: Nat8, gameId: T.GameId) : ?T.Game {
     switch(gameGroupIndex){
@@ -938,7 +938,11 @@ actor class _GameCanister() {
     }
   };
 
-  private func updateGame(gameGroupIndex: Nat8, updatedGame: T.Game) : Result.Result<(), T.Error> {
+  private func addGame(gameGroupIndex, newGame: T.Game) : Result.Result {
+
+  };
+
+  private func saveGame(gameGroupIndex: Nat8, updatedGame: T.Game) : Result.Result<(), T.Error> {
     switch(gameGroupIndex){
       case 0{
         gameGroup1 := Array.map<T.Game, T.Game>(gameGroup1, func(game: T.Game){
@@ -1395,6 +1399,10 @@ actor class _GameCanister() {
       }
     };
     return #ok();
+  };
+
+  private func removeGame(gameGroupIndex: Nat8, gameId: T.GameId) : Result.Result<(), T.Error>{
+
   };
 
   private func getGameCountInGroup(groupIndex: Nat8) : Nat {
