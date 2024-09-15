@@ -26,7 +26,7 @@ module {
     private var totalGolfers : Nat = 0;
     
       
-    public func saveGolfer(principalId: T.PrincipalId, dto: DTOs.SaveGolferDTO) : async Result.Result<(), T.Error> {
+    public func saveGolfer(principalId: T.PrincipalId, dto: DTOs.UpdateGolferDTO) : async Result.Result<(), T.Error> {
       
       if(Text.size(dto.username) < 5 or Text.size(dto.username) > 20){
         return #err(#TooLong);
@@ -50,7 +50,7 @@ module {
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
           let golfer_canister = actor (foundCanisterId) : actor {
-            saveGolfer : (principal: T.PrincipalId, dto: DTOs.SaveGolferDTO) -> async Result.Result<(), T.Error>
+            saveGolfer : (principal: T.PrincipalId, dto: DTOs.UpdateGolferDTO) -> async Result.Result<(), T.Error>
           };
           return await golfer_canister.saveGolfer(principalId, dto);
         };
@@ -62,7 +62,7 @@ module {
             var golfer_canister = actor (activeCanisterId) : actor {
               getLatestId : () -> async T.GameId;
               isCanisterFull : () -> async Bool;
-              saveGolfer : (principal: T.PrincipalId, dto: DTOs.SaveGolferDTO) -> async Result.Result<(), T.Error>;  
+              saveGolfer : (principal: T.PrincipalId, dto: DTOs.UpdateGolferDTO) -> async Result.Result<(), T.Error>;  
             };
 
             let isCanisterFull = await golfer_canister.isCanisterFull(); 
@@ -75,7 +75,7 @@ module {
               golfer_canister := actor (activeCanisterId) : actor {
                 getLatestId : () -> async T.GameId;
                 isCanisterFull : () -> async Bool;
-                saveGolfer : (principal: T.PrincipalId, dto: DTOs.SaveGolferDTO) -> async Result.Result<(), T.Error>;  
+                saveGolfer : (principal: T.PrincipalId, dto: DTOs.UpdateGolferDTO) -> async Result.Result<(), T.Error>;  
               };
             };
 
@@ -98,7 +98,7 @@ module {
       return false;
     };
 
-    public func saveGolferPicture(principalId: T.PrincipalId, dto: DTOs.SaveGolferPictureDTO) : async Result.Result<(), T.Error> {
+    public func saveGolferPicture(principalId: T.PrincipalId, dto: DTOs.UpdateGolferPictureDTO) : async Result.Result<(), T.Error> {
       let validProfilePicture = isProfilePictureValid(dto.golferPicture);
       if(not validProfilePicture){
         return #err(#InvalidProfilePicture);
@@ -108,7 +108,7 @@ module {
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
           let golfer_canister = actor (foundCanisterId) : actor {
-            saveGolferPicture : (principal: T.PrincipalId, dto: DTOs.SaveGolferPictureDTO) -> async Result.Result<(), T.Error>
+            saveGolferPicture : (principal: T.PrincipalId, dto: DTOs.UpdateGolferPictureDTO) -> async Result.Result<(), T.Error>
           };
           return await golfer_canister.saveGolferPicture(principalId, dto);
         };
@@ -119,7 +119,7 @@ module {
 
             var golfer_canister = actor (activeCanisterId) : actor {
               isCanisterFull : () -> async Bool;
-              saveGolferPicture : (principal: T.PrincipalId, dto: DTOs.SaveGolferPictureDTO) -> async Result.Result<(), T.Error>;  
+              saveGolferPicture : (principal: T.PrincipalId, dto: DTOs.UpdateGolferPictureDTO) -> async Result.Result<(), T.Error>;  
             };
 
             let isCanisterFull = await golfer_canister.isCanisterFull();
@@ -127,7 +127,7 @@ module {
               await createNewCanister();
              
               golfer_canister := actor (activeCanisterId) : actor {
-                saveGolferPicture : (principal: T.PrincipalId, dto: DTOs.SaveGolferPictureDTO) -> async Result.Result<(), T.Error>;  
+                saveGolferPicture : (principal: T.PrincipalId, dto: DTOs.UpdateGolferPictureDTO) -> async Result.Result<(), T.Error>;  
                 getLatestId : () -> async T.GameId;
                 isCanisterFull : () -> async Bool;
               };
@@ -182,7 +182,7 @@ module {
       };
     };
 
-    public func saveYardageSet(principalId: T.PrincipalId, dto: DTOs.SaveYardageSetDTO) : async Result.Result<(), T.Error> {
+    public func saveYardageSet(principalId: T.PrincipalId, dto: DTOs.UpdateYardageSetDTO) : async Result.Result<(), T.Error> {
       
       let nameLength = Text.size(dto.name);
       if(nameLength < 3 or nameLength > 20){
@@ -193,7 +193,7 @@ module {
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
           let golfer_canister = actor (foundCanisterId) : actor {
-            saveYardageSet : (principal: T.PrincipalId, dto: DTOs.SaveYardageSetDTO) -> async Result.Result<(), T.Error>
+            saveYardageSet : (principal: T.PrincipalId, dto: DTOs.UpdateYardageSetDTO) -> async Result.Result<(), T.Error>
           };
           return await golfer_canister.saveYardageSet(principalId, dto);
         };
@@ -235,36 +235,6 @@ module {
           return #err(#NotFound);
         }
       };
-    };
-
-    public func saveYardageSetClub(principalId: T.PrincipalId, dto: DTOs.SaveYardageSetClubDTO) : async Result.Result<(), T.Error> {
-      let existingGolferCanisterId = golferCanisterIndex.get(principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
-          let golfer_canister = actor (foundCanisterId) : actor {
-            saveYardageSetClub : (principal: T.PrincipalId, dto: DTOs.SaveYardageSetClubDTO) -> async Result.Result<(), T.Error>
-          };
-          return await golfer_canister.saveYardageSetClub(principalId, dto);
-        };
-        case (null){
-          return #err(#NotFound);
-        }
-      }; 
-    };
-
-    public func deleteYardageSetClub(principalId: T.PrincipalId, dto: DTOs.DeleteYardageSetClubDTO) : async Result.Result<(), T.Error> {
-      let existingGolferCanisterId = golferCanisterIndex.get(principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
-          let golfer_canister = actor (foundCanisterId) : actor {
-            deleteYardageSetClub : (principal: T.PrincipalId, dto: DTOs.DeleteYardageSetClubDTO) -> async Result.Result<(), T.Error>
-          };
-          return await golfer_canister.deleteYardageSetClub(principalId, dto);
-        };
-        case (null){
-          return #err(#NotFound);
-        }
-      }; 
     };
 
     public func listGolfers(dto: DTOs.ListGolfersDTO) : async Result.Result<DTOs.GolfersDTO, T.Error> {
@@ -322,7 +292,6 @@ module {
       
       return #ok(golfersDTO);
     };
-
 
     public func listFriendRequests(principalId: T.PrincipalId, dto: DTOs.PaginationFilters) : async Result.Result<DTOs.FriendRequestsDTO, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(principalId);
@@ -427,13 +396,13 @@ module {
       };
     };
 
-    public func getUpcomingGames(principalId: T.PrincipalId, dto: DTOs.GetUpcomingGamesDTO) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
+    public func getUpcomingGames(principalId: T.PrincipalId, dto: DTOs.UpcomingGamesDTO) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getUpcomingGames : (principalId: T.PrincipalId, dto: DTOs.GetUpcomingGamesDTO) -> async Result.Result<DTOs.UpcomingGamesDTO, T.Error>;
+            getUpcomingGames : (principalId: T.PrincipalId, dto: DTOs.UpcomingGamesDTO) -> async Result.Result<DTOs.UpcomingGamesDTO, T.Error>;
           };
 
           return await golfer_canister.getUpcomingGames(principalId, dto);
@@ -532,13 +501,13 @@ module {
        };
     };
       
-    public func saveGolfCourse(golferPrincipalId: T.PrincipalId, dto: DTOs.SaveGolfCourse) : async Result.Result<(), T.Error> {
+    public func saveGolfCourse(golferPrincipalId: T.PrincipalId, dto: DTOs.UpdateGolfCourseDTO) : async Result.Result<(), T.Error> {
       let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
 
        switch(golferCanisterId){
         case (?foundCanisterId){
           let golfer_canister = actor (foundCanisterId) : actor {
-            saveGolfCourse : (golferPrincipalId: T.PrincipalId, dto: DTOs.SaveGolfCourse) -> async Result.Result<(), T.Error>;
+            saveGolfCourse : (golferPrincipalId: T.PrincipalId, dto: DTOs.UpdateGolfCourseDTO) -> async Result.Result<(), T.Error>;
           };
 
           return await golfer_canister.saveGolfCourse(golferPrincipalId, dto);

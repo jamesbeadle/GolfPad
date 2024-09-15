@@ -170,7 +170,7 @@ actor class _GolfCoursesCanister() {
       activeGroupIndex += 1;
     };
 
-    if(activeGroupIndex > 11){
+    if(activeGroupIndex > 99){
       canisterFull := true;
       return #err(#CanisterFull);
     };

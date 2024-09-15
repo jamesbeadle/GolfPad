@@ -460,7 +460,7 @@ actor class _GameCanister() {
               teeOffTime = foundGame.teeOffTime;
               winner = foundGame.winner;
             };
-            updateGame(foundGroupIndex, updatedGame);
+            saveGame(foundGroupIndex, updatedGame);
           };
           case (#err _){
             return #err(#NotFound);
@@ -473,7 +473,7 @@ actor class _GameCanister() {
     };
   };
 
-  public shared ({ caller }) func acceptGameInvite(dto: DTOs.AccepteGameInviteDTO) : async Result.Result<(), T.Error>{
+  public shared ({ caller }) func acceptGameInvite(dto: DTOs.AcceptGameInviteDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -511,7 +511,7 @@ actor class _GameCanister() {
               teeOffTime = foundGame.teeOffTime;
               winner = foundGame.winner;
             };
-            updateGame(foundGroupIndex, updatedGame);
+            saveGame(foundGroupIndex, updatedGame);
           };
           case (#err _){
             return #err(#NotFound);
@@ -540,7 +540,7 @@ actor class _GameCanister() {
         let game = await getGame({gameId = dto.gameId});
         switch(game){
           case (#ok foundGame){
-                        //ENSURE GAME IS ACTIVE
+            //TODO: ENSURE GAME IS ACTIVE
             //change the status of the game when the first score goes in
 
             var updatedScoreInfo: ?T.GameScoreDetail = null;
@@ -608,7 +608,7 @@ actor class _GameCanister() {
                       teeOffTime = foundGame.teeOffTime;
                       winner = gameWinner;
                     };
-                    updateGame(foundGroupIndex, updatedGame);
+                    saveGame(foundGroupIndex, updatedGame);
                   };
                   case (null){ return #err(#NotFound); }
                 };
@@ -938,8 +938,8 @@ actor class _GameCanister() {
     }
   };
 
-  private func addGame(gameGroupIndex, newGame: T.Game) : Result.Result {
-
+  private func addGame(gameGroupIndex: Nat8, newGame: T.Game) : Result.Result<(), T.Error> {
+    return #err(#NotFound); //TODO
   };
 
   private func saveGame(gameGroupIndex: Nat8, updatedGame: T.Game) : Result.Result<(), T.Error> {
@@ -1402,7 +1402,7 @@ actor class _GameCanister() {
   };
 
   private func removeGame(gameGroupIndex: Nat8, gameId: T.GameId) : Result.Result<(), T.Error>{
-
+    return #err(#NotFound); //TODO
   };
 
   private func getGameCountInGroup(groupIndex: Nat8) : Nat {
@@ -1564,8 +1564,6 @@ actor class _GameCanister() {
   };
 
   //TODO
-  //update game
-  //delete game
   //post upgrade
   
 };

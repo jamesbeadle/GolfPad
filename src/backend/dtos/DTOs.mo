@@ -62,7 +62,8 @@ module DTOs {
     };
 
     public type CreateGolferDTO = {
-        //todo 
+        username: Text;
+        handicap: ?T.Handicap;
     };
 
     public type UpdateGolferDTO = {
@@ -155,10 +156,18 @@ module DTOs {
     };
 
     public type UpdateGameDTO = {
+        gameId: T.GameId;
 
     };
 
     public type DeleteGameDTO = {
+        gameId: T.GameId;
+
+    };
+
+    public type AddGameScoreDTO = {
+        gameId: T.GameId;
+        detail: T.GameScoreDetail;
 
     };
 
@@ -193,8 +202,14 @@ module DTOs {
         invitedGolferIds: [T.PrincipalId];
     };
 
-    public type AccepteGameInviteDTO = {
+    public type AddGameInvitesDTO = {
         gameId: T.GameId;
+        golferIds: [T.PrincipalId];
+    };
+
+    public type AcceptGameInviteDTO = {
+        gameId: T.GameId;
+        acceptedById: T.PrincipalId;
     };
 
     public type RejectGameInviteDTO = {
@@ -202,12 +217,12 @@ module DTOs {
     };
 
     //Dashboard DTOs
-    
-    public type GolferBuzzDTO = {
-
-    };
 
     public type UpcomingGamesDTO = {
+
+    };
+    
+    public type GolferBuzzDTO = {
 
     };
 

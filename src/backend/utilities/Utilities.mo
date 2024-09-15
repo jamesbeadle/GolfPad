@@ -260,7 +260,7 @@ module {
     let cid = { canister_id = Principal.fromActor(a) };
     switch (backendCanisterController) {
       case (null) {};
-      case (?controller) {
+      case (?_) {
         Cycles.add<system>(cycles);
         await (
           IC.deposit_cycles({
@@ -275,7 +275,7 @@ module {
     let cid = { canister_id = Principal.fromActor(a) };
     switch (backendCanisterController) {
       case (null) {};
-      case (?controller) {
+      case (?_) {
         await (
           IC.delete_canister({
             canister_id = cid.canister_id;

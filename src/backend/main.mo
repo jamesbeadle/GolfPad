@@ -81,18 +81,6 @@ actor Self {
     let principalId = Principal.toText(caller);
     return await golferManager.getYardageSet(principalId, dto);
   };
-    
-  public shared ({ caller }) func saveYardageSetClub(dto: DTOs.SaveYardageSetClubDTO) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return await golferManager.saveYardageSetClub(principalId, dto);
-  };
-    
-  public shared ({ caller }) func deleteYardageSetClub(dto: DTOs.DeleteYardageSetClubDTO) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return await golferManager.deleteYardageSetClub(principalId, dto);
-  };
 
   //Friend requests
 
