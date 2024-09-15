@@ -19,13 +19,19 @@ actor Self {
   
   //Golfer Functions
 
-  public shared ({ caller }) func saveGolfer(dto: DTOs.SaveGolferDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func createGolfer(dto: DTOs.CreateGolferDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return await golferManager.saveGolfer(principalId, dto);
+    return await golferManager.createGolfer(principalId, dto);
   };
 
-  public shared ({ caller }) func saveGolferPicture(dto: DTOs.SaveGolferPictureDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateGolfer(dto: DTOs.UpdateGolferDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return await golferManager.updateGolfer(principalId, dto);
+  };
+
+  public shared ({ caller }) func saveGolferPicture(dto: DTOs.UpdateGolferPictureDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return await golferManager.saveGolferPicture(principalId, dto);
@@ -56,30 +62,36 @@ actor Self {
     return await golferManager.getBuzz(principalId, dto);
   };
 
-  public shared ({ caller }) func getUpcomingGames(dto: DTOs.GetUpcomingGamesDTO) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
+  public shared ({ caller }) func getUpcomingGames(dto: DTOs.UpcomingGamesDTO) : async Result.Result<DTOs.UpcomingGamesDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return await golferManager.getUpcomingGames(principalId, dto);
   };
 
   //Yardage Sets
-    
-  public shared ({ caller }) func saveYardageSet(dto: DTOs.SaveYardageSetDTO) : async Result.Result<(), T.Error> {
+
+  public shared ({ caller }) func getYardageSet(dto: DTOs.GetYardageSetDTO) : async Result.Result<DTOs.YardageSetDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return await golferManager.saveYardageSet(principalId, dto);
+    return await golferManager.getYardageSet(principalId, dto);
+  };
+    
+  public shared ({ caller }) func createYardageSet(dto: DTOs.CreateYardageSetDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return await golferManager.createYardageSet(principalId, dto);
+  };
+    
+  public shared ({ caller }) func updateYardageSet(dto: DTOs.UpdateYardageSetDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return await golferManager.updateYardageSet(principalId, dto);
   };
     
   public shared ({ caller }) func deleteYardageSet(dto: DTOs.DeleteYardageSetDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return await golferManager.deleteYardageSet(principalId, dto);
-  };
-
-  public shared ({ caller }) func getYardageSet(dto: DTOs.GetYardageSetDTO) : async Result.Result<DTOs.YardageSetDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return await golferManager.getYardageSet(principalId, dto);
   };
 
   //Friend requests
@@ -122,10 +134,16 @@ actor Self {
     return await golferManager.listCourses(principalId, dto);
   };
     
-  public shared ({ caller }) func saveGolfCourse(dto: DTOs.AddGolfCourseDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func createGolfCourse(dto: DTOs.CreateGolfCourseDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return await golferManager.saveGolfCourse(principalId, dto);
+    return await golferManager.createGolfCourse(principalId, dto);
+  };
+    
+  public shared ({ caller }) func updateGolfCourse(dto: DTOs.UpdateGolfCourseDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return await golferManager.updateGolfCourse(principalId, dto);
   };
     
   public shared ({ caller }) func deleteGolfCourse(dto: DTOs.DeleteGolfCourseDTO) : async Result.Result<(), T.Error> {
@@ -273,7 +291,7 @@ actor Self {
     };
   };
 
-  public shared ({ caller }) func acceptGameInvite(dto: DTOs.AccepteGameInviteDTO) : async Result.Result<(), T.Error>{
+  public shared ({ caller }) func acceptGameInvite(dto: DTOs.AcceptGameInviteDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert principalId == dto.acceptedById;
@@ -283,13 +301,12 @@ actor Self {
   public shared ({ caller }) func addGameScore(dto: DTOs.AddGameScoreDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert principalId == dto.submittedById;
-    return await gameManager.addGameScore(dto);
+    return await gameManager.addGameScore(principalId, dto);
   };
 
   //DAO Validation & Execution Functions
 
-  public shared query ({ caller }) func validateAddGolfCourse(dto : DTOs.AddGolfCourseDTO) : async T.RustResult {
+  public shared query ({ caller }) func validateAddGolfCourse(dto : DTOs.CreateGolfCourseDTO) : async T.RustResult {
     assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
     
     //Todo when functionality available: Make cross subnet call to governance canister to see if proposal already exists
@@ -297,7 +314,7 @@ actor Self {
     return courseManager.validateAddGolfCourse(dto);
   };
 
-  public shared ({ caller }) func executeAddGolfCourse(dto : DTOs.AddGolfCourseDTO) : async () {
+  public shared ({ caller }) func executeAddGolfCourse(dto : DTOs.CreateGolfCourseDTO) : async () {
     assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
     return await courseManager.executeAddGolfCourse(dto);
   };

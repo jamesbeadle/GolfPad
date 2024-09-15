@@ -167,8 +167,18 @@ module DTOs {
 
     public type AddGameScoreDTO = {
         gameId: T.GameId;
-        detail: T.GameScoreDetail;
+        detail: GameScoreSubmissionDTO;
+    };
 
+    public type GameScoreSubmissionDTO = {
+      #MulligansScores: MulligansScoreDTO;
+    };
+
+    public type MulligansScoreDTO = {
+        holeNumber: T.HoleNumber;
+        winner: T.PrincipalId;
+        golfer1MulliganUsed: Bool;
+        golfer2MulliganUsed: Bool;
     };
 
     //Friend Request DTOs

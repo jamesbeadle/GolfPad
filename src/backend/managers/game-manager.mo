@@ -3,9 +3,7 @@ import List "mo:base/List";
 import Buffer "mo:base/Buffer";
 import Iter "mo:base/Iter";
 import Array "mo:base/Array";
-import Time "mo:base/Time";
 import TrieMap "mo:base/TrieMap";
-import Text "mo:base/Text";
 import Principal "mo:base/Principal";
 import T "../data-types/types";
 import DTOs "../dtos/DTOs";
@@ -106,12 +104,12 @@ module {
       return #err(#NotFound);
     };
 
-    public func acceptGameInvite( dto: DTOs.AccepteGameInviteDTO) : async Result.Result<(), T.Error>{
+    public func acceptGameInvite( dto: DTOs.AcceptGameInviteDTO) : async Result.Result<(), T.Error>{
       let gameCanisterId = gameCanisterIndex.get(dto.gameId);
       switch(gameCanisterId){
         case (?foundCanisterId){
           let game_canister = actor (foundCanisterId) : actor {
-            acceptGameInvite : (dto: DTOs.AccepteGameInviteDTO) -> async Result.Result<(), T.Error>;
+            acceptGameInvite : (dto: DTOs.AcceptGameInviteDTO) -> async Result.Result<(), T.Error>;
           };
           return await game_canister.acceptGameInvite(dto);
         };
@@ -120,7 +118,7 @@ module {
       return #err(#NotFound);
     };
 
-    public func addGameScore(dto: DTOs.AddGameScoreDTO) :async  Result.Result<(), T.Error> {
+    public func addGameScore(submittedById: T.PrincipalId, dto: DTOs.AddGameScoreDTO) :async  Result.Result<(), T.Error> {
       
       let existingGame = await getGame({ gameId = dto.gameId });
 
@@ -128,7 +126,7 @@ module {
         case (#ok foundGame){
 
           let playerInGame = Option.isSome(Array.find<T.PrincipalId>(foundGame.playerIds, func(playerId: T.PrincipalId){
-            playerId == dto.submittedById;
+            playerId == submittedById;
           }));
 
           if(not playerInGame){

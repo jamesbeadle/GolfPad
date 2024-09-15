@@ -25,8 +25,57 @@ module {
     private var uniqueGolferCanisterIds : List.List<T.CanisterId> = List.nil();
     private var totalGolfers : Nat = 0;
     
+    public func createGolfer(principalId: T.PrincipalId, dto: DTOs.CreateGolferDTO) : async Result.Result<(), T.Error> {
       
-    public func saveGolfer(principalId: T.PrincipalId, dto: DTOs.UpdateGolferDTO) : async Result.Result<(), T.Error> {
+      if(Text.size(dto.username) < 5 or Text.size(dto.username) > 20){
+        return #err(#TooLong);
+      };
+
+      switch(dto.handicap){
+        case (null){};
+        case (?foundHandicap){
+          if(foundHandicap < -540 or foundHandicap > 540){
+            return #err(#OutOfRange);
+          };
+        }
+      };
+
+      let invalidUsername = isUsernameTaken(dto.username, principalId);
+      if(invalidUsername){
+        return #err(#AlreadyExists);
+      };
+
+      let existingGolferCanisterId = golferCanisterIndex.get(principalId);
+      switch(existingGolferCanisterId){
+        case (?_){
+          return #err(#AlreadyExists);
+        };
+        case (null){
+          if(activeCanisterId == ""){
+            await createNewCanister();
+          };
+
+          var golfer_canister = actor (activeCanisterId) : actor {
+            isCanisterFull : () -> async Bool;
+            createGolfer : (principal: T.PrincipalId, dto: DTOs.CreateGolferDTO) -> async Result.Result<(), T.Error>;  
+          };
+
+          let isCanisterFull = await golfer_canister.isCanisterFull(); 
+        
+          if(isCanisterFull){              
+            await createNewCanister();
+            golfer_canister := actor (activeCanisterId) : actor {
+              isCanisterFull : () -> async Bool;
+              createGolfer : (principal: T.PrincipalId, dto: DTOs.CreateGolferDTO) -> async Result.Result<(), T.Error>;  
+            };
+          };
+
+          return await golfer_canister.createGolfer(principalId, dto);
+        }
+      };    
+    };
+      
+    public func updateGolfer(principalId: T.PrincipalId, dto: DTOs.UpdateGolferDTO) : async Result.Result<(), T.Error> {
       
       if(Text.size(dto.username) < 5 or Text.size(dto.username) > 20){
         return #err(#TooLong);
@@ -50,36 +99,12 @@ module {
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
           let golfer_canister = actor (foundCanisterId) : actor {
-            saveGolfer : (principal: T.PrincipalId, dto: DTOs.UpdateGolferDTO) -> async Result.Result<(), T.Error>
+            updateGolfer : (principal: T.PrincipalId, dto: DTOs.UpdateGolferDTO) -> async Result.Result<(), T.Error>
           };
-          return await golfer_canister.saveGolfer(principalId, dto);
+          return await golfer_canister.updateGolfer(principalId, dto);
         };
         case (null){
-            if(activeCanisterId == ""){
-              await createNewCanister();
-            };
-
-            var golfer_canister = actor (activeCanisterId) : actor {
-              getLatestId : () -> async T.GameId;
-              isCanisterFull : () -> async Bool;
-              saveGolfer : (principal: T.PrincipalId, dto: DTOs.UpdateGolferDTO) -> async Result.Result<(), T.Error>;  
-            };
-
-            let isCanisterFull = await golfer_canister.isCanisterFull(); 
-        
-            if(isCanisterFull){
-              let latestId = await golfer_canister.getLatestId();
-              let nextId: T.GameId = latestId + 1;
-              
-              await createNewCanister();
-              golfer_canister := actor (activeCanisterId) : actor {
-                getLatestId : () -> async T.GameId;
-                isCanisterFull : () -> async Bool;
-                saveGolfer : (principal: T.PrincipalId, dto: DTOs.UpdateGolferDTO) -> async Result.Result<(), T.Error>;  
-              };
-            };
-
-            return await golfer_canister.saveGolfer(principalId, dto);
+          return #err(#NotFound);
         }
       };    
     };
@@ -113,27 +138,27 @@ module {
           return await golfer_canister.saveGolferPicture(principalId, dto);
         };
         case (null){
-            if(activeCanisterId == ""){
-              await createNewCanister();
-            };
+          if(activeCanisterId == ""){
+            await createNewCanister();
+          };
 
-            var golfer_canister = actor (activeCanisterId) : actor {
-              isCanisterFull : () -> async Bool;
+          var golfer_canister = actor (activeCanisterId) : actor {
+            isCanisterFull : () -> async Bool;
+            saveGolferPicture : (principal: T.PrincipalId, dto: DTOs.UpdateGolferPictureDTO) -> async Result.Result<(), T.Error>;  
+          };
+
+          let isCanisterFull = await golfer_canister.isCanisterFull();
+          if(isCanisterFull){
+            await createNewCanister();
+            
+            golfer_canister := actor (activeCanisterId) : actor {
               saveGolferPicture : (principal: T.PrincipalId, dto: DTOs.UpdateGolferPictureDTO) -> async Result.Result<(), T.Error>;  
+              getLatestId : () -> async T.GameId;
+              isCanisterFull : () -> async Bool;
             };
+          };
 
-            let isCanisterFull = await golfer_canister.isCanisterFull();
-            if(isCanisterFull){
-              await createNewCanister();
-             
-              golfer_canister := actor (activeCanisterId) : actor {
-                saveGolferPicture : (principal: T.PrincipalId, dto: DTOs.UpdateGolferPictureDTO) -> async Result.Result<(), T.Error>;  
-                getLatestId : () -> async T.GameId;
-                isCanisterFull : () -> async Bool;
-              };
-            };
-
-            return await golfer_canister.saveGolferPicture(principalId, dto);
+          return await golfer_canister.saveGolferPicture(principalId, dto);
         }
       };    
 
@@ -182,7 +207,25 @@ module {
       };
     };
 
-    public func saveYardageSet(principalId: T.PrincipalId, dto: DTOs.UpdateYardageSetDTO) : async Result.Result<(), T.Error> {
+    public func getYardageSet(principalId: T.PrincipalId, dto: DTOs.GetYardageSetDTO) : async Result.Result<DTOs.YardageSetDTO, T.Error> {
+       
+      let existingGolferCanisterId = golferCanisterIndex.get(principalId);
+      switch(existingGolferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            getYardageSet : (principalId: T.PrincipalId, dto: DTOs.GetYardageSetDTO) -> async Result.Result<DTOs.YardageSetDTO, T.Error>;
+          };
+
+          return await golfer_canister.getYardageSet(principalId, dto);
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
+    };
+
+    public func createYardageSet(principalId: T.PrincipalId, dto: DTOs.CreateYardageSetDTO) : async Result.Result<(), T.Error> {
       
       let nameLength = Text.size(dto.name);
       if(nameLength < 3 or nameLength > 20){
@@ -193,9 +236,30 @@ module {
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
           let golfer_canister = actor (foundCanisterId) : actor {
-            saveYardageSet : (principal: T.PrincipalId, dto: DTOs.UpdateYardageSetDTO) -> async Result.Result<(), T.Error>
+            createYardageSet : (principal: T.PrincipalId, dto: DTOs.CreateYardageSetDTO) -> async Result.Result<(), T.Error>
           };
-          return await golfer_canister.saveYardageSet(principalId, dto);
+          return await golfer_canister.createYardageSet(principalId, dto);
+        };
+        case (null){
+          return #err(#NotFound);        
+        }
+      }; 
+    };
+
+    public func updateYardageSet(principalId: T.PrincipalId, dto: DTOs.UpdateYardageSetDTO) : async Result.Result<(), T.Error> {
+      
+      let nameLength = Text.size(dto.name);
+      if(nameLength < 3 or nameLength > 20){
+        return #err(#TooLong);
+      };
+
+      let existingGolferCanisterId = golferCanisterIndex.get(principalId);
+      switch(existingGolferCanisterId){
+        case (?foundCanisterId){
+          let golfer_canister = actor (foundCanisterId) : actor {
+            updateYardageSet : (principal: T.PrincipalId, dto: DTOs.UpdateYardageSetDTO) -> async Result.Result<(), T.Error>
+          };
+          return await golfer_canister.updateYardageSet(principalId, dto);
         };
         case (null){
           return #err(#NotFound);        
@@ -217,24 +281,6 @@ module {
           return #err(#NotFound);
         }
       }; 
-    };
-
-    public func getYardageSet(principalId: T.PrincipalId, dto: DTOs.GetYardageSetDTO) : async Result.Result<DTOs.YardageSetDTO, T.Error> {
-       
-      let existingGolferCanisterId = golferCanisterIndex.get(principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
-
-          let golfer_canister = actor (foundCanisterId) : actor {
-            getYardageSet : (principalId: T.PrincipalId, dto: DTOs.GetYardageSetDTO) -> async Result.Result<DTOs.YardageSetDTO, T.Error>;
-          };
-
-          return await golfer_canister.getYardageSet(principalId, dto);
-        };
-        case (null){
-          return #err(#NotFound);
-        }
-      };
     };
 
     public func listGolfers(dto: DTOs.ListGolfersDTO) : async Result.Result<DTOs.GolfersDTO, T.Error> {
@@ -482,7 +528,6 @@ module {
         }
        };
     };
-
       
     public func listCourses(golferPrincipalId: T.PrincipalId, dto: DTOs.PaginationFilters) : async Result.Result<DTOs.CoursesDTO, T.Error> {
       let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
@@ -501,16 +546,33 @@ module {
        };
     };
       
-    public func saveGolfCourse(golferPrincipalId: T.PrincipalId, dto: DTOs.UpdateGolfCourseDTO) : async Result.Result<(), T.Error> {
+    public func createGolfCourse(golferPrincipalId: T.PrincipalId, dto: DTOs.CreateGolfCourseDTO) : async Result.Result<(), T.Error> {
       let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
 
        switch(golferCanisterId){
         case (?foundCanisterId){
           let golfer_canister = actor (foundCanisterId) : actor {
-            saveGolfCourse : (golferPrincipalId: T.PrincipalId, dto: DTOs.UpdateGolfCourseDTO) -> async Result.Result<(), T.Error>;
+            createGolfCourse : (golferPrincipalId: T.PrincipalId, dto: DTOs.CreateGolfCourseDTO) -> async Result.Result<(), T.Error>;
           };
 
-          return await golfer_canister.saveGolfCourse(golferPrincipalId, dto);
+          return await golfer_canister.createGolfCourse(golferPrincipalId, dto);
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+       };
+    };
+      
+    public func updateGolfCourse(golferPrincipalId: T.PrincipalId, dto: DTOs.UpdateGolfCourseDTO) : async Result.Result<(), T.Error> {
+      let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
+
+       switch(golferCanisterId){
+        case (?foundCanisterId){
+          let golfer_canister = actor (foundCanisterId) : actor {
+            updateGolfCourse : (golferPrincipalId: T.PrincipalId, dto: DTOs.UpdateGolfCourseDTO) -> async Result.Result<(), T.Error>;
+          };
+
+          return await golfer_canister.updateGolfCourse(golferPrincipalId, dto);
         };
         case (null){
           return #err(#NotFound);

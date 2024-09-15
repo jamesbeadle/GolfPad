@@ -540,32 +540,33 @@ actor class _GameCanister() {
         let game = await getGame({gameId = dto.gameId});
         switch(game){
           case (#ok foundGame){
-            //TODO: ENSURE GAME IS ACTIVE
-            //change the status of the game when the first score goes in
+            if(foundGame.status != #Active){
+              return #err(#NotAllowed);
+            };
 
             var updatedScoreInfo: ?T.GameScoreDetail = null;
             switch(dto.detail){
-              case (#MulligansAddScoreDTO detail){
+              case (#MulligansScores updatedScore){
                 
                 switch(foundGame.scoreDetail){
-                  case (?(#MulligansScores score)){
-                    var golfer1HolesWon = score.golfer1HolesWonCount;
-                    var golfer2HolesWon = score.golfer2HolesWonCount;
+                  case (?(#MulligansScores currentScore)){
+                    var golfer1HolesWon = currentScore.golfer1HolesWonCount;
+                    var golfer2HolesWon = currentScore.golfer2HolesWonCount;
                     
-                    if(detail.holeWinner == foundGame.playerIds[0]){
+                    if(updatedScore.winner == foundGame.playerIds[0]){
                       golfer1HolesWon += 1;
                     };
                     
-                    if(detail.holeWinner == foundGame.playerIds[1]){
+                    if(updatedScore.winner == foundGame.playerIds[1]){
                       golfer2HolesWon += 1;
                     };
 
-                    var mulliganHoleResultBuffer = Buffer.fromArray<T.MulligansHoleResult>(score.results);
+                    var mulliganHoleResultBuffer = Buffer.fromArray<T.MulligansHoleResult>(currentScore.results);
                     mulliganHoleResultBuffer.add({
-                      holeNumber = detail.hole;
-                      winner = detail.holeWinner;
-                      golfer1MulliganUsed = detail.golfer1MulliganUsed;
-                      golfer2MulliganUsed = detail.golfer2MulliganUsed;
+                      holeNumber = updatedScore.holeNumber;
+                      winner = updatedScore.winner;
+                      golfer1MulliganUsed = updatedScore.golfer1MulliganUsed;
+                      golfer2MulliganUsed = updatedScore.golfer2MulliganUsed;
                     });
 
                     var difference: Int = Int8.toInt(Int8.fromNat8(golfer1HolesWon)) - Int8.toInt(Int8.fromNat8(golfer2HolesWon));
@@ -573,11 +574,11 @@ actor class _GameCanister() {
                       difference := -difference;
                     };
                     
-                    let remainingHoles: Int = 18 - Int8.toInt(Int8.fromNat8(detail.hole)); 
+                    let remainingHoles: Int = 18 - Int8.toInt(Int8.fromNat8(updatedScore.holeNumber)); 
 
                     var gameWinner = "";
                     var gameStatus: T.GameStatus = foundGame.status;
-                    if(difference > remainingHoles or detail.hole == 18){
+                    if(difference > remainingHoles or updatedScore.holeNumber == 18){
                       if(golfer1HolesWon > golfer2HolesWon){
                         gameWinner := foundGame.playerIds[0];
                       };

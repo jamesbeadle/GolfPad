@@ -78,7 +78,7 @@ module {
       };
     };
 
-    public func validateAddGolfCourse(dto : DTOs.AddGolfCourseDTO) : T.RustResult {
+    public func validateAddGolfCourse(dto : DTOs.CreateGolfCourseDTO) : T.RustResult {
       
       if(Text.size(dto.name) > 100){
         return #Err("Golf Course name too long, max 100 characters.");
@@ -91,10 +91,10 @@ module {
       return #Ok("Proposal Valid");
     };
 
-    public func executeAddGolfCourse(dto : DTOs.AddGolfCourseDTO) : async () {
+    public func executeAddGolfCourse(dto : DTOs.CreateGolfCourseDTO) : async () {
       var golf_course_canister = actor (activeCanisterId) : actor {
         getLatestId : () -> async T.GolfCourseId;
-        addGolfCourse : (dto: DTOs.AddGolfCourseDTO) -> async ();
+        addGolfCourse : (dto: DTOs.CreateGolfCourseDTO) -> async ();
         isCanisterFull : () -> async Bool;
       };
 
@@ -108,7 +108,7 @@ module {
 
         golf_course_canister := actor (activeCanisterId) : actor {
           getLatestId : () -> async T.GolfCourseId;
-          addGolfCourse : (dto: DTOs.AddGolfCourseDTO) -> async ();
+          addGolfCourse : (dto: DTOs.CreateGolfCourseDTO) -> async ();
           isCanisterFull : () -> async Bool;
        };
 
