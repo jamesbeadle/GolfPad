@@ -2883,5 +2883,4 @@ actor class _GolfCoursesCanister() {
     }
   };
 
-
 };

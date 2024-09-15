@@ -33,8 +33,10 @@
   </p>
 
   <p>
-    We are starting with new games but we plan to make <span class="font-extrabold text-black condensed">GOLFPAD</span> 
-    the home of everything golf from playing to coaching. 
+    We will introduce golfers to <span class="font-extrabold text-black condensed">GOLFPAD</span> with our 4 new unique games along with useful player tools.
+    We will then bring in features to assist golf coaches and golf clubs to connect with the millions of golfers worldwide. 
+    Our ultimate goal is to use the platform to enable golfers to take control of the sport they love, specifically giving them a more accurate handicap to use when they play.
+    
   </p>
 
   <p>

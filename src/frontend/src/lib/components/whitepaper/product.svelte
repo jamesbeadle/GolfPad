@@ -64,7 +64,7 @@
 {/if}
 
 <div class="flex flex-col space-y-4 text-base">
-  <h2 class="text-2xl font-black text-black condensed">PRODUCT</h2>
+  <h2 class="text-2xl font-black text-black condensed">OUR NEW GAMES</h2>
     
   <p>We want <span class="condensed">GOLFPAD</span> to have everything a user needs to play, learn and socialise with the world's community of golfers. 
     Initially we have designed 4 new game formats for golfers to enjoy on our platform, with the DAO deciding on future additions. 

@@ -4,6 +4,7 @@
 
   import Vision from "$lib/components/whitepaper/vision.svelte";
   import Product from "$lib/components/whitepaper/product.svelte";
+  import Handicap from "$lib/components/whitepaper/handicap.svelte";
   import DAO from "$lib/components/whitepaper/dao.svelte";
   import Marketing from "$lib/components/whitepaper/marketing.svelte";
   import RoadMap from "$lib/components/whitepaper/roadmap.svelte";
@@ -16,6 +17,7 @@
   const tabs = [
     { name: "Vision", component: Vision },
     { name: "Product", component: Product },
+    { name: "Handicaps", component: Handicap },
     { name: "DAO", component: DAO },
     { name: "Marketing", component: Marketing },
     { name: "Road Map", component: RoadMap },

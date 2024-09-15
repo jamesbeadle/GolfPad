@@ -108,7 +108,8 @@
   <div class="bg-GolfPadYellow flex-none relative h-[50px] mt-auto">
     <div class="absolute bottom-4 left-4 z-10">
       <a href="/whitepaper" class="text-black text-sm font-medium">WHITEPAPER |</a> 
-      <a href="/team" class="text-black text-sm font-medium">TEAM</a> 
+      <a href="/team" class="text-black text-sm font-medium">TEAM |</a> 
+      <a target="_blank" href="https://github.com/jamesbeadle/golfpad" class="text-black text-sm font-medium">GITHUB</a> 
     </div>
   </div>
   {/if}
