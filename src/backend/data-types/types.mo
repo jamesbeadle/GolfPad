@@ -118,7 +118,7 @@ module Types {
 
   public type HistoricalGolfCourse = {
     id: Nat;
-    index: GolfCourseVersion;
+    version: GolfCourseVersion;
     name: Text;
     teeGroups: [TeeGroup];
     dateAdded: Int;

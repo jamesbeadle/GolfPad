@@ -225,8 +225,7 @@ module DTOs {
     public type UpdateGolfCourseDTO = {
         courseId: T.GolfCourseId;
         name: Text;
-        updateTeeGroup: T.TeeGroup;
-        holes: [T.Hole];
+        updatedTeeGroup: ?T.TeeGroup;
     };
 
     public type SaveGolfCourseDTO = {

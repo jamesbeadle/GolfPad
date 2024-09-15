@@ -4,6 +4,8 @@ import Iter "mo:base/Iter";
 import Nat8 "mo:base/Nat8";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
+import Int "mo:base/Int";
+import Int8 "mo:base/Int8";
 
 import DTOs "../dtos/DTOs";
 import Environment "../utilities/Environment";
@@ -16,7 +18,7 @@ actor class _GameCanister() {
   private var activeGroupIndex: Nat8 = 1;
   private var nextGameId: T.GameId = 0;
   private var totalGames = 0;
-  private stable var MAX_GAMES_PER_GROUP: Nat = 250000; //TODO why not used?
+  private stable var MAX_GAMES_PER_GROUP: Nat = 250000;
   private stable var MAX_GAMES_PER_CANISTER: Nat = 12500000;
 
   private stable var gameGroup1 : [T.Game] = [];
@@ -566,18 +568,30 @@ actor class _GameCanister() {
                       golfer2MulliganUsed = detail.golfer2MulliganUsed;
                     });
 
-                    var gameWinner = "";
-
-                    if(detail.hole == 18){
-                      gameWinner := ""; //todo set winner
+                    var difference: Int = Int8.toInt(Int8.fromNat8(golfer1HolesWon)) - Int8.toInt(Int8.fromNat8(golfer2HolesWon));
+                    if(difference < 0){
+                      difference := -difference;
                     };
+                    
+                    let remainingHoles: Int = 18 - Int8.toInt(Int8.fromNat8(detail.hole)); 
 
+                    var gameWinner = "";
+                    var gameStatus: T.GameStatus = foundGame.status;
+                    if(difference > remainingHoles or detail.hole == 18){
+                      if(golfer1HolesWon > golfer2HolesWon){
+                        gameWinner := foundGame.playerIds[0];
+                      };
+                      if(golfer2HolesWon > golfer1HolesWon){
+                        gameWinner := foundGame.playerIds[1];
+                      };
+                      gameStatus := #Complete;
+                    };
 
                     updatedScoreInfo := ?(#MulligansScores {
                       results = Buffer.toArray(mulliganHoleResultBuffer);
                       golfer1HolesWonCount = golfer1HolesWon;
                       golfer2HolesWonCount = golfer2HolesWon;
-                      winner = "";
+                      winner = gameWinner;
                     });
             
                     let updatedGame: T.Game = {
@@ -590,13 +604,11 @@ actor class _GameCanister() {
                       playerIds = foundGame.playerIds;
                       predictions = foundGame.predictions;
                       scoreDetail = updatedScoreInfo;
-                      status = foundGame.status;
+                      status = gameStatus;
                       teeOffTime = foundGame.teeOffTime;
                       winner = gameWinner;
                     };
                     updateGame(foundGroupIndex, updatedGame);
-
-
                   };
                   case (null){ return #err(#NotFound); }
                 };
@@ -616,7 +628,6 @@ actor class _GameCanister() {
     };
   };
 
-  //todo complete game
 
 
   private func findGame(gameGroupIndex: Nat8, gameId: T.GameId) : ?T.Game {

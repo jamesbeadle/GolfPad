@@ -997,10 +997,6 @@ actor class _GolferCanister() {
   };
 
   public shared ({caller}) func saveGolfCourse(golferPrincipalId: T.PrincipalId, dto: DTOs.SaveGolfCourseDTO) : async Result.Result<(), T.Error>{
-    
-     //TODO an update for the course should snapshot the existing one as a change has been made 
-
-    
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -1036,7 +1032,6 @@ actor class _GolferCanister() {
                     },
                   )[0].id + 1;
                 };
-
 
                 var updatedTeeGroups: [T.TeeGroup] = []; 
                 switch(dto.teeGroup){
@@ -1082,9 +1077,18 @@ actor class _GolferCanister() {
                             return teeGroup;
                           }
                         });
-
                       }
                     };
+
+                    let updatedHistoryBuffer = Buffer.fromArray<T.HistoricalGolfCourse>(course.history);
+                    updatedHistoryBuffer.add({
+                      dateAdded = course.dateAdded;
+                      id = course.id;
+                      name = course.name;
+                      status = course.status;
+                      teeGroups = course.teeGroups;
+                      version = course.activeVersion;
+                    });
 
                     let updatedGolfCourse: T.GolfCourse = {
                       teeGroups = updatedTeeGroups;
@@ -1092,8 +1096,8 @@ actor class _GolferCanister() {
                       id = course.id;
                       dateAdded = course.dateAdded;
                       status = #Active;
-                      history = course.history;
-                      activeVersion = course.activeVersion;
+                      history = Buffer.toArray(updatedHistoryBuffer);
+                      activeVersion = course.activeVersion + 1;
                     };
                     return updatedGolfCourse;
                   } else {

@@ -156,7 +156,6 @@ actor Self {
     
   public shared ({ caller }) func getGame(dto: DTOs.GetGameDTO) : async Result.Result<DTOs.GameDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
     return await gameManager.getGame(dto);
   };
 

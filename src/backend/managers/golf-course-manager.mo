@@ -122,9 +122,14 @@ module {
       if(Text.size(dto.name) > 100){
         return #Err("Golf Course name too long, max 100 characters.");
       };
-
-      if(Array.size(dto.holes) != 18){
-        return #Err("Golf Course must have 18 holes");
+      
+      switch(dto.updatedTeeGroup){
+        case (?foundTeeGroup){
+          if(Array.size(foundTeeGroup.holes) != 18){
+            return #Err("Golf Course must have 18 holes");
+          };
+        };
+        case null { }
       };
 
       return #Ok("Proposal Valid");
