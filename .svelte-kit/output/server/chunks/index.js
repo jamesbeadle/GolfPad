@@ -3426,7 +3426,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "86byd6"
+  version_hash: "1w0ub5p"
 };
 async function get_hooks() {
   return {};
@@ -4134,6 +4134,16 @@ const Team = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       image: "james.jpg"
     },
     {
+      name: "Dfinity Designer",
+      title: "Head of Design",
+      image: "dfd.jpg"
+    },
+    {
+      name: "Thilly Thana",
+      title: "Lead Developer",
+      image: "thilly.jpg"
+    },
+    {
       name: "George Robinson",
       title: "Community Manager",
       image: "george.jpg"
@@ -4144,9 +4154,9 @@ const Team = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       image: "josh.jpg"
     },
     {
-      name: "Dfinity Designer",
-      title: "Head of Design",
-      image: "dfd.jpg"
+      name: "Ashutosh Yadav",
+      title: "Media Production Manager",
+      image: "ashutosh.jpg"
     }
   ];
   return `<div class="flex flex-col space-y-6 text-base"><h2 class="text-2xl font-black text-black condensed" data-svelte-h="svelte-ku25ef">OUR TEAM</h2> <p class="text-lg leading-relaxed" data-svelte-h="svelte-1ligo3a">Waterway Labs have a team of keen golfers. The team have experience of being long time club members along with playing courses with friends on an adhoc basis. Using the team&#39;s domain knowledge will ensure that <span class="condensed">GOLFPAD</span> contains everything a golfer expects from an all-in-one golf solution and more.</p> <p class="text-lg leading-relaxed" data-svelte-h="svelte-1on8rex">The Waterway Labs team is in the process of expansion, bringing on a new Managing Director &amp; Head of Operations in June 2024.</p> <h2 class="text-2xl font-semibold" data-svelte-h="svelte-6wauv7">Meet the Team</h2> <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${each(teamMembers, (member) => {

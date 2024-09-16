@@ -10,9 +10,11 @@
     { name: "Zoe Duffy", title: "Managing Director", image: "zoe.jpg"  },
     { name: "Kelly Howlett", title: "Head of Operations", image: "kelly.jpeg" },
     { name: "James Beadle", title: "Development Manager", image: "james.jpg"  },
+    { name: "Dfinity Designer", title: "Head of Design", image: "dfd.jpg"  },
+    { name: "Thilly Thana", title: "Lead Developer", image: "thilly.jpg"  },
     { name: "George Robinson", title: "Community Manager", image: "george.jpg"  },
     { name: "Josh Wray", title: "Head of Promotion", image: "josh.jpg"  },
-    { name: "Dfinity Designer", title: "Head of Design", image: "dfd.jpg"  }
+    { name: "Ashutosh Yadav", title: "Media Production Manager", image: "ashutosh.jpg"  }
   ];
 </script>
 
