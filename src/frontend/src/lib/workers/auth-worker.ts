@@ -1,4 +1,4 @@
-import { AUTH_TIMER_INTERVAL } from "$lib/constants/app.constants";
+import { AUTH_TIMER_INTERVAL } from "$lib/constants/app-constants";
 import type {
   PostMessage,
   PostMessageDataRequest,

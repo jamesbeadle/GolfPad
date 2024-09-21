@@ -4,7 +4,7 @@
   import { authStore, type AuthSignInParams, type AuthStoreData } from "$lib/stores/auth-store";
   import { BusyScreen, Spinner } from "@dfinity/gix-components";
   import "../app.css";
-  import { authSignedInStore } from "$lib/derived/auth.derived";
+  import { authSignedInStore } from "$lib/derived/auth-derived";
   import { goto } from "$app/navigation";
   import { fade } from "svelte/transition";
   import NavOverlay from "$lib/components/shared/navigation.svelte";
@@ -82,16 +82,16 @@
   </div>
 {:then _}
   
-<div class="flex min-h-screen flex-col relative">
+<div class="relative flex flex-col min-h-screen">
   <div class="flex-none h-[80px] relative">
-    <div class="absolute top-4 left-4 z-10">
+    <div class="absolute z-10 top-4 left-4">
       <button
         on:click={toggleNav}
-        class="bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md">
+        class="flex items-center justify-center w-12 h-12 text-2xl font-bold text-white bg-black rounded-full shadow-md">
         +
       </button>
     </div>
-    <div class="absolute top-4 right-4 z-10">
+    <div class="absolute z-10 top-4 right-4">
       <a href="/">
         <span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span>
       </a>
@@ -106,10 +106,10 @@
 
   {#if !isHomepage}
   <div class="bg-GolfPadYellow flex-none relative h-[50px] mt-auto">
-    <div class="absolute bottom-4 left-4 z-10">
-      <a href="/whitepaper" class="text-black text-sm font-medium">WHITEPAPER |</a> 
-      <a href="/team" class="text-black text-sm font-medium">TEAM |</a> 
-      <a target="_blank" href="https://github.com/jamesbeadle/golfpad" class="text-black text-sm font-medium">GITHUB</a> 
+    <div class="absolute z-10 bottom-4 left-4">
+      <a href="/whitepaper" class="text-sm font-medium text-black">WHITEPAPER |</a> 
+      <a href="/team" class="text-sm font-medium text-black">TEAM |</a> 
+      <a target="_blank" href="https://github.com/jamesbeadle/golfpad" class="text-sm font-medium text-black">GITHUB</a> 
     </div>
   </div>
   {/if}

@@ -2,10 +2,10 @@ import {
   AUTH_MAX_TIME_TO_LIVE,
   AUTH_POPUP_HEIGHT,
   AUTH_POPUP_WIDTH,
-} from "$lib/constants/app.constants";
+} from "$lib/constants/app-constants";
 import type { OptionIdentity } from "$lib/types/identity";
-import { createAuthClient } from "$lib/utils/auth.utils";
-import { popupCenter } from "$lib/utils/window.utils";
+import { createAuthClient } from "$lib/utils/auth-utils";
+import { popupCenter } from "$lib/utils/window-utils";
 import type { AuthClient } from "@dfinity/auth-client";
 import { writable, type Readable } from "svelte/store";
 
