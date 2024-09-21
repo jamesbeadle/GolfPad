@@ -15,9 +15,9 @@ actor class _GameCanister() {
 
   private stable var stable_game_group_indexes: [(T.GameId, Nat8)] = [];
 
-  private var activeGroupIndex: Nat8 = 0;
-  private var nextGameId: T.GameId = 1;
-  private var totalGames = 0;
+  private stable var activeGroupIndex: Nat8 = 0;
+  private stable var nextGameId: T.GameId = 1;
+  private stable var totalGames = 0;
   private stable var MAX_GAMES_PER_GROUP: Nat = 250000;
   private stable var MAX_GAMES_PER_CANISTER: Nat = 12500000;
 
