@@ -4,7 +4,7 @@
   import { authStore, type AuthSignInParams, type AuthStoreData } from "$lib/stores/auth-store";
   import { BusyScreen, Spinner } from "@dfinity/gix-components";
   import "../app.css";
-  import { authSignedInStore } from "$lib/derived/auth.derived";
+  import { authSignedInStore } from "$lib/derived/auth-derived";
   import { goto } from "$app/navigation";
   import { fade } from "svelte/transition";
   import NavOverlay from "$lib/components/shared/navigation.svelte";
