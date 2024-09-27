@@ -6,6 +6,7 @@ import * as set_cookie_parser from "set-cookie-parser";
 import { nonNullish } from "@dfinity/utils";
 import "dompurify";
 import { AuthClient } from "@dfinity/auth-client";
+import { HttpAgent, Actor } from "@dfinity/agent";
 let base = "";
 let assets = base;
 const initial = { base, assets };
@@ -950,7 +951,7 @@ function getContext(key2) {
 function ensure_array_like(array_like_or_iterator) {
   return array_like_or_iterator?.length !== void 0 ? array_like_or_iterator : Array.from(array_like_or_iterator);
 }
-const ATTR_REGEX = /[&"]/g;
+const ATTR_REGEX = /[&"<]/g;
 const CONTENT_REGEX = /[&<]/g;
 function escape(value, is_attr = false) {
   const str = String(value);
@@ -3426,7 +3427,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1w0ub5p"
+  version_hash: "1e8kten"
 };
 async function get_hooks() {
   return {};
@@ -3630,7 +3631,7 @@ const initAuthStore = () => {
 };
 const authStore = initAuthStore();
 const adminPrincipal = "nn75s-ayupf-j6mj3-kluyb-wjj7y-eang2-dwzzr-cfdxk-etbw7-cgwnb-lqe";
-derived(
+const authSignedInStore = derived(
   authStore,
   ({ identity }) => identity !== null && identity !== void 0
 );
@@ -3874,38 +3875,584 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return ` <div>${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}</div> `;
     }
     return function(_) {
-      return ` <div class="flex min-h-screen flex-col relative"><div class="flex-none h-[80px] relative"><div class="absolute top-4 left-4 z-10"><button class="bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md" data-svelte-h="svelte-agay9v">+</button></div> <div class="absolute top-4 right-4 z-10" data-svelte-h="svelte-1wa3tgc"><a href="/"><span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span></a></div></div> ${validate_component(Navigation, "NavOverlay").$$render($$result, { expanded, selectedRoute, toggleNav }, {}, {})} <div class="${escape(
+      return ` <div class="relative flex flex-col min-h-screen"><div class="flex-none h-[80px] relative"><div class="absolute z-10 top-4 left-4"><button class="flex items-center justify-center w-12 h-12 text-2xl font-bold text-white bg-black rounded-full shadow-md" data-svelte-h="svelte-1kd34xx">+</button></div> <div class="absolute z-10 top-4 right-4" data-svelte-h="svelte-17zfyzy"><a href="/"><span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span></a></div></div> ${validate_component(Navigation, "NavOverlay").$$render($$result, { expanded, selectedRoute, toggleNav }, {}, {})} <div class="${escape(
         isHomepage ? "bg-GolfPadYellow  items-center justify-center relative" : "bg-white",
         true
-      ) + " flex-1 flex"}">${slots.default ? slots.default({}) : ``}</div> ${!isHomepage ? `<div class="bg-GolfPadYellow flex-none relative h-[50px] mt-auto" data-svelte-h="svelte-139whkh"><div class="absolute bottom-4 left-4 z-10"><a href="/whitepaper" class="text-black text-sm font-medium">WHITEPAPER |</a> <a href="/team" class="text-black text-sm font-medium">TEAM |</a> <a target="_blank" href="https://github.com/jamesbeadle/golfpad" class="text-black text-sm font-medium">GITHUB</a></div></div>` : ``}</div> `;
+      ) + " flex-1 flex"}">${slots.default ? slots.default({}) : ``}</div> ${!isHomepage ? `<div class="bg-GolfPadYellow flex-none relative h-[50px] mt-auto" data-svelte-h="svelte-ba1d4j"><div class="absolute z-10 bottom-4 left-4"><a href="/whitepaper" class="text-sm font-medium text-black">WHITEPAPER |</a> <a href="/team" class="text-sm font-medium text-black">TEAM |</a> <a target="_blank" href="https://github.com/jamesbeadle/golfpad" class="text-sm font-medium text-black">GITHUB</a></div></div>` : ``}</div> `;
     }();
   }(init2())} ${validate_component(BusyScreen, "BusyScreen").$$render($$result, {}, {}, {})}`;
 });
-const Page$b = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
-    default: () => {
-      return `<div class="text-center px-4 z-10" data-svelte-h="svelte-gpwuh9"><h1 class="font-bold text-GolfPadForest mb-1">WELCOME TO <span class="condensed">GOLFPAD</span></h1> <h2 class="text-3xl md:text-6xl font-black text-black mb-6 condensed leading-tight mx-16">THE FUTURE OF GOLF STARTS HERE</h2> <a href="/whitepaper"><button class="bg-GolfPadForest text-GolfPadYellow py-3 px-12 text-lg font-semibold shadow-lg">WHITEPAPER</button></a></div> <div class="absolute bottom-0 left-0 w-full z-0" data-svelte-h="svelte-1nkbl8y"><img src="golfball_mobile.png" alt="Golf Ball" class="md:hidden w-full h-auto object-cover"> <img src="golfball.png" alt="Golf Ball" class="hidden md:flex w-full h-auto object-cover"></div>`;
+const idlFactory = ({ IDL }) => {
+  const PrincipalId = IDL.Text;
+  const AcceptFriendRequestDTO = IDL.Record({ "requestedBy": PrincipalId });
+  const Error2 = IDL.Variant({
+    "InvalidProfilePicture": IDL.Null,
+    "DecodeError": IDL.Null,
+    "TooLong": IDL.Null,
+    "NotAllowed": IDL.Null,
+    "NotEnoughFunds": IDL.Null,
+    "TooShort": IDL.Null,
+    "NotFound": IDL.Null,
+    "NotAuthorized": IDL.Null,
+    "AlreadyExists": IDL.Null,
+    "CreateGameError": IDL.Null,
+    "OutOfRange": IDL.Null,
+    "PaymentError": IDL.Null,
+    "CanisterFull": IDL.Null
+  });
+  const Result = IDL.Variant({ "ok": IDL.Null, "err": Error2 });
+  const GameId = IDL.Nat;
+  const AcceptGameInviteDTO = IDL.Record({
+    "gameId": GameId,
+    "acceptedById": PrincipalId
+  });
+  const HoleNumber = IDL.Nat8;
+  const MulligansScoreDTO = IDL.Record({
+    "golfer2MulliganUsed": IDL.Bool,
+    "winner": PrincipalId,
+    "golfer1MulliganUsed": IDL.Bool,
+    "holeNumber": HoleNumber
+  });
+  const GameScoreSubmissionDTO = IDL.Variant({
+    "MulligansScores": MulligansScoreDTO
+  });
+  const AddGameScoreDTO = IDL.Record({
+    "gameId": GameId,
+    "detail": GameScoreSubmissionDTO
+  });
+  const BeginGameDTO = IDL.Record({ "gameId": GameId });
+  const GameType = IDL.Variant({
+    "Mulligans": IDL.Null,
+    "BuildIt": IDL.Null,
+    "Bands": IDL.Null,
+    "NextUp": IDL.Null
+  });
+  const CourseType = IDL.Variant({
+    "Custom": IDL.Null,
+    "Official": IDL.Null
+  });
+  const GolfCourseId = IDL.Nat;
+  const CreateGameDTO = IDL.Record({
+    "inviteIds": IDL.Vec(PrincipalId),
+    "createdById": PrincipalId,
+    "teeOffTime": IDL.Int,
+    "gameType": GameType,
+    "courseType": CourseType,
+    "courseId": GolfCourseId,
+    "teeGroup": IDL.Text
+  });
+  const TeeInfo = IDL.Record({
+    "par": IDL.Nat8,
+    "name": IDL.Text,
+    "yardage": IDL.Nat,
+    "colour": IDL.Text,
+    "strokeIndex": IDL.Nat8
+  });
+  const CanisterId = IDL.Text;
+  const ImageId = IDL.Nat;
+  const Hole = IDL.Record({
+    "name": IDL.Text,
+    "tees": IDL.Vec(TeeInfo),
+    "number": IDL.Nat8,
+    "images": IDL.Vec(IDL.Tuple(CanisterId, ImageId))
+  });
+  const TeeGroup = IDL.Record({
+    "added": IDL.Int,
+    "holes": IDL.Vec(Hole),
+    "name": IDL.Text,
+    "colour": IDL.Text,
+    "strokeIndex": IDL.Nat8
+  });
+  const CreateGolfCourseDTO = IDL.Record({
+    "holes": IDL.Vec(Hole),
+    "name": IDL.Text,
+    "initialTeeGroup": TeeGroup
+  });
+  const Handicap2 = IDL.Int16;
+  const CreateGolferDTO = IDL.Record({
+    "username": IDL.Text,
+    "handicap": IDL.Opt(Handicap2)
+  });
+  const ClubIndex = IDL.Nat16;
+  const YardageClub = IDL.Record({
+    "name": IDL.Text,
+    "index": ClubIndex,
+    "yards": IDL.Nat16
+  });
+  const CreateYardageSetDTO = IDL.Record({
+    "clubs": IDL.Vec(YardageClub),
+    "name": IDL.Text
+  });
+  const DeleteGolfCourseDTO = IDL.Record({ "courseId": GolfCourseId });
+  const YardageSetId = IDL.Nat16;
+  const DeleteYardageSetDTO = IDL.Record({ "yardageSetId": YardageSetId });
+  const UpdateGolfCourseDTO = IDL.Record({
+    "name": IDL.Text,
+    "updatedTeeGroup": IDL.Opt(TeeGroup),
+    "courseId": GolfCourseId
+  });
+  const GetGameDTO = IDL.Record({ "gameId": GameId });
+  const GameStatus = IDL.Variant({
+    "Unplayed": IDL.Null,
+    "Active": IDL.Null,
+    "Complete": IDL.Null
+  });
+  const MulligansHoleResult = IDL.Record({
+    "golfer2MulliganUsed": IDL.Bool,
+    "winner": PrincipalId,
+    "golfer1MulliganUsed": IDL.Bool,
+    "holeNumber": HoleNumber
+  });
+  const MulligansScores = IDL.Record({
+    "winner": PrincipalId,
+    "results": IDL.Vec(MulligansHoleResult),
+    "golfer2HolesWonCount": IDL.Nat8,
+    "golfer1HolesWonCount": IDL.Nat8
+  });
+  const GameScoreDetail = IDL.Variant({ "MulligansScores": MulligansScores });
+  const MulligansPrediction = IDL.Record({});
+  const BandsPrediction = IDL.Record({
+    "wontHitTreeOrBunkerStartHole": HoleNumber,
+    "underParStartHole": HoleNumber,
+    "golferId": PrincipalId,
+    "wontDoubleBogeyStartHole": HoleNumber,
+    "singlePutt2Of3GreensStartHole": HoleNumber,
+    "wontBogeyStartHole": HoleNumber,
+    "parOrUnderStartHole": HoleNumber,
+    "hit2Of3FairwaysStartHole": HoleNumber,
+    "hit2Of3GreensStartHole": HoleNumber,
+    "wontLoseBallStartHole": HoleNumber
+  });
+  const GamePrediction = IDL.Variant({
+    "Mulligans": MulligansPrediction,
+    "BuildIt": IDL.Record({}),
+    "Bands": BandsPrediction,
+    "NextUp": IDL.Record({})
+  });
+  const GolfCourseVersion = IDL.Nat8;
+  const GolfCourseSnapshot = IDL.Record({
+    "courseVersion": GolfCourseVersion,
+    "courseId": GolfCourseId,
+    "teeGroup": TeeGroup
+  });
+  const GolfEvent = IDL.Variant({
+    "Par": IDL.Null,
+    "Scrub": IDL.Null,
+    "DoubleBogey": IDL.Null,
+    "Birdie": IDL.Null,
+    "BallNotLost": IDL.Null,
+    "Bogey": IDL.Null,
+    "HitFairway": IDL.Null,
+    "Albatross": IDL.Null,
+    "HitBunker": IDL.Null,
+    "HitTree": IDL.Null,
+    "HitGreen": IDL.Null,
+    "TakeMulligan": IDL.Null,
+    "HitWater": IDL.Null,
+    "LongestDrive": IDL.Null,
+    "Eagle": IDL.Null,
+    "OnePuttGreen": IDL.Null
+  });
+  const GolferEvent = IDL.Record({
+    "golferId": PrincipalId,
+    "hole": HoleNumber,
+    "event": GolfEvent
+  });
+  const GameDTO = IDL.Record({
+    "id": GameId,
+    "playerIds": IDL.Vec(PrincipalId),
+    "status": GameStatus,
+    "scoreDetail": IDL.Opt(GameScoreDetail),
+    "invites": IDL.Vec(PrincipalId),
+    "predictions": IDL.Vec(GamePrediction),
+    "winner": PrincipalId,
+    "teeOffTime": IDL.Int,
+    "courseSnapshot": GolfCourseSnapshot,
+    "events": IDL.Vec(GolferEvent),
+    "gameType": GameType,
+    "courseId": GolfCourseId
+  });
+  const Result_10 = IDL.Variant({ "ok": GameDTO, "err": Error2 });
+  const GetGolferDTO = IDL.Record({ "golferPrincipalId": PrincipalId });
+  const GameInvite = IDL.Record({
+    "gameId": GameId,
+    "inviteFrom": PrincipalId
+  });
+  const GolferDTO = IDL.Record({
+    "username": IDL.Text,
+    "gameInvites": IDL.Vec(GameInvite),
+    "upcomingGames": IDL.Vec(GameId),
+    "golferPicture": IDL.Opt(IDL.Vec(IDL.Nat8)),
+    "completedGames": IDL.Vec(GameId),
+    "handicap": IDL.Opt(Handicap2),
+    "golferPictureExtension": IDL.Text,
+    "principalId": PrincipalId,
+    "activeGames": IDL.Vec(GameId)
+  });
+  const Result_9 = IDL.Variant({ "ok": GolferDTO, "err": Error2 });
+  const PaginationFilters = IDL.Record({
+    "offset": IDL.Nat,
+    "limit": IDL.Nat
+  });
+  const GolferBuzzDTO = IDL.Record({});
+  const Result_8 = IDL.Variant({ "ok": GolferBuzzDTO, "err": Error2 });
+  const GameSummary = IDL.Record({
+    "status": GameStatus,
+    "date": IDL.Int,
+    "players": IDL.Vec(PrincipalId),
+    "gameType": GameType
+  });
+  const GolferGameSummariesDTO = IDL.Record({
+    "totalEntries": IDL.Nat,
+    "offset": IDL.Nat,
+    "limit": IDL.Nat,
+    "entries": IDL.Vec(GameSummary)
+  });
+  const Result_7 = IDL.Variant({
+    "ok": GolferGameSummariesDTO,
+    "err": Error2
+  });
+  const MyGolferDTO = IDL.Record({
+    "username": IDL.Text,
+    "golferPicture": IDL.Opt(IDL.Vec(IDL.Nat8)),
+    "handicap": IDL.Opt(Handicap2),
+    "golferPictureExtension": IDL.Text,
+    "principalId": PrincipalId
+  });
+  const Result_6 = IDL.Variant({ "ok": MyGolferDTO, "err": Error2 });
+  const UpcomingGamesDTO = IDL.Record({});
+  const Result_5 = IDL.Variant({ "ok": UpcomingGamesDTO, "err": Error2 });
+  const GetYardageSetDTO = IDL.Record({ "yardageSetId": YardageSetId });
+  const YardageSetDTO = IDL.Record({});
+  const Result_4 = IDL.Variant({ "ok": YardageSetDTO, "err": Error2 });
+  const GolfCourseDTO = IDL.Record({
+    "activeVersion": GolfCourseVersion,
+    "name": IDL.Text,
+    "tees": IDL.Vec(TeeGroup),
+    "courseId": GolfCourseId
+  });
+  const CoursesDTO = IDL.Record({ "courses": IDL.Vec(GolfCourseDTO) });
+  const Result_3 = IDL.Variant({ "ok": CoursesDTO, "err": Error2 });
+  const FriendRequestDTO = IDL.Record({
+    "requestTime": IDL.Int,
+    "principalId": PrincipalId
+  });
+  const FriendRequestsDTO = IDL.Record({
+    "friendRequests": IDL.Vec(FriendRequestDTO)
+  });
+  const Result_2 = IDL.Variant({ "ok": FriendRequestsDTO, "err": Error2 });
+  const ListGolfersDTO = IDL.Record({ "searchTerm": IDL.Text });
+  const GolferSummaryDTO = IDL.Record({
+    "golferPrincipalId": PrincipalId,
+    "golferPicture": IDL.Opt(IDL.Vec(IDL.Nat8)),
+    "golferName": IDL.Text,
+    "handicap": IDL.Opt(Handicap2),
+    "golferPictureExtension": IDL.Text
+  });
+  const GolfersDTO = IDL.Record({ "golfers": IDL.Vec(GolferSummaryDTO) });
+  const Result_1 = IDL.Variant({ "ok": GolfersDTO, "err": Error2 });
+  const RejectFriendRequestDTO = IDL.Record({ "requestedBy": PrincipalId });
+  const UpdateGolferPictureDTO = IDL.Record({
+    "golferPicture": IDL.Vec(IDL.Nat8),
+    "golferPictureExtension": IDL.Text
+  });
+  const SendFriendRequestDTO = IDL.Record({ "requestedFriend": PrincipalId });
+  const InviteGolfersDTO = IDL.Record({
+    "gameId": GameId,
+    "invitedGolferIds": IDL.Vec(PrincipalId)
+  });
+  const UpdateGolferDTO = IDL.Record({
+    "username": IDL.Text,
+    "handicap": IDL.Opt(Handicap2)
+  });
+  const UpdateYardageSetDTO = IDL.Record({
+    "clubs": IDL.Vec(YardageClub),
+    "name": IDL.Text,
+    "yardageSetId": YardageSetId
+  });
+  const RustResult = IDL.Variant({ "Ok": IDL.Text, "Err": IDL.Text });
+  return IDL.Service({
+    "acceptFriendRequest": IDL.Func([AcceptFriendRequestDTO], [Result], []),
+    "acceptGameInvite": IDL.Func([AcceptGameInviteDTO], [Result], []),
+    "addGameScore": IDL.Func([AddGameScoreDTO], [Result], []),
+    "beginGame": IDL.Func([BeginGameDTO], [Result], []),
+    "createGame": IDL.Func([CreateGameDTO], [Result], []),
+    "createGolfCourse": IDL.Func([CreateGolfCourseDTO], [Result], []),
+    "createGolfer": IDL.Func([CreateGolferDTO], [Result], []),
+    "createYardageSet": IDL.Func([CreateYardageSetDTO], [Result], []),
+    "deleteGolfCourse": IDL.Func([DeleteGolfCourseDTO], [Result], []),
+    "deleteYardageSet": IDL.Func([DeleteYardageSetDTO], [Result], []),
+    "executeAddGolfCourse": IDL.Func([CreateGolfCourseDTO], [], []),
+    "executeUpdateGolfCourse": IDL.Func([UpdateGolfCourseDTO], [], []),
+    "getGame": IDL.Func([GetGameDTO], [Result_10], []),
+    "getGolfer": IDL.Func([GetGolferDTO], [Result_9], []),
+    "getGolferBuzz": IDL.Func([PaginationFilters], [Result_8], []),
+    "getGolferGameHistory": IDL.Func([PaginationFilters], [Result_7], []),
+    "getMyGames": IDL.Func([PaginationFilters], [Result_7], []),
+    "getMyGolfer": IDL.Func([], [Result_6], []),
+    "getUpcomingGames": IDL.Func([PaginationFilters], [Result_5], []),
+    "getYardageSet": IDL.Func([GetYardageSetDTO], [Result_4], []),
+    "listCourses": IDL.Func([PaginationFilters], [Result_3], []),
+    "listFriendRequests": IDL.Func([PaginationFilters], [Result_2], []),
+    "listGolfers": IDL.Func([ListGolfersDTO], [Result_1], []),
+    "rejectFriendRequest": IDL.Func([RejectFriendRequestDTO], [Result], []),
+    "saveGolferPicture": IDL.Func([UpdateGolferPictureDTO], [Result], []),
+    "sendFriendRequest": IDL.Func([SendFriendRequestDTO], [Result], []),
+    "sendGameInvites": IDL.Func([InviteGolfersDTO], [Result], []),
+    "updateGolfCourse": IDL.Func([UpdateGolfCourseDTO], [Result], []),
+    "updateGolfer": IDL.Func([UpdateGolferDTO], [Result], []),
+    "updateYardageSet": IDL.Func([UpdateYardageSetDTO], [Result], []),
+    "validateAddGolfCourse": IDL.Func(
+      [CreateGolfCourseDTO],
+      [RustResult],
+      ["query"]
+    ),
+    "validateUpdateGolfCourse": IDL.Func(
+      [UpdateGolfCourseDTO],
+      [RustResult],
+      ["query"]
+    )
+  });
+};
+var define_process_env_default$2 = { BACKEND_CANISTER_ID: "bw4dl-smaaa-aaaaa-qaacq-cai", FRONTEND_CANISTER_ID: "b77ix-eeaaa-aaaaa-qaada-cai", DFX_NETWORK: "local" };
+const canisterId = define_process_env_default$2.CANISTER_ID_BACKEND;
+const createActor = (canisterId2, options2 = {}) => {
+  const agent = options2.agent || new HttpAgent({ ...options2.agentOptions });
+  if (options2.agent && options2.agentOptions) {
+    console.warn(
+      "Detected both agent and agentOptions passed to createActor. Ignoring agentOptions and proceeding with the provided agent."
+    );
+  }
+  {
+    agent.fetchRootKey().catch((err) => {
+      console.warn(
+        "Unable to fetch root key. Check to ensure that your local replica is running"
+      );
+      console.error(err);
+    });
+  }
+  return Actor.createActor(idlFactory, {
+    agent,
+    canisterId: canisterId2,
+    ...options2.actorOptions
+  });
+};
+canisterId ? createActor(canisterId) : void 0;
+var define_process_env_default$1 = { BACKEND_CANISTER_ID: "bw4dl-smaaa-aaaaa-qaacq-cai", FRONTEND_CANISTER_ID: "b77ix-eeaaa-aaaaa-qaada-cai", DFX_NETWORK: "local" };
+class ActorFactory {
+  static createActor(idlFactory2, canisterId2 = "", identity = null, options2 = null) {
+    const hostOptions = {
+      host: "http://127.0.0.1:8080",
+      identity
+    };
+    if (!options2) {
+      options2 = {
+        agentOptions: hostOptions
+      };
+    } else if (!options2.agentOptions) {
+      options2.agentOptions = hostOptions;
+    } else {
+      options2.agentOptions.host = hostOptions.host;
     }
-  })}`;
-});
-const Page$a = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
-    default: () => {
-      return `<p data-svelte-h="svelte-1u28trd">Welcome to bands.</p>`;
+    const agent = new HttpAgent({ ...options2.agentOptions });
+    if (define_process_env_default$1.NODE_ENV !== "production") {
+      agent.fetchRootKey().catch((err) => {
+        console.warn(
+          "Unable to fetch root key. Ensure your local replica is running"
+        );
+        console.error(err);
+      });
     }
-  })}`;
-});
-const Page$9 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
-    default: () => {
-      return `<p data-svelte-h="svelte-aq459n">Build It coming soon.</p>`;
+    return Actor.createActor(idlFactory2, {
+      agent,
+      canisterId: canisterId2,
+      ...options2?.actorOptions
+    });
+  }
+  static createIdentityActor(authStore2, canisterId2) {
+    let unsubscribe;
+    return new Promise((resolve2, reject) => {
+      unsubscribe = authStore2.subscribe((store) => {
+        if (store.identity) {
+          resolve2(store.identity);
+        }
+      });
+    }).then((identity) => {
+      unsubscribe();
+      return ActorFactory.createActor(idlFactory, canisterId2, identity);
+    });
+  }
+}
+function isError(response) {
+  return response && response.err !== void 0;
+}
+function getFileExtensionFromFile(file) {
+  const filename = file.name;
+  const lastIndex = filename.lastIndexOf(".");
+  return lastIndex !== -1 ? filename.substring(lastIndex + 1) : "";
+}
+var define_process_env_default = { BACKEND_CANISTER_ID: "bw4dl-smaaa-aaaaa-qaacq-cai", FRONTEND_CANISTER_ID: "b77ix-eeaaa-aaaaa-qaada-cai", DFX_NETWORK: "local" };
+function createUserStore() {
+  const { subscribe: subscribe2, set } = writable(null);
+  async function sync() {
+    let localStorageString = localStorage.getItem("user_data");
+    if (localStorageString && localStorageString != "undefined") {
+      const localUser = JSON.parse(localStorageString);
+      set(localUser);
+      return;
     }
-  })}`;
-});
-const Page$8 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+    try {
+      await cacheUser();
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      throw error;
+    }
+  }
+  async function cacheUser() {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      define_process_env_default.BACKEND_CANISTER_ID
+    );
+    let getUserResponse = await identityActor.getUser();
+    let error = isError(getUserResponse);
+    if (error) {
+      console.error("Error fetching user user");
+      return;
+    }
+    let userData = getUserResponse.ok;
+    set(userData);
+  }
+  async function createUser(username, displayName, profilePicture) {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        define_process_env_default.BACKEND_CANISTER_ID ?? ""
+      );
+      const readFileAsArrayBuffer = (file) => {
+        return new Promise((resolve2, reject) => {
+          const reader = new FileReader();
+          reader.readAsArrayBuffer(file);
+          reader.onloadend = () => {
+            const arrayBuffer = reader.result;
+            resolve2(new Uint8Array(arrayBuffer));
+          };
+          reader.onerror = () => {
+            reject(new Error("Error reading file"));
+          };
+        });
+      };
+      try {
+        var extension = "";
+        const maxPictureSize = 500;
+        if (profilePicture && profilePicture.size > maxPictureSize * 1024) {
+          throw new Error("File size exceeds the limit of 500KB");
+        }
+        if (profilePicture) {
+          extension = getFileExtensionFromFile(profilePicture);
+        }
+        let dto = {
+          username,
+          displayName,
+          profilePicture: profilePicture ? await readFileAsArrayBuffer(profilePicture) : [],
+          profilePictureExtension: extension
+        };
+        const result = await identityActor.createUser(dto);
+        return result;
+      } catch (error) {
+        console.error("Error updating profile picture:", error);
+        throw error;
+      }
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error;
+    }
+  }
+  async function updateUser(updatedUser) {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        define_process_env_default.BACKEND_CANISTER_ID ?? ""
+      );
+      const result = await identityActor.updateUserDetail(updatedUser);
+      sync();
+      return result;
+    } catch (error) {
+      console.error("Error updating user:", error);
+      throw error;
+    }
+  }
+  async function isUsernameTaken(username) {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        define_process_env_default.BACKEND_CANISTER_ID ?? ""
+      );
+      const result = await identityActor.isUsernameTaken(username);
+      return result;
+    } catch (error) {
+      console.error("Error getting user:", error);
+      throw error;
+    }
+  }
+  async function updateUserPicture(picture) {
+    try {
+      const maxPictureSize = 1e3;
+      if (picture.size > maxPictureSize * 1024) {
+        return null;
+      }
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(picture);
+      reader.onloadend = async () => {
+        const arrayBuffer = reader.result;
+        const uint8Array = new Uint8Array(arrayBuffer);
+        try {
+          const identityActor = await ActorFactory.createIdentityActor(
+            authStore,
+            define_process_env_default.BACKEND_CANISTER_ID ?? ""
+          );
+          const result = await identityActor.updateUserPicture(uint8Array);
+          sync();
+          return result;
+        } catch (error) {
+          console.error(error);
+        }
+      };
+    } catch (error) {
+      console.error("Error updating username:", error);
+      throw error;
+    }
+  }
+  return {
+    subscribe: subscribe2,
+    sync,
+    createUser,
+    updateUser,
+    updateUserPicture,
+    isUsernameTaken
+  };
+}
+const userStore = createUserStore();
+const userGetAgentPicture = derived(
+  userStore,
+  (user) => user !== null && user !== void 0 && user.userPicture !== void 0 && user.userPicture.length > 0 ? URL.createObjectURL(new Blob([new Uint8Array(user.userPicture)])) : "placeholder.png"
+);
+const Page$5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $authSignedInStore, $$unsubscribe_authSignedInStore;
+  let $userGetAgentPicture, $$unsubscribe_userGetAgentPicture;
+  $$unsubscribe_authSignedInStore = subscribe(authSignedInStore, (value) => $authSignedInStore = value);
+  $$unsubscribe_userGetAgentPicture = subscribe(userGetAgentPicture, (value) => $userGetAgentPicture = value);
+  $$unsubscribe_authSignedInStore();
+  $$unsubscribe_userGetAgentPicture();
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<p data-svelte-h="svelte-1qr7k1">Call It coming soon.</p>`;
+      return `<div class="z-10 px-4 text-center"><h1 class="mb-1 font-bold text-GolfPadForest" data-svelte-h="svelte-h9sgsu">WELCOME TO <span class="condensed">GOLFPAD</span></h1> <h2 class="mx-16 mb-6 text-3xl font-black leading-tight text-black md:text-6xl condensed" data-svelte-h="svelte-b01hg0">THE FUTURE OF GOLF STARTS HERE</h2> ${!$authSignedInStore ? `<button class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow" data-svelte-h="svelte-1xn4nag">CONNECT</button>` : ``} ${$authSignedInStore ? `<img${add_attribute("src", $userGetAgentPicture, 0)} alt="Profile" class="profile-pic-bottom-right" aria-label="Toggle Profile"> <button class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow" data-svelte-h="svelte-i01x5w">SIGN OUT</button>` : ``} <style data-svelte-h="svelte-ylwaj7">.profile-pic-bottom-right {
+        position: fixed;
+        bottom: 10px; 
+        right: 10px; 
+        width: 50px;  
+        height: auto; 
+        border-radius: 50%; 
+    }</style></div> <div class="absolute bottom-0 left-0 z-0 w-full" data-svelte-h="svelte-1m4zgpi"><img src="golfball_mobile.png" alt="Golf Ball" class="object-cover w-full h-auto md:hidden"> <img src="golfball.png" alt="Golf Ball" class="hidden object-cover w-full h-auto md:flex"></div>`;
     }
   })}`;
 });
@@ -3913,7 +4460,7 @@ const css$1 = {
   code: "button.svelte-18ue7le{transition:color 0.3s, border-color 0.3s}",
   map: `{"version":3,"file":"+page.svelte","sources":["+page.svelte"],"sourcesContent":["<script lang=\\"ts\\">import { onMount } from \\"svelte\\";\\nimport { writable } from \\"svelte/store\\";\\nimport Layout from \\"../Layout.svelte\\";\\nonMount(() => {\\n    window.scrollTo(0, 0);\\n});\\nconst selectedGame = writable(\\"Mulligans\\");\\n<\/script>\\n\\n<Layout>\\n    <div class=\\"p-4 text-black w-full max-w-4xl mx-auto\\">\\n        <h2 class=\\"text-2xl md:text-4xl font-black text-black mb-6 mt-3\\">\\n            GAMEPLAY RULES\\n        </h2>\\n\\n        <p class=\\"text-base md:text-lg leading-relaxed mb-6\\">\\n            Choose a game from the tabs below to view its specific rules. Understanding these rules is essential to ensure fair play and enjoyment for everyone involved.\\n        </p>\\n\\n        <div class=\\"border-b border-gray-300 mb-4\\">\\n            <div class=\\"flex flex-wrap space-x-2 md:space-x-4 overflow-x-auto\\">\\n                <button\\n                    class=\\"text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 {($selectedGame === 'Mulligans') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-blue-500'}\\"\\n                    on:click={() => selectedGame.set('Mulligans')}\\n                >\\n                <span class=\\"condensed\\">MULLIGANS</span>\\n                </button>\\n                <button\\n                    class=\\"text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 {($selectedGame === 'Bands') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-blue-500'}\\"\\n                    on:click={() => selectedGame.set('Bands')}\\n                >\\n                <span class=\\"condensed\\">BANDS</span>\\n                </button>\\n                <button\\n                    class=\\"text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 {($selectedGame === 'Build It') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-blue-500'}\\"\\n                    on:click={() => selectedGame.set('Build It')}\\n                >\\n                <span class=\\"condensed\\">BUILD IT</span>\\n                </button>\\n                <button\\n                    class=\\"text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 {($selectedGame === 'Next Up') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-blue-500'}\\"\\n                    on:click={() => selectedGame.set('Next Up')}\\n                >\\n                <span class=\\"condensed\\">NEXT UP</span>\\n                </button>\\n            </div>\\n        </div>\\n\\n        <div class=\\"bg-white p-4 md:p-6 rounded-lg shadow-lg\\">\\n            {#if $selectedGame === 'Mulligans'}\\n                <div class=\\"flex flex-col md:flex-row items-center mb-4\\">\\n                    <img src=\\"mulligans.png\\" alt=\\"mulligans\\" class=\\"w-full h-32 md:w-20 md:h-20 rounded-lg object-cover object-center md:object-contain mb-4 md:mb-0 md:mr-4\\" />\\n                    <h3 class=\\"text-xl md:text-2xl condensed\\">MULLIGANS</h3>\\n                </div>\\n                <ul class=\\"list-disc list-inside text-sm md:text-base text-gray-700 space-y-2\\">\\n                    <li>A golfer receives a mulligan every 3 holes, specifically the 1st, 4th, 7th, 10th, 13th and 16th holes.</li>\\n                    <li>Golfers play each hole in match play format, with scores adjusted by handicap.</li>\\n                    <li>If a golfer wins a hole a mulligan is added to their available mulligans.</li>\\n                    <li>A golfer can use as many mulligans as they have available on any hole.</li>\\n                    <li>A golfer can build up as many mulligans as they can.</li>\\n                    <li>The game is decided when a golfer is winning by more holes than are available to play.</li>\\n                </ul>\\n            {/if}\\n\\n            {#if $selectedGame === 'Bands'}\\n                <div class=\\"flex flex-col md:flex-row items-center mb-4\\">\\n                    <img src=\\"bands.png\\" alt=\\"bands\\" class=\\"w-full h-32 md:w-20 md:h-20 rounded-lg object-cover object-center md:object-contain mb-4 md:mb-0 md:mr-4\\" />\\n                    <h3 class=\\"text-xl md:text-2xl condensed\\">BANDS</h3>\\n                </div>\\n                <p class=\\"text-sm md:text-base text-gray-700 mb-4\\">\\n                    Before a match, a golfer makes selections of 3 hole bands for each of the 9 game categories. \\n                    Each band must start on a different hole but they are allowed to overlap.\\n                </p>\\n\\n                <p class=\\"text-sm md:text-base text-gray-700 mb-4\\">\\n                    The points for each band are as follows:\\n                </p>\\n\\n                <ul class=\\"list-disc list-inside text-sm md:text-base text-gray-700 space-y-2\\">\\n                    <li><span class=\\"semi-bold\\">Band 1:</span> Holes where you don’t hit a tree or enter a bunker. <span class=\\"semi-bold\\">15 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 2:</span> Holes where you won’t lose a ball. <span class=\\"semi-bold\\">10 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 3:</span> Holes where you hit 2/3 fairways. <span class=\\"semi-bold\\">20 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 4:</span> Holes where you hit 2/3 greens. <span class=\\"semi-bold\\">25 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 5:</span> Holes where you will 1-putt 2/3 greens. <span class=\\"semi-bold\\">30 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 6:</span> Holes where you won’t get a double bogey or worse. <span class=\\"semi-bold\\">35 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 7:</span> Holes where you won’t bogey or worse. <span class=\\"semi-bold\\">40 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 8:</span> Holes where you’ll be par or under. <span class=\\"semi-bold\\">45 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 9:</span> Holes where you’ll be under par. <span class=\\"semi-bold\\">50 points</span></li>\\n                </ul>\\n                <p class=\\"text-sm md:text-base text-gray-700 mt-4\\">\\n                    A golfer can get a maximum possible total score of 270. Golfers receive the points for each band they achieve. The winner is the golfer with the most points at the end of the round.\\n                </p>\\n            {/if}\\n\\n\\n            {#if $selectedGame === 'Build It'}\\n                <div class=\\"flex flex-col md:flex-row items-center mb-4\\">\\n                    <img src=\\"build-it.png\\" alt=\\"build-it\\" class=\\"w-full h-32 md:w-20 md:h-20 rounded-lg object-cover object-center md:object-contain mb-4 md:mb-0 md:mr-4\\" />\\n                    <h3 class=\\"text-xl md:text-2xl condensed\\">BUILD IT</h3>\\n                </div>\\n                <ul class=\\"list-disc list-inside text-sm md:text-base text-gray-700 space-y-2\\">\\n                    <li>A golfer can create a team in which they can compete against multiple other teams.</li>\\n                    <li>The golfer who created the team becomes the team's captain.</li>\\n                    <li>A team captain sets up a game on a specific course and tee to compete against other teams.</li>\\n                    <li>A team captain invites other team's to join in a new game.</li>\\n                    <li>A team captain selects a period of time to build their team card over.</li>\\n                    <li>Golfers add their scorecards transferring any new lowest scores over to the team card.</li>\\n                    <li>The winners are the team with the lowest scorecard at the end of the game's duration.</li>\\n                </ul>\\n            {/if}\\n\\n            {#if $selectedGame === 'Next Up'}\\n                <div class=\\"flex flex-col md:flex-row items-center mb-4\\">\\n                    <img src=\\"next-up.png\\" alt=\\"next-up\\" class=\\"w-full h-32 md:w-20 md:h-20 rounded-lg object-cover object-center md:object-contain mb-4 md:mb-0 md:mr-4\\" />\\n                    <h3 class=\\"text-xl md:text-2xl condensed\\">NEXT UP</h3>\\n                </div>\\n                <ul class=\\"list-disc list-inside text-sm md:text-base text-gray-700 space-y-2\\">\\n                    <li>Each golfer is assigned a random tee box, denoting the hole in which they must win.</li>\\n                    <li>If a golfer wins the hole they are defending, they get 3 points.</li>\\n                    <li>If a golfer wins a hole they are not defending, they get 1 point.</li>\\n                    <li>The winner is the golfer with the most points at the end of the round.</li>\\n                    <li>If the number of holes is not divisible by the number of players without a remainder, the holes are divided up and the remaining holes are assigned to the lowest scoring player who can potentially win.</li>\\n                </ul>\\n            {/if}\\n        </div>\\n    </div>\\n</Layout>\\n\\n<style>\\n    button {\\n        transition: color 0.3s, border-color 0.3s;\\n    }</style>\\n"],"names":[],"mappings":"AAiII,qBAAO,CACH,UAAU,CAAE,KAAK,CAAC,IAAI,CAAC,CAAC,YAAY,CAAC,IACzC"}`
 };
-const Page$7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $selectedGame, $$unsubscribe_selectedGame;
   const selectedGame = writable("Mulligans");
   $$unsubscribe_selectedGame = subscribe(selectedGame, (value) => $selectedGame = value);
@@ -3938,46 +4485,17 @@ const Page$7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     }
   })}`;
 });
-const Page$6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
-    default: () => {
-      return `<p data-svelte-h="svelte-pqh7oa">Mulligans coming soon.</p>`;
-    }
-  })}`;
-});
-const Page$5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
-    default: () => {
-      return `${``} <div class="p-4"><div class="flex flex-col bg-GolfPadYellow rounded-md rounded-b-lg"><div class="flex flex-row items-center px-4 border-b border-b-GolfPadGreen justify-between"><div class="flex items-center">${validate_component(Logo_icon, "LogoIcon").$$render(
-        $$result,
-        {
-          fill: "#FFFFFF",
-          className: "w-8 mr-2 my-2"
-        },
-        {},
-        {}
-      )} <p class="text-base text-GolfPadBlue" data-svelte-h="svelte-t7pz22">My Games</p></div> <button class="btn-add my-2" data-svelte-h="svelte-4jr5rl">New Game</button></div> <div class="w-full bg-GolfPadGreen p-4 rounded-b-md flex flex-col text-sm" data-svelte-h="svelte-1n33snh"><div class="flex flex-row space-x-2"><div class="w-1/12"><p>Date</p></div> <div class="w-2/12"><p>Game</p></div> <div class="w-3/12"><p>Course</p></div> <div class="w-4/12"><p>Golfers</p></div> <div class="w-1/12"><p>Result</p></div> <div class="w-1/12"><p></p></div></div> <div class="horizontal-divider my-2"></div> <p>No data.</p> <div class="horizontal-divider my-2"></div></div></div></div>`;
-    }
-  })}`;
-});
-const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
-    default: () => {
-      return `<p data-svelte-h="svelte-1yaqo4i">Next Up coming soon.</p>`;
-    }
-  })}`;
-});
 const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="p-4"><div class="flex flex-row items-center">${validate_component(Logo_icon, "LogoIcon").$$render($$result, { fill: "#FFFFFF", className: "w-6 mr-2" }, {}, {})} <p class="text-xl" data-svelte-h="svelte-14za60w">Profile Coming Soon</p></div></div>`;
+      return `<div class="w-full max-w-4xl p-4 mx-auto text-black" data-svelte-h="svelte-bces61"><h2 class="mt-3 mb-6 text-2xl font-black text-black md:text-4xl">MY GAMES</h2></div>`;
     }
   })}`;
 });
 const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<p data-svelte-h="svelte-c22g1c">Prohphet coming soon.</p>`;
+      return `<div class="p-4"><div class="flex flex-row items-center">${validate_component(Logo_icon, "LogoIcon").$$render($$result, { fill: "#FFFFFF", className: "w-6 mr-2" }, {}, {})} <p class="text-xl" data-svelte-h="svelte-14za60w">Profile Coming Soon</p></div></div>`;
     }
   })}`;
 });
@@ -4204,7 +4722,7 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 export {
   Error$1 as E,
   Layout$1 as L,
-  Page$b as P,
+  Page$5 as P,
   Server as S,
   set_building as a,
   set_manifest as b,
@@ -4214,17 +4732,11 @@ export {
   set_read_implementation as f,
   get_hooks as g,
   set_safe_public_env as h,
-  Page$a as i,
-  Page$9 as j,
-  Page$8 as k,
-  Page$7 as l,
-  Page$6 as m,
-  Page$5 as n,
+  Page$4 as i,
+  Page$3 as j,
+  Page$2 as k,
+  Page$1 as l,
+  Page as m,
   options as o,
-  Page$4 as p,
-  Page$3 as q,
-  Page$2 as r,
-  set_assets as s,
-  Page$1 as t,
-  Page as u
+  set_assets as s
 };

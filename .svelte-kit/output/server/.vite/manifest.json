@@ -15,7 +15,7 @@
       "_vendor.js"
     ],
     "css": [
-      "_app/immutable/assets/index.BtJ9TXoC.css"
+      "_app/immutable/assets/index.DtZnf5IX.css"
     ]
   },
   "_vendor.js": {
@@ -58,33 +58,6 @@
       "_index.js"
     ]
   },
-  "src/frontend/src/routes/bands-new/+page.svelte": {
-    "file": "entries/pages/bands-new/_page.svelte.js",
-    "name": "entries/pages/bands-new/_page.svelte",
-    "src": "src/frontend/src/routes/bands-new/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_index.js"
-    ]
-  },
-  "src/frontend/src/routes/build-it-new/+page.svelte": {
-    "file": "entries/pages/build-it-new/_page.svelte.js",
-    "name": "entries/pages/build-it-new/_page.svelte",
-    "src": "src/frontend/src/routes/build-it-new/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_index.js"
-    ]
-  },
-  "src/frontend/src/routes/call-it-new/+page.svelte": {
-    "file": "entries/pages/call-it-new/_page.svelte.js",
-    "name": "entries/pages/call-it-new/_page.svelte",
-    "src": "src/frontend/src/routes/call-it-new/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_index.js"
-    ]
-  },
   "src/frontend/src/routes/game-rules/+page.svelte": {
     "file": "entries/pages/game-rules/_page.svelte.js",
     "name": "entries/pages/game-rules/_page.svelte",
@@ -94,28 +67,10 @@
       "_index.js"
     ]
   },
-  "src/frontend/src/routes/mulligans-new/+page.svelte": {
-    "file": "entries/pages/mulligans-new/_page.svelte.js",
-    "name": "entries/pages/mulligans-new/_page.svelte",
-    "src": "src/frontend/src/routes/mulligans-new/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_index.js"
-    ]
-  },
-  "src/frontend/src/routes/my-games/+page.svelte": {
-    "file": "entries/pages/my-games/_page.svelte.js",
-    "name": "entries/pages/my-games/_page.svelte",
-    "src": "src/frontend/src/routes/my-games/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_index.js"
-    ]
-  },
-  "src/frontend/src/routes/next-up-new/+page.svelte": {
-    "file": "entries/pages/next-up-new/_page.svelte.js",
-    "name": "entries/pages/next-up-new/_page.svelte",
-    "src": "src/frontend/src/routes/next-up-new/+page.svelte",
+  "src/frontend/src/routes/games/+page.svelte": {
+    "file": "entries/pages/games/_page.svelte.js",
+    "name": "entries/pages/games/_page.svelte",
+    "src": "src/frontend/src/routes/games/+page.svelte",
     "isEntry": true,
     "imports": [
       "_index.js"
@@ -125,15 +80,6 @@
     "file": "entries/pages/profile/_page.svelte.js",
     "name": "entries/pages/profile/_page.svelte",
     "src": "src/frontend/src/routes/profile/+page.svelte",
-    "isEntry": true,
-    "imports": [
-      "_index.js"
-    ]
-  },
-  "src/frontend/src/routes/prophet-new/+page.svelte": {
-    "file": "entries/pages/prophet-new/_page.svelte.js",
-    "name": "entries/pages/prophet-new/_page.svelte",
-    "src": "src/frontend/src/routes/prophet-new/+page.svelte",
     "isEntry": true,
     "imports": [
       "_index.js"
