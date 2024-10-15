@@ -47,7 +47,7 @@
 }
 
 .times-button {
-  @apply text-black text-3xl;
+  @apply text-3xl text-black;
 }
 
 input[type="file"] {
@@ -76,8 +76,8 @@ input[type="file"] {
 }
 
 input {
-  background-color: #194b63 !important;
-  color: white !important;
+  background-color: #194b63;
+  color: white;
 }
 
 /* Extra small devices (portrait phones, less than 480px) */
@@ -124,18 +124,18 @@ input {
 
 .horizontal-divider {
   min-height: 2px;
-  @apply flex-shrink-0 h-px bg-GolfPadGreen self-stretch;
+  @apply self-stretch flex-shrink-0 h-px bg-GolfPadGreen;
 }
 
 .horizontal-divider-dark {
   min-height: 2px;
-  @apply flex-shrink-0 h-px bg-GolfPadDarkGreen self-stretch;
+  @apply self-stretch flex-shrink-0 h-px bg-GolfPadDarkGreen;
 }
 
 .btn-view {
-  @apply bg-GolfPadDarkGreen px-4 py-2 rounded-md border border-GolfPadDarkGreen;
+  @apply px-4 py-2 border rounded-md bg-GolfPadDarkGreen border-GolfPadDarkGreen;
 }
 
 .btn-add {
-  @apply bg-GolfPadDarkGreen px-4 py-2 rounded-md border border-GolfPadDarkGreen;
+  @apply px-4 py-2 border rounded-md bg-GolfPadDarkGreen border-GolfPadDarkGreen;
 }

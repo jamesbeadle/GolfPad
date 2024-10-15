@@ -1,8 +1,10 @@
 {
   "backend": {
-    "ic": "elbip-aiaaa-aaaal-qjfhq-cai"
+    "ic": "elbip-aiaaa-aaaal-qjfhq-cai",
+    "local": "bkyz2-fmaaa-aaaaa-qaaaq-cai"
   },
   "frontend": {
-    "ic": "gw4gh-taaaa-aaaal-qjfia-cai"
+    "ic": "gw4gh-taaaa-aaaal-qjfia-cai",
+    "local": "bd3sg-teaaa-aaaaa-qaaba-cai"
   }
 }

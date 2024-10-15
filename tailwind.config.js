@@ -36,7 +36,8 @@ export default {
       "4xl": "2.441rem",
       "5xl": "3.052rem",
       "6xl": "6.104rem",
-      cta: "6rem",
+      "7xl": "8.000rem",
+      cta: "7rem",
     },
     extend: {
       colors: {

@@ -1,6 +1,6 @@
 import { authStore, type AuthSignInParams } from "$lib/stores/auth-store";
 import type { ToastMsg } from "$lib/types/toast";
-import { replaceHistory } from "$lib/utils/route.utils";
+import { replaceHistory } from "$lib/utils/route-utils";
 import type { ToastLevel } from "@dfinity/gix-components";
 import { busyStore } from "@dfinity/gix-components";
 import { isNullish } from "@dfinity/utils";

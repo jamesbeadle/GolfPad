@@ -107,7 +107,6 @@
 
 
 <style>
-    /* Example button styling */
     .btn {
         padding: 10px 20px;
         font-weight: bold;

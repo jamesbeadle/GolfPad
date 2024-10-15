@@ -1,6 +1,6 @@
 <script>
   export let className = "";
-  export let fill = ""
+  export const fill = ""
 </script>
 <svg class={className} width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
   <circle cx="60" cy="60" r="60" fill="white"/>

@@ -1,6 +1,6 @@
 <script>
     export let className = 'w-6';
-    export let fill = '#FFFFFF';
+    export const fill = '#FFFFFF';
   </script>
 
 <svg class={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

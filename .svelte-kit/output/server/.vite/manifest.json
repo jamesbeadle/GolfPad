@@ -15,26 +15,26 @@
       "_vendor.js"
     ],
     "css": [
-      "_app/immutable/assets/index.DtZnf5IX.css"
+      "_app/immutable/assets/index.kirncAzC.css"
     ]
   },
   "_vendor.js": {
     "file": "chunks/vendor.js",
     "name": "vendor"
   },
-  "node_modules/@sveltejs/kit/src/runtime/components/error.svelte": {
+  "node_modules/@sveltejs/kit/src/runtime/components/svelte-4/error.svelte": {
     "file": "entries/fallbacks/error.svelte.js",
     "name": "entries/fallbacks/error.svelte",
-    "src": "node_modules/@sveltejs/kit/src/runtime/components/error.svelte",
+    "src": "node_modules/@sveltejs/kit/src/runtime/components/svelte-4/error.svelte",
     "isEntry": true,
     "imports": [
       "_index.js"
     ]
   },
-  "node_modules/@sveltejs/kit/src/runtime/components/layout.svelte": {
+  "node_modules/@sveltejs/kit/src/runtime/components/svelte-4/layout.svelte": {
     "file": "entries/fallbacks/layout.svelte.js",
     "name": "entries/fallbacks/layout.svelte",
-    "src": "node_modules/@sveltejs/kit/src/runtime/components/layout.svelte",
+    "src": "node_modules/@sveltejs/kit/src/runtime/components/svelte-4/layout.svelte",
     "isEntry": true,
     "imports": [
       "_index.js"
@@ -71,6 +71,15 @@
     "file": "entries/pages/games/_page.svelte.js",
     "name": "entries/pages/games/_page.svelte",
     "src": "src/frontend/src/routes/games/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "src/frontend/src/routes/games/mulligans/+page.svelte": {
+    "file": "entries/pages/games/mulligans/_page.svelte.js",
+    "name": "entries/pages/games/mulligans/_page.svelte",
+    "src": "src/frontend/src/routes/games/mulligans/+page.svelte",
     "isEntry": true,
     "imports": [
       "_index.js"
