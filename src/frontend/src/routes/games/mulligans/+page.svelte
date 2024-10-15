@@ -2,10 +2,7 @@
     import ShowSelectGameModal from "$lib/components/games/show-select-game-modal.svelte";
     import Layout from "../../Layout.svelte";
     import Select from 'svelte-select';
-    import  FaIcon  from 'svelte-fa';
-    import { faCheck } from '@fortawesome/free-solid-svg-icons';
     import { goto } from "$app/navigation";
-
     //TODO Needs to actually get course, tee and opponents from backend then save game when created
     type Course = {
         value: string;
@@ -149,9 +146,9 @@
                         <svelte:fragment slot="item" let:item > <!-- Custom rendering for items -->
                                 <div class="flex items-center justify-between w-full p-2">
                                     <span>{item.name}</span>
-                                    {#if isSelected (item)}
+                                   <!--  {#if isSelected (item)}
                                         <FaIcon icon={faCheck} class="text-green-500" />
-                                    {/if}
+                                    {/if} -->
                                 </div>
                         </svelte:fragment>
                     </Select>
