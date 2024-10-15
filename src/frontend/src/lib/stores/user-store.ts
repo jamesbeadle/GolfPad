@@ -1,8 +1,9 @@
 import { authStore } from "$lib/stores/auth-store";
 import { writable } from "svelte/store";
 import type {
-  CreateUserDTO,
-  UpdateUserDTO,
+  MyGolferDTO,
+  PrincipalId,
+  UpdateGolferDTO,
 } from "../../../../declarations/backend/backend.did";
 import { ActorFactory } from "../utils/actor-factory";
 import { getFileExtensionFromFile, isError } from "$lib/utils/helpers";
@@ -45,8 +46,9 @@ function createUserStore() {
 
   async function createUser(
     username: string,
-    displayName: string,
+    handicap: [number] | [],
     profilePicture: File | null,
+    principalId: PrincipalId,
   ): Promise<any> {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
@@ -79,13 +81,14 @@ function createUserStore() {
           extension = getFileExtensionFromFile(profilePicture);
         }
 
-        let dto: CreateUserDTO = {
+        let dto: MyGolferDTO = {
           username: username,
-          displayName: displayName,
-          profilePicture: profilePicture
-            ? await readFileAsArrayBuffer(profilePicture)
+          handicap: handicap,
+          golferPicture: profilePicture
+            ? [await readFileAsArrayBuffer(profilePicture)]
             : [],
-          profilePictureExtension: extension,
+          golferPictureExtension: extension,
+          principalId: principalId,
         };
 
         const result = await identityActor.createUser(dto);
@@ -100,7 +103,7 @@ function createUserStore() {
     }
   }
 
-  async function updateUser(updatedUser: UpdateUserDTO): Promise<any> {
+  async function updateUser(updatedUser: UpdateGolferDTO): Promise<any> {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,

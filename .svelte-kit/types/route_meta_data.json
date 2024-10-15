@@ -1,6 +1,9 @@
 {
 	"/": [],
 	"/game-rules": [],
+	"/games": [],
+	"/games/mulligans": [],
+	"/games/mulligans/[gameId]": [],
 	"/profile": [],
 	"/team": [],
 	"/whitepaper": []

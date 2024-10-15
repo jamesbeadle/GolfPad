@@ -3,7 +3,7 @@ import type {
   PostMessage,
   PostMessageDataRequest,
 } from "$lib/types/post-message";
-import { createAuthClient } from "$lib/utils/auth.utils";
+import { createAuthClient } from "$lib/utils/auth-utils";
 import {
   IdbStorage,
   KEY_STORAGE_DELEGATION,

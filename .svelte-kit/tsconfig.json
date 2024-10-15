@@ -40,7 +40,10 @@
 	"exclude": [
 		"../node_modules/**",
 		"../src/frontend/src/service-worker.js",
+		"../src/frontend/src/service-worker/**/*.js",
 		"../src/frontend/src/service-worker.ts",
-		"../src/frontend/src/service-worker.d.ts"
+		"../src/frontend/src/service-worker/**/*.ts",
+		"../src/frontend/src/service-worker.d.ts",
+		"../src/frontend/src/service-worker/**/*.d.ts"
 	]
 }

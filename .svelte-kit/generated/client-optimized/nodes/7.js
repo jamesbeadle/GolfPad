@@ -1,1 +1,1 @@
-export { default as component } from "../../../../src/frontend/src/routes/mulligans-new/+page.svelte";
+export { default as component } from "../../../../src/frontend/src/routes/team/+page.svelte";

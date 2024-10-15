@@ -1,8 +1,8 @@
 <script lang="ts">
     import { authSignedInStore } from "$lib/derived/auth-derived";
-import LogoIcon from "$lib/icons/logo-icon.svelte";
+    import LogoIcon from "$lib/icons/logo-icon.svelte";
     import { authStore, type AuthSignInParams } from "$lib/stores/auth-store";
-import Layout from "./Layout.svelte";
+    import Layout from "./Layout.svelte";
     import { userGetAgentPicture } from "$lib/derived/user-derived";
 
     function handleLogin() {
@@ -40,22 +40,22 @@ import Layout from "./Layout.svelte";
             aria-label="Toggle Profile"
         />
         <button 
-        class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow"
-        on:click={handleLogout}
-    >
-    SIGN OUT
-    </button>
+            class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow"
+            on:click={handleLogout}
+        >
+            SIGN OUT
+        </button>
     {/if}
 
     <style>
-    .profile-pic-bottom-right {
-        position: fixed;
-        bottom: 10px; 
-        right: 10px; 
-        width: 50px;  
-        height: auto; 
-        border-radius: 50%; 
-    }
+        .profile-pic-bottom-right {
+            position: fixed;
+            bottom: 10px; 
+            right: 10px; 
+            width: 50px;  
+            height: auto; 
+            border-radius: 50%; 
+        }
     </style>
     
 </div>

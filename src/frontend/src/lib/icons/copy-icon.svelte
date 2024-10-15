@@ -1,6 +1,6 @@
 <script>
   export let className = '';
-  export let fill = '';
+  export const fill = '';
 </script>
 
 <svg
