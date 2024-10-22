@@ -50,6 +50,17 @@ export default {
         GolfPadLightGreen: "#D9FAF1",
         GolfPadDarkRed: "#7A3F2D",
       },
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],
+      },
+      fontSize: {
+        body: ["16px", "22.4px"], // font-size and line-height
+      },
+      fontWeight: {
+        light: "300",
+        med: "400",
+        sub: "600",
+      },
     },
   },
   plugins: [],

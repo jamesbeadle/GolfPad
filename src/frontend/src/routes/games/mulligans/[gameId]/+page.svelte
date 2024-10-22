@@ -2,8 +2,11 @@
     import { onMount } from "svelte";
     import Layout from "../../../Layout.svelte";
     import { goto } from "$app/navigation";
+    import ShowSelectGameModal from "$lib/components/games/show-select-game-modal.svelte";
     
     export let params;
+
+    let showNewGameModal = false;
 
     interface Player {
         name: string;
@@ -13,7 +16,7 @@
         mulligans: number;
     }
 
-    let gameStatus ='live';
+    let gameStatus ='completed';
     let winner: string = '';
 
     let playerHoleScores = [
@@ -44,7 +47,19 @@
     function handlePreviousHole() {
         //TODO get golf course info
     }
+    function openGameModal() {
+        showNewGameModal = true;
+    }
 
+    function closeGameModal() {
+        showNewGameModal = false;
+    }
+
+    function handleGameSelection(event: CustomEvent) {
+        const gameChoice = event.detail;
+        closeGameModal();
+        goto(`/${gameChoice}-new`);
+    }
 </script>
 
 <Layout>
@@ -137,9 +152,10 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <button class="btn btn-new-game" on:click={() => goto(`/games/mulligans/${generateGameId()}`)}>
-                                New Game
-                            </button>
+                            <button on:click={openGameModal} class="btn btn-new-game">New Game</button>
+                                {#if showNewGameModal}
+                                    <ShowSelectGameModal visible={showNewGameModal} closeModal={closeGameModal} on:gameSelected={handleGameSelection} />
+                                {/if}
                         </div>
                     {:else if gameStatus === 'live'}
                         <div class="flex items-center px-4 mt-4 mb-2 space-x-4 bg-white rounded-md player-details">
@@ -152,7 +168,6 @@
                                         style="color: {player.isWinning ? '#000' : '#888'};">{player.score}
                                     </p>
                                  </div>
-                                <!-- Add vertical divider between players, but not after the last one -->
                                 {#if index < players.length - 1}
                                     <div class="h-20 mt-2 border-l-2" style="border-color: #F3F3F3;"></div>
                                 {/if}

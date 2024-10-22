@@ -15,7 +15,7 @@
       "_vendor.js"
     ],
     "css": [
-      "_app/immutable/assets/index.kirncAzC.css"
+      "_app/immutable/assets/index.BUAW2T5S.css"
     ]
   },
   "_vendor.js": {
@@ -80,6 +80,15 @@
     "file": "entries/pages/games/mulligans/_page.svelte.js",
     "name": "entries/pages/games/mulligans/_page.svelte",
     "src": "src/frontend/src/routes/games/mulligans/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "src/frontend/src/routes/games/mulligans/[gameId]/+page.svelte": {
+    "file": "entries/pages/games/mulligans/_gameId_/_page.svelte.js",
+    "name": "entries/pages/games/mulligans/_gameId_/_page.svelte",
+    "src": "src/frontend/src/routes/games/mulligans/[gameId]/+page.svelte",
     "isEntry": true,
     "imports": [
       "_index.js"

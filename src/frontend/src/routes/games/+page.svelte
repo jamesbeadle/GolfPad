@@ -21,7 +21,6 @@
             console.error("Failed to fetch golfer game summaries:", err);
         }
     });
-    //TODO needs to be more like figma
     function openGameModal() {
         showNewGameModal = true;
     }
