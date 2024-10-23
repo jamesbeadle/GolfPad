@@ -66,7 +66,7 @@
     <div class="w-full">
         <div class="w-full p-2 px-4 text-black">
             <div class="flex items-center justify-between">
-                <h2 class="mt-1 text-3xl font-black text-black md:text-5xl condensed">GAME DETAILS</h2>
+                <h2 class="mt-1 text-3xl font-black text-black md:text-5xl condensed"style="margin-left:10px;">GAME DETAILS</h2>
                 {#if gameStatus === 'live'}
                     <div class="flex items-center">
                         <div class="w-3 h-3 bg-green-500 rounded-full"></div>
