@@ -114,8 +114,8 @@
     }
 
     .btn-new-game {
-        background-color: #f6c200;
-        color: #1C4932;
+        background-color: theme('colors.GolfPadYellow');
+        color: theme('colors.GolfPadForest');
         border: none;
     }
 

@@ -188,8 +188,8 @@
   }
 
   .select-button {
-      background-color: #1C4932;
-      color: #F4C802;
+      background-color: theme('colors.GolfPadForest');
+      color: theme('colors.GolfPadYellow');
       padding: 10px 20px;
       border: none;
       border-radius: 5px;

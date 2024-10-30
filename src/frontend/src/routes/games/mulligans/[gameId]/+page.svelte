@@ -16,7 +16,7 @@
         mulligans: number;
     }
 
-    let gameStatus ='completed';
+    let gameStatus ='live';
     let winner: string = '';
 
     let playerHoleScores = [
@@ -267,18 +267,18 @@
         text-align: center;
     }
     .btn-new-game {
-        background-color: #f6c200;
-        color: #1C4932;
+        background-color: theme('colors.GolfPadYellow');;
+        color: theme('colors.GolfPadForest');
         border: none;
         width: 400px;
     }
     .btn-new-game:hover {
-        background-color: #e4c013; /* Darker yellow on hover */
-        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2); /* More shadow on hover */
+        background-color: #e4c013;
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2); 
     }
     .btn-use{
-        background-color: #1C4932;
-        color: #F4C802;
+        background-color: theme('colors.GolfPadForest');;
+        color: theme('colors.GolfPadYellow');
         border: none;
         border-radius: 12px;
         min-width: 80px;
@@ -292,15 +292,15 @@
         text-align: center;
     }
     .btn-next {
-        background-color: #F4C802;
-        color: #1C4932;
+        background-color: theme('colors.GolfPadYellow');
+        color: theme('colors.GolfPadForest');
     }
     .btn-next:hover {
         background-color: #e4b400;
     }
     .btn-prev {
-        background-color: #1C4932;
-        color: #F4C802; 
+        background-color: theme('colors.GolfPadForest');
+        color: theme('colors.GolfPadYellow');
     }
     .btn-hole:disabled {
         cursor: not-allowed; 
