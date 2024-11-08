@@ -71,10 +71,10 @@
 <Layout>
     <div class="flex flex-col w-full">
         <div class="w-full p-2 px-4 text-black">
-            <h2 class="mt-2 mb-0 text-3xl font-black text-black md:text-5xl condensed">MULLIGANS</h2>
+            <h2 class="mt-2 mb-0 text-3xl font-black text-black md:text-5xl condensed"style="margin-left:10px;">MULLIGANS</h2>
         </div>
   
-        <div class="w-full p-4 text-black bg-gray-100">
+        <div class="w-full p-4 text-black bg-gray-100"style="margin-left:10px;">
             <h3 class="mt-0 mb-2 text-3xl font-black text-black md:text-3xl condensed">GAME DETAILS</h3>
 
             <label for="course" class="block mt-4 text-lg font-bold text-black">Course</label>
@@ -176,8 +176,8 @@
     }
 
     .btn-new-game {
-        background-color: #f6c200;
-        color: #1C4932;
+        background-color: theme('colors.GolfPadYellow');
+        color: theme('colors.GolfPadForest');
         border: none;
     }
 

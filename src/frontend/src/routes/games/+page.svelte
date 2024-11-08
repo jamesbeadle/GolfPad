@@ -21,7 +21,6 @@
             console.error("Failed to fetch golfer game summaries:", err);
         }
     });
-    //TODO needs to be more like figma
     function openGameModal() {
         showNewGameModal = true;
     }
@@ -42,7 +41,7 @@
     <div class="w-full">
         <div class="w-full h-full p-2 px-4 text-black">
             <div class="flex items-center justify-between mb-4">
-                <h2 class="mt-3 mb-4 text-3xl font-black text-black md:text-5xl condensed">MY GAMES</h2>
+                <h2 class="mt-3 mb-4 text-3xl font-black text-black md:text-5xl condensed"style="margin-left:10px;">MY GAMES</h2>
                 <button on:click={openGameModal} class="btn btn-new-game">New Game</button>
                 {#if showNewGameModal}
                     <ShowSelectGameModal visible={showNewGameModal} closeModal={closeGameModal} on:gameSelected={handleGameSelection} />
@@ -115,8 +114,8 @@
     }
 
     .btn-new-game {
-        background-color: #f6c200;
-        color: #1C4932;
+        background-color: theme('colors.GolfPadYellow');
+        color: theme('colors.GolfPadForest');
         border: none;
     }
 

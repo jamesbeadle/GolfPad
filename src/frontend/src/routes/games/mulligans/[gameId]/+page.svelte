@@ -2,8 +2,11 @@
     import { onMount } from "svelte";
     import Layout from "../../../Layout.svelte";
     import { goto } from "$app/navigation";
+    import ShowSelectGameModal from "$lib/components/games/show-select-game-modal.svelte";
     
     export let params;
+
+    let showNewGameModal = false;
 
     interface Player {
         name: string;
@@ -44,14 +47,26 @@
     function handlePreviousHole() {
         //TODO get golf course info
     }
+    function openGameModal() {
+        showNewGameModal = true;
+    }
 
+    function closeGameModal() {
+        showNewGameModal = false;
+    }
+
+    function handleGameSelection(event: CustomEvent) {
+        const gameChoice = event.detail;
+        closeGameModal();
+        goto(`/${gameChoice}-new`);
+    }
 </script>
 
 <Layout>
     <div class="w-full">
         <div class="w-full p-2 px-4 text-black">
             <div class="flex items-center justify-between">
-                <h2 class="mt-1 text-3xl font-black text-black md:text-5xl condensed">GAME DETAILS</h2>
+                <h2 class="mt-1 text-3xl font-black text-black md:text-5xl condensed"style="margin-left:10px;">GAME DETAILS</h2>
                 {#if gameStatus === 'live'}
                     <div class="flex items-center">
                         <div class="w-3 h-3 bg-green-500 rounded-full"></div>
@@ -137,9 +152,10 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <button class="btn btn-new-game" on:click={() => goto(`/games/mulligans/${generateGameId()}`)}>
-                                New Game
-                            </button>
+                            <button on:click={openGameModal} class="btn btn-new-game">New Game</button>
+                                {#if showNewGameModal}
+                                    <ShowSelectGameModal visible={showNewGameModal} closeModal={closeGameModal} on:gameSelected={handleGameSelection} />
+                                {/if}
                         </div>
                     {:else if gameStatus === 'live'}
                         <div class="flex items-center px-4 mt-4 mb-2 space-x-4 bg-white rounded-md player-details">
@@ -152,7 +168,6 @@
                                         style="color: {player.isWinning ? '#000' : '#888'};">{player.score}
                                     </p>
                                  </div>
-                                <!-- Add vertical divider between players, but not after the last one -->
                                 {#if index < players.length - 1}
                                     <div class="h-20 mt-2 border-l-2" style="border-color: #F3F3F3;"></div>
                                 {/if}
@@ -252,18 +267,18 @@
         text-align: center;
     }
     .btn-new-game {
-        background-color: #f6c200;
-        color: #1C4932;
+        background-color: theme('colors.GolfPadYellow');;
+        color: theme('colors.GolfPadForest');
         border: none;
         width: 400px;
     }
     .btn-new-game:hover {
-        background-color: #e4c013; /* Darker yellow on hover */
-        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2); /* More shadow on hover */
+        background-color: #e4c013;
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2); 
     }
     .btn-use{
-        background-color: #1C4932;
-        color: #F4C802;
+        background-color: theme('colors.GolfPadForest');;
+        color: theme('colors.GolfPadYellow');
         border: none;
         border-radius: 12px;
         min-width: 80px;
@@ -277,15 +292,15 @@
         text-align: center;
     }
     .btn-next {
-        background-color: #F4C802;
-        color: #1C4932;
+        background-color: theme('colors.GolfPadYellow');
+        color: theme('colors.GolfPadForest');
     }
     .btn-next:hover {
         background-color: #e4b400;
     }
     .btn-prev {
-        background-color: #1C4932;
-        color: #F4C802; 
+        background-color: theme('colors.GolfPadForest');
+        color: theme('colors.GolfPadYellow');
     }
     .btn-hole:disabled {
         cursor: not-allowed; 
