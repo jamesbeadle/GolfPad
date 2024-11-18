@@ -20,7 +20,7 @@
 .modal .content {
   left: 0 !important;
   right: 0 !important;
-  background-color: theme('colors.GolfPadYellow') !important;
+  background-color: theme("colors.GolfPadYellow") !important;
   border-radius: 8px;
   border: 1px solid #2e323a !important;
 }

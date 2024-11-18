@@ -3,8 +3,10 @@
     import { writable } from "svelte/store";
     import { goto, afterNavigate } from "$app/navigation";
     import { page } from "$app/stores";
+    import { authSignedInStore } from "$lib/derived/auth-derived";
+    import { authStore } from "$lib/stores/auth-store";
   
-    type Route = 'home' | 'whitepaper' | 'team' | 'game-rules';
+    type Route = 'home' | 'whitepaper' | 'team' | 'game-rules' | 'games';
   
     export let expanded: boolean = false;
     export let selectedRoute: Route = 'home';
@@ -12,6 +14,7 @@
   
     const navItems = writable<{ name: string; route: Route }[]>([
       { name: 'HOME', route: 'home' },
+      { name: 'MY GAMES', route: 'games' },
       { name: 'WHITEPAPER', route: 'whitepaper' },
       { name: 'GAME RULES', route: 'game-rules' },
       { name: 'TEAM', route: 'team' }
@@ -50,10 +53,17 @@
         case '/game-rules':
           selectedRoute = 'game-rules';
           break;
+        case '/games':
+          selectedRoute = 'games';
+          break;
         default:
           selectedRoute = 'home';
           break;
       }
+    }
+
+    function handleLogout(){
+      authStore.signOut();
     }
 </script>
   
@@ -111,6 +121,22 @@
             </button>
           </div>
         {/each}
+
+       
+
+
+
+    {#if $authSignedInStore}
+      <div class="nav-item expanded">
+              
+        <button 
+            class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow"
+            on:click={handleLogout}
+        >
+            SIGN OUT
+        </button>
+        </div>
+    {/if}
       </div>
   
       <div class="flex justify-between items-center p-5 text-xs lg:text-base">

@@ -4,6 +4,7 @@
     import { authStore, type AuthSignInParams } from "$lib/stores/auth-store";
     import Layout from "./Layout.svelte";
     import { userGetAgentPicture } from "$lib/derived/user-derived";
+    import { goto } from "$app/navigation";
 
     function handleLogin() {
         let params: AuthSignInParams = {
@@ -13,8 +14,8 @@
         console.log("Logged in Successfully");
     }
 
-    function handleLogout(){
-        authStore.signOut();
+    function handlePlay() {
+        goto('/games');
     }
 </script>
 <Layout>    
@@ -41,9 +42,9 @@
         />
         <button 
             class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow"
-            on:click={handleLogout}
+            on:click={handlePlay}
         >
-            SIGN OUT
+            PLAY
         </button>
     {/if}
 
