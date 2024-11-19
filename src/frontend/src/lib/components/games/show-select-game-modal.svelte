@@ -1,200 +1,66 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { Modal } from "@dfinity/gix-components";
-    import { createEventDispatcher } from "svelte";
-    
+    import { games, type Game } from "./games";
+        
     export let visible: boolean;
     export let closeModal: () => void;
 
-    const dispatch = createEventDispatcher();
-
-    function playGame(game: string){
+    function playGame(gameId: Game['id']) {
         closeModal();
-        dispatch('gameSelected', game);
+        goto(`/games/create/${gameId}`);
     }
 
     
 </script>
   
   {#if visible}
-    <div class="modal-overlay">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h2 class="modal-title condensed">NEW GAME</h2>
-              <button class="close-button" on:click={closeModal}>&times;</button>
-          </div>
-          <p class="select-game-text font-inter font-sub">SELECT GAME</p>
-          
-          <!-- Grid of games -->
-          <div class="games-grid">
-            <button class="game-card" on:click={() => goto('/games/mulligans')}>
-                <img src="/hero.png" alt="Mulligans" class="game-image" />
-                <h3 class="condensed">MULLIGANS</h3>
-                <p class="font-inter font-med">Mulligans offer golfers a second chance to retake a shot without penalty, providing a do-over opportunity to improve their game.</p>
+    <div class="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000] p-4">
+      <div class="bg-white p-8 sm:p-5 rounded-lg max-w-[1100px] w-full h-auto max-h-[90vh] overflow-y-auto shadow-lg relative">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="ml-5 text-4xl font-bold sm:text-5xl condensed">NEW GAME</h2>
+          <button 
+            class="flex items-center justify-center w-10 h-10 text-2xl font-bold text-white bg-black rounded-full shadow-md hover:bg-gray-800"
+            on:click={closeModal}
+          >
+            &times;
+          </button>
+        </div>
+        
+        <p class="mb-5 ml-5 text-base text-gray-500 font-inter font-sub">SELECT GAME</p>
+        
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-5 md:gap-5">
+          {#each games as game (game.id)}
+            <button 
+              class="flex flex-col justify-between sm:items-center w-full p-2.5 bg-white transition-all duration-200 
+                     hover:scale-105 hover:shadow-lg hover:rounded-lg"
+              on:click={() => playGame(game.id)}
+            >
+              <img 
+                src={game.image} 
+                alt={game.title} 
+                class="object-cover object-[center_20%] h-[140px] sm:h-auto w-full mx-0 mb-4 rounded-lg sm:max-w-none sm:aspect-square sm:object-fill sm:mx-auto" 
+              />
+              <div class="flex flex-col flex-grow w-full">
+                <h3 class="text-2xl font-bold mb-1 condensed h-[2em] flex items-start sm:items-center text-left sm:text-center sm:justify-center">
+                  {game.title}
+                </h3>
+                <p class="text-sm text-left text-gray-500 md:text-sm font-inter font-med">
+                  {game.description}
+                </p>
+              </div>
             </button>
-                
-            <button class="game-card" on:click={() => playGame('prophet')}>
-                <img src="/bands.png" alt="Prophet" class="game-image" />
-                <h3 class="condensed">PROPHET</h3>
-                <p class="font-inter font-med">Prophet is a golf game format that emphasizes precise scoring based on the length of each putt made by players.</p>
-            </button>
-              
-            <button class="game-card" on:click={() => playGame('bands')}>
-                <img src="/next-up.png" alt="Bands" class="game-image" />
-                <h3 class="condensed">BANDS</h3>
-                <p class="font-inter font-med">Bands is a golf game where players hit designated targets to earn points.</p>
-            </button>
-            
-            <button class="game-card" on:click={() => playGame('build-it')}>
-                <img src="/build-it.png" alt="Build It" class="game-image" />
-                <h3 class="condensed">BUILD IT</h3>
-                <p class="font-inter font-med">Build It is a golf game where players aim to progressively improve their scores over each hole.</p>
-            </button>
-            
-            <button class="game-card" on:click={() => playGame('next-up')}>
-                <img src="/mulligans.png" alt="Next Up" class="game-image" />
-                <h3 class="condensed">NEXT UP</h3>
-                <p class="font-inter font-med">Next Up is a golf game where players compete to score the next best shot after each hole.</p>
-            </button>
-          </div>
+          {/each}
+        </div>
 
-          <!-- Select button -->
-          <div class="modal-footer">
-              <button class="select-button" on:click={closeModal}>SELECT</button>
-          </div>
+        <div class="hidden mt-5 text-right lg:block">
+          <button 
+            class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 md:px-5 md:py-2.5 rounded text-sm md:text-base"
+            on:click={closeModal}
+          >
+            SELECT
+          </button>
+        </div>
       </div>
     </div>
 {/if}
 
-<style>
-  .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-  }
-
-  .modal-content {
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 1100px;
-      height: 653px;
-      width: 100%;
-      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-      position: relative;
-  }
-
-  .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-  }
-
-  .modal-title {
-      font-size: 3rem;
-      font-weight: bold;
-      margin-left: 20px;
-  }
-
-  .close-button {
-    font-size: 1.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;                
-    justify-content: center;       
-    align-items: center;          
-    width: 2.5rem;                  
-    height: 2.5rem;                  
-    font-size: 1.5rem;      
-    font-weight: bold;            
-    color: white;                 
-    background-color: black;      
-    border-radius: 50%;       
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-right: 20px;
-}
-
-  .select-game-text {
-      font-size: 1rem;
-      margin-left: 20px;
-      margin-bottom: 20px;
-      color: #8C8C8C; 
-  }
-
-  .games-grid {
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: 20px;
-  }
-
-  .game-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 200px;
-    height: 200px;
-    text-align: center;
-    background-color: #fff;
-    padding: 10px;
-    height: 100%;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  }
-  .game-card:hover {
-    transform: scale(1.1);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-}
-
-  .game-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: fit;
-    border-radius: 8px;
-  }
-
-  .game-image {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      margin-bottom: 10px;
-  }
-
-  .game-card h3 {
-      font-size: 2rem;
-      font-weight: bold;
-      margin-bottom: 0.4rem;
-  }
-
-  .game-card p {
-    font-size: 0.9rem;
-    color: #8C8C8C; 
-    text-align: left; 
-}
-
-  .modal-footer {
-      margin-top: 20px;
-      text-align: right;
-  }
-
-  .select-button {
-      background-color: theme('colors.GolfPadForest');
-      color: theme('colors.GolfPadYellow');
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1rem;
-      margin-right: 20px;
-  }
-</style>

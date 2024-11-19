@@ -1,1 +1,1 @@
-export { default as component } from "../../../../src/frontend/src/routes/games/mulligans/+page.svelte";
+export { default as component } from "../../../../src/frontend/src/routes/games/[gameId]/+page.svelte";

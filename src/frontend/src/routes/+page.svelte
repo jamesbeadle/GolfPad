@@ -1,10 +1,9 @@
 <script lang="ts">
-    import { authSignedInStore } from "$lib/derived/auth-derived";
-    import LogoIcon from "$lib/icons/logo-icon.svelte";
     import { authStore, type AuthSignInParams } from "$lib/stores/auth-store";
-    import Layout from "./Layout.svelte";
+    import { authSignedInStore } from "$lib/derived/auth-derived";
     import { userGetAgentPicture } from "$lib/derived/user-derived";
-
+    import Layout from "./Layout.svelte";
+    
     function handleLogin() {
         let params: AuthSignInParams = {
         domain: import.meta.env.VITE_AUTH_PROVIDER_URLS,
@@ -36,7 +35,7 @@
         <img
             src={$userGetAgentPicture}
             alt="Profile"
-            class="profile-pic-bottom-right"
+            class="fixed w-12 h-12 rounded-full bottom-3 right-3"
             aria-label="Toggle Profile"
         />
         <button 
@@ -46,17 +45,6 @@
             SIGN OUT
         </button>
     {/if}
-
-    <style>
-        .profile-pic-bottom-right {
-            position: fixed;
-            bottom: 10px; 
-            right: 10px; 
-            width: 50px;  
-            height: auto; 
-            border-radius: 50%; 
-        }
-    </style>
     
 </div>
 <div class="absolute bottom-0 left-0 z-0 w-full">

@@ -15,7 +15,7 @@
       "_vendor.js"
     ],
     "css": [
-      "_app/immutable/assets/index.BUAW2T5S.css"
+      "_app/immutable/assets/index.mcahxQmT.css"
     ]
   },
   "_vendor.js": {
@@ -76,19 +76,19 @@
       "_index.js"
     ]
   },
-  "src/frontend/src/routes/games/mulligans/+page.svelte": {
-    "file": "entries/pages/games/mulligans/_page.svelte.js",
-    "name": "entries/pages/games/mulligans/_page.svelte",
-    "src": "src/frontend/src/routes/games/mulligans/+page.svelte",
+  "src/frontend/src/routes/games/[gameId]/+page.svelte": {
+    "file": "entries/pages/games/_gameId_/_page.svelte.js",
+    "name": "entries/pages/games/_gameId_/_page.svelte",
+    "src": "src/frontend/src/routes/games/[gameId]/+page.svelte",
     "isEntry": true,
     "imports": [
       "_index.js"
     ]
   },
-  "src/frontend/src/routes/games/mulligans/[gameId]/+page.svelte": {
-    "file": "entries/pages/games/mulligans/_gameId_/_page.svelte.js",
-    "name": "entries/pages/games/mulligans/_gameId_/_page.svelte",
-    "src": "src/frontend/src/routes/games/mulligans/[gameId]/+page.svelte",
+  "src/frontend/src/routes/games/create/[game]/+page.svelte": {
+    "file": "entries/pages/games/create/_game_/_page.svelte.js",
+    "name": "entries/pages/games/create/_game_/_page.svelte",
+    "src": "src/frontend/src/routes/games/create/[game]/+page.svelte",
     "isEntry": true,
     "imports": [
       "_index.js"

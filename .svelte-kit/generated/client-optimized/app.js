@@ -19,8 +19,8 @@ export const dictionary = {
 		"/": [2],
 		"/game-rules": [3],
 		"/games": [4],
-		"/games/mulligans": [5],
-		"/games/mulligans/[gameId]": [6],
+		"/games/create/[game]": [6],
+		"/games/[gameId]": [5],
 		"/profile": [7],
 		"/team": [8],
 		"/whitepaper": [9]

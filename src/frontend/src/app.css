@@ -20,7 +20,7 @@
 .modal .content {
   left: 0 !important;
   right: 0 !important;
-  background-color: theme('colors.GolfPadYellow') !important;
+  background-color: theme("colors.GolfPadYellow") !important;
   border-radius: 8px;
   border: 1px solid #2e323a !important;
 }
@@ -132,10 +132,26 @@ input {
   @apply self-stretch flex-shrink-0 h-px bg-GolfPadDarkGreen;
 }
 
+.btn {
+  @apply px-6 py-2 font-bold rounded cursor-pointer;
+}
+
 .btn-view {
   @apply px-4 py-2 border rounded-md bg-GolfPadDarkGreen border-GolfPadDarkGreen;
 }
 
 .btn-add {
   @apply px-4 py-2 border rounded-md bg-GolfPadDarkGreen border-GolfPadDarkGreen;
+}
+
+.btn-close {
+  @apply flex justify-center items-center w-10 h-10 text-2xl font-bold text-white bg-black rounded-full shadow-md mr-5 hover:bg-gray-800;
+}
+
+.btn-select {
+  @apply bg-GolfPadForest text-GolfPadYellow px-5 py-2.5 rounded cursor-pointer text-base mr-5;
+}
+
+.btn-new-game {
+  @apply font-bold rounded cursor-pointer mx-0 my-4 md:ml-6 bg-GolfPadYellow text-GolfPadForest border-none hover:bg-[#e4c013] hover:shadow-lg active:bg-[#d3a913] active:translate-y-0.5;
 }

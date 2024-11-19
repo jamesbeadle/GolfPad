@@ -16,6 +16,152 @@ actor Self {
   private let golferManager = GolferManager.GolferManager();
   private let courseManager = GolfCourseManager.GolfCourseManager();
   private let gameManager = GameManager.GameManager();
+
+  private stable var golfCourses: [DTOs.GolfCourseDTO] = [
+      {
+          courseId = 1;
+          name = "Pebble Beach Golf Links";
+          tees = [
+              {
+                  name = "Blue";
+                  colour = "#0000FF";
+                  added = Time.now();
+                  strokeIndex = 1;
+                  holes = [
+                      {
+                          name = "Hole 1";
+                          number = 1;
+                          strokeIndex = 1;
+                          tees = [
+                              {
+                                  par = 4;
+                                  name = "Blue";
+                                  yardage = 400;
+                                  colour = "#0000FF";
+                                  strokeIndex = 1
+                              }
+                          ];
+                          images = [
+                              ("canister-id", 1) 
+                          ]
+                      }
+                  ]
+              }
+          ];
+          activeVersion = 1
+      },
+      {
+          courseId = 2;
+          name = "St. Andrews Links";
+          tees = [
+              {
+                  name = "Gold";
+                  colour = "#FFD700";
+                  added = Time.now();
+                  strokeIndex = 1;
+                  holes = [
+                      {
+                          name = "Hole 1";
+                          number = 1;
+                          strokeIndex = 1;
+                          tees = [
+                              {
+                                  par = 4;
+                                  name = "Gold";
+                                  yardage = 420;
+                                  colour = "#FFD700";
+                                  strokeIndex = 1
+                              }
+                          ];
+                          images = [
+                              ("canister-id", 2) 
+                          ]
+                      }
+                  ]
+              }
+          ];
+          activeVersion = 1
+      },
+      {
+          courseId = 3;
+          name = "Augusta National Golf Club";
+          tees = [
+              {
+                  name = "Green";
+                  colour = "#008000";
+                  added = Time.now();
+                  strokeIndex = 1;
+                  holes = [
+                      {
+                          name = "Hole 1";
+                          number = 1;
+                          strokeIndex = 1;
+                          tees = [
+                              {
+                                  par = 4;
+                                  name = "Green";
+                                  yardage = 450;
+                                  colour = "#008000";
+                                  strokeIndex = 1
+                              }
+                          ];
+                          images = [
+                              ("canister-id", 3)
+                          ]
+                      }
+                  ]
+              }
+          ];
+          activeVersion = 1
+      }
+  ];
+
+  private stable var golfers: [DTOs.GolferDTO] = [
+      {
+          principalId = "Zoe-Duffy";
+          username = "Zoe Duffy";
+          golferPicture = null; // No picture for now
+          golferPictureExtension = "jpg";
+          handicap = null;
+          upcomingGames = [];
+          activeGames = [];
+          completedGames = [];
+          gameInvites = [];
+      },
+      {
+          principalId = "Kelly-Howlett";
+          username = "Kelly Howlett";
+          golferPicture = null; // No picture for now
+          golferPictureExtension = "jpeg";
+          handicap = null;
+          upcomingGames = [];
+          activeGames = [];
+          completedGames = [];
+          gameInvites = [];
+      },
+      {
+          principalId = "James-Beadle";
+          username = "James Beadle";
+          golferPicture = null; // No picture for now
+          golferPictureExtension = "jpg";
+          handicap = null;
+          upcomingGames = [];
+          activeGames = [];
+          completedGames = [];
+          gameInvites = [];
+      },
+      {
+          principalId = "Thilly-Thana";
+          username = "Thilly Thana";
+          golferPicture = null; // No picture for now
+          golferPictureExtension = "jpg";
+          handicap = null;
+          upcomingGames = [];
+          activeGames = [];
+          completedGames = [];
+          gameInvites = [];
+      }
+  ];
   
   //Golfer Functions
 
@@ -96,9 +242,10 @@ actor Self {
 
   //Friend requests
 
-  public shared ({ caller }) func listGolfers(dto: DTOs.ListGolfersDTO) : async Result.Result<DTOs.GolfersDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    return await golferManager.listGolfers(dto);
+  public shared ({ caller }) func listGolfers(dto: DTOs.ListGolfersDTO) : async Result.Result<[DTOs.GolferDTO], T.Error> {
+    /* assert not Principal.isAnonymous(caller);
+    return await golferManager.listGolfers(dto); */
+    return #ok(golfers);
   };
 
   public shared ({ caller }) func listFriendRequests(dto: DTOs.PaginationFilters) : async Result.Result<DTOs.FriendRequestsDTO, T.Error> {
@@ -129,9 +276,10 @@ actor Self {
   //Golf courses
 
   public shared ({ caller }) func listCourses(dto: DTOs.PaginationFilters) : async Result.Result<DTOs.CoursesDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
+    /* assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return await golferManager.listCourses(principalId, dto);
+    return await golferManager.listCourses(principalId, dto); */
+    return #ok({courses = golfCourses});
   };
     
   public shared ({ caller }) func createGolfCourse(dto: DTOs.CreateGolfCourseDTO) : async Result.Result<(), T.Error> {

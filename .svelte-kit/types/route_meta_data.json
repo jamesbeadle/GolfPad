@@ -2,8 +2,8 @@
 	"/": [],
 	"/game-rules": [],
 	"/games": [],
-	"/games/mulligans": [],
-	"/games/mulligans/[gameId]": [],
+	"/games/create/[game]": [],
+	"/games/[gameId]": [],
 	"/profile": [],
 	"/team": [],
 	"/whitepaper": []

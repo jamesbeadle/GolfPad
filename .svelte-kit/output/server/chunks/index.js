@@ -7,7 +7,6 @@ import { nonNullish } from "@dfinity/utils";
 import "dompurify";
 import { AuthClient } from "@dfinity/auth-client";
 import { HttpAgent, Actor } from "@dfinity/agent";
-import { computePosition, autoUpdate, offset, flip, shift } from "@floating-ui/dom";
 let base = "";
 let assets = base;
 const initial = { base, assets };
@@ -931,13 +930,6 @@ function subscribe(store, ...callbacks) {
   const unsub = store.subscribe(...callbacks);
   return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
 }
-function compute_slots(slots) {
-  const result = {};
-  for (const key2 in slots) {
-    result[key2] = true;
-  }
-  return result;
-}
 function null_to_empty(value) {
   return value == null ? "" : value;
 }
@@ -981,109 +973,9 @@ function setContext(key2, context) {
 function getContext(key2) {
   return get_current_component().$$.context.get(key2);
 }
-const dirty_components = [];
-const binding_callbacks = [];
-let render_callbacks = [];
-const flush_callbacks = [];
-const resolved_promise = /* @__PURE__ */ Promise.resolve();
-let update_scheduled = false;
-function schedule_update() {
-  if (!update_scheduled) {
-    update_scheduled = true;
-    resolved_promise.then(flush);
-  }
-}
-function tick() {
-  schedule_update();
-  return resolved_promise;
-}
-function add_render_callback(fn) {
-  render_callbacks.push(fn);
-}
-const seen_callbacks = /* @__PURE__ */ new Set();
-let flushidx = 0;
-function flush() {
-  if (flushidx !== 0) {
-    return;
-  }
-  const saved_component = current_component;
-  do {
-    try {
-      while (flushidx < dirty_components.length) {
-        const component = dirty_components[flushidx];
-        flushidx++;
-        set_current_component(component);
-        update(component.$$);
-      }
-    } catch (e) {
-      dirty_components.length = 0;
-      flushidx = 0;
-      throw e;
-    }
-    set_current_component(null);
-    dirty_components.length = 0;
-    flushidx = 0;
-    while (binding_callbacks.length) binding_callbacks.pop()();
-    for (let i = 0; i < render_callbacks.length; i += 1) {
-      const callback = render_callbacks[i];
-      if (!seen_callbacks.has(callback)) {
-        seen_callbacks.add(callback);
-        callback();
-      }
-    }
-    render_callbacks.length = 0;
-  } while (dirty_components.length);
-  while (flush_callbacks.length) {
-    flush_callbacks.pop()();
-  }
-  update_scheduled = false;
-  seen_callbacks.clear();
-  set_current_component(saved_component);
-}
-function update($$) {
-  if ($$.fragment !== null) {
-    $$.update();
-    run_all($$.before_update);
-    const dirty = $$.dirty;
-    $$.dirty = [-1];
-    $$.fragment && $$.fragment.p($$.ctx, dirty);
-    $$.after_update.forEach(add_render_callback);
-  }
-}
 function ensure_array_like(array_like_or_iterator) {
   return array_like_or_iterator?.length !== void 0 ? array_like_or_iterator : Array.from(array_like_or_iterator);
 }
-const _boolean_attributes = (
-  /** @type {const} */
-  [
-    "allowfullscreen",
-    "allowpaymentrequest",
-    "async",
-    "autofocus",
-    "autoplay",
-    "checked",
-    "controls",
-    "default",
-    "defer",
-    "disabled",
-    "formnovalidate",
-    "hidden",
-    "inert",
-    "ismap",
-    "loop",
-    "multiple",
-    "muted",
-    "nomodule",
-    "novalidate",
-    "open",
-    "playsinline",
-    "readonly",
-    "required",
-    "reversed",
-    "selected"
-  ]
-);
-const boolean_attributes = /* @__PURE__ */ new Set([..._boolean_attributes]);
 const ATTR_REGEX = /[&"<]/g;
 const CONTENT_REGEX = /[&<]/g;
 function escape(value, is_attr = false) {
@@ -1099,72 +991,6 @@ function escape(value, is_attr = false) {
     last = i + 1;
   }
   return escaped + str.substring(last);
-}
-const invalid_attribute_name_character = /[\s'">/=\u{FDD0}-\u{FDEF}\u{FFFE}\u{FFFF}\u{1FFFE}\u{1FFFF}\u{2FFFE}\u{2FFFF}\u{3FFFE}\u{3FFFF}\u{4FFFE}\u{4FFFF}\u{5FFFE}\u{5FFFF}\u{6FFFE}\u{6FFFF}\u{7FFFE}\u{7FFFF}\u{8FFFE}\u{8FFFF}\u{9FFFE}\u{9FFFF}\u{AFFFE}\u{AFFFF}\u{BFFFE}\u{BFFFF}\u{CFFFE}\u{CFFFF}\u{DFFFE}\u{DFFFF}\u{EFFFE}\u{EFFFF}\u{FFFFE}\u{FFFFF}\u{10FFFE}\u{10FFFF}]/u;
-function spread(args, attrs_to_add) {
-  const attributes = Object.assign({}, ...args);
-  if (attrs_to_add) {
-    const classes_to_add = attrs_to_add.classes;
-    const styles_to_add = attrs_to_add.styles;
-    if (classes_to_add) {
-      if (attributes.class == null) {
-        attributes.class = classes_to_add;
-      } else {
-        attributes.class += " " + classes_to_add;
-      }
-    }
-    if (styles_to_add) {
-      if (attributes.style == null) {
-        attributes.style = style_object_to_string(styles_to_add);
-      } else {
-        attributes.style = style_object_to_string(
-          merge_ssr_styles(attributes.style, styles_to_add)
-        );
-      }
-    }
-  }
-  let str = "";
-  Object.keys(attributes).forEach((name) => {
-    if (invalid_attribute_name_character.test(name)) return;
-    const value = attributes[name];
-    if (value === true) str += " " + name;
-    else if (boolean_attributes.has(name.toLowerCase())) {
-      if (value) str += " " + name;
-    } else if (value != null) {
-      str += ` ${name}="${value}"`;
-    }
-  });
-  return str;
-}
-function merge_ssr_styles(style_attribute, style_directive) {
-  const style_object = {};
-  for (const individual_style of style_attribute.split(";")) {
-    const colon_index = individual_style.indexOf(":");
-    const name = individual_style.slice(0, colon_index).trim();
-    const value = individual_style.slice(colon_index + 1).trim();
-    if (!name) continue;
-    style_object[name] = value;
-  }
-  for (const name in style_directive) {
-    const value = style_directive[name];
-    if (value) {
-      style_object[name] = value;
-    } else {
-      delete style_object[name];
-    }
-  }
-  return style_object;
-}
-function escape_attribute_value(value) {
-  const should_escape = typeof value === "string" || value && typeof value === "object";
-  return should_escape ? escape(value, true) : value;
-}
-function escape_object(obj) {
-  const result = {};
-  for (const key2 in obj) {
-    result[key2] = escape_attribute_value(obj[key2]);
-  }
-  return result;
 }
 function each(items, fn) {
   items = ensure_array_like(items);
@@ -1228,9 +1054,6 @@ function add_attribute(name, value, boolean) {
   const assignment = `="${escape(value, true)}"`;
   return ` ${name}${assignment}`;
 }
-function style_object_to_string(style_object) {
-  return Object.keys(style_object).filter((key2) => style_object[key2] != null && style_object[key2] !== "").map((key2) => `${key2}: ${escape_attribute_value(style_object[key2])};`).join(" ");
-}
 const subscriber_queue = [];
 function readable(value, start) {
   return {
@@ -1258,14 +1081,14 @@ function writable(value, start = noop) {
       }
     }
   }
-  function update2(fn) {
+  function update(fn) {
     set(fn(value));
   }
   function subscribe2(run2, invalidate = noop) {
     const subscriber = [run2, invalidate];
     subscribers.add(subscriber);
     if (subscribers.size === 1) {
-      stop = start(set, update2) || noop;
+      stop = start(set, update) || noop;
     }
     run2(value);
     return () => {
@@ -1276,7 +1099,7 @@ function writable(value, start = noop) {
       }
     };
   }
-  return { set, update: update2, subscribe: subscribe2 };
+  return { set, update, subscribe: subscribe2 };
 }
 function derived(stores, fn, initial_value) {
   const single = !Array.isArray(stores);
@@ -1285,7 +1108,7 @@ function derived(stores, fn, initial_value) {
     throw new Error("derived() expects stores as input, got a falsy value");
   }
   const auto = fn.length < 2;
-  return readable(initial_value, (set, update2) => {
+  return readable(initial_value, (set, update) => {
     let started = false;
     const values = [];
     let pending = 0;
@@ -1295,7 +1118,7 @@ function derived(stores, fn, initial_value) {
         return;
       }
       cleanup();
-      const result = fn(single ? values[0] : values, set, update2);
+      const result = fn(single ? values[0] : values, set, update);
       if (auto) {
         set(result);
       } else {
@@ -1366,13 +1189,13 @@ const replacements = {
   "\u2029": "\\u2029"
 };
 const pattern = new RegExp(`[${Object.keys(replacements).join("")}]`, "g");
-function serialize_data(fetched, filter2, prerendering2 = false) {
+function serialize_data(fetched, filter, prerendering2 = false) {
   const headers2 = {};
   let cache_control = null;
   let age = null;
   let varyAny = false;
   for (const [key2, value] of fetched.response.headers) {
-    if (filter2(key2, value)) {
+    if (filter(key2, value)) {
       headers2[key2] = value;
     }
     if (key2 === "cache-control") cache_control = value;
@@ -3636,7 +3459,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1eg454u"
+  version_hash: "9yygvm"
 };
 async function get_hooks() {
   return {};
@@ -3788,7 +3611,7 @@ const isNnsAlternativeOrigin = () => {
   return window.location.origin === NNS_IC_ORG_ALTERNATIVE_ORIGIN;
 };
 const initAuthStore = () => {
-  const { subscribe: subscribe2, set, update: update2 } = writable({
+  const { subscribe: subscribe2, set, update } = writable({
     identity: void 0
   });
   return {
@@ -3808,7 +3631,7 @@ const initAuthStore = () => {
         await authClient?.login({
           maxTimeToLive: AUTH_MAX_TIME_TO_LIVE,
           onSuccess: () => {
-            update2((state) => ({
+            update((state) => ({
               ...state,
               identity: authClient?.getIdentity()
             }));
@@ -3830,7 +3653,7 @@ const initAuthStore = () => {
       const client = authClient ?? await createAuthClient();
       await client.logout();
       authClient = null;
-      update2((state) => ({
+      update((state) => ({
         ...state,
         identity: null
       }));
@@ -3848,249 +3671,6 @@ derived(
   authStore,
   ({ identity }) => identity !== null && identity !== void 0 && identity.getPrincipal().toString() === adminPrincipal
 );
-const Logo_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { className = "" } = $$props;
-  const fill = "";
-  if ($$props.className === void 0 && $$bindings.className && className !== void 0) $$bindings.className(className);
-  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0) $$bindings.fill(fill);
-  return `<svg${add_attribute("class", className, 0)} width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="60" r="60" fill="white"></circle><circle cx="60" cy="60" r="46" fill="#101111"></circle><path fill-rule="evenodd" clip-rule="evenodd" d="M102.483 66.689C102.824 64.5093 103 62.2753 103 60.0001C103 36.2518 83.7484 17 60.0001 17C36.2518 17 17 36.2518 17 60.0001C17 62.2753 17.1767 64.5093 17.5171 66.689H102.483Z" fill="#F4C802"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M96.2825 66.689C96.7531 64.3647 97 61.9608 97 59.5C97 39.3416 80.4345 23 60 23C39.5655 23 23 39.3416 23 59.5C23 61.9608 23.2469 64.3647 23.7175 66.689H96.2825Z" fill="#F4C802"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M89.2515 66.689C89.7413 64.5381 90 62.2992 90 60C90 43.4315 76.5685 30 60 30C43.4315 30 30 43.4315 30 60C30 62.2992 30.2587 64.5381 30.7485 66.689H89.2515Z" fill="#F4C802"></path><mask id="mask0_311_2114" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="17" y="17" width="86" height="86"><circle cx="60" cy="60" r="43" fill="#101111"></circle></mask><g mask="url(#mask0_311_2114)"><rect x="-15" y="60" width="149" height="66" fill="#70B354"></rect><path d="M57.3429 102.056C57.3784 102.607 57.8227 103.055 58.375 103.055H62.625C63.1773 103.055 63.6216 102.607 63.6571 102.056C64.0262 96.3243 67.5474 91.3577 72.6771 88.5507C72.8744 88.4427 73 88.237 73 88.0121C73 87.5548 72.5104 87.2608 72.0973 87.4569C68.9063 88.9722 64.8784 89.8764 60.5 89.8764C56.1216 89.8764 52.0937 88.9722 48.9027 87.4569C48.4896 87.2608 48 87.5548 48 88.0121C48 88.237 48.1256 88.4427 48.3229 88.5507C53.4526 91.3577 56.9738 96.3243 57.3429 102.056Z" fill="#101111"></path><path d="M57.375 90.8765C57.375 90.3242 57.8227 89.8765 58.375 89.8765H62.625C63.1773 89.8765 63.625 90.3242 63.625 90.8765V119C63.625 119.552 63.1773 120 62.625 120H58.375C57.8227 120 57.375 119.552 57.375 119V90.8765Z" fill="#101111"></path></g><circle cx="60" cy="60" r="20" fill="white"></circle><circle cx="60" cy="60" r="26" fill="#101111"></circle><circle cx="60" cy="60" r="22" fill="white"></circle></svg>`;
-});
-const core = {
-  close: "Close",
-  back: "Back",
-  menu: "Open menu to access navigation options",
-  collapse: "Collapse",
-  expand: "Expand",
-  copy: "Copy to clipboard"
-};
-const theme = {
-  switch_theme: "Switch theme"
-};
-const progress = {
-  completed: "Completed",
-  in_progress: "In progress"
-};
-const en = {
-  core,
-  theme,
-  progress
-};
-readable({
-  lang: "en",
-  ...en
-});
-const initBusyStore = () => {
-  const DEFAULT_STATE = [];
-  const { subscribe: subscribe2, update: update2, set } = writable(DEFAULT_STATE);
-  return {
-    subscribe: subscribe2,
-    /**
-     * Show the busy-screen if not visible
-     */
-    startBusy({ initiator: newInitiator, text: text2 }) {
-      update2((state) => [
-        ...state.filter(({ initiator }) => newInitiator !== initiator),
-        { initiator: newInitiator, text: text2 }
-      ]);
-    },
-    /**
-     * Hide the busy-screen if no other initiators are done
-     */
-    stopBusy(initiatorToRemove) {
-      update2((state) => state.filter(({ initiator }) => initiator !== initiatorToRemove));
-    },
-    resetForTesting() {
-      set(DEFAULT_STATE);
-    }
-  };
-};
-const busyStore = initBusyStore();
-const busy = derived(busyStore, ($busyStore) => $busyStore.length > 0);
-const busyMessage = derived(busyStore, ($busyStore) => $busyStore.reverse().find(({ text: text2 }) => nonNullish(text2))?.text);
-const css$b = {
-  code: ".medium.svelte-85668t{--spinner-size:30px}.small.svelte-85668t{--spinner-size:calc(var(--line-height-standard) * 1rem)}.tiny.svelte-85668t{--spinner-size:calc(var(--line-height-standard) * 0.5rem)}svg.svelte-85668t{width:var(--spinner-size);height:var(--spinner-size);animation:spinner-linear-rotate 2000ms linear infinite;position:absolute;top:calc(50% - var(--spinner-size) / 2);left:calc(50% - var(--spinner-size) / 2);--radius:45px;--circumference:calc(3.1415926536 * var(--radius) * 2);--start:calc((1 - 0.05) * var(--circumference));--end:calc((1 - 0.8) * var(--circumference))}svg.inline.svelte-85668t{display:inline-block;position:relative}circle.svelte-85668t{stroke-dasharray:var(--circumference);stroke-width:10%;transform-origin:50% 50% 0;transition-property:stroke;animation-name:spinner-stroke-rotate-100;animation-duration:4000ms;animation-timing-function:cubic-bezier(0.35, 0, 0.25, 1);animation-iteration-count:infinite;fill:transparent;stroke:currentColor;transition:stroke-dashoffset 225ms linear}@keyframes spinner-linear-rotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}@keyframes spinner-stroke-rotate-100{0%{stroke-dashoffset:var(--start);transform:rotate(0)}12.5%{stroke-dashoffset:var(--end);transform:rotate(0)}12.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(72.5deg)}25%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(72.5deg)}25.0001%{stroke-dashoffset:var(--start);transform:rotate(270deg)}37.5%{stroke-dashoffset:var(--end);transform:rotate(270deg)}37.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(161.5deg)}50%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(161.5deg)}50.0001%{stroke-dashoffset:var(--start);transform:rotate(180deg)}62.5%{stroke-dashoffset:var(--end);transform:rotate(180deg)}62.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(251.5deg)}75%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(251.5deg)}75.0001%{stroke-dashoffset:var(--start);transform:rotate(90deg)}87.5%{stroke-dashoffset:var(--end);transform:rotate(90deg)}87.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(341.5deg)}100%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(341.5deg)}}",
-  map: '{"version":3,"file":"Spinner.svelte","sources":["Spinner.svelte"],"sourcesContent":["<!-- adapted source: https://github.com/angular/components/tree/master/src/material/progress-spinner -->\\n<script>export let inline = false;\\nexport let size = \\"medium\\";\\n<\/script>\\n\\n<svg\\n  class:inline\\n  class={size}\\n  preserveAspectRatio=\\"xMidYMid meet\\"\\n  focusable=\\"false\\"\\n  aria-hidden=\\"true\\"\\n  data-tid=\\"spinner\\"\\n  viewBox=\\"0 0 100 100\\"><circle cx=\\"50%\\" cy=\\"50%\\" r=\\"45\\" /></svg\\n>\\n\\n<style>.medium {\\n  --spinner-size: 30px;\\n}\\n\\n.small {\\n  --spinner-size: calc(var(--line-height-standard) * 1rem);\\n}\\n\\n.tiny {\\n  --spinner-size: calc(var(--line-height-standard) * 0.5rem);\\n}\\n\\nsvg {\\n  width: var(--spinner-size);\\n  height: var(--spinner-size);\\n  animation: spinner-linear-rotate 2000ms linear infinite;\\n  position: absolute;\\n  top: calc(50% - var(--spinner-size) / 2);\\n  left: calc(50% - var(--spinner-size) / 2);\\n  --radius: 45px;\\n  --circumference: calc(3.1415926536 * var(--radius) * 2);\\n  --start: calc((1 - 0.05) * var(--circumference));\\n  --end: calc((1 - 0.8) * var(--circumference));\\n}\\nsvg.inline {\\n  display: inline-block;\\n  position: relative;\\n}\\n\\ncircle {\\n  stroke-dasharray: var(--circumference);\\n  stroke-width: 10%;\\n  transform-origin: 50% 50% 0;\\n  transition-property: stroke;\\n  animation-name: spinner-stroke-rotate-100;\\n  animation-duration: 4000ms;\\n  animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1);\\n  animation-iteration-count: infinite;\\n  fill: transparent;\\n  stroke: currentColor;\\n  transition: stroke-dashoffset 225ms linear;\\n}\\n\\n/* -global- */\\n@keyframes -global-spinner-linear-rotate {\\n  0% {\\n    transform: rotate(0deg);\\n  }\\n  100% {\\n    transform: rotate(360deg);\\n  }\\n}\\n/* -global- */\\n@keyframes -global-spinner-stroke-rotate-100 {\\n  0% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(0);\\n  }\\n  12.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(0);\\n  }\\n  12.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(72.5deg);\\n  }\\n  25% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(72.5deg);\\n  }\\n  25.0001% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(270deg);\\n  }\\n  37.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(270deg);\\n  }\\n  37.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(161.5deg);\\n  }\\n  50% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(161.5deg);\\n  }\\n  50.0001% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(180deg);\\n  }\\n  62.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(180deg);\\n  }\\n  62.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(251.5deg);\\n  }\\n  75% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(251.5deg);\\n  }\\n  75.0001% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(90deg);\\n  }\\n  87.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(90deg);\\n  }\\n  87.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(341.5deg);\\n  }\\n  100% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(341.5deg);\\n  }\\n}</style>\\n"],"names":[],"mappings":"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"}'
-};
-const Spinner = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { inline = false } = $$props;
-  let { size = "medium" } = $$props;
-  if ($$props.inline === void 0 && $$bindings.inline && inline !== void 0) $$bindings.inline(inline);
-  if ($$props.size === void 0 && $$bindings.size && size !== void 0) $$bindings.size(size);
-  $$result.css.add(css$b);
-  return `  <svg class="${[escape(null_to_empty(size), true) + " svelte-85668t", inline ? "inline" : ""].join(" ").trim()}" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true" data-tid="spinner" viewBox="0 0 100 100"><circle cx="50%" cy="50%" r="45" class="svelte-85668t"></circle></svg>`;
-});
-const css$a = {
-  code: "div.svelte-14plyno{z-index:calc(var(--z-index) + 1000);position:fixed;top:0;right:0;bottom:0;left:0;background:var(--backdrop);color:var(--backdrop-contrast)}.content.svelte-14plyno{display:flex;flex-direction:column;justify-content:center;align-items:center}p.svelte-14plyno{padding-bottom:var(--padding);max-width:calc(var(--section-max-width) / 2)}",
-  map: '{"version":3,"file":"BusyScreen.svelte","sources":["BusyScreen.svelte"],"sourcesContent":["<script>import { fade } from \\"svelte/transition\\";\\nimport { busy, busyMessage } from \\"../stores/busy.store\\";\\nimport Spinner from \\"./Spinner.svelte\\";\\nimport { nonNullish } from \\"@dfinity/utils\\";\\n<\/script>\\n\\n<!-- Display spinner and lock UI if busyStore is not empty -->\\n{#if $busy}\\n  <div data-tid=\\"busy\\" transition:fade|global>\\n    <div class=\\"content\\">\\n      {#if nonNullish($busyMessage)}\\n        <p>{$busyMessage}</p>\\n      {/if}\\n      <span>\\n        <Spinner inline />\\n      </span>\\n    </div>\\n  </div>\\n{/if}\\n\\n<style>div {\\n  z-index: calc(var(--z-index) + 1000);\\n  position: fixed;\\n  top: 0;\\n  right: 0;\\n  bottom: 0;\\n  left: 0;\\n  background: var(--backdrop);\\n  color: var(--backdrop-contrast);\\n}\\n\\n.content {\\n  display: flex;\\n  flex-direction: column;\\n  justify-content: center;\\n  align-items: center;\\n}\\n\\np {\\n  padding-bottom: var(--padding);\\n  max-width: calc(var(--section-max-width) / 2);\\n}</style>\\n"],"names":[],"mappings":"AAoBO,kBAAI,CACT,OAAO,CAAE,KAAK,IAAI,SAAS,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CACpC,QAAQ,CAAE,KAAK,CACf,GAAG,CAAE,CAAC,CACN,KAAK,CAAE,CAAC,CACR,MAAM,CAAE,CAAC,CACT,IAAI,CAAE,CAAC,CACP,UAAU,CAAE,IAAI,UAAU,CAAC,CAC3B,KAAK,CAAE,IAAI,mBAAmB,CAChC,CAEA,uBAAS,CACP,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAAM,CACtB,eAAe,CAAE,MAAM,CACvB,WAAW,CAAE,MACf,CAEA,gBAAE,CACA,cAAc,CAAE,IAAI,SAAS,CAAC,CAC9B,SAAS,CAAE,KAAK,IAAI,mBAAmB,CAAC,CAAC,CAAC,CAAC,CAAC,CAC9C"}'
-};
-const BusyScreen = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $busy, $$unsubscribe_busy;
-  let $busyMessage, $$unsubscribe_busyMessage;
-  $$unsubscribe_busy = subscribe(busy, (value) => $busy = value);
-  $$unsubscribe_busyMessage = subscribe(busyMessage, (value) => $busyMessage = value);
-  $$result.css.add(css$a);
-  $$unsubscribe_busy();
-  $$unsubscribe_busyMessage();
-  return ` ${$busy ? `<div data-tid="busy" class="svelte-14plyno"><div class="content svelte-14plyno">${nonNullish($busyMessage) ? `<p class="svelte-14plyno">${escape($busyMessage)}</p>` : ``} <span>${validate_component(Spinner, "Spinner").$$render($$result, { inline: true }, {}, {})}</span></div></div>` : ``}`;
-});
-var Theme;
-(function(Theme2) {
-  Theme2["DARK"] = "dark";
-  Theme2["LIGHT"] = "light";
-})(Theme || (Theme = {}));
-const isNode = () => typeof process !== "undefined" && process.versions != null && process.versions.node != null;
-const enumFromStringExists = ({ obj, value }) => Object.values(obj).includes(value);
-const THEME_ATTRIBUTE = "theme";
-const LOCALSTORAGE_THEME_KEY = "nnsTheme";
-const initTheme = () => {
-  if (isNode()) {
-    return void 0;
-  }
-  const theme2 = document.documentElement.getAttribute(THEME_ATTRIBUTE);
-  const initialTheme = enumFromStringExists({
-    obj: Theme,
-    value: theme2
-  }) ? theme2 : Theme.DARK;
-  applyTheme({ theme: initialTheme, preserve: false });
-  return initialTheme;
-};
-const applyTheme = ({ theme: theme2, preserve = true }) => {
-  const { documentElement, head } = document;
-  documentElement.setAttribute(THEME_ATTRIBUTE, theme2);
-  const color = getComputedStyle(documentElement).getPropertyValue("--theme-color");
-  head?.children?.namedItem("theme-color")?.setAttribute("content", color.trim());
-  if (preserve) {
-    localStorage.setItem(LOCALSTORAGE_THEME_KEY, JSON.stringify(theme2));
-  }
-};
-initTheme();
-var Menu;
-(function(Menu2) {
-  Menu2["COLLAPSED"] = "collapsed";
-  Menu2["EXPANDED"] = "expanded";
-})(Menu || (Menu = {}));
-const MENU_ATTRIBUTE = "menu";
-const LOCALSTORAGE_MENU_KEY = "nnsMenu";
-const initMenu = () => {
-  if (isNode()) {
-    return void 0;
-  }
-  const menu = document.documentElement.getAttribute(MENU_ATTRIBUTE);
-  const initialMenu2 = enumFromStringExists({
-    obj: Menu,
-    value: menu
-  }) ? menu : Menu.EXPANDED;
-  applyMenu({ menu: initialMenu2, preserve: false });
-  return initialMenu2;
-};
-const applyMenu = ({ menu, preserve = true }) => {
-  const { documentElement } = document;
-  documentElement.setAttribute(MENU_ATTRIBUTE, menu);
-  if (preserve) {
-    localStorage.setItem(LOCALSTORAGE_MENU_KEY, JSON.stringify(menu));
-  }
-};
-const initialMenu = initMenu();
-const initMenuStore = () => {
-  const { subscribe: subscribe2, update: update2 } = writable(initialMenu);
-  return {
-    subscribe: subscribe2,
-    toggle: () => {
-      update2((state) => {
-        const menu = state === Menu.EXPANDED ? Menu.COLLAPSED : Menu.EXPANDED;
-        applyMenu({ menu, preserve: true });
-        return menu;
-      });
-    }
-  };
-};
-const menuStore = initMenuStore();
-derived(menuStore, ($menuStore) => $menuStore === Menu.COLLAPSED);
-const css$9 = {
-  code: ".nav-overlay.svelte-w4rfmh.svelte-w4rfmh{position:fixed;top:0px;left:0px;z-index:50;display:flex;height:100%;width:100vw;flex-direction:column;justify-content:space-between;overflow-x:hidden;--tw-bg-opacity:1;background-color:rgb(244 200 2 / var(--tw-bg-opacity))}.nav-item.svelte-w4rfmh.svelte-w4rfmh{transform:translateY(-100%);opacity:0;transition:transform 0.5s ease, opacity 0.5s ease}.nav-item.expanded.svelte-w4rfmh.svelte-w4rfmh{transform:translateY(0);opacity:1}.social-links.svelte-w4rfmh a.svelte-w4rfmh{margin-right:10px;text-decoration:none;color:black}.nav-content.svelte-w4rfmh.svelte-w4rfmh{margin-top:100px}",
-  map: `{"version":3,"file":"navigation.svelte","sources":["navigation.svelte"],"sourcesContent":["<script lang=\\"ts\\">import { fade } from \\"svelte/transition\\";\\nimport { writable } from \\"svelte/store\\";\\nimport { goto, afterNavigate } from \\"$app/navigation\\";\\nimport { page } from \\"$app/stores\\";\\nexport let expanded = false;\\nexport let selectedRoute = 'home';\\nexport let toggleNav;\\nconst navItems = writable([\\n    { name: 'HOME', route: 'home' },\\n    { name: 'WHITEPAPER', route: 'whitepaper' },\\n    { name: 'GAME RULES', route: 'game-rules' },\\n    { name: 'TEAM', route: 'team' }\\n]);\\nfunction selectRoute(route) {\\n    selectedRoute = route;\\n    toggleNav();\\n    if (route === 'home') {\\n        goto(\`/\`);\\n        return;\\n    }\\n    goto(\`/\${route}\`);\\n}\\nfunction closeNav() {\\n    toggleNav();\\n}\\nfunction goHome() {\\n    toggleNav();\\n    goto('/');\\n}\\n$: {\\n    switch ($page.url.pathname) {\\n        case '/':\\n            selectedRoute = 'home';\\n            break;\\n        case '/whitepaper':\\n            selectedRoute = 'whitepaper';\\n            break;\\n        case '/team':\\n            selectedRoute = 'team';\\n            break;\\n        case '/game-rules':\\n            selectedRoute = 'game-rules';\\n            break;\\n        default:\\n            selectedRoute = 'home';\\n            break;\\n    }\\n}\\n<\/script>\\n  \\n<style>\\n    .nav-overlay {\\n      position: fixed;\\n      top: 0px;\\n      left: 0px;\\n      z-index: 50;\\n      display: flex;\\n      height: 100%;\\n      width: 100vw;\\n      flex-direction: column;\\n      justify-content: space-between;\\n      overflow-x: hidden;\\n      --tw-bg-opacity: 1;\\n      background-color: rgb(244 200 2 / var(--tw-bg-opacity));\\n}\\n  \\n    .nav-item {\\n      transform: translateY(-100%);\\n      opacity: 0;\\n      transition: transform 0.5s ease, opacity 0.5s ease;\\n    }\\n  \\n    .nav-item.expanded {\\n      transform: translateY(0);\\n      opacity: 1;\\n    }\\n  \\n    .social-links a {\\n      margin-right: 10px;\\n      text-decoration: none;\\n      color: black;\\n    }\\n  \\n    .nav-content {\\n      margin-top: 100px;\\n    }</style>\\n  \\n{#if expanded}\\n\\n    <div class=\\"flex min-h-screen flex-col relative nav-overlay\\" in:fade={{ duration: 300 }} out:fade={{ duration: 300 }}>\\n      \\n      <div class=\\"absolute top-4 left-4 z-10\\">\\n        <button\\n          on:click={closeNav}\\n          class=\\"bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md\\">\\n          -\\n        </button>\\n      </div>\\n      <div class=\\"absolute top-4 right-4 z-10\\">\\n        <button on:click={goHome}>\\n            <span class=\\"text-3xl font-extrabold text-black condensed\\">GOLFPAD</span>\\n        </button>\\n      </div>\\n  \\n      <div class=\\"nav-content flex flex-col items-start pl-10\\">\\n        {#each $navItems as item (item.route)}\\n          <div class=\\"nav-item expanded\\">\\n            <button\\n              on:click={() => selectRoute(item.route)}\\n              class=\\"text-3xl lg:text-6xl font-bold condensed {selectedRoute === item.route ? 'text-white' : 'text-black'}\\">\\n              {item.name}\\n            </button>\\n          </div>\\n        {/each}\\n      </div>\\n  \\n      <div class=\\"flex justify-between items-center p-5 text-xs lg:text-base\\">\\n        <div class=\\"social-links\\">\\n          <a href=\\"https://twitter.com\\" target=\\"_blank\\">TWITTER</a>\\n          <a href=\\"https://oc.app\\" target=\\"_blank\\">OPENCHAT</a>\\n          <a href=\\"https://youtube.com\\" target=\\"_blank\\">YOUTUBE</a>\\n        </div>\\n        \\n        <div>\\n          <img src=\\"placeholder.png\\" alt=\\"Profile\\" class=\\"w-12 h-12 rounded-full\\" />\\n        </div>\\n      </div>\\n    </div>\\n{/if}\\n"],"names":[],"mappings":"AAmDI,wCAAa,CACX,QAAQ,CAAE,KAAK,CACf,GAAG,CAAE,GAAG,CACR,IAAI,CAAE,GAAG,CACT,OAAO,CAAE,EAAE,CACX,OAAO,CAAE,IAAI,CACb,MAAM,CAAE,IAAI,CACZ,KAAK,CAAE,KAAK,CACZ,cAAc,CAAE,MAAM,CACtB,eAAe,CAAE,aAAa,CAC9B,UAAU,CAAE,MAAM,CAClB,eAAe,CAAE,CAAC,CAClB,gBAAgB,CAAE,IAAI,GAAG,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC,IAAI,eAAe,CAAC,CAC5D,CAEI,qCAAU,CACR,SAAS,CAAE,WAAW,KAAK,CAAC,CAC5B,OAAO,CAAE,CAAC,CACV,UAAU,CAAE,SAAS,CAAC,IAAI,CAAC,IAAI,CAAC,CAAC,OAAO,CAAC,IAAI,CAAC,IAChD,CAEA,SAAS,qCAAU,CACjB,SAAS,CAAE,WAAW,CAAC,CAAC,CACxB,OAAO,CAAE,CACX,CAEA,2BAAa,CAAC,eAAE,CACd,YAAY,CAAE,IAAI,CAClB,eAAe,CAAE,IAAI,CACrB,KAAK,CAAE,KACT,CAEA,wCAAa,CACX,UAAU,CAAE,KACd"}`
-};
-const Navigation = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $page, $$unsubscribe_page;
-  let $navItems, $$unsubscribe_navItems;
-  $$unsubscribe_page = subscribe(page, (value) => $page = value);
-  let { expanded = false } = $$props;
-  let { selectedRoute = "home" } = $$props;
-  let { toggleNav } = $$props;
-  const navItems = writable([
-    { name: "HOME", route: "home" },
-    { name: "WHITEPAPER", route: "whitepaper" },
-    { name: "GAME RULES", route: "game-rules" },
-    { name: "TEAM", route: "team" }
-  ]);
-  $$unsubscribe_navItems = subscribe(navItems, (value) => $navItems = value);
-  if ($$props.expanded === void 0 && $$bindings.expanded && expanded !== void 0) $$bindings.expanded(expanded);
-  if ($$props.selectedRoute === void 0 && $$bindings.selectedRoute && selectedRoute !== void 0) $$bindings.selectedRoute(selectedRoute);
-  if ($$props.toggleNav === void 0 && $$bindings.toggleNav && toggleNav !== void 0) $$bindings.toggleNav(toggleNav);
-  $$result.css.add(css$9);
-  {
-    {
-      switch ($page.url.pathname) {
-        case "/":
-          selectedRoute = "home";
-          break;
-        case "/whitepaper":
-          selectedRoute = "whitepaper";
-          break;
-        case "/team":
-          selectedRoute = "team";
-          break;
-        case "/game-rules":
-          selectedRoute = "game-rules";
-          break;
-        default:
-          selectedRoute = "home";
-          break;
-      }
-    }
-  }
-  $$unsubscribe_page();
-  $$unsubscribe_navItems();
-  return `${expanded ? `<div class="flex min-h-screen flex-col relative nav-overlay svelte-w4rfmh"><div class="absolute top-4 left-4 z-10"><button class="bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md" data-svelte-h="svelte-1cmq6fl">-</button></div> <div class="absolute top-4 right-4 z-10"><button data-svelte-h="svelte-y0f4s"><span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span></button></div> <div class="nav-content flex flex-col items-start pl-10 svelte-w4rfmh">${each($navItems, (item) => {
-    return `<div class="nav-item expanded svelte-w4rfmh"><button class="${"text-3xl lg:text-6xl font-bold condensed " + escape(
-      selectedRoute === item.route ? "text-white" : "text-black",
-      true
-    )}">${escape(item.name)}</button> </div>`;
-  })}</div> <div class="flex justify-between items-center p-5 text-xs lg:text-base" data-svelte-h="svelte-4mey05"><div class="social-links svelte-w4rfmh"><a href="https://twitter.com" target="_blank" class="svelte-w4rfmh">TWITTER</a> <a href="https://oc.app" target="_blank" class="svelte-w4rfmh">OPENCHAT</a> <a href="https://youtube.com" target="_blank" class="svelte-w4rfmh">YOUTUBE</a></div> <div><img src="placeholder.png" alt="Profile" class="w-12 h-12 rounded-full"></div></div></div>` : ``}`;
-});
-const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let isHomepage;
-  let $$unsubscribe_authStore;
-  $$unsubscribe_authStore = subscribe(authStore, (value) => value);
-  let expanded = false;
-  let selectedRoute = "home";
-  const init2 = async () => await Promise.all([syncAuthStore()]);
-  const syncAuthStore = async () => {
-    {
-      return;
-    }
-  };
-  onDestroy(() => {
-  });
-  function toggleNav() {
-    expanded = !expanded;
-    console.log(expanded);
-  }
-  isHomepage = browser;
-  $$unsubscribe_authStore();
-  return ` ${function(__value) {
-    if (is_promise(__value)) {
-      __value.then(null, noop);
-      return ` <div>${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}</div> `;
-    }
-    return function(_) {
-      return ` <div class="relative flex flex-col min-h-screen"><div class="flex-none h-[80px] relative"><div class="absolute z-10 top-4 left-4"><button class="flex items-center justify-center w-12 h-12 text-2xl font-bold text-white bg-black rounded-full shadow-md" data-svelte-h="svelte-1kd34xx">+</button></div> <div class="absolute z-10 top-4 right-4" data-svelte-h="svelte-17zfyzy"><a href="/"><span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span></a></div></div> ${validate_component(Navigation, "NavOverlay").$$render($$result, { expanded, selectedRoute, toggleNav }, {}, {})} <div class="${escape(
-        isHomepage ? "bg-GolfPadYellow  items-center justify-center relative" : "bg-white",
-        true
-      ) + " flex-1 flex"}">${slots.default ? slots.default({}) : ``}</div> ${!isHomepage ? `<div class="bg-GolfPadYellow flex-none relative h-[50px] mt-auto" data-svelte-h="svelte-ba1d4j"><div class="absolute z-10 bottom-4 left-4"><a href="/whitepaper" class="text-sm font-medium text-black">WHITEPAPER |</a> <a href="/team" class="text-sm font-medium text-black">TEAM |</a> <a target="_blank" href="https://github.com/jamesbeadle/golfpad" class="text-sm font-medium text-black">GITHUB</a></div></div>` : ``}</div> `;
-    }();
-  }(init2())} ${validate_component(BusyScreen, "BusyScreen").$$render($$result, {}, {}, {})}`;
-});
 const idlFactory = ({ IDL }) => {
   const PrincipalId = IDL.Text;
   const AcceptFriendRequestDTO = IDL.Record({ "requestedBy": PrincipalId });
@@ -4134,7 +3714,8 @@ const idlFactory = ({ IDL }) => {
     "Mulligans": IDL.Null,
     "BuildIt": IDL.Null,
     "Bands": IDL.Null,
-    "NextUp": IDL.Null
+    "NextUp": IDL.Null,
+    "Prophet": IDL.Null
   });
   const CourseType = IDL.Variant({
     "Custom": IDL.Null,
@@ -4351,15 +3932,7 @@ const idlFactory = ({ IDL }) => {
   });
   const Result_2 = IDL.Variant({ "ok": FriendRequestsDTO, "err": Error2 });
   const ListGolfersDTO = IDL.Record({ "searchTerm": IDL.Text });
-  const GolferSummaryDTO = IDL.Record({
-    "golferPrincipalId": PrincipalId,
-    "golferPicture": IDL.Opt(IDL.Vec(IDL.Nat8)),
-    "golferName": IDL.Text,
-    "handicap": IDL.Opt(Handicap2),
-    "golferPictureExtension": IDL.Text
-  });
-  const GolfersDTO = IDL.Record({ "golfers": IDL.Vec(GolferSummaryDTO) });
-  const Result_1 = IDL.Variant({ "ok": GolfersDTO, "err": Error2 });
+  const Result_1 = IDL.Variant({ "ok": IDL.Vec(GolferDTO), "err": Error2 });
   const RejectFriendRequestDTO = IDL.Record({ "requestedBy": PrincipalId });
   const UpdateGolferPictureDTO = IDL.Record({
     "golferPicture": IDL.Vec(IDL.Nat8),
@@ -4423,7 +3996,7 @@ const idlFactory = ({ IDL }) => {
     )
   });
 };
-var define_process_env_default$2 = { __CANDID_UI_CANISTER_ID: "ahw5u-keaaa-aaaaa-qaaha-cai", BACKEND_CANISTER_ID: "ajuq4-ruaaa-aaaaa-qaaga-cai", FRONTEND_CANISTER_ID: "aovwi-4maaa-aaaaa-qaagq-cai", DFX_NETWORK: "local" };
+var define_process_env_default$2 = { BACKEND_CANISTER_ID: "bkyz2-fmaaa-aaaaa-qaaaq-cai", FRONTEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", DFX_NETWORK: "local" };
 const canisterId = define_process_env_default$2.CANISTER_ID_BACKEND;
 const createActor = (canisterId2, options2 = {}) => {
   const agent = options2.agent || new HttpAgent({ ...options2.agentOptions });
@@ -4447,11 +4020,11 @@ const createActor = (canisterId2, options2 = {}) => {
   });
 };
 canisterId ? createActor(canisterId) : void 0;
-var define_process_env_default$1 = { __CANDID_UI_CANISTER_ID: "ahw5u-keaaa-aaaaa-qaaha-cai", BACKEND_CANISTER_ID: "ajuq4-ruaaa-aaaaa-qaaga-cai", FRONTEND_CANISTER_ID: "aovwi-4maaa-aaaaa-qaagq-cai", DFX_NETWORK: "local" };
+var define_process_env_default$1 = { BACKEND_CANISTER_ID: "bkyz2-fmaaa-aaaaa-qaaaq-cai", FRONTEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", DFX_NETWORK: "local" };
 class ActorFactory {
   static createActor(idlFactory2, canisterId2 = "", identity = null, options2 = null) {
     const hostOptions = {
-      host: "http://127.0.0.1:8080",
+      host: `http://127.0.0.1:4943/?canisterId=qhbym-qaaaa-aaaaa-aaafq-cai`,
       identity
     };
     if (!options2) {
@@ -4464,7 +4037,7 @@ class ActorFactory {
       options2.agentOptions.host = hostOptions.host;
     }
     const agent = new HttpAgent({ ...options2.agentOptions });
-    if (define_process_env_default$1.NODE_ENV !== "production") {
+    {
       agent.fetchRootKey().catch((err) => {
         console.warn(
           "Unable to fetch root key. Ensure your local replica is running"
@@ -4477,6 +4050,22 @@ class ActorFactory {
       canisterId: canisterId2,
       ...options2?.actorOptions
     });
+  }
+  static getAgent(canisterId2 = "", identity = null, options2 = null) {
+    const hostOptions = {
+      host: `http://127.0.0.1:4943/?canisterId=b77ix-eeaaa-aaaaa-qaada-cai`,
+      identity
+    };
+    if (!options2) {
+      options2 = {
+        agentOptions: hostOptions
+      };
+    } else if (!options2.agentOptions) {
+      options2.agentOptions = hostOptions;
+    } else {
+      options2.agentOptions.host = hostOptions.host;
+    }
+    return new HttpAgent({ ...options2.agentOptions });
   }
   static createIdentityActor(authStore2, canisterId2) {
     let unsubscribe;
@@ -4491,6 +4080,23 @@ class ActorFactory {
       return ActorFactory.createActor(idlFactory, canisterId2, identity);
     });
   }
+  static getGovernanceAgent(identity = null, options2 = null) {
+    let canisterId2 = define_process_env_default$1.CANISTER_ID_SNS_GOVERNANCE;
+    const hostOptions = {
+      host: `http://127.0.0.1:4943/?canisterId=${canisterId2}`,
+      identity
+    };
+    if (!options2) {
+      options2 = {
+        agentOptions: hostOptions
+      };
+    } else if (!options2.agentOptions) {
+      options2.agentOptions = hostOptions;
+    } else {
+      options2.agentOptions.host = hostOptions.host;
+    }
+    return new HttpAgent({ ...options2.agentOptions });
+  }
 }
 function isError(response) {
   return response && response.err !== void 0;
@@ -4500,7 +4106,7 @@ function getFileExtensionFromFile(file) {
   const lastIndex = filename.lastIndexOf(".");
   return lastIndex !== -1 ? filename.substring(lastIndex + 1) : "";
 }
-var define_process_env_default = { __CANDID_UI_CANISTER_ID: "ahw5u-keaaa-aaaaa-qaaha-cai", BACKEND_CANISTER_ID: "ajuq4-ruaaa-aaaaa-qaaga-cai", FRONTEND_CANISTER_ID: "aovwi-4maaa-aaaaa-qaagq-cai", DFX_NETWORK: "local" };
+var define_process_env_default = { BACKEND_CANISTER_ID: "bkyz2-fmaaa-aaaaa-qaaaq-cai", FRONTEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", DFX_NETWORK: "local" };
 function createUserStore() {
   const { subscribe: subscribe2, set } = writable(null);
   async function sync() {
@@ -4646,6 +4252,242 @@ const userGetAgentPicture = derived(
   userStore,
   (user) => user !== null && user !== void 0 && user.userPicture !== void 0 && user.userPicture.length > 0 ? URL.createObjectURL(new Blob([new Uint8Array(user.userPicture)])) : "placeholder.png"
 );
+const core = {
+  close: "Close",
+  back: "Back",
+  menu: "Open menu to access navigation options",
+  collapse: "Collapse",
+  expand: "Expand",
+  copy: "Copy to clipboard"
+};
+const theme = {
+  switch_theme: "Switch theme"
+};
+const progress = {
+  completed: "Completed",
+  in_progress: "In progress"
+};
+const en = {
+  core,
+  theme,
+  progress
+};
+readable({
+  lang: "en",
+  ...en
+});
+const initBusyStore = () => {
+  const DEFAULT_STATE = [];
+  const { subscribe: subscribe2, update, set } = writable(DEFAULT_STATE);
+  return {
+    subscribe: subscribe2,
+    /**
+     * Show the busy-screen if not visible
+     */
+    startBusy({ initiator: newInitiator, text: text2 }) {
+      update((state) => [
+        ...state.filter(({ initiator }) => newInitiator !== initiator),
+        { initiator: newInitiator, text: text2 }
+      ]);
+    },
+    /**
+     * Hide the busy-screen if no other initiators are done
+     */
+    stopBusy(initiatorToRemove) {
+      update((state) => state.filter(({ initiator }) => initiator !== initiatorToRemove));
+    },
+    resetForTesting() {
+      set(DEFAULT_STATE);
+    }
+  };
+};
+const busyStore = initBusyStore();
+const busy = derived(busyStore, ($busyStore) => $busyStore.length > 0);
+const busyMessage = derived(busyStore, ($busyStore) => $busyStore.reverse().find(({ text: text2 }) => nonNullish(text2))?.text);
+const css$4 = {
+  code: ".medium.svelte-85668t{--spinner-size:30px}.small.svelte-85668t{--spinner-size:calc(var(--line-height-standard) * 1rem)}.tiny.svelte-85668t{--spinner-size:calc(var(--line-height-standard) * 0.5rem)}svg.svelte-85668t{width:var(--spinner-size);height:var(--spinner-size);animation:spinner-linear-rotate 2000ms linear infinite;position:absolute;top:calc(50% - var(--spinner-size) / 2);left:calc(50% - var(--spinner-size) / 2);--radius:45px;--circumference:calc(3.1415926536 * var(--radius) * 2);--start:calc((1 - 0.05) * var(--circumference));--end:calc((1 - 0.8) * var(--circumference))}svg.inline.svelte-85668t{display:inline-block;position:relative}circle.svelte-85668t{stroke-dasharray:var(--circumference);stroke-width:10%;transform-origin:50% 50% 0;transition-property:stroke;animation-name:spinner-stroke-rotate-100;animation-duration:4000ms;animation-timing-function:cubic-bezier(0.35, 0, 0.25, 1);animation-iteration-count:infinite;fill:transparent;stroke:currentColor;transition:stroke-dashoffset 225ms linear}@keyframes spinner-linear-rotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}@keyframes spinner-stroke-rotate-100{0%{stroke-dashoffset:var(--start);transform:rotate(0)}12.5%{stroke-dashoffset:var(--end);transform:rotate(0)}12.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(72.5deg)}25%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(72.5deg)}25.0001%{stroke-dashoffset:var(--start);transform:rotate(270deg)}37.5%{stroke-dashoffset:var(--end);transform:rotate(270deg)}37.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(161.5deg)}50%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(161.5deg)}50.0001%{stroke-dashoffset:var(--start);transform:rotate(180deg)}62.5%{stroke-dashoffset:var(--end);transform:rotate(180deg)}62.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(251.5deg)}75%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(251.5deg)}75.0001%{stroke-dashoffset:var(--start);transform:rotate(90deg)}87.5%{stroke-dashoffset:var(--end);transform:rotate(90deg)}87.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(341.5deg)}100%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(341.5deg)}}",
+  map: '{"version":3,"file":"Spinner.svelte","sources":["Spinner.svelte"],"sourcesContent":["<!-- adapted source: https://github.com/angular/components/tree/master/src/material/progress-spinner -->\\n<script>export let inline = false;\\nexport let size = \\"medium\\";\\n<\/script>\\n\\n<svg\\n  class:inline\\n  class={size}\\n  preserveAspectRatio=\\"xMidYMid meet\\"\\n  focusable=\\"false\\"\\n  aria-hidden=\\"true\\"\\n  data-tid=\\"spinner\\"\\n  viewBox=\\"0 0 100 100\\"><circle cx=\\"50%\\" cy=\\"50%\\" r=\\"45\\" /></svg\\n>\\n\\n<style>.medium {\\n  --spinner-size: 30px;\\n}\\n\\n.small {\\n  --spinner-size: calc(var(--line-height-standard) * 1rem);\\n}\\n\\n.tiny {\\n  --spinner-size: calc(var(--line-height-standard) * 0.5rem);\\n}\\n\\nsvg {\\n  width: var(--spinner-size);\\n  height: var(--spinner-size);\\n  animation: spinner-linear-rotate 2000ms linear infinite;\\n  position: absolute;\\n  top: calc(50% - var(--spinner-size) / 2);\\n  left: calc(50% - var(--spinner-size) / 2);\\n  --radius: 45px;\\n  --circumference: calc(3.1415926536 * var(--radius) * 2);\\n  --start: calc((1 - 0.05) * var(--circumference));\\n  --end: calc((1 - 0.8) * var(--circumference));\\n}\\nsvg.inline {\\n  display: inline-block;\\n  position: relative;\\n}\\n\\ncircle {\\n  stroke-dasharray: var(--circumference);\\n  stroke-width: 10%;\\n  transform-origin: 50% 50% 0;\\n  transition-property: stroke;\\n  animation-name: spinner-stroke-rotate-100;\\n  animation-duration: 4000ms;\\n  animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1);\\n  animation-iteration-count: infinite;\\n  fill: transparent;\\n  stroke: currentColor;\\n  transition: stroke-dashoffset 225ms linear;\\n}\\n\\n/* -global- */\\n@keyframes -global-spinner-linear-rotate {\\n  0% {\\n    transform: rotate(0deg);\\n  }\\n  100% {\\n    transform: rotate(360deg);\\n  }\\n}\\n/* -global- */\\n@keyframes -global-spinner-stroke-rotate-100 {\\n  0% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(0);\\n  }\\n  12.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(0);\\n  }\\n  12.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(72.5deg);\\n  }\\n  25% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(72.5deg);\\n  }\\n  25.0001% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(270deg);\\n  }\\n  37.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(270deg);\\n  }\\n  37.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(161.5deg);\\n  }\\n  50% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(161.5deg);\\n  }\\n  50.0001% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(180deg);\\n  }\\n  62.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(180deg);\\n  }\\n  62.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(251.5deg);\\n  }\\n  75% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(251.5deg);\\n  }\\n  75.0001% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(90deg);\\n  }\\n  87.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(90deg);\\n  }\\n  87.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(341.5deg);\\n  }\\n  100% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(341.5deg);\\n  }\\n}</style>\\n"],"names":[],"mappings":"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"}'
+};
+const Spinner = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { inline = false } = $$props;
+  let { size = "medium" } = $$props;
+  if ($$props.inline === void 0 && $$bindings.inline && inline !== void 0) $$bindings.inline(inline);
+  if ($$props.size === void 0 && $$bindings.size && size !== void 0) $$bindings.size(size);
+  $$result.css.add(css$4);
+  return `  <svg class="${[escape(null_to_empty(size), true) + " svelte-85668t", inline ? "inline" : ""].join(" ").trim()}" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true" data-tid="spinner" viewBox="0 0 100 100"><circle cx="50%" cy="50%" r="45" class="svelte-85668t"></circle></svg>`;
+});
+const css$3 = {
+  code: "div.svelte-14plyno{z-index:calc(var(--z-index) + 1000);position:fixed;top:0;right:0;bottom:0;left:0;background:var(--backdrop);color:var(--backdrop-contrast)}.content.svelte-14plyno{display:flex;flex-direction:column;justify-content:center;align-items:center}p.svelte-14plyno{padding-bottom:var(--padding);max-width:calc(var(--section-max-width) / 2)}",
+  map: '{"version":3,"file":"BusyScreen.svelte","sources":["BusyScreen.svelte"],"sourcesContent":["<script>import { fade } from \\"svelte/transition\\";\\nimport { busy, busyMessage } from \\"../stores/busy.store\\";\\nimport Spinner from \\"./Spinner.svelte\\";\\nimport { nonNullish } from \\"@dfinity/utils\\";\\n<\/script>\\n\\n<!-- Display spinner and lock UI if busyStore is not empty -->\\n{#if $busy}\\n  <div data-tid=\\"busy\\" transition:fade|global>\\n    <div class=\\"content\\">\\n      {#if nonNullish($busyMessage)}\\n        <p>{$busyMessage}</p>\\n      {/if}\\n      <span>\\n        <Spinner inline />\\n      </span>\\n    </div>\\n  </div>\\n{/if}\\n\\n<style>div {\\n  z-index: calc(var(--z-index) + 1000);\\n  position: fixed;\\n  top: 0;\\n  right: 0;\\n  bottom: 0;\\n  left: 0;\\n  background: var(--backdrop);\\n  color: var(--backdrop-contrast);\\n}\\n\\n.content {\\n  display: flex;\\n  flex-direction: column;\\n  justify-content: center;\\n  align-items: center;\\n}\\n\\np {\\n  padding-bottom: var(--padding);\\n  max-width: calc(var(--section-max-width) / 2);\\n}</style>\\n"],"names":[],"mappings":"AAoBO,kBAAI,CACT,OAAO,CAAE,KAAK,IAAI,SAAS,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CACpC,QAAQ,CAAE,KAAK,CACf,GAAG,CAAE,CAAC,CACN,KAAK,CAAE,CAAC,CACR,MAAM,CAAE,CAAC,CACT,IAAI,CAAE,CAAC,CACP,UAAU,CAAE,IAAI,UAAU,CAAC,CAC3B,KAAK,CAAE,IAAI,mBAAmB,CAChC,CAEA,uBAAS,CACP,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAAM,CACtB,eAAe,CAAE,MAAM,CACvB,WAAW,CAAE,MACf,CAEA,gBAAE,CACA,cAAc,CAAE,IAAI,SAAS,CAAC,CAC9B,SAAS,CAAE,KAAK,IAAI,mBAAmB,CAAC,CAAC,CAAC,CAAC,CAAC,CAC9C"}'
+};
+const BusyScreen = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $busy, $$unsubscribe_busy;
+  let $busyMessage, $$unsubscribe_busyMessage;
+  $$unsubscribe_busy = subscribe(busy, (value) => $busy = value);
+  $$unsubscribe_busyMessage = subscribe(busyMessage, (value) => $busyMessage = value);
+  $$result.css.add(css$3);
+  $$unsubscribe_busy();
+  $$unsubscribe_busyMessage();
+  return ` ${$busy ? `<div data-tid="busy" class="svelte-14plyno"><div class="content svelte-14plyno">${nonNullish($busyMessage) ? `<p class="svelte-14plyno">${escape($busyMessage)}</p>` : ``} <span>${validate_component(Spinner, "Spinner").$$render($$result, { inline: true }, {}, {})}</span></div></div>` : ``}`;
+});
+var Theme;
+(function(Theme2) {
+  Theme2["DARK"] = "dark";
+  Theme2["LIGHT"] = "light";
+})(Theme || (Theme = {}));
+const isNode = () => typeof process !== "undefined" && process.versions != null && process.versions.node != null;
+const enumFromStringExists = ({ obj, value }) => Object.values(obj).includes(value);
+const THEME_ATTRIBUTE = "theme";
+const LOCALSTORAGE_THEME_KEY = "nnsTheme";
+const initTheme = () => {
+  if (isNode()) {
+    return void 0;
+  }
+  const theme2 = document.documentElement.getAttribute(THEME_ATTRIBUTE);
+  const initialTheme = enumFromStringExists({
+    obj: Theme,
+    value: theme2
+  }) ? theme2 : Theme.DARK;
+  applyTheme({ theme: initialTheme, preserve: false });
+  return initialTheme;
+};
+const applyTheme = ({ theme: theme2, preserve = true }) => {
+  const { documentElement, head } = document;
+  documentElement.setAttribute(THEME_ATTRIBUTE, theme2);
+  const color = getComputedStyle(documentElement).getPropertyValue("--theme-color");
+  head?.children?.namedItem("theme-color")?.setAttribute("content", color.trim());
+  if (preserve) {
+    localStorage.setItem(LOCALSTORAGE_THEME_KEY, JSON.stringify(theme2));
+  }
+};
+initTheme();
+var Menu;
+(function(Menu2) {
+  Menu2["COLLAPSED"] = "collapsed";
+  Menu2["EXPANDED"] = "expanded";
+})(Menu || (Menu = {}));
+const MENU_ATTRIBUTE = "menu";
+const LOCALSTORAGE_MENU_KEY = "nnsMenu";
+const initMenu = () => {
+  if (isNode()) {
+    return void 0;
+  }
+  const menu = document.documentElement.getAttribute(MENU_ATTRIBUTE);
+  const initialMenu2 = enumFromStringExists({
+    obj: Menu,
+    value: menu
+  }) ? menu : Menu.EXPANDED;
+  applyMenu({ menu: initialMenu2, preserve: false });
+  return initialMenu2;
+};
+const applyMenu = ({ menu, preserve = true }) => {
+  const { documentElement } = document;
+  documentElement.setAttribute(MENU_ATTRIBUTE, menu);
+  if (preserve) {
+    localStorage.setItem(LOCALSTORAGE_MENU_KEY, JSON.stringify(menu));
+  }
+};
+const initialMenu = initMenu();
+const initMenuStore = () => {
+  const { subscribe: subscribe2, update } = writable(initialMenu);
+  return {
+    subscribe: subscribe2,
+    toggle: () => {
+      update((state) => {
+        const menu = state === Menu.EXPANDED ? Menu.COLLAPSED : Menu.EXPANDED;
+        applyMenu({ menu, preserve: true });
+        return menu;
+      });
+    }
+  };
+};
+const menuStore = initMenuStore();
+derived(menuStore, ($menuStore) => $menuStore === Menu.COLLAPSED);
+const css$2 = {
+  code: ".nav-overlay.svelte-w4rfmh.svelte-w4rfmh{position:fixed;top:0px;left:0px;z-index:50;display:flex;height:100%;width:100vw;flex-direction:column;justify-content:space-between;overflow-x:hidden;--tw-bg-opacity:1;background-color:rgb(244 200 2 / var(--tw-bg-opacity))}.nav-item.svelte-w4rfmh.svelte-w4rfmh{transform:translateY(-100%);opacity:0;transition:transform 0.5s ease, opacity 0.5s ease}.nav-item.expanded.svelte-w4rfmh.svelte-w4rfmh{transform:translateY(0);opacity:1}.social-links.svelte-w4rfmh a.svelte-w4rfmh{margin-right:10px;text-decoration:none;color:black}.nav-content.svelte-w4rfmh.svelte-w4rfmh{margin-top:100px}",
+  map: `{"version":3,"file":"navigation.svelte","sources":["navigation.svelte"],"sourcesContent":["<script lang=\\"ts\\">import { fade } from \\"svelte/transition\\";\\nimport { writable } from \\"svelte/store\\";\\nimport { goto, afterNavigate } from \\"$app/navigation\\";\\nimport { page } from \\"$app/stores\\";\\nexport let expanded = false;\\nexport let selectedRoute = 'home';\\nexport let toggleNav;\\nconst navItems = writable([\\n    { name: 'HOME', route: 'home' },\\n    { name: 'WHITEPAPER', route: 'whitepaper' },\\n    { name: 'GAME RULES', route: 'game-rules' },\\n    { name: 'TEAM', route: 'team' }\\n]);\\nfunction selectRoute(route) {\\n    selectedRoute = route;\\n    toggleNav();\\n    if (route === 'home') {\\n        goto(\`/\`);\\n        return;\\n    }\\n    goto(\`/\${route}\`);\\n}\\nfunction closeNav() {\\n    toggleNav();\\n}\\nfunction goHome() {\\n    toggleNav();\\n    goto('/');\\n}\\n$: {\\n    switch ($page.url.pathname) {\\n        case '/':\\n            selectedRoute = 'home';\\n            break;\\n        case '/whitepaper':\\n            selectedRoute = 'whitepaper';\\n            break;\\n        case '/team':\\n            selectedRoute = 'team';\\n            break;\\n        case '/game-rules':\\n            selectedRoute = 'game-rules';\\n            break;\\n        default:\\n            selectedRoute = 'home';\\n            break;\\n    }\\n}\\n<\/script>\\n  \\n<style>\\n    .nav-overlay {\\n      position: fixed;\\n      top: 0px;\\n      left: 0px;\\n      z-index: 50;\\n      display: flex;\\n      height: 100%;\\n      width: 100vw;\\n      flex-direction: column;\\n      justify-content: space-between;\\n      overflow-x: hidden;\\n      --tw-bg-opacity: 1;\\n      background-color: rgb(244 200 2 / var(--tw-bg-opacity));\\n}\\n  \\n    .nav-item {\\n      transform: translateY(-100%);\\n      opacity: 0;\\n      transition: transform 0.5s ease, opacity 0.5s ease;\\n    }\\n  \\n    .nav-item.expanded {\\n      transform: translateY(0);\\n      opacity: 1;\\n    }\\n  \\n    .social-links a {\\n      margin-right: 10px;\\n      text-decoration: none;\\n      color: black;\\n    }\\n  \\n    .nav-content {\\n      margin-top: 100px;\\n    }</style>\\n  \\n{#if expanded}\\n\\n    <div class=\\"flex min-h-screen flex-col relative nav-overlay\\" in:fade={{ duration: 300 }} out:fade={{ duration: 300 }}>\\n      \\n      <div class=\\"absolute top-4 left-4 z-10\\">\\n        <button\\n          on:click={closeNav}\\n          class=\\"bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md\\">\\n          -\\n        </button>\\n      </div>\\n      <div class=\\"absolute top-4 right-4 z-10\\">\\n        <button on:click={goHome}>\\n            <span class=\\"text-3xl font-extrabold text-black condensed\\">GOLFPAD</span>\\n        </button>\\n      </div>\\n  \\n      <div class=\\"nav-content flex flex-col items-start pl-10\\">\\n        {#each $navItems as item (item.route)}\\n          <div class=\\"nav-item expanded\\">\\n            <button\\n              on:click={() => selectRoute(item.route)}\\n              class=\\"text-3xl lg:text-6xl font-bold condensed {selectedRoute === item.route ? 'text-white' : 'text-black'}\\">\\n              {item.name}\\n            </button>\\n          </div>\\n        {/each}\\n      </div>\\n  \\n      <div class=\\"flex justify-between items-center p-5 text-xs lg:text-base\\">\\n        <div class=\\"social-links\\">\\n          <a href=\\"https://twitter.com\\" target=\\"_blank\\">TWITTER</a>\\n          <a href=\\"https://oc.app\\" target=\\"_blank\\">OPENCHAT</a>\\n          <a href=\\"https://youtube.com\\" target=\\"_blank\\">YOUTUBE</a>\\n        </div>\\n        \\n        <div>\\n          <img src=\\"placeholder.png\\" alt=\\"Profile\\" class=\\"w-12 h-12 rounded-full\\" />\\n        </div>\\n      </div>\\n    </div>\\n{/if}\\n"],"names":[],"mappings":"AAmDI,wCAAa,CACX,QAAQ,CAAE,KAAK,CACf,GAAG,CAAE,GAAG,CACR,IAAI,CAAE,GAAG,CACT,OAAO,CAAE,EAAE,CACX,OAAO,CAAE,IAAI,CACb,MAAM,CAAE,IAAI,CACZ,KAAK,CAAE,KAAK,CACZ,cAAc,CAAE,MAAM,CACtB,eAAe,CAAE,aAAa,CAC9B,UAAU,CAAE,MAAM,CAClB,eAAe,CAAE,CAAC,CAClB,gBAAgB,CAAE,IAAI,GAAG,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC,IAAI,eAAe,CAAC,CAC5D,CAEI,qCAAU,CACR,SAAS,CAAE,WAAW,KAAK,CAAC,CAC5B,OAAO,CAAE,CAAC,CACV,UAAU,CAAE,SAAS,CAAC,IAAI,CAAC,IAAI,CAAC,CAAC,OAAO,CAAC,IAAI,CAAC,IAChD,CAEA,SAAS,qCAAU,CACjB,SAAS,CAAE,WAAW,CAAC,CAAC,CACxB,OAAO,CAAE,CACX,CAEA,2BAAa,CAAC,eAAE,CACd,YAAY,CAAE,IAAI,CAClB,eAAe,CAAE,IAAI,CACrB,KAAK,CAAE,KACT,CAEA,wCAAa,CACX,UAAU,CAAE,KACd"}`
+};
+const Navigation = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $page, $$unsubscribe_page;
+  let $navItems, $$unsubscribe_navItems;
+  $$unsubscribe_page = subscribe(page, (value) => $page = value);
+  let { expanded = false } = $$props;
+  let { selectedRoute = "home" } = $$props;
+  let { toggleNav } = $$props;
+  const navItems = writable([
+    { name: "HOME", route: "home" },
+    { name: "WHITEPAPER", route: "whitepaper" },
+    { name: "GAME RULES", route: "game-rules" },
+    { name: "TEAM", route: "team" }
+  ]);
+  $$unsubscribe_navItems = subscribe(navItems, (value) => $navItems = value);
+  if ($$props.expanded === void 0 && $$bindings.expanded && expanded !== void 0) $$bindings.expanded(expanded);
+  if ($$props.selectedRoute === void 0 && $$bindings.selectedRoute && selectedRoute !== void 0) $$bindings.selectedRoute(selectedRoute);
+  if ($$props.toggleNav === void 0 && $$bindings.toggleNav && toggleNav !== void 0) $$bindings.toggleNav(toggleNav);
+  $$result.css.add(css$2);
+  {
+    {
+      switch ($page.url.pathname) {
+        case "/":
+          selectedRoute = "home";
+          break;
+        case "/whitepaper":
+          selectedRoute = "whitepaper";
+          break;
+        case "/team":
+          selectedRoute = "team";
+          break;
+        case "/game-rules":
+          selectedRoute = "game-rules";
+          break;
+        default:
+          selectedRoute = "home";
+          break;
+      }
+    }
+  }
+  $$unsubscribe_page();
+  $$unsubscribe_navItems();
+  return `${expanded ? `<div class="flex min-h-screen flex-col relative nav-overlay svelte-w4rfmh"><div class="absolute top-4 left-4 z-10"><button class="bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md" data-svelte-h="svelte-1cmq6fl">-</button></div> <div class="absolute top-4 right-4 z-10"><button data-svelte-h="svelte-y0f4s"><span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span></button></div> <div class="nav-content flex flex-col items-start pl-10 svelte-w4rfmh">${each($navItems, (item) => {
+    return `<div class="nav-item expanded svelte-w4rfmh"><button class="${"text-3xl lg:text-6xl font-bold condensed " + escape(
+      selectedRoute === item.route ? "text-white" : "text-black",
+      true
+    )}">${escape(item.name)}</button> </div>`;
+  })}</div> <div class="flex justify-between items-center p-5 text-xs lg:text-base" data-svelte-h="svelte-4mey05"><div class="social-links svelte-w4rfmh"><a href="https://twitter.com" target="_blank" class="svelte-w4rfmh">TWITTER</a> <a href="https://oc.app" target="_blank" class="svelte-w4rfmh">OPENCHAT</a> <a href="https://youtube.com" target="_blank" class="svelte-w4rfmh">YOUTUBE</a></div> <div><img src="placeholder.png" alt="Profile" class="w-12 h-12 rounded-full"></div></div></div>` : ``}`;
+});
+const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let isHomepage;
+  let $$unsubscribe_authStore;
+  $$unsubscribe_authStore = subscribe(authStore, (value) => value);
+  let expanded = false;
+  let selectedRoute = "home";
+  const init2 = async () => await Promise.all([syncAuthStore()]);
+  const syncAuthStore = async () => {
+    {
+      return;
+    }
+  };
+  onDestroy(() => {
+  });
+  function toggleNav() {
+    expanded = !expanded;
+    console.log(expanded);
+  }
+  isHomepage = browser;
+  $$unsubscribe_authStore();
+  return ` ${function(__value) {
+    if (is_promise(__value)) {
+      __value.then(null, noop);
+      return ` <div>${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}</div> `;
+    }
+    return function(_) {
+      return ` <div class="relative flex flex-col min-h-screen"><div class="flex-none h-[80px] relative"><div class="absolute z-10 top-4 left-4"><button class="flex items-center justify-center w-12 h-12 text-2xl font-bold text-white bg-black rounded-full shadow-md" data-svelte-h="svelte-1kd34xx">+</button></div> <div class="absolute z-10 top-4 right-4" data-svelte-h="svelte-17zfyzy"><a href="/"><span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span></a></div></div> ${validate_component(Navigation, "NavOverlay").$$render($$result, { expanded, selectedRoute, toggleNav }, {}, {})} <div class="${escape(
+        isHomepage ? "bg-GolfPadYellow  items-center justify-center relative" : "bg-white",
+        true
+      ) + " flex-1 flex"}">${slots.default ? slots.default({}) : ``}</div> ${!isHomepage ? `<div class="bg-GolfPadYellow flex-none relative h-[50px] mt-auto" data-svelte-h="svelte-ba1d4j"><div class="absolute z-10 bottom-4 left-4"><a href="/whitepaper" class="text-sm font-medium text-black">WHITEPAPER |</a> <a href="/team" class="text-sm font-medium text-black">TEAM |</a> <a target="_blank" href="https://github.com/jamesbeadle/golfpad" class="text-sm font-medium text-black">GITHUB</a></div></div>` : ``}</div> `;
+    }();
+  }(init2())} ${validate_component(BusyScreen, "BusyScreen").$$render($$result, {}, {}, {})}`;
+});
 const Page$7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $authSignedInStore, $$unsubscribe_authSignedInStore;
   let $userGetAgentPicture, $$unsubscribe_userGetAgentPicture;
@@ -4655,18 +4497,11 @@ const Page$7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$unsubscribe_userGetAgentPicture();
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="z-10 px-4 text-center"><h1 class="mb-1 font-bold text-GolfPadForest" data-svelte-h="svelte-h9sgsu">WELCOME TO <span class="condensed">GOLFPAD</span></h1> <h2 class="mx-16 mb-6 text-3xl font-black leading-tight text-black md:text-6xl condensed" data-svelte-h="svelte-b01hg0">THE FUTURE OF GOLF STARTS HERE</h2> ${!$authSignedInStore ? `<button class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow" data-svelte-h="svelte-1xn4nag">CONNECT</button>` : ``} ${$authSignedInStore ? `<img${add_attribute("src", $userGetAgentPicture, 0)} alt="Profile" class="profile-pic-bottom-right" aria-label="Toggle Profile"> <button class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow" data-svelte-h="svelte-1ijbrxg">SIGN OUT</button>` : ``} <style data-svelte-h="svelte-zvmyc3">.profile-pic-bottom-right {
-            position: fixed;
-            bottom: 10px; 
-            right: 10px; 
-            width: 50px;  
-            height: auto; 
-            border-radius: 50%; 
-        }</style></div> <div class="absolute bottom-0 left-0 z-0 w-full" data-svelte-h="svelte-1m4zgpi"><img src="golfball_mobile.png" alt="Golf Ball" class="object-cover w-full h-auto md:hidden"> <img src="golfball.png" alt="Golf Ball" class="hidden object-cover w-full h-auto md:flex"></div>`;
+      return `<div class="z-10 px-4 text-center"><h1 class="mb-1 font-bold text-GolfPadForest" data-svelte-h="svelte-h9sgsu">WELCOME TO <span class="condensed">GOLFPAD</span></h1> <h2 class="mx-16 mb-6 text-3xl font-black leading-tight text-black md:text-6xl condensed" data-svelte-h="svelte-b01hg0">THE FUTURE OF GOLF STARTS HERE</h2> ${!$authSignedInStore ? `<button class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow" data-svelte-h="svelte-1xn4nag">CONNECT</button>` : ``} ${$authSignedInStore ? `<img${add_attribute("src", $userGetAgentPicture, 0)} alt="Profile" class="fixed w-12 h-12 rounded-full bottom-3 right-3" aria-label="Toggle Profile"> <button class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow" data-svelte-h="svelte-1ijbrxg">SIGN OUT</button>` : ``}</div> <div class="absolute bottom-0 left-0 z-0 w-full" data-svelte-h="svelte-1m4zgpi"><img src="golfball_mobile.png" alt="Golf Ball" class="object-cover w-full h-auto md:hidden"> <img src="golfball.png" alt="Golf Ball" class="hidden object-cover w-full h-auto md:flex"></div>`;
     }
   })}`;
 });
-const css$8 = {
+const css$1 = {
   code: "button.svelte-18ue7le{transition:color 0.3s, border-color 0.3s}",
   map: `{"version":3,"file":"+page.svelte","sources":["+page.svelte"],"sourcesContent":["<script lang=\\"ts\\">import { onMount } from \\"svelte\\";\\nimport { writable } from \\"svelte/store\\";\\nimport Layout from \\"../Layout.svelte\\";\\nonMount(() => {\\n    window.scrollTo(0, 0);\\n});\\nconst selectedGame = writable(\\"Mulligans\\");\\n<\/script>\\n\\n<Layout>\\n    <div class=\\"p-4 text-black w-full max-w-4xl mx-auto\\">\\n        <h2 class=\\"text-2xl md:text-4xl font-black text-black mb-6 mt-3\\">\\n            GAMEPLAY RULES\\n        </h2>\\n\\n        <p class=\\"text-base md:text-lg leading-relaxed mb-6\\">\\n            Choose a game from the tabs below to view its specific rules. Understanding these rules is essential to ensure fair play and enjoyment for everyone involved.\\n        </p>\\n\\n        <div class=\\"border-b border-gray-300 mb-4\\">\\n            <div class=\\"flex flex-wrap space-x-2 md:space-x-4 overflow-x-auto\\">\\n                <button\\n                    class=\\"text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 {($selectedGame === 'Mulligans') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-blue-500'}\\"\\n                    on:click={() => selectedGame.set('Mulligans')}\\n                >\\n                <span class=\\"condensed\\">MULLIGANS</span>\\n                </button>\\n                <button\\n                    class=\\"text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 {($selectedGame === 'Bands') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-blue-500'}\\"\\n                    on:click={() => selectedGame.set('Bands')}\\n                >\\n                <span class=\\"condensed\\">BANDS</span>\\n                </button>\\n                <button\\n                    class=\\"text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 {($selectedGame === 'Build It') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-blue-500'}\\"\\n                    on:click={() => selectedGame.set('Build It')}\\n                >\\n                <span class=\\"condensed\\">BUILD IT</span>\\n                </button>\\n                <button\\n                    class=\\"text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 {($selectedGame === 'Next Up') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-blue-500'}\\"\\n                    on:click={() => selectedGame.set('Next Up')}\\n                >\\n                <span class=\\"condensed\\">NEXT UP</span>\\n                </button>\\n            </div>\\n        </div>\\n\\n        <div class=\\"bg-white p-4 md:p-6 rounded-lg shadow-lg\\">\\n            {#if $selectedGame === 'Mulligans'}\\n                <div class=\\"flex flex-col md:flex-row items-center mb-4\\">\\n                    <img src=\\"mulligans.png\\" alt=\\"mulligans\\" class=\\"w-full h-32 md:w-20 md:h-20 rounded-lg object-cover object-center md:object-contain mb-4 md:mb-0 md:mr-4\\" />\\n                    <h3 class=\\"text-xl md:text-2xl condensed\\">MULLIGANS</h3>\\n                </div>\\n                <ul class=\\"list-disc list-inside text-sm md:text-base text-gray-700 space-y-2\\">\\n                    <li>A golfer receives a mulligan every 3 holes, specifically the 1st, 4th, 7th, 10th, 13th and 16th holes.</li>\\n                    <li>Golfers play each hole in match play format, with scores adjusted by handicap.</li>\\n                    <li>If a golfer wins a hole a mulligan is added to their available mulligans.</li>\\n                    <li>A golfer can use as many mulligans as they have available on any hole.</li>\\n                    <li>A golfer can build up as many mulligans as they can.</li>\\n                    <li>The game is decided when a golfer is winning by more holes than are available to play.</li>\\n                </ul>\\n            {/if}\\n\\n            {#if $selectedGame === 'Bands'}\\n                <div class=\\"flex flex-col md:flex-row items-center mb-4\\">\\n                    <img src=\\"bands.png\\" alt=\\"bands\\" class=\\"w-full h-32 md:w-20 md:h-20 rounded-lg object-cover object-center md:object-contain mb-4 md:mb-0 md:mr-4\\" />\\n                    <h3 class=\\"text-xl md:text-2xl condensed\\">BANDS</h3>\\n                </div>\\n                <p class=\\"text-sm md:text-base text-gray-700 mb-4\\">\\n                    Before a match, a golfer makes selections of 3 hole bands for each of the 9 game categories. \\n                    Each band must start on a different hole but they are allowed to overlap.\\n                </p>\\n\\n                <p class=\\"text-sm md:text-base text-gray-700 mb-4\\">\\n                    The points for each band are as follows:\\n                </p>\\n\\n                <ul class=\\"list-disc list-inside text-sm md:text-base text-gray-700 space-y-2\\">\\n                    <li><span class=\\"semi-bold\\">Band 1:</span> Holes where you don’t hit a tree or enter a bunker. <span class=\\"semi-bold\\">15 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 2:</span> Holes where you won’t lose a ball. <span class=\\"semi-bold\\">10 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 3:</span> Holes where you hit 2/3 fairways. <span class=\\"semi-bold\\">20 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 4:</span> Holes where you hit 2/3 greens. <span class=\\"semi-bold\\">25 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 5:</span> Holes where you will 1-putt 2/3 greens. <span class=\\"semi-bold\\">30 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 6:</span> Holes where you won’t get a double bogey or worse. <span class=\\"semi-bold\\">35 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 7:</span> Holes where you won’t bogey or worse. <span class=\\"semi-bold\\">40 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 8:</span> Holes where you’ll be par or under. <span class=\\"semi-bold\\">45 points</span></li>\\n                    <li><span class=\\"semi-bold\\">Band 9:</span> Holes where you’ll be under par. <span class=\\"semi-bold\\">50 points</span></li>\\n                </ul>\\n                <p class=\\"text-sm md:text-base text-gray-700 mt-4\\">\\n                    A golfer can get a maximum possible total score of 270. Golfers receive the points for each band they achieve. The winner is the golfer with the most points at the end of the round.\\n                </p>\\n            {/if}\\n\\n\\n            {#if $selectedGame === 'Build It'}\\n                <div class=\\"flex flex-col md:flex-row items-center mb-4\\">\\n                    <img src=\\"build-it.png\\" alt=\\"build-it\\" class=\\"w-full h-32 md:w-20 md:h-20 rounded-lg object-cover object-center md:object-contain mb-4 md:mb-0 md:mr-4\\" />\\n                    <h3 class=\\"text-xl md:text-2xl condensed\\">BUILD IT</h3>\\n                </div>\\n                <ul class=\\"list-disc list-inside text-sm md:text-base text-gray-700 space-y-2\\">\\n                    <li>A golfer can create a team in which they can compete against multiple other teams.</li>\\n                    <li>The golfer who created the team becomes the team's captain.</li>\\n                    <li>A team captain sets up a game on a specific course and tee to compete against other teams.</li>\\n                    <li>A team captain invites other team's to join in a new game.</li>\\n                    <li>A team captain selects a period of time to build their team card over.</li>\\n                    <li>Golfers add their scorecards transferring any new lowest scores over to the team card.</li>\\n                    <li>The winners are the team with the lowest scorecard at the end of the game's duration.</li>\\n                </ul>\\n            {/if}\\n\\n            {#if $selectedGame === 'Next Up'}\\n                <div class=\\"flex flex-col md:flex-row items-center mb-4\\">\\n                    <img src=\\"next-up.png\\" alt=\\"next-up\\" class=\\"w-full h-32 md:w-20 md:h-20 rounded-lg object-cover object-center md:object-contain mb-4 md:mb-0 md:mr-4\\" />\\n                    <h3 class=\\"text-xl md:text-2xl condensed\\">NEXT UP</h3>\\n                </div>\\n                <ul class=\\"list-disc list-inside text-sm md:text-base text-gray-700 space-y-2\\">\\n                    <li>Each golfer is assigned a random tee box, denoting the hole in which they must win.</li>\\n                    <li>If a golfer wins the hole they are defending, they get 3 points.</li>\\n                    <li>If a golfer wins a hole they are not defending, they get 1 point.</li>\\n                    <li>The winner is the golfer with the most points at the end of the round.</li>\\n                    <li>If the number of holes is not divisible by the number of players without a remainder, the holes are divided up and the remaining holes are assigned to the lowest scoring player who can potentially win.</li>\\n                </ul>\\n            {/if}\\n        </div>\\n    </div>\\n</Layout>\\n\\n<style>\\n    button {\\n        transition: color 0.3s, border-color 0.3s;\\n    }</style>\\n"],"names":[],"mappings":"AAiII,qBAAO,CACH,UAAU,CAAE,KAAK,CAAC,IAAI,CAAC,CAAC,YAAY,CAAC,IACzC"}`
 };
@@ -4674,7 +4509,7 @@ const Page$6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $selectedGame, $$unsubscribe_selectedGame;
   const selectedGame = writable("Mulligans");
   $$unsubscribe_selectedGame = subscribe(selectedGame, (value) => $selectedGame = value);
-  $$result.css.add(css$8);
+  $$result.css.add(css$1);
   $$unsubscribe_selectedGame();
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
@@ -4696,898 +4531,270 @@ const Page$6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   })}`;
 });
 const golferGameSummary = writable(null);
-const css$7 = {
-  code: ".btn.svelte-1iebmou.svelte-1iebmou{padding:10px 20px;font-weight:bold;border-radius:5px;cursor:pointer}.btn-new-game.svelte-1iebmou.svelte-1iebmou{background-color:#f6c200;color:#1C4932;border:none}.btn-predict.svelte-1iebmou.svelte-1iebmou{background-color:#007bff;color:white;padding:10px 15px}.table-headings.svelte-1iebmou.svelte-1iebmou{background-color:#f7f7f7;padding:10px;font-size:20px;width:100%;text-align:left;font-weight:bold}.game-type.svelte-1iebmou h3.svelte-1iebmou{font-weight:bold}.game-list.svelte-1iebmou.svelte-1iebmou{background-color:#f7f7f7;border-top:1px solid #eee;margin-top:20px;text-align:left;width:100%}.game-type.svelte-1iebmou.svelte-1iebmou{display:flex;align-items:center;border-bottom:1px solid #eee;padding:20px 0}.game-info.svelte-1iebmou.svelte-1iebmou{width:60px;height:60px;border-radius:5px}.players.svelte-1iebmou.svelte-1iebmou{display:flex;background-color:#f7f7f7}.hover-picture.svelte-1iebmou.svelte-1iebmou{display:none;position:absolute;top:50px;left:0;z-index:100}.hover-player.svelte-1iebmou.svelte-1iebmou{background-color:white;border-radius:8px;box-shadow:0px 4px 8px rgba(0,0,0,0.1);padding:10px}.btn-view-player.svelte-1iebmou.svelte-1iebmou{background-color:#007bff;color:white;padding:5px 10px;border-radius:5px}.status.svelte-1iebmou.svelte-1iebmou{font-size:18px;font-weight:bold;color:#007bff;background-color:#f7f7f7}.flex.svelte-1iebmou.svelte-1iebmou{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}h2.svelte-1iebmou.svelte-1iebmou{text-align:left;margin-left:0}",
-  map: '{"version":3,"file":"+page.svelte","sources":["+page.svelte"],"sourcesContent":["<script lang=\\"ts\\">import { onMount } from \\"svelte\\";\\nimport Layout from \\"../Layout.svelte\\";\\nimport { goto } from \\"$app/navigation\\";\\nimport { golferGameSummary, getGolferGameSummary } from \\"$lib/stores/golfer-summaries-store\\";\\nimport ShowSelectGameModal from \\"$lib/components/games/show-select-game-modal.svelte\\";\\nlet showNewGameModal = false;\\nlet pageFilters = {\\n    limit: BigInt(0),\\n    offset: BigInt(0),\\n};\\n// Fetch golfer game summaries on mount\\nonMount(async () => {\\n    try {\\n        const result = await getGolferGameSummary(pageFilters);\\n        console.log(result); // Log the result after it\'s fetched\\n    }\\n    catch (err) {\\n        console.error(\\"Failed to fetch golfer game summaries:\\", err);\\n    }\\n});\\n//TODO needs to be more like figma\\nfunction openGameModal() {\\n    showNewGameModal = true;\\n}\\nfunction closeGameModal() {\\n    showNewGameModal = false;\\n}\\nfunction handleGameSelection(event) {\\n    const gameChoice = event.detail;\\n    closeGameModal();\\n    goto(`/${gameChoice}-new`);\\n}\\n<\/script>\\n\\n<Layout>\\n    <div class=\\"w-full\\">\\n        <div class=\\"w-full h-full p-2 px-4 text-black\\">\\n            <div class=\\"flex items-center justify-between mb-4\\">\\n                <h2 class=\\"mt-3 mb-4 text-3xl font-black text-black md:text-5xl condensed\\">MY GAMES</h2>\\n                <button on:click={openGameModal} class=\\"btn btn-new-game\\">New Game</button>\\n                {#if showNewGameModal}\\n                    <ShowSelectGameModal visible={showNewGameModal} closeModal={closeGameModal} on:gameSelected={handleGameSelection} />\\n                {/if}\\n            </div>\\n\\n            <!-- Headings -->\\n            <div class=\\"flex items-center p-4 font-bold table-headings condensed\\">\\n                <div class=\\"w-2/6\\">Game</div>\\n                <div class=\\"w-2/6\\">Players</div>\\n                <div class=\\"w-1/6\\">Status</div>\\n                <div class=\\"w-1/6\\"></div>\\n            </div>\\n\\n            <!-- Check if there are no games -->\\n            {#if $golferGameSummary && $golferGameSummary.totalEntries === BigInt(0)}\\n                <!-- Content to display when totalEntries is 0 -->\\n                <p>No game history found. Start your first game!</p>\\n            {/if}\\n\\n            <!-- Game List -->\\n            {#if $golferGameSummary && $golferGameSummary.entries.length > 0}\\n                {#each $golferGameSummary.entries as game}\\n                    <div class=\\"game-list\\">\\n                        <div class=\\"flex items-center p-4 game-type\\">\\n                            <div class=\\"flex items-center game-info\\">\\n                                <!-- Game image -->\\n                            </div>\\n                            <div class=\\"ml-4\\">\\n                                <h3 class=\\"font-bold\\">{game.gameType}</h3>\\n                                <p class=\\"text-sm\\">{new Date(Number(game.date) * 1000).toLocaleDateString()}</p>\\n                            </div>\\n                        </div>\\n\\n                        <!-- Players Column -->\\n                        <div class=\\"flex ml-auto players\\">\\n                            {#each game.players as player}\\n                                <div class=\\"hover-picture\\">\\n                                    <div class=\\"p-2 bg-white rounded shadow-lg hover-player\\">\\n                                        <p class=\\"font-bold\\">{player}</p>\\n                                        <button class=\\"btn btn-view-player\\">View Player</button>\\n                                    </div>\\n                                </div>\\n                            {/each}\\n                        </div>\\n\\n                        <!-- Status Column -->\\n                        <div class=\\"w-1/6 font-bold text-blue-500 status\\">\\n                            {game.status}\\n                        </div>\\n\\n                        <!-- Button Column -->\\n                        <div class=\\"w-1/6 actions\\">\\n                            <button class=\\"btn btn-predict\\">Predict</button>\\n                        </div>\\n                    </div>\\n                {/each}\\n            {/if}\\n        </div>\\n    </div>\\n</Layout>\\n\\n\\n<style>\\n    .btn {\\n        padding: 10px 20px;\\n        font-weight: bold;\\n        border-radius: 5px;\\n        cursor: pointer;\\n    }\\n\\n    .btn-new-game {\\n        background-color: #f6c200;\\n        color: #1C4932;\\n        border: none;\\n    }\\n\\n    .btn-predict {\\n        background-color: #007bff;\\n        color: white;\\n        padding: 10px 15px;\\n    }\\n    \\n    .table-headings{\\n        background-color: #f7f7f7;\\n        padding: 10px;\\n        font-size: 20px;\\n        width:100%;\\n        text-align: left;\\n        font-weight: bold;\\n    }\\n\\n    .game-type h3 {\\n        font-weight: bold;\\n    }\\n\\n    .game-list {\\n        background-color: #f7f7f7;\\n        border-top: 1px solid #eee;\\n        margin-top: 20px;\\n        text-align: left;\\n        width: 100%;\\n    }\\n\\n    .game-type {\\n        display: flex;\\n        align-items: center;\\n        border-bottom: 1px solid #eee;\\n        padding: 20px 0;\\n    }\\n\\n    .game-info {\\n        width: 60px;\\n        height: 60px;\\n        border-radius: 5px;\\n    }\\n\\n    .players {\\n        display: flex;\\n        background-color: #f7f7f7;\\n    }\\n\\n    .hover-picture {\\n        display: none;\\n        position: absolute;\\n        top: 50px;\\n        left: 0;\\n        z-index: 100;\\n    }\\n\\n    .hover-player {\\n        background-color: white;\\n        border-radius: 8px;\\n        box-shadow: 0px 4px 8px rgba(0,0,0,0.1);\\n        padding: 10px;\\n    }\\n\\n    .btn-view-player {\\n        background-color: #007bff;\\n        color: white;\\n        padding: 5px 10px;\\n        border-radius: 5px;\\n    }\\n\\n    .status {\\n        font-size: 18px;\\n        font-weight: bold;\\n        color: #007bff;\\n        background-color: #f7f7f7;\\n    }\\n\\n    .flex {\\n        display: flex;\\n        justify-content: space-between;\\n        align-items: center;\\n        margin-bottom: 20px;\\n    }\\n\\n/*     .no-games-message {\\n        text-align: center;\\n        margin-top: 20px;\\n        font-size: 18px;\\n        font-weight: bold;\\n        color: gray;\\n    } */\\n\\n    h2 {\\n        text-align: left;\\n        margin-left: 0;\\n    }</style>"],"names":[],"mappings":"AAuGI,kCAAK,CACD,OAAO,CAAE,IAAI,CAAC,IAAI,CAClB,WAAW,CAAE,IAAI,CACjB,aAAa,CAAE,GAAG,CAClB,MAAM,CAAE,OACZ,CAEA,2CAAc,CACV,gBAAgB,CAAE,OAAO,CACzB,KAAK,CAAE,OAAO,CACd,MAAM,CAAE,IACZ,CAEA,0CAAa,CACT,gBAAgB,CAAE,OAAO,CACzB,KAAK,CAAE,KAAK,CACZ,OAAO,CAAE,IAAI,CAAC,IAClB,CAEA,6CAAe,CACX,gBAAgB,CAAE,OAAO,CACzB,OAAO,CAAE,IAAI,CACb,SAAS,CAAE,IAAI,CACf,MAAM,IAAI,CACV,UAAU,CAAE,IAAI,CAChB,WAAW,CAAE,IACjB,CAEA,yBAAU,CAAC,iBAAG,CACV,WAAW,CAAE,IACjB,CAEA,wCAAW,CACP,gBAAgB,CAAE,OAAO,CACzB,UAAU,CAAE,GAAG,CAAC,KAAK,CAAC,IAAI,CAC1B,UAAU,CAAE,IAAI,CAChB,UAAU,CAAE,IAAI,CAChB,KAAK,CAAE,IACX,CAEA,wCAAW,CACP,OAAO,CAAE,IAAI,CACb,WAAW,CAAE,MAAM,CACnB,aAAa,CAAE,GAAG,CAAC,KAAK,CAAC,IAAI,CAC7B,OAAO,CAAE,IAAI,CAAC,CAClB,CAEA,wCAAW,CACP,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI,CACZ,aAAa,CAAE,GACnB,CAEA,sCAAS,CACL,OAAO,CAAE,IAAI,CACb,gBAAgB,CAAE,OACtB,CAEA,4CAAe,CACX,OAAO,CAAE,IAAI,CACb,QAAQ,CAAE,QAAQ,CAClB,GAAG,CAAE,IAAI,CACT,IAAI,CAAE,CAAC,CACP,OAAO,CAAE,GACb,CAEA,2CAAc,CACV,gBAAgB,CAAE,KAAK,CACvB,aAAa,CAAE,GAAG,CAClB,UAAU,CAAE,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,GAAG,CAAC,CACvC,OAAO,CAAE,IACb,CAEA,8CAAiB,CACb,gBAAgB,CAAE,OAAO,CACzB,KAAK,CAAE,KAAK,CACZ,OAAO,CAAE,GAAG,CAAC,IAAI,CACjB,aAAa,CAAE,GACnB,CAEA,qCAAQ,CACJ,SAAS,CAAE,IAAI,CACf,WAAW,CAAE,IAAI,CACjB,KAAK,CAAE,OAAO,CACd,gBAAgB,CAAE,OACtB,CAEA,mCAAM,CACF,OAAO,CAAE,IAAI,CACb,eAAe,CAAE,aAAa,CAC9B,WAAW,CAAE,MAAM,CACnB,aAAa,CAAE,IACnB,CAUA,gCAAG,CACC,UAAU,CAAE,IAAI,CAChB,WAAW,CAAE,CACjB"}'
-};
+const Dropdown = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { items = [] } = $$props;
+  let { bindSelected = null } = $$props;
+  let { placeholder = "Select an Option" } = $$props;
+  let { multiple = false } = $$props;
+  let { searchEnabled = false } = $$props;
+  let searchTerm = "";
+  createEventDispatcher();
+  if ($$props.items === void 0 && $$bindings.items && items !== void 0) $$bindings.items(items);
+  if ($$props.bindSelected === void 0 && $$bindings.bindSelected && bindSelected !== void 0) $$bindings.bindSelected(bindSelected);
+  if ($$props.placeholder === void 0 && $$bindings.placeholder && placeholder !== void 0) $$bindings.placeholder(placeholder);
+  if ($$props.multiple === void 0 && $$bindings.multiple && multiple !== void 0) $$bindings.multiple(multiple);
+  if ($$props.searchEnabled === void 0 && $$bindings.searchEnabled && searchEnabled !== void 0) $$bindings.searchEnabled(searchEnabled);
+  items.filter((item) => item && item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  return `<div class="relative w-full"><button type="button" class="w-full p-2 text-left border border-gray-300 rounded-md cursor-pointer">${multiple && Array.isArray(bindSelected) && bindSelected.length > 0 ? `<span>${escape(bindSelected.map((item) => item.name).join(", "))}</span>` : `${!multiple && bindSelected && typeof bindSelected === "object" && "name" in bindSelected ? `<span>${escape(bindSelected.name)}</span>` : `<span class="text-gray-400">${escape(placeholder)}</span>`}`}</button> ${``}</div>`;
+});
+const Game_form = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { gameTitle } = $$props;
+  let { opponentConfig } = $$props;
+  let tees = [
+    { name: "Red", value: "red" },
+    { name: "Blue", value: "blue" },
+    { name: "White", value: "white" },
+    { name: "Black", value: "black" }
+  ];
+  let courses = [];
+  let opponents = [];
+  let dropdownItems = [];
+  let selectedOpponent = [];
+  let selectedCourse = null;
+  let selectedTee = null;
+  let teeOffDate = "";
+  let teeOffTime = "";
+  if ($$props.gameTitle === void 0 && $$bindings.gameTitle && gameTitle !== void 0) $$bindings.gameTitle(gameTitle);
+  if ($$props.opponentConfig === void 0 && $$bindings.opponentConfig && opponentConfig !== void 0) $$bindings.opponentConfig(opponentConfig);
+  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+    default: () => {
+      return `<div class="flex flex-col w-full"><div class="w-full p-2 px-4 text-black"><h2 class="mx-2 mt-2 mb-0 text-5xl font-black text-black md:mx-4 condensed">${escape(gameTitle.toUpperCase())}</h2></div> <div class="w-full p-4 text-black bg-gray-100 rounded-lg"><label for="course" class="block mt-4 text-lg font-bold text-black" data-svelte-h="svelte-1byzqo7">Course</label> <div class="flex items-center w-full mt-2 text-black bg-gray-100"><div class="flex-grow max-w-md">${validate_component(Dropdown, "Dropdown").$$render(
+        $$result,
+        {
+          items: courses.map((course) => ({
+            name: course.name,
+            value: course.courseId
+          })),
+          bindSelected: selectedCourse,
+          placeholder: "Select Course",
+          multiple: false,
+          searchEnabled: false
+        },
+        {},
+        {}
+      )}</div></div> <label for="tee" class="block mt-4 text-lg font-bold text-black" data-svelte-h="svelte-ntbdvm">Select Tee Group</label> <div class="flex items-center w-full mt-2 text-black bg-gray-100"><div class="flex-grow max-w-md">${validate_component(Dropdown, "Dropdown").$$render(
+        $$result,
+        {
+          items: tees,
+          bindSelected: selectedTee,
+          placeholder: "Select Tee Group",
+          searchEnabled: false,
+          multiple: false
+        },
+        {},
+        {}
+      )}</div></div> <label for="date" class="block mt-4 text-lg font-bold text-black" data-svelte-h="svelte-yp3zwq">Select Tee Off Date</label> <div class="flex items-center w-full mt-2"><div class="flex-grow max-w-md"><input type="date" class="w-full p-2 mt-2 text-gray-400 bg-gray-100 border border-gray-300 rounded" placeholder="dd/mm/yyyy"${add_attribute("value", teeOffDate, 0)}></div></div> <label for="time" class="block mt-4 text-lg font-bold text-black" data-svelte-h="svelte-1jkzqww">Select Tee Off Time</label> <div class="flex items-center w-full mt-2"><div class="flex-grow max-w-md"><input type="time" class="w-full p-2 mt-2 text-gray-400 bg-gray-100 border border-gray-300 rounded" placeholder="hh:mm"${add_attribute("value", teeOffTime, 0)}></div></div> <label for="opponent" class="block mt-4 text-lg font-bold text-black">${escape(opponentConfig.playerLabels ? "Players" : "Opponents")}</label> <div class="flex items-center w-full mt-2 text-black bg-gray-100"><div class="flex-grow max-w-md">${opponents.length > 0 ? `${validate_component(Dropdown, "Dropdown").$$render(
+        $$result,
+        {
+          items: dropdownItems,
+          bindSelected: selectedOpponent,
+          placeholder: "Select your Opponent(s)",
+          searchEnabled: false,
+          multiple: false
+        },
+        {},
+        {}
+      )}` : `<div data-svelte-h="svelte-1oc8xm8">Loading opponents...</div>`}</div></div></div> <button class="btn btn-new-game md:w-[400px] w-full" data-svelte-h="svelte-1lc7lal">Create New Game</button></div>`;
+    }
+  })}`;
+});
 const Page$5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $golferGameSummary, $$unsubscribe_golferGameSummary;
   $$unsubscribe_golferGameSummary = subscribe(golferGameSummary, (value) => $golferGameSummary = value);
   ({ limit: BigInt(0), offset: BigInt(0) });
-  $$result.css.add(css$7);
   $$unsubscribe_golferGameSummary();
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="w-full"><div class="w-full h-full p-2 px-4 text-black"><div class="flex items-center justify-between mb-4 svelte-1iebmou"><h2 class="mt-3 mb-4 text-3xl font-black text-black md:text-5xl condensed svelte-1iebmou" data-svelte-h="svelte-a8tfl1">MY GAMES</h2> <button class="btn btn-new-game svelte-1iebmou" data-svelte-h="svelte-di9i36">New Game</button> ${``}</div>  <div class="flex items-center p-4 font-bold table-headings condensed svelte-1iebmou" data-svelte-h="svelte-1e89po5"><div class="w-2/6">Game</div> <div class="w-2/6">Players</div> <div class="w-1/6">Status</div> <div class="w-1/6"></div></div>  ${$golferGameSummary && $golferGameSummary.totalEntries === BigInt(0) ? ` <p data-svelte-h="svelte-rlwbs1">No game history found. Start your first game!</p>` : ``}  ${$golferGameSummary && $golferGameSummary.entries.length > 0 ? `${each($golferGameSummary.entries, (game) => {
-        return `<div class="game-list svelte-1iebmou"><div class="flex items-center p-4 game-type svelte-1iebmou"><div class="flex items-center game-info svelte-1iebmou" data-svelte-h="svelte-1cw2ejx"></div> <div class="ml-4"><h3 class="font-bold svelte-1iebmou">${escape(game.gameType)}</h3> <p class="text-sm">${escape(new Date(Number(game.date) * 1e3).toLocaleDateString())}</p> </div></div>  <div class="flex ml-auto players svelte-1iebmou">${each(game.players, (player) => {
-          return `<div class="hover-picture svelte-1iebmou"><div class="p-2 bg-white rounded shadow-lg hover-player svelte-1iebmou"><p class="font-bold">${escape(player)}</p> <button class="btn btn-view-player svelte-1iebmou" data-svelte-h="svelte-y5anln">View Player</button></div> </div>`;
-        })}</div>  <div class="w-1/6 font-bold text-blue-500 status svelte-1iebmou">${escape(game.status)}</div>  <div class="w-1/6 actions" data-svelte-h="svelte-vo6icp"><button class="btn btn-predict svelte-1iebmou">Predict</button></div> </div>`;
-      })}` : ``}</div></div>`;
+      return `<div class="w-full"><div class="w-full h-full p-2 px-4 text-black"><div class="flex items-center justify-between mb-4"><h2 class="px-2 my-3 text-3xl font-black text-black md:text-5xl condensed" data-svelte-h="svelte-11gfxk7">MY GAMES</h2> <button class="mr-4 btn btn-new-game" data-svelte-h="svelte-68zs4g">New Game</button> ${``}</div> <div class="flex items-center w-full p-4 text-xl font-bold text-left bg-gray-50 condensed" data-svelte-h="svelte-1e1ky6m"><div class="w-2/6">Game</div> <div class="w-2/6">Players</div> <div class="w-1/6">Status</div> <div class="w-1/6"></div></div> ${$golferGameSummary && $golferGameSummary.totalEntries === BigInt(0) ? `<p data-svelte-h="svelte-rlwbs1">No game history found. Start your first game!</p>` : ``}  ${$golferGameSummary && $golferGameSummary.entries.length > 0 ? `${each($golferGameSummary.entries, (game) => {
+        return `<div class="w-full mt-5 text-left border-t border-gray-200 bg-gray-50"><div class="flex items-center p-4 border-b border-gray-200"><div class="flex items-center rounded w-15 h-15" data-svelte-h="svelte-1hxxdi8"></div> <div class="ml-4"><h3 class="font-bold">${escape(game.gameType)}</h3> <p class="text-sm">${escape(new Date(Number(game.date) * 1e3).toLocaleDateString())}</p> </div></div> <div class="flex ml-auto bg-gray-50">${each(game.players, (player) => {
+          return `<div class="relative group"><div class="absolute left-0 z-50 hidden group-hover:block top-12"><p class="font-bold">${escape(player)}</p> <button class="px-2.5 py-1.5 bg-blue-500 text-white rounded" data-svelte-h="svelte-1ayp4ij">View Player
+                                        </button></div> </div>`;
+        })}</div> <div class="w-1/6 text-lg font-bold text-blue-500 bg-gray-50">${escape(game.status)}</div> <div class="w-1/6" data-svelte-h="svelte-p15t31"><button class="px-4 py-2.5 bg-blue-500 text-white font-bold rounded">Predict
+                            </button></div> </div>`;
+      })}` : ``} ${``}</div></div>`;
     }
   })}`;
 });
-function createFloatingActions(initOptions) {
-  let referenceElement;
-  let floatingElement;
-  const defaultOptions = {
-    autoUpdate: true
-  };
-  let options2 = initOptions;
-  const getOptions = (mixin) => {
-    return { ...defaultOptions, ...initOptions || {}, ...mixin || {} };
-  };
-  const updatePosition = (updateOptions) => {
-    if (referenceElement && floatingElement) {
-      options2 = getOptions(updateOptions);
-      computePosition(referenceElement, floatingElement, options2).then((v) => {
-        Object.assign(floatingElement.style, {
-          position: v.strategy,
-          left: `${v.x}px`,
-          top: `${v.y}px`
-        });
-        options2?.onComputed && options2.onComputed(v);
-      });
-    }
-  };
-  const referenceAction = (node) => {
-    if ("subscribe" in node) {
-      setupVirtualElementObserver(node);
-      return {};
-    } else {
-      referenceElement = node;
-      updatePosition();
-    }
-  };
-  const contentAction = (node, contentOptions) => {
-    let autoUpdateDestroy;
-    floatingElement = node;
-    options2 = getOptions(contentOptions);
-    setTimeout(() => updatePosition(contentOptions), 0);
-    updatePosition(contentOptions);
-    const destroyAutoUpdate = () => {
-      if (autoUpdateDestroy) {
-        autoUpdateDestroy();
-        autoUpdateDestroy = void 0;
-      }
-    };
-    const initAutoUpdate = ({ autoUpdate: autoUpdate$1 } = options2 || {}) => {
-      destroyAutoUpdate();
-      if (autoUpdate$1 !== false) {
-        tick().then(() => {
-          return autoUpdate(referenceElement, floatingElement, () => updatePosition(options2), autoUpdate$1 === true ? {} : autoUpdate$1);
-        });
-      }
-      return;
-    };
-    autoUpdateDestroy = initAutoUpdate();
-    return {
-      update(contentOptions2) {
-        updatePosition(contentOptions2);
-        autoUpdateDestroy = initAutoUpdate(contentOptions2);
-      },
-      destroy() {
-        destroyAutoUpdate();
-      }
-    };
-  };
-  const setupVirtualElementObserver = (node) => {
-    const unsubscribe = node.subscribe(($node) => {
-      if (referenceElement === void 0) {
-        referenceElement = $node;
-        updatePosition();
-      } else {
-        Object.assign(referenceElement, $node);
-        updatePosition();
-      }
-    });
-    onDestroy(unsubscribe);
-  };
-  return [
-    referenceAction,
-    contentAction,
-    updatePosition
-  ];
-}
-function filter({
-  loadOptions,
-  filterText,
-  items,
-  multiple,
-  value,
-  itemId,
-  groupBy,
-  filterSelectedItems,
-  itemFilter,
-  convertStringItemsToObjects: convertStringItemsToObjects2,
-  filterGroupedItems,
-  label
-}) {
-  if (items && loadOptions) return items;
-  if (!items) return [];
-  if (items && items.length > 0 && typeof items[0] !== "object") {
-    items = convertStringItemsToObjects2(items);
-  }
-  let filterResults = items.filter((item) => {
-    let matchesFilter = itemFilter(item[label], filterText, item);
-    if (matchesFilter && multiple && value?.length) {
-      matchesFilter = !value.some((x) => {
-        return filterSelectedItems ? x[itemId] === item[itemId] : false;
-      });
-    }
-    return matchesFilter;
-  });
-  if (groupBy) {
-    filterResults = filterGroupedItems(filterResults);
-  }
-  return filterResults;
-}
-async function getItems({ dispatch, loadOptions, convertStringItemsToObjects: convertStringItemsToObjects2, filterText }) {
-  let res = await loadOptions(filterText).catch((err) => {
-    console.warn("svelte-select loadOptions error :>> ", err);
-    dispatch("error", { type: "loadOptions", details: err });
-  });
-  if (res && !res.cancelled) {
-    if (res) {
-      if (res && res.length > 0 && typeof res[0] !== "object") {
-        res = convertStringItemsToObjects2(res);
-      }
-      dispatch("loaded", { items: res });
-    } else {
-      res = [];
-    }
-    return {
-      filteredItems: res,
-      loading: false,
-      focused: true,
-      listOpen: true
-    };
-  }
-}
-const css$6 = {
-  code: "svg.svelte-1ea3f3y{width:var(--chevron-icon-width, 20px);height:var(--chevron-icon-width, 20px);color:var(--chevron-icon-colour, currentColor)}",
-  map: '{"version":3,"file":"ChevronIcon.svelte","sources":["ChevronIcon.svelte"],"sourcesContent":["<svg\\n    width=\\"100%\\"\\n    height=\\"100%\\"\\n    viewBox=\\"0 0 20 20\\"\\n    focusable=\\"false\\"\\n    aria-hidden=\\"true\\">\\n    <path\\n    fill=\\"currentColor\\"\\n        d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747\\n          3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0\\n          1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502\\n          0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0\\n          0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\" />\\n</svg>\\n\\n<style>\\n  svg {\\n      width: var(--chevron-icon-width, 20px);\\n      height: var(--chevron-icon-width, 20px);\\n      color: var(--chevron-icon-colour, currentColor);\\n  }</style>"],"names":[],"mappings":"AAgBE,kBAAI,CACA,KAAK,CAAE,IAAI,oBAAoB,CAAC,KAAK,CAAC,CACtC,MAAM,CAAE,IAAI,oBAAoB,CAAC,KAAK,CAAC,CACvC,KAAK,CAAE,IAAI,qBAAqB,CAAC,aAAa,CAClD"}'
-};
-const ChevronIcon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$6);
-  return `<svg width="100%" height="100%" viewBox="0 0 20 20" focusable="false" aria-hidden="true" class="svelte-1ea3f3y"><path fill="currentColor" d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747
-          3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0
-          1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502
-          0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0
-          0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path></svg>`;
+const Title_panel = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { gameType } = $$props;
+  let { teeOffTime } = $$props;
+  let { courseId } = $$props;
+  if ($$props.gameType === void 0 && $$bindings.gameType && gameType !== void 0) $$bindings.gameType(gameType);
+  if ($$props.teeOffTime === void 0 && $$bindings.teeOffTime && teeOffTime !== void 0) $$bindings.teeOffTime(teeOffTime);
+  if ($$props.courseId === void 0 && $$bindings.courseId && courseId !== void 0) $$bindings.courseId(courseId);
+  return `<div class="flex flex-col items-start justify-center w-full ml-8 mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500" data-svelte-h="svelte-8kyw97">GAMETYPE</span> <h1 class="font-black leading-none text-7xl font-condensed">${escape(gameType)}</h1> <div class="flex flex-col mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500 mt-2.5" data-svelte-h="svelte-193wnh6">DATE</span> <h3 class="mb-4 text-4xl font-bold text-center font-condensed">${escape(teeOffTime)}</h3></div> <div class="flex items-center justify-start mt-2.5"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex flex-col"><span class="mb-0 text-sm font-medium text-gray-500" data-svelte-h="svelte-17zrtw2">COURSE</span> <div><p class="text-3xl font-bold text-center font-condensed">${escape(courseId)}</p></div></div></div></div>`;
 });
-const css$5 = {
-  code: "svg.svelte-yszwet{width:var(--clear-icon-width, 20px);height:var(--clear-icon-width, 20px);color:var(--clear-icon-color, currentColor)}",
-  map: '{"version":3,"file":"ClearIcon.svelte","sources":["ClearIcon.svelte"],"sourcesContent":["<svg\\n    width=\\"100%\\"\\n    height=\\"100%\\"\\n    viewBox=\\"-2 -2 50 50\\"\\n    focusable=\\"false\\"\\n    aria-hidden=\\"true\\"\\n    role=\\"presentation\\"\\n>\\n    <path\\n        fill=\\"currentColor\\"\\n        d=\\"M34.923,37.251L24,26.328L13.077,37.251L9.436,33.61l10.923-10.923L9.436,11.765l3.641-3.641L24,19.047L34.923,8.124\\n    l3.641,3.641L27.641,22.688L38.564,33.61L34.923,37.251z\\"\\n    />\\n</svg>\\n\\n<style>\\n    svg {\\n        width: var(--clear-icon-width, 20px);\\n        height: var(--clear-icon-width, 20px);\\n        color: var(--clear-icon-color, currentColor);\\n    }</style>"],"names":[],"mappings":"AAgBI,iBAAI,CACA,KAAK,CAAE,IAAI,kBAAkB,CAAC,KAAK,CAAC,CACpC,MAAM,CAAE,IAAI,kBAAkB,CAAC,KAAK,CAAC,CACrC,KAAK,CAAE,IAAI,kBAAkB,CAAC,aAAa,CAC/C"}'
-};
-const ClearIcon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$5);
-  return `<svg width="100%" height="100%" viewBox="-2 -2 50 50" focusable="false" aria-hidden="true" role="presentation" class="svelte-yszwet"><path fill="currentColor" d="M34.923,37.251L24,26.328L13.077,37.251L9.436,33.61l10.923-10.923L9.436,11.765l3.641-3.641L24,19.047L34.923,8.124
-    l3.641,3.641L27.641,22.688L38.564,33.61L34.923,37.251z"></path></svg>`;
+const Bands_scorecard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return ``;
 });
-const css$4 = {
-  code: ".loading.svelte-d6026t{width:var(--spinner-width, 20px);height:var(--spinner-height, 20px);color:var(--spinner-color, var(--icons-color));animation:svelte-d6026t-rotate 0.75s linear infinite;transform-origin:center center;transform:none}.circle_path.svelte-d6026t{stroke-dasharray:90;stroke-linecap:round}@keyframes svelte-d6026t-rotate{100%{transform:rotate(360deg)}}",
-  map: '{"version":3,"file":"LoadingIcon.svelte","sources":["LoadingIcon.svelte"],"sourcesContent":["<svg class=\\"loading\\" viewBox=\\"25 25 50 50\\">\\n    <circle\\n        class=\\"circle_path\\"\\n        cx=\\"50\\"\\n        cy=\\"50\\"\\n        r=\\"20\\"\\n        fill=\\"none\\"\\n        stroke=\\"currentColor\\"\\n        stroke-width=\\"5\\"\\n        stroke-miterlimit=\\"10\\" />\\n</svg>\\n\\n<style>\\n    .loading {\\n        width: var(--spinner-width, 20px);\\n        height: var(--spinner-height, 20px);\\n        color: var(--spinner-color, var(--icons-color));\\n        animation: rotate 0.75s linear infinite;\\n        transform-origin: center center;\\n        transform: none;\\n    }\\n\\n    .circle_path {\\n        stroke-dasharray: 90;\\n        stroke-linecap: round;\\n    }\\n\\n    @keyframes rotate {\\n        100% {\\n            transform: rotate(360deg);\\n        }\\n    }</style>"],"names":[],"mappings":"AAaI,sBAAS,CACL,KAAK,CAAE,IAAI,eAAe,CAAC,KAAK,CAAC,CACjC,MAAM,CAAE,IAAI,gBAAgB,CAAC,KAAK,CAAC,CACnC,KAAK,CAAE,IAAI,eAAe,CAAC,mBAAmB,CAAC,CAC/C,SAAS,CAAE,oBAAM,CAAC,KAAK,CAAC,MAAM,CAAC,QAAQ,CACvC,gBAAgB,CAAE,MAAM,CAAC,MAAM,CAC/B,SAAS,CAAE,IACf,CAEA,0BAAa,CACT,gBAAgB,CAAE,EAAE,CACpB,cAAc,CAAE,KACpB,CAEA,WAAW,oBAAO,CACd,IAAK,CACD,SAAS,CAAE,OAAO,MAAM,CAC5B,CACJ"}'
-};
-const LoadingIcon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$4);
-  return `<svg class="loading svelte-d6026t" viewBox="25 25 50 50"><circle class="circle_path svelte-d6026t" cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5" stroke-miterlimit="10"></circle></svg>`;
+const Build_it_scorecard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return ``;
 });
-const css$3 = {
-  code: ".svelte-select.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{--borderRadius:var(--border-radius);--clearSelectColor:var(--clear-select-color);--clearSelectWidth:var(--clear-select-width);--disabledBackground:var(--disabled-background);--disabledBorderColor:var(--disabled-border-color);--disabledColor:var(--disabled-color);--disabledPlaceholderColor:var(--disabled-placeholder-color);--disabledPlaceholderOpacity:var(--disabled-placeholder-opacity);--errorBackground:var(--error-background);--errorBorder:var(--error-border);--groupItemPaddingLeft:var(--group-item-padding-left);--groupTitleColor:var(--group-title-color);--groupTitleFontSize:var(--group-title-font-size);--groupTitleFontWeight:var(--group-title-font-weight);--groupTitlePadding:var(--group-title-padding);--groupTitleTextTransform:var(--group-title-text-transform);--groupTitleBorderColor:var(--group-title-border-color);--groupTitleBorderWidth:var(--group-title-border-width);--groupTitleBorderStyle:var(--group-title-border-style);--indicatorColor:var(--chevron-color);--indicatorHeight:var(--chevron-height);--indicatorWidth:var(--chevron-width);--inputColor:var(--input-color);--inputLeft:var(--input-left);--inputLetterSpacing:var(--input-letter-spacing);--inputMargin:var(--input-margin);--inputPadding:var(--input-padding);--itemActiveBackground:var(--item-active-background);--itemColor:var(--item-color);--itemFirstBorderRadius:var(--item-first-border-radius);--itemHoverBG:var(--item-hover-bg);--itemHoverColor:var(--item-hover-color);--itemIsActiveBG:var(--item-is-active-bg);--itemIsActiveColor:var(--item-is-active-color);--itemIsNotSelectableColor:var(--item-is-not-selectable-color);--itemPadding:var(--item-padding);--listBackground:var(--list-background);--listBorder:var(--list-border);--listBorderRadius:var(--list-border-radius);--listEmptyColor:var(--list-empty-color);--listEmptyPadding:var(--list-empty-padding);--listEmptyTextAlign:var(--list-empty-text-align);--listMaxHeight:var(--list-max-height);--listPosition:var(--list-position);--listShadow:var(--list-shadow);--listZIndex:var(--list-z-index);--multiItemBG:var(--multi-item-bg);--multiItemBorderRadius:var(--multi-item-border-radius);--multiItemDisabledHoverBg:var(--multi-item-disabled-hover-bg);--multiItemDisabledHoverColor:var(--multi-item-disabled-hover-color);--multiItemHeight:var(--multi-item-height);--multiItemMargin:var(--multi-item-margin);--multiItemPadding:var(--multi-item-padding);--multiSelectInputMargin:var(--multi-select-input-margin);--multiSelectInputPadding:var(--multi-select-input-padding);--multiSelectPadding:var(--multi-select-padding);--placeholderColor:var(--placeholder-color);--placeholderOpacity:var(--placeholder-opacity);--selectedItemPadding:var(--selected-item-padding);--spinnerColor:var(--spinner-color);--spinnerHeight:var(--spinner-height);--spinnerWidth:var(--spinner-width);--internal-padding:0 0 0 16px;border:var(--border, 1px solid #d8dbdf);border-radius:var(--border-radius, 6px);min-height:var(--height, 42px);position:relative;display:flex;align-items:stretch;padding:var(--padding, var(--internal-padding));background:var(--background, #fff);margin:var(--margin, 0);width:var(--width, 100%);font-size:var(--font-size, 16px);max-height:var(--max-height)}.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{box-sizing:var(--box-sizing, border-box)}.svelte-select.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam:hover{border:var(--border-hover, 1px solid #b2b8bf)}.value-container.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{display:flex;flex:1 1 0%;flex-wrap:wrap;align-items:center;gap:5px 10px;padding:var(--value-container-padding, 5px 0);position:relative;overflow:var(--value-container-overflow, hidden);align-self:stretch}.prepend.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam,.indicators.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{display:flex;flex-shrink:0;align-items:center}.indicators.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{position:var(--indicators-position);top:var(--indicators-top);right:var(--indicators-right);bottom:var(--indicators-bottom)}input.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{position:absolute;cursor:default;border:none;color:var(--input-color, var(--item-color));padding:var(--input-padding, 0);letter-spacing:var(--input-letter-spacing, inherit);margin:var(--input-margin, 0);min-width:10px;top:0;right:0;bottom:0;left:0;background:transparent;font-size:var(--font-size, 16px)}.svelte-1bhoqam:not(.multi)>.value-container.svelte-1bhoqam>input.svelte-1bhoqam{width:100%;height:100%}input.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam::-moz-placeholder{color:var(--placeholder-color, #78848f);opacity:var(--placeholder-opacity, 1)}input.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam::placeholder{color:var(--placeholder-color, #78848f);opacity:var(--placeholder-opacity, 1)}input.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam:focus{outline:none}.svelte-select.focused.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{border:var(--border-focused, 1px solid #006fe8);border-radius:var(--border-radius-focused, var(--border-radius, 6px))}.disabled.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{background:var(--disabled-background, #ebedef);border-color:var(--disabled-border-color, #ebedef);color:var(--disabled-color, #c1c6cc)}.disabled.svelte-1bhoqam input.svelte-1bhoqam.svelte-1bhoqam::-moz-placeholder{color:var(--disabled-placeholder-color, #c1c6cc);opacity:var(--disabled-placeholder-opacity, 1)}.disabled.svelte-1bhoqam input.svelte-1bhoqam.svelte-1bhoqam::placeholder{color:var(--disabled-placeholder-color, #c1c6cc);opacity:var(--disabled-placeholder-opacity, 1)}.selected-item.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{position:relative;overflow:var(--selected-item-overflow, hidden);padding:var(--selected-item-padding, 0 20px 0 0);text-overflow:ellipsis;white-space:nowrap;color:var(--selected-item-color, inherit);font-size:var(--font-size, 16px)}.multi.svelte-1bhoqam .selected-item.svelte-1bhoqam.svelte-1bhoqam{position:absolute;line-height:var(--height, 42px);height:var(--height, 42px)}.selected-item.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam:focus{outline:none}.hide-selected-item.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{opacity:0}.icon.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{display:flex;align-items:center;justify-content:center}.clear-select.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{all:unset;display:flex;align-items:center;justify-content:center;width:var(--clear-select-width, 40px);height:var(--clear-select-height, 100%);color:var(--clear-select-color, var(--icons-color));margin:var(--clear-select-margin, 0);pointer-events:all;flex-shrink:0}.clear-select.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam:focus{outline:var(--clear-select-focus-outline, 1px solid #006fe8)}.loading.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{width:var(--loading-width, 40px);height:var(--loading-height);color:var(--loading-color, var(--icons-color));margin:var(--loading--margin, 0);flex-shrink:0}.chevron.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{width:var(--chevron-width, 40px);height:var(--chevron-height, 40px);background:var(--chevron-background, transparent);pointer-events:var(--chevron-pointer-events, none);color:var(--chevron-color, var(--icons-color));border:var(--chevron-border, 0 0 0 1px solid #d8dbdf);flex-shrink:0}.multi.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{padding:var(--multi-select-padding, var(--internal-padding))}.multi.svelte-1bhoqam input.svelte-1bhoqam.svelte-1bhoqam{padding:var(--multi-select-input-padding, 0);position:relative;margin:var(--multi-select-input-margin, 5px 0);flex:1 1 40px}.svelte-select.error.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{border:var(--error-border, 1px solid #ff2d55);background:var(--error-background, #fff)}.a11y-text.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{z-index:9999;border:0px;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0px;white-space:nowrap}.multi-item.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{background:var(--multi-item-bg, #ebedef);margin:var(--multi-item-margin, 0);outline:var(--multi-item-outline, 1px solid #ddd);border-radius:var(--multi-item-border-radius, 4px);height:var(--multi-item-height, 25px);line-height:var(--multi-item-height, 25px);display:flex;cursor:default;padding:var(--multi-item-padding, 0 5px);overflow:hidden;gap:var(--multi-item-gap, 4px);outline-offset:-1px;max-width:var(--multi-max-width, none);color:var(--multi-item-color, var(--item-color))}.multi-item.disabled.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam:hover{background:var(--multi-item-disabled-hover-bg, #ebedef);color:var(--multi-item-disabled-hover-color, #c1c6cc)}.multi-item-text.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.multi-item-clear.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{display:flex;align-items:center;justify-content:center;--clear-icon-color:var(--multi-item-clear-icon-color, #000)}.multi-item.active.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{outline:var(--multi-item-active-outline, 1px solid #006fe8)}.svelte-select-list.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{box-shadow:var(--list-shadow, 0 2px 3px 0 rgba(44, 62, 80, 0.24));border-radius:var(--list-border-radius, 4px);max-height:var(--list-max-height, 252px);overflow-y:auto;background:var(--list-background, #fff);position:var(--list-position, absolute);z-index:var(--list-z-index, 2);border:var(--list-border)}.prefloat.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{opacity:0;pointer-events:none}.list-group-title.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{color:var(--group-title-color, #8f8f8f);cursor:default;font-size:var(--group-title-font-size, 16px);font-weight:var(--group-title-font-weight, 600);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--group-title-padding, 0 20px);text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap;text-transform:var(--group-title-text-transform, uppercase);border-width:var(--group-title-border-width, medium);border-style:var(--group-title-border-style, none);border-color:var(--group-title-border-color, color)}.empty.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{text-align:var(--list-empty-text-align, center);padding:var(--list-empty-padding, 20px 0);color:var(--list-empty-color, #78848f)}.item.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{cursor:default;height:var(--item-height, var(--height, 42px));line-height:var(--item-line-height, var(--height, 42px));padding:var(--item-padding, 0 20px);color:var(--item-color, inherit);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;transition:var(--item-transition, all 0.2s);align-items:center;width:100%}.item.group-item.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{padding-left:var(--group-item-padding-left, 40px)}.item.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam:active{background:var(--item-active-background, #b9daff)}.item.active.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{background:var(--item-is-active-bg, #007aff);color:var(--item-is-active-color, #fff)}.item.first.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{border-radius:var(--item-first-border-radius, 4px 4px 0 0)}.item.hover.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam:not(.active){background:var(--item-hover-bg, #e7f2ff);color:var(--item-hover-color, inherit)}.item.not-selectable.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam,.item.hover.item.not-selectable.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam,.item.active.item.not-selectable.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam,.item.not-selectable.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam:active{color:var(--item-is-not-selectable-color, #999);background:transparent}.required.svelte-1bhoqam.svelte-1bhoqam.svelte-1bhoqam{opacity:0;z-index:-1;position:absolute;top:0;left:0;bottom:0;right:0}",
-  map: `{"version":3,"file":"Select.svelte","sources":["Select.svelte"],"sourcesContent":["<script>\\n    import { beforeUpdate, createEventDispatcher, onDestroy, onMount } from 'svelte';\\n    import { offset, flip, shift } from 'svelte-floating-ui/dom';\\n    import { createFloatingActions } from 'svelte-floating-ui';\\n\\n    const dispatch = createEventDispatcher();\\n\\n    import _filter from './filter';\\n    import _getItems from './get-items';\\n\\n    import ChevronIcon from './ChevronIcon.svelte';\\n    import ClearIcon from './ClearIcon.svelte';\\n    import LoadingIcon from './LoadingIcon.svelte';\\n\\n    export let justValue = null; // read-only\\n\\n    export let filter = _filter;\\n    export let getItems = _getItems;\\n\\n    export let id = null;\\n    export let name = null;\\n    export let container = undefined;\\n    export let input = undefined;\\n    export let multiple = false;\\n    export let multiFullItemClearable = false;\\n    export let disabled = false;\\n    export let focused = false;\\n    export let value = null;\\n    export let filterText = '';\\n    export let placeholder = 'Please select';\\n    export let placeholderAlwaysShow = false;\\n    export let items = null;\\n    export let label = 'label';\\n    export let itemFilter = (label, filterText, option) => \`\${label}\`.toLowerCase().includes(filterText.toLowerCase());\\n    export let groupBy = undefined;\\n    export let groupFilter = (groups) => groups;\\n    export let groupHeaderSelectable = false;\\n    export let itemId = 'value';\\n    export let loadOptions = undefined;\\n    export let containerStyles = '';\\n    export let hasError = false;\\n    export let filterSelectedItems = true;\\n    export let required = false;\\n    export let closeListOnChange = true;\\n    export let clearFilterTextOnBlur = true;\\n\\n    export let createGroupHeaderItem = (groupValue, item) => {\\n        return {\\n            value: groupValue,\\n            [label]: groupValue,\\n        };\\n    };\\n\\n    export const getFilteredItems = () => {\\n        return filteredItems;\\n    };\\n\\n    export let searchable = true;\\n    export let inputStyles = '';\\n    export let clearable = true;\\n    export let loading = false;\\n    export let listOpen = false;\\n\\n    let timeout;\\n    export let debounce = (fn, wait = 1) => {\\n        clearTimeout(timeout);\\n        timeout = setTimeout(fn, wait);\\n    };\\n\\n    export let debounceWait = 300;\\n    export let hideEmptyState = false;\\n    export let inputAttributes = {};\\n    export let listAutoWidth = true;\\n    export let showChevron = false;\\n    export let listOffset = 5;\\n    export let hoverItemIndex = 0;\\n    export let floatingConfig = {};\\n\\n    export { containerClasses as class };\\n\\n    let containerClasses = '';\\n    let activeValue;\\n    let prev_value;\\n    let prev_filterText;\\n    let prev_multiple;\\n\\n    function setValue() {\\n        if (typeof value === 'string') {\\n            let item = (items || []).find((item) => item[itemId] === value);\\n            value = item || {\\n                [itemId]: value,\\n                label: value,\\n            };\\n        } else if (multiple && Array.isArray(value) && value.length > 0) {\\n            value = value.map((item) => (typeof item === 'string' ? { value: item, label: item } : item));\\n        }\\n    }\\n\\n    let _inputAttributes;\\n    function assignInputAttributes() {\\n        _inputAttributes = Object.assign(\\n            {\\n                autocapitalize: 'none',\\n                autocomplete: 'off',\\n                autocorrect: 'off',\\n                spellcheck: false,\\n                tabindex: 0,\\n                type: 'text',\\n                'aria-autocomplete': 'list',\\n            },\\n            inputAttributes\\n        );\\n\\n        if (id) {\\n            _inputAttributes['id'] = id;\\n        }\\n\\n        if (!searchable) {\\n            _inputAttributes['readonly'] = true;\\n        }\\n    }\\n\\n    function convertStringItemsToObjects(_items) {\\n        return _items.map((item, index) => {\\n            return {\\n                index,\\n                value: item,\\n                label: \`\${item}\`,\\n            };\\n        });\\n    }\\n\\n    function filterGroupedItems(_items) {\\n        const groupValues = [];\\n        const groups = {};\\n\\n        _items.forEach((item) => {\\n            const groupValue = groupBy(item);\\n\\n            if (!groupValues.includes(groupValue)) {\\n                groupValues.push(groupValue);\\n                groups[groupValue] = [];\\n\\n                if (groupValue) {\\n                    groups[groupValue].push(\\n                        Object.assign(createGroupHeaderItem(groupValue, item), {\\n                            id: groupValue,\\n                            groupHeader: true,\\n                            selectable: groupHeaderSelectable,\\n                        })\\n                    );\\n                }\\n            }\\n\\n            groups[groupValue].push(Object.assign({ groupItem: !!groupValue }, item));\\n        });\\n\\n        const sortedGroupedItems = [];\\n\\n        groupFilter(groupValues).forEach((groupValue) => {\\n            if (groups[groupValue]) sortedGroupedItems.push(...groups[groupValue]);\\n        });\\n\\n        return sortedGroupedItems;\\n    }\\n\\n    function dispatchSelectedItem() {\\n        if (multiple) {\\n            if (JSON.stringify(value) !== JSON.stringify(prev_value)) {\\n                if (checkValueForDuplicates()) {\\n                    dispatch('input', value);\\n                }\\n            }\\n            return;\\n        }\\n\\n        if (!prev_value || JSON.stringify(value[itemId]) !== JSON.stringify(prev_value[itemId])) {\\n            dispatch('input', value);\\n        }\\n    }\\n\\n    function setupMulti() {\\n        if (value) {\\n            if (Array.isArray(value)) {\\n                value = [...value];\\n            } else {\\n                value = [value];\\n            }\\n        }\\n    }\\n\\n    function setupSingle() {\\n        if (value) value = null;\\n    }\\n\\n    $: if ((items, value)) setValue();\\n    $: if (inputAttributes || !searchable) assignInputAttributes();\\n    $: if (multiple) setupMulti();\\n    $: if (prev_multiple && !multiple) setupSingle();\\n    $: if (multiple && value && value.length > 1) checkValueForDuplicates();\\n    $: if (value) dispatchSelectedItem();\\n    $: if (!value && multiple && prev_value) dispatch('input', value);\\n    $: if (!focused && input) closeList();\\n    $: if (filterText !== prev_filterText) setupFilterText();\\n    $: if (!multiple && listOpen && value && filteredItems) setValueIndexAsHoverIndex();\\n    $: dispatchHover(hoverItemIndex);\\n\\n    function setValueIndexAsHoverIndex() {\\n        const valueIndex = filteredItems.findIndex((i) => {\\n            return i[itemId] === value[itemId];\\n        });\\n\\n        checkHoverSelectable(valueIndex, true);\\n    }\\n\\n    function dispatchHover(i) {\\n        dispatch('hoverItem', i);\\n    }\\n\\n    function checkHoverSelectable(startingIndex = 0, ignoreGroup) {\\n        hoverItemIndex = startingIndex < 0 ? 0 : startingIndex;\\n        if (!ignoreGroup && groupBy && filteredItems[hoverItemIndex] && !filteredItems[hoverItemIndex].selectable) {\\n            setHoverIndex(1);\\n        }\\n    }\\n\\n    function setupFilterText() {\\n        if (!loadOptions && filterText.length === 0) return;\\n\\n        if (loadOptions) {\\n            debounce(async function () {\\n                loading = true;\\n                let res = await getItems({\\n                    dispatch,\\n                    loadOptions,\\n                    convertStringItemsToObjects,\\n                    filterText,\\n                });\\n\\n                if (res) {\\n                    loading = res.loading;\\n                    listOpen = listOpen ? res.listOpen : filterText.length > 0 ? true : false;\\n                    focused = listOpen && res.focused;\\n                    items = groupBy ? filterGroupedItems(res.filteredItems) : res.filteredItems;\\n                } else {\\n                    loading = false;\\n                    focused = true;\\n                    listOpen = true;\\n                }\\n            }, debounceWait);\\n        } else {\\n            listOpen = true;\\n\\n            if (multiple) {\\n                activeValue = undefined;\\n            }\\n        }\\n    }\\n\\n    $: hasValue = multiple ? value && value.length > 0 : value;\\n    $: hideSelectedItem = hasValue && filterText.length > 0;\\n    $: showClear = hasValue && clearable && !disabled && !loading;\\n    $: placeholderText =\\n        placeholderAlwaysShow && multiple\\n            ? placeholder\\n            : multiple && value?.length === 0\\n            ? placeholder\\n            : value\\n            ? ''\\n            : placeholder;\\n    $: ariaSelection = value ? handleAriaSelection(multiple) : '';\\n    $: ariaContext = handleAriaContent({ filteredItems, hoverItemIndex, focused, listOpen });\\n    $: updateValueDisplay(items);\\n    $: justValue = computeJustValue(multiple, value, itemId);\\n    $: if (!multiple && prev_value && !value) dispatch('input', value);\\n    $: filteredItems = filter({\\n        loadOptions,\\n        filterText,\\n        items,\\n        multiple,\\n        value,\\n        itemId,\\n        groupBy,\\n        label,\\n        filterSelectedItems,\\n        itemFilter,\\n        convertStringItemsToObjects,\\n        filterGroupedItems,\\n    });\\n    $: if (listOpen && filteredItems && !multiple && !value) checkHoverSelectable();\\n    $: handleFilterEvent(filteredItems);\\n    $: if (container && floatingConfig) floatingUpdate(Object.assign(_floatingConfig, floatingConfig));\\n    $: listDom = !!list;\\n    $: listMounted(list, listOpen);\\n    $: if (listOpen && container && list) setListWidth();\\n    $: scrollToHoverItem = hoverItemIndex;\\n    $: if (listOpen && multiple) hoverItemIndex = 0;\\n    $: if (input && listOpen && !focused) handleFocus();\\n    $: if (filterText) hoverItemIndex = 0;\\n\\n    function handleFilterEvent(items) {\\n        if (listOpen) dispatch('filter', items);\\n    }\\n\\n    beforeUpdate(async () => {\\n        prev_value = value;\\n        prev_filterText = filterText;\\n        prev_multiple = multiple;\\n    });\\n\\n    function computeJustValue() {\\n        if (multiple) return value ? value.map((item) => item[itemId]) : null;\\n        return value ? value[itemId] : value;\\n    }\\n\\n    function checkValueForDuplicates() {\\n        let noDuplicates = true;\\n        if (value) {\\n            const ids = [];\\n            const uniqueValues = [];\\n\\n            value.forEach((val) => {\\n                if (!ids.includes(val[itemId])) {\\n                    ids.push(val[itemId]);\\n                    uniqueValues.push(val);\\n                } else {\\n                    noDuplicates = false;\\n                }\\n            });\\n\\n            if (!noDuplicates) value = uniqueValues;\\n        }\\n        return noDuplicates;\\n    }\\n\\n    function findItem(selection) {\\n        let matchTo = selection ? selection[itemId] : value[itemId];\\n        return items.find((item) => item[itemId] === matchTo);\\n    }\\n\\n    function updateValueDisplay(items) {\\n        if (!items || items.length === 0 || items.some((item) => typeof item !== 'object')) return;\\n        if (!value || (multiple ? value.some((selection) => !selection || !selection[itemId]) : !value[itemId])) return;\\n\\n        if (Array.isArray(value)) {\\n            value = value.map((selection) => findItem(selection) || selection);\\n        } else {\\n            value = findItem() || value;\\n        }\\n    }\\n\\n    async function handleMultiItemClear(i) {\\n        const itemToRemove = value[i];\\n\\n        if (value.length === 1) {\\n            value = undefined;\\n        } else {\\n            value = value.filter((item) => {\\n                return item !== itemToRemove;\\n            });\\n        }\\n\\n        dispatch('clear', itemToRemove);\\n    }\\n\\n    function handleKeyDown(e) {\\n        if (!focused) return;\\n        e.stopPropagation();\\n        switch (e.key) {\\n            case 'Escape':\\n                e.preventDefault();\\n                closeList();\\n                break;\\n            case 'Enter':\\n                e.preventDefault();\\n\\n                if (listOpen) {\\n                    if (filteredItems.length === 0) break;\\n                    const hoverItem = filteredItems[hoverItemIndex];\\n\\n                    if (value && !multiple && value[itemId] === hoverItem[itemId]) {\\n                        closeList();\\n                        break;\\n                    } else {\\n                        handleSelect(filteredItems[hoverItemIndex]);\\n                    }\\n                }\\n\\n                break;\\n            case 'ArrowDown':\\n                e.preventDefault();\\n\\n                if (listOpen) {\\n                    setHoverIndex(1);\\n                } else {\\n                    listOpen = true;\\n                    activeValue = undefined;\\n                }\\n\\n                break;\\n            case 'ArrowUp':\\n                e.preventDefault();\\n\\n                if (listOpen) {\\n                    setHoverIndex(-1);\\n                } else {\\n                    listOpen = true;\\n                    activeValue = undefined;\\n                }\\n\\n                break;\\n            case 'Tab':\\n                if (listOpen && focused) {\\n                    if (\\n                        filteredItems.length === 0 ||\\n                        (value && value[itemId] === filteredItems[hoverItemIndex][itemId])\\n                    )\\n                        return closeList();\\n\\n                    e.preventDefault();\\n                    handleSelect(filteredItems[hoverItemIndex]);\\n                    closeList();\\n                }\\n\\n                break;\\n            case 'Backspace':\\n                if (!multiple || filterText.length > 0) return;\\n\\n                if (multiple && value && value.length > 0) {\\n                    handleMultiItemClear(activeValue !== undefined ? activeValue : value.length - 1);\\n                    if (activeValue === 0 || activeValue === undefined) break;\\n                    activeValue = value.length > activeValue ? activeValue - 1 : undefined;\\n                }\\n\\n                break;\\n            case 'ArrowLeft':\\n                if (!value || !multiple || filterText.length > 0) return;\\n                if (activeValue === undefined) {\\n                    activeValue = value.length - 1;\\n                } else if (value.length > activeValue && activeValue !== 0) {\\n                    activeValue -= 1;\\n                }\\n                break;\\n            case 'ArrowRight':\\n                if (!value || !multiple || filterText.length > 0 || activeValue === undefined) return;\\n                if (activeValue === value.length - 1) {\\n                    activeValue = undefined;\\n                } else if (activeValue < value.length - 1) {\\n                    activeValue += 1;\\n                }\\n                break;\\n        }\\n    }\\n\\n    function handleFocus(e) {\\n        if (focused && input === document?.activeElement) return;\\n        if (e) dispatch('focus', e);\\n        input?.focus();\\n        focused = true;\\n    }\\n\\n    async function handleBlur(e) {\\n        if (isScrolling) return;\\n        if (listOpen || focused) {\\n            dispatch('blur', e);\\n            closeList();\\n            focused = false;\\n            activeValue = undefined;\\n            input?.blur();\\n        }\\n    }\\n\\n    function handleClick() {\\n        if (disabled) return;\\n        if (filterText.length > 0) return listOpen = true;\\n        listOpen = !listOpen;\\n    }\\n\\n    export function handleClear() {\\n        dispatch('clear', value);\\n        value = undefined;\\n        closeList();\\n        handleFocus();\\n    }\\n\\n    onMount(() => {\\n        if (listOpen) focused = true;\\n        if (focused && input) input.focus();\\n    });\\n\\n    function itemSelected(selection) {\\n        if (selection) {\\n            filterText = '';\\n            const item = Object.assign({}, selection);\\n\\n            if (item.groupHeader && !item.selectable) return;\\n            value = multiple ? (value ? value.concat([item]) : [item]) : (value = item);\\n\\n            setTimeout(() => {\\n                if (closeListOnChange) closeList();\\n                activeValue = undefined;\\n                dispatch('change', value);\\n                dispatch('select', selection);\\n            });\\n        }\\n    }\\n\\n    function closeList() {\\n        if (clearFilterTextOnBlur) {\\n            filterText = '';\\n        }\\n        listOpen = false;\\n    }\\n\\n    export let ariaValues = (values) => {\\n        return \`Option \${values}, selected.\`;\\n    };\\n\\n    export let ariaListOpen = (label, count) => {\\n        return \`You are currently focused on option \${label}. There are \${count} results available.\`;\\n    };\\n\\n    export let ariaFocused = () => {\\n        return \`Select is focused, type to refine list, press down to open the menu.\`;\\n    };\\n\\n    function handleAriaSelection(_multiple) {\\n        let selected = undefined;\\n\\n        if (_multiple && value.length > 0) {\\n            selected = value.map((v) => v[label]).join(', ');\\n        } else {\\n            selected = value[label];\\n        }\\n\\n        return ariaValues(selected);\\n    }\\n\\n    function handleAriaContent() {\\n        if (!filteredItems || filteredItems.length === 0) return '';\\n        let _item = filteredItems[hoverItemIndex];\\n        if (listOpen && _item) {\\n            let count = filteredItems ? filteredItems.length : 0;\\n            return ariaListOpen(_item[label], count);\\n        } else {\\n            return ariaFocused();\\n        }\\n    }\\n\\n    let list = null;\\n\\n    let isScrollingTimer;\\n    function handleListScroll() {\\n        clearTimeout(isScrollingTimer);\\n        isScrollingTimer = setTimeout(() => {\\n            isScrolling = false;\\n        }, 100);\\n    }\\n\\n    function handleClickOutside(event) {\\n        if (!listOpen && !focused && container && !container.contains(event.target) && !list?.contains(event.target)) {\\n            handleBlur();\\n        }\\n    }\\n\\n    onDestroy(() => {\\n        list?.remove();\\n    });\\n\\n    let isScrolling = false;\\n\\n    function handleSelect(item) {\\n        if (!item || item.selectable === false) return;\\n        itemSelected(item);\\n    }\\n\\n    function handleHover(i) {\\n        if (isScrolling) return;\\n        hoverItemIndex = i;\\n    }\\n\\n    function handleItemClick(args) {\\n        const { item, i } = args;\\n        if (item?.selectable === false) return;\\n        if (value && !multiple && value[itemId] === item[itemId]) return closeList();\\n        if (isItemSelectable(item)) {\\n            hoverItemIndex = i;\\n            handleSelect(item);\\n        }\\n    }\\n\\n    function setHoverIndex(increment) {\\n        let selectableFilteredItems = filteredItems.filter(\\n            (item) => !Object.hasOwn(item, 'selectable') || item.selectable === true\\n        );\\n\\n        if (selectableFilteredItems.length === 0) {\\n            return (hoverItemIndex = 0);\\n        }\\n\\n        if (increment > 0 && hoverItemIndex === filteredItems.length - 1) {\\n            hoverItemIndex = 0;\\n        } else if (increment < 0 && hoverItemIndex === 0) {\\n            hoverItemIndex = filteredItems.length - 1;\\n        } else {\\n            hoverItemIndex = hoverItemIndex + increment;\\n        }\\n\\n        const hover = filteredItems[hoverItemIndex];\\n\\n        if (hover && hover.selectable === false) {\\n            if (increment === 1 || increment === -1) setHoverIndex(increment);\\n            return;\\n        }\\n    }\\n\\n    function isItemActive(item, value, itemId) {\\n        if (multiple) return;\\n        return value && value[itemId] === item[itemId];\\n    }\\n\\n    function isItemFirst(itemIndex) {\\n        return itemIndex === 0;\\n    }\\n\\n    function isItemSelectable(item) {\\n        return (item.groupHeader && item.selectable) || item.selectable || !item.hasOwnProperty('selectable');\\n    }\\n\\n    const activeScroll = scrollAction;\\n    const hoverScroll = scrollAction;\\n\\n    function scrollAction(node) {\\n        return {\\n            update(args) {\\n                if (args.scroll) {\\n                    handleListScroll();\\n                    node.scrollIntoView({ behavior: 'auto', block: 'nearest' });\\n                }\\n            },\\n        };\\n    }\\n\\n    function setListWidth() {\\n        const { width } = container.getBoundingClientRect();\\n        list.style.width = listAutoWidth ? width + 'px' : 'auto';\\n    }\\n\\n    let _floatingConfig = {\\n        strategy: 'absolute',\\n        placement: 'bottom-start',\\n        middleware: [offset(listOffset), flip(), shift()],\\n        autoUpdate: false,\\n    };\\n\\n    const [floatingRef, floatingContent, floatingUpdate] = createFloatingActions(_floatingConfig);\\n\\n    $: if (container && floatingConfig?.autoUpdate === undefined) {\\n        _floatingConfig.autoUpdate = true;\\n    }\\n\\n    let prefloat = true;\\n    function listMounted(list, listOpen) {\\n        if (!list || !listOpen) return (prefloat = true);\\n        setTimeout(() => {\\n            prefloat = false;\\n        }, 0);\\n    }\\n<\/script>\\n\\n<svelte:window on:click={handleClickOutside} on:keydown={handleKeyDown} />\\n\\n<div\\n    class=\\"svelte-select {containerClasses}\\"\\n    class:multi={multiple}\\n    class:disabled\\n    class:focused\\n    class:list-open={listOpen}\\n    class:show-chevron={showChevron}\\n    class:error={hasError}\\n    style={containerStyles}\\n    on:pointerup|preventDefault={handleClick}\\n    bind:this={container}\\n    use:floatingRef\\n    role=\\"none\\">\\n    {#if listOpen}\\n        <div\\n            use:floatingContent\\n            bind:this={list}\\n            class=\\"svelte-select-list\\"\\n            class:prefloat\\n            on:scroll={handleListScroll}\\n            on:pointerup|preventDefault|stopPropagation\\n            on:mousedown|preventDefault|stopPropagation\\n\\t\\t\\trole=\\"none\\">\\n            {#if $$slots['list-prepend']}<slot name=\\"list-prepend\\" />{/if}\\n            {#if $$slots.list}<slot name=\\"list\\" {filteredItems} />\\n            {:else if filteredItems.length > 0}\\n                {#each filteredItems as item, i}\\n                    <div\\n                        on:mouseover={() => handleHover(i)}\\n                        on:focus={() => handleHover(i)}\\n                        on:click|stopPropagation={() => handleItemClick({ item, i })}\\n                        on:keydown|preventDefault|stopPropagation\\n                        class=\\"list-item\\"\\n                        tabindex=\\"-1\\"\\n                        role=\\"none\\">\\n                        <div\\n                            use:activeScroll={{ scroll: isItemActive(item, value, itemId), listDom }}\\n                            use:hoverScroll={{ scroll: scrollToHoverItem === i, listDom }}\\n                            class=\\"item\\"\\n                            class:list-group-title={item.groupHeader}\\n                            class:active={isItemActive(item, value, itemId)}\\n                            class:first={isItemFirst(i)}\\n                            class:hover={hoverItemIndex === i}\\n                            class:group-item={item.groupItem}\\n                            class:not-selectable={item?.selectable === false}>\\n                            <slot name=\\"item\\" {item} index={i}>\\n                                {item?.[label]}\\n                            </slot>\\n                        </div>\\n                    </div>\\n                {/each}\\n            {:else if !hideEmptyState}\\n                <slot name=\\"empty\\">\\n                    <div class=\\"empty\\">No options</div>\\n                </slot>\\n            {/if}\\n            {#if $$slots['list-append']}<slot name=\\"list-append\\" />{/if}\\n        </div>\\n    {/if}\\n\\n    <span aria-live=\\"polite\\" aria-atomic=\\"false\\" aria-relevant=\\"additions text\\" class=\\"a11y-text\\">\\n        {#if focused}\\n            <span id=\\"aria-selection\\">{ariaSelection}</span>\\n            <span id=\\"aria-context\\">\\n                {ariaContext}\\n            </span>\\n        {/if}\\n    </span>\\n\\n    <div class=\\"prepend\\">\\n        <slot name=\\"prepend\\" />\\n    </div>\\n\\n    <div class=\\"value-container\\">\\n        {#if hasValue}\\n            {#if multiple}\\n                {#each value as item, i}\\n                    <div\\n                        class=\\"multi-item\\"\\n                        class:active={activeValue === i}\\n                        class:disabled\\n                        on:click|preventDefault={() => (multiFullItemClearable ? handleMultiItemClear(i) : {})}\\n                        on:keydown|preventDefault|stopPropagation\\n                        role=\\"none\\">\\n                        <span class=\\"multi-item-text\\">\\n                            <slot name=\\"selection\\" selection={item} index={i}>\\n                                {item[label]}\\n                            </slot>\\n                        </span>\\n\\n                        {#if !disabled && !multiFullItemClearable && ClearIcon}\\n                            <div\\n                                class=\\"multi-item-clear\\"\\n                                on:pointerup|preventDefault|stopPropagation={() => handleMultiItemClear(i)}>\\n                                <slot name=\\"multi-clear-icon\\">\\n                                    <ClearIcon />\\n                                </slot>\\n                            </div>\\n                        {/if}\\n                    </div>\\n                {/each}\\n            {:else}\\n                <div class=\\"selected-item\\" class:hide-selected-item={hideSelectedItem}>\\n                    <slot name=\\"selection\\" selection={value}>\\n                        {value[label]}\\n                    </slot>\\n                </div>\\n            {/if}\\n        {/if}\\n\\n        <input\\n            on:keydown={handleKeyDown}\\n            on:blur={handleBlur}\\n            on:focus={handleFocus}\\n            readOnly={!searchable}\\n            {..._inputAttributes}\\n            bind:this={input}\\n            bind:value={filterText}\\n            placeholder={placeholderText}\\n            style={inputStyles}\\n            {disabled} />\\n    </div>\\n\\n    <div class=\\"indicators\\">\\n        {#if loading}\\n            <div class=\\"icon loading\\" aria-hidden=\\"true\\">\\n                <slot name=\\"loading-icon\\">\\n                    <LoadingIcon />\\n                </slot>\\n            </div>\\n        {/if}\\n\\n        {#if showClear}\\n            <button type=\\"button\\" class=\\"icon clear-select\\" on:click={handleClear}>\\n                <slot name=\\"clear-icon\\">\\n                    <ClearIcon />\\n                </slot>\\n            </button>\\n        {/if}\\n\\n        {#if showChevron}\\n            <div class=\\"icon chevron\\" aria-hidden=\\"true\\">\\n                <slot name=\\"chevron-icon\\" {listOpen}>\\n                    <ChevronIcon />\\n                </slot>\\n            </div>\\n        {/if}\\n    </div>\\n\\n    <slot name=\\"input-hidden\\" {value}>\\n        <input {name} type=\\"hidden\\" value={value ? JSON.stringify(value) : null} />\\n    </slot>\\n\\n    {#if required && (!value || value.length === 0)}\\n        <slot name=\\"required\\" {value}>\\n            <select class=\\"required\\" required tabindex=\\"-1\\" aria-hidden=\\"true\\" />\\n        </slot>\\n    {/if}\\n</div>\\n\\n<style>\\n    .svelte-select {\\n        /* deprecating camelCase custom props in favour of kebab-case for v5 */\\n        --borderRadius: var(--border-radius);\\n        --clearSelectColor: var(--clear-select-color);\\n        --clearSelectWidth: var(--clear-select-width);\\n        --disabledBackground: var(--disabled-background);\\n        --disabledBorderColor: var(--disabled-border-color);\\n        --disabledColor: var(--disabled-color);\\n        --disabledPlaceholderColor: var(--disabled-placeholder-color);\\n        --disabledPlaceholderOpacity: var(--disabled-placeholder-opacity);\\n        --errorBackground: var(--error-background);\\n        --errorBorder: var(--error-border);\\n        --groupItemPaddingLeft: var(--group-item-padding-left);\\n        --groupTitleColor: var(--group-title-color);\\n        --groupTitleFontSize: var(--group-title-font-size);\\n        --groupTitleFontWeight: var(--group-title-font-weight);\\n        --groupTitlePadding: var(--group-title-padding);\\n        --groupTitleTextTransform: var(--group-title-text-transform);\\n        --groupTitleBorderColor: var(--group-title-border-color);\\n        --groupTitleBorderWidth: var(--group-title-border-width);\\n        --groupTitleBorderStyle: var(--group-title-border-style);\\n        --indicatorColor: var(--chevron-color);\\n        --indicatorHeight: var(--chevron-height);\\n        --indicatorWidth: var(--chevron-width);\\n        --inputColor: var(--input-color);\\n        --inputLeft: var(--input-left);\\n        --inputLetterSpacing: var(--input-letter-spacing);\\n        --inputMargin: var(--input-margin);\\n        --inputPadding: var(--input-padding);\\n        --itemActiveBackground: var(--item-active-background);\\n        --itemColor: var(--item-color);\\n        --itemFirstBorderRadius: var(--item-first-border-radius);\\n        --itemHoverBG: var(--item-hover-bg);\\n        --itemHoverColor: var(--item-hover-color);\\n        --itemIsActiveBG: var(--item-is-active-bg);\\n        --itemIsActiveColor: var(--item-is-active-color);\\n        --itemIsNotSelectableColor: var(--item-is-not-selectable-color);\\n        --itemPadding: var(--item-padding);\\n        --listBackground: var(--list-background);\\n        --listBorder: var(--list-border);\\n        --listBorderRadius: var(--list-border-radius);\\n        --listEmptyColor: var(--list-empty-color);\\n        --listEmptyPadding: var(--list-empty-padding);\\n        --listEmptyTextAlign: var(--list-empty-text-align);\\n        --listMaxHeight: var(--list-max-height);\\n        --listPosition: var(--list-position);\\n        --listShadow: var(--list-shadow);\\n        --listZIndex: var(--list-z-index);\\n        --multiItemBG: var(--multi-item-bg);\\n        --multiItemBorderRadius: var(--multi-item-border-radius);\\n        --multiItemDisabledHoverBg: var(--multi-item-disabled-hover-bg);\\n        --multiItemDisabledHoverColor: var(--multi-item-disabled-hover-color);\\n        --multiItemHeight: var(--multi-item-height);\\n        --multiItemMargin: var(--multi-item-margin);\\n        --multiItemPadding: var(--multi-item-padding);\\n        --multiSelectInputMargin: var(--multi-select-input-margin);\\n        --multiSelectInputPadding: var(--multi-select-input-padding);\\n        --multiSelectPadding: var(--multi-select-padding);\\n        --placeholderColor: var(--placeholder-color);\\n        --placeholderOpacity: var(--placeholder-opacity);\\n        --selectedItemPadding: var(--selected-item-padding);\\n        --spinnerColor: var(--spinner-color);\\n        --spinnerHeight: var(--spinner-height);\\n        --spinnerWidth: var(--spinner-width);\\n\\n        --internal-padding: 0 0 0 16px;\\n\\n        border: var(--border, 1px solid #d8dbdf);\\n        border-radius: var(--border-radius, 6px);\\n        min-height: var(--height, 42px);\\n        position: relative;\\n        display: flex;\\n        align-items: stretch;\\n        padding: var(--padding, var(--internal-padding));\\n        background: var(--background, #fff);\\n        margin: var(--margin, 0);\\n        width: var(--width, 100%);\\n        font-size: var(--font-size, 16px);\\n        max-height: var(--max-height);\\n    }\\n\\n    * {\\n        box-sizing: var(--box-sizing, border-box);\\n    }\\n\\n    .svelte-select:hover {\\n        border: var(--border-hover, 1px solid #b2b8bf);\\n    }\\n\\n    .value-container {\\n        display: flex;\\n        flex: 1 1 0%;\\n        flex-wrap: wrap;\\n        align-items: center;\\n        gap: 5px 10px;\\n        padding: var(--value-container-padding, 5px 0);\\n        position: relative;\\n        overflow: var(--value-container-overflow, hidden);\\n        align-self: stretch;\\n    }\\n\\n    .prepend,\\n    .indicators {\\n        display: flex;\\n        flex-shrink: 0;\\n        align-items: center;\\n    }\\n\\n    .indicators {\\n        position: var(--indicators-position);\\n        top: var(--indicators-top);\\n        right: var(--indicators-right);\\n        bottom: var(--indicators-bottom);\\n    }\\n\\n    input {\\n        position: absolute;\\n        cursor: default;\\n        border: none;\\n        color: var(--input-color, var(--item-color));\\n        padding: var(--input-padding, 0);\\n        letter-spacing: var(--input-letter-spacing, inherit);\\n        margin: var(--input-margin, 0);\\n        min-width: 10px;\\n        top: 0;\\n        right: 0;\\n        bottom: 0;\\n        left: 0;\\n        background: transparent;\\n        font-size: var(--font-size, 16px);\\n    }\\n\\n    :not(.multi) > .value-container > input {\\n        width: 100%;\\n        height: 100%;\\n    }\\n\\n    input::-moz-placeholder {\\n        color: var(--placeholder-color, #78848f);\\n        opacity: var(--placeholder-opacity, 1);\\n    }\\n\\n    input::placeholder {\\n        color: var(--placeholder-color, #78848f);\\n        opacity: var(--placeholder-opacity, 1);\\n    }\\n\\n    input:focus {\\n        outline: none;\\n    }\\n\\n    .svelte-select.focused {\\n        border: var(--border-focused, 1px solid #006fe8);\\n        border-radius: var(--border-radius-focused, var(--border-radius, 6px));\\n    }\\n\\n    .disabled {\\n        background: var(--disabled-background, #ebedef);\\n        border-color: var(--disabled-border-color, #ebedef);\\n        color: var(--disabled-color, #c1c6cc);\\n    }\\n\\n    .disabled input::-moz-placeholder {\\n        color: var(--disabled-placeholder-color, #c1c6cc);\\n        opacity: var(--disabled-placeholder-opacity, 1);\\n    }\\n\\n    .disabled input::placeholder {\\n        color: var(--disabled-placeholder-color, #c1c6cc);\\n        opacity: var(--disabled-placeholder-opacity, 1);\\n    }\\n\\n    .selected-item {\\n        position: relative;\\n        overflow: var(--selected-item-overflow, hidden);\\n        padding: var(--selected-item-padding, 0 20px 0 0);\\n        text-overflow: ellipsis;\\n        white-space: nowrap;\\n        color: var(--selected-item-color, inherit);\\n        font-size: var(--font-size, 16px);\\n    }\\n\\n    .multi .selected-item {\\n        position: absolute;\\n        line-height: var(--height, 42px);\\n        height: var(--height, 42px);\\n    }\\n\\n    .selected-item:focus {\\n        outline: none;\\n    }\\n\\n    .hide-selected-item {\\n        opacity: 0;\\n    }\\n\\n    .icon {\\n        display: flex;\\n        align-items: center;\\n        justify-content: center;\\n    }\\n\\n    .clear-select {\\n        all: unset;\\n        display: flex;\\n        align-items: center;\\n        justify-content: center;\\n        width: var(--clear-select-width, 40px);\\n        height: var(--clear-select-height, 100%);\\n        color: var(--clear-select-color, var(--icons-color));\\n        margin: var(--clear-select-margin, 0);\\n        pointer-events: all;\\n        flex-shrink: 0;\\n    }\\n\\n    .clear-select:focus {\\n        outline: var(--clear-select-focus-outline, 1px solid #006fe8);\\n    }\\n\\n    .loading {\\n        width: var(--loading-width, 40px);\\n        height: var(--loading-height);\\n        color: var(--loading-color, var(--icons-color));\\n        margin: var(--loading--margin, 0);\\n        flex-shrink: 0;\\n    }\\n\\n    .chevron {\\n        width: var(--chevron-width, 40px);\\n        height: var(--chevron-height, 40px);\\n        background: var(--chevron-background, transparent);\\n        pointer-events: var(--chevron-pointer-events, none);\\n        color: var(--chevron-color, var(--icons-color));\\n        border: var(--chevron-border, 0 0 0 1px solid #d8dbdf);\\n        flex-shrink: 0;\\n    }\\n\\n    .multi {\\n        padding: var(--multi-select-padding, var(--internal-padding));\\n    }\\n\\n    .multi input {\\n        padding: var(--multi-select-input-padding, 0);\\n        position: relative;\\n        margin: var(--multi-select-input-margin, 5px 0);\\n        flex: 1 1 40px;\\n    }\\n\\n    .svelte-select.error {\\n        border: var(--error-border, 1px solid #ff2d55);\\n        background: var(--error-background, #fff);\\n    }\\n\\n    .a11y-text {\\n        z-index: 9999;\\n        border: 0px;\\n        clip: rect(1px, 1px, 1px, 1px);\\n        height: 1px;\\n        width: 1px;\\n        position: absolute;\\n        overflow: hidden;\\n        padding: 0px;\\n        white-space: nowrap;\\n    }\\n\\n    .multi-item {\\n        background: var(--multi-item-bg, #ebedef);\\n        margin: var(--multi-item-margin, 0);\\n        outline: var(--multi-item-outline, 1px solid #ddd);\\n        border-radius: var(--multi-item-border-radius, 4px);\\n        height: var(--multi-item-height, 25px);\\n        line-height: var(--multi-item-height, 25px);\\n        display: flex;\\n        cursor: default;\\n        padding: var(--multi-item-padding, 0 5px);\\n        overflow: hidden;\\n        gap: var(--multi-item-gap, 4px);\\n        outline-offset: -1px;\\n        max-width: var(--multi-max-width, none);\\n        color: var(--multi-item-color, var(--item-color));\\n    }\\n\\n    .multi-item.disabled:hover {\\n        background: var(--multi-item-disabled-hover-bg, #ebedef);\\n        color: var(--multi-item-disabled-hover-color, #c1c6cc);\\n    }\\n\\n    .multi-item-text {\\n        overflow: hidden;\\n        text-overflow: ellipsis;\\n        white-space: nowrap;\\n    }\\n\\n    .multi-item-clear {\\n        display: flex;\\n        align-items: center;\\n        justify-content: center;\\n        --clear-icon-color: var(--multi-item-clear-icon-color, #000);\\n    }\\n\\n    .multi-item.active {\\n        outline: var(--multi-item-active-outline, 1px solid #006fe8);\\n    }\\n\\n    .svelte-select-list {\\n        box-shadow: var(--list-shadow, 0 2px 3px 0 rgba(44, 62, 80, 0.24));\\n        border-radius: var(--list-border-radius, 4px);\\n        max-height: var(--list-max-height, 252px);\\n        overflow-y: auto;\\n        background: var(--list-background, #fff);\\n        position: var(--list-position, absolute);\\n        z-index: var(--list-z-index, 2);\\n        border: var(--list-border);\\n    }\\n\\n    .prefloat {\\n        opacity: 0;\\n        pointer-events: none;\\n    }\\n\\n    .list-group-title {\\n        color: var(--group-title-color, #8f8f8f);\\n        cursor: default;\\n        font-size: var(--group-title-font-size, 16px);\\n        font-weight: var(--group-title-font-weight, 600);\\n        height: var(--height, 42px);\\n        line-height: var(--height, 42px);\\n        padding: var(--group-title-padding, 0 20px);\\n        text-overflow: ellipsis;\\n        overflow-x: hidden;\\n        white-space: nowrap;\\n        text-transform: var(--group-title-text-transform, uppercase);\\n        border-width: var(--group-title-border-width, medium);\\n        border-style: var(--group-title-border-style, none);\\n        border-color: var(--group-title-border-color, color);\\n    }\\n\\n    .empty {\\n        text-align: var(--list-empty-text-align, center);\\n        padding: var(--list-empty-padding, 20px 0);\\n        color: var(--list-empty-color, #78848f);\\n    }\\n\\n    .item {\\n        cursor: default;\\n        height: var(--item-height, var(--height, 42px));\\n        line-height: var(--item-line-height, var(--height, 42px));\\n        padding: var(--item-padding, 0 20px);\\n        color: var(--item-color, inherit);\\n        text-overflow: ellipsis;\\n        overflow: hidden;\\n        white-space: nowrap;\\n        transition: var(--item-transition, all 0.2s);\\n        align-items: center;\\n        width: 100%;\\n    }\\n\\n    .item.group-item {\\n        padding-left: var(--group-item-padding-left, 40px);\\n    }\\n\\n    .item:active {\\n        background: var(--item-active-background, #b9daff);\\n    }\\n\\n    .item.active {\\n        background: var(--item-is-active-bg, #007aff);\\n        color: var(--item-is-active-color, #fff);\\n    }\\n\\n    .item.first {\\n        border-radius: var(--item-first-border-radius, 4px 4px 0 0);\\n    }\\n\\n    .item.hover:not(.active) {\\n        background: var(--item-hover-bg, #e7f2ff);\\n        color: var(--item-hover-color, inherit);\\n    }\\n\\n    .item.not-selectable,\\n    .item.hover.item.not-selectable,\\n    .item.active.item.not-selectable,\\n    .item.not-selectable:active {\\n        color: var(--item-is-not-selectable-color, #999);\\n        background: transparent;\\n    }\\n\\n    .required {\\n        opacity: 0;\\n        z-index: -1;\\n        position: absolute;\\n        top: 0;\\n        left: 0;\\n        bottom: 0;\\n        right: 0;\\n    }</style>\\n"],"names":[],"mappings":"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"}`
-};
-function convertStringItemsToObjects(_items) {
-  return _items.map((item, index) => {
-    return { index, value: item, label: `${item}` };
-  });
+const Mulligans_scorecard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return ``;
+});
+const Next_up_scorecard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return ``;
+});
+const Prophet_scorecard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return ``;
+});
+const Game_info_panel = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { gameType } = $$props;
+  let { gameStatus } = $$props;
+  let { playerIds } = $$props;
+  let { events } = $$props;
+  let { winner } = $$props;
+  if ($$props.gameType === void 0 && $$bindings.gameType && gameType !== void 0) $$bindings.gameType(gameType);
+  if ($$props.gameStatus === void 0 && $$bindings.gameStatus && gameStatus !== void 0) $$bindings.gameStatus(gameStatus);
+  if ($$props.playerIds === void 0 && $$bindings.playerIds && playerIds !== void 0) $$bindings.playerIds(playerIds);
+  if ($$props.events === void 0 && $$bindings.events && events !== void 0) $$bindings.events(events);
+  if ($$props.winner === void 0 && $$bindings.winner && winner !== void 0) $$bindings.winner(winner);
+  return `<div><h4 class="text-4xl font-bold condensed">${gameStatus === "unplayed" ? `PLAYER SETUP` : `${gameStatus === "active" ? `PLAYER SCORES` : `${gameStatus === "completed" ? `PLAYER DETAILS` : ``}`}`}</h4>   ${gameType ? `${gameType === "Bands" ? `${validate_component(Bands_scorecard, "BandsScorecard").$$render($$result, {}, {}, {})}` : `${gameType === "Mulligans" ? `${validate_component(Mulligans_scorecard, "MulligansScorecard").$$render($$result, {}, {}, {})}` : `${gameType === "NextUp" ? `${validate_component(Next_up_scorecard, "NextUpScorecard").$$render($$result, {}, {}, {})}` : `${gameType === "BuildIt" ? `${validate_component(Build_it_scorecard, "BuildItScorecard").$$render($$result, {}, {}, {})}` : `${gameType === "Prophet" ? `${validate_component(Prophet_scorecard, "ProphetScorecard").$$render($$result, {}, {}, {})}` : ``}`}`}`}`}` : ``}</div>`;
+});
+function getGameTypeImage(gameType) {
+  if ("Bands" in gameType) return "/bands.png";
+  if ("Mulligans" in gameType) return "/mulligans.png";
+  if ("NextUp" in gameType) return "/next-up.png";
+  if ("BuildIt" in gameType) return "/build-it.png";
+  if ("Prophet" in gameType) return "/prophet.png";
+  return "";
 }
-function isItemFirst(itemIndex) {
-  return itemIndex === 0;
+function getGameStatus(status) {
+  if ("Unplayed" in status) return "Unplayed";
+  if ("Active" in status) return "Active";
+  if ("Complete" in status) return "Complete";
+  return "Unknown";
 }
-const Select = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let hasValue;
-  let hideSelectedItem;
-  let showClear;
-  let placeholderText;
-  let ariaSelection;
-  let ariaContext;
-  let filteredItems;
-  let $$slots = compute_slots(slots);
-  const dispatch = createEventDispatcher();
-  let { justValue = null } = $$props;
-  let { filter: filter$1 = filter } = $$props;
-  let { getItems: getItems$1 = getItems } = $$props;
-  let { id = null } = $$props;
-  let { name = null } = $$props;
-  let { container = void 0 } = $$props;
-  let { input = void 0 } = $$props;
-  let { multiple = false } = $$props;
-  let { multiFullItemClearable = false } = $$props;
-  let { disabled = false } = $$props;
-  let { focused = false } = $$props;
-  let { value = null } = $$props;
-  let { filterText = "" } = $$props;
-  let { placeholder = "Please select" } = $$props;
-  let { placeholderAlwaysShow = false } = $$props;
-  let { items = null } = $$props;
-  let { label = "label" } = $$props;
-  let { itemFilter = (label2, filterText2, option) => `${label2}`.toLowerCase().includes(filterText2.toLowerCase()) } = $$props;
-  let { groupBy = void 0 } = $$props;
-  let { groupFilter = (groups) => groups } = $$props;
-  let { groupHeaderSelectable = false } = $$props;
-  let { itemId = "value" } = $$props;
-  let { loadOptions = void 0 } = $$props;
-  let { containerStyles = "" } = $$props;
-  let { hasError = false } = $$props;
-  let { filterSelectedItems = true } = $$props;
-  let { required = false } = $$props;
-  let { closeListOnChange = true } = $$props;
-  let { clearFilterTextOnBlur = true } = $$props;
-  let { createGroupHeaderItem = (groupValue, item) => {
-    return { value: groupValue, [label]: groupValue };
-  } } = $$props;
-  const getFilteredItems = () => {
-    return filteredItems;
-  };
-  let { searchable = true } = $$props;
-  let { inputStyles = "" } = $$props;
-  let { clearable = true } = $$props;
-  let { loading = false } = $$props;
-  let { listOpen = false } = $$props;
-  let timeout;
-  let { debounce = (fn, wait = 1) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(fn, wait);
-  } } = $$props;
-  let { debounceWait = 300 } = $$props;
-  let { hideEmptyState = false } = $$props;
-  let { inputAttributes = {} } = $$props;
-  let { listAutoWidth = true } = $$props;
-  let { showChevron = false } = $$props;
-  let { listOffset = 5 } = $$props;
-  let { hoverItemIndex = 0 } = $$props;
-  let { floatingConfig = {} } = $$props;
-  let { class: containerClasses = "" } = $$props;
-  let activeValue;
-  let prev_value;
-  let prev_filterText;
-  function setValue() {
-    if (typeof value === "string") {
-      let item = (items || []).find((item2) => item2[itemId] === value);
-      value = item || { [itemId]: value, label: value };
-    } else if (multiple && Array.isArray(value) && value.length > 0) {
-      value = value.map((item) => typeof item === "string" ? { value: item, label: item } : item);
-    }
-  }
-  let _inputAttributes;
-  function assignInputAttributes() {
-    _inputAttributes = Object.assign(
-      {
-        autocapitalize: "none",
-        autocomplete: "off",
-        autocorrect: "off",
-        spellcheck: false,
-        tabindex: 0,
-        type: "text",
-        "aria-autocomplete": "list"
-      },
-      inputAttributes
-    );
-    if (id) {
-      _inputAttributes["id"] = id;
-    }
-    if (!searchable) {
-      _inputAttributes["readonly"] = true;
-    }
-  }
-  function filterGroupedItems(_items) {
-    const groupValues = [];
-    const groups = {};
-    _items.forEach((item) => {
-      const groupValue = groupBy(item);
-      if (!groupValues.includes(groupValue)) {
-        groupValues.push(groupValue);
-        groups[groupValue] = [];
-        if (groupValue) {
-          groups[groupValue].push(Object.assign(createGroupHeaderItem(groupValue, item), {
-            id: groupValue,
-            groupHeader: true,
-            selectable: groupHeaderSelectable
-          }));
-        }
-      }
-      groups[groupValue].push(Object.assign({ groupItem: !!groupValue }, item));
-    });
-    const sortedGroupedItems = [];
-    groupFilter(groupValues).forEach((groupValue) => {
-      if (groups[groupValue]) sortedGroupedItems.push(...groups[groupValue]);
-    });
-    return sortedGroupedItems;
-  }
-  function dispatchSelectedItem() {
-    if (multiple) {
-      if (JSON.stringify(value) !== JSON.stringify(prev_value)) {
-        if (checkValueForDuplicates()) {
-          dispatch("input", value);
-        }
-      }
-      return;
-    }
-    {
-      dispatch("input", value);
-    }
-  }
-  function setupMulti() {
-    if (value) {
-      if (Array.isArray(value)) {
-        value = [...value];
-      } else {
-        value = [value];
-      }
-    }
-  }
-  function setValueIndexAsHoverIndex() {
-    const valueIndex = filteredItems.findIndex((i) => {
-      return i[itemId] === value[itemId];
-    });
-    checkHoverSelectable(valueIndex, true);
-  }
-  function dispatchHover(i) {
-    dispatch("hoverItem", i);
-  }
-  function checkHoverSelectable(startingIndex = 0, ignoreGroup) {
-    hoverItemIndex = startingIndex < 0 ? 0 : startingIndex;
-    if (!ignoreGroup && groupBy && filteredItems[hoverItemIndex] && !filteredItems[hoverItemIndex].selectable) {
-      setHoverIndex(1);
-    }
-  }
-  function setupFilterText() {
-    if (!loadOptions && filterText.length === 0) return;
-    if (loadOptions) {
-      debounce(
-        async function() {
-          loading = true;
-          let res = await getItems$1({
-            dispatch,
-            loadOptions,
-            convertStringItemsToObjects,
-            filterText
-          });
-          if (res) {
-            loading = res.loading;
-            listOpen = listOpen ? res.listOpen : filterText.length > 0 ? true : false;
-            focused = listOpen && res.focused;
-            items = groupBy ? filterGroupedItems(res.filteredItems) : res.filteredItems;
-          } else {
-            loading = false;
-            focused = true;
-            listOpen = true;
-          }
-        },
-        debounceWait
-      );
-    } else {
-      listOpen = true;
-      if (multiple) {
-        activeValue = void 0;
-      }
-    }
-  }
-  function handleFilterEvent(items2) {
-    if (listOpen) dispatch("filter", items2);
-  }
-  function computeJustValue() {
-    if (multiple) return value ? value.map((item) => item[itemId]) : null;
-    return value ? value[itemId] : value;
-  }
-  function checkValueForDuplicates() {
-    let noDuplicates = true;
-    if (value) {
-      const ids = [];
-      const uniqueValues = [];
-      value.forEach((val) => {
-        if (!ids.includes(val[itemId])) {
-          ids.push(val[itemId]);
-          uniqueValues.push(val);
-        } else {
-          noDuplicates = false;
-        }
-      });
-      if (!noDuplicates) value = uniqueValues;
-    }
-    return noDuplicates;
-  }
-  function findItem(selection) {
-    let matchTo = selection ? selection[itemId] : value[itemId];
-    return items.find((item) => item[itemId] === matchTo);
-  }
-  function updateValueDisplay(items2) {
-    if (!items2 || items2.length === 0 || items2.some((item) => typeof item !== "object")) return;
-    if (!value || (multiple ? value.some((selection) => !selection || !selection[itemId]) : !value[itemId])) return;
-    if (Array.isArray(value)) {
-      value = value.map((selection) => findItem(selection) || selection);
-    } else {
-      value = findItem() || value;
-    }
-  }
-  function handleFocus(e) {
-    if (focused && input === document?.activeElement) return;
-    input?.focus();
-    focused = true;
-  }
-  function handleClear() {
-    dispatch("clear", value);
-    value = void 0;
-    closeList();
-    handleFocus();
-  }
-  function closeList() {
-    if (clearFilterTextOnBlur) {
-      filterText = "";
-    }
-    listOpen = false;
-  }
-  let { ariaValues = (values) => {
-    return `Option ${values}, selected.`;
-  } } = $$props;
-  let { ariaListOpen = (label2, count) => {
-    return `You are currently focused on option ${label2}. There are ${count} results available.`;
-  } } = $$props;
-  let { ariaFocused = () => {
-    return `Select is focused, type to refine list, press down to open the menu.`;
-  } } = $$props;
-  function handleAriaSelection(_multiple) {
-    let selected = void 0;
-    if (_multiple && value.length > 0) {
-      selected = value.map((v) => v[label]).join(", ");
-    } else {
-      selected = value[label];
-    }
-    return ariaValues(selected);
-  }
-  function handleAriaContent() {
-    if (!filteredItems || filteredItems.length === 0) return "";
-    let _item = filteredItems[hoverItemIndex];
-    if (listOpen && _item) {
-      let count = filteredItems ? filteredItems.length : 0;
-      return ariaListOpen(_item[label], count);
-    } else {
-      return ariaFocused();
-    }
-  }
-  let list = null;
-  onDestroy(() => {
-  });
-  function setHoverIndex(increment) {
-    let selectableFilteredItems = filteredItems.filter((item) => !Object.hasOwn(item, "selectable") || item.selectable === true);
-    if (selectableFilteredItems.length === 0) {
-      return hoverItemIndex = 0;
-    }
-    if (hoverItemIndex === filteredItems.length - 1) {
-      hoverItemIndex = 0;
-    } else {
-      hoverItemIndex = hoverItemIndex + increment;
-    }
-    const hover = filteredItems[hoverItemIndex];
-    if (hover && hover.selectable === false) {
-      setHoverIndex(increment);
-      return;
-    }
-  }
-  function isItemActive(item, value2, itemId2) {
-    if (multiple) return;
-    return value2 && value2[itemId2] === item[itemId2];
-  }
-  function setListWidth() {
-    const { width } = container.getBoundingClientRect();
-    list.style.width = listAutoWidth ? width + "px" : "auto";
-  }
-  let _floatingConfig = {
-    strategy: "absolute",
-    placement: "bottom-start",
-    middleware: [offset(listOffset), flip(), shift()],
-    autoUpdate: false
-  };
-  const [floatingRef, floatingContent, floatingUpdate] = createFloatingActions(_floatingConfig);
-  let prefloat = true;
-  function listMounted(list2, listOpen2) {
-    return prefloat = true;
-  }
-  if ($$props.justValue === void 0 && $$bindings.justValue && justValue !== void 0) $$bindings.justValue(justValue);
-  if ($$props.filter === void 0 && $$bindings.filter && filter$1 !== void 0) $$bindings.filter(filter$1);
-  if ($$props.getItems === void 0 && $$bindings.getItems && getItems$1 !== void 0) $$bindings.getItems(getItems$1);
-  if ($$props.id === void 0 && $$bindings.id && id !== void 0) $$bindings.id(id);
-  if ($$props.name === void 0 && $$bindings.name && name !== void 0) $$bindings.name(name);
-  if ($$props.container === void 0 && $$bindings.container && container !== void 0) $$bindings.container(container);
-  if ($$props.input === void 0 && $$bindings.input && input !== void 0) $$bindings.input(input);
-  if ($$props.multiple === void 0 && $$bindings.multiple && multiple !== void 0) $$bindings.multiple(multiple);
-  if ($$props.multiFullItemClearable === void 0 && $$bindings.multiFullItemClearable && multiFullItemClearable !== void 0) $$bindings.multiFullItemClearable(multiFullItemClearable);
-  if ($$props.disabled === void 0 && $$bindings.disabled && disabled !== void 0) $$bindings.disabled(disabled);
-  if ($$props.focused === void 0 && $$bindings.focused && focused !== void 0) $$bindings.focused(focused);
-  if ($$props.value === void 0 && $$bindings.value && value !== void 0) $$bindings.value(value);
-  if ($$props.filterText === void 0 && $$bindings.filterText && filterText !== void 0) $$bindings.filterText(filterText);
-  if ($$props.placeholder === void 0 && $$bindings.placeholder && placeholder !== void 0) $$bindings.placeholder(placeholder);
-  if ($$props.placeholderAlwaysShow === void 0 && $$bindings.placeholderAlwaysShow && placeholderAlwaysShow !== void 0) $$bindings.placeholderAlwaysShow(placeholderAlwaysShow);
-  if ($$props.items === void 0 && $$bindings.items && items !== void 0) $$bindings.items(items);
-  if ($$props.label === void 0 && $$bindings.label && label !== void 0) $$bindings.label(label);
-  if ($$props.itemFilter === void 0 && $$bindings.itemFilter && itemFilter !== void 0) $$bindings.itemFilter(itemFilter);
-  if ($$props.groupBy === void 0 && $$bindings.groupBy && groupBy !== void 0) $$bindings.groupBy(groupBy);
-  if ($$props.groupFilter === void 0 && $$bindings.groupFilter && groupFilter !== void 0) $$bindings.groupFilter(groupFilter);
-  if ($$props.groupHeaderSelectable === void 0 && $$bindings.groupHeaderSelectable && groupHeaderSelectable !== void 0) $$bindings.groupHeaderSelectable(groupHeaderSelectable);
-  if ($$props.itemId === void 0 && $$bindings.itemId && itemId !== void 0) $$bindings.itemId(itemId);
-  if ($$props.loadOptions === void 0 && $$bindings.loadOptions && loadOptions !== void 0) $$bindings.loadOptions(loadOptions);
-  if ($$props.containerStyles === void 0 && $$bindings.containerStyles && containerStyles !== void 0) $$bindings.containerStyles(containerStyles);
-  if ($$props.hasError === void 0 && $$bindings.hasError && hasError !== void 0) $$bindings.hasError(hasError);
-  if ($$props.filterSelectedItems === void 0 && $$bindings.filterSelectedItems && filterSelectedItems !== void 0) $$bindings.filterSelectedItems(filterSelectedItems);
-  if ($$props.required === void 0 && $$bindings.required && required !== void 0) $$bindings.required(required);
-  if ($$props.closeListOnChange === void 0 && $$bindings.closeListOnChange && closeListOnChange !== void 0) $$bindings.closeListOnChange(closeListOnChange);
-  if ($$props.clearFilterTextOnBlur === void 0 && $$bindings.clearFilterTextOnBlur && clearFilterTextOnBlur !== void 0) $$bindings.clearFilterTextOnBlur(clearFilterTextOnBlur);
-  if ($$props.createGroupHeaderItem === void 0 && $$bindings.createGroupHeaderItem && createGroupHeaderItem !== void 0) $$bindings.createGroupHeaderItem(createGroupHeaderItem);
-  if ($$props.getFilteredItems === void 0 && $$bindings.getFilteredItems && getFilteredItems !== void 0) $$bindings.getFilteredItems(getFilteredItems);
-  if ($$props.searchable === void 0 && $$bindings.searchable && searchable !== void 0) $$bindings.searchable(searchable);
-  if ($$props.inputStyles === void 0 && $$bindings.inputStyles && inputStyles !== void 0) $$bindings.inputStyles(inputStyles);
-  if ($$props.clearable === void 0 && $$bindings.clearable && clearable !== void 0) $$bindings.clearable(clearable);
-  if ($$props.loading === void 0 && $$bindings.loading && loading !== void 0) $$bindings.loading(loading);
-  if ($$props.listOpen === void 0 && $$bindings.listOpen && listOpen !== void 0) $$bindings.listOpen(listOpen);
-  if ($$props.debounce === void 0 && $$bindings.debounce && debounce !== void 0) $$bindings.debounce(debounce);
-  if ($$props.debounceWait === void 0 && $$bindings.debounceWait && debounceWait !== void 0) $$bindings.debounceWait(debounceWait);
-  if ($$props.hideEmptyState === void 0 && $$bindings.hideEmptyState && hideEmptyState !== void 0) $$bindings.hideEmptyState(hideEmptyState);
-  if ($$props.inputAttributes === void 0 && $$bindings.inputAttributes && inputAttributes !== void 0) $$bindings.inputAttributes(inputAttributes);
-  if ($$props.listAutoWidth === void 0 && $$bindings.listAutoWidth && listAutoWidth !== void 0) $$bindings.listAutoWidth(listAutoWidth);
-  if ($$props.showChevron === void 0 && $$bindings.showChevron && showChevron !== void 0) $$bindings.showChevron(showChevron);
-  if ($$props.listOffset === void 0 && $$bindings.listOffset && listOffset !== void 0) $$bindings.listOffset(listOffset);
-  if ($$props.hoverItemIndex === void 0 && $$bindings.hoverItemIndex && hoverItemIndex !== void 0) $$bindings.hoverItemIndex(hoverItemIndex);
-  if ($$props.floatingConfig === void 0 && $$bindings.floatingConfig && floatingConfig !== void 0) $$bindings.floatingConfig(floatingConfig);
-  if ($$props.class === void 0 && $$bindings.class && containerClasses !== void 0) $$bindings.class(containerClasses);
-  if ($$props.handleClear === void 0 && $$bindings.handleClear && handleClear !== void 0) $$bindings.handleClear(handleClear);
-  if ($$props.ariaValues === void 0 && $$bindings.ariaValues && ariaValues !== void 0) $$bindings.ariaValues(ariaValues);
-  if ($$props.ariaListOpen === void 0 && $$bindings.ariaListOpen && ariaListOpen !== void 0) $$bindings.ariaListOpen(ariaListOpen);
-  if ($$props.ariaFocused === void 0 && $$bindings.ariaFocused && ariaFocused !== void 0) $$bindings.ariaFocused(ariaFocused);
-  $$result.css.add(css$3);
-  {
-    if (value) setValue();
-  }
-  {
-    if (inputAttributes || !searchable) assignInputAttributes();
-  }
-  {
-    if (multiple) setupMulti();
-  }
-  {
-    if (multiple && value && value.length > 1) checkValueForDuplicates();
-  }
-  {
-    if (value) dispatchSelectedItem();
-  }
-  {
-    if (!value && multiple && prev_value) dispatch("input", value);
-  }
-  {
-    if (!focused && input) closeList();
-  }
-  {
-    if (filterText !== prev_filterText) setupFilterText();
-  }
-  filteredItems = filter$1({
-    loadOptions,
-    filterText,
-    items,
-    multiple,
-    value,
-    itemId,
-    groupBy,
-    label,
-    filterSelectedItems,
-    itemFilter,
-    convertStringItemsToObjects,
-    filterGroupedItems
-  });
-  {
-    if (!multiple && listOpen && value && filteredItems) setValueIndexAsHoverIndex();
-  }
-  {
-    if (listOpen && multiple) hoverItemIndex = 0;
-  }
-  {
-    if (filterText) hoverItemIndex = 0;
-  }
-  {
-    dispatchHover(hoverItemIndex);
-  }
-  hasValue = multiple ? value && value.length > 0 : value;
-  hideSelectedItem = hasValue && filterText.length > 0;
-  showClear = hasValue && clearable && !disabled && !loading;
-  placeholderText = placeholderAlwaysShow && multiple ? placeholder : multiple && value?.length === 0 ? placeholder : value ? "" : placeholder;
-  ariaSelection = value ? handleAriaSelection(multiple) : "";
-  ariaContext = handleAriaContent();
-  {
-    updateValueDisplay(items);
-  }
-  justValue = computeJustValue();
-  {
-    if (!multiple && prev_value && !value) dispatch("input", value);
-  }
-  {
-    if (listOpen && filteredItems && !multiple && !value) checkHoverSelectable();
-  }
-  {
-    handleFilterEvent(filteredItems);
-  }
-  {
-    if (container && floatingConfig?.autoUpdate === void 0) {
-      _floatingConfig.autoUpdate = true;
-    }
-  }
-  {
-    if (container && floatingConfig) floatingUpdate(Object.assign(_floatingConfig, floatingConfig));
-  }
-  {
-    listMounted();
-  }
-  {
-    if (listOpen && container && list) setListWidth();
-  }
-  {
-    if (input && listOpen && !focused) handleFocus();
-  }
-  return ` <div class="${[
-    "svelte-select " + escape(containerClasses, true) + " svelte-1bhoqam",
-    (multiple ? "multi" : "") + " " + (disabled ? "disabled" : "") + " " + (focused ? "focused" : "") + " " + (listOpen ? "list-open" : "") + " " + (showChevron ? "show-chevron" : "") + " " + (hasError ? "error" : "")
-  ].join(" ").trim()}"${add_attribute("style", containerStyles, 0)} role="none"${add_attribute("this", container, 0)}>${listOpen ? `<div class="${["svelte-select-list svelte-1bhoqam", prefloat ? "prefloat" : ""].join(" ").trim()}" role="none"${add_attribute("this", list, 0)}>${$$slots["list-prepend"] ? `${slots["list-prepend"] ? slots["list-prepend"]({}) : ``}` : ``} ${$$slots.list ? `${slots.list ? slots.list({ filteredItems }) : ``}` : `${filteredItems.length > 0 ? `${each(filteredItems, (item, i) => {
-    return `<div class="list-item svelte-1bhoqam" tabindex="-1" role="none"><div class="${[
-      "item svelte-1bhoqam",
-      (item.groupHeader ? "list-group-title" : "") + " " + (isItemActive(item, value, itemId) ? "active" : "") + " " + (isItemFirst(i) ? "first" : "") + " " + (hoverItemIndex === i ? "hover" : "") + " " + (item.groupItem ? "group-item" : "") + " " + (item?.selectable === false ? "not-selectable" : "")
-    ].join(" ").trim()}">${slots.item ? slots.item({ item, index: i }) : ` ${escape(item?.[label])} `}</div> </div>`;
-  })}` : `${!hideEmptyState ? `${slots.empty ? slots.empty({}) : ` <div class="empty svelte-1bhoqam" data-svelte-h="svelte-16ffy3h">No options</div> `}` : ``}`}`} ${$$slots["list-append"] ? `${slots["list-append"] ? slots["list-append"]({}) : ``}` : ``}</div>` : ``} <span aria-live="polite" aria-atomic="false" aria-relevant="additions text" class="a11y-text svelte-1bhoqam">${focused ? `<span id="aria-selection" class="svelte-1bhoqam">${escape(ariaSelection)}</span> <span id="aria-context" class="svelte-1bhoqam">${escape(ariaContext)}</span>` : ``}</span> <div class="prepend svelte-1bhoqam">${slots.prepend ? slots.prepend({}) : ``}</div> <div class="value-container svelte-1bhoqam">${hasValue ? `${multiple ? `${each(value, (item, i) => {
-    return `<div class="${[
-      "multi-item svelte-1bhoqam",
-      (activeValue === i ? "active" : "") + " " + (disabled ? "disabled" : "")
-    ].join(" ").trim()}" role="none"><span class="multi-item-text svelte-1bhoqam">${slots.selection ? slots.selection({ selection: item, index: i }) : ` ${escape(item[label])} `}</span> ${!disabled && !multiFullItemClearable && ClearIcon ? `<div class="multi-item-clear svelte-1bhoqam">${slots["multi-clear-icon"] ? slots["multi-clear-icon"]({}) : ` ${validate_component(ClearIcon, "ClearIcon").$$render($$result, {}, {}, {})} `} </div>` : ``} </div>`;
-  })}` : `<div class="${[
-    "selected-item svelte-1bhoqam",
-    hideSelectedItem ? "hide-selected-item" : ""
-  ].join(" ").trim()}">${slots.selection ? slots.selection({ selection: value }) : ` ${escape(value[label])} `}</div>`}` : ``} <input${spread(
-    [
-      { readonly: !searchable || null },
-      escape_object(_inputAttributes),
-      {
-        placeholder: escape_attribute_value(placeholderText)
-      },
-      {
-        style: escape_attribute_value(inputStyles)
-      },
-      { disabled: disabled || null }
-    ],
-    { classes: "svelte-1bhoqam" }
-  )}${add_attribute("this", input, 0)}${add_attribute("value", filterText, 0)}></div> <div class="indicators svelte-1bhoqam">${loading ? `<div class="icon loading svelte-1bhoqam" aria-hidden="true">${slots["loading-icon"] ? slots["loading-icon"]({}) : ` ${validate_component(LoadingIcon, "LoadingIcon").$$render($$result, {}, {}, {})} `}</div>` : ``} ${showClear ? `<button type="button" class="icon clear-select svelte-1bhoqam">${slots["clear-icon"] ? slots["clear-icon"]({}) : ` ${validate_component(ClearIcon, "ClearIcon").$$render($$result, {}, {}, {})} `}</button>` : ``} ${showChevron ? `<div class="icon chevron svelte-1bhoqam" aria-hidden="true">${slots["chevron-icon"] ? slots["chevron-icon"]({ listOpen }) : ` ${validate_component(ChevronIcon, "ChevronIcon").$$render($$result, {}, {}, {})} `}</div>` : ``}</div> ${slots["input-hidden"] ? slots["input-hidden"]({ value }) : ` <input${add_attribute("name", name, 0)} type="hidden"${add_attribute("value", value ? JSON.stringify(value) : null, 0)} class="svelte-1bhoqam"> `} ${required && (!value || value.length === 0) ? `${slots.required ? slots.required({ value }) : ` <select class="required svelte-1bhoqam" required tabindex="-1" aria-hidden="true"></select> `}` : ``} </div>`;
-});
-const css$2 = {
-  code: ".select-override .svelte-select__control{background-color:white !important;color:black !important}.btn.svelte-hf9p98{padding:10px 10px;font-weight:bold;border-radius:5px;cursor:pointer;width:400px;margin:1rem 0 1rem 1.5rem}.btn-new-game.svelte-hf9p98{background-color:#f6c200;color:#1C4932;border:none}.btn-new-game.svelte-hf9p98:hover{background-color:#e4c013;box-shadow:0px 6px 8px rgba(0, 0, 0, 0.2)}",
-  map: `{"version":3,"file":"+page.svelte","sources":["+page.svelte"],"sourcesContent":["<script lang=\\"ts\\">import ShowSelectGameModal from \\"$lib/components/games/show-select-game-modal.svelte\\";\\nimport Layout from \\"../../Layout.svelte\\";\\nimport Select from 'svelte-select';\\nimport { goto } from \\"$app/navigation\\";\\nlet tees = [\\n    { value: 'blue-tee', label: 'Blue Tee' },\\n    { value: 'white_tee', label: 'White Tee' },\\n    { value: 'black_tee', label: 'Black Tee' },\\n    { value: 'red_tee', label: 'Red Tee' }\\n];\\nlet courses = [\\n    { value: 'royal_dornoch', label: 'Royal Dornoch', img: '/golfCourse.png' },\\n    { value: 'swinley_forest', label: 'Swinley Forest', img: '/golfCourse.png' },\\n    { value: 'trump_turnberry', label: 'Trump Turnberry', img: '/golfCourse.png' },\\n    { value: 'royal_birkdale', label: 'Royal Birkdale Golf Club', img: '/golfCourse.png' },\\n    { value: 'royal_liverpool', label: 'Royal Liverpool Golf Club', img: '/golfCourse.png' },\\n    { value: 'royal_st_george', label: 'Royal St. Georges', img: '/golfCourse.png' },\\n    { value: 'waterville', label: 'Waterville', img: '/golfCourse.png' }\\n];\\nlet opponents = [\\n    { name: 'Zoe Duffy', title: 'Managing Director', image: '/zoe.jpg' },\\n    { name: 'Kelly Howlett', title: 'Head of Operations', image: '/kelly.jpeg' },\\n    { name: 'James Beadle', title: 'Development Manager', image: '/james.jpg' },\\n    { name: 'Dfinity Designer', title: 'Head of Design', image: '/dfd.jpg' },\\n    { name: 'Thilly Thana', title: 'Lead Developer', image: '/thilly.jpg' },\\n    { name: 'George Robinson', title: 'Community Manager', image: '/george.jpg' },\\n    { name: 'Josh Wray', title: 'Head of Promotion', image: '/josh.jpg' },\\n    { name: 'Ashutosh Yadav', title: 'Media Production Manager', image: '/ashutosh.jpg' }\\n];\\nlet selectedOpponent = [];\\nlet selectedCourse = null;\\nlet selectedTee = null;\\n//TODO there is a bug with when an opponent is selected then the array gets deleted for some reason\\nfunction handleSelectionChange(selected) {\\n    selectedOpponent = selected.map((opponent) => ({ ...opponent }));\\n}\\nfunction isSelected(opponent) {\\n    return selectedOpponent.some(sel => sel.name === opponent.name);\\n}\\nfunction generateGameId() {\\n    //TODO there is a getGameDTO with the game id inside it \\n    return Math.random().toString(36).substr(2, 9);\\n}\\n<\/script>\\n\\n<Layout>\\n    <div class=\\"flex flex-col w-full\\">\\n        <div class=\\"w-full p-2 px-4 text-black\\">\\n            <h2 class=\\"mt-2 mb-0 text-3xl font-black text-black md:text-5xl condensed\\">MULLIGANS</h2>\\n        </div>\\n  \\n        <div class=\\"w-full p-4 text-black bg-gray-100\\">\\n            <h3 class=\\"mt-0 mb-2 text-3xl font-black text-black md:text-3xl condensed\\">GAME DETAILS</h3>\\n\\n            <label for=\\"course\\" class=\\"block mt-4 text-lg font-bold text-black\\">Course</label>\\n            <!-- Course -->\\n            <div class=\\"flex items-center w-full mt-2 text-black bg-gray-100\\">\\n                <div class=\\"flex-grow max-w-md\\">\\n                    <Select \\n                        id=\\"course\\"\\n                        items={courses}\\n                        bind:value={selectedCourse}\\n                        label=\\"label\\"\\n                        placeholder=\\"Select a Course\\"\\n                        searchable\\n                        class=\\"p-2 text-black bg-white rounded-lg focus:bg-white focus:border-gray-400 focus:outline-none active:bg-white select-override\\"\\n                    >\\n                        <svelte:fragment slot=\\"item\\" let:item>\\n                            <div class=\\"flex items-center w-12 h-12 p-2 space-x-3\\">\\n                                <img src={item.img} alt={item.label} class=\\"object-cover w-8 h-8 rounded-lg\\" />\\n                                <span class=\\"text-black\\">{item.label}</span>\\n                            </div>\\n                        </svelte:fragment>\\n                    </Select>\\n                </div>\\n            \\n                <!-- Add New Course Button -->\\n                <button class=\\"flex items-center justify-center w-10 h-10 text-2xl font-bold text-white bg-black rounded-full shadow-md\\" style=\\"margin-left: 8px\\" >\\n                   +\\n                </button>\\n            </div>\\n\\n            <label for=\\"tee\\" class=\\"block mt-4 text-lg font-bold text-black\\">Tee</label>\\n\\n            <div class=\\"flex items-center w-full mt-2 text-black bg-gray-100\\">\\n                <div class=\\"flex-grow max-w-md\\">\\n                    <Select \\n                        id=\\"tee\\"\\n                        items={tees}\\n                        bind:value={selectedTee}\\n                        label=\\"label\\"\\n                        placeholder=\\"Select a Tee\\"\\n                        searchable\\n                        class=\\"p-2 text-black bg-white rounded-lg focus:bg-white focus:border-gray-400 focus:outline-none active:bg-white select-override\\"\\n                    />\\n                </div>\\n            </div>\\n\\n            <!-- Date Selection -->\\n            <div class=\\"mt-4\\">\\n                <label for=\\"date\\" class=\\"block mb-2 text-lg font-bold text-black\\">Date</label>\\n                <input type=\\"date\\" id=\\"date\\" name=\\"date\\" class=\\"w-full max-w-md p-2 text-black bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400\\" />\\n            </div>\\n\\n            <!--Opponent Selection-->\\n            <label for=\\"opponent\\" class=\\"block mt-4 text-lg font-bold text-black\\">Opponents</label>\\n\\n            <div class=\\"flex items-center w-full mt-2 text-black bg-gray-100\\">\\n                <div class=\\"flex-grow max-w-md\\">\\n                    <Select \\n                        id=\\"opponent\\"\\n                        items={opponents}\\n                        bind:value={selectedOpponent}\\n                        label=\\"name\\"\\n                        placeholder=\\"Select your Opponent(s)\\"\\n                        multiple={true}\\n                        searchable\\n                        on:change={(e) => handleSelectionChange(e.detail)}\\n                        class=\\"p-2 text-black bg-white rounded-lg focus:bg-white focus:border-gray-400 focus:outline-none active:bg-white select-override\\"\\n                    >\\n                        <svelte:fragment slot=\\"item\\" let:item > <!-- Custom rendering for items -->\\n                                <div class=\\"flex items-center justify-between w-full p-2\\">\\n                                    <span>{item.name}</span>\\n                                   <!--  {#if isSelected (item)}\\n                                        <FaIcon icon={faCheck} class=\\"text-green-500\\" />\\n                                    {/if} -->\\n                                </div>\\n                        </svelte:fragment>\\n                    </Select>\\n                </div>\\n            </div>\\n        </div>    \\n        <button class=\\"btn btn-new-game\\" on:click={() => goto(\`/games/mulligans/\${generateGameId()}\`)}>\\n            Create New Game\\n        </button>\\n    </div>\\n</Layout>\\n\\n<style>\\n    :global(.select-override .svelte-select__control) {\\n        background-color: white !important;\\n        color: black !important;\\n    }\\n    .btn {\\n        padding: 10px 10px;\\n        font-weight: bold;\\n        border-radius: 5px;\\n        cursor: pointer;\\n        width: 400px;\\n        margin: 1rem 0 1rem 1.5rem;\\n    }\\n\\n    .btn-new-game {\\n        background-color: #f6c200;\\n        color: #1C4932;\\n        border: none;\\n    }\\n\\n    .btn-new-game:hover {\\n        background-color: #e4c013; /* Darker yellow on hover */\\n        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2); /* More shadow on hover */\\n    }\\n\\n    .create-button:active {\\n        background-color: #d3a913; /* Even darker on click */\\n        transform: translateY(2px); /* Simulating a pressed state */\\n    }</style>"],"names":[],"mappings":"AA2IY,wCAA0C,CAC9C,gBAAgB,CAAE,KAAK,CAAC,UAAU,CAClC,KAAK,CAAE,KAAK,CAAC,UACjB,CACA,kBAAK,CACD,OAAO,CAAE,IAAI,CAAC,IAAI,CAClB,WAAW,CAAE,IAAI,CACjB,aAAa,CAAE,GAAG,CAClB,MAAM,CAAE,OAAO,CACf,KAAK,CAAE,KAAK,CACZ,MAAM,CAAE,IAAI,CAAC,CAAC,CAAC,IAAI,CAAC,MACxB,CAEA,2BAAc,CACV,gBAAgB,CAAE,OAAO,CACzB,KAAK,CAAE,OAAO,CACd,MAAM,CAAE,IACZ,CAEA,2BAAa,MAAO,CAChB,gBAAgB,CAAE,OAAO,CACzB,UAAU,CAAE,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,GAAG,CAC7C"}`
-};
 const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let tees = [
-    { value: "blue-tee", label: "Blue Tee" },
-    { value: "white_tee", label: "White Tee" },
-    { value: "black_tee", label: "Black Tee" },
-    { value: "red_tee", label: "Red Tee" }
-  ];
-  let courses = [
-    {
-      value: "royal_dornoch",
-      label: "Royal Dornoch",
-      img: "/golfCourse.png"
-    },
-    {
-      value: "swinley_forest",
-      label: "Swinley Forest",
-      img: "/golfCourse.png"
-    },
-    {
-      value: "trump_turnberry",
-      label: "Trump Turnberry",
-      img: "/golfCourse.png"
-    },
-    {
-      value: "royal_birkdale",
-      label: "Royal Birkdale Golf Club",
-      img: "/golfCourse.png"
-    },
-    {
-      value: "royal_liverpool",
-      label: "Royal Liverpool Golf Club",
-      img: "/golfCourse.png"
-    },
-    {
-      value: "royal_st_george",
-      label: "Royal St. Georges",
-      img: "/golfCourse.png"
-    },
-    {
-      value: "waterville",
-      label: "Waterville",
-      img: "/golfCourse.png"
-    }
-  ];
-  let opponents = [
-    {
-      name: "Zoe Duffy",
-      title: "Managing Director",
-      image: "/zoe.jpg"
-    },
-    {
-      name: "Kelly Howlett",
-      title: "Head of Operations",
-      image: "/kelly.jpeg"
-    },
-    {
-      name: "James Beadle",
-      title: "Development Manager",
-      image: "/james.jpg"
-    },
-    {
-      name: "Dfinity Designer",
-      title: "Head of Design",
-      image: "/dfd.jpg"
-    },
-    {
-      name: "Thilly Thana",
-      title: "Lead Developer",
-      image: "/thilly.jpg"
-    },
-    {
-      name: "George Robinson",
-      title: "Community Manager",
-      image: "/george.jpg"
-    },
-    {
-      name: "Josh Wray",
-      title: "Head of Promotion",
-      image: "/josh.jpg"
-    },
-    {
-      name: "Ashutosh Yadav",
-      title: "Media Production Manager",
-      image: "/ashutosh.jpg"
-    }
-  ];
-  let selectedOpponent = [];
-  let selectedCourse = null;
-  let selectedTee = null;
-  $$result.css.add(css$2);
-  let $$settled;
-  let $$rendered;
-  let previous_head = $$result.head;
-  do {
-    $$settled = true;
-    $$result.head = previous_head;
-    $$rendered = `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
-      default: () => {
-        return `<div class="flex flex-col w-full"><div class="w-full p-2 px-4 text-black" data-svelte-h="svelte-nxsc57"><h2 class="mt-2 mb-0 text-3xl font-black text-black md:text-5xl condensed">MULLIGANS</h2></div> <div class="w-full p-4 text-black bg-gray-100"><h3 class="mt-0 mb-2 text-3xl font-black text-black md:text-3xl condensed" data-svelte-h="svelte-57ai8l">GAME DETAILS</h3> <label for="course" class="block mt-4 text-lg font-bold text-black" data-svelte-h="svelte-nmz97x">Course</label>  <div class="flex items-center w-full mt-2 text-black bg-gray-100"><div class="flex-grow max-w-md">${validate_component(Select, "Select").$$render(
-          $$result,
-          {
-            id: "course",
-            items: courses,
-            label: "label",
-            placeholder: "Select a Course",
-            searchable: true,
-            class: "p-2 text-black bg-white rounded-lg focus:bg-white focus:border-gray-400 focus:outline-none active:bg-white select-override",
-            value: selectedCourse
-          },
-          {
-            value: ($$value) => {
-              selectedCourse = $$value;
-              $$settled = false;
-            }
-          },
-          {
-            item: ({ item }) => {
-              return `<div class="flex items-center w-12 h-12 p-2 space-x-3"><img${add_attribute("src", item.img, 0)}${add_attribute("alt", item.label, 0)} class="object-cover w-8 h-8 rounded-lg"> <span class="text-black">${escape(item.label)}</span></div>`;
-            }
-          }
-        )}</div>  <button class="flex items-center justify-center w-10 h-10 text-2xl font-bold text-white bg-black rounded-full shadow-md" style="margin-left: 8px" data-svelte-h="svelte-1wx7xmm">+</button></div> <label for="tee" class="block mt-4 text-lg font-bold text-black" data-svelte-h="svelte-xp2okv">Tee</label> <div class="flex items-center w-full mt-2 text-black bg-gray-100"><div class="flex-grow max-w-md">${validate_component(Select, "Select").$$render(
-          $$result,
-          {
-            id: "tee",
-            items: tees,
-            label: "label",
-            placeholder: "Select a Tee",
-            searchable: true,
-            class: "p-2 text-black bg-white rounded-lg focus:bg-white focus:border-gray-400 focus:outline-none active:bg-white select-override",
-            value: selectedTee
-          },
-          {
-            value: ($$value) => {
-              selectedTee = $$value;
-              $$settled = false;
-            }
-          },
-          {}
-        )}</div></div>  <div class="mt-4" data-svelte-h="svelte-bc75dv"><label for="date" class="block mb-2 text-lg font-bold text-black">Date</label> <input type="date" id="date" name="date" class="w-full max-w-md p-2 text-black bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"></div>  <label for="opponent" class="block mt-4 text-lg font-bold text-black" data-svelte-h="svelte-1up3vre">Opponents</label> <div class="flex items-center w-full mt-2 text-black bg-gray-100"><div class="flex-grow max-w-md">${validate_component(Select, "Select").$$render(
-          $$result,
-          {
-            id: "opponent",
-            items: opponents,
-            label: "name",
-            placeholder: "Select your Opponent(s)",
-            multiple: true,
-            searchable: true,
-            class: "p-2 text-black bg-white rounded-lg focus:bg-white focus:border-gray-400 focus:outline-none active:bg-white select-override",
-            value: selectedOpponent
-          },
-          {
-            value: ($$value) => {
-              selectedOpponent = $$value;
-              $$settled = false;
-            }
-          },
-          {
-            item: ({ item }) => {
-              return ` <div class="flex items-center justify-between w-full p-2"><span>${escape(item.name)}</span> </div>`;
-            }
-          }
-        )}</div></div></div> <button class="btn btn-new-game svelte-hf9p98" data-svelte-h="svelte-r7h540">Create New Game</button></div>`;
+  let $page, $$unsubscribe_page;
+  let $gameData, $$unsubscribe_gameData;
+  $$unsubscribe_page = subscribe(page, (value) => $page = value);
+  const gameData = writable({
+    id: BigInt(0),
+    gameType: { Mulligans: null },
+    scoreDetail: [],
+    status: { Unplayed: null },
+    courseId: BigInt(0),
+    predictions: [],
+    events: [],
+    courseSnapshot: {
+      courseId: BigInt(0),
+      courseVersion: 0,
+      teeGroup: {
+        added: BigInt(0),
+        holes: [],
+        name: "",
+        colour: "",
+        strokeIndex: 0
       }
-    })}`;
-  } while (!$$settled);
-  return $$rendered;
-});
-const css$1 = {
-  code: ".game-image.svelte-hzmiaf{width:100%;height:auto;border-radius:8px}.course-image.svelte-hzmiaf{width:80px;height:80px;-o-object-fit:cover;object-fit:cover;border-radius:8px}.btn.svelte-hzmiaf{padding:4px 16px;font-weight:bold;border-radius:5px;cursor:pointer;margin:1rem 0 1rem 1.5rem;text-align:center}.btn-new-game.svelte-hzmiaf{background-color:#f6c200;color:#1C4932;border:none;width:400px}.btn-new-game.svelte-hzmiaf:hover{background-color:#e4c013;box-shadow:0px 6px 8px rgba(0, 0, 0, 0.2)}.btn-use.svelte-hzmiaf{background-color:#1C4932;color:#F4C802;border:none;border-radius:12px;min-width:80px}.btn-hole.svelte-hzmiaf{padding:8px 16px;font-weight:bold;border-radius:8px;cursor:pointer;min-width:230px;text-align:center}.btn-next.svelte-hzmiaf{background-color:#F4C802;color:#1C4932}.btn-next.svelte-hzmiaf:hover{background-color:#e4b400}.btn-prev.svelte-hzmiaf{background-color:#1C4932;color:#F4C802}.btn-hole.svelte-hzmiaf:disabled{cursor:not-allowed}",
-  map: `{"version":3,"file":"+page.svelte","sources":["+page.svelte"],"sourcesContent":["<script lang=\\"ts\\">import { onMount } from \\"svelte\\";\\nimport Layout from \\"../../../Layout.svelte\\";\\nimport { goto } from \\"$app/navigation\\";\\nexport let params;\\nlet gameStatus = 'live';\\nlet winner = '';\\nlet playerHoleScores = [\\n    { hole: 1, par: 4, score: null },\\n    { hole: 2, par: 4, score: null },\\n];\\nlet players = [\\n    { name: \\"James\\", image: \\"/team/james.jpg\\", score: \\"1 UP\\", isWinning: true, mulligans: 1 },\\n    { name: \\"Josh\\", image: \\"/team/josh.jpg\\", score: \\"2 DOWN\\", isWinning: false, mulligans: 1 },\\n    { name: \\"George\\", image: \\"/team/george.jpg\\", score: \\"1 DOWN\\", isWinning: false, mulligans: 1 }\\n];\\nfunction submitGameDetails() {\\n    console.log(playerHoleScores);\\n    //TODO save to DTO\\n}\\nfunction generateGameId() {\\n    //TODO there is a getGameDTO with the game id inside it \\n    return Math.random().toString(36).substr(2, 9);\\n}\\nfunction handleNextHole() {\\n    //TODO get golf course info\\n}\\nfunction handlePreviousHole() {\\n    //TODO get golf course info\\n}\\n<\/script>\\n\\n<Layout>\\n    <div class=\\"w-full\\">\\n        <div class=\\"w-full p-2 px-4 text-black\\">\\n            <div class=\\"flex items-center justify-between\\">\\n                <h2 class=\\"mt-1 text-3xl font-black text-black md:text-5xl condensed\\">GAME DETAILS</h2>\\n                {#if gameStatus === 'live'}\\n                    <div class=\\"flex items-center\\">\\n                        <div class=\\"w-3 h-3 bg-green-500 rounded-full\\"></div>\\n                        <span class=\\"ml-2 mr-4 text-xl font-bold text-green-500\\">LIVE</span>\\n                    </div>\\n                {/if}\\n            </div>\\n        </div>\\n        <div class=\\"flex w-full p-4 text-black bg-gray-100 \\">\\n            <div class=\\"w-1/3 rounded-lg\\">\\n                <img src=\\"/hero.png\\" alt=\\"Mulligans\\" class=\\"game-image\\" />\\n            </div>\\n\\n            <div class=\\"flex flex-col items-start justify-center w-1/3 ml-8\\"style=\\"margin-top: 10px;\\" >\\n                <span class=\\"mb-0 text-sm font-medium text-gray-500 \\">GAMETYPE</span>\\n                <h1 class=\\"font-black text-7xl game-type condensed\\"style=\\"line-height: 1;\\">\\n                    MULLI-<br>GANS\\n                </h1>\\n                <!--TODO needs to be replaced with date of game-->\\n                <div class= \\"flex flex-col\\"style=\\"margin-top: 10px;\\">\\n                    <span class=\\"mb-0 text-sm font-medium text-gray-500\\"style=\\"margin-top: 10px;\\">DATE</span>\\n                    <h3 class =\\"mb-4 text-4xl font-bold text-center condensed game-date\\">October 9 2024</h3>\\n                </div>\\n                <!--TODO needs to be replaced with actual course-->\\n                <div class=\\"flex items-center justify-start course-details\\"style=\\"margin-top: 10px;\\" >\\n                    <img src=\\"/golfCourse.png\\" alt=\\"Course\\" class=\\"w-20 h-20 mr-4 rounded-lg course-image\\"/>\\n                    <div class= \\"flex flex-col\\">\\n                        <span class=\\"mb-0 text-sm font-medium text-gray-500\\">COURSE</span>\\n                        <div>\\n                            <p class=\\"text-3xl font-bold text-center condensed game-date\\">Course's Name</p>\\n                        </div>\\n                    </div>\\n                    \\n                </div>\\n            </div>\\n            <!--TODO needs to be replaced with game info-->\\n            <div class=\\"w-1/3\\">\\n                <h4 class=\\"mt-8 mb-0 text-4xl font-bold condensed\\"style=\\"margin-top: -3px;\\">PLAYER SCORES</h4>\\n                <div class=\\"mt-2 bg-white rounded-lg player-details\\">\\n                    {#if gameStatus === 'completed'}\\n                        <div class=\\"flex flex-col mb-3\\">\\n                            <div class=\\"flex px-4 mt-6 mb-2 space-x-2\\">\\n                                <img src=\\"/team/james.jpg\\" alt=\\"Player 1\\" class=\\"w-10 h-10 rounded-full\\">\\n                                <img src=\\"/team/josh.jpg\\" alt=\\"Player 2\\" class=\\"w-10 h-10 rounded-full\\">\\n                                <img src=\\"/team/george.jpg\\" alt=\\"Player 3\\" class=\\"w-10 h-10 rounded-full\\">\\n                            </div>\\n                            <hr class=\\"my-2 mb-5 border-gray-300 border-t-1\\"style=\\"border-color: #F3F3F3;\\"/>\\n                            <div class =\\"flex items-center justify-between bg-white\\">\\n                                <div class=\\"flex flex-col px-4\\">\\n                                    <div class=\\"font-medium text-gray-500 text-xxs\\">PLAYER</div>\\n                                    <p class=\\"mb-2 text-lg font-bold condensed\\">James (18)</p>\\n                                </div>\\n\\n                                <div class=\\"flex flex-col\\">\\n                                    <div class=\\"font-medium text-gray-500 text-xxs\\">GAME PLACE</div>\\n                                    <p class=\\"mb-2 text-lg font-bold condensed\\">WINNER</p>\\n                                </div>\\n\\n                                <div class=\\"flex flex-col px-4\\">\\n                                    <div class=\\"font-medium text-gray-500 text-xxs\\">PLAYER</div>\\n                                    <p class=\\"mb-2 text-lg font-bold condensed\\">78 (+6)</p>\\n                                </div>\\n                            </div>\\n                            <hr class=\\"mt-2 border-gray-300 border-t-1\\" style=\\"border-color: #F3F3F3;\\" />\\n                        </div>\\n                        <div class=\\"mt-2\\"style=\\"margin-top: -15px;\\">\\n                            <table class=\\"flex flex-col w-full border-collapse table-auto \\">\\n                                <thread>\\n                                    <tr style=\\"border-color: #F3F3F3; margin-top: -10px; border-top-width: 1px;\\">\\n                                        <th class=\\"p-4 pr-10 text-lg font-bold text-center border-b condensed\\"style=\\"border-color: #F3F3F3;\\">Hole</th>\\n                                        <th class=\\"p-6 pr-10 text-lg font-bold text-center border-b condensed\\"style=\\"border-color: #F3F3F3;\\">Par</th>\\n                                        <th class=\\"p-6 pr-6 text-lg font-bold text-center border-b condensed\\"style=\\"border-color: #F3F3F3;\\">Score</th>\\n                                        <th class=\\"p-6 text-lg font-bold text-center border-b condensed\\"style=\\"border-color: #F3F3F3;\\">+/- Par</th>\\n                                    </tr>\\n                                </thread>\\n                                <tbody>\\n                                    <!--TODO needs to be replaced with game info-->\\n                                    <tr>\\n                                        <td class=\\"p-4 pl-6 text-lg font-bold text-center border-b condensed\\">1</td>\\n                                        <td class=\\"p-4 pl-16 text-lg text-center border-b\\">4</td>\\n                                        <td class=\\"p-4 pl-16 text-lg text-center border-b\\">4</td>\\n                                        <td class=\\"p-4 pl-16 text-lg text-center border-b\\">E</td>\\n                                    </tr>\\n                                </tbody>\\n                            </table>\\n                            <button class=\\"btn btn-new-game\\" on:click={() => goto(\`/games/mulligans/\${generateGameId()}\`)}>\\n                                New Game\\n                            </button>\\n                        </div>\\n                    {:else if gameStatus === 'live'}\\n                        <div class=\\"flex items-center px-4 mt-4 mb-2 space-x-4 bg-white rounded-md player-details\\">\\n                            {#each players as player, index}\\n                                <!-- Player Image -->\\n                                 <div class =\\"flex flex-col items-center p-4 bg-white rounded-lg\\"\\n                                    style=\\"opacity: {player.isWinning ? '1' : '0.4'};\\"> \\n                                    <img src={player.image} alt={player.name} class=\\"w-12 h-12 rounded-full\\">\\n                                    <p class=\\"mt-1 text-xl font-bold text-center text-black condensed\\"\\n                                        style=\\"color: {player.isWinning ? '#000' : '#888'};\\">{player.score}\\n                                    </p>\\n                                 </div>\\n                                <!-- Add vertical divider between players, but not after the last one -->\\n                                {#if index < players.length - 1}\\n                                    <div class=\\"h-20 mt-2 border-l-2\\" style=\\"border-color: #F3F3F3;\\"></div>\\n                                {/if}\\n                            {/each}\\n                        </div>\\n                    {/if}\\n                </div>\\n                {#if gameStatus === 'live'}\\n                    <h4 class=\\"mt-4 mb-0 text-4xl font-bold condensed\\"style=\\"margin-top: 8px;\\">SCORE CARD</h4>\\n                    <div class=\\"p-4 mt-4 bg-white rounded-lg player-details\\"style=\\"margin-top: 10px;\\">\\n                        <div class=\\"grid grid-cols-4 gap-4 text-center\\">\\n                            <div class=\\"relative flex items-center justify-center\\">\\n                                <div>\\n                                    <span class=\\"mb-0 text-sm font-medium text-gray-500\\"style=\\"margin-top: 10px;\\">HOLE</span>\\n                                    <p class=\\"text-4xl font-bold condensed\\">07</p>\\n                                </div>\\n                                <div class=\\"absolute top-0 bottom-0 right-0 w-px\\" style=\\"border-left: 1px solid #F3F3F3;\\"></div>\\n                            </div>\\n                            <div>\\n                                <span class=\\"mb-0 text-sm font-medium text-gray-500\\"style=\\"margin-top: 10px;\\">PAR</span>\\n                                <p class=\\"text-2xl font-bold condensed\\">4</p>\\n                            </div>\\n                            <div>\\n                                <span class=\\"mb-0 text-sm font-medium text-gray-500\\"style=\\"margin-top: 10px;\\">YARDS</span>\\n                                <p class=\\"text-2xl font-bold condensed\\">455</p>\\n                            </div>\\n                            <div>\\n                                <span class=\\"mb-0 text-sm font-medium text-gray-500\\"style=\\"margin-top: 10px;\\">S.I</span>\\n                                <p class=\\"text-2xl font-bold condensed\\">18</p>\\n                            </div>\\n                        </div>\\n                        <hr class=\\"my-4 border-gray-300 border-t-1\\" style=\\"border-color: #F3F3F3;\\" />\\n                        <div class=\\"mt-4\\">\\n                            <div class=\\"grid grid-cols-2 gap-4 mb-2\\">\\n                                <div class=\\"text-xl font-bold condensed\\">Player</div>\\n                                <div class=\\"text-xl font-bold text-right condensed\\">Available Mulligans</div>\\n                            </div>\\n                            {#each players as player (player.name)}\\n                                <div class=\\"grid items-center grid-cols-2 gap-4 mt-2\\">\\n                                    <div class=\\"flex items-center space-x-4\\">\\n                                        <img src={player.image} alt={player.name} class=\\"w-10 h-10 rounded-full\\">\\n                                        <p class=\\"text-lg font-bold condensed\\">{player.name}</p>\\n                                    </div>\\n                                    <div class=\\"flex items-center justify-end space-x-4\\">\\n                                        <p class=\\"text-lg text-left condensed\\" style=\\"margin-right:30px\\">{player.mulligans}</p>\\n                                        <button class=\\"btn btn-use\\">USE</button>\\n                                    </div>\\n                                </div>\\n                            {/each}\\n                        </div>\\n                        <hr class=\\"mt-6 border-gray-300 border-t-1\\" style=\\"border-color: #F3F3F3;\\" />\\n                        <div class=\\"mt-4\\">\\n                            <div class=\\"grid grid-cols-2 gap-4\\">\\n                                <div class=\\"text-lg font-bold\\">Winner</div>\\n                                <div class=\\"text-xs font-bold text-right text-gray-500 uppercase\\">Select Winner of the Hole</div>\\n                            </div>\\n                            <div class=\\"flex mt-4 space-x-4\\">\\n                                {#each players as player}\\n                                    <button type=\\"button\\" \\n                                        class=\\"flex items-center p-4 space-x-2 border rounded-lg cursor-pointer hover:bg-gray-100\\"\\n                                        on:click={() => winner = player.name}\\n                                        class:bg-gray-100={winner === player.name}>\\n                                    <img src={player.image} alt={player.name} class=\\"w-10 h-10 rounded-full\\">\\n                                    <p class=\\"font-bold\\">{player.name}</p>\\n                                    </button>\\n                                {/each}\\n                            </div>\\n                        </div>\\n                    </div>\\n                    <div class=\\"flex justify-center p-2 mt-2 space-x-2 bg-white rounded-md\\" style=\\"margin-top: 5px;\\">\\n                        <button class=\\"btn-hole btn-prev\\">PREVIOUS HOLE</button>\\n                        <button class=\\"btn-hole btn-next\\">NEXT HOLE</button>\\n                    </div>\\n                {/if}\\n            </div>\\n        </div>\\n    </div>\\n</Layout>\\n<style>\\n    .game-image {\\n        width: 100%;\\n        height: auto;\\n        border-radius:8px;\\n    }\\n    .course-image {\\n        width: 80px;\\n        height: 80px;\\n        -o-object-fit: cover;\\n           object-fit: cover;\\n        border-radius: 8px;\\n    }\\n    .btn {\\n        padding: 4px 16px;\\n        font-weight: bold;\\n        border-radius: 5px;\\n        cursor: pointer;\\n        margin: 1rem 0 1rem 1.5rem;\\n        text-align: center;\\n    }\\n    .btn-new-game {\\n        background-color: #f6c200;\\n        color: #1C4932;\\n        border: none;\\n        width: 400px;\\n    }\\n    .btn-new-game:hover {\\n        background-color: #e4c013; /* Darker yellow on hover */\\n        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2); /* More shadow on hover */\\n    }\\n    .btn-use{\\n        background-color: #1C4932;\\n        color: #F4C802;\\n        border: none;\\n        border-radius: 12px;\\n        min-width: 80px;\\n    }\\n    .btn-hole{\\n        padding: 8px 16px;\\n        font-weight: bold;\\n        border-radius: 8px;\\n        cursor: pointer;\\n        min-width: 230px;\\n        text-align: center;\\n    }\\n    .btn-next {\\n        background-color: #F4C802;\\n        color: #1C4932;\\n    }\\n    .btn-next:hover {\\n        background-color: #e4b400;\\n    }\\n    .btn-prev {\\n        background-color: #1C4932;\\n        color: #F4C802; \\n    }\\n    .btn-hole:disabled {\\n        cursor: not-allowed; \\n    }</style>"],"names":[],"mappings":"AAwNI,yBAAY,CACR,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI,CACZ,cAAc,GAClB,CACA,2BAAc,CACV,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI,CACZ,aAAa,CAAE,KAAK,CACjB,UAAU,CAAE,KAAK,CACpB,aAAa,CAAE,GACnB,CACA,kBAAK,CACD,OAAO,CAAE,GAAG,CAAC,IAAI,CACjB,WAAW,CAAE,IAAI,CACjB,aAAa,CAAE,GAAG,CAClB,MAAM,CAAE,OAAO,CACf,MAAM,CAAE,IAAI,CAAC,CAAC,CAAC,IAAI,CAAC,MAAM,CAC1B,UAAU,CAAE,MAChB,CACA,2BAAc,CACV,gBAAgB,CAAE,OAAO,CACzB,KAAK,CAAE,OAAO,CACd,MAAM,CAAE,IAAI,CACZ,KAAK,CAAE,KACX,CACA,2BAAa,MAAO,CAChB,gBAAgB,CAAE,OAAO,CACzB,UAAU,CAAE,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,GAAG,CAC7C,CACA,sBAAQ,CACJ,gBAAgB,CAAE,OAAO,CACzB,KAAK,CAAE,OAAO,CACd,MAAM,CAAE,IAAI,CACZ,aAAa,CAAE,IAAI,CACnB,SAAS,CAAE,IACf,CACA,uBAAS,CACL,OAAO,CAAE,GAAG,CAAC,IAAI,CACjB,WAAW,CAAE,IAAI,CACjB,aAAa,CAAE,GAAG,CAClB,MAAM,CAAE,OAAO,CACf,SAAS,CAAE,KAAK,CAChB,UAAU,CAAE,MAChB,CACA,uBAAU,CACN,gBAAgB,CAAE,OAAO,CACzB,KAAK,CAAE,OACX,CACA,uBAAS,MAAO,CACZ,gBAAgB,CAAE,OACtB,CACA,uBAAU,CACN,gBAAgB,CAAE,OAAO,CACzB,KAAK,CAAE,OACX,CACA,uBAAS,SAAU,CACf,MAAM,CAAE,WACZ"}`
-};
-const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { params } = $$props;
-  let winner = "";
-  let players = [
-    {
-      name: "James",
-      image: "/team/james.jpg",
-      score: "1 UP",
-      isWinning: true,
-      mulligans: 1
     },
-    {
-      name: "Josh",
-      image: "/team/josh.jpg",
-      score: "2 DOWN",
-      isWinning: false,
-      mulligans: 1
-    },
-    {
-      name: "George",
-      image: "/team/george.jpg",
-      score: "1 DOWN",
-      isWinning: false,
-      mulligans: 1
-    }
-  ];
-  if ($$props.params === void 0 && $$bindings.params && params !== void 0) $$bindings.params(params);
-  $$result.css.add(css$1);
+    teeOffTime: BigInt(0),
+    playerIds: [],
+    invites: [],
+    winner: ""
+  });
+  $$unsubscribe_gameData = subscribe(gameData, (value) => $gameData = value);
+  $page.url.searchParams.get("id");
+  $$unsubscribe_page();
+  $$unsubscribe_gameData();
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="w-full"><div class="w-full p-2 px-4 text-black"><div class="flex items-center justify-between"><h2 class="mt-1 text-3xl font-black text-black md:text-5xl condensed" data-svelte-h="svelte-pdf09q">GAME DETAILS</h2> ${`<div class="flex items-center" data-svelte-h="svelte-166v31"><div class="w-3 h-3 bg-green-500 rounded-full"></div> <span class="ml-2 mr-4 text-xl font-bold text-green-500">LIVE</span></div>`}</div></div> <div class="flex w-full p-4 text-black bg-gray-100 "><div class="w-1/3 rounded-lg" data-svelte-h="svelte-1yb2qtv"><img src="/hero.png" alt="Mulligans" class="game-image svelte-hzmiaf"></div> <div class="flex flex-col items-start justify-center w-1/3 ml-8" style="margin-top: 10px;" data-svelte-h="svelte-1yuisyc"><span class="mb-0 text-sm font-medium text-gray-500 ">GAMETYPE</span> <h1 class="font-black text-7xl game-type condensed" style="line-height: 1;">MULLI-<br>GANS</h1>  <div class="flex flex-col" style="margin-top: 10px;"><span class="mb-0 text-sm font-medium text-gray-500" style="margin-top: 10px;">DATE</span> <h3 class="mb-4 text-4xl font-bold text-center condensed game-date">October 9 2024</h3></div>  <div class="flex items-center justify-start course-details" style="margin-top: 10px;"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg course-image svelte-hzmiaf"> <div class="flex flex-col"><span class="mb-0 text-sm font-medium text-gray-500">COURSE</span> <div><p class="text-3xl font-bold text-center condensed game-date">Course&#39;s Name</p></div></div></div></div>  <div class="w-1/3"><h4 class="mt-8 mb-0 text-4xl font-bold condensed" style="margin-top: -3px;" data-svelte-h="svelte-1ftl9wo">PLAYER SCORES</h4> <div class="mt-2 bg-white rounded-lg player-details">${`${`<div class="flex items-center px-4 mt-4 mb-2 space-x-4 bg-white rounded-md player-details">${each(players, (player, index) => {
-        return ` <div class="flex flex-col items-center p-4 bg-white rounded-lg" style="${"opacity: " + escape(player.isWinning ? "1" : "0.4", true) + ";"}"><img${add_attribute("src", player.image, 0)}${add_attribute("alt", player.name, 0)} class="w-12 h-12 rounded-full"> <p class="mt-1 text-xl font-bold text-center text-black condensed" style="${"color: " + escape(player.isWinning ? "#000" : "#888", true) + ";"}">${escape(player.score)} </p></div>  ${index < players.length - 1 ? `<div class="h-20 mt-2 border-l-2" style="border-color: #F3F3F3;"></div>` : ``}`;
-      })}</div>`}`}</div> ${`<h4 class="mt-4 mb-0 text-4xl font-bold condensed" style="margin-top: 8px;" data-svelte-h="svelte-pepiri">SCORE CARD</h4> <div class="p-4 mt-4 bg-white rounded-lg player-details" style="margin-top: 10px;"><div class="grid grid-cols-4 gap-4 text-center" data-svelte-h="svelte-f9zkys"><div class="relative flex items-center justify-center"><div><span class="mb-0 text-sm font-medium text-gray-500" style="margin-top: 10px;">HOLE</span> <p class="text-4xl font-bold condensed">07</p></div> <div class="absolute top-0 bottom-0 right-0 w-px" style="border-left: 1px solid #F3F3F3;"></div></div> <div><span class="mb-0 text-sm font-medium text-gray-500" style="margin-top: 10px;">PAR</span> <p class="text-2xl font-bold condensed">4</p></div> <div><span class="mb-0 text-sm font-medium text-gray-500" style="margin-top: 10px;">YARDS</span> <p class="text-2xl font-bold condensed">455</p></div> <div><span class="mb-0 text-sm font-medium text-gray-500" style="margin-top: 10px;">S.I</span> <p class="text-2xl font-bold condensed">18</p></div></div> <hr class="my-4 border-gray-300 border-t-1" style="border-color: #F3F3F3;"> <div class="mt-4"><div class="grid grid-cols-2 gap-4 mb-2" data-svelte-h="svelte-1bn36s5"><div class="text-xl font-bold condensed">Player</div> <div class="text-xl font-bold text-right condensed">Available Mulligans</div></div> ${each(players, (player) => {
-        return `<div class="grid items-center grid-cols-2 gap-4 mt-2"><div class="flex items-center space-x-4"><img${add_attribute("src", player.image, 0)}${add_attribute("alt", player.name, 0)} class="w-10 h-10 rounded-full"> <p class="text-lg font-bold condensed">${escape(player.name)}</p></div> <div class="flex items-center justify-end space-x-4"><p class="text-lg text-left condensed" style="margin-right:30px">${escape(player.mulligans)}</p> <button class="btn btn-use svelte-hzmiaf" data-svelte-h="svelte-fbn0lu">USE</button></div> </div>`;
-      })}</div> <hr class="mt-6 border-gray-300 border-t-1" style="border-color: #F3F3F3;"> <div class="mt-4"><div class="grid grid-cols-2 gap-4" data-svelte-h="svelte-1btf3ow"><div class="text-lg font-bold">Winner</div> <div class="text-xs font-bold text-right text-gray-500 uppercase">Select Winner of the Hole</div></div> <div class="flex mt-4 space-x-4">${each(players, (player) => {
-        return `<button type="button" class="${[
-          "flex items-center p-4 space-x-2 border rounded-lg cursor-pointer hover:bg-gray-100",
-          winner === player.name ? "bg-gray-100" : ""
-        ].join(" ").trim()}"><img${add_attribute("src", player.image, 0)}${add_attribute("alt", player.name, 0)} class="w-10 h-10 rounded-full"> <p class="font-bold">${escape(player.name)}</p> </button>`;
-      })}</div></div></div> <div class="flex justify-center p-2 mt-2 space-x-2 bg-white rounded-md" style="margin-top: 5px;" data-svelte-h="svelte-1o4iqjp"><button class="btn-hole btn-prev svelte-hzmiaf">PREVIOUS HOLE</button> <button class="btn-hole btn-next svelte-hzmiaf">NEXT HOLE</button></div>`}</div></div></div>`;
+      return `<div class="w-full"><div class="w-full p-2 px-4 text-black"><div class="flex items-center justify-between"><h2 class="px-5 mt-1 text-3xl font-black text-black md:text-5xl condensed" data-svelte-h="svelte-nepsyy">GAME DETAILS</h2> ${getGameStatus($gameData?.status) === "Active" ? `<div class="flex items-center" data-svelte-h="svelte-166v31"><div class="w-3 h-3 bg-green-500 rounded-full"></div> <span class="ml-2 mr-4 text-xl font-bold text-green-500">LIVE</span></div>` : ``} ${getGameStatus($gameData?.status) === "Unplayed" ? `<div class="flex items-center" data-svelte-h="svelte-ac3xua"><div class="w-3 h-3 bg-blue-500 rounded-full"></div> <span class="ml-2 mr-4 text-xl font-bold text-blue-500">PREDICT</span></div>` : ``}</div></div> <div class="w-full"><div class="w-1/3 rounded-lg"><img${add_attribute("src", getGameTypeImage($gameData?.gameType), 0)}${add_attribute("alt", Object.keys($gameData?.gameType || {})[0], 0)} class="game-image"></div> ${validate_component(Title_panel, "TitlePanel").$$render(
+        $$result,
+        {
+          gameType: Object.keys($gameData?.gameType || {})[0],
+          teeOffTime: $gameData.teeOffTime,
+          courseId: $gameData.courseId
+        },
+        {},
+        {}
+      )} ${validate_component(Game_info_panel, "GameInfoPanel").$$render(
+        $$result,
+        {
+          gameType: Object.keys($gameData?.gameType || {})[0],
+          gameStatus: getGameStatus($gameData?.status),
+          playerIds: Object.keys($gameData.playerIds),
+          events: Object.keys($gameData.events),
+          winner: Object.keys($gameData.winner)
+        },
+        {},
+        {}
+      )}</div></div>`;
     }
   })}`;
+});
+const gameConfigs = {
+  mulligans: {
+    title: "Mulligans",
+    opponentConfig: {
+      multiple: true
+    }
+  },
+  prophet: {
+    title: "Prophet",
+    opponentConfig: {
+      multiple: false
+    }
+  },
+  bands: {
+    title: "Bands",
+    opponentConfig: {
+      multiple: true,
+      maxPlayers: 4
+    }
+  },
+  "build-it": {
+    title: "Build It",
+    opponentConfig: {
+      playerLabels: ["Player A", "Player B", "Player C"]
+    }
+  },
+  "next-up": {
+    title: "Next Up",
+    opponentConfig: {
+      multiple: true,
+      maxPlayers: 2
+    }
+  }
+};
+const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $page, $$unsubscribe_page;
+  $$unsubscribe_page = subscribe(page, (value) => $page = value);
+  const gameType = $page.params.game;
+  const config = gameConfigs[gameType];
+  const defaultOpponentConfig = { multiple: false };
+  const safeConfig = {
+    ...defaultOpponentConfig,
+    ...config.opponentConfig
+  };
+  $$unsubscribe_page();
+  return `${validate_component(Game_form, "GameForm").$$render(
+    $$result,
+    {
+      gameTitle: config.title,
+      opponentConfig: safeConfig
+    },
+    {},
+    {}
+  )}`;
+});
+const Logo_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  const fill = "";
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0) $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0) $$bindings.fill(fill);
+  return `<svg${add_attribute("class", className, 0)} width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="60" r="60" fill="white"></circle><circle cx="60" cy="60" r="46" fill="#101111"></circle><path fill-rule="evenodd" clip-rule="evenodd" d="M102.483 66.689C102.824 64.5093 103 62.2753 103 60.0001C103 36.2518 83.7484 17 60.0001 17C36.2518 17 17 36.2518 17 60.0001C17 62.2753 17.1767 64.5093 17.5171 66.689H102.483Z" fill="#F4C802"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M96.2825 66.689C96.7531 64.3647 97 61.9608 97 59.5C97 39.3416 80.4345 23 60 23C39.5655 23 23 39.3416 23 59.5C23 61.9608 23.2469 64.3647 23.7175 66.689H96.2825Z" fill="#F4C802"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M89.2515 66.689C89.7413 64.5381 90 62.2992 90 60C90 43.4315 76.5685 30 60 30C43.4315 30 30 43.4315 30 60C30 62.2992 30.2587 64.5381 30.7485 66.689H89.2515Z" fill="#F4C802"></path><mask id="mask0_311_2114" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="17" y="17" width="86" height="86"><circle cx="60" cy="60" r="43" fill="#101111"></circle></mask><g mask="url(#mask0_311_2114)"><rect x="-15" y="60" width="149" height="66" fill="#70B354"></rect><path d="M57.3429 102.056C57.3784 102.607 57.8227 103.055 58.375 103.055H62.625C63.1773 103.055 63.6216 102.607 63.6571 102.056C64.0262 96.3243 67.5474 91.3577 72.6771 88.5507C72.8744 88.4427 73 88.237 73 88.0121C73 87.5548 72.5104 87.2608 72.0973 87.4569C68.9063 88.9722 64.8784 89.8764 60.5 89.8764C56.1216 89.8764 52.0937 88.9722 48.9027 87.4569C48.4896 87.2608 48 87.5548 48 88.0121C48 88.237 48.1256 88.4427 48.3229 88.5507C53.4526 91.3577 56.9738 96.3243 57.3429 102.056Z" fill="#101111"></path><path d="M57.375 90.8765C57.375 90.3242 57.8227 89.8765 58.375 89.8765H62.625C63.1773 89.8765 63.625 90.3242 63.625 90.8765V119C63.625 119.552 63.1773 120 62.625 120H58.375C57.8227 120 57.375 119.552 57.375 119V90.8765Z" fill="#101111"></path></g><circle cx="60" cy="60" r="20" fill="white"></circle><circle cx="60" cy="60" r="26" fill="#101111"></circle><circle cx="60" cy="60" r="22" fill="white"></circle></svg>`;
 });
 const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
