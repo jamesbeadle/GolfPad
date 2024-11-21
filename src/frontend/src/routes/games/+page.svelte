@@ -1,25 +1,25 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import Layout from "../Layout.svelte";
-    import { golferGameSummary, getGolferGameSummary } from "$lib/stores/golfer-summaries-store";
+    import { golferSummariesStore } from "$lib/stores/golfer-summaries-store";
     import ShowSelectGameModal from "$lib/components/games/show-select-game-modal.svelte";
     import GameForm from "$lib/components/games/game-form.svelte";
-
+    import type { PaginationFilters, GolferGameSummariesDTO } from "../../../../declarations/backend/backend.did";
     let showNewGameModal = false;
 
-    let pageFilters = {
-        limit: BigInt(0),
-        offset: BigInt(0),
-    };
-
     let selectedGame: { game: string, config: any } | null = null;
+    let gameSummaries: GolferGameSummariesDTO | undefined;
 
-    // Fetch golfer game summaries on mount
     onMount(async () => {
-        try {
-            const result = await getGolferGameSummary(pageFilters);
-            console.log(result);  // Log the result after it's fetched
-        } catch (err) {
+        try{
+            const filters: PaginationFilters = {
+                limit: BigInt(10),
+                offset: BigInt(0),
+            };
+            gameSummaries = await golferSummariesStore.getGolferGameSummaries(filters);
+            console.log(gameSummaries);
+        }
+        catch(err){
             console.error("Failed to fetch golfer game summaries:", err);
         }
     });
@@ -55,13 +55,14 @@
                 <div class="w-1/6"></div>
             </div>
 
-            {#if $golferGameSummary && $golferGameSummary.totalEntries === BigInt(0)}
+            <!-- {#if $golferGameSummary && $golferGameSummary.totalEntries === BigInt(0)}
                 <p>No game history found. Start your first game!</p>
-            {/if}
+            {/if} -->
 
             <!-- Game List -->
-            {#if $golferGameSummary && $golferGameSummary.entries.length > 0}
-                {#each $golferGameSummary.entries as game}
+
+            {#if $golferSummariesStore && $golferSummariesStore.entries.length > 0}
+                {#each $golferSummariesStore.entries as game}
                     <div class="w-full mt-5 text-left border-t border-gray-200 bg-gray-50">
                         <div class="flex items-center p-4 border-b border-gray-200">
                             <div class="flex items-center rounded w-15 h-15">

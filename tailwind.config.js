@@ -4,25 +4,18 @@ export default {
   theme: {
     screens: {
       xs: "480px",
-      // => @media (min-width: 640px) { ... }
 
       sm: "640px",
-      // => @media (min-width: 640px) { ... }
 
       md: "768px",
-      // => @media (min-width: 768px) { ... }
 
       lg: "1024px",
-      // => @media (min-width: 1024px) { ... }
 
       xl: "1280px",
-      // => @media (min-width: 1280px) { ... }
 
       "2xl": "1536px",
-      // => @media (min-width: 1536px) { ... }
 
       "3xl": "1920px",
-      // => @media (min-width: 1920px) { ... }
     },
     fontSize: {
       xxs: ".625rem",
@@ -41,20 +34,20 @@ export default {
     },
     extend: {
       colors: {
-        GolfPadYellow: "#F4C802",
-        GolfPadForest: "#1C4932",
-        GolfPadGreen: "#2D7B66",
-        GolfPadBlue: "#2D5D7A",
-        GolfPadLightBlue: "#D9EDFA",
-        GolfPadDarkGreen: "#243B35",
-        GolfPadLightGreen: "#D9FAF1",
-        GolfPadDarkRed: "#7A3F2D",
+        BrandYellow: "#F4C802",
+        BrandForest: "#1C4932",
+        BrandGreen: "#2D7B66",
+        BrandBlue: "#2D5D7A",
+        BrandLightBlue: "#D9EDFA",
+        BrandDarkGreen: "#243B35",
+        BrandLightGreen: "#D9FAF1",
+        BrandDarkRed: "#7A3F2D",
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],
       },
       fontSize: {
-        body: ["16px", "22.4px"], // font-size and line-height
+        body: ["16px", "22.4px"],
       },
       fontWeight: {
         light: "300",

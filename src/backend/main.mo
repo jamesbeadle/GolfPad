@@ -162,6 +162,154 @@ actor Self {
           gameInvites = [];
       }
   ];
+
+  private stable var games: [DTOs.GameDTO] = [
+    {
+        id = 1;
+        gameType = #Mulligans;
+        scoreDetail = null;  // Assume no score details yet
+        status = #Unplayed; // Set all games to 'Unplayed'
+        courseId = 1; // Pebble Beach Golf Links
+        predictions = [];
+        events = [];
+        courseSnapshot = {
+            courseId = 1;
+            courseVersion = 1;
+            name = "Pebble Beach Golf Links";
+            teeGroup = {
+                name = "Blue";
+                colour = "#0000FF";
+                added = Time.now();
+                strokeIndex = 1;
+                holes = [
+                    {
+                        name = "Hole 1";
+                        number = 1;
+                        strokeIndex = 1;
+                        tees = [
+                            {
+                                par = 4;
+                                name = "Blue";
+                                yardage = 400;
+                                colour = "#0000FF";
+                                strokeIndex = 1
+                            }
+                        ];
+                        images = [("canister-id", 1)]
+                    }
+                ]
+            };
+        };
+        teeOffTime = Time.now() + 100000000; // Future tee-off time
+        playerIds = ["James-Beadle", "Zoe-Duffy"];
+        invites = ["Kelly-Howlett"];
+        winner = ""; // No winner yet
+    },
+    {
+        id = 2;
+        gameType = #BuildIt;
+        scoreDetail = null;
+        status = #Unplayed; // Set to 'Unplayed'
+        courseId = 2; // St. Andrews Links
+        predictions = [];
+        events = [];
+        courseSnapshot = {
+            courseId = 2;
+            courseVersion = 1;
+            name = "St. Andrews Links";
+            teeGroup = {
+                name = "Gold";
+                colour = "#FFD700";
+                added = Time.now();
+                strokeIndex = 1;
+                holes = [
+                    {
+                        name = "Hole 1";
+                        number = 1;
+                        strokeIndex = 1;
+                        tees = [
+                            {
+                                par = 4;
+                                name = "Gold";
+                                yardage = 420;
+                                colour = "#FFD700";
+                                strokeIndex = 1
+                            }
+                        ];
+                        images = [("canister-id", 2)]
+                    }
+                ]
+            };
+        };
+        teeOffTime = Time.now() + 200000000; // Future tee-off time
+        playerIds = ["Kelly-Howlett", "Thilly-Thana"];
+        invites = ["James-Beadle"];
+        winner = "";
+    },
+    {
+        id = 3;
+        gameType = #Bands;
+        scoreDetail = null;
+        status = #Unplayed; // Set to 'Unplayed'
+        courseId = 3; // Augusta National Golf Club
+        predictions = [];
+        events = [];
+        courseSnapshot = {
+            courseId = 3;
+            courseVersion = 1;
+            name = "Augusta National Golf Club";
+            teeGroup = {
+                name = "Green";
+                colour = "#008000";
+                added = Time.now();
+                strokeIndex = 1;
+                holes = [
+                    {
+                        name = "Hole 1";
+                        number = 1;
+                        strokeIndex = 1;
+                        tees = [
+                            {
+                                par = 4;
+                                name = "Green";
+                                yardage = 450;
+                                colour = "#008000";
+                                strokeIndex = 1
+                            }
+                        ];
+                        images = [("canister-id", 3)]
+                    }
+                ]
+            };
+        };
+        teeOffTime = Time.now() + 300000000; // Future tee-off time
+        playerIds = ["Thilly-Thana"];
+        invites = ["Kelly-Howlett"];
+        winner = "";
+    }
+];
+
+  private stable var golferGameSummaries: DTOs.GolferGameSummariesDTO = {
+      entries = [
+          {
+              gameType = #Mulligans;
+              players = ["James-Beadle", "Zoe-Duffy"];
+              status = #Unplayed; // Game has not been played yet
+              date = 1735197120000000000; // Future date for tee-off
+          },
+          {
+              gameType = #BuildIt;
+              players = ["Kelly-Howlett", "Thilly-Thana"];
+              status = #Unplayed; // Game has not been played yet
+              date = 1765197120000000000; // Future date for tee-off
+          }
+      ];
+      totalEntries = 2;
+      limit = 10;
+      offset = 0;
+  };
+
+
   
   //Golfer Functions
 
@@ -303,9 +451,14 @@ actor Self {
   //Game
     
   public shared ({ caller }) func getMyGames(dto: DTOs.PaginationFilters) : async Result.Result<DTOs.GolferGameSummariesDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
+    /* assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return await golferManager.getGolferGameSummaries(principalId, dto);
+    return await golferManager.getGolferGameSummaries(principalId, dto); */
+    return #ok(golferGameSummaries);
+  };
+
+  public shared ({ caller }) func getDummyGames(dto: DTOs.PaginationFilters) : async Result.Result<[DTOs.GameDTO], T.Error> {
+    return #ok(games);
   };
     
   public shared ({ caller }) func getGame(dto: DTOs.GetGameDTO) : async Result.Result<DTOs.GameDTO, T.Error> {
@@ -314,7 +467,7 @@ actor Self {
   };
 
   public shared ({ caller }) func createGame(dto: DTOs.CreateGameDTO) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
+    //assert not Principal.isAnonymous(caller);
     assert dto.teeOffTime > Time.now();
     
     let principalId = Principal.toText(caller);

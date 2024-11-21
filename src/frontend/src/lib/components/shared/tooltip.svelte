@@ -16,7 +16,7 @@
   <slot />
   {#if tooltipVisible}
     <button
-      class="absolute z-10 hidden p-2 px-4 text-white bg-opacity-75 rounded-md shadow-lg bg-GolfPadGreen md:flex"
+      class="absolute z-10 hidden p-2 px-4 text-white bg-opacity-75 rounded-md shadow-lg bg-BrandGreen md:flex"
       style="transform: translate(20%, -50%); top: 50%; left: 50%;"
       on:click={toggleTooltip}
     >

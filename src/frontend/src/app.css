@@ -20,7 +20,7 @@
 .modal .content {
   left: 0 !important;
   right: 0 !important;
-  background-color: theme("colors.GolfPadYellow") !important;
+  background-color: theme("colors.BrandYellow") !important;
   border-radius: 8px;
   border: 1px solid #2e323a !important;
 }
@@ -65,7 +65,6 @@ input[type="file"] {
   z-index: 1000;
 }
 
-/* global.css */
 :root {
   --dialog-width: 90% !important;
   --dialog-max-width: 600px !important;
@@ -80,38 +79,25 @@ input {
   color: white;
 }
 
-/* Extra small devices (portrait phones, less than 480px) */
 @media (min-width: 480px) {
 }
 
-/* Small devices (landscape phones, 640px and up) */
 @media (min-width: 640px) {
-  /* Your CSS here */
 }
 
-/* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
-  /* Your CSS here */
 }
 
-/* Large devices (desktops, 1024px and up) */
 @media (min-width: 1024px) {
-  /* Your CSS here */
 }
 
-/* Extra large devices (large desktops, 1280px and up) */
 @media (min-width: 1280px) {
-  /* Your CSS here */
 }
 
-/* 2XL devices (larger desktops, 1536px and up) */
 @media (min-width: 1536px) {
-  /* Your CSS here */
 }
 
-/* 3XL devices (extra large desktops, 1920px and up) */
 @media (min-width: 1920px) {
-  /* Your CSS here */
 }
 
 .condensed {
@@ -124,12 +110,12 @@ input {
 
 .horizontal-divider {
   min-height: 2px;
-  @apply self-stretch flex-shrink-0 h-px bg-GolfPadGreen;
+  @apply self-stretch flex-shrink-0 h-px bg-BrandGreen;
 }
 
 .horizontal-divider-dark {
   min-height: 2px;
-  @apply self-stretch flex-shrink-0 h-px bg-GolfPadDarkGreen;
+  @apply self-stretch flex-shrink-0 h-px bg-BrandDarkGreen;
 }
 
 .btn {
@@ -137,21 +123,21 @@ input {
 }
 
 .btn-view {
-  @apply px-4 py-2 border rounded-md bg-GolfPadDarkGreen border-GolfPadDarkGreen;
+  @apply px-4 py-2 border rounded-md bg-BrandDarkGreen;
 }
 
 .btn-add {
-  @apply px-4 py-2 border rounded-md bg-GolfPadDarkGreen border-GolfPadDarkGreen;
+  @apply px-4 py-2 border rounded-md bg-BrandDarkGreen;
 }
 
 .btn-close {
-  @apply flex justify-center items-center w-10 h-10 text-2xl font-bold text-white bg-black rounded-full shadow-md mr-5 hover:bg-gray-800;
+  @apply flex items-center justify-center w-10 h-10 mr-5 text-2xl font-bold text-white bg-black rounded-full shadow-md hover:bg-gray-800;
 }
 
 .btn-select {
-  @apply bg-GolfPadForest text-GolfPadYellow px-5 py-2.5 rounded cursor-pointer text-base mr-5;
+  @apply bg-BrandForest text-BrandYellow px-5 py-2.5 rounded cursor-pointer text-base mr-5;
 }
 
 .btn-new-game {
-  @apply font-bold rounded cursor-pointer mx-0 my-4 md:ml-6 bg-GolfPadYellow text-GolfPadForest border-none hover:bg-[#e4c013] hover:shadow-lg active:bg-[#d3a913] active:translate-y-0.5;
+  @apply font-bold rounded cursor-pointer mx-0 my-4 md:ml-6 bg-BrandYellow text-BrandForest border-none hover:bg-[#e4c013] hover:shadow-lg active:bg-[#d3a913] active:translate-y-0.5;
 }

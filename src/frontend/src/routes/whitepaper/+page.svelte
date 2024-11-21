@@ -49,19 +49,19 @@
 </script>
 
 <Layout>
-  <div class="p-2 px-4 text-black h-full w-full">
-    <h2 class="text-3xl md:text-5xl font-black text-black mb-4 mt-3 condensed">
+  <div class="w-full h-full p-2 px-4 text-black">
+    <h2 class="mt-3 mb-4 text-3xl font-black text-black md:text-5xl condensed">
       GOLFPAD WHITEPAPER
     </h2>
-    <div class="w-full flex flex-col md:flex-row">
+    <div class="flex flex-col w-full md:flex-row">
       <img 
-        src="hero.png" 
+        src="mulligans.png" 
         alt="hero" 
         class="w-full h-48 md:w-1/4 md:h-auto object-cover object-[50%_var(--crop-position-y)] rounded-lg" 
         style="--crop-position-y: {cropPositionY};"
       />
 
-      <div class="w-full md:w-3/4 px-2 mt-4 md:mt-0">
+      <div class="w-full px-2 mt-4 md:w-3/4 md:mt-0">
         {#each tabs as { name, component }, index}
           {#if activeTab === name.toLowerCase()}
             <div class="flex flex-col">
@@ -69,17 +69,17 @@
                 <svelte:component this={component} />
               </div>
 
-              <div class="flex flex-col text-xs mt-8">
+              <div class="flex flex-col mt-8 text-xs">
                 <div class="flex flex-row space-x-2">
                   <button
-                    class="w-1/2 py-2 px-4 rounded bg-GolfPadYellow text-black disabled:bg-GolfPadDarkGreen disabled:text-white"
+                    class="w-1/2 px-4 py-2 text-black rounded bg-BrandYellow disabled:bg-BrandDarkGreen disabled:text-white"
                     on:click={prevTab}
                     disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
                   >
                     Previous Section
                   </button>
                   <button
-                    class="w-1/2 py-2 px-4 rounded bg-GolfPadYellow text-black disabled:bg-GolfPadDarkGreen disabled:text-white"
+                    class="w-1/2 px-4 py-2 text-black rounded bg-BrandYellow disabled:bg-BrandDarkGreen disabled:text-white"
                     on:click={nextTab}
                     disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
                   >
@@ -89,8 +89,10 @@
                 <div class="flex flex-row justify-center my-4">
                   {#each tabs as _, index}
                     <button 
-                      class="pip" 
-                      class:is-active={isActiveTab(index)} 
+                    class={`
+                      w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full mx-0.5 cursor-pointer border-none
+                      ${isActiveTab(index) ? 'bg-BrandBlue' : 'bg-gray-500 hover:bg-gray-600'}
+                    `} 
                       on:click={() => setActiveTab(index)}
                       aria-label={`Go to ${tabs[index].name} section`}
                     ></button>
@@ -104,26 +106,3 @@
     </div>
   </div>
 </Layout>
-
-<style>
-  .pip {
-    width: 10px;
-    height: 10px;
-    background-color: gray;
-    border-radius: 50%;
-    margin: 0 2px;
-    cursor: pointer;
-    border: none;
-  }
-  
-  .pip.is-active {
-    @apply bg-GolfPadBlue;
-  }
-
-  @media (min-width: 640px) {
-    .pip {
-      width: 12px;
-      height: 12px;
-    }
-  }
-</style>

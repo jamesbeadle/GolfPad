@@ -9,7 +9,7 @@ function createCourseStore() {
   const { subscribe, set } = writable<GolfCourseDTO[]>([]);
 
   async function getCourse(courseId: number): Promise<GolfCourseDTO[]> {
-    return new CourseServices().getCourse(courseId);
+    return await new CourseServices().getCourse(courseId);
   }
   async function getCourses(
     filters: PaginationFilters,

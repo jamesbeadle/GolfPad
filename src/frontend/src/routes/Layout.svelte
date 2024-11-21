@@ -100,12 +100,12 @@
 
   <NavOverlay {expanded} {selectedRoute} {toggleNav}/>
 
-  <div class="{isHomepage ? 'bg-GolfPadYellow  items-center justify-center relative' : 'bg-white'} flex-1 flex">
+  <div class="{isHomepage ? 'bg-BrandYellow  items-center justify-center relative' : 'bg-white'} flex-1 flex">
     <slot />
   </div>
 
   {#if !isHomepage}
-  <div class="bg-GolfPadYellow flex-none relative h-[50px] mt-auto">
+  <div class="bg-BrandYellow flex-none relative h-[50px] mt-auto">
     <div class="absolute z-10 bottom-4 left-4">
       <a href="/whitepaper" class="text-sm font-medium text-black">WHITEPAPER |</a> 
       <a href="/team" class="text-sm font-medium text-black">TEAM |</a> 

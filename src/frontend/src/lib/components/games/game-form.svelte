@@ -6,7 +6,8 @@
     import { gameStore } from "$lib/stores/game-store";
     import { courseStore } from "$lib/stores/course-store";
     import { playerStore } from "$lib/stores/player-store";
-    import type { CreateGameDTO, GolfCourseDTO, GameType, PaginationFilters, GolferDTO } from "../../../../../declarations/backend/backend.did";
+    import type { CreateGameDTO, GolfCourseDTO, GameType, PaginationFilters, GolferDTO, TeeGroup } from "../../../../../declarations/backend/backend.did";
+    import { formatDateStringtoBigInt } from "$lib/utils/helpers";
     
     export let gameTitle: string;
     export let opponentConfig: {
@@ -15,24 +16,23 @@
         playerLabels?: string[]; 
     };
 
-    //TODO: set up and get tees from backend
-    let tees: {name: string, value: any}[] = [
-        { name: 'Red', value: 'red' },
-        { name: 'Blue', value: 'blue' },
-        { name: 'White', value: 'white' },
-        { name: 'Black', value: 'black' }
-    ]; 
     let courses:GolfCourseDTO[] = []; 
     let opponents: GolferDTO[] = [];
+    let tees: {name: string, value: string}[] = [];
     let dropdownItems: {name: string, value: any}[] = [];
 
     let selectedOpponent: {name: string, value: any}[] = [];
-    let selectedCourse: {name: string, value: bigint} | null = null;
+    let selectedCourse: GolfCourseDTO | null = null;
+    let selectedCourseObject: {name: string, value: any} | null = null;
+    let selectedCourseId: { value: string }| null = null;
     let selectedTee: {name: string, value: string} | null = null;
 
     let currentGameId = 1;
     let teeOffDate: string = "";
     let teeOffTime: string = "";
+    let teeOffDateTime: string = "";
+
+    $: teeOffDateTime = teeOffDate + "T" + teeOffTime;
     
     onMount(async () => {
         try{
@@ -54,14 +54,27 @@
             console.error("Error Fetching Course", error);
         }
     });
+
+    $: if (selectedCourseId?.value) {
+        selectedCourse = courses.find((course) => course.courseId.toString() === selectedCourseId!.value) || null;
+        console.log("Selected Course:", selectedCourseId);
+        if (selectedCourse) {
+            tees = selectedCourse.tees.map((tee: TeeGroup) => ({
+                name: tee.name,
+                value: tee.name,
+            }));
+            console.log("Tees:", tees);
+            selectedTee = null;
+        }
+    }
+
     function generateGameId() {
         //TODO Get highest game id and add 1 (currently no backend canister function to get highest game id)
         currentGameId += 1;
         return currentGameId;
     }
-
     async function handleCreateGame() {
-        if (!selectedCourse?.value || !selectedTee || selectedOpponent.length === 0) {
+        if (!selectedCourse || !selectedTee || selectedOpponent.length === 0) {
         console.error("Please fill out all fields.");
         return;
     }
@@ -78,19 +91,15 @@
             return;
         }
         
-        const courseId = BigInt(selectedCourse.value);
-        if (!courseId) {
-            console.error("Selected course does not have a valid courseId.");
-            return;
-        }
+        const teeOffTime = formatDateStringtoBigInt(teeOffDateTime);
         
         const dto: CreateGameDTO = {
-            createdById: "TODO",
-            courseType: {Official: null},
-            courseId: courseId,
+            createdById: "Kelly-Howlett",
+            courseType: {Custom: null},
+            courseId: BigInt(selectedCourse.courseId),
             gameType: gameType,
             inviteIds: Array.isArray(selectedOpponent) ? selectedOpponent.map(o => o.value) : [],
-            teeOffTime: BigInt(0),
+            teeOffTime: teeOffTime,
             teeGroup: selectedTee.value,
         };
         console.log("DTO:", dto);
@@ -126,33 +135,36 @@
                     <Dropdown 
                         items={courses.map(course => ({
                             name: course.name,
-                            value: course.courseId
+                            value: course.courseId.toString()
                         }))}
-                        bindSelected={selectedCourse}
+                        bindSelected={selectedCourseObject}
                         placeholder="Select Course"
                         multiple={false}
                         searchEnabled={false}
                         on:select={(e) => {
-                            selectedCourse = e.detail.value;
+                            selectedCourseObject = e.detail; 
+                            selectedCourseId = e.detail.value;
                         }}
                     />
                 </div> 
             </div>
-            <label for="tee" class="block mt-4 text-lg font-bold text-black">Select Tee Group</label>
-            <div class="flex items-center w-full mt-2 text-black bg-gray-100">
-                <div class="flex-grow max-w-md">
-                    <Dropdown
-                        items={tees}
-                        bindSelected={selectedTee}
-                        placeholder="Select Tee Group"
-                        searchEnabled={false}
-                        multiple={false}
-                        on:select={(e) => {
-                            selectedTee = e.detail.value;
-                        }}
-                    />
-                </div> 
-            </div>
+            {#if selectedCourseId}
+                <label for="tee" class="block mt-4 text-lg font-bold text-black">Select Tee Group</label>
+                <div class="flex items-center w-full mt-2 text-black bg-gray-100">
+                    <div class="flex-grow max-w-md">
+                        <Dropdown
+                            items={tees}
+                            bindSelected={selectedTee}
+                            placeholder="Select Tee Group"
+                            searchEnabled={false}
+                            multiple={false}
+                            on:select={(e) => {
+                                selectedTee = e.detail.value;
+                            }}
+                        />
+                    </div> 
+                </div>
+            {/if}
             <label for="date" class="block mt-4 text-lg font-bold text-black">Select Tee Off Date</label>
             <div class="flex items-center w-full mt-2">
                 <div class="flex-grow max-w-md">

@@ -66,7 +66,6 @@
     <link rel="preload" href="/golfball.png" as="image" />
     <link rel="preload" href="/golfball_mobile.png" as="image" />
     <link rel="preload" href="/boat.png" as="image" />
-    <link rel="preload" href="/hero.png" as="image" />
     <link rel="preload" href="/panel-bg.png" as="image" />
     <link rel="preload" href="/roadmap.png" as="image" />
     <link rel="preload" href="/token.png" as="image" />
@@ -118,13 +117,17 @@
 
     <meta content="#2CE3A6" name="theme-color" />
     
-		<link href="/_app/immutable/assets/index.mcahxQmT.css" rel="stylesheet">
-		<link rel="modulepreload" href="/_app/immutable/entry/start.BF27-r4R.js">
-		<link rel="modulepreload" href="/_app/immutable/chunks/index.xxT0eudR.js">
-		<link rel="modulepreload" href="/_app/immutable/chunks/vendor.ttZttkfp.js">
-		<link rel="modulepreload" href="/_app/immutable/entry/app.BI9BjIEJ.js">
+		<link href="/_app/immutable/assets/index.D3YEpmre.css" rel="stylesheet">
+		<link rel="modulepreload" href="/_app/immutable/entry/start.BC-Pb6Uz.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/index.BwSqExf6.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/vendor.CAYtD-Ba.js">
+		<link rel="modulepreload" href="/_app/immutable/entry/app.DLpY2KKd.js">
 
     <style>
+      :root {
+        --GolfPadYellow: #f4c802;
+      }
+
       html,
       body {
         height: 100%;
@@ -166,7 +169,7 @@
         color: white !important;
         height: 100vh;
         margin: 0;
-        background-color: #f4c802;
+        background-color: var(--GolfPadYellow);
       }
 
       #app-spinner {
@@ -290,15 +293,15 @@
     <div style="display: contents">
 			<script>
 				{
-					__sveltekit_9yygvm = {
+					__sveltekit_90cvmk = {
 						base: ""
 					};
 
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("/_app/immutable/entry/start.BF27-r4R.js"),
-						import("/_app/immutable/entry/app.BI9BjIEJ.js")
+						import("/_app/immutable/entry/start.BC-Pb6Uz.js"),
+						import("/_app/immutable/entry/app.DLpY2KKd.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element);
 					});

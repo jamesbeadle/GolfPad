@@ -15,7 +15,7 @@
   
   {#if visible}
     <div class="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000] p-4">
-      <div class="bg-white p-8 sm:p-5 rounded-lg max-w-[1100px] w-full h-auto max-h-[90vh] overflow-y-auto shadow-lg relative">
+      <div class="bg-white p-8 sm:p-5 rounded-lg max-w-[90%] w-full h-auto max-h-[90vh] overflow-y-auto shadow-lg relative">
         <div class="flex items-center justify-between mb-5">
           <h2 class="ml-5 text-4xl font-bold sm:text-5xl condensed">NEW GAME</h2>
           <button 
@@ -54,7 +54,7 @@
 
         <div class="hidden mt-5 text-right lg:block">
           <button 
-            class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 md:px-5 md:py-2.5 rounded text-sm md:text-base"
+            class="bg-BrandForest text-BrandYellow px-4 py-2 md:px-5 md:py-2.5 rounded text-sm md:text-base"
             on:click={closeModal}
           >
             SELECT

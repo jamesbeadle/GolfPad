@@ -36,15 +36,14 @@ export class GameServices {
   }
 
   async createGame(dto: CreateGameDTO): Promise<{ ok?: bigint; err?: string }> {
-    try {
-      let result = await this.actor.createGame(dto);
-      if (isError(result)) {
-        console.error("Error Creating Game1", result);
-      }
-      return { ok: result.ok };
-    } catch (error) {
-      console.error("Error Creating Game (Catch)", error);
-      throw error;
+    const identityActor = await ActorFactory.createActor(
+      idlFactory,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.createGame(dto);
+    if (isError(result)) {
+      throw new Error("Error Creating Game");
     }
+    return { ok: result.ok };
   }
 }

@@ -31,6 +31,13 @@ export function formatUnixDateToSmallReadable(unixNano: number) {
   return new Intl.DateTimeFormat("en-UK", options).format(date);
 }
 
+export function formatDateStringtoBigInt(dateString: string): bigint {
+  const date = new Date(dateString);
+  const timestampMilliseconds = date.getTime();
+  let nanoseconds = BigInt(timestampMilliseconds) * BigInt(1000000);
+  return nanoseconds;
+}
+
 export function getCountdownTime(unixNano: number) {
   const targetDate = new Date(unixNano / 1000000);
   const now = new Date();
@@ -338,12 +345,9 @@ export function isProfessionValid(profession: string): boolean {
 }
 
 export function getFileExtensionFromFile(file: File): string {
-  // Use the name property of the File object to get the filename
   const filename = file.name;
 
-  // Extract the extension
   const lastIndex = filename.lastIndexOf(".");
 
-  // Return the extension, ensuring it doesn't return -1 for files without an extension
   return lastIndex !== -1 ? filename.substring(lastIndex + 1) : "";
 }
