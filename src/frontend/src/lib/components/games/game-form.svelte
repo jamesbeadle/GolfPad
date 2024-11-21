@@ -98,7 +98,7 @@
             courseType: {Custom: null},
             courseId: BigInt(selectedCourse.courseId),
             gameType: gameType,
-            inviteIds: Array.isArray(selectedOpponent) ? selectedOpponent.map(o => o.value) : [],
+            inviteIds: ["James-Beadle"],
             teeOffTime: teeOffTime,
             teeGroup: selectedTee.value,
         };
