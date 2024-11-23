@@ -4,8 +4,10 @@ import type {
   GolfCourseDTO,
   PaginationFilters,
   CoursesDTO,
+  CreateGolfCourseDTO,
 } from "../../../../declarations/backend/backend.did";
 import { ActorFactory } from "$lib/utils/actor-factory";
+import { authStore } from "$lib/stores/auth-store";
 
 export class CourseServices {
   private actor: any;
@@ -27,5 +29,16 @@ export class CourseServices {
     const result = await this.actor.listCourses(filters);
     if (isError(result)) throw new Error("Failed to get courses");
     return result.ok;
+  }
+
+  async createCourse(dto: CreateGolfCourseDTO): Promise<void> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.createCourse(dto);
+    if (isError(result)) {
+      throw new Error("Error Creating Course");
+    }
   }
 }

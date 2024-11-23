@@ -6,6 +6,7 @@ import type {
   CreateGameDTO,
 } from "../../../../declarations/backend/backend.did";
 import { ActorFactory } from "$lib/utils/actor-factory";
+import { authStore } from "$lib/stores/auth-store";
 
 export class GameServices {
   private actor: any;
@@ -36,8 +37,8 @@ export class GameServices {
   }
 
   async createGame(dto: CreateGameDTO): Promise<{ ok?: bigint; err?: string }> {
-    const identityActor = await ActorFactory.createActor(
-      idlFactory,
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
       process.env.BACKEND_CANISTER_ID ?? "",
     );
     const result: any = await identityActor.createGame(dto);

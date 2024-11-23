@@ -14,6 +14,8 @@ import Environment "../utilities/Environment";
 import Cycles "mo:base/ExperimentalCycles";
 import Option "mo:base/Option";
 
+import Debug "mo:base/Debug";
+
 module {
   public class GameManager() {
 
@@ -30,7 +32,7 @@ module {
 
       switch(dto.gameType){
         case (#Mulligans){
-          assert totalPlayers == 1;
+          assert totalPlayers == 2;
         };
         case (#Bands){
           assert totalPlayers >= 1 and totalPlayers <= 4;
@@ -42,7 +44,7 @@ module {
           return #err(#NotFound);
         } 
       };
-
+      Debug.print("Past Switch");
       var game_canister = actor (activeCanisterId) : actor {
         createGame : (dto: DTOs.CreateGameDTO, courseSnapshot: DTOs.GolfCourseSnaphotDTO) -> async Result.Result<T.GameId, T.Error>;
         getLatestId : () -> async T.GameId;
@@ -72,7 +74,7 @@ module {
           };
         }
       };
-
+      Debug.print("Going to game canister");
       return await game_canister.createGame(dto, courseSnapshot);
     };
 

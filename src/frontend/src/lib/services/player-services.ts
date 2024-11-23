@@ -1,6 +1,6 @@
 import { isError } from "$lib/utils/helpers";
 import { idlFactory } from "../../../../declarations/backend";
-import type { GolferDTO } from "../../../../declarations/backend/backend.did";
+import type { GolferDTO, CreateGolferDTO } from "../../../../declarations/backend/backend.did";
 import { ActorFactory } from "$lib/utils/actor-factory";
 
 export class PlayerServices {
@@ -16,6 +16,12 @@ export class PlayerServices {
   async getPlayer(playerId: number): Promise<GolferDTO[]> {
     const result = await this.actor.getPlayer(playerId);
     if (isError(result)) throw new Error("Failed to get player");
+    return result.ok;
+  }
+
+  async createPlayer(player: CreateGolferDTO): Promise<GolferDTO[]> {
+    const result = await this.actor.createGolfer(player);
+    if (isError(result)) throw new Error("Failed to create player");
     return result.ok;
   }
 

@@ -3459,7 +3459,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "90cvmk"
+  version_hash: "14iz7gx"
 };
 async function get_hooks() {
   return {};
@@ -3998,8 +3998,8 @@ const idlFactory = ({ IDL }) => {
     )
   });
 };
-var define_process_env_default$3 = { BACKEND_CANISTER_ID: "bkyz2-fmaaa-aaaaa-qaaaq-cai", FRONTEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", DFX_NETWORK: "local" };
-const canisterId = define_process_env_default$3.CANISTER_ID_BACKEND;
+var define_process_env_default$2 = { __CANDID_UI_CANISTER_ID: "br5f7-7uaaa-aaaaa-qaaca-cai", BACKEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", FRONTEND_CANISTER_ID: "be2us-64aaa-aaaaa-qaabq-cai", DFX_NETWORK: "local" };
+const canisterId = define_process_env_default$2.CANISTER_ID_BACKEND;
 const createActor = (canisterId2, options2 = {}) => {
   const agent = options2.agent || new HttpAgent({ ...options2.agentOptions });
   if (options2.agent && options2.agentOptions) {
@@ -4022,11 +4022,10 @@ const createActor = (canisterId2, options2 = {}) => {
   });
 };
 canisterId ? createActor(canisterId) : void 0;
-var define_process_env_default$2 = { BACKEND_CANISTER_ID: "bkyz2-fmaaa-aaaaa-qaaaq-cai", FRONTEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", DFX_NETWORK: "local" };
 class ActorFactory {
   static createActor(idlFactory2, canisterId2 = "", identity = null, options2 = null) {
     const hostOptions = {
-      host: `http://127.0.0.1:4943/?canisterId=qhbym-qaaaa-aaaaa-aaafq-cai`,
+      host: "http://localhost:8080",
       identity
     };
     if (!options2) {
@@ -4055,7 +4054,7 @@ class ActorFactory {
   }
   static getAgent(canisterId2 = "", identity = null, options2 = null) {
     const hostOptions = {
-      host: `http://127.0.0.1:4943/?canisterId=b77ix-eeaaa-aaaaa-qaada-cai`,
+      host: "http://localhost:8080",
       identity
     };
     if (!options2) {
@@ -4083,9 +4082,8 @@ class ActorFactory {
     });
   }
   static getGovernanceAgent(identity = null, options2 = null) {
-    let canisterId2 = define_process_env_default$2.CANISTER_ID_SNS_GOVERNANCE;
     const hostOptions = {
-      host: `http://127.0.0.1:4943/?canisterId=${canisterId2}`,
+      host: "http://127.0.0.1:8080",
       identity
     };
     if (!options2) {
@@ -4108,7 +4106,7 @@ function getFileExtensionFromFile(file) {
   const lastIndex = filename.lastIndexOf(".");
   return lastIndex !== -1 ? filename.substring(lastIndex + 1) : "";
 }
-var define_process_env_default$1 = { BACKEND_CANISTER_ID: "bkyz2-fmaaa-aaaaa-qaaaq-cai", FRONTEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", DFX_NETWORK: "local" };
+var define_process_env_default$1 = { __CANDID_UI_CANISTER_ID: "br5f7-7uaaa-aaaaa-qaaca-cai", BACKEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", FRONTEND_CANISTER_ID: "be2us-64aaa-aaaaa-qaabq-cai", DFX_NETWORK: "local" };
 function createUserStore() {
   const { subscribe: subscribe2, set } = writable(null);
   async function sync() {
@@ -4527,7 +4525,7 @@ const Page$6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     }
   })}`;
 });
-var define_process_env_default = { BACKEND_CANISTER_ID: "bkyz2-fmaaa-aaaaa-qaaaq-cai", FRONTEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", DFX_NETWORK: "local" };
+var define_process_env_default = { __CANDID_UI_CANISTER_ID: "br5f7-7uaaa-aaaaa-qaaca-cai", BACKEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", FRONTEND_CANISTER_ID: "be2us-64aaa-aaaaa-qaabq-cai", DFX_NETWORK: "local" };
 class GolferSummariesServices {
   actor;
   constructor() {
@@ -4621,7 +4619,7 @@ const Page$5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$unsubscribe_golferSummariesStore();
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="w-full"><div class="w-full h-full p-2 px-4 text-black"><div class="flex items-center justify-between mb-4"><h2 class="px-2 my-3 text-3xl font-black text-black md:text-5xl condensed" data-svelte-h="svelte-11gfxk7">MY GAMES</h2> <button class="mr-4 btn btn-new-game" data-svelte-h="svelte-68zs4g">New Game</button> ${``}</div> <div class="flex items-center w-full p-4 text-xl font-bold text-left bg-gray-50 condensed" data-svelte-h="svelte-1e1ky6m"><div class="w-2/6">Game</div> <div class="w-2/6">Players</div> <div class="w-1/6">Status</div> <div class="w-1/6"></div></div>   ${$golferSummariesStore && $golferSummariesStore.entries.length > 0 ? `${each($golferSummariesStore.entries, (game) => {
+      return `<div class="w-full"><div class="w-full h-full p-2 px-4 text-black"><div class="flex items-center justify-between mb-4"><h2 class="px-2 my-3 text-3xl font-black text-black md:text-5xl condensed" data-svelte-h="svelte-11gfxk7">MY GAMES</h2> <button class="mr-4 btn btn-new-game" data-svelte-h="svelte-68zs4g">New Game</button> ${``}</div> <div class="flex items-center w-full p-4 text-xl font-bold text-left bg-gray-50 condensed" data-svelte-h="svelte-1e1ky6m"><div class="w-2/6">Game</div> <div class="w-2/6">Players</div> <div class="w-1/6">Status</div> <div class="w-1/6"></div></div> ${``}  ${$golferSummariesStore && $golferSummariesStore.entries.length > 0 ? `${each($golferSummariesStore.entries, (game) => {
         return `<div class="w-full mt-5 text-left border-t border-gray-200 bg-gray-50"><div class="flex items-center p-4 border-b border-gray-200"><div class="flex items-center rounded w-15 h-15" data-svelte-h="svelte-1hxxdi8"></div> <div class="ml-4"><h3 class="font-bold">${escape(game.gameType)}</h3> <p class="text-sm">${escape(new Date(Number(game.date) * 1e3).toLocaleDateString())}</p> </div></div> <div class="flex ml-auto bg-gray-50">${each(game.players, (player) => {
           return `<div class="relative group"><div class="absolute left-0 z-50 hidden group-hover:block top-12"><p class="font-bold">${escape(player)}</p> <button class="px-2.5 py-1.5 bg-blue-500 text-white rounded" data-svelte-h="svelte-1ayp4ij">View Player
                                         </button></div> </div>`;

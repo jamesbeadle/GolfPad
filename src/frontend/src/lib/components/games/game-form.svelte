@@ -95,7 +95,7 @@
         
         const dto: CreateGameDTO = {
             createdById: "Kelly-Howlett",
-            courseType: {Custom: null},
+            courseType: {Official: null},
             courseId: BigInt(selectedCourse.courseId),
             gameType: gameType,
             inviteIds: ["James-Beadle"],

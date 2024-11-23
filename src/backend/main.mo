@@ -472,20 +472,20 @@ actor Self {
     
     let principalId = Principal.toText(caller);
     
-    switch(dto.courseType){
+    /* switch(dto.courseType){
       case (#Custom){
         assert await golferManager.customCourseExists(principalId, dto.courseId);
       };
       case (#Official){
         assert courseManager.courseExists(dto.courseId);
       };
-    };
+    }; */
 
-    assert await golferManager.hasFriends(principalId, dto.inviteIds);
+    //assert await golferManager.hasFriends(principalId, dto.inviteIds);
 
     var golfCourse: ?DTOs.GolfCourseDTO = null;
 
-    switch(dto.courseType){
+    /* switch(dto.courseType){
       case (#Custom){
         let result = await golferManager.getGolfCourse(principalId, dto.courseId);
         switch(result){
@@ -508,13 +508,15 @@ actor Self {
           }
         }
       }
-    };
+    }; */
 
-    switch(golfCourse){
+    /* switch(golfCourse){
       case (?foundCourse){
         let teeGroup = Array.find<T.TeeGroup>(foundCourse.tees, func(teeGroup: T.TeeGroup){
           teeGroup.name == dto.teeGroup;
         });
+
+        
 
         switch(teeGroup){
           case (?foundTeeGroup){
@@ -542,6 +544,28 @@ actor Self {
       };
       case (null){
         return #err(#NotFound);
+      }
+    }; */
+
+    let result = await gameManager.createGame(dto, {
+              id = dto.courseId;
+              courseVersion = 1;
+              name = "Augusta National Golf Club";
+              teeGroup = {
+                name = dto.teeGroup;
+                colour = "#008000";
+                added = Time.now();
+                strokeIndex = 1;
+                holes = [];
+              };
+            });
+
+            switch(result){
+              case (#ok gameId){
+                return await golferManager.addGame(principalId, gameId, dto.inviteIds);
+              };
+              case (#err _){
+        return #err(#CreateGameError);
       }
     };
   };

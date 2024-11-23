@@ -55,9 +55,9 @@
                 <div class="w-1/6"></div>
             </div>
 
-            <!-- {#if $golferGameSummary && $golferGameSummary.totalEntries === BigInt(0)}
+            {#if gameSummaries && gameSummaries.totalEntries === BigInt(0)}
                 <p>No game history found. Start your first game!</p>
-            {/if} -->
+            {/if}
 
             <!-- Game List -->
 

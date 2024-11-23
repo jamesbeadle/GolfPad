@@ -3,6 +3,7 @@ import { CourseServices } from "$lib/services/course-services";
 import type {
   GolfCourseDTO,
   PaginationFilters,
+  CreateGolfCourseDTO,
 } from "../../../../declarations/backend/backend.did";
 
 function createCourseStore() {
@@ -18,11 +19,16 @@ function createCourseStore() {
     return courses.courses;
   }
 
+  async function createCourse(createGolfCourseDTO: CreateGolfCourseDTO): Promise<void> {
+    return await new CourseServices().createCourse(createGolfCourseDTO);
+  }
+
   return {
     subscribe,
     setCourse: (course: GolfCourseDTO[]) => set(course),
     getCourse,
     getCourses,
+    createCourse,
   };
 }
 export const courseStore = createCourseStore();

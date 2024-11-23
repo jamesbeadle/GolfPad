@@ -42,6 +42,9 @@ export default {
         BrandDarkGreen: "#243B35",
         BrandLightGreen: "#D9FAF1",
         BrandDarkRed: "#7A3F2D",
+        BrandDarkGray: "#8C8C8C",
+        BrandLightGray: "#F3F3F3",
+        BrandDivider: "#DDDDDD",
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],
