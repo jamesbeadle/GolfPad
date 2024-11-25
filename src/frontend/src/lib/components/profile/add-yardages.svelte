@@ -55,7 +55,7 @@
         <div class="p-6">
           <div class="flex flex-col gap-4">
             <div>
-              <label for="yardageSetName" class="block mb-2 text-sm font-bold text-black">NAME</label>
+              <label for="yardageSetName" class="block mb-2 text-sm text-black">NAME</label>
               <input
                 id="yardageSetName"
                 type="text"
