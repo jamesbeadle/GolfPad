@@ -10,6 +10,7 @@ import GolferManager "managers/golfer-manager";
 import GolfCourseManager "managers/golf-course-manager";
 import GameManager "managers/game-manager";
 import Environment "utilities/Environment";
+import Debug "mo:base/Debug";
 
 actor Self {
 
@@ -316,6 +317,7 @@ actor Self {
   public shared ({ caller }) func createGolfer(dto: DTOs.CreateGolferDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
+    Debug.print("Principal ID: " # principalId);
     return await golferManager.createGolfer(principalId, dto);
   };
 
@@ -373,6 +375,7 @@ actor Self {
   public shared ({ caller }) func createYardageSet(dto: DTOs.CreateYardageSetDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
+    Debug.print("Principal ID: " # principalId);
     return await golferManager.createYardageSet(principalId, dto);
   };
     

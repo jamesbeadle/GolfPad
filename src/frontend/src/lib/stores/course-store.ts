@@ -19,7 +19,9 @@ function createCourseStore() {
     return courses.courses;
   }
 
-  async function createCourse(createGolfCourseDTO: CreateGolfCourseDTO): Promise<void> {
+  async function createCourse(
+    createGolfCourseDTO: CreateGolfCourseDTO,
+  ): Promise<void> {
     return await new CourseServices().createCourse(createGolfCourseDTO);
   }
 

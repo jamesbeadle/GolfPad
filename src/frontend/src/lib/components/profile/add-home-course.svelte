@@ -2,7 +2,7 @@
     import { createEventDispatcher, onMount } from 'svelte';
     import CustomDropdown from '$lib/components/shared/dropdown.svelte';
     import { courseStore } from "$lib/stores/course-store";
-    import type { GolfCourseDTO, CreateGolfCourseDTO, PaginationFilters, TeeGroup, Hole } from '../../../../../declarations/backend/backend.did';
+    import type { GolfCourseDTO, CreateGolfCourseDTO, PaginationFilters, TeeGroup, Hole, TeeInfo } from '../../../../../declarations/backend/backend.did';
     import PictureIcon from '$lib/icons/picture-icon.svelte';
   
     export let isOpen = false;
@@ -12,8 +12,8 @@
   
     let courses: GolfCourseDTO[] = [];
     let selectedCountry: string | null = null;
-    let activeTab: 'SEARCH' | 'ADD_CUSTOM' = 'SEARCH';
-    let addCustomTab: 'BASIC' | 'ADVANCED' = 'BASIC';
+    let activeTab: 'SEARCH' | 'ADD_CUSTOM' = 'ADD_CUSTOM';
+    let addCustomTab: 'BASIC' | 'ADVANCED' = 'ADVANCED';
     let searchQuery: string = '';
 
     let courseName: string = "";
@@ -32,6 +32,22 @@
         name: "",
         images: [],
     };
+
+    interface TeeInfoForm {
+        name: string;
+        colour: string;
+        yardage: bigint | null;
+        par: number | null;
+        strokeIndex: number | null;
+    }
+
+    let newTeeInfo: TeeInfoForm[] = Array.from({ length: 18 }, () => ({
+        name: "",
+        colour: "",
+        yardage: null,
+        par: null,
+        strokeIndex: null,
+    }));
     
     let courseImage: string | null = null;
     let selectedCopyFrom: TeeGroup | null = null;
@@ -87,6 +103,12 @@
       console.error("Error creating course: ", err);
     }
   }
+
+  function isAdvancedTabFilled() {
+    return newTeeGroup.holes.length === 18 && newTeeGroup.holes.every(hole => 
+        hole.tees.every(tee => newTeeInfo[hole.number - 1].par !== null && newTeeInfo[hole.number - 1].strokeIndex !== null && newTeeInfo[hole.number - 1].yardage !== null)
+    );
+}
 </script>
   
 {#if isOpen}
@@ -97,7 +119,7 @@
             on:click={handleClose}
         ></button>
 
-        <div class="relative z-10 w-[60vw] bg-white rounded-lg shadow-xl">
+        <div class="relative z-10 w-[60vw] h-[95vh] overflow-y-auto bg-white rounded-lg shadow-xl">
             <div class="flex items-center justify-between p-4">
                 <h2 class="text-3xl text-black condensed">ADD HOME COURSE</h2>
                 <button 
@@ -195,7 +217,7 @@
                                 <input
                                     id="courseNameInput"
                                     type="text"
-                                    class="w-full p-3 bg-white border border-gray-300 rounded"
+                                    class="w-full p-3 text-black bg-white border border-gray-300 rounded"
                                     bind:value={courseName}
                                     placeholder="Enter Course Name"
                                 />
@@ -355,7 +377,59 @@
                                     CREATE TEE
                                 </button>
                             </div>
-                            
+                            <!-- {#if newTee} -->
+                                <div class="overflow-x-auto">
+                                    <div class="overflow-y-auto max-h-[50vh]">
+                                        <table class="min-w-full bg-white border-collapse">
+                                        <thead>
+                                            <tr>
+                                            <th class="p-4 text-xl text-left border-b condensed text-Black">HOLE</th>
+                                            <th class="p-4 text-xl text-left border-b condensed text-Black">PAR</th>
+                                            <th class="p-4 text-xl text-left border-b condensed text-Black">S.I.</th>
+                                            <th class="p-4 text-xl text-left border-b condensed text-Black">YARDS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {#each newTeeInfo as teeInfo, index}
+                                            <tr class="hover:bg-BrandLightGray">
+                                                <td class="p-4 text-lg border-b condensed">{index + 1}</td>
+                                                <td class="p-4 border-b">
+                                                <input
+                                                    type="text"
+                                                    class="w-full p-2 text-black border rounded"
+                                                    class:bg-BrandLightGray={!newTeeInfo[index].par}
+                                                    class:bg-white={newTeeInfo[index].par}
+                                                    placeholder="Enter"
+                                                    bind:value={newTeeInfo[index].par}
+                                                />
+                                                </td>
+                                                <td class="p-4 border-b">
+                                                <input
+                                                    type="text"
+                                                    class="w-full p-2 text-black border rounded"
+                                                    class:bg-BrandLightGray={!newTeeInfo[index].strokeIndex}
+                                                    class:bg-white={newTeeInfo[index].strokeIndex}
+                                                    placeholder="Enter"
+                                                    bind:value={newTeeInfo[index].strokeIndex}
+                                                />
+                                                </td>
+                                                <td class="p-4 border-b">
+                                                <input
+                                                    type="text"
+                                                    class="w-full p-2 text-black border rounded"
+                                                    class:bg-BrandLightGray={!newTeeInfo[index].yardage}
+                                                    class:bg-white={newTeeInfo[index].yardage}
+                                                    placeholder="Enter"
+                                                    bind:value={newTeeInfo[index].yardage}
+                                                />
+                                                </td>
+                                            </tr>
+                                            {/each}
+                                        </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            <!-- {/if} -->
                         </div>
                     </div>
                 {/if}
@@ -368,16 +442,17 @@
                 CANCEL
                 </button>
                 <button
-                type="button"
-                class="px-6 py-2 transition-all duration-200 ease-in-out rounded-lg focus:outline-none"
-                class:bg-BrandForest={selectedCourse}
-                class:text-BrandYellow={selectedCourse}
-                class:bg-BrandLightGray={!selectedCourse}
-                class:text-BrandDarkGray={!selectedCourse}
-                on:click={handleSave}
-                >
-                ADD COURSE
-                </button>
+    type="button"
+    class="px-6 py-2 transition-all duration-200 ease-in-out rounded-lg focus:outline-none"
+    class:bg-BrandForest={selectedCourse || (activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
+    class:text-BrandYellow={selectedCourse || (activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
+    class:bg-BrandLightGray={!selectedCourse && !(activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
+    class:text-BrandDarkGray={!selectedCourse && !(activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
+    disabled={!selectedCourse && !(activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
+    on:click={handleSave}
+>
+    ADD COURSE
+</button>
             </div>
         </div>
     </div>

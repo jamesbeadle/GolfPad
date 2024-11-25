@@ -9,10 +9,11 @@
   import EditIcon from "$lib/icons/edit-icon.svelte";
   import AddImage from "$lib/components/profile/add-image.svelte";
   import AddHomeCourse from "$lib/components/profile/add-home-course.svelte";
+  import AddYardages from "$lib/components/profile/add-yardages.svelte";
 
   let golfer: CreateGolferDTO = {
       username: "",
-      handicap: [],
+      handicap: [0],
   };
 
   let golferPicture: string | null = null;
@@ -28,6 +29,7 @@
 
   let isImageModalOpen: boolean = false;
   let isHomeCourseModalOpen: boolean = false;
+  let isYardagesModalOpen: boolean = false;
 
   onMount(async () => {
     try {
@@ -41,14 +43,24 @@
             }
         }); */
 
-        const filters: PaginationFilters = {
-            limit: BigInt(10),
-            offset: BigInt(0),
+        // const filters: PaginationFilters = {
+        //     limit: BigInt(10),
+        //     offset: BigInt(0),
+        // };
+        // courses = await courseStore.getCourses(filters);
+        // console.log("Courses:", courses);
+        const createGolferDTO: CreateGolferDTO = {
+          username: "testAlpha",
+          handicap: [5],
         };
-        courses = await courseStore.getCourses(filters);
-        console.log("Courses:", courses);
+        
+        console.log("Creating Golfer:", createGolferDTO);
+        const result = await playerStore.createPlayer(createGolferDTO);
+
+        console.log("Golfer Created Result:", result);
+        
     } catch (err) {
-        console.error('Error fetching courses or user store:', err);
+        console.error('Creating Golfer Error:', err);
     }
 });
 
@@ -72,13 +84,8 @@
           };
 
           console.log("Saving golfer details:", createGolferDTO);
-
-          const result = await playerStore.createPlayer(createGolferDTO);
-          if (result.length > 0) {
-              console.log("Golfer details saved successfully");
-          } else {
-              console.error("Error saving golfer details");
-          }
+          await playerStore.createPlayer(createGolferDTO);
+          console.log("Golfer details saved successfully");
       } catch (err) {
           console.error("Failed to save golfer details:", err);
       }
@@ -217,9 +224,16 @@
                           <div class="px-4 pb-4">
                               <button 
                                 class="w-full p-2 rounded text-BrandYellow bg-BrandForest hover:bg-green-700"
-                          >
+                                on:click={() => isYardagesModalOpen = true}
+                              >
                                   ADD YARDAGES
                               </button>
+                              {#if isYardagesModalOpen}
+                                <AddYardages 
+                                    isOpen={isYardagesModalOpen} 
+                                    on:close={() => isYardagesModalOpen = false}
+                                />
+                              {/if}
                           </div>
                       </div>
                   </div>

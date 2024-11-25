@@ -1,7 +1,11 @@
 import { isError } from "$lib/utils/helpers";
 import { idlFactory } from "../../../../declarations/backend";
-import type { GolferDTO, CreateGolferDTO } from "../../../../declarations/backend/backend.did";
+import type {
+  GolferDTO,
+  CreateGolferDTO,
+} from "../../../../declarations/backend/backend.did";
 import { ActorFactory } from "$lib/utils/actor-factory";
+import { authStore } from "$lib/stores/auth-store";
 
 export class PlayerServices {
   private actor: any;
@@ -19,10 +23,17 @@ export class PlayerServices {
     return result.ok;
   }
 
-  async createPlayer(player: CreateGolferDTO): Promise<GolferDTO[]> {
-    const result = await this.actor.createGolfer(player);
-    if (isError(result)) throw new Error("Failed to create player");
-    return result.ok;
+  async createPlayer(player: CreateGolferDTO): Promise<void> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.createGolfer(player);
+    console.log("Result:", result);
+    if (isError(result)) {
+      console.log("ERROR Result:", result);
+      throw new Error("Error Creating Player");
+    }
   }
 
   async listPlayers(searchTerm: string): Promise<GolferDTO[]> {

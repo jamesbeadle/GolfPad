@@ -1,6 +1,9 @@
 import { writable } from "svelte/store";
 import { PlayerServices } from "$lib/services/player-services";
-import type { CreateGolferDTO, GolferDTO } from "../../../../declarations/backend/backend.did";
+import type {
+  CreateGolferDTO,
+  GolferDTO,
+} from "../../../../declarations/backend/backend.did";
 
 function createPlayerStore() {
   const { subscribe, set } = writable<GolferDTO[]>([]);

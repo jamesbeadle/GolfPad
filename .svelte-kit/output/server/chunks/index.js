@@ -3459,7 +3459,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "14iz7gx"
+  version_hash: "1lzacn0"
 };
 async function get_hooks() {
   return {};
@@ -3671,6 +3671,9 @@ derived(
   authStore,
   ({ identity }) => identity !== null && identity !== void 0 && identity.getPrincipal().toString() === adminPrincipal
 );
+function isError(response) {
+  return response && response.err !== void 0;
+}
 const idlFactory = ({ IDL }) => {
   const PrincipalId = IDL.Text;
   const AcceptFriendRequestDTO = IDL.Record({ "requestedBy": PrincipalId });
@@ -3998,8 +4001,8 @@ const idlFactory = ({ IDL }) => {
     )
   });
 };
-var define_process_env_default$2 = { __CANDID_UI_CANISTER_ID: "br5f7-7uaaa-aaaaa-qaaca-cai", BACKEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", FRONTEND_CANISTER_ID: "be2us-64aaa-aaaaa-qaabq-cai", DFX_NETWORK: "local" };
-const canisterId = define_process_env_default$2.CANISTER_ID_BACKEND;
+var define_process_env_default$3 = { __CANDID_UI_CANISTER_ID: "br5f7-7uaaa-aaaaa-qaaca-cai", BACKEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", FRONTEND_CANISTER_ID: "be2us-64aaa-aaaaa-qaabq-cai", DFX_NETWORK: "local" };
+const canisterId = define_process_env_default$3.CANISTER_ID_BACKEND;
 const createActor = (canisterId2, options2 = {}) => {
   const agent = options2.agent || new HttpAgent({ ...options2.agentOptions });
   if (options2.agent && options2.agentOptions) {
@@ -4083,7 +4086,7 @@ class ActorFactory {
   }
   static getGovernanceAgent(identity = null, options2 = null) {
     const hostOptions = {
-      host: "http://127.0.0.1:8080",
+      host: "http://localhost:8080",
       identity
     };
     if (!options2) {
@@ -4098,44 +4101,42 @@ class ActorFactory {
     return new HttpAgent({ ...options2.agentOptions });
   }
 }
-function isError(response) {
-  return response && response.err !== void 0;
-}
-function getFileExtensionFromFile(file) {
-  const filename = file.name;
-  const lastIndex = filename.lastIndexOf(".");
-  return lastIndex !== -1 ? filename.substring(lastIndex + 1) : "";
+var define_process_env_default$2 = { __CANDID_UI_CANISTER_ID: "br5f7-7uaaa-aaaaa-qaaca-cai", BACKEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", FRONTEND_CANISTER_ID: "be2us-64aaa-aaaaa-qaabq-cai", DFX_NETWORK: "local" };
+class UserService {
+  constructor() {
+    authStore.sync();
+  }
+  async isAdmin() {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      define_process_env_default$2.BACKEND_CANISTER_ID
+    );
+    const result = await identityActor.isAdmin();
+    if (isError(result)) {
+      throw new Error("Failed to check is admin");
+    }
+    return result.ok;
+  }
 }
 var define_process_env_default$1 = { __CANDID_UI_CANISTER_ID: "br5f7-7uaaa-aaaaa-qaaca-cai", BACKEND_CANISTER_ID: "bd3sg-teaaa-aaaaa-qaaba-cai", FRONTEND_CANISTER_ID: "be2us-64aaa-aaaaa-qaabq-cai", DFX_NETWORK: "local" };
 function createUserStore() {
   const { subscribe: subscribe2, set } = writable(null);
   async function sync() {
-    let localStorageString = localStorage.getItem("user_data");
-    if (localStorageString && localStorageString != "undefined") {
-      const localUser = JSON.parse(localStorageString);
-      set(localUser);
+    let localStorageString = localStorage.getItem("user_profile_data");
+    if (localStorageString) {
+      const localProfile = JSON.parse(localStorageString);
+      set(localProfile);
       return;
     }
     try {
-      await cacheUser();
+      await cacheProfile();
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error("Error fetching user profile:", error);
       throw error;
     }
   }
-  async function cacheUser() {
-    const identityActor = await ActorFactory.createIdentityActor(
-      authStore,
-      define_process_env_default$1.BACKEND_CANISTER_ID
-    );
-    let getUserResponse = await identityActor.getUser();
-    let error = isError(getUserResponse);
-    if (error) {
-      console.error("Error fetching user user");
-      return;
-    }
-    let userData = getUserResponse.ok;
-    set(userData);
+  async function isAdmin() {
+    return new UserService().isAdmin();
   }
   async function createUser(username, handicap, profilePicture, principalId) {
     try {
@@ -4197,22 +4198,10 @@ function createUserStore() {
       throw error;
     }
   }
-  async function isUsernameTaken(username) {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        define_process_env_default$1.BACKEND_CANISTER_ID ?? ""
-      );
-      const result = await identityActor.isUsernameTaken(username);
-      return result;
-    } catch (error) {
-      console.error("Error getting user:", error);
-      throw error;
-    }
-  }
-  async function updateUserPicture(picture) {
+  async function updateProfilePicture(picture) {
     try {
       const maxPictureSize = 1e3;
+      const extension = getFileExtensionFromFile(picture);
       if (picture.size > maxPictureSize * 1024) {
         return null;
       }
@@ -4226,25 +4215,66 @@ function createUserStore() {
             authStore,
             define_process_env_default$1.BACKEND_CANISTER_ID ?? ""
           );
-          const result = await identityActor.updateUserPicture(uint8Array);
-          sync();
+          let dto = {
+            golferPicture: uint8Array,
+            golferPictureExtension: extension
+          };
+          const result = await identityActor.updateUserPicture(dto);
+          if (isError(result)) {
+            console.error("Error updating profile picture");
+            return;
+          }
+          await cacheProfile();
           return result;
         } catch (error) {
           console.error(error);
         }
       };
     } catch (error) {
-      console.error("Error updating username:", error);
+      console.error("Error updating profile picture:", error);
       throw error;
     }
+  }
+  function getFileExtensionFromFile(file) {
+    const filename = file.name;
+    const lastIndex = filename.lastIndexOf(".");
+    return lastIndex !== -1 ? filename.substring(lastIndex + 1) : "";
+  }
+  async function isUsernameAvailable(username) {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        define_process_env_default$1.BACKEND_CANISTER_ID ?? ""
+      );
+      const result = await identityActor.isUsernameTaken(username);
+      return result;
+    } catch (error) {
+      console.error("Error getting user:", error);
+      throw error;
+    }
+  }
+  async function cacheProfile() {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      define_process_env_default$1.BACKEND_CANISTER_ID
+    );
+    let getProfileResponse = await identityActor.getGolfer();
+    let error = isError(getProfileResponse);
+    if (error) {
+      console.error("Error fetching user profile");
+      return;
+    }
+    let profileData = getProfileResponse.ok;
+    set(profileData);
   }
   return {
     subscribe: subscribe2,
     sync,
     createUser,
     updateUser,
-    updateUserPicture,
-    isUsernameTaken
+    updateProfilePicture,
+    isUsernameAvailable,
+    isAdmin
   };
 }
 const userStore = createUserStore();
@@ -4793,17 +4823,24 @@ const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     {}
   )}`;
 });
-const Logo_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Edit_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { className = "" } = $$props;
-  const fill = "";
+  let { fill = "" } = $$props;
   if ($$props.className === void 0 && $$bindings.className && className !== void 0) $$bindings.className(className);
   if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0) $$bindings.fill(fill);
-  return `<svg${add_attribute("class", className, 0)} width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="60" r="60" fill="white"></circle><circle cx="60" cy="60" r="46" fill="#101111"></circle><path fill-rule="evenodd" clip-rule="evenodd" d="M102.483 66.689C102.824 64.5093 103 62.2753 103 60.0001C103 36.2518 83.7484 17 60.0001 17C36.2518 17 17 36.2518 17 60.0001C17 62.2753 17.1767 64.5093 17.5171 66.689H102.483Z" fill="BrandYellow"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M96.2825 66.689C96.7531 64.3647 97 61.9608 97 59.5C97 39.3416 80.4345 23 60 23C39.5655 23 23 39.3416 23 59.5C23 61.9608 23.2469 64.3647 23.7175 66.689H96.2825Z" fill="BrandYellow"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M89.2515 66.689C89.7413 64.5381 90 62.2992 90 60C90 43.4315 76.5685 30 60 30C43.4315 30 30 43.4315 30 60C30 62.2992 30.2587 64.5381 30.7485 66.689H89.2515Z" fill="BrandYellow"></path><mask id="mask0_311_2114" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="17" y="17" width="86" height="86"><circle cx="60" cy="60" r="43" fill="#101111"></circle></mask><g mask="url(#mask0_311_2114)"><rect x="-15" y="60" width="149" height="66" fill="#70B354"></rect><path d="M57.3429 102.056C57.3784 102.607 57.8227 103.055 58.375 103.055H62.625C63.1773 103.055 63.6216 102.607 63.6571 102.056C64.0262 96.3243 67.5474 91.3577 72.6771 88.5507C72.8744 88.4427 73 88.237 73 88.0121C73 87.5548 72.5104 87.2608 72.0973 87.4569C68.9063 88.9722 64.8784 89.8764 60.5 89.8764C56.1216 89.8764 52.0937 88.9722 48.9027 87.4569C48.4896 87.2608 48 87.5548 48 88.0121C48 88.237 48.1256 88.4427 48.3229 88.5507C53.4526 91.3577 56.9738 96.3243 57.3429 102.056Z" fill="#101111"></path><path d="M57.375 90.8765C57.375 90.3242 57.8227 89.8765 58.375 89.8765H62.625C63.1773 89.8765 63.625 90.3242 63.625 90.8765V119C63.625 119.552 63.1773 120 62.625 120H58.375C57.8227 120 57.375 119.552 57.375 119V90.8765Z" fill="#101111"></path></g><circle cx="60" cy="60" r="20" fill="white"></circle><circle cx="60" cy="60" r="26" fill="#101111"></circle><circle cx="60" cy="60" r="22" fill="white"></circle></svg>`;
+  return `<svg${add_attribute("class", className, 0)}${add_attribute("fill", fill, 0)} viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><path d="m60 10c27.57 0 50 22.43 50 50s-22.43 50-50 50-50-22.43-50-50 22.43-50 50-50zm0-10c-33.135 0-60 26.865-60 60s26.865 60 60 60 60-26.865 60-60-26.865-60-60-60zm-19.97 64.82 15.53 15.525-20.56 4.655zm49.97-18.82-29.2 29.605-16.01-16.01 29.205-29.595z"></path></svg>`;
 });
 const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let golfer = { username: "", handicap: [0] };
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="p-4"><div class="flex flex-row items-center">${validate_component(Logo_icon, "LogoIcon").$$render($$result, { fill: "#FFFFFF", className: "w-6 mr-2" }, {}, {})} <p class="text-xl" data-svelte-h="svelte-14za60w">Profile Coming Soon</p></div></div>`;
+      return `<div class="w-full"><div class="flex items-center justify-between px-8 pt-4"><h2 class="text-4xl text-black condensed" data-svelte-h="svelte-1px7ll0">PROFILE</h2> <div class="flex justify-end"><button class="${"px-10 py-3 text-xl text-BrandYellow condensed rounded-l-md rounded-r-none " + escape(
+        "bg-BrandForest",
+        true
+      )}">DETAILS</button> <button class="${"px-10 py-3 text-xl text-BrandYellow condensed rounded-t-md " + escape(
+        "bg-[#F9F9F9] text-[#C0C0C0]",
+        true
+      )}" ${"disabled"}>SOCIAL</button></div></div> <div class="w-full h-full px-2 pt-4"><div class="flex p-4 rounded-md bg-BrandLightGray"><div class="w-1/3"><div class="relative flex items-center justify-center w-full h-full bg-yellow-400 rounded-lg">${`<img src="default-profile-picture.jpg" alt="Default Profile" class="object-cover w-full h-full rounded-lg"> <button class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">${validate_component(Edit_icon, "EditIcon").$$render($$result, { className: "w-20 h-20", fill: "white" }, {}, {})}</button>`} ${``} </div></div> <div class="flex flex-col w-1/3 px-4"><h3 class="mb-4 text-xl text-black condensed" data-svelte-h="svelte-1a77zur">DETAILS</h3> <label for="username" class="block pt-8 pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-19ut7l7">USERNAME</label> <input id="username" placeholder="Enter your username" type="text" class="w-full p-2 mb-4 text-2xl text-black bg-transparent border-b rounded condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest"${add_attribute("value", golfer.username, 0)}> <label for="handicap" class="block pt-4 pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-8ztggn">HANDICAP</label> <input id="handicap" placeholder="Enter your handicap" type="number" class="w-full p-2 mb-4 text-xl text-black bg-transparent border-b rounded condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest"${add_attribute("value", golfer.handicap, 0)}> <div class="flex items-center mt-auto text-black"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex-1"><label for="homeCourse" class="block pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-b12mcu">HOME COURSE</label> ${`<button type="button" class="w-full p-2 text-left rounded text-BrandDarkGray hover:bg-black/5" data-svelte-h="svelte-13ycswt">Select home course</button>`} ${``}</div></div></div>  <div class="w-1/3 px-4"><h3 class="text-xl text-black condensed" data-svelte-h="svelte-c5n1wb">YARDAGES</h3> <div class="flex flex-col h-[calc(100%-1rem)] p-4 rounded-lg bg-BrandLightGray"><div class="flex flex-col h-full bg-white rounded-lg"><div class="flex items-center justify-between py-4 mx-4 text-black condensed" data-svelte-h="svelte-1dxhibu"><span>CLUB</span> <span>YARDS</span></div> <div class="flex items-center justify-center flex-1" data-svelte-h="svelte-p82joy"><p class="px-8 text-sm text-center text-BrandDarkGray">No yardages have been added. Click the button below to get started.</p></div> <div class="px-4 pb-4"><button class="w-full p-2 rounded text-BrandYellow bg-BrandForest hover:bg-green-700" data-svelte-h="svelte-grpv2r">ADD YARDAGES</button> ${``}</div></div></div></div></div></div></div>`;
     }
   })}`;
 });

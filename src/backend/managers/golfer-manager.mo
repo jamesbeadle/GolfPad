@@ -15,6 +15,7 @@ import Utilities "../utilities/Utilities";
 import Environment "../utilities/Environment";
 import Array "mo:base/Array";
 import Blob "mo:base/Blob";
+import Debug "mo:base/Debug";
 
 module {
   public class GolferManager() {
@@ -44,21 +45,24 @@ module {
       if(invalidUsername){
         return #err(#AlreadyExists);
       };
-
+      Debug.print("Past Checks");
       let existingGolferCanisterId = golferCanisterIndex.get(principalId);
       switch(existingGolferCanisterId){
         case (?_){
           return #err(#AlreadyExists);
         };
         case (null){
+          Debug.print("Creating New Canister");
           if(activeCanisterId == ""){
             await createNewCanister();
+            Debug.print("Active Canister ID: " # activeCanisterId);
           };
 
           var golfer_canister = actor (activeCanisterId) : actor {
             isCanisterFull : () -> async Bool;
             createGolfer : (principal: T.PrincipalId, dto: DTOs.CreateGolferDTO) -> async Result.Result<(), T.Error>;  
           };
+          Debug.print("Creating Golfer because canister is not full");
 
           let isCanisterFull = await golfer_canister.isCanisterFull(); 
         
@@ -69,7 +73,7 @@ module {
               createGolfer : (principal: T.PrincipalId, dto: DTOs.CreateGolferDTO) -> async Result.Result<(), T.Error>;  
             };
           };
-
+          Debug.print("Creating Golfer");
           return await golfer_canister.createGolfer(principalId, dto);
         }
       };    
@@ -227,11 +231,13 @@ module {
     public func createYardageSet(principalId: T.PrincipalId, dto: DTOs.CreateYardageSetDTO) : async Result.Result<(), T.Error> {
       
       let nameLength = Text.size(dto.name);
+      Debug.print("Name Length: " # debug_show(nameLength));
       if(nameLength < 3 or nameLength > 20){
         return #err(#TooLong);
       };
 
       let existingGolferCanisterId = golferCanisterIndex.get(principalId);
+      Debug.print("Existing Golfer Canister ID: " # debug_show(existingGolferCanisterId));
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
           let golfer_canister = actor (foundCanisterId) : actor {
@@ -598,22 +604,32 @@ module {
 
     private func createNewCanister() : async (){
       Cycles.add<system>(10_000_000_000_000);
+      Debug.print("Got Cycles");
       let canister = await GolferCanister._GolferCanister();
+      Debug.print("Created Canister");
       let IC : Management.Management = actor (Environment.Default);
+      Debug.print("Got IC");
       let principal = ?Principal.fromText(Environment.BACKEND_CANISTER_ID);
+      Debug.print("Got Principal");
       let _ = await Utilities.updateCanister_(canister, principal, IC);
-
+      Debug.print("Updated Canister");
       let canister_principal = Principal.fromActor(canister);
+      Debug.print("Got Canister Principal");
       let canisterId = Principal.toText(canister_principal);
+      Debug.print("Got Canister ID");
 
       if (canisterId == "") {
         return;
       };
-
+      Debug.print("Canister ID is not empty");
       let uniqueCanisterIdBuffer = Buffer.fromArray<T.CanisterId>(List.toArray(uniqueGolferCanisterIds));
+      Debug.print("Created Unique Canister ID Buffer");
       uniqueCanisterIdBuffer.add(canisterId);
+      Debug.print("Added Canister ID to Buffer");
       uniqueGolferCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
+      Debug.print("Set Unique Canister IDs");
       activeCanisterId := canisterId;
+      Debug.print("Set Active Canister ID");
       return;
     };
 
