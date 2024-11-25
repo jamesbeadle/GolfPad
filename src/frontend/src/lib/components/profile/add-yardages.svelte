@@ -32,16 +32,12 @@
   
   {#if isOpen}
     <div class="fixed inset-0 z-50 flex items-center justify-center">
-      <!-- Background Overlay -->
       <button
         type="button"
         class="absolute inset-0 bg-black bg-opacity-50"
         on:click={handleClose}
       ></button>
-  
-      <!-- Modal Content -->
       <div class="relative z-10 w-[30vw] bg-white rounded-lg shadow-xl">
-        <!-- Header -->
         <div class="flex items-center justify-between p-4">
           <h2 class="text-3xl text-black condensed">ADD NEW YARDAGE SET</h2>
           <button 
@@ -53,16 +49,11 @@
             ✕
           </button>
         </div>
-  
-        <!-- Description -->
         <div class="px-6 pt-2 pb-4">
           <p class="text-sm text-BrandDarkGray">Create a new yardage set to track your performance in various settings. Specify the name of the set to help you manage and optimize your game across different conditions.</p>
         </div>
-  
-        <!-- Form Content -->
         <div class="p-6">
           <div class="flex flex-col gap-4">
-            <!-- Name Input -->
             <div>
               <label for="yardageSetName" class="block mb-2 text-sm font-bold text-black">NAME</label>
               <input
@@ -75,8 +66,6 @@
             </div>
           </div>
         </div>
-  
-        <!-- Footer Buttons -->
         <div class="flex justify-end gap-3 p-4">
           <button
             class="px-6 py-2 transition-all duration-200 ease-in-out rounded-lg text-BrandForest bg-BrandYellow hover:bg-yellow-400 focus:outline-none"

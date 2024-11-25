@@ -442,17 +442,17 @@
                 CANCEL
                 </button>
                 <button
-    type="button"
-    class="px-6 py-2 transition-all duration-200 ease-in-out rounded-lg focus:outline-none"
-    class:bg-BrandForest={selectedCourse || (activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
-    class:text-BrandYellow={selectedCourse || (activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
-    class:bg-BrandLightGray={!selectedCourse && !(activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
-    class:text-BrandDarkGray={!selectedCourse && !(activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
-    disabled={!selectedCourse && !(activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
-    on:click={handleSave}
->
-    ADD COURSE
-</button>
+                    type="button"
+                    class="px-6 py-2 transition-all duration-200 ease-in-out rounded-lg focus:outline-none"
+                    class:bg-BrandForest={selectedCourse || (activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
+                    class:text-BrandYellow={selectedCourse || (activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
+                    class:bg-BrandLightGray={!selectedCourse && !(activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
+                    class:text-BrandDarkGray={!selectedCourse && !(activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
+                    disabled={!selectedCourse && !(activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
+                    on:click={handleSave}
+                >
+                    ADD COURSE
+                </button>
             </div>
         </div>
     </div>

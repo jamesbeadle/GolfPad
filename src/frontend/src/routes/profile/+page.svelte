@@ -208,8 +208,6 @@
                     </div>
                   </div>
               </div>
-
-              <!-- Yardages Section -->
               <div class="w-1/3 px-4">
                   <h3 class="text-xl text-black condensed">YARDAGES</h3>
                   <div class="flex flex-col h-[calc(100%-1rem)] p-4 rounded-lg bg-BrandLightGray">
