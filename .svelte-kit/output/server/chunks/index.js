@@ -3459,7 +3459,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1lzacn0"
+  version_hash: "d4w7iu"
 };
 async function get_hooks() {
   return {};
@@ -3673,6 +3673,10 @@ derived(
 );
 function isError(response) {
   return response && response.err !== void 0;
+}
+function uint8ArrayToBase64(bytes) {
+  const binary = Array.from(bytes).map((byte) => String.fromCharCode(byte)).join("");
+  return btoa(binary);
 }
 const idlFactory = ({ IDL }) => {
   const PrincipalId = IDL.Text;
@@ -4278,10 +4282,39 @@ function createUserStore() {
   };
 }
 const userStore = createUserStore();
-const userGetAgentPicture = derived(
+const userGetProfilePicture = derived(
   userStore,
-  (user) => user !== null && user !== void 0 && user.userPicture !== void 0 && user.userPicture.length > 0 ? URL.createObjectURL(new Blob([new Uint8Array(user.userPicture)])) : "placeholder.png"
+  ($user) => {
+    try {
+      let byteArray;
+      if ($user && $user.profilePicture) {
+        if (Array.isArray($user.profilePicture) && $user.profilePicture[0] instanceof Uint8Array) {
+          byteArray = $user.profilePicture[0];
+          return `data:image/${$user.profilePictureType};base64,${uint8ArrayToBase64(byteArray)}`;
+        } else if ($user.profilePicture instanceof Uint8Array) {
+          return `data:${$user.profilePictureType};base64,${uint8ArrayToBase64(
+            $user.profilePicture
+          )}`;
+        } else {
+          if (typeof $user.profilePicture === "string") {
+            if ($user.profilePicture.startsWith("data:image")) {
+              return $user.profilePicture;
+            } else {
+              return `data:${$user.profilePictureType};base64,${$user.profilePicture}`;
+            }
+          }
+        }
+      }
+      return "placeholder.png";
+    } catch (error) {
+      console.error(error);
+      return "placeholder.png";
+    }
+  }
 );
+const getCourseImage = (course) => {
+  return "golfCourse.png";
+};
 const core = {
   close: "Close",
   back: "Back",
@@ -4518,20 +4551,65 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     }();
   }(init2())} ${validate_component(BusyScreen, "BusyScreen").$$render($$result, {}, {}, {})}`;
 });
-const Page$7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$a = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $authSignedInStore, $$unsubscribe_authSignedInStore;
-  let $userGetAgentPicture, $$unsubscribe_userGetAgentPicture;
+  let $userGetProfilePicture, $$unsubscribe_userGetProfilePicture;
   $$unsubscribe_authSignedInStore = subscribe(authSignedInStore, (value) => $authSignedInStore = value);
-  $$unsubscribe_userGetAgentPicture = subscribe(userGetAgentPicture, (value) => $userGetAgentPicture = value);
+  $$unsubscribe_userGetProfilePicture = subscribe(userGetProfilePicture, (value) => $userGetProfilePicture = value);
   $$unsubscribe_authSignedInStore();
-  $$unsubscribe_userGetAgentPicture();
+  $$unsubscribe_userGetProfilePicture();
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="z-10 px-4 mb-20 text-center"><h1 class="mb-1 font-bold text-BrandForest" data-svelte-h="svelte-cw6v72">WELCOME TO <span class="condensed">GOLFPAD</span></h1> <h2 class="mx-16 mb-6 text-5xl font-black leading-tight text-black md:text-6xl condensed" data-svelte-h="svelte-qfwaeu">THE FUTURE OF GOLF STARTS HERE</h2> ${!$authSignedInStore ? `<button class="px-10 py-3 text-sm font-semibold rounded shadow-lg md:px-12 md:text-lg bg-BrandForest text-BrandYellow" data-svelte-h="svelte-14ismbr">CONNECT</button>` : ``} ${$authSignedInStore ? `<img${add_attribute("src", $userGetAgentPicture, 0)} alt="Profile" class="fixed w-12 h-12 rounded-full bottom-3 right-3" aria-label="Toggle Profile"> <button class="px-10 py-3 text-sm font-semibold rounded shadow-lg md:px-12 md:text-lg bg-BrandForest text-BrandYellow" data-svelte-h="svelte-qglar7">SIGN OUT</button>` : ``}</div> <div class="absolute bottom-0 left-0 z-0 w-full" data-svelte-h="svelte-1l2reow"><img src="golfball_mobile.png" alt="Golf Ball" class="object-cover w-full h-auto md:hidden"> <img src="golfball.png" alt="Golf Ball" class="hidden object-cover w-full md:flex"></div>`;
+      return `<div class="z-10 px-4 mb-20 text-center"><h1 class="mb-1 font-bold text-BrandForest" data-svelte-h="svelte-cw6v72">WELCOME TO <span class="condensed">GOLFPAD</span></h1> <h2 class="mx-16 mb-6 text-5xl font-black leading-tight text-black md:text-6xl condensed" data-svelte-h="svelte-qfwaeu">THE FUTURE OF GOLF STARTS HERE</h2> ${!$authSignedInStore ? `<button class="px-10 py-3 text-sm font-semibold rounded shadow-lg md:px-12 md:text-lg bg-BrandForest text-BrandYellow" data-svelte-h="svelte-14ismbr">CONNECT</button>` : ``} ${$authSignedInStore ? `<img${add_attribute("src", $userGetProfilePicture, 0)} alt="Profile" class="fixed w-12 h-12 rounded-full bottom-3 right-3" aria-label="Toggle Profile"> <button class="px-10 py-3 text-sm font-semibold rounded shadow-lg md:px-12 md:text-lg bg-BrandForest text-BrandYellow" data-svelte-h="svelte-qglar7">SIGN OUT</button>` : ``}</div> <div class="absolute bottom-0 left-0 z-0 w-full" data-svelte-h="svelte-1l2reow"><img src="golfball_mobile.png" alt="Golf Ball" class="object-cover w-full h-auto md:hidden"> <img src="golfball.png" alt="Golf Ball" class="hidden object-cover w-full md:flex"></div>`;
     }
   })}`;
 });
-const Page$6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Dropdown = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { items = [] } = $$props;
+  let { bindSelected = null } = $$props;
+  let { placeholder = "Select an Option" } = $$props;
+  let { multiple = false } = $$props;
+  let { searchEnabled = false } = $$props;
+  let searchTerm = "";
+  createEventDispatcher();
+  if ($$props.items === void 0 && $$bindings.items && items !== void 0) $$bindings.items(items);
+  if ($$props.bindSelected === void 0 && $$bindings.bindSelected && bindSelected !== void 0) $$bindings.bindSelected(bindSelected);
+  if ($$props.placeholder === void 0 && $$bindings.placeholder && placeholder !== void 0) $$bindings.placeholder(placeholder);
+  if ($$props.multiple === void 0 && $$bindings.multiple && multiple !== void 0) $$bindings.multiple(multiple);
+  if ($$props.searchEnabled === void 0 && $$bindings.searchEnabled && searchEnabled !== void 0) $$bindings.searchEnabled(searchEnabled);
+  items.filter((item) => item && item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  return `<div class="relative w-full"><button type="button" class="w-full p-2 text-left border border-gray-300 rounded-md cursor-pointer">${multiple && Array.isArray(bindSelected) && bindSelected.length > 0 ? `<span>${escape(bindSelected.map((item) => item.name).join(", "))}</span>` : `${!multiple && bindSelected && typeof bindSelected === "object" && "name" in bindSelected ? `<span>${escape(bindSelected.name)}</span>` : `<span class="text-gray-400">${escape(placeholder)}</span>`}`}</button> ${``}</div>`;
+});
+const Page$9 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let coursesTees = [];
+  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+    default: () => {
+      return `<div class="w-full bg-white"><div class="flex items-center justify-between px-8 pt-4"><h2 class="text-4xl text-black condensed" data-svelte-h="svelte-k1xkdv">MY COURSES</h2> <button class="mr-4 btn btn-new-game" data-svelte-h="svelte-15tl9ls">ADD NEW COURSE</button> ${``}</div> <div class="w-full h-full px-2 pt-4"><div class="p-2 rounded bg-BrandLightGray"><div class="grid items-center grid-cols-2 gap-4 p-4 text-xl text-black condensed" data-svelte-h="svelte-1ixozn2"><span>NAME</span> <span>TEES</span></div> <div class="overflow-y-auto max-h-[60vh] p-2">${each(coursesTees, (course) => {
+        return `<div class="grid items-center grid-cols-2 p-3 mb-2 bg-white rounded gap-y-4"><div class="flex items-center"><img${add_attribute("src", getCourseImage(), 0)}${add_attribute("alt", course.name, 0)} class="object-cover w-16 h-16 mr-4 rounded-md"> <span class="text-2xl text-black condensed">${escape(course.name)}</span></div> <div class="flex items-center justify-between space-x-2 text-black">${each(course.teeColors, (tee) => {
+          return `<span class="px-2 py-1 text-sm text-white rounded-full" style="${"background-color: " + escape(tee.color, true) + ";"}">${escape(tee.name)} </span>`;
+        })} <button class="btn-view btn" data-svelte-h="svelte-1xcla2q">VIEW
+                                </button></div> </div>`;
+      })}</div></div></div></div>`;
+    }
+  })}`;
+});
+const Title_panel = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { gameType } = $$props;
+  let { teeOffTime } = $$props;
+  let { courseId } = $$props;
+  if ($$props.gameType === void 0 && $$bindings.gameType && gameType !== void 0) $$bindings.gameType(gameType);
+  if ($$props.teeOffTime === void 0 && $$bindings.teeOffTime && teeOffTime !== void 0) $$bindings.teeOffTime(teeOffTime);
+  if ($$props.courseId === void 0 && $$bindings.courseId && courseId !== void 0) $$bindings.courseId(courseId);
+  return `<div class="flex flex-col items-start justify-center w-full ml-8 mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500" data-svelte-h="svelte-8kyw97">GAMETYPE</span> <h1 class="font-black leading-none text-7xl font-condensed">${escape(gameType)}</h1> <div class="flex flex-col mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500 mt-2.5" data-svelte-h="svelte-193wnh6">DATE</span> <h3 class="mb-4 text-4xl font-bold text-center font-condensed">${escape(teeOffTime)}</h3></div> <div class="flex items-center justify-start mt-2.5"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex flex-col"><span class="mb-0 text-sm font-medium text-gray-500" data-svelte-h="svelte-17zrtw2">COURSE</span> <div><p class="text-3xl font-bold text-center font-condensed">${escape(courseId)}</p></div></div></div></div>`;
+});
+const Page$8 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+    default: () => {
+      return `<div class="w-full" data-svelte-h="svelte-4qh2mk"><div class="p-2 px-4 text-black"><div class="flex"><h2 class="px-5 mt-1 text-4xl font-black text-black condensed">COURSE DETAILS</h2></div></div> <div class="w-full h-full bg-BrandLightGray"><div class="w-1/3 h-full rounded "><img src="/golfCourse.png" alt="golf course" class="object-cover w-full h-full p-4 rounded"></div> <div class="w-1/3 h-screen"></div></div></div>`;
+    }
+  })}`;
+});
+const Page$7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $selectedGame, $$unsubscribe_selectedGame;
   const selectedGame = writable("Mulligans");
   $$unsubscribe_selectedGame = subscribe(selectedGame, (value) => $selectedGame = value);
@@ -4584,22 +4662,6 @@ function createGolferSummariesStore() {
   };
 }
 const golferSummariesStore = createGolferSummariesStore();
-const Dropdown = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { items = [] } = $$props;
-  let { bindSelected = null } = $$props;
-  let { placeholder = "Select an Option" } = $$props;
-  let { multiple = false } = $$props;
-  let { searchEnabled = false } = $$props;
-  let searchTerm = "";
-  createEventDispatcher();
-  if ($$props.items === void 0 && $$bindings.items && items !== void 0) $$bindings.items(items);
-  if ($$props.bindSelected === void 0 && $$bindings.bindSelected && bindSelected !== void 0) $$bindings.bindSelected(bindSelected);
-  if ($$props.placeholder === void 0 && $$bindings.placeholder && placeholder !== void 0) $$bindings.placeholder(placeholder);
-  if ($$props.multiple === void 0 && $$bindings.multiple && multiple !== void 0) $$bindings.multiple(multiple);
-  if ($$props.searchEnabled === void 0 && $$bindings.searchEnabled && searchEnabled !== void 0) $$bindings.searchEnabled(searchEnabled);
-  items.filter((item) => item && item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
-  return `<div class="relative w-full"><button type="button" class="w-full p-2 text-left border border-gray-300 rounded-md cursor-pointer">${multiple && Array.isArray(bindSelected) && bindSelected.length > 0 ? `<span>${escape(bindSelected.map((item) => item.name).join(", "))}</span>` : `${!multiple && bindSelected && typeof bindSelected === "object" && "name" in bindSelected ? `<span>${escape(bindSelected.name)}</span>` : `<span class="text-gray-400">${escape(placeholder)}</span>`}`}</button> ${``}</div>`;
-});
 const Game_form = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { gameTitle } = $$props;
   let { opponentConfig } = $$props;
@@ -4643,7 +4705,7 @@ const Game_form = create_ssr_component(($$result, $$props, $$bindings, slots) =>
     }
   })}`;
 });
-const Page$5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $golferSummariesStore, $$unsubscribe_golferSummariesStore;
   $$unsubscribe_golferSummariesStore = subscribe(golferSummariesStore, (value) => $golferSummariesStore = value);
   $$unsubscribe_golferSummariesStore();
@@ -4658,15 +4720,6 @@ const Page$5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       })}` : ``} ${``}</div></div>`;
     }
   })}`;
-});
-const Title_panel = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { gameType } = $$props;
-  let { teeOffTime } = $$props;
-  let { courseId } = $$props;
-  if ($$props.gameType === void 0 && $$bindings.gameType && gameType !== void 0) $$bindings.gameType(gameType);
-  if ($$props.teeOffTime === void 0 && $$bindings.teeOffTime && teeOffTime !== void 0) $$bindings.teeOffTime(teeOffTime);
-  if ($$props.courseId === void 0 && $$bindings.courseId && courseId !== void 0) $$bindings.courseId(courseId);
-  return `<div class="flex flex-col items-start justify-center w-full ml-8 mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500" data-svelte-h="svelte-8kyw97">GAMETYPE</span> <h1 class="font-black leading-none text-7xl font-condensed">${escape(gameType)}</h1> <div class="flex flex-col mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500 mt-2.5" data-svelte-h="svelte-193wnh6">DATE</span> <h3 class="mb-4 text-4xl font-bold text-center font-condensed">${escape(teeOffTime)}</h3></div> <div class="flex items-center justify-start mt-2.5"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex flex-col"><span class="mb-0 text-sm font-medium text-gray-500" data-svelte-h="svelte-17zrtw2">COURSE</span> <div><p class="text-3xl font-bold text-center font-condensed">${escape(courseId)}</p></div></div></div></div>`;
 });
 const Bands_scorecard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return ``;
@@ -4710,7 +4763,7 @@ function getGameStatus(status) {
   if ("Complete" in status) return "Complete";
   return "Unknown";
 }
-const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $page, $$unsubscribe_page;
   let $gameData, $$unsubscribe_gameData;
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
@@ -4802,7 +4855,7 @@ const gameConfigs = {
     }
   }
 };
-const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $page, $$unsubscribe_page;
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
   const gameType = $page.params.game;
@@ -4830,7 +4883,7 @@ const Edit_icon = create_ssr_component(($$result, $$props, $$bindings, slots) =>
   if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0) $$bindings.fill(fill);
   return `<svg${add_attribute("class", className, 0)}${add_attribute("fill", fill, 0)} viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><path d="m60 10c27.57 0 50 22.43 50 50s-22.43 50-50 50-50-22.43-50-50 22.43-50 50-50zm0-10c-33.135 0-60 26.865-60 60s26.865 60 60 60 60-26.865 60-60-26.865-60-60-60zm-19.97 64.82 15.53 15.525-20.56 4.655zm49.97-18.82-29.2 29.605-16.01-16.01 29.205-29.595z"></path></svg>`;
 });
-const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let golfer = { username: "", handicap: [0] };
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
@@ -4840,11 +4893,11 @@ const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       )}">DETAILS</button> <button class="${"px-10 py-3 text-xl text-BrandYellow condensed rounded-t-md " + escape(
         "bg-[#F9F9F9] text-[#C0C0C0]",
         true
-      )}" ${"disabled"}>SOCIAL</button></div></div> <div class="w-full h-full px-2 pt-4"><div class="flex p-4 rounded-md bg-BrandLightGray"><div class="w-1/3"><div class="relative flex items-center justify-center w-full h-full bg-yellow-400 rounded-lg">${`<img src="default-profile-picture.jpg" alt="Default Profile" class="object-cover w-full h-full rounded-lg"> <button class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">${validate_component(Edit_icon, "EditIcon").$$render($$result, { className: "w-20 h-20", fill: "white" }, {}, {})}</button>`} ${``} </div></div> <div class="flex flex-col w-1/3 px-4"><h3 class="mb-4 text-xl text-black condensed" data-svelte-h="svelte-1a77zur">DETAILS</h3> <label for="username" class="block pt-8 pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-19ut7l7">USERNAME</label> <input id="username" placeholder="Enter your username" type="text" class="w-full p-2 mb-4 text-2xl text-black bg-transparent border-b rounded condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest"${add_attribute("value", golfer.username, 0)}> <label for="handicap" class="block pt-4 pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-8ztggn">HANDICAP</label> <input id="handicap" placeholder="Enter your handicap" type="number" class="w-full p-2 mb-4 text-xl text-black bg-transparent border-b rounded condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest"${add_attribute("value", golfer.handicap, 0)}> <div class="flex items-center mt-auto text-black"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex-1"><label for="homeCourse" class="block pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-b12mcu">HOME COURSE</label> ${`<button type="button" class="w-full p-2 text-left rounded text-BrandDarkGray hover:bg-black/5" data-svelte-h="svelte-13ycswt">Select home course</button>`} ${``}</div></div></div>  <div class="w-1/3 px-4"><h3 class="text-xl text-black condensed" data-svelte-h="svelte-c5n1wb">YARDAGES</h3> <div class="flex flex-col h-[calc(100%-1rem)] p-4 rounded-lg bg-BrandLightGray"><div class="flex flex-col h-full bg-white rounded-lg"><div class="flex items-center justify-between py-4 mx-4 text-black condensed" data-svelte-h="svelte-1dxhibu"><span>CLUB</span> <span>YARDS</span></div> <div class="flex items-center justify-center flex-1" data-svelte-h="svelte-p82joy"><p class="px-8 text-sm text-center text-BrandDarkGray">No yardages have been added. Click the button below to get started.</p></div> <div class="px-4 pb-4"><button class="w-full p-2 rounded text-BrandYellow bg-BrandForest hover:bg-green-700" data-svelte-h="svelte-grpv2r">ADD YARDAGES</button> ${``}</div></div></div></div></div></div></div>`;
+      )}" ${"disabled"}>SOCIAL</button></div></div> <div class="w-full h-full px-2 pt-4"><div class="flex p-4 rounded-md bg-BrandLightGray"><div class="w-1/3"><div class="relative flex items-center justify-center w-full h-full bg-yellow-400 rounded-lg">${`<img src="default-profile-picture.jpg" alt="Default Profile" class="object-cover w-full h-full rounded-lg"> <button class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">${validate_component(Edit_icon, "EditIcon").$$render($$result, { className: "w-20 h-20", fill: "white" }, {}, {})}</button>`} ${``} </div></div> <div class="flex flex-col w-1/3 px-4"><h3 class="mb-4 text-xl text-black condensed" data-svelte-h="svelte-1a77zur">DETAILS</h3> <label for="username" class="block pt-8 pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-19ut7l7">USERNAME</label> <input id="username" placeholder="Enter your username" type="text" class="w-full p-2 mb-4 text-2xl text-black bg-transparent border-b rounded condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest"${add_attribute("value", golfer.username, 0)}> <label for="handicap" class="block pt-4 pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-8ztggn">HANDICAP</label> <input id="handicap" placeholder="Enter your handicap" type="number" class="w-full p-2 mb-4 text-xl text-black bg-transparent border-b rounded condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest"${add_attribute("value", golfer.handicap, 0)}> <div class="flex items-center mt-auto text-black"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex-1"><label for="homeCourse" class="block pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-b12mcu">HOME COURSE</label> ${`<button type="button" class="w-full p-2 text-left rounded text-BrandDarkGray hover:bg-black/5" data-svelte-h="svelte-13ycswt">Select home course</button>`} ${``}</div></div></div> <div class="w-1/3 px-4"><h3 class="text-xl text-black condensed" data-svelte-h="svelte-c5n1wb">YARDAGES</h3> <div class="flex flex-col h-[calc(100%-1rem)] p-4 rounded-lg bg-BrandLightGray"><div class="flex flex-col h-full bg-white rounded-lg"><div class="flex items-center justify-between py-4 mx-4 text-black condensed" data-svelte-h="svelte-1dxhibu"><span>CLUB</span> <span>YARDS</span></div> <div class="flex items-center justify-center flex-1" data-svelte-h="svelte-p82joy"><p class="px-8 text-sm text-center text-BrandDarkGray">No yardages have been added. Click the button below to get started.</p></div> <div class="px-4 pb-4"><button class="w-full p-2 rounded text-BrandYellow bg-BrandForest hover:bg-green-700" data-svelte-h="svelte-grpv2r">ADD YARDAGES</button> ${``}</div></div></div></div></div></div></div>`;
     }
   })}`;
 });
-const Page$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   const teamMembers = [
     {
       name: "Zoe Duffy",
@@ -5030,7 +5083,7 @@ const System_architecture = create_ssr_component(($$result, $$props, $$bindings,
   return `<div class="flex flex-col space-y-4 text-base" data-svelte-h="svelte-78p70m"><h2 class="text-2xl font-black text-black condensed">SYSTEM ARCHITECTURE</h2> <p>Full details of the <span class="condensed">GOLFPAD</span> multi-canister architecture will be released after testing is complete.</p></div>`;
 });
 let cropPositionY = "top";
-const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Page$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let activeTab = "vision";
   const tabs = [
     { name: "Vision", component: Vision },
@@ -5066,10 +5119,44 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     }
   })}`;
 });
+const Delete_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0) $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0) $$bindings.fill(fill);
+  return `<svg${add_attribute("class", className, 0)}${add_attribute("fill", fill, 0)} viewBox="0 0 18 20" xmlns="http://www.w3.org/2000/svg"><path d="M7 16C7.26522 16 7.51957 15.8946 7.70711 15.7071C7.89464 15.5196 8 15.2652 8 15V9C8 8.73478 7.89464 8.48043 7.70711 8.29289C7.51957 8.10536 7.26522 8 7 8C6.73478 8 6.48043 8.10536 6.29289 8.29289C6.10536 8.48043 6 8.73478 6 9V15C6 15.2652 6.10536 15.5196 6.29289 15.7071C6.48043 15.8946 6.73478 16 7 16ZM17 4H13V3C13 2.20435 12.6839 1.44129 12.1213 0.87868C11.5587 0.316071 10.7956 0 10 0H8C7.20435 0 6.44129 0.316071 5.87868 0.87868C5.31607 1.44129 5 2.20435 5 3V4H1C0.734784 4 0.48043 4.10536 0.292893 4.29289C0.105357 4.48043 0 4.73478 0 5C0 5.26522 0.105357 5.51957 0.292893 5.70711C0.48043 5.89464 0.734784 6 1 6H2V17C2 17.7956 2.31607 18.5587 2.87868 19.1213C3.44129 19.6839 4.20435 20 5 20H13C13.7956 20 14.5587 19.6839 15.1213 19.1213C15.6839 18.5587 16 17.7956 16 17V6H17C17.2652 6 17.5196 5.89464 17.7071 5.70711C17.8946 5.51957 18 5.26522 18 5C18 4.73478 17.8946 4.48043 17.7071 4.29289C17.5196 4.10536 17.2652 4 17 4ZM7 3C7 2.73478 7.10536 2.48043 7.29289 2.29289C7.48043 2.10536 7.73478 2 8 2H10C10.2652 2 10.5196 2.10536 10.7071 2.29289C10.8946 2.48043 11 2.73478 11 3V4H7V3ZM14 17C14 17.2652 13.8946 17.5196 13.7071 17.7071C13.5196 17.8946 13.2652 18 13 18H5C4.73478 18 4.48043 17.8946 4.29289 17.7071C4.10536 17.5196 4 17.2652 4 17V6H14V17ZM11 16C11.2652 16 11.5196 15.8946 11.7071 15.7071C11.8946 15.5196 12 15.2652 12 15V9C12 8.73478 11.8946 8.48043 11.7071 8.29289C11.5196 8.10536 11.2652 8 11 8C10.7348 8 10.4804 8.10536 10.2929 8.29289C10.1054 8.48043 10 8.73478 10 9V15C10 15.2652 10.1054 15.5196 10.2929 15.7071C10.4804 15.8946 10.7348 16 11 16Z" fill="#C0C0C0"></path></svg>`;
+});
+const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let yardageSet = {
+    id: 1,
+    name: "Championship Tees",
+    clubs: [
+      { index: 1, name: "Driver", yards: 320 },
+      { index: 2, name: "3 Wood", yards: 210 },
+      { index: 3, name: "5 Wood", yards: 190 },
+      { index: 4, name: "3 Iron", yards: 183 },
+      { index: 5, name: "4 Iron", yards: 176 },
+      { index: 6, name: "5 Iron", yards: 164 },
+      { index: 7, name: "6 Iron", yards: 144 },
+      { index: 8, name: "7 Iron", yards: 135 },
+      { index: 9, name: "8 Iron", yards: 133 },
+      { index: 10, name: "9 Iron", yards: 128 },
+      { index: 11, name: "PW", yards: 0 }
+    ]
+  };
+  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+    default: () => {
+      return `<div class="w-full bg-white"><div class="flex items-center justify-between px-8 pt-4" data-svelte-h="svelte-1q0bbhl"><h2 class="text-4xl text-black condensed">MY YARDAGES</h2></div> <div class="w-full h-full px-2 pt-4"><div class="flex gap-4 p-4 rounded-lg bg-BrandLightGray"><div class="flex flex-col w-1/3 p-4 rounded-md"><label for="yardage-set" class="pb-2 text-2xl text-black condensed" data-svelte-h="svelte-us7rfp">YARDAGE SET</label> <select id="yardage-set" class="p-2 mb-6 text-lg text-black border rounded-md"><option${add_attribute("value", yardageSet.name, 0)}>${escape(yardageSet.name)}</option></select> <button type="button" class="w-full p-4 mt-auto rounded-md text-BrandForest bg-BrandYellow" data-svelte-h="svelte-lnkzdd">ADD NEW SET</button> ${``}</div> <div class="flex-1 p-4 bg-white rounded-md"><div class="flex items-center justify-between pb-4 border-b"><div class="flex items-center gap-2"><h3 class="text-2xl text-black condensed">${escape(yardageSet.name)}</h3> <button type="button" class="p-1 rounded-full hover:bg-gray-100">${validate_component(Edit_icon, "EditIcon").$$render($$result, { className: "w-4 h-4" }, {}, {})}</button> ${``}</div> <button class="p-2 text-sm text-black rounded-md bg-BrandLightGray" data-svelte-h="svelte-scpmhp">Copy From</button></div> <div class="grid grid-cols-3 gap-4 mt-4" data-svelte-h="svelte-18rka2k"><span class="col-span-1 text-xl text-black condensed">CLUB</span> <span class="col-span-2 text-xl text-black condensed">YARDS</span></div> ${each(yardageSet.clubs, (club, index) => {
+        return `<div class="grid items-center grid-cols-3 gap-4 mt-4 group"><span class="col-span-1 text-xl text-black condensed">${escape(club.name)}</span> <div class="flex items-center justify-between col-span-2"><div class="flex items-center gap-2"><input type="number" class="w-1/3 p-2 text-lg text-black border rounded-md bg-BrandLightGray focus:outline-none focus:ring-2 focus:ring-BrandForest" placeholder="Enter"${add_attribute("value", club.yards, 0)}> <button type="button" class="invisible p-1 rounded-full hover:bg-BrandLightGray group-hover:visible">${validate_component(Delete_icon, "DeleteIcon").$$render($$result, { className: "w-4 h-4" }, {}, {})} </button></div> ${index === yardageSet.clubs.length - 1 ? `<button type="button" class="p-2 text-center rounded-md w-28 text-BrandYellow bg-BrandForest" data-svelte-h="svelte-gw2sqz">ADD CLUB
+                                    </button>` : ``}</div> </div>`;
+      })} ${``} ${``}</div></div></div></div>`;
+    }
+  })}`;
+});
 export {
   Error$1 as E,
   Layout$1 as L,
-  Page$7 as P,
+  Page$a as P,
   Server as S,
   set_building as a,
   set_manifest as b,
@@ -5079,13 +5166,16 @@ export {
   set_read_implementation as f,
   get_hooks as g,
   set_safe_public_env as h,
-  Page$6 as i,
-  Page$5 as j,
-  Page$4 as k,
-  Page$3 as l,
-  Page$2 as m,
-  Page$1 as n,
+  Page$9 as i,
+  Page$8 as j,
+  Page$7 as k,
+  Page$6 as l,
+  Page$5 as m,
+  Page$4 as n,
   options as o,
-  Page as p,
-  set_assets as s
+  Page$3 as p,
+  Page$2 as q,
+  Page$1 as r,
+  set_assets as s,
+  Page as t
 };

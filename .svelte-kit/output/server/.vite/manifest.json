@@ -15,7 +15,7 @@
       "_vendor.js"
     ],
     "css": [
-      "_app/immutable/assets/index.CVLz95Iw.css"
+      "_app/immutable/assets/index.JTqfBvrz.css"
     ]
   },
   "_vendor.js": {
@@ -53,6 +53,24 @@
     "file": "entries/pages/_page.svelte.js",
     "name": "entries/pages/_page.svelte",
     "src": "src/frontend/src/routes/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "src/frontend/src/routes/courses/+page.svelte": {
+    "file": "entries/pages/courses/_page.svelte.js",
+    "name": "entries/pages/courses/_page.svelte",
+    "src": "src/frontend/src/routes/courses/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "src/frontend/src/routes/courses/[courseId]/+page.svelte": {
+    "file": "entries/pages/courses/_courseId_/_page.svelte.js",
+    "name": "entries/pages/courses/_courseId_/_page.svelte",
+    "src": "src/frontend/src/routes/courses/[courseId]/+page.svelte",
     "isEntry": true,
     "imports": [
       "_index.js"
@@ -116,6 +134,15 @@
     "file": "entries/pages/whitepaper/_page.svelte.js",
     "name": "entries/pages/whitepaper/_page.svelte",
     "src": "src/frontend/src/routes/whitepaper/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "src/frontend/src/routes/yardages/+page.svelte": {
+    "file": "entries/pages/yardages/_page.svelte.js",
+    "name": "entries/pages/yardages/_page.svelte",
+    "src": "src/frontend/src/routes/yardages/+page.svelte",
     "isEntry": true,
     "imports": [
       "_index.js"

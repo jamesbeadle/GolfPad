@@ -1,11 +1,13 @@
 {
 	"/": [],
 	"/courses": [],
+	"/courses/[courseId]": [],
 	"/game-rules": [],
 	"/games": [],
 	"/games/create/[game]": [],
 	"/games/[gameId]": [],
 	"/profile": [],
 	"/team": [],
-	"/whitepaper": []
+	"/whitepaper": [],
+	"/yardages": []
 }

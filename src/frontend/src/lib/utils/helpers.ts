@@ -351,3 +351,10 @@ export function getFileExtensionFromFile(file: File): string {
 
   return lastIndex !== -1 ? filename.substring(lastIndex + 1) : "";
 }
+
+export function uint8ArrayToBase64(bytes: Uint8Array): string {
+  const binary = Array.from(bytes)
+    .map((byte) => String.fromCharCode(byte))
+    .join("");
+  return btoa(binary);
+}

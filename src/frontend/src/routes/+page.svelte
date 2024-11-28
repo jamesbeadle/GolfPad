@@ -1,7 +1,7 @@
 <script lang="ts">
     import { authStore, type AuthSignInParams } from "$lib/stores/auth-store";
     import { authSignedInStore } from "$lib/derived/auth-derived";
-    import { userGetAgentPicture } from "$lib/derived/user-derived";
+    import { userGetProfilePicture } from "$lib/derived/user-derived";
     import Layout from "./Layout.svelte";
     
     function handleLogin() {
@@ -33,7 +33,7 @@
 
     {#if $authSignedInStore}
         <img
-            src={$userGetAgentPicture}
+            src={$userGetProfilePicture}
             alt="Profile"
             class="fixed w-12 h-12 rounded-full bottom-3 right-3"
             aria-label="Toggle Profile"

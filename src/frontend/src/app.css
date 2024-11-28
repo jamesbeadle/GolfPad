@@ -109,8 +109,7 @@ input {
 }
 
 .horizontal-divider {
-  min-height: 2px;
-  @apply self-stretch flex-shrink-0 h-px bg-BrandGreen;
+  @apply self-stretch flex-shrink-0 h-px bg-BrandDivider;
 }
 
 .horizontal-divider-dark {
@@ -123,7 +122,7 @@ input {
 }
 
 .btn-view {
-  @apply px-4 py-2 border rounded-md bg-BrandDarkGreen;
+  @apply px-4 py-1 border rounded-md bg-BrandForest text-BrandYellow;
 }
 
 .btn-add {
