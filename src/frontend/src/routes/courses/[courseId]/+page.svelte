@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { getCourseImage } from '$lib/derived/user-derived';
     import Layout from "../../Layout.svelte";
-    import TitlePanel from '$lib/components/games/title-panel.svelte';
     import { onMount } from 'svelte';
     import { courseStore } from '$lib/stores/course-store';
     import type { GolfCourseDTO, PaginationFilters } from '../../../../../declarations/backend/backend.did.d.ts';
     import { page } from '$app/stores';
+    import EditCourse from '$lib/components/courses/edit-course.svelte';
 
     let course: GolfCourseDTO | null = null;
+    let editCourseIsOpen = false;
 
     let holes = [
         { hole: 1, par: 4, strokeIndex: 8, yards: 400 },
@@ -55,8 +56,17 @@
 <Layout>
     <div class="w-full">
         <div class="p-2 px-4 text-black">
-            <div class="flex">
-                <h2 class="px-5 mt-1 text-5xl text-black condensed">COURSE DETAILS</h2>
+            <div class="flex items-center justify-between">
+                <h2 class="px-5 mt-1 text-5xl condensed">COURSE DETAILS</h2>
+                <div class="flex gap-4">
+                    <button class="px-4 py-3 font-semibold rounded text-md bg-BrandLightGray">REMOVE COURSE</button>
+                    <button 
+                        class="px-4 py-3 font-semibold rounded text-md text-BrandYellow bg-BrandForest"
+                        on:click={() => editCourseIsOpen = true}
+                    >
+                        EDIT COURSE DETAILS
+                    </button>
+                </div>
             </div>
         </div>
         <div class="flex w-full rounded bg-BrandLightGray">
@@ -104,7 +114,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Replace with actual data -->
+                                <!--TODO: Replace with actual data -->
                                 {#each holes as hole}
                                     <tr>
                                         <td class="p-3 text-black condensed">{hole.hole}</td>
@@ -119,5 +129,9 @@
                 </div>
             </div>
         </div>
+        {#if editCourseIsOpen}
+            <!-- TODO change placeholder to actual image -->
+            <EditCourse isOpen={editCourseIsOpen} holes={holes} courseName={course?.name || ''} courseImage="/course-placeholder.jpg" />
+        {/if}
     </div>
 </Layout>

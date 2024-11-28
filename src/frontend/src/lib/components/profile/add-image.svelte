@@ -47,7 +47,7 @@
         type="button"
         aria-label="Close"
       ></button>
-      <div class="relative z-10 w-[500px] bg-white rounded-lg shadow-xl">
+      <div class="relative z-10 w-[40vw] bg-white rounded-lg shadow-xl">
         <div class="flex items-center justify-between p-5">
           <h2 class="text-3xl text-black condensed">UPLOAD IMAGE</h2>
           <button 
@@ -68,12 +68,12 @@
           >
             {#if previewUrl}
               <img src={previewUrl} alt="Preview" class="object-cover w-32 h-32 mb-4 rounded" />
-              <p class="text-lg font-medium text-gray-500">Click to change image</p>
+              <p class="text-lg font-medium text-BrandDarkGray">Click to change image</p>
             {:else}
               <div class="mb-4">
                 <PictureIcon className="w-12 h-12 fill-BrandDarkGray" />
               </div>
-              <p class="text-lg font-medium text-gray-500">Drag and Drop or Browse</p>
+              <p class="text-lg font-medium text-BrandDarkGray">Drag and Drop or Browse</p>
             {/if}
             <input
               id="fileInput"
@@ -88,7 +88,7 @@
         <div class="flex justify-end gap-4 p-6">
           <button
             type="button"
-            class="px-6 py-2 text-gray-500 transition-all duration-200 ease-in-out rounded-lg bg-BrandYellow hover:bg-yellow-400 focus:outline-none"
+            class="px-6 py-2 transition-all duration-200 ease-in-out rounded-lg text-BrandDarkGray bg-BrandYellow hover:bg-yellow-400 focus:outline-none"
             on:click={handleClose}
           >
             Cancel
