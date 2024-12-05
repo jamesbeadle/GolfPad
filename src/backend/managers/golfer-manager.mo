@@ -73,7 +73,7 @@ module {
               createGolfer : (principal: T.PrincipalId, dto: DTOs.CreateGolferDTO) -> async Result.Result<(), T.Error>;  
             };
           };
-          Debug.print("Creating Golfer");
+          Debug.print("Entering golfer canister file");
           return await golfer_canister.createGolfer(principalId, dto);
         }
       };    
@@ -553,12 +553,14 @@ module {
       
     public func createGolfCourse(golferPrincipalId: T.PrincipalId, dto: DTOs.CreateGolfCourseDTO) : async Result.Result<(), T.Error> {
       let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
+      Debug.print("Golfer Canister ID: " # debug_show(golferCanisterId));
 
        switch(golferCanisterId){
         case (?foundCanisterId){
           let golfer_canister = actor (foundCanisterId) : actor {
             createGolfCourse : (golferPrincipalId: T.PrincipalId, dto: DTOs.CreateGolfCourseDTO) -> async Result.Result<(), T.Error>;
           };
+          Debug.print("Combined principal and dto, Entering Canister");
 
           return await golfer_canister.createGolfCourse(golferPrincipalId, dto);
         };

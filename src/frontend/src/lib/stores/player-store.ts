@@ -3,6 +3,7 @@ import { PlayerServices } from "$lib/services/player-services";
 import type {
   CreateGolferDTO,
   GolferDTO,
+  UpdateGolferPictureDTO,
 } from "../../../../declarations/backend/backend.did";
 
 function createPlayerStore() {
@@ -20,12 +21,17 @@ function createPlayerStore() {
     return new PlayerServices().createPlayer(player);
   }
 
+  async function saveGolferPicture(dto: UpdateGolferPictureDTO) {
+    return new PlayerServices().saveGolferPicture(dto);
+  }
+
   return {
     subscribe,
     setPlayer: (player: GolferDTO[]) => set(player),
     createPlayer,
     getPlayer,
     listPlayers,
+    saveGolferPicture,
   };
 }
 export const playerStore = createPlayerStore();

@@ -3459,7 +3459,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "d4w7iu"
+  version_hash: "1eiyqeu"
 };
 async function get_hooks() {
   return {};
@@ -3940,7 +3940,15 @@ const idlFactory = ({ IDL }) => {
   });
   const Result_2 = IDL.Variant({ "ok": FriendRequestsDTO, "err": Error2 });
   const ListGolfersDTO = IDL.Record({ "searchTerm": IDL.Text });
-  const Result_1 = IDL.Variant({ "ok": IDL.Vec(GolferDTO), "err": Error2 });
+  const GolferSummaryDTO = IDL.Record({
+    "golferPrincipalId": PrincipalId,
+    "golferPicture": IDL.Opt(IDL.Vec(IDL.Nat8)),
+    "golferName": IDL.Text,
+    "handicap": IDL.Opt(Handicap2),
+    "golferPictureExtension": IDL.Text
+  });
+  const GolfersDTO = IDL.Record({ "golfers": IDL.Vec(GolferSummaryDTO) });
+  const Result_1 = IDL.Variant({ "ok": GolfersDTO, "err": Error2 });
   const RejectFriendRequestDTO = IDL.Record({ "requestedBy": PrincipalId });
   const UpdateGolferPictureDTO = IDL.Record({
     "golferPicture": IDL.Vec(IDL.Nat8),
@@ -4130,10 +4138,13 @@ function createUserStore() {
     if (localStorageString) {
       const localProfile = JSON.parse(localStorageString);
       set(localProfile);
-      return;
+      console.log("Existing User");
+      return false;
     }
     try {
       await cacheProfile();
+      console.log("New User");
+      return true;
     } catch (error) {
       console.error("Error fetching user profile:", error);
       throw error;
@@ -4142,42 +4153,18 @@ function createUserStore() {
   async function isAdmin() {
     return new UserService().isAdmin();
   }
-  async function createUser(username, handicap, profilePicture, principalId) {
+  async function createUser(username, handicap) {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
         define_process_env_default$1.BACKEND_CANISTER_ID ?? ""
       );
-      const readFileAsArrayBuffer = (file) => {
-        return new Promise((resolve2, reject) => {
-          const reader = new FileReader();
-          reader.readAsArrayBuffer(file);
-          reader.onloadend = () => {
-            const arrayBuffer = reader.result;
-            resolve2(new Uint8Array(arrayBuffer));
-          };
-          reader.onerror = () => {
-            reject(new Error("Error reading file"));
-          };
-        });
-      };
       try {
-        var extension = "";
-        const maxPictureSize = 500;
-        if (profilePicture && profilePicture.size > maxPictureSize * 1024) {
-          throw new Error("File size exceeds the limit of 500KB");
-        }
-        if (profilePicture) {
-          extension = getFileExtensionFromFile(profilePicture);
-        }
         let dto = {
           username,
-          handicap,
-          golferPicture: profilePicture ? [await readFileAsArrayBuffer(profilePicture)] : [],
-          golferPictureExtension: extension,
-          principalId
+          handicap
         };
-        const result = await identityActor.createUser(dto);
+        const result = await identityActor.createGolfer(dto);
         return result;
       } catch (error) {
         console.error("Error updating profile picture:", error);
@@ -4262,7 +4249,8 @@ function createUserStore() {
       authStore,
       define_process_env_default$1.BACKEND_CANISTER_ID
     );
-    let getProfileResponse = await identityActor.getGolfer();
+    let getProfileResponse = await identityActor.getMyGolfer();
+    console.log("getProfileResponse: ", getProfileResponse);
     let error = isError(getProfileResponse);
     if (error) {
       console.error("Error fetching user profile");
@@ -4276,6 +4264,7 @@ function createUserStore() {
     sync,
     createUser,
     updateUser,
+    cacheProfile,
     updateProfilePicture,
     isUsernameAvailable,
     isAdmin
@@ -4584,28 +4573,139 @@ const Page$9 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let coursesTees = [];
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="w-full bg-white"><div class="flex items-center justify-between px-8 pt-4"><h2 class="text-4xl text-black condensed" data-svelte-h="svelte-k1xkdv">MY COURSES</h2> <button class="mr-4 btn btn-new-game" data-svelte-h="svelte-15tl9ls">ADD NEW COURSE</button> ${``}</div> <div class="w-full h-full px-2 pt-4"><div class="p-2 rounded bg-BrandLightGray"><div class="grid items-center grid-cols-2 gap-4 p-4 text-xl text-black condensed" data-svelte-h="svelte-1ixozn2"><span>NAME</span> <span>TEES</span></div> <div class="overflow-y-auto max-h-[60vh] p-2">${each(coursesTees, (course) => {
+      return `<div class="w-full bg-white"><div class="flex items-center justify-between px-8 pt-4"><h2 class="text-4xl text-black condensed" data-svelte-h="svelte-k1xkdv">MY COURSES</h2> <button class="hidden md:block btn btn-new-game" data-svelte-h="svelte-1vxj1rq">ADD NEW COURSE</button></div> <div class="w-full h-full px-2 pt-4"><div class="hidden p-2 rounded lg:block bg-BrandLightGray"><div class="grid items-center grid-cols-2 gap-4 p-4 text-xl text-black condensed" data-svelte-h="svelte-1ixozn2"><span>NAME</span> <span>TEES</span></div> <div class="overflow-y-auto max-h-[60vh] p-2">${each(coursesTees, (course) => {
         return `<div class="grid items-center grid-cols-2 p-3 mb-2 bg-white rounded gap-y-4"><div class="flex items-center"><img${add_attribute("src", getCourseImage(), 0)}${add_attribute("alt", course.name, 0)} class="object-cover w-16 h-16 mr-4 rounded-md"> <span class="text-2xl text-black condensed">${escape(course.name)}</span></div> <div class="flex items-center justify-between space-x-2 text-black">${each(course.teeColors, (tee) => {
-          return `<span class="px-2 py-1 text-sm text-white rounded-full" style="${"background-color: " + escape(tee.color, true) + ";"}">${escape(tee.name)} </span>`;
-        })} <button class="btn-view btn" data-svelte-h="svelte-1xcla2q">VIEW
+          return `<span class="px-2 py-1 text-sm text-black rounded-full" style="${"background-color: " + escape(tee.color, true) + ";"}">${escape(tee.name)} </span>`;
+        })} <button class="px-5 py-1 text-sm rounded text-BrandYellow bg-BrandForest" data-svelte-h="svelte-19h1531">VIEW
                                 </button></div> </div>`;
-      })}</div></div></div></div>`;
+      })}</div></div> <div class="space-y-4 lg:hidden">${each(coursesTees, (course) => {
+        return `<div class="p-4 bg-white rounded-lg"><div class="sm:hidden"><div class="flex items-center mb-4"><img${add_attribute("src", getCourseImage(), 0)}${add_attribute("alt", course.name, 0)} class="w-16 h-16 mr-4 rounded-lg"> <span class="text-2xl text-black condensed">${escape(course.name)}</span></div> <div class="h-px mb-4 bg-BrandDivider"></div> <div class="flex flex-wrap gap-2">${each(course.teeColors, (tee) => {
+          return `<span class="px-3 py-1 text-sm text-white rounded-full" style="${"background-color: " + escape(tee.color, true) + ";"}">${escape(tee.name)} </span>`;
+        })} </div></div> <div class="hidden sm:block"><div class="flex items-center justify-between mb-4"><div class="flex items-center"><img${add_attribute("src", getCourseImage(), 0)}${add_attribute("alt", course.name, 0)} class="w-16 h-16 mr-4 rounded-lg"> <span class="text-2xl text-black condensed">${escape(course.name)}</span></div> <div class="flex items-center gap-2">${each(course.teeColors, (tee) => {
+          return `<span class="px-3 py-1 text-sm text-black rounded-full" style="${"background-color: " + escape(tee.color, true) + ";"}">${escape(tee.name)} </span>`;
+        })}</div> </div></div> <button class="w-full py-2 mt-4 text-sm rounded text-BrandYellow bg-BrandForest" data-svelte-h="svelte-19ujajf">VIEW</button> </div>`;
+      })}</div> <button class="w-full py-2 mt-6 text-xl lg:hidden bg-BrandYellow text-BrandForest" data-svelte-h="svelte-1mfp1xl">ADD NEW COURSE</button></div> ${``}</div>`;
     }
   })}`;
 });
-const Title_panel = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { gameType } = $$props;
-  let { teeOffTime } = $$props;
-  let { courseId } = $$props;
-  if ($$props.gameType === void 0 && $$bindings.gameType && gameType !== void 0) $$bindings.gameType(gameType);
-  if ($$props.teeOffTime === void 0 && $$bindings.teeOffTime && teeOffTime !== void 0) $$bindings.teeOffTime(teeOffTime);
-  if ($$props.courseId === void 0 && $$bindings.courseId && courseId !== void 0) $$bindings.courseId(courseId);
-  return `<div class="flex flex-col items-start justify-center w-full ml-8 mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500" data-svelte-h="svelte-8kyw97">GAMETYPE</span> <h1 class="font-black leading-none text-7xl font-condensed">${escape(gameType)}</h1> <div class="flex flex-col mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500 mt-2.5" data-svelte-h="svelte-193wnh6">DATE</span> <h3 class="mb-4 text-4xl font-bold text-center font-condensed">${escape(teeOffTime)}</h3></div> <div class="flex items-center justify-start mt-2.5"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex flex-col"><span class="mb-0 text-sm font-medium text-gray-500" data-svelte-h="svelte-17zrtw2">COURSE</span> <div><p class="text-3xl font-bold text-center font-condensed">${escape(courseId)}</p></div></div></div></div>`;
-});
 const Page$8 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let holes = [
+    {
+      hole: 1,
+      par: 4,
+      strokeIndex: 8,
+      yards: 400
+    },
+    {
+      hole: 2,
+      par: 4,
+      strokeIndex: 3,
+      yards: 340
+    },
+    {
+      hole: 3,
+      par: 3,
+      strokeIndex: 12,
+      yards: 200
+    },
+    {
+      hole: 4,
+      par: 4,
+      strokeIndex: 6,
+      yards: 320
+    },
+    {
+      hole: 5,
+      par: 5,
+      strokeIndex: 1,
+      yards: 480
+    },
+    {
+      hole: 6,
+      par: 3,
+      strokeIndex: 5,
+      yards: 220
+    },
+    {
+      hole: 7,
+      par: 4,
+      strokeIndex: 11,
+      yards: 370
+    },
+    {
+      hole: 8,
+      par: 4,
+      strokeIndex: 2,
+      yards: 350
+    },
+    {
+      hole: 9,
+      par: 4,
+      strokeIndex: 7,
+      yards: 420
+    },
+    {
+      hole: 10,
+      par: 5,
+      strokeIndex: 9,
+      yards: 500
+    },
+    {
+      hole: 11,
+      par: 4,
+      strokeIndex: 14,
+      yards: 310
+    },
+    {
+      hole: 12,
+      par: 3,
+      strokeIndex: 18,
+      yards: 190
+    },
+    {
+      hole: 13,
+      par: 5,
+      strokeIndex: 4,
+      yards: 530
+    },
+    {
+      hole: 14,
+      par: 4,
+      strokeIndex: 13,
+      yards: 390
+    },
+    {
+      hole: 15,
+      par: 3,
+      strokeIndex: 17,
+      yards: 180
+    },
+    {
+      hole: 16,
+      par: 4,
+      strokeIndex: 10,
+      yards: 410
+    },
+    {
+      hole: 17,
+      par: 5,
+      strokeIndex: 15,
+      yards: 480
+    },
+    {
+      hole: 18,
+      par: 4,
+      strokeIndex: 16,
+      yards: 400
+    }
+  ];
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="w-full" data-svelte-h="svelte-4qh2mk"><div class="p-2 px-4 text-black"><div class="flex"><h2 class="px-5 mt-1 text-4xl font-black text-black condensed">COURSE DETAILS</h2></div></div> <div class="w-full h-full bg-BrandLightGray"><div class="w-1/3 h-full rounded "><img src="/golfCourse.png" alt="golf course" class="object-cover w-full h-full p-4 rounded"></div> <div class="w-1/3 h-screen"></div></div></div>`;
+      return `<div class="w-full"><div class="p-2 px-4 text-black"><div class="flex items-center justify-between"><h2 class="text-5xl text-black md:text-4xl condensed" data-svelte-h="svelte-1bbmc22">COURSE DETAILS</h2> <div class="hidden gap-4 md:flex"><button class="px-4 py-3 font-semibold rounded text-md bg-BrandLightGray" data-svelte-h="svelte-1ayvtqr">REMOVE COURSE</button> <button class="px-4 py-3 font-semibold rounded text-md text-BrandYellow bg-BrandForest" data-svelte-h="svelte-v4pdxc">EDIT COURSE DETAILS</button></div></div></div> <div class="flex flex-col p-4 rounded-md lg:flex-row bg-BrandLightGray"><div class="w-full mb-6 lg:w-1/3 lg:mb-0" data-svelte-h="svelte-1uyfyew"><h3 class="px-2 mb-4 text-2xl text-black lg:hidden condensed">DETAILS</h3> <img src="/course-placeholder.jpg" alt="golf course" class="object-cover w-full h-full rounded"></div> <div class="w-full px-0 mb-6 lg:w-1/3 lg:px-4 lg:mb-0">${``}</div> <div class="w-full px-0 lg:w-1/3 lg:px-4"><h2 class="pb-3 text-xl text-black condensed" data-svelte-h="svelte-1yg9laa">TEES</h2> <div class="flex flex-col p-5 bg-white border-b rounded">${``}</div> <div class="overflow-x-auto"><div class="overflow-y-auto max-h-[65vh]"><table class="hidden min-w-full bg-white border-collapse sm:table"><thead data-svelte-h="svelte-iqaa4l"><tr><th class="p-4 text-xl text-left text-black border-b condensed">HOLE</th> <th class="p-4 text-xl text-left text-black border-b condensed">PAR</th> <th class="p-4 text-xl text-left text-black border-b condensed">S.I.</th> <th class="p-4 text-xl text-left text-black border-b condensed">YARDS</th></tr></thead> <tbody>${each(holes, (hole) => {
+        return `<tr><td class="p-3 text-black condensed">${escape(hole.hole)}</td> <td class="p-3 text-black">${escape(hole.par)}</td> <td class="p-3 text-black">${escape(hole.strokeIndex)}</td> <td class="p-3 text-black">${escape(hole.yards)}</td> </tr>`;
+      })}</tbody></table> <div class="sm:hidden"><div class="grid grid-cols-4 gap-4 p-2 text-sm text-black bg-white condensed" data-svelte-h="svelte-m7esr"><div>HOLE</div> <div>PAR</div> <div>S.I</div> <div>YARDS</div></div> ${each(holes, (hole) => {
+        return `<div class="grid grid-cols-4 gap-4 p-2 text-black bg-white border-t"><div class="text-lg condensed">${escape(hole.hole)}</div> <div class="text-lg">${escape(hole.par)}</div> <div class="text-lg">${escape(hole.strokeIndex)}</div> <div class="text-lg">${escape(hole.yards)}</div> </div>`;
+      })}</div></div></div> <div class="flex w-full gap-4 p-2 bg-white md:hidden"><button class="px-3 py-1 font-semibold text-black rounded text-md bg-BrandLightGray" data-svelte-h="svelte-gfgmnn">REMOVE COURSE</button> <button class="px-3 py-1 font-semibold rounded text-md text-BrandYellow bg-BrandForest" data-svelte-h="svelte-174d6pb">EDIT COURSE DETAILS</button></div></div></div> ${``}</div>`;
     }
   })}`;
 });
@@ -4720,6 +4820,15 @@ const Page$6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       })}` : ``} ${``}</div></div>`;
     }
   })}`;
+});
+const Title_panel = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { gameType } = $$props;
+  let { teeOffTime } = $$props;
+  let { courseId } = $$props;
+  if ($$props.gameType === void 0 && $$bindings.gameType && gameType !== void 0) $$bindings.gameType(gameType);
+  if ($$props.teeOffTime === void 0 && $$bindings.teeOffTime && teeOffTime !== void 0) $$bindings.teeOffTime(teeOffTime);
+  if ($$props.courseId === void 0 && $$bindings.courseId && courseId !== void 0) $$bindings.courseId(courseId);
+  return `<div class="flex flex-col items-start justify-center w-full ml-8 mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500" data-svelte-h="svelte-8kyw97">GAMETYPE</span> <h1 class="font-black leading-none text-7xl font-condensed">${escape(gameType)}</h1> <div class="flex flex-col mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500 mt-2.5" data-svelte-h="svelte-193wnh6">DATE</span> <h3 class="mb-4 text-4xl font-bold text-center font-condensed">${escape(teeOffTime)}</h3></div> <div class="flex items-center justify-start mt-2.5"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex flex-col"><span class="mb-0 text-sm font-medium text-gray-500" data-svelte-h="svelte-17zrtw2">COURSE</span> <div><p class="text-3xl font-bold text-center font-condensed">${escape(courseId)}</p></div></div></div></div>`;
 });
 const Bands_scorecard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return ``;
@@ -4884,16 +4993,32 @@ const Edit_icon = create_ssr_component(($$result, $$props, $$bindings, slots) =>
   return `<svg${add_attribute("class", className, 0)}${add_attribute("fill", fill, 0)} viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><path d="m60 10c27.57 0 50 22.43 50 50s-22.43 50-50 50-50-22.43-50-50 22.43-50 50-50zm0-10c-33.135 0-60 26.865-60 60s26.865 60 60 60 60-26.865 60-60-26.865-60-60-60zm-19.97 64.82 15.53 15.525-20.56 4.655zm49.97-18.82-29.2 29.605-16.01-16.01 29.205-29.595z"></path></svg>`;
 });
 const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  [
+    {
+      principalId: "DECHU_475",
+      requestTime: BigInt(Date.now())
+    },
+    {
+      principalId: "SMITH_238475",
+      requestTime: BigInt(Date.now())
+    }
+  ];
   let golfer = { username: "", handicap: [0] };
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="w-full"><div class="flex items-center justify-between px-8 pt-4"><h2 class="text-4xl text-black condensed" data-svelte-h="svelte-1px7ll0">PROFILE</h2> <div class="flex justify-end"><button class="${"px-10 py-3 text-xl text-BrandYellow condensed rounded-l-md rounded-r-none " + escape(
+      return `<div class="w-full"><div class="flex items-center justify-between px-8 pt-4"><h2 class="text-5xl text-black md:text-4xl condensed" data-svelte-h="svelte-xer55u">PROFILE</h2> <div class="justify-end hidden md:flex"><button class="${"px-10 py-3 text-xl text-BrandYellow condensed rounded-l-md rounded-r-none " + escape(
         "bg-BrandForest",
         true
       )}">DETAILS</button> <button class="${"px-10 py-3 text-xl text-BrandYellow condensed rounded-t-md " + escape(
         "bg-[#F9F9F9] text-[#C0C0C0]",
         true
-      )}" ${"disabled"}>SOCIAL</button></div></div> <div class="w-full h-full px-2 pt-4"><div class="flex p-4 rounded-md bg-BrandLightGray"><div class="w-1/3"><div class="relative flex items-center justify-center w-full h-full bg-yellow-400 rounded-lg">${`<img src="default-profile-picture.jpg" alt="Default Profile" class="object-cover w-full h-full rounded-lg"> <button class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">${validate_component(Edit_icon, "EditIcon").$$render($$result, { className: "w-20 h-20", fill: "white" }, {}, {})}</button>`} ${``} </div></div> <div class="flex flex-col w-1/3 px-4"><h3 class="mb-4 text-xl text-black condensed" data-svelte-h="svelte-1a77zur">DETAILS</h3> <label for="username" class="block pt-8 pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-19ut7l7">USERNAME</label> <input id="username" placeholder="Enter your username" type="text" class="w-full p-2 mb-4 text-2xl text-black bg-transparent border-b rounded condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest"${add_attribute("value", golfer.username, 0)}> <label for="handicap" class="block pt-4 pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-8ztggn">HANDICAP</label> <input id="handicap" placeholder="Enter your handicap" type="number" class="w-full p-2 mb-4 text-xl text-black bg-transparent border-b rounded condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest"${add_attribute("value", golfer.handicap, 0)}> <div class="flex items-center mt-auto text-black"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex-1"><label for="homeCourse" class="block pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-b12mcu">HOME COURSE</label> ${`<button type="button" class="w-full p-2 text-left rounded text-BrandDarkGray hover:bg-black/5" data-svelte-h="svelte-13ycswt">Select home course</button>`} ${``}</div></div></div> <div class="w-1/3 px-4"><h3 class="text-xl text-black condensed" data-svelte-h="svelte-c5n1wb">YARDAGES</h3> <div class="flex flex-col h-[calc(100%-1rem)] p-4 rounded-lg bg-BrandLightGray"><div class="flex flex-col h-full bg-white rounded-lg"><div class="flex items-center justify-between py-4 mx-4 text-black condensed" data-svelte-h="svelte-1dxhibu"><span>CLUB</span> <span>YARDS</span></div> <div class="flex items-center justify-center flex-1" data-svelte-h="svelte-p82joy"><p class="px-8 text-sm text-center text-BrandDarkGray">No yardages have been added. Click the button below to get started.</p></div> <div class="px-4 pb-4"><button class="w-full p-2 rounded text-BrandYellow bg-BrandForest hover:bg-green-700" data-svelte-h="svelte-grpv2r">ADD YARDAGES</button> ${``}</div></div></div></div></div></div></div>`;
+      )}">SOCIAL</button></div></div> ${`<div class="w-full h-full px-2 pt-4"><div class="flex flex-col p-4 rounded-md lg:flex-row bg-BrandLightGray"><div class="w-full mb-6 lg:w-1/3 lg:mb-0"><h3 class="px-2 mb-4 text-2xl text-black lg:hidden condensed" data-svelte-h="svelte-n9ylnt">DETAILS</h3> <div class="relative flex items-center justify-center w-full aspect-[16/9] lg:aspect-square bg-yellow-400 rounded-lg">${`<img src="default-profile-picture.jpg" alt="Default Profile" class="object-cover w-full h-full rounded-lg"> <button class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">${validate_component(Edit_icon, "EditIcon").$$render($$result, { className: "w-20 h-20", fill: "white" }, {}, {})}</button>`} ${``}</div></div> <div class="w-full px-0 mb-6 lg:w-1/3 lg:px-4 lg:mb-0"><h3 class="hidden mb-4 text-xl text-black lg:block condensed" data-svelte-h="svelte-c7x13v">DETAILS</h3> <label for="username" class="block pt-8 pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-19ut7l7">USERNAME</label> <input id="username" placeholder="Enter your username" type="text" class="w-full p-2 mb-4 text-4xl text-black bg-transparent border-b rounded lg:text-2xl condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest"${add_attribute("value", golfer.username, 0)}> <label for="handicap" class="block pt-4 pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-8ztggn">HANDICAP</label> <input id="handicap" placeholder="Enter your handicap" type="number" class="w-full p-2 mb-4 text-xl text-black bg-transparent border-b rounded condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest" min="0" max="54"${add_attribute("value", golfer.handicap[0], 0)}> ${`${``} <button class="px-2 py-2 mb-4 text-sm rounded lg:px-3 lg:py-1 text-BrandYellow bg-BrandForest hover:bg-green-700 disabled:opacity-50" ${"disabled"}>${`CREATE USER`}</button>`} <div class="flex items-center mt-auto text-black"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex-1"><label for="homeCourse" class="block pb-3 text-sm text-BrandDarkGray" data-svelte-h="svelte-b12mcu">HOME COURSE</label> ${`<button type="button" class="w-full p-2 text-left rounded text-BrandDarkGray hover:bg-black/5" data-svelte-h="svelte-1xozzvh">Select home course</button>`} ${``}</div></div></div> <div class="w-full px-0 lg:w-1/3 lg:px-4"><h3 class="text-xl text-black condensed" data-svelte-h="svelte-c5n1wb">YARDAGES</h3> <div class="flex flex-col h-[calc(100%-1rem)] p-4 rounded-lg bg-BrandLightGray"><div class="flex flex-col h-full bg-white rounded-lg"><div class="flex items-center justify-between p-2 text-black lg:py-4 lg:mx-4 condensed" data-svelte-h="svelte-rjlhdz"><span>CLUB</span> <span>YARDS</span></div> <div class="flex items-center justify-center flex-1" data-svelte-h="svelte-19vbkmq"><p class="px-8 text-sm text-center text-BrandDarkGray">No yardages have been added. Click the button below to get started.</p></div> <div class="px-4 pb-4"><button class="w-full p-2 rounded text-BrandYellow bg-BrandForest hover:bg-green-700" data-svelte-h="svelte-qxw2s3">ADD YARDAGES</button> ${``}</div></div></div></div></div></div>`} ${``} <div class="sticky bottom-0 left-0 right-0 z-10 flex w-full bg-white md:hidden"><button class="${"flex-1 py-2 text-xl condensed " + escape(
+        "bg-BrandForest text-BrandYellow",
+        true
+      )}">DETAILS</button> <button class="${"flex-1 py-2 text-xl condensed " + escape(
+        "bg-[#F9F9F9] text-[#C0C0C0]",
+        true
+      )}">SOCIAL</button></div></div>`;
     }
   })}`;
 });
@@ -5146,8 +5271,8 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   };
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="w-full bg-white"><div class="flex items-center justify-between px-8 pt-4" data-svelte-h="svelte-1q0bbhl"><h2 class="text-4xl text-black condensed">MY YARDAGES</h2></div> <div class="w-full h-full px-2 pt-4"><div class="flex gap-4 p-4 rounded-lg bg-BrandLightGray"><div class="flex flex-col w-1/3 p-4 rounded-md"><label for="yardage-set" class="pb-2 text-2xl text-black condensed" data-svelte-h="svelte-us7rfp">YARDAGE SET</label> <select id="yardage-set" class="p-2 mb-6 text-lg text-black border rounded-md"><option${add_attribute("value", yardageSet.name, 0)}>${escape(yardageSet.name)}</option></select> <button type="button" class="w-full p-4 mt-auto rounded-md text-BrandForest bg-BrandYellow" data-svelte-h="svelte-lnkzdd">ADD NEW SET</button> ${``}</div> <div class="flex-1 p-4 bg-white rounded-md"><div class="flex items-center justify-between pb-4 border-b"><div class="flex items-center gap-2"><h3 class="text-2xl text-black condensed">${escape(yardageSet.name)}</h3> <button type="button" class="p-1 rounded-full hover:bg-gray-100">${validate_component(Edit_icon, "EditIcon").$$render($$result, { className: "w-4 h-4" }, {}, {})}</button> ${``}</div> <button class="p-2 text-sm text-black rounded-md bg-BrandLightGray" data-svelte-h="svelte-scpmhp">Copy From</button></div> <div class="grid grid-cols-3 gap-4 mt-4" data-svelte-h="svelte-18rka2k"><span class="col-span-1 text-xl text-black condensed">CLUB</span> <span class="col-span-2 text-xl text-black condensed">YARDS</span></div> ${each(yardageSet.clubs, (club, index) => {
-        return `<div class="grid items-center grid-cols-3 gap-4 mt-4 group"><span class="col-span-1 text-xl text-black condensed">${escape(club.name)}</span> <div class="flex items-center justify-between col-span-2"><div class="flex items-center gap-2"><input type="number" class="w-1/3 p-2 text-lg text-black border rounded-md bg-BrandLightGray focus:outline-none focus:ring-2 focus:ring-BrandForest" placeholder="Enter"${add_attribute("value", club.yards, 0)}> <button type="button" class="invisible p-1 rounded-full hover:bg-BrandLightGray group-hover:visible">${validate_component(Delete_icon, "DeleteIcon").$$render($$result, { className: "w-4 h-4" }, {}, {})} </button></div> ${index === yardageSet.clubs.length - 1 ? `<button type="button" class="p-2 text-center rounded-md w-28 text-BrandYellow bg-BrandForest" data-svelte-h="svelte-gw2sqz">ADD CLUB
+      return `<div class="w-full bg-white"><div class="flex items-center justify-between px-8 pt-4" data-svelte-h="svelte-1q0bbhl"><h2 class="text-4xl text-black condensed">MY YARDAGES</h2></div> <div class="w-full h-full px-2 pt-4"><div class="flex flex-col gap-4 p-4 rounded-lg lg:flex-row bg-BrandLightGray"><div class="flex flex-col w-full p-4 rounded-md lg:w-1/3"><label for="yardage-set" class="pb-2 text-2xl text-black condensed" data-svelte-h="svelte-us7rfp">YARDAGE SET</label> <select id="yardage-set" class="p-2 mb-6 text-lg text-black border rounded-md"><option${add_attribute("value", yardageSet.name, 0)}>${escape(yardageSet.name)}</option></select> <button type="button" class="w-full p-4 mt-auto rounded-md text-BrandForest bg-BrandYellow" data-svelte-h="svelte-lnkzdd">ADD NEW SET</button> ${``}</div> <div class="flex-1 p-4 bg-white rounded-md"><div class="flex items-center justify-between pb-4 border-b"><div class="flex items-center gap-2"><h3 class="text-2xl text-black condensed">${escape(yardageSet.name)}</h3> <button type="button" class="p-1 rounded-full hover:bg-gray-100">${validate_component(Edit_icon, "EditIcon").$$render($$result, { className: "w-4 h-4" }, {}, {})}</button> ${``}</div> <button class="p-2 text-sm text-black rounded-md bg-BrandLightGray" data-svelte-h="svelte-scpmhp">Copy From</button></div> <div class="grid grid-cols-3 gap-4 mt-4 text-sm sm:text-base" data-svelte-h="svelte-1igm8ed"><span class="col-span-1 text-black condensed">CLUB</span> <span class="col-span-2 text-black condensed">YARDS</span></div> ${each(yardageSet.clubs, (club, index) => {
+        return `<div class="grid items-center grid-cols-3 gap-4 mt-4 group"><span class="col-span-1 text-black condensed">${escape(club.name)}</span> <div class="flex items-center justify-between col-span-2"><div class="flex items-center gap-2"><input type="number" class="w-1/3 p-2 text-black border rounded-md bg-BrandLightGray focus:outline-none focus:ring-2 focus:ring-BrandForest" placeholder="Enter"${add_attribute("value", club.yards, 0)}> <button type="button" class="invisible p-1 rounded-full hover:bg-BrandLightGray group-hover:visible">${validate_component(Delete_icon, "DeleteIcon").$$render($$result, { className: "w-4 h-4" }, {}, {})} </button></div> ${index === yardageSet.clubs.length - 1 ? `<button type="button" class="p-2 text-center rounded-md w-28 text-BrandYellow bg-BrandForest" data-svelte-h="svelte-gw2sqz">ADD CLUB
                                     </button>` : ``}</div> </div>`;
       })} ${``} ${``}</div></div></div></div>`;
     }

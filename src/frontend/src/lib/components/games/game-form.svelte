@@ -6,7 +6,7 @@
     import { gameStore } from "$lib/stores/game-store";
     import { courseStore } from "$lib/stores/course-store";
     import { playerStore } from "$lib/stores/player-store";
-    import type { CreateGameDTO, GolfCourseDTO, GameType, PaginationFilters, GolferDTO, TeeGroup } from "../../../../../declarations/backend/backend.did";
+    import type { CreateGameDTO, GolfCourseDTO, GameType, PaginationFilters, GolfersDTO, TeeGroup } from "../../../../../declarations/backend/backend.did";
     import { formatDateStringtoBigInt } from "$lib/utils/helpers";
     
     export let gameTitle: string;
@@ -17,7 +17,7 @@
     };
 
     let courses:GolfCourseDTO[] = []; 
-    let opponents: GolferDTO[] = [];
+    let opponents: GolfersDTO[] = [];
     let tees: {name: string, value: string}[] = [];
     let dropdownItems: {name: string, value: any}[] = [];
 
@@ -34,26 +34,27 @@
 
     $: teeOffDateTime = teeOffDate + "T" + teeOffTime;
     
-    onMount(async () => {
-        try{
-            const filters: PaginationFilters = {
-                limit: BigInt(10),
-                offset: BigInt(0),
-            };
-            courses = await courseStore.getCourses(filters);
+    // onMount(async () => {
+    //     try{
+    //         const filters: PaginationFilters = {
+    //             limit: BigInt(10),
+    //             offset: BigInt(0),
+    //         };
+    //         courses = await courseStore.getCourses(filters);
 
-            opponents = await playerStore.listPlayers("");
-            dropdownItems = opponents.map(opponent => {
-                return {
-                    name: opponent.username,
-                    value: opponent.username
-                };
-                });
-            }
-        catch(error){
-            console.error("Error Fetching Course", error);
-        }
-    });
+    //         const golfersResponse = await playerStore.listPlayers("");
+    //         opponents = golfersResponse.golfers;
+    //         dropdownItems = opponents.map(opponent => {
+    //             return {
+    //                 name: opponent.username,
+    //                 value: opponent.username
+    //             };
+    //             });
+    //         }
+    //     catch(error){
+    //         console.error("Error Fetching Course", error);
+    //     }
+    // });
 
     $: if (selectedCourseId?.value) {
         selectedCourse = courses.find((course) => course.courseId.toString() === selectedCourseId!.value) || null;

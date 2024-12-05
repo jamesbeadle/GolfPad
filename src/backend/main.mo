@@ -393,10 +393,9 @@ actor Self {
 
   //Friend requests
 
-  public shared ({ caller }) func listGolfers(dto: DTOs.ListGolfersDTO) : async Result.Result<[DTOs.GolferDTO], T.Error> {
-    /* assert not Principal.isAnonymous(caller);
-    return await golferManager.listGolfers(dto); */
-    return #ok(golfers);
+  public shared ({ caller }) func listGolfers(dto: DTOs.ListGolfersDTO) : async Result.Result<DTOs.GolfersDTO, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    return await golferManager.listGolfers(dto);
   };
 
   public shared ({ caller }) func listFriendRequests(dto: DTOs.PaginationFilters) : async Result.Result<DTOs.FriendRequestsDTO, T.Error> {
@@ -436,6 +435,7 @@ actor Self {
   public shared ({ caller }) func createGolfCourse(dto: DTOs.CreateGolfCourseDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
+    Debug.print("Principal ID: " # principalId);
     return await golferManager.createGolfCourse(principalId, dto);
   };
     

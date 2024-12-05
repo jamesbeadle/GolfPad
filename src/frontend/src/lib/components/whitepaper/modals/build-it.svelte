@@ -1,18 +1,25 @@
 <script lang="ts">
-    import { Modal } from "@dfinity/gix-components";
-    
+  
     export let visible: boolean;
     export let closeModal: () => void;
   </script>
   
-  <Modal {visible} on:nnsClose={closeModal}>
-    <div class="mx-4 p-4">
-      <div class="flex justify-between items-center mb-4">
-        <p class="condensed text-3xl">BUILD IT</p>
-        <button class="times-button text-2xl" on:click={closeModal}>&times;</button>
+{#if visible}
+    <div class="fixed inset-0 z-50 flex items-center justify-center">
+      <button
+        type="button"
+        class="absolute inset-0 bg-black bg-opacity-50"
+        on:click={closeModal}
+      ></button>
+
+      <div class="relative z-50 w-[60vw] max-h-[90vh] overflow-y-auto bg-BrandYellow rounded-lg border border-black">
+        <div class="p-4 mx-4">
+          <div class="flex items-center justify-between mb-4">
+        <p class="text-3xl condensed">BUILD IT</p>
+        <button class="text-2xl times-button" on:click={closeModal}>&times;</button>
       </div>
   
-      <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+      <div class="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
         <img 
           src="build-it-game.png" 
           alt="game" 
@@ -25,6 +32,8 @@
           <p><span class="condensed">BUILD IT</span> will allow golfers to contribute to a team on a more granular level, enhancing the community golf experience.</p>
         </div>
       </div>
+      </div>
+      </div>
     </div>
-  </Modal>
+{/if}
   

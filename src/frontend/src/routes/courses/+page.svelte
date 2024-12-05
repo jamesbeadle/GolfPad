@@ -60,6 +60,7 @@
             case "white":
                 return "#FFFFFF";
             case "yellow":
+            case "gold":
                 return "#FFFF00";
             default:
                 return "#CCCCCC"; 
@@ -74,24 +75,14 @@
         <div class="flex items-center justify-between px-8 pt-4">
             <h2 class="text-4xl text-black condensed">MY COURSES</h2>
             <button
-                class="mr-4 btn btn-new-game"
+                class="hidden md:block btn btn-new-game"
                 on:click={() => isAddHomeCourseModalOpen = true}
             >
                 ADD NEW COURSE
             </button>
-            {#if isAddHomeCourseModalOpen}
-                <AddHomeCourse 
-                    isOpen={isAddHomeCourseModalOpen} 
-                    on:close={() => isAddHomeCourseModalOpen = false}
-                    on:courseSelect={(event) => {
-                        selectedCourse = event.detail.course;
-                        isAddHomeCourseModalOpen = false;
-                        }}
-                />
-            {/if}
         </div>
         <div class="w-full h-full px-2 pt-4">
-            <div class="p-2 rounded bg-BrandLightGray">
+            <div class="hidden p-2 rounded lg:block bg-BrandLightGray">
                 <div class="grid items-center grid-cols-2 gap-4 p-4 text-xl text-black condensed">
                     <span>NAME</span>
                     <span>TEES</span>
@@ -110,13 +101,15 @@
                             <div class="flex items-center justify-between space-x-2 text-black">
                                 {#each course.teeColors as tee}
                                     <span 
-                                        class="px-2 py-1 text-sm text-white rounded-full"
+                                        class="px-2 py-1 text-sm text-black rounded-full"
                                         style="background-color: {tee.color};"
                                     >
                                         {tee.name}
                                     </span>
                                 {/each}
-                                <button class="btn-view btn">
+                                <button 
+                                    class="px-5 py-1 text-sm rounded text-BrandYellow bg-BrandForest"
+                                >
                                     VIEW
                                 </button>
                             </div>
@@ -124,6 +117,78 @@
                     {/each}
                 </div>
             </div>
+            <div class="space-y-4 lg:hidden">
+                {#each coursesTees as course}
+                    <div class="p-4 bg-white rounded-lg">
+                        <div class="sm:hidden">
+                            <div class="flex items-center mb-4">
+                                <img 
+                                    src={getCourseImage(course)} 
+                                    alt={course.name} 
+                                    class="w-16 h-16 mr-4 rounded-lg" 
+                                />
+                                <span class="text-2xl text-black condensed">{course.name}</span>
+                            </div>
+                            <div class="h-px mb-4 bg-BrandDivider"></div>
+                            <div class="flex flex-wrap gap-2">
+                                {#each course.teeColors as tee}
+                                    <span 
+                                        class="px-3 py-1 text-sm text-white rounded-full"
+                                        style="background-color: {tee.color};"
+                                    >
+                                        {tee.name}
+                                    </span>
+                                {/each}
+                            </div>
+                        </div>
+                        <div class="hidden sm:block">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <img 
+                                        src={getCourseImage(course)} 
+                                        alt={course.name} 
+                                        class="w-16 h-16 mr-4 rounded-lg" 
+                                    />
+                                    <span class="text-2xl text-black condensed">{course.name}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    {#each course.teeColors as tee}
+                                        <span 
+                                            class="px-3 py-1 text-sm text-black rounded-full"
+                                            style="background-color: {tee.color};"
+                                        >
+                                            {tee.name}
+                                        </span>
+                                    {/each}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button 
+                            class="w-full py-2 mt-4 text-sm rounded text-BrandYellow bg-BrandForest"
+                        >
+                            VIEW
+                        </button>
+                    </div>
+                {/each}
+            </div>
+            <button
+                class="w-full py-2 mt-6 text-xl lg:hidden bg-BrandYellow text-BrandForest"
+                on:click={() => isAddHomeCourseModalOpen = true}
+            >
+                ADD NEW COURSE
+            </button>
         </div>
+
+        {#if isAddHomeCourseModalOpen}
+            <AddHomeCourse 
+                isOpen={isAddHomeCourseModalOpen} 
+                on:close={() => isAddHomeCourseModalOpen = false}
+                on:courseSelect={(event) => {
+                    selectedCourse = event.detail.course;
+                    isAddHomeCourseModalOpen = false;
+                }}
+            />
+        {/if}
     </div>
 </Layout>

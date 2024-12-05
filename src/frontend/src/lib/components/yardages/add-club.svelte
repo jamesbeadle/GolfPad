@@ -19,12 +19,12 @@
   </script>
   
   {#if isOpen}
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div class="w-1/3 p-8 bg-white rounded-lg">
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 sm:p-0">
+      <div class="w-full sm:w-[90vw] md:w-[60vw] lg:w-1/3 p-4 sm:p-8 bg-white rounded-lg">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-3xl text-black condensed">ADD GOLF CLUB</h2>
+          <h2 class="text-xl text-black sm:text-2xl md:text-3xl condensed">ADD GOLF CLUB</h2>
           <button 
-            class="flex items-center justify-center w-8 h-8 text-base font-bold text-white bg-black rounded-full shadow-md"
+            class="flex items-center justify-center text-base font-bold text-white bg-black rounded-full shadow-md w-7 h-7 sm:w-8 sm:h-8"
             on:click={handleClose}
             type="button"
             aria-label="Close"
@@ -41,7 +41,7 @@
             type="text"
             placeholder="e.g. Driver"
             bind:value={clubName}
-            class="w-full p-2 rounded-md bg-BrandLightGray"
+            class="w-full p-2 rounded-md sm:p-3 bg-BrandLightGray"
           />
         </div>
   
@@ -52,20 +52,20 @@
             type="number"
             placeholder="Enter"
             bind:value={yardage}
-            class="w-full p-2 rounded-md bg-BrandLightGray"
+            class="w-full p-2 rounded-md sm:p-3 bg-BrandLightGray"
           />
         </div>
   
-        <div class="flex justify-end mt-6">
+        <div class="flex justify-end gap-3 mt-6 sm:gap-4">
           <button
             on:click={handleClose}
-            class="px-6 py-2 mr-4 rounded-md text-BrandForest bg-BrandYellow "
+            class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandForest bg-BrandYellow"
           >
             CANCEL
           </button>
           <button
             on:click={addClub}
-            class="px-6 py-2 rounded-md text-BrandYellow bg-BrandForest"
+            class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandYellow bg-BrandForest"
             disabled={!clubName || yardage === null}
           >
             ADD CLUB

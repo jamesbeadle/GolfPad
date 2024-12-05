@@ -3,6 +3,7 @@ import { isError } from "$lib/utils/helpers";
 import { writable } from "svelte/store";
 import { ActorFactory } from "../utils/actor-factory";
 import type {
+  CreateGolferDTO,
   MyGolferDTO,
   PrincipalId,
   UpdateGolferDTO,
@@ -18,10 +19,13 @@ function createUserStore() {
     if (localStorageString) {
       const localProfile = JSON.parse(localStorageString);
       set(localProfile);
-      return;
+      console.log("Existing User");
+      return false;
     }
     try {
       await cacheProfile();
+      console.log("New User");
+      return true;
     } catch (error) {
       console.error("Error fetching user profile:", error);
       throw error;
@@ -35,8 +39,6 @@ function createUserStore() {
   async function createUser(
     username: string,
     handicap: [number] | [],
-    profilePicture: File | null,
-    principalId: PrincipalId,
   ): Promise<any> {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
@@ -44,42 +46,13 @@ function createUserStore() {
         process.env.BACKEND_CANISTER_ID ?? "",
       );
 
-      const readFileAsArrayBuffer = (file: File): Promise<Uint8Array> => {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.readAsArrayBuffer(file);
-          reader.onloadend = () => {
-            const arrayBuffer = reader.result as ArrayBuffer;
-            resolve(new Uint8Array(arrayBuffer));
-          };
-          reader.onerror = () => {
-            reject(new Error("Error reading file"));
-          };
-        });
-      };
-
       try {
-        var extension = "";
-        const maxPictureSize = 500;
-        if (profilePicture && profilePicture.size > maxPictureSize * 1024) {
-          throw new Error("File size exceeds the limit of 500KB");
-        }
-
-        if (profilePicture) {
-          extension = getFileExtensionFromFile(profilePicture);
-        }
-
-        let dto: MyGolferDTO = {
+        let dto: CreateGolferDTO = {
           username: username,
           handicap: handicap,
-          golferPicture: profilePicture
-            ? [await readFileAsArrayBuffer(profilePicture)]
-            : [],
-          golferPictureExtension: extension,
-          principalId: principalId,
         };
 
-        const result = await identityActor.createUser(dto);
+        const result = await identityActor.createGolfer(dto);
         return result;
       } catch (error) {
         console.error("Error updating profile picture:", error);
@@ -175,15 +148,14 @@ function createUserStore() {
       process.env.BACKEND_CANISTER_ID ?? "",
     );
 
-    let getProfileResponse = await identityActor.getGolfer();
+    let getProfileResponse = await identityActor.getMyGolfer();
+    console.log("getProfileResponse: ", getProfileResponse);
     let error = isError(getProfileResponse);
     if (error) {
       console.error("Error fetching user profile");
       return;
     }
-
     let profileData = getProfileResponse.ok;
-
     set(profileData);
   }
 
@@ -192,6 +164,7 @@ function createUserStore() {
     sync,
     createUser,
     updateUser,
+    cacheProfile,
     updateProfilePicture,
     isUsernameAvailable,
     isAdmin,

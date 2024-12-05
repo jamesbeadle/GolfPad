@@ -3,6 +3,8 @@ import { idlFactory } from "../../../../declarations/backend";
 import type {
   GolferDTO,
   CreateGolferDTO,
+  GolfersDTO,
+  UpdateGolferPictureDTO,
 } from "../../../../declarations/backend/backend.did";
 import { ActorFactory } from "$lib/utils/actor-factory";
 import { authStore } from "$lib/stores/auth-store";
@@ -36,10 +38,22 @@ export class PlayerServices {
     }
   }
 
-  async listPlayers(searchTerm: string): Promise<GolferDTO[]> {
+  async listPlayers(searchTerm: string): Promise<GolfersDTO> {
     const dto = { searchTerm };
     const result = await this.actor.listGolfers(dto);
     if (isError(result)) throw new Error("Failed to list players");
-    return result.ok;
+    return result.ok as GolfersDTO;
+  }
+
+  async saveGolferPicture(dto: UpdateGolferPictureDTO): Promise<void> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result = await identityActor.saveGolferPicture(dto);
+    if (isError(result)) {
+      console.log("ERROR Result:", result);
+      throw new Error("Error Saving Golfer Picture");
+    }
   }
 }

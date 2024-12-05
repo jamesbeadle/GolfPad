@@ -5,6 +5,7 @@ import type {
   PaginationFilters,
   CoursesDTO,
   CreateGolfCourseDTO,
+  UpdateGolfCourseDTO,
 } from "../../../../declarations/backend/backend.did";
 import { ActorFactory } from "$lib/utils/actor-factory";
 import { authStore } from "$lib/stores/auth-store";
@@ -36,9 +37,22 @@ export class CourseServices {
       authStore,
       process.env.BACKEND_CANISTER_ID ?? "",
     );
-    const result: any = await identityActor.createCourse(dto);
+    const result: any = await identityActor.createGolfCourse(dto);
+    console.log("Result: ", result);
     if (isError(result)) {
       throw new Error("Error Creating Course");
+    }
+    return result;
+  }
+
+  async updateCourse(dto: UpdateGolfCourseDTO): Promise<void> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.updateGolfCourse(dto);
+    if (isError(result)) {
+      throw new Error("Error Updating Course");
     }
   }
 }

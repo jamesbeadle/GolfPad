@@ -16,37 +16,34 @@
     let addCustomTab: 'BASIC' | 'ADVANCED' = 'ADVANCED';
     let searchQuery: string = '';
 
-    let courseName: string = "";
+    let courseName: string = "Test Golf Club";
+    
     let teeGroups: TeeGroup[] = [];
-    let newTeeGroup: Omit<Partial<TeeGroup>, 'holes'> & { holes: Hole[] } = {
-        name: "",
-        colour: "",
+    let newTeeGroup: TeeGroup = {
+        name: "Championship",
+        colour: "#000000",
         strokeIndex: 0,
-        holes: [],
+        added: BigInt(Date.now()),
+        holes: Array(18).fill(null).map((_, index) => ({
+            number: index + 1,
+            name: `Hole ${index + 1}`,
+            images: [],
+            tees: [{
+                name: "Championship",
+                colour: "#000000",
+                yardage: BigInt(350 + (index * 10)),
+                par: 4,
+                strokeIndex: index + 1
+            }]
+        }))
     };
 
-    let holeNumber: number = 1;
-    let newHole: Hole = {
-        number: holeNumber,
-        tees: [],
-        name: "",
-        images: [],
-    };
-
-    interface TeeInfoForm {
-        name: string;
-        colour: string;
-        yardage: bigint | null;
-        par: number | null;
-        strokeIndex: number | null;
-    }
-
-    let newTeeInfo: TeeInfoForm[] = Array.from({ length: 18 }, () => ({
-        name: "",
-        colour: "",
-        yardage: null,
-        par: null,
-        strokeIndex: null,
+    let newTeeInfo = Array(18).fill(null).map((_, index) => ({
+        name: "Championship",
+        colour: "#000000",
+        yardage: 350 + (index * 10),
+        par: 4,
+        strokeIndex: index + 1
     }));
     
     let courseImage: string | null = null;
@@ -69,59 +66,123 @@
       dispatch('close');
     }
   
-    function handleSave() {
-      if (selectedCourse) {
-        dispatch('courseSelect', { course: selectedCourse });
-        handleClose();
-      }
+    async function handleSave() {
+        try {
+            if (activeTab === 'SEARCH' && selectedCourse) {
+                dispatch('courseSelect', { course: selectedCourse });
+                handleClose();
+            } 
+            else if (activeTab === 'ADD_CUSTOM') {
+                if (!courseName || !newTeeGroup.name || !newTeeGroup.colour) {
+                    console.error("Course name, tee group name, and tee group color are required");
+                    return;
+                }
+
+                if (addCustomTab === 'ADVANCED' && !isAdvancedTabFilled()) {
+                    console.error("All 18 holes must have complete data");
+                    return;
+                }
+
+                const createGolfCourseDTO: CreateGolfCourseDTO = {
+                    name: courseName,
+                    initialTeeGroup: {
+                        name: newTeeGroup.name,
+                        colour: newTeeGroup.colour,
+                        added: BigInt(Date.now()),
+                        strokeIndex: newTeeGroup.strokeIndex ?? 0,
+                        holes: addCustomTab === 'ADVANCED' 
+                            ? newTeeGroup.holes
+                            : Array(18).fill(null).map((_, index) => ({
+                                number: index + 1,
+                                name: `Hole ${index + 1}`,
+                                images: [],
+                                tees: [{
+                                    name: newTeeGroup.name || '',
+                                    colour: newTeeGroup.colour || '',
+                                    yardage: BigInt(0),
+                                    par: 4,
+                                    strokeIndex: index + 1
+                                }]
+                            }))
+                    },
+                    holes: []
+                };
+
+                console.log("Creating Golf Course: ", createGolfCourseDTO);
+
+                await courseStore.createCourse(createGolfCourseDTO);
+
+                const filters = { limit: BigInt(10), offset: BigInt(0) };
+                const courses = await courseStore.getCourses(filters);
+                const newCourse = courses.find(c => c.name === courseName);
+                
+                if (newCourse) {
+                    dispatch('courseSelect', { course: newCourse });
+                }
+                handleClose();
+            }
+        } catch (error) {
+            console.error('Error saving course:', error);
+        }
     }
 
-    async function handleAddCourse() {
+    function isAdvancedTabFilled() {
+        if (newTeeGroup.holes.length !== 18) {
+            console.log("Not enough holes:", newTeeGroup.holes.length);
+            return false;
+        }
+
+        return newTeeGroup.holes.every((hole, index) => {
+            if (hole.number !== index + 1) {
+                console.log(`Invalid hole number at index ${index}`);
+                return false;
+            }
+
+            if (!hole.tees || hole.tees.length === 0) {
+                console.log(`No tees for hole ${hole.number}`);
+                return false;
+            }
+
+            return hole.tees.every(tee => {
+                const isValid = 
+                    tee.name && 
+                    tee.colour && 
+                    typeof tee.yardage !== 'undefined' &&
+                    typeof tee.par !== 'undefined' &&
+                    typeof tee.strokeIndex !== 'undefined';
+
+                if (!isValid) {
+                    console.log(`Invalid tee data for hole ${hole.number}:`, tee);
+                }
+
+                return isValid;
+            });
+        });
+    }
+    function isValid() {
     if (!courseName || !newTeeGroup.name || !newTeeGroup.colour) {
-      console.error("Course name, tee group name, and tee group color are required");
-      return;
+        return false;
+    }
+    
+    if (addCustomTab === 'ADVANCED') {
+        return isAdvancedTabFilled();
     }
 
-    const createGolfCourseDTO: CreateGolfCourseDTO = {
-      name: courseName,
-      initialTeeGroup: {
-        name: newTeeGroup.name,
-        colour: newTeeGroup.colour,
-        added: BigInt(Date.now()),
-        strokeIndex: newTeeGroup.strokeIndex ?? 0,
-        holes: newTeeGroup.holes ?? [],
-      },
-      holes: [],
-    };
-
-    console.log("Creating Golf Course: ", createGolfCourseDTO);
-
-    try {
-      await courseStore.createCourse(createGolfCourseDTO);
-      handleClose();
-    } catch (err) {
-      console.error("Error creating course: ", err);
-    }
-  }
-
-  function isAdvancedTabFilled() {
-    return newTeeGroup.holes.length === 18 && newTeeGroup.holes.every(hole => 
-        hole.tees.every(tee => newTeeInfo[hole.number - 1].par !== null && newTeeInfo[hole.number - 1].strokeIndex !== null && newTeeInfo[hole.number - 1].yardage !== null)
-    );
+    return true;
 }
 </script>
   
 {#if isOpen}
-    <div class="fixed inset-0 z-50 flex items-center justify-center">
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-0">
         <button
             type="button"
             class="absolute inset-0 bg-black bg-opacity-50"
             on:click={handleClose}
         ></button>
 
-        <div class="relative z-10 w-[60vw] h-[95vh] overflow-y-auto bg-white rounded-lg shadow-xl">
-            <div class="flex items-center justify-between p-4">
-                <h2 class="text-3xl text-black condensed">ADD HOME COURSE</h2>
+        <div class="relative z-10 w-full md:w-[80vw] lg:w-[60vw] h-[95vh] overflow-y-auto bg-white rounded-lg shadow-xl">
+            <div class="flex items-center justify-between p-3 md:p-4">
+                <h2 class="text-2xl text-black md:text-3xl condensed">ADD HOME COURSE</h2>
                 <button 
                 class="flex items-center justify-center w-8 h-8 text-base font-bold text-white bg-black rounded-full shadow-md"
                 on:click={handleClose}
@@ -131,11 +192,11 @@
                 ✕
                 </button>
             </div>
-            <div class="px-6 pt-4 pb-2">
-                <p class="text-base text-BrandDarkGray">Your home course should be the one you play at most frequently, serving as your default for tracking scores.</p>
+            <div class="px-3 pt-2 pb-2 md:px-6 md:pt-4">
+                <p class="text-sm md:text-base text-BrandDarkGray">Your home course should be the one you play at most frequently, serving as your default for tracking scores.</p>
             </div>
 
-            <div class="flex px-6 pt-4">
+            <div class="flex px-3 pt-4 md:px-6">
                 <button
                 class="px-4 py-2 text-xl condensed"
                 class:text-BrandForest={activeTab === 'SEARCH'}
@@ -153,23 +214,23 @@
                     ADD CUSTOM
                 </button>
             </div>
-            <div class="p-6">
+            <div class="p-3 md:p-6">
                 {#if activeTab === 'SEARCH'}
-                    <div class="flex gap-4 mb-4 text-black">
-                        <div class="flex-grow w-1/2">
-                            <label for="courseName" class="block mb-1 text-sm font-medium text-BrandDarkGray">Course Name</label>
+                    <div class="flex flex-col gap-3 mb-3 text-black md:flex-row md:gap-4 md:mb-4">
+                        <div class="w-full md:w-1/2">
+                            <label for="courseName" class="block mb-1 text-xs font-medium text-BrandDarkGray md:text-sm">Course Name</label>
                             <input
                                 id="courseName"
                                 type="text"
-                                class="w-full p-2 text-black rounded"
+                                class="w-full p-2 text-sm text-black rounded md:text-base"
                                 class:bg-BrandLightGray={!searchQuery}
                                 class:bg-white={searchQuery}
                                 placeholder="Search"
                                 bind:value={searchQuery}
                             />
                         </div>
-                        <div class="flex-grow w-1/2">
-                            <label for="country" class="block mb-1 text-sm font-medium text-BrandDarkGray">Country</label>
+                        <div class="w-full md:w-1/2">
+                            <label for="country" class="block mb-1 text-xs font-medium text-BrandDarkGray md:text-sm">Country</label>
                             <CustomDropdown
                                 items={[
                                     { value: 'us', name: 'United States' },
@@ -184,27 +245,45 @@
                             />
                         </div>
                     </div>
-                    <div class="space-y-4">
+                    <div class="space-y-2 md:space-y-4">
                         {#each courses.filter(course => course.name.toLowerCase().includes(searchQuery.toLowerCase())) as course}
                             <button 
                                 type="button"
-                                class="flex items-center w-full gap-4 p-4 text-left border rounded-lg cursor-pointer hover:bg-BrandLightGray"
+                                class="relative flex flex-col w-full gap-2 p-2 text-left border rounded-lg cursor-pointer md:flex-row md:items-center md:gap-4 md:p-4 hover:bg-BrandLightGray"
                                 on:click={() => selectedCourse = course}
                                 on:keydown={(e) => e.key === 'Enter' && (selectedCourse = course)}
                                 class:bg-BrandLightGray={selectedCourse === course}
                             >
-                                <div class="pr-2">
-                                    <label for="courseId" class="block mb-1 text-sm font-medium text-BrandDarkGray">ID</label>
-                                    <h3 class="text-lg text-black condensed">{course.courseId}</h3>
-                                </div>
-                                <img src="golfCourse.png" alt="Course Thumbnail" class="w-10 h-10 rounded" />
-                                <div class="flex-grow">
-                                    <h3 class="text-lg text-black condensed">{course.name}</h3>
-                                </div>
-                                <div class="flex gap-2">
+                                <div class="absolute flex flex-wrap gap-1 top-2 right-2 md:hidden">
                                     {#each course.tees as tee}
-                                        <span class="px-2 py-1 text-xs font-bold text-black rounded-full" style="background-color: {tee.colour}">{tee.name}</span>
+                                        <span 
+                                            class="px-1.5 py-0.5 text-2xs font-bold text-white rounded-full" 
+                                            style="background-color: {tee.colour}"
+                                        >
+                                            {tee.name}
+                                        </span>
                                     {/each}
+                                </div>
+                                <div class="flex items-center gap-2 md:gap-4">
+                                    <div>
+                                        <span class="text-xs text-BrandDarkGray md:text-sm">ID</span>
+                                        <h3 class="text-base text-black condensed md:text-lg">{course.courseId}</h3>
+                                    </div>
+                                    <img src="golfCourse.png" alt="Course Thumbnail" class="w-8 h-8 rounded md:w-10 md:h-10" />
+                                </div>
+                                
+                                <div class="flex items-center justify-between flex-1">
+                                    <h3 class="text-base text-black condensed md:text-lg">{course.name}</h3>
+                                    <div class="flex-wrap hidden gap-2 md:flex">
+                                        {#each course.tees as tee}
+                                            <span 
+                                                class="px-2 py-1 text-xs font-bold text-white rounded-full" 
+                                                style="background-color: {tee.colour}"
+                                            >
+                                                {tee.name}
+                                            </span>
+                                        {/each}
+                                    </div>
                                 </div>
                             </button>
                         {/each}
@@ -277,7 +356,7 @@
                                             type="button"
                                             class="flex items-center justify-center w-8 h-8 text-2xl font-bold rounded-full text-BrandForest bg-BrandYellow"
                                             on:click={() => {
-                                                newTeeGroup.holes.push({...newHole, number: holeNumber++});
+                                                console.log("All 18 holes are already added");
                                             }}
                                         >
                                             +
@@ -377,7 +456,7 @@
                                     CREATE TEE
                                 </button>
                             </div>
-                            <!-- {#if newTee} -->
+                            {#if newTee}
                                 <div class="overflow-x-auto">
                                     <div class="overflow-y-auto max-h-[50vh]">
                                         <table class="min-w-full bg-white border-collapse">
@@ -429,26 +508,25 @@
                                         </table>
                                     </div>
                                 </div>
-                            <!-- {/if} -->
+                            {/if}
                         </div>
                     </div>
                 {/if}
             </div>
-            <div class="flex justify-end gap-3 p-4">
+            <div class="flex justify-end gap-3 p-3 border-t md:p-4 md:border-t-0">
                 <button
-                class="px-6 py-2 transition-all duration-200 ease-in-out rounded-lg text-BrandForest bg-BrandYellow hover:bg-yellow-400 focus:outline-none"
+                class="flex-1 px-4 py-2 transition-all duration-200 ease-in-out rounded-lg md:flex-initial md:px-6 text-BrandForest bg-BrandYellow hover:bg-yellow-400 focus:outline-none"
                 on:click={handleClose}
                 >
                 CANCEL
                 </button>
                 <button
                     type="button"
-                    class="px-6 py-2 transition-all duration-200 ease-in-out rounded-lg focus:outline-none"
-                    class:bg-BrandForest={selectedCourse || (activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
-                    class:text-BrandYellow={selectedCourse || (activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
-                    class:bg-BrandLightGray={!selectedCourse && !(activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
-                    class:text-BrandDarkGray={!selectedCourse && !(activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
-                    disabled={!selectedCourse && !(activeTab === 'ADD_CUSTOM' && addCustomTab === 'ADVANCED' && isAdvancedTabFilled())}
+                    class="flex-1 px-4 py-2 font-bold transition-all duration-200 ease-in-out rounded md:flex-initial md:px-6"
+                    class:bg-BrandLightGray={!isValid()}
+                    class:text-BrandDarkGray={!isValid()}
+                    class:bg-BrandForest={isValid()}
+                    class:text-BrandYellow={isValid()}
                     on:click={handleSave}
                 >
                     ADD COURSE

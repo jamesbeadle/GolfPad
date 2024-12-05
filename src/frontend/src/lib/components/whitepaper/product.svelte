@@ -52,7 +52,7 @@
 {/if}
 
 {#if showBands}
-  <Bands closeModal={closeBands} visible={showBands} />
+  <Bands visible={showBands} closeModal={closeBands} />
 {/if}
 
 {#if showBuildIt}

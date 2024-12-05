@@ -40,18 +40,18 @@
   </script>
   
   {#if isOpen}
-    <div class="fixed inset-0 z-50 flex items-center justify-center">
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0">
       <button
         class="absolute inset-0 bg-black bg-opacity-50"
         on:click={handleClose}
         type="button"
         aria-label="Close"
       ></button>
-      <div class="relative z-10 w-[40vw] bg-white rounded-lg shadow-xl">
-        <div class="flex items-center justify-between p-5">
-          <h2 class="text-3xl text-black condensed">UPLOAD IMAGE</h2>
+      <div class="relative z-10 w-full sm:w-[90vw] md:w-[60vw] lg:w-[40vw] bg-white rounded-lg shadow-xl">
+        <div class="flex items-center justify-between p-4 sm:p-5">
+          <h2 class="text-2xl text-black sm:text-3xl condensed">UPLOAD IMAGE</h2>
           <button 
-            class="flex items-center justify-center w-8 h-8 text-base font-bold text-white bg-black rounded-full shadow-md"
+            class="flex items-center justify-center text-base font-bold text-white bg-black rounded-full shadow-md w-7 h-7 sm:w-8 sm:h-8"
             on:click={handleClose}
             type="button"
             aria-label="Close"
@@ -59,21 +59,21 @@
             ✕
           </button>
         </div>
-        <div class="p-8">
+        <div class="p-4 sm:p-8">
           <button 
             type="button"
-            class="flex flex-col items-center justify-center w-full p-8 transition-all duration-200 ease-in-out border-2 border-dashed rounded-lg cursor-pointer border-BrandLightGray hover:border-BrandForest"
+            class="flex flex-col items-center justify-center w-full p-4 transition-all duration-200 ease-in-out border-2 border-dashed rounded-lg cursor-pointer sm:p-8 border-BrandLightGray hover:border-BrandForest"
             on:click={triggerFileInput}
             on:keydown={(e) => e.key === 'Enter' && triggerFileInput()}
           >
             {#if previewUrl}
-              <img src={previewUrl} alt="Preview" class="object-cover w-32 h-32 mb-4 rounded" />
-              <p class="text-lg font-medium text-BrandDarkGray">Click to change image</p>
+              <img src={previewUrl} alt="Preview" class="object-cover w-24 h-24 mb-4 rounded sm:w-32 sm:h-32" />
+              <p class="text-base font-medium sm:text-lg text-BrandDarkGray">Click to change image</p>
             {:else}
               <div class="mb-4">
-                <PictureIcon className="w-12 h-12 fill-BrandDarkGray" />
+                <PictureIcon className="w-10 h-10 sm:w-12 sm:h-12 fill-BrandDarkGray" />
               </div>
-              <p class="text-lg font-medium text-BrandDarkGray">Drag and Drop or Browse</p>
+              <p class="text-base font-medium sm:text-lg text-BrandDarkGray">Drag and Drop or Browse</p>
             {/if}
             <input
               id="fileInput"
@@ -85,17 +85,17 @@
             />
           </button>
         </div>
-        <div class="flex justify-end gap-4 p-6">
+        <div class="flex justify-end gap-3 p-4 sm:gap-4 sm:p-6">
           <button
             type="button"
-            class="px-6 py-2 transition-all duration-200 ease-in-out rounded-lg text-BrandDarkGray bg-BrandYellow hover:bg-yellow-400 focus:outline-none"
+            class="px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg sm:px-6 sm:text-base text-BrandDarkGray bg-BrandYellow hover:bg-yellow-400 focus:outline-none"
             on:click={handleClose}
           >
             Cancel
           </button>
           <button
             type="button"
-            class="px-6 py-2 transition-all duration-200 ease-in-out rounded-lg focus:outline-none"
+            class="px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg sm:px-6 sm:text-base focus:outline-none"
             class:bg-BrandForest={hasFile}
             class:text-BrandYellow={hasFile}
             class:bg-BrandLightGray={!hasFile}

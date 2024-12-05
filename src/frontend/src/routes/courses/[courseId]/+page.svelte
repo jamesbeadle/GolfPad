@@ -57,8 +57,8 @@
     <div class="w-full">
         <div class="p-2 px-4 text-black">
             <div class="flex items-center justify-between">
-                <h2 class="px-5 mt-1 text-5xl condensed">COURSE DETAILS</h2>
-                <div class="flex gap-4">
+                <h2 class="text-5xl text-black md:text-4xl condensed">COURSE DETAILS</h2>
+                <div class="hidden gap-4 md:flex">
                     <button class="px-4 py-3 font-semibold rounded text-md bg-BrandLightGray">REMOVE COURSE</button>
                     <button 
                         class="px-4 py-3 font-semibold rounded text-md text-BrandYellow bg-BrandForest"
@@ -69,26 +69,28 @@
                 </div>
             </div>
         </div>
-        <div class="flex w-full rounded bg-BrandLightGray">
-            <div class="w-1/3 p-4">
+        <div class="flex flex-col p-4 rounded-md lg:flex-row bg-BrandLightGray">
+            <div class="w-full mb-6 lg:w-1/3 lg:mb-0">
+                <h3 class="px-2 mb-4 text-2xl text-black lg:hidden condensed">DETAILS</h3>
                 <img src="/course-placeholder.jpg" alt="golf course" class="object-cover w-full h-full rounded" />
             </div>
-            <div class="flex items-center w-1/3 p-4">
+            <div class="w-full px-0 mb-6 lg:w-1/3 lg:px-4 lg:mb-0">
                 {#if course}
                     <div class="flex flex-col">
-                        <h2 class="text-xl text-black condensed">DETAILS</h2>
+                        <h3 class="hidden mb-4 text-xl text-black lg:block condensed">DETAILS</h3>
                         <div class="flex flex-col">
                             <p class="block pt-8 text-sm text-BrandDarkGray">COURSE NAME</p>
-                            <h2 class="text-6xl text-black condensed">{course.name.toUpperCase()}</h2>
+                            <h2 class="text-5xl text-black md:text-6xl condensed">{course.name.toUpperCase()}</h2>
                         </div>
                         <div class="flex flex-col">
                             <p class="block pt-8 text-sm text-BrandDarkGray">LOCATION</p>
                             <h1 class="text-2xl text-black condensed">UNITED KINGDOM</h1>
                         </div>
+                        <div class="w-full h-px my-4 bg-BrandDivider sm:hidden"></div>
                     </div>
                 {/if}
             </div> 
-            <div class="w-1/3 p-4">
+            <div class="w-full px-0 lg:w-1/3 lg:px-4">
                 <h2 class="pb-3 text-xl text-black condensed">TEES</h2>
                 <div class="flex flex-col p-5 bg-white border-b rounded">
                     {#if course && course.tees}
@@ -104,7 +106,7 @@
                 </div>
                 <div class="overflow-x-auto">
                     <div class="overflow-y-auto max-h-[65vh]">
-                        <table class="min-w-full bg-white border-collapse">
+                        <table class="hidden min-w-full bg-white border-collapse sm:table">
                             <thead>
                                 <tr>
                                     <th class="p-4 text-xl text-left text-black border-b condensed">HOLE</th>
@@ -114,7 +116,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!--TODO: Replace with actual data -->
                                 {#each holes as hole}
                                     <tr>
                                         <td class="p-3 text-black condensed">{hole.hole}</td>
@@ -125,13 +126,39 @@
                                 {/each}
                             </tbody>
                         </table>
+                        <div class="sm:hidden">
+                            <div class="grid grid-cols-4 gap-4 p-2 text-sm text-black bg-white condensed">
+                                <div>HOLE</div>
+                                <div>PAR</div>
+                                <div>S.I</div>
+                                <div>YARDS</div>
+                            </div>
+                            {#each holes as hole}
+                                <div class="grid grid-cols-4 gap-4 p-2 text-black bg-white border-t">
+                                    <div class="text-lg condensed">{hole.hole}</div>
+                                    <div class="text-lg">{hole.par}</div>
+                                    <div class="text-lg">{hole.strokeIndex}</div>
+                                    <div class="text-lg">{hole.yards}</div>
+                                </div>
+                            {/each}
+                        </div>
                     </div>
+                </div>
+                <div class="flex w-full gap-4 p-2 bg-white md:hidden">
+                    <button class="px-3 py-1 font-semibold text-black rounded text-md bg-BrandLightGray">REMOVE COURSE</button>
+                    <button 
+                        class="px-3 py-1 font-semibold rounded text-md text-BrandYellow bg-BrandForest"
+                        on:click={() => editCourseIsOpen = true}
+                    >
+                        EDIT COURSE DETAILS
+                    </button>
                 </div>
             </div>
         </div>
-        {#if editCourseIsOpen}
-            <!-- TODO change placeholder to actual image -->
-            <EditCourse isOpen={editCourseIsOpen} holes={holes} courseName={course?.name || ''} courseImage="/course-placeholder.jpg" />
-        {/if}
     </div>
 </Layout>
+
+{#if editCourseIsOpen}
+    <!-- TODO change placeholder to actual image -->
+    <EditCourse isOpen={editCourseIsOpen} holes={holes} courseName={course?.name || ''} courseImage="/course-placeholder.jpg" />
+{/if}

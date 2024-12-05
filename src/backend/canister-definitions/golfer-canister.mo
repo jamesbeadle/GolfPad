@@ -13,7 +13,7 @@ import DTOs "../dtos/DTOs";
 import Environment "../utilities/Environment";
 import T "../data-types/types";
 import Utilities "../utilities/Utilities";
-
+import Debug "mo:base/Debug";
 actor class _GolferCanister() {
 
   private stable var stable_golfer_group_indexes: [(T.PrincipalId, Nat8)] = [];
@@ -77,22 +77,25 @@ actor class _GolferCanister() {
   };
 
   public shared ({caller}) func createGolfer(golferPrincipalId: T.PrincipalId, dto: DTOs.CreateGolferDTO) : async Result.Result<(), T.Error>{
+    Debug.print("Entering golfer canister");
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+    Debug.print("Got backend principal id");
 
     if(totalGolfers >= MAX_GOLFERS_PER_CANISTER){
       return #err(#CanisterFull);
     };
-
+    Debug.print("Total golfers is less than max golfers per canister");
     if(getGolferCountInGroup(activeGroupIndex) >= MAX_GOLFERS_PER_GROUP){
       activeGroupIndex += 1;
     };
-
+    Debug.print("Active group index incremented");
     if(activeGroupIndex > 11){
       canisterFull := true;
       return #err(#CanisterFull);
     };
+    Debug.print("Canister is not full");
 
     let newGolfer: T.Golfer = {
       activeGames = [];
@@ -113,7 +116,7 @@ actor class _GolferCanister() {
       scheduledGames = [];
       gameInvites = [];
     };
-
+    Debug.print("Adding golfer to group");
     addGolfer(newGolfer);
   };  
 
@@ -947,6 +950,7 @@ actor class _GolferCanister() {
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+    Debug.print("Backend Principal ID: " # debug_show(backendPrincipalId));
 
     var groupIndex: ?Nat8 = null;
     for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
@@ -954,13 +958,15 @@ actor class _GolferCanister() {
         groupIndex := ?golferGroupIndex.1;
       }
     };
+    Debug.print("Group Index: " # debug_show(groupIndex));
     switch(groupIndex){
       case (null){ return #err(#NotFound); };
       case (?foundGroupIndex){
         let golfer = findGolfer(foundGroupIndex, golferPrincipalId);
+        Debug.print("Golfer: " # debug_show(golfer));
         switch(golfer){
           case (?foundGolfer){
-            
+            Debug.print("Found Golfer");
             var updatedGolfCourses: [T.GolfCourse] = [];
             
             var golfCourseBuffer = Buffer.fromArray<T.GolfCourse>([]);
@@ -977,7 +983,7 @@ actor class _GolferCanister() {
                 },
               )[0].id + 1;
             };
-
+            Debug.print("Added Course to array");
             var updatedTeeGroups: [T.TeeGroup] = [dto.initialTeeGroup]; 
                 
             let newGolfCourse: T.GolfCourse = {
@@ -1010,6 +1016,7 @@ actor class _GolferCanister() {
               scheduledGames = foundGolfer.scheduledGames;
               gameInvites = foundGolfer.gameInvites;
             };
+            Debug.print("Saving Golfer");
             saveGolfer(foundGroupIndex, updatedGolfer);
           };
           case (null) { return #err(#NotFound); }
@@ -1392,6 +1399,7 @@ actor class _GolferCanister() {
         let group1Buffer = Buffer.fromArray<T.Golfer>(golferGroup1);
         group1Buffer.add(newGolfer);
         golferGroup1 := Buffer.toArray(group1Buffer);
+        Debug.print("Golfer added to group 1");
       };
       case 1{
         let group2Buffer = Buffer.fromArray<T.Golfer>(golferGroup2);

@@ -51,8 +51,8 @@
             <h2 class="text-4xl text-black condensed">MY YARDAGES</h2>
         </div>
         <div class="w-full h-full px-2 pt-4">
-            <div class="flex gap-4 p-4 rounded-lg bg-BrandLightGray">
-                <div class="flex flex-col w-1/3 p-4 rounded-md">
+            <div class="flex flex-col gap-4 p-4 rounded-lg lg:flex-row bg-BrandLightGray">
+                <div class="flex flex-col w-full p-4 rounded-md lg:w-1/3">
                     <label for="yardage-set" class="pb-2 text-2xl text-black condensed">YARDAGE SET</label>
                     <select id="yardage-set" class="p-2 mb-6 text-lg text-black border rounded-md">
                         <option>{yardageSet.name}</option>
@@ -96,18 +96,18 @@
                         </div>
                         <button class="p-2 text-sm text-black rounded-md bg-BrandLightGray">Copy From</button>
                     </div>
-                    <div class="grid grid-cols-3 gap-4 mt-4">
-                        <span class="col-span-1 text-xl text-black condensed">CLUB</span>
-                        <span class="col-span-2 text-xl text-black condensed">YARDS</span>
+                    <div class="grid grid-cols-3 gap-4 mt-4 text-sm sm:text-base">
+                        <span class="col-span-1 text-black condensed">CLUB</span>
+                        <span class="col-span-2 text-black condensed">YARDS</span>
                     </div>
                     {#each yardageSet.clubs as club, index (club.index)}
                         <div class="grid items-center grid-cols-3 gap-4 mt-4 group">
-                            <span class="col-span-1 text-xl text-black condensed">{club.name}</span>
+                            <span class="col-span-1 text-black condensed">{club.name}</span>
                             <div class="flex items-center justify-between col-span-2">
                                 <div class="flex items-center gap-2">
                                     <input
                                         type="number"
-                                        class="w-1/3 p-2 text-lg text-black border rounded-md bg-BrandLightGray focus:outline-none focus:ring-2 focus:ring-BrandForest"
+                                        class="w-1/3 p-2 text-black border rounded-md bg-BrandLightGray focus:outline-none focus:ring-2 focus:ring-BrandForest"
                                         placeholder="Enter"
                                         bind:value={club.yards}
                                     />
