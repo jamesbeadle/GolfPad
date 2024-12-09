@@ -1,1 +1,0 @@
-export { default as component } from "../../../../src/frontend/src/routes/yardages/+page.svelte";
