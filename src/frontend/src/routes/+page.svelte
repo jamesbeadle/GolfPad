@@ -3,7 +3,7 @@
     import { authSignedInStore } from "$lib/derived/auth-derived";
     import { userGetProfilePicture } from "$lib/derived/user-derived";
     import Layout from "./Layout.svelte";
-    
+  
     function handleLogin() {
         let params: AuthSignInParams = {
         domain: import.meta.env.VITE_AUTH_PROVIDER_URL,
@@ -12,8 +12,8 @@
         console.log("Logged in Successfully");
     }
 
-    function handleLogout(){
-        authStore.signOut();
+    function handlePlay() {
+        goto('/games');
     }
 </script>
 <Layout>    
@@ -42,7 +42,7 @@
             class="px-10 py-3 text-sm font-semibold rounded shadow-lg md:px-12 md:text-lg bg-BrandForest text-BrandYellow"
             on:click={handleLogout}
         >
-            SIGN OUT
+            PLAY
         </button>
     {/if}
     

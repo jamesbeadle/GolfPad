@@ -3,7 +3,7 @@ import type { AuthStore } from "$lib/stores/auth-store";
 import type { OptionIdentity } from "$lib/types/identity";
 import { Actor, HttpAgent } from "@dfinity/agent";
 import type { Unsubscriber } from "svelte/store";
-import { idlFactory as backend } from "../../../../declarations/backend";
+import { idlFactory as canister } from "../../../../declarations/backend";
 
 export class ActorFactory {
   static createActor(
@@ -16,7 +16,7 @@ export class ActorFactory {
       host:
         process.env.DFX_NETWORK === "ic"
           ? `https://${canisterId}.icp-api.io`
-          : "http://localhost:8080",
+          : `http://localhost:8080/?canisterId=qhbym-qaaaa-aaaaa-aaafq-cai`,
       identity: identity,
     };
 
@@ -57,7 +57,7 @@ export class ActorFactory {
       host:
         process.env.DFX_NETWORK === "ic"
           ? `https://${canisterId}.icp-api.io`
-          : "http://localhost:8080",
+          : `http://localhost:8080/?canisterId=b77ix-eeaaa-aaaaa-qaada-cai`,
       identity: identity,
     };
 
@@ -84,7 +84,7 @@ export class ActorFactory {
       });
     }).then((identity) => {
       unsubscribe();
-      return ActorFactory.createActor(backend, canisterId, identity);
+      return ActorFactory.createActor(canister, canisterId, identity);
     });
   }
 
@@ -97,7 +97,7 @@ export class ActorFactory {
       host:
         process.env.DFX_NETWORK === "ic"
           ? `https://${canisterId}.icp-api.io`
-          : "http://localhost:8080",
+          : `http://localhost:8080/?canisterId=${canisterId}`,
       identity: identity,
     };
 

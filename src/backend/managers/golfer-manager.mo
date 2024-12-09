@@ -423,9 +423,14 @@ module {
           };
 
           return await golfer_canister.getGolferGameSummaries(principalId, dto);
-        };
+        };   
         case (null){
-          return #err(#NotFound);
+          return #ok({
+            entries = [];
+            limit = 0;
+            offset = 0;
+            totalEntries = 0;
+          });
         }
       };
     };
