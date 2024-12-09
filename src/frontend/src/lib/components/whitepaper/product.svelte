@@ -52,7 +52,7 @@
 {/if}
 
 {#if showBands}
-  <Bands closeModal={closeBands} visible={showBands} />
+  <Bands visible={showBands} closeModal={closeBands} />
 {/if}
 
 {#if showBuildIt}
@@ -73,26 +73,26 @@
     Our first 4 games will be released in the following order and are described in the following sections:
   </p>
 
-  <div class="w-full flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-2">
-    <div class="w-full md:w-1/4 flex flex-col space-y-2">
-      <img src="mulligans.png" alt="mulligans" class="w-full" />
-      <p class="condensed text-3xl md:text-lg text-center">MULLIGANS</p>
-      <button on:click={openMulligans} class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
+  <div class="flex flex-col w-full space-y-4 md:flex-row md:space-y-0 md:space-x-2">
+    <div class="flex flex-col w-full space-y-2 md:w-1/4">
+      <img src="prophet.png" alt="mulligans" class="w-full" />
+      <p class="text-3xl text-center condensed md:text-lg">MULLIGANS</p>
+      <button on:click={openMulligans} class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">Info</button>
     </div>
-    <div class="w-full md:w-1/4 flex flex-col space-y-2">
+    <div class="flex flex-col w-full space-y-2 md:w-1/4">
       <img src="bands.png" alt="bands" class="w-full" />
-      <p class="condensed text-3xl md:text-lg text-center">BANDS</p>
-      <button on:click={openBands} class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
+      <p class="text-3xl text-center condensed md:text-lg">BANDS</p>
+      <button on:click={openBands} class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">Info</button>
     </div>
-    <div class="w-full md:w-1/4 flex flex-col space-y-2">
+    <div class="flex flex-col w-full space-y-2 md:w-1/4">
       <img src="build-it.png" alt="build-it" class="w-full" />
-      <p class="condensed text-3xl md:text-lg text-center">BUILD IT</p>
-      <button on:click={openBuildIt} class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
+      <p class="text-3xl text-center condensed md:text-lg">BUILD IT</p>
+      <button on:click={openBuildIt} class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">Info</button>
     </div>
-    <div class="w-full md:w-1/4 flex flex-col space-y-2">
+    <div class="flex flex-col w-full space-y-2 md:w-1/4">
       <img src="next-up.png" alt="next-up" class="w-full" />
-      <p class="condensed text-3xl md:text-lg text-center">NEXT UP</p>
-      <button on:click={openNextUp} class="bg-GolfPadForest text-GolfPadYellow px-4 py-2 rounded text-xs">Info</button>
+      <p class="text-3xl text-center condensed md:text-lg">NEXT UP</p>
+      <button on:click={openNextUp} class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">Info</button>
     </div>
   </div>
 </div>

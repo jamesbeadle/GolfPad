@@ -69,7 +69,7 @@
   
 <style>
     .nav-overlay {
-    @apply bg-GolfPadYellow fixed top-0 left-0 w-screen h-full z-50 flex flex-col justify-between overflow-x-hidden;
+    @apply bg-BrandYellow fixed top-0 left-0 w-screen h-full z-50 flex flex-col justify-between overflow-x-hidden;
   }
   
     .nav-item {

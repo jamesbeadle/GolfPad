@@ -272,6 +272,7 @@ module Types {
     #Mulligans;
     #NextUp;
     #BuildIt;
+    #Prophet;
   };
 
   public type GameStatus = {

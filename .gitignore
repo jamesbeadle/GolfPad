@@ -17,4 +17,3 @@ src/declarations/
 node_modules/
 dist/
 .svelte-kit/
-

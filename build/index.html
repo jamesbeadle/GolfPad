@@ -66,7 +66,6 @@
     <link rel="preload" href="/golfball.png" as="image" />
     <link rel="preload" href="/golfball_mobile.png" as="image" />
     <link rel="preload" href="/boat.png" as="image" />
-    <link rel="preload" href="/hero.png" as="image" />
     <link rel="preload" href="/panel-bg.png" as="image" />
     <link rel="preload" href="/roadmap.png" as="image" />
     <link rel="preload" href="/token.png" as="image" />
@@ -125,6 +124,10 @@
 		<link rel="modulepreload" href="/_app/immutable/entry/app.BD_WU3C0.js">
 
     <style>
+      :root {
+        --GolfPadYellow: #f4c802;
+      }
+
       html,
       body {
         height: 100%;
@@ -166,7 +169,7 @@
         color: white !important;
         height: 100vh;
         margin: 0;
-        background-color: #f4c802;
+        background-color: var(--GolfPadYellow);
       }
 
       #app-spinner {
