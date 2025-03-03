@@ -9,7 +9,6 @@
     import EditIcon from "$lib/icons/edit-icon.svelte";
     import AddImage from "$lib/components/profile/add-image.svelte";
     import AddHomeCourse from "$lib/components/profile/add-home-course.svelte";
-    import AddYardages from "$lib/components/profile/add-shots.svelte";
     import { authStore } from "$lib/stores/auth-store";
     import { userGetProfilePicture } from "$lib/derived/user.derived";
 
@@ -49,8 +48,7 @@
 
     let isImageModalOpen: boolean = false;
     let isHomeCourseModalOpen: boolean = false;
-    let isYardagesModalOpen: boolean = false;
-
+    
     let isCreating = false;
     let error = '';
 
@@ -296,34 +294,6 @@
                                 />
                             {/if}
                         </div>
-                        </div>
-                    </div>
-                    <div class="w-full px-0 lg:w-1/3 lg:px-4">
-                        <h3 class="text-xl text-black condensed">YARDAGES</h3>
-                        <div class="flex flex-col h-[calc(100%-1rem)] p-4 rounded-lg bg-BrandLightGray">
-                            <div class="flex flex-col h-full bg-white rounded-lg">
-                                <div class="flex items-center justify-between p-2 text-black lg:py-4 lg:mx-4 condensed">
-                                    <span>CLUB</span>
-                                    <span>YARDS</span>
-                                </div>
-                                <div class="flex items-center justify-center flex-1">
-                                    <p class="px-8 text-sm text-center text-BrandDarkGray">No yardages have been added. Click the button below to get started.</p>
-                                </div>
-                                <div class="px-4 pb-4">
-                                    <button 
-                                    class="w-full p-2 rounded text-BrandYellow bg-BrandForest hover:bg-green-700"
-                                    on:click={() => isYardagesModalOpen = true}
-                                    >
-                                        ADD YARDAGES
-                                    </button>
-                                    {#if isYardagesModalOpen}
-                                    <AddYardages 
-                                        isOpen={isYardagesModalOpen} 
-                                        on:close={() => isYardagesModalOpen = false}
-                                    />
-                                    {/if}
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

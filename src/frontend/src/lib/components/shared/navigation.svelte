@@ -6,7 +6,7 @@
     import { authSignedInStore } from "$lib/derived/auth.derived";
     import { authStore } from "$lib/stores/auth-store";
   
-    type Route = 'home' | 'whitepaper' | 'team' | 'game-rules' | 'games';
+    type Route = 'home' | 'whitepaper' | 'game-rules' | 'games';
   
     export let expanded: boolean = false;
     export let selectedRoute: Route = 'home';
@@ -16,8 +16,7 @@
       { name: 'HOME', route: 'home' },
       { name: 'MY GAMES', route: 'games' },
       { name: 'WHITEPAPER', route: 'whitepaper' },
-      { name: 'GAME RULES', route: 'game-rules' },
-      { name: 'TEAM', route: 'team' }
+      { name: 'GAME RULES', route: 'game-rules' }
     ]);
   
     function selectRoute(route: Route) {
@@ -46,9 +45,6 @@
           break;
         case '/whitepaper':
           selectedRoute = 'whitepaper';
-          break;
-        case '/team':
-          selectedRoute = 'team';
           break;
         case '/game-rules':
           selectedRoute = 'game-rules';
@@ -128,6 +124,8 @@
 
     {#if $authSignedInStore}
       <div class="nav-item expanded">
+
+        <a class="brand-button" href="/profile">Profile</a>
               
         <button 
             class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow"
@@ -152,3 +150,5 @@
       </div>
     </div>
 {/if}
+
+

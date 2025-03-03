@@ -11,15 +11,15 @@
   import { appStore } from "$lib/stores/app-store";
     import { writable } from "svelte/store";
     import { initAuthWorker } from "$lib/services/worker-auth.service";
-    import exp from "constants";
     import Toasts from "$lib/components/toasts/toasts.svelte";
     import Navigation from "$lib/components/shared/navigation.svelte";
+    import Landing from "$lib/components/landing/landing.svelte";
+    import Header from "$lib/components/shared/header.svelte";
 
   let worker: { syncAuthIdle: (auth: AuthStoreData) => void } | undefined;
 
   let isLoading = true;
   let isLoggedIn = false;
-  let showApps = writable(false);
   let selectedRoute: 'home' | 'whitepaper' = 'home';
   let expanded = false;
 
@@ -81,40 +81,15 @@
     {#if isLoading}
       <FullScreenSpinner />
     {:else}
-      
-      <div class="relative flex flex-col min-h-screen">
-        <div class="flex-none h-[80px] relative">
-          <div class="absolute z-10 top-4 left-4">
-            <button
-              on:click={toggleNav}
-              class="flex items-center justify-center w-12 h-12 text-2xl font-bold text-white bg-black rounded-full shadow-md">
-              +
-            </button>
-          </div>
-          <div class="absolute z-10 top-4 right-4">
-            <a href="/">
-              <span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span>
-            </a>
-          </div>
-        </div>
-
-        <Navigation {expanded} {selectedRoute} {toggleNav}/>
-
-        <div class="{isHomepage ? 'bg-BrandYellow  items-center justify-center relative' : 'bg-white'} flex-1 flex">
+      <Header {toggleNav} />
+      {#if isLoggedIn}
+        <div class="bg-white flex-1 flex">
           <slot />
         </div>
-
-        {#if !isHomepage}
-        <div class="bg-BrandYellow flex-none relative h-[50px] mt-auto">
-          <div class="absolute z-10 bottom-4 left-4">
-            <a href="/whitepaper" class="text-sm font-medium text-black">WHITEPAPER |</a> 
-            <a href="/team" class="text-sm font-medium text-black">TEAM |</a> 
-            <a target="_blank" href="https://github.com/jamesbeadle/golfpad" class="text-sm font-medium text-black">GITHUB</a> 
-          </div>
-        </div>
-        {/if}
-      </div>
-
+      {:else}
+        <Landing />
+      {/if}
+      <Navigation {expanded} {selectedRoute} {toggleNav}/>
       <Toasts />
     {/if}
   </div>
