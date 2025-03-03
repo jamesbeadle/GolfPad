@@ -1,11 +1,12 @@
 <script lang="ts">
-    import { Modal } from "@dfinity/gix-components";
+    import Modal from "$lib/components/shared/modal.svelte";
+
     
     export let visible: boolean;
     export let closeModal: () => void;
   </script>
   
-  <Modal {visible} on:nnsClose={closeModal}>
+  <Modal showModal={visible} onClose={closeModal}>
     <div class="mx-4 p-4">
       <div class="flex justify-between items-center mb-4">
         <p class="condensed text-3xl">NEXT UP</p>

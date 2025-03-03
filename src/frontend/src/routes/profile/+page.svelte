@@ -11,7 +11,7 @@
     import AddHomeCourse from "$lib/components/profile/add-home-course.svelte";
     import AddYardages from "$lib/components/profile/add-yardages.svelte";
     import { authStore } from "$lib/stores/auth-store";
-    import { userGetProfilePicture } from "$lib/derived/user-derived";
+    import { userGetProfilePicture } from "$lib/derived/user.derived";
 
 
     let existingFriends = [

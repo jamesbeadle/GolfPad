@@ -1,11 +1,10 @@
-interface ErrorResponse {
-  err: {
-    NotFound?: null;
-  };
-}
+import * as FlagIcons from "svelte-flag-icons";
 
-export function isError(response: any): response is ErrorResponse {
-  return response && response.err !== undefined;
+export function uint8ArrayToBase64(bytes: Uint8Array): string {
+  const binary = Array.from(bytes)
+    .map((byte) => String.fromCharCode(byte))
+    .join("");
+  return btoa(binary);
 }
 
 export function formatUnixDateToReadable(unixNano: number) {
@@ -29,13 +28,6 @@ export function formatUnixDateToSmallReadable(unixNano: number) {
   };
 
   return new Intl.DateTimeFormat("en-UK", options).format(date);
-}
-
-export function formatDateStringtoBigInt(dateString: string): bigint {
-  const date = new Date(dateString);
-  const timestampMilliseconds = date.getTime();
-  let nanoseconds = BigInt(timestampMilliseconds) * BigInt(1000000);
-  return nanoseconds;
 }
 
 export function getCountdownTime(unixNano: number) {
@@ -76,6 +68,61 @@ export function formatUnixTimeToTime(unixTimeNano: number): string {
   return `${hours}:${minutesStr} ${ampm}`;
 }
 
+export function formatUnixToDateInputValue(unixNano: number) {
+  const date = new Date(unixNano / 1000000);
+  const year = date.getFullYear();
+  let month = (date.getMonth() + 1).toString();
+  let day = date.getDate().toString();
+
+  month = month.length < 2 ? "0" + month : month;
+  day = day.length < 2 ? "0" + day : day;
+
+  return `${year}-${month}-${day}`;
+}
+
+export function convertDateInputToUnixNano(dateString: string): bigint {
+  const dateParts = dateString.split("-");
+  if (dateParts.length !== 3) {
+    throw new Error("Invalid date format. Expected YYYY-MM-DD");
+  }
+
+  const year = parseInt(dateParts[0], 10);
+  const month = parseInt(dateParts[1], 10) - 1;
+  const day = parseInt(dateParts[2], 10);
+
+  const date = new Date(year, month, day);
+  const unixTimeMillis = date.getTime();
+  return BigInt(unixTimeMillis) * BigInt(1000000);
+}
+
+export function convertDateTimeInputToUnixNano(dateTimeString: string): bigint {
+  const [datePart, timePart] = dateTimeString.split("T");
+
+  const dateParts = datePart.split("-");
+  if (dateParts.length !== 3) {
+    throw new Error("Invalid date format. Expected YYYY-MM-DD");
+  }
+  const year = parseInt(dateParts[0], 10);
+  const month = parseInt(dateParts[1], 10) - 1;
+  const day = parseInt(dateParts[2], 10);
+
+  let hours = 0,
+    minutes = 0,
+    seconds = 0;
+  if (timePart) {
+    const timeParts = timePart.split(":");
+    hours = parseInt(timeParts[0], 10);
+    minutes = parseInt(timeParts[1], 10);
+    if (timeParts.length === 3) {
+      seconds = parseInt(timeParts[2], 10);
+    }
+  }
+
+  const date = new Date(year, month, day, hours, minutes, seconds);
+  const unixTimeMillis = date.getTime();
+  return BigInt(unixTimeMillis) * BigInt(1000000);
+}
+
 export function convertDateToReadable(nanoseconds: number): string {
   const milliseconds = nanoseconds / 1e6;
   const date = new Date(milliseconds);
@@ -100,146 +147,405 @@ export function calculateAgeFromNanoseconds(nanoseconds: number) {
   return age;
 }
 
-import * as FlagIcons from "svelte-flag-icons";
-export function getFlagComponent(countryCode: string) {
-  switch (countryCode) {
-    case "Albania":
+export function getFlagComponent(countryId: number) {
+  switch (countryId) {
+    case 1:
+      return FlagIcons.Af;
+    case 2:
       return FlagIcons.Al;
-    case "Algeria":
+    case 3:
       return FlagIcons.Dz;
-    case "Argentina":
+    case 4:
+      return FlagIcons.Ad;
+    case 5:
+      return FlagIcons.Ao;
+    case 6:
+      return FlagIcons.Ag;
+    case 7:
       return FlagIcons.Ar;
-    case "Australia":
+    case 8:
+      return FlagIcons.Am;
+    case 9:
       return FlagIcons.Au;
-    case "Austria":
+    case 10:
       return FlagIcons.At;
-    case "Belgium":
+    case 11:
+      return FlagIcons.Az;
+    case 12:
+      return FlagIcons.Bs;
+    case 13:
+      return FlagIcons.Bh;
+    case 14:
+      return FlagIcons.Bd;
+    case 15:
+      return FlagIcons.Bb;
+    case 16:
+      return FlagIcons.By;
+    case 17:
       return FlagIcons.Be;
-    case "Bosnia and Herzegovina":
+    case 18:
+      return FlagIcons.Bz;
+    case 20:
+      return FlagIcons.Bt;
+    case 21:
+      return FlagIcons.Bo;
+    case 22:
       return FlagIcons.Ba;
-    case "Brazil":
+    case 23:
+      return FlagIcons.Bw;
+    case 24:
       return FlagIcons.Br;
-    case "Burkina Faso":
+    case 25:
+      return FlagIcons.Bn;
+    case 26:
+      return FlagIcons.Bg;
+    case 27:
       return FlagIcons.Bf;
-    case "Cameroon":
+    case 28:
+      return FlagIcons.Bi;
+    case 29:
+      return FlagIcons.Cv;
+    case 30:
+      return FlagIcons.Kh;
+    case 31:
       return FlagIcons.Cm;
-    case "Canada":
+    case 32:
       return FlagIcons.Ca;
-    case "Colombia":
+    case 33:
+      return FlagIcons.Cf;
+    case 34:
+      return FlagIcons.Td;
+    case 35:
+      return FlagIcons.Cl;
+    case 36:
+      return FlagIcons.Cn;
+    case 37:
       return FlagIcons.Co;
-    case "Costa Rica":
-      return FlagIcons.Cr;
-    case "Croatia":
-      return FlagIcons.Hr;
-    case "Czech Republic":
-      return FlagIcons.Cz;
-    case "Denmark":
-      return FlagIcons.Dk;
-    case "DR Congo":
+    case 38:
+      return FlagIcons.Km;
+    case 39:
+      return FlagIcons.Cd;
+    case 40:
       return FlagIcons.Cg;
-    case "Ecuador":
-      return FlagIcons.Ec;
-    case "Egypt":
-      return FlagIcons.Eg;
-    case "England":
-      return FlagIcons.Gb;
-    case "Estonia":
-      return FlagIcons.Ee;
-    case "Finland":
-      return FlagIcons.Fi;
-    case "France":
-      return FlagIcons.Fr;
-    case "Gabon":
-      return FlagIcons.Ga;
-    case "Germany":
-      return FlagIcons.De;
-    case "Ghana":
-      return FlagIcons.Gh;
-    case "Greece":
-      return FlagIcons.Gr;
-    case "Grenada":
-      return FlagIcons.Gd;
-    case "Guinea":
-      return FlagIcons.Gn;
-    case "Iceland":
-      return FlagIcons.Is;
-    case "Iran":
-      return FlagIcons.Ir;
-    case "Ireland":
-      return FlagIcons.Ie;
-    case "Israel":
-      return FlagIcons.Il;
-    case "Italy":
-      return FlagIcons.It;
-    case "Ivory Coast":
+    case 41:
+      return FlagIcons.Cr;
+    case 42:
       return FlagIcons.Ci;
-    case "Jamaica":
+    case 43:
+      return FlagIcons.Hr;
+    case 44:
+      return FlagIcons.Cu;
+    case 45:
+      return FlagIcons.Cy;
+    case 46:
+      return FlagIcons.Cz;
+    case 47:
+      return FlagIcons.Dk;
+    case 48:
+      return FlagIcons.Dj;
+    case 49:
+      return FlagIcons.Dm;
+    case 50:
+      return FlagIcons.Do;
+    case 51:
+      return FlagIcons.Ec;
+    case 52:
+      return FlagIcons.Eg;
+    case 53:
+      return FlagIcons.Sv;
+    case 54:
+      return FlagIcons.Gq;
+    case 55:
+      return FlagIcons.Er;
+    case 56:
+      return FlagIcons.Ee;
+    case 57:
+      return FlagIcons.Sz;
+    case 58:
+      return FlagIcons.Et;
+    case 59:
+      return FlagIcons.Fj;
+    case 60:
+      return FlagIcons.Fi;
+    case 61:
+      return FlagIcons.Fr;
+    case 62:
+      return FlagIcons.Ga;
+    case 63:
+      return FlagIcons.Gm;
+    case 64:
+      return FlagIcons.Ge;
+    case 65:
+      return FlagIcons.De;
+    case 66:
+      return FlagIcons.Gh;
+    case 67:
+      return FlagIcons.Gr;
+    case 68:
+      return FlagIcons.Gd;
+    case 69:
+      return FlagIcons.Gt;
+    case 70:
+      return FlagIcons.Gn;
+    case 71:
+      return FlagIcons.Gm;
+    case 72:
+      return FlagIcons.Gy;
+    case 73:
+      return FlagIcons.Ht;
+    case 74:
+      return FlagIcons.Hn;
+    case 75:
+      return FlagIcons.Hu;
+    case 76:
+      return FlagIcons.Is;
+    case 77:
+      return FlagIcons.In;
+    case 78:
+      return FlagIcons.Id;
+    case 79:
+      return FlagIcons.Ir;
+    case 80:
+      return FlagIcons.Iq;
+    case 81:
+      return FlagIcons.Ie;
+    case 82:
+      return FlagIcons.Il;
+    case 83:
+      return FlagIcons.It;
+    case 84:
       return FlagIcons.Jm;
-    case "Japan":
+    case 85:
       return FlagIcons.Jp;
-    case "Macedonia":
-      return FlagIcons.Mk;
-    case "Mali":
-      return FlagIcons.Ml;
-    case "Mexico":
-      return FlagIcons.Mx;
-    case "Montserrat":
-      return FlagIcons.Ms;
-    case "Morocco":
-      return FlagIcons.Ma;
-    case "Netherlands":
-      return FlagIcons.Nl;
-    case "Nigeria":
-      return FlagIcons.Ne;
-    case "Northern Ireland":
-      return FlagIcons.Gb;
-    case "Norway":
-      return FlagIcons.No;
-    case "Paraguay":
-      return FlagIcons.Py;
-    case "Poland":
-      return FlagIcons.Pl;
-    case "Portugal":
-      return FlagIcons.Pt;
-    case "Scotland":
-      return FlagIcons.Gb;
-    case "Senegal":
-      return FlagIcons.Sn;
-    case "Serbia":
-      return FlagIcons.Rs;
-    case "Slovakia":
-      return FlagIcons.Sk;
-    case "South Africa":
-      return FlagIcons.Za;
-    case "South Korea":
+    case 86:
+      return FlagIcons.Jo;
+    case 87:
+      return FlagIcons.Kz;
+    case 88:
+      return FlagIcons.Ke;
+    case 89:
+      return FlagIcons.Ki;
+    case 90:
+      return FlagIcons.Kp;
+    case 91:
       return FlagIcons.Kr;
-    case "Spain":
+    case 92:
+      return FlagIcons.Xk;
+    case 93:
+      return FlagIcons.Kw;
+    case 94:
+      return FlagIcons.Kg;
+    case 95:
+      return FlagIcons.La;
+    case 96:
+      return FlagIcons.Lv;
+    case 97:
+      return FlagIcons.Lb;
+    case 98:
+      return FlagIcons.Ls;
+    case 99:
+      return FlagIcons.Lr;
+    case 100:
+      return FlagIcons.Ly;
+    case 101:
+      return FlagIcons.Li;
+    case 102:
+      return FlagIcons.Lt;
+    case 103:
+      return FlagIcons.Lu;
+    case 104:
+      return FlagIcons.Mg;
+    case 105:
+      return FlagIcons.Mw;
+    case 106:
+      return FlagIcons.My;
+    case 107:
+      return FlagIcons.Mv;
+    case 108:
+      return FlagIcons.Ml;
+    case 109:
+      return FlagIcons.Mt;
+    case 110:
+      return FlagIcons.Mh;
+    case 111:
+      return FlagIcons.Mr;
+    case 112:
+      return FlagIcons.Mu;
+    case 113:
+      return FlagIcons.Mx;
+    case 114:
+      return FlagIcons.Fm;
+    case 115:
+      return FlagIcons.Md;
+    case 116:
+      return FlagIcons.Mc;
+    case 117:
+      return FlagIcons.Mn;
+    case 118:
+      return FlagIcons.Me;
+    case 119:
+      return FlagIcons.Ma;
+    case 120:
+      return FlagIcons.Mz;
+    case 121:
+      return FlagIcons.Mm;
+    case 122:
+      return FlagIcons.Na;
+    case 123:
+      return FlagIcons.Nr;
+    case 124:
+      return FlagIcons.Np;
+    case 125:
+      return FlagIcons.Nl;
+    case 126:
+      return FlagIcons.Nz;
+    case 127:
+      return FlagIcons.Ni;
+    case 128:
+      return FlagIcons.Ne;
+    case 129:
+      return FlagIcons.Ne;
+    case 130:
+      return FlagIcons.Mk;
+    case 131:
+      return FlagIcons.No;
+    case 132:
+      return FlagIcons.Om;
+    case 133:
+      return FlagIcons.Pk;
+    case 134:
+      return FlagIcons.Pw;
+    case 135:
+      return FlagIcons.Pa;
+    case 136:
+      return FlagIcons.Pg;
+    case 137:
+      return FlagIcons.Py;
+    case 138:
+      return FlagIcons.Pe;
+    case 139:
+      return FlagIcons.Ph;
+    case 140:
+      return FlagIcons.Pl;
+    case 141:
+      return FlagIcons.Pt;
+    case 142:
+      return FlagIcons.Qa;
+    case 143:
+      return FlagIcons.Ro;
+    case 144:
+      return FlagIcons.Ru;
+    case 145:
+      return FlagIcons.Rw;
+    case 146:
+      return FlagIcons.Kn;
+    case 147:
+      return FlagIcons.Lc;
+    case 148:
+      return FlagIcons.Vc;
+    case 149:
+      return FlagIcons.Ws;
+    case 150:
+      return FlagIcons.Sm;
+    case 151:
+      return FlagIcons.St;
+    case 152:
+      return FlagIcons.Sa;
+    case 153:
+      return FlagIcons.Sn;
+    case 154:
+      return FlagIcons.Rs;
+    case 155:
+      return FlagIcons.Sc;
+    case 156:
+      return FlagIcons.Sl;
+    case 157:
+      return FlagIcons.Sg;
+    case 158:
+      return FlagIcons.Sk;
+    case 159:
+      return FlagIcons.Si;
+    case 160:
+      return FlagIcons.Sb;
+    case 161:
+      return FlagIcons.So;
+    case 162:
+      return FlagIcons.Za;
+    case 163:
+      return FlagIcons.Ss;
+    case 164:
       return FlagIcons.Es;
-    case "Sweden":
+    case 165:
+      return FlagIcons.Lk;
+    case 166:
+      return FlagIcons.Sd;
+    case 167:
+      return FlagIcons.Sr;
+    case 168:
       return FlagIcons.Se;
-    case "Switzerland":
+    case 169:
       return FlagIcons.Ch;
-    case "Tunisia":
+    case 170:
+      return FlagIcons.Sy;
+    case 171:
+      return FlagIcons.Tw;
+    case 172:
+      return FlagIcons.Tj;
+    case 173:
+      return FlagIcons.Tz;
+    case 174:
+      return FlagIcons.Th;
+    case 175:
+      return FlagIcons.Tl;
+    case 176:
+      return FlagIcons.Tg;
+    case 177:
+      return FlagIcons.To;
+    case 178:
+      return FlagIcons.Tt;
+    case 179:
       return FlagIcons.Tn;
-    case "Turkey":
+    case 180:
       return FlagIcons.Tr;
-    case "Ukraine":
+    case 181:
+      return FlagIcons.Tm;
+    case 182:
+      return FlagIcons.Tv;
+    case 183:
+      return FlagIcons.Ug;
+    case 184:
       return FlagIcons.Ua;
-    case "United States":
-      return FlagIcons.Us;
-    case "Uruguay":
-      return FlagIcons.Uy;
-    case "Wales":
+    case 185:
+      return FlagIcons.Ae;
+    case 186:
       return FlagIcons.Gb;
-    case "Zimbabwe":
+    case 187:
+      return FlagIcons.Us;
+    case 188:
+      return FlagIcons.Uy;
+    case 189:
+      return FlagIcons.Uz;
+    case 190:
+      return FlagIcons.Vu;
+    case 191:
+      return FlagIcons.Va;
+    case 192:
+      return FlagIcons.Ve;
+    case 193:
+      return FlagIcons.Vn;
+    case 194:
+      return FlagIcons.Ye;
+    case 195:
+      return FlagIcons.Zm;
+    case 196:
       return FlagIcons.Zw;
     default:
       return null;
   }
 }
 
-export function getDateFromBigInt(dateMS: bigint): string {
-  const dateInMilliseconds = Number(dateMS / 1000000n);
+export function getDateFromBigInt(dateMS: number): string {
+  const dateInMilliseconds = Number(dateMS / 1000000);
   const date = new Date(dateInMilliseconds);
   const monthNames = [
     "Jan",
@@ -258,103 +564,130 @@ export function getDateFromBigInt(dateMS: bigint): string {
   return `${monthNames[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
-export function isUsernameValid(username: string): boolean {
-  if (!username === undefined) {
-    return false;
+interface ErrorResponse {
+  err: {
+    NotFound?: null;
+  };
+}
+
+interface SuccessResponse {
+  ok: any;
+}
+export function isError(response: any): response is ErrorResponse {
+  return response && response.err !== undefined;
+}
+
+export function isSuccess(response: any): response is SuccessResponse {
+  return response && response.ok !== undefined;
+}
+
+export function getMonthFromNumber(month: number): string {
+  switch (month) {
+    case 1:
+      return "January";
+    case 2:
+      return "February";
+    case 3:
+      return "March";
+    case 4:
+      return "April";
+    case 5:
+      return "May";
+    case 6:
+      return "June";
+    case 7:
+      return "July";
+    case 8:
+      return "August";
+    case 9:
+      return "September";
+    case 10:
+      return "October";
+    case 11:
+      return "November";
+    case 12:
+      return "December";
   }
-  const alphanumericRegex = /^[a-zA-Z0-9]+$/;
-  return (
-    username.length > 0 &&
-    username.length <= 16 &&
-    alphanumericRegex.test(username)
+
+  return "";
+}
+
+enum PlayerEvent {
+  Appearance,
+  Goal,
+  GoalAssisted,
+  GoalConceded,
+  KeeperSave,
+  CleanSheet,
+  PenaltySaved,
+  PenaltyMissed,
+  YellowCard,
+  RedCard,
+  OwnGoal,
+  HighestScoringPlayer,
+}
+
+enum Position {
+  GOALKEEPER,
+  DEFENDER,
+  MIDFIELDER,
+  FORWARD,
+}
+
+export function getImageURL(blob: any): string {
+  let byteArray;
+  if (blob && typeof blob === "object" && !Array.isArray(blob)) {
+    const values = Object.values(blob);
+    if (values.length === 0) {
+      return "/profile_placeholder.png";
+    }
+    byteArray = Uint8Array.from(Object.values(blob));
+  } else if (Array.isArray(blob) && blob[0] instanceof Uint8Array) {
+    byteArray = blob[0];
+  } else if (blob instanceof Uint8Array) {
+    byteArray = blob;
+  } else if (typeof blob === "string") {
+    if (blob.startsWith("data:image")) {
+      return blob;
+    } else if (!blob.startsWith("/profile_placeholder.png")) {
+      return `data:png;base64,${blob}`;
+    }
+  }
+
+  if (byteArray) {
+    return `data:image/png;base64,${uint8ArrayToBase64(byteArray)}`;
+  }
+
+  return "/profile_placeholder.png";
+}
+
+export function serializeData(data: any): string {
+  return JSON.stringify(data, (_, value) =>
+    typeof value === "bigint" ? `${value}n` : value,
   );
 }
 
-export function isDisplayNameValid(displayName: string): boolean {
-  if (!displayName === undefined) {
-    return false;
-  }
-  const alphanumericSpaceRegex = /^[a-zA-Z0-9 ]+$/;
-  return (
-    displayName.length > 0 &&
-    displayName.length <= 30 &&
-    alphanumericSpaceRegex.test(displayName)
-  );
+export function deserializeData(data: string): any {
+  return JSON.parse(data, (_, value) => {
+    if (typeof value === "string" && /^\d+n$/.test(value)) {
+      return BigInt(value.slice(0, -1));
+    }
+    return value;
+  });
 }
 
-export function isNameValid(name: string): boolean {
-  if (!name === undefined) {
-    return false;
-  }
-  if (name.length == 0) {
-    return true;
-  } else {
-    const alphanumericSpaceDashRegex = /^[a-zA-Z0-9 \-]+$/;
-    return name.length <= 30 && alphanumericSpaceDashRegex.test(name);
-  }
+export interface Deferred<T> {
+  promise: Promise<T>;
+  resolve: (value: T | PromiseLike<T>) => void;
+  reject: (reason?: any) => void;
 }
 
-export function isEmailValid(email: string): boolean {
-  if (!email === undefined) {
-    return false;
-  }
-  if (email.length == 0) {
-    return true;
-  } else {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return email.length <= 254 && emailRegex.test(email);
-  }
-}
-
-export function isPhoneValid(phone: string): boolean {
-  if (!phone === undefined) {
-    return false;
-  }
-  if (phone.length == 0) {
-    return true;
-  } else {
-    const phoneRegex = /^[a-zA-Z0-9 +()-]+$/;
-    return phone.length <= 30 && phoneRegex.test(phone);
-  }
-}
-
-export function isOtherContactValid(otherContact: string): boolean {
-  if (!otherContact === undefined) {
-    return false;
-  }
-  if (otherContact.length == 0) {
-    return true;
-  } else {
-    const otherContactRegex = /^[a-zA-Z0-9 +()-@]+$/;
-    return otherContact.length <= 30 && otherContactRegex.test(otherContact);
-  }
-}
-
-export function isProfessionValid(profession: string): boolean {
-  if (profession === undefined) {
-    return false;
-  }
-  if (profession.length == 0) {
-    return true;
-  } else {
-    const alphanumericSpaceDashRegex = /^[a-zA-Z0-9 \-]+$/;
-    return (
-      profession.length <= 50 && alphanumericSpaceDashRegex.test(profession)
-    );
-  }
-}
-
-export function getFileExtensionFromFile(file: File): string {
-  const filename = file.name;
-
-  const lastIndex = filename.lastIndexOf(".");
-
-  return lastIndex !== -1 ? filename.substring(lastIndex + 1) : "";
-}
-
-export function uint8ArrayToBase64(bytes: Uint8Array): string {
-  const binary = Array.from(bytes)
-    .map((byte) => String.fromCharCode(byte))
-    .join("");
-  return btoa(binary);
+export function createDeferred<T>(): Deferred<T> {
+  let resolve: (value: T | PromiseLike<T>) => void;
+  let reject: (reason?: any) => void;
+  const promise = new Promise<T>((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+  return { promise, resolve: resolve!, reject: reject! };
 }

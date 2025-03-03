@@ -3,7 +3,7 @@
     import { writable } from "svelte/store";
     import { goto, afterNavigate } from "$app/navigation";
     import { page } from "$app/stores";
-    import { authSignedInStore } from "$lib/derived/auth-derived";
+    import { authSignedInStore } from "$lib/derived/auth.derived";
     import { authStore } from "$lib/stores/auth-store";
   
     type Route = 'home' | 'whitepaper' | 'team' | 'game-rules' | 'games';

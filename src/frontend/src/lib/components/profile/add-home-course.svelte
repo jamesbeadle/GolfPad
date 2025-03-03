@@ -174,12 +174,7 @@
   
 {#if isOpen}
     <div class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-0">
-        <button
-            type="button"
-            class="absolute inset-0 bg-black bg-opacity-50"
-            on:click={handleClose}
-        ></button>
-
+       
         <div class="relative z-10 w-full md:w-[80vw] lg:w-[60vw] h-[95vh] overflow-y-auto bg-white rounded-lg shadow-xl">
             <div class="flex items-center justify-between p-3 md:p-4">
                 <h2 class="text-2xl text-black md:text-3xl condensed">ADD HOME COURSE</h2>

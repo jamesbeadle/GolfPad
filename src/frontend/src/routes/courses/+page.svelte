@@ -4,7 +4,7 @@
     import Layout from "../Layout.svelte";
     import { courseStore } from "$lib/stores/course-store";
     import type {GolfCourseDTO, PaginationFilters, TeeGroup} from './../../../../declarations/backend/backend.did.d.ts';
-    import { getCourseImage } from "$lib/derived/user-derived";
+    import { getCourseImage } from "$lib/derived/user.derived";
     
     let courses: GolfCourseDTO[] = [];
     let isAddHomeCourseModalOpen = false;

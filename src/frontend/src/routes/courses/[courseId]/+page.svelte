@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getCourseImage } from '$lib/derived/user-derived';
+	import { getCourseImage } from '$lib/derived/user.derived';
     import Layout from "../../Layout.svelte";
     import { onMount } from 'svelte';
     import { courseStore } from '$lib/stores/course-store';

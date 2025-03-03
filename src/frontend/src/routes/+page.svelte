@@ -1,15 +1,19 @@
 <script lang="ts">
     import { authStore, type AuthSignInParams } from "$lib/stores/auth-store";
-    import { authSignedInStore } from "$lib/derived/auth-derived";
-    import { userGetProfilePicture } from "$lib/derived/user-derived";
+    import { authSignedInStore } from "$lib/derived/auth.derived";
+    import { userGetProfilePicture } from "$lib/derived/user.derived";
     import Layout from "./Layout.svelte";
+    import { goto } from "$app/navigation";
   
     function handleLogin() {
         let params: AuthSignInParams = {
         domain: import.meta.env.VITE_AUTH_PROVIDER_URL,
         };
         authStore.signIn(params);
-        console.log("Logged in Successfully");
+    }
+
+    function handleLogout() {
+        authStore.signOut();
     }
 
     function handlePlay() {

@@ -1,1 +1,2 @@
-import{k as m}from"../chunks/index.CcGU-OsC.js";export{m as component};
+import { k as m } from "../chunks/index.CcGU-OsC.js";
+export { m as component };

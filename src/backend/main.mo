@@ -1,4 +1,5 @@
 import Result "mo:base/Result";
+import Base "mo:waterway-mops/BaseTypes";
 import Principal "mo:base/Principal";
 import Time "mo:base/Time";
 import Option "mo:base/Option";
@@ -11,12 +12,23 @@ import GolfCourseManager "managers/golf-course-manager";
 import GameManager "managers/game-manager";
 import Environment "utilities/Environment";
 import Debug "mo:base/Debug";
+import BaseCommands "commands/base_commands";
 
 actor Self {
 
   private let golferManager = GolferManager.GolferManager();
   private let courseManager = GolfCourseManager.GolfCourseManager();
   private let gameManager = GameManager.GameManager();
+
+  
+  private var appStatus: Base.AppStatus = { 
+    onHold = false;
+    version = "0.0.1";
+  };  
+
+  public shared query func getAppStatus() : async Result.Result<BaseCommands.AppStatusDTO, T.Error> {
+    return #ok(appStatus);
+  };
 
   private stable var golfCourses: [DTOs.GolfCourseDTO] = [
       {
@@ -725,5 +737,7 @@ actor Self {
     courseManager.setStableUniqueCanisterIds(stable_unique_golf_course_canister_ids);
     gameManager.setStableUniqueCanisterIds(stable_unique_game_canister_ids);
   };
+
+  
 
 };
