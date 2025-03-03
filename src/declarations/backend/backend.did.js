@@ -108,6 +108,11 @@ export const idlFactory = ({ IDL }) => {
     updatedTeeGroup: IDL.Opt(TeeGroup),
     courseId: GolfCourseId,
   });
+  const AppStatusDTO = IDL.Record({
+    version: IDL.Text,
+    onHold: IDL.Bool,
+  });
+  const Result_12 = IDL.Variant({ ok: AppStatusDTO, err: Error });
   const PaginationFilters = IDL.Record({
     offset: IDL.Nat,
     limit: IDL.Nat,
@@ -302,6 +307,7 @@ export const idlFactory = ({ IDL }) => {
     deleteYardageSet: IDL.Func([DeleteYardageSetDTO], [Result], []),
     executeAddGolfCourse: IDL.Func([CreateGolfCourseDTO], [], []),
     executeUpdateGolfCourse: IDL.Func([UpdateGolfCourseDTO], [], []),
+    getAppStatus: IDL.Func([], [Result_12], ["query"]),
     getDummyGames: IDL.Func([PaginationFilters], [Result_11], []),
     getGame: IDL.Func([GetGameDTO], [Result_10], []),
     getGolfer: IDL.Func([GetGolferDTO], [Result_9], []),

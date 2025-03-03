@@ -91,6 +91,11 @@ type Result_2 =
    err: Error;
    ok: FriendRequestsDTO;
  };
+type Result_12 = 
+ variant {
+   err: Error;
+   ok: AppStatusDTO;
+ };
 type Result_11 = 
  variant {
    err: Error;
@@ -362,6 +367,11 @@ type BandsPrediction =
    wontHitTreeOrBunkerStartHole: HoleNumber;
    wontLoseBallStartHole: HoleNumber;
  };
+type AppStatusDTO = 
+ record {
+   onHold: bool;
+   version: text;
+ };
 type AddGameScoreDTO = 
  record {
    detail: GameScoreSubmissionDTO;
@@ -386,6 +396,7 @@ service : {
   deleteYardageSet: (DeleteYardageSetDTO) -> (Result);
   executeAddGolfCourse: (CreateGolfCourseDTO) -> ();
   executeUpdateGolfCourse: (UpdateGolfCourseDTO) -> ();
+  getAppStatus: () -> (Result_12) query;
   getDummyGames: (PaginationFilters) -> (Result_11);
   getGame: (GetGameDTO) -> (Result_10);
   getGolfer: (GetGolferDTO) -> (Result_9);

@@ -13,6 +13,10 @@ export interface AddGameScoreDTO {
   gameId: GameId;
   detail: GameScoreSubmissionDTO;
 }
+export interface AppStatusDTO {
+  version: string;
+  onHold: boolean;
+}
 export interface BandsPrediction {
   wontHitTreeOrBunkerStartHole: HoleNumber;
   underParStartHole: HoleNumber;
@@ -251,6 +255,7 @@ export type Result = { ok: null } | { err: Error };
 export type Result_1 = { ok: GolfersDTO } | { err: Error };
 export type Result_10 = { ok: GameDTO } | { err: Error };
 export type Result_11 = { ok: Array<GameDTO> } | { err: Error };
+export type Result_12 = { ok: AppStatusDTO } | { err: Error };
 export type Result_2 = { ok: FriendRequestsDTO } | { err: Error };
 export type Result_3 = { ok: CoursesDTO } | { err: Error };
 export type Result_4 = { ok: YardageSetDTO } | { err: Error };
@@ -316,6 +321,7 @@ export interface _SERVICE {
   deleteYardageSet: ActorMethod<[DeleteYardageSetDTO], Result>;
   executeAddGolfCourse: ActorMethod<[CreateGolfCourseDTO], undefined>;
   executeUpdateGolfCourse: ActorMethod<[UpdateGolfCourseDTO], undefined>;
+  getAppStatus: ActorMethod<[], Result_12>;
   getDummyGames: ActorMethod<[PaginationFilters], Result_11>;
   getGame: ActorMethod<[GetGameDTO], Result_10>;
   getGolfer: ActorMethod<[GetGolferDTO], Result_9>;
