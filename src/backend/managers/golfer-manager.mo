@@ -17,6 +17,7 @@ import Array "mo:base/Array";
 import Blob "mo:base/Blob";
 import Debug "mo:base/Debug";
 import Base "mo:waterway-mops/BaseTypes";
+import GolferCommands "../commands/golfer_commands";
 
 module {
   public class GolferManager() {
@@ -27,7 +28,7 @@ module {
     private var uniqueGolferCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGolfers : Nat = 0;
     
-    public func createGolfer(principalId: T.GolferId, dto: DTOs.CreateGolferDTO) : async Result.Result<(), T.Error> {
+    public func createGolfer(dto: GolferCommands.CreateGolfer) : async Result.Result<(), T.Error> {
       
       if(Text.size(dto.username) < 5 or Text.size(dto.username) > 20){
         return #err(#TooLong);
@@ -80,7 +81,7 @@ module {
       };    
     };
       
-    public func updateGolfer(principalId: T.GolferId, dto: DTOs.UpdateGolferDTO) : async Result.Result<(), T.Error> {
+    public func updateGolfer(principalId: T.GolferId, dto: GolferCommands.UpdateGolfer) : async Result.Result<(), T.Error> {
       
       if(Text.size(dto.username) < 5 or Text.size(dto.username) > 20){
         return #err(#TooLong);

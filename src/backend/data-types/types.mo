@@ -50,7 +50,7 @@ module Types {
     firstName: Text;
     lastName: Text;
     handicap: ?Handicap;
-    homeCourseId: GolfCourseId;
+    homeCourseId: ?GolfCourseId;
     termsAgreed: Bool;
     profilePicture: ?Blob;
     profilePictureFileExtension: Text;

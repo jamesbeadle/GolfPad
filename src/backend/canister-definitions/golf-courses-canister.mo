@@ -9,6 +9,8 @@ import Time "mo:base/Time";
 import DTOs "../dtos/DTOs";
 import Environment "../utilities/Environment";
 import T "../data-types/types";
+import GolfCourseQueries "../queries/golf_course_queries";
+import GolfCourseCommands "../commands/golf_course_commands";
 
 actor class _GolfCoursesCanister() {
 
@@ -124,21 +126,21 @@ actor class _GolfCoursesCanister() {
 
   //Public endpoints:
 
-  public shared ({caller}) func getGolfCourse(dto: DTOs.GetGolfCourseDTO) : async Result.Result<DTOs.GolfCourseDTO, T.Error>{
+  public shared ({caller}) func getGolfCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<DTOs.GolfCourseDTO, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
 
     var groupIndex: ?Nat8 = null;
     for (golfCourseGroupIndex in Iter.fromArray(stable_golf_course_group_indexes)) {
-      if(golfCourseGroupIndex.0 == dto.courseId){
+      if(golfCourseGroupIndex.0 == dto.golfCourseId){
         groupIndex := ?golfCourseGroupIndex.1;
       }
     };
     switch(groupIndex){
       case (null){ return #err(#NotFound); };
       case (?foundGroupIndex){
-        let golfCourse = findGolfCourse(foundGroupIndex, dto.courseId);
+        let golfCourse = findGolfCourse(foundGroupIndex, dto.golfCourseId);
         switch(golfCourse){
           case (?foundGolfCourse){
             return #ok({
@@ -171,7 +173,7 @@ actor class _GolfCoursesCanister() {
     nextCourseId := nextId;
   };
 
-  public shared ({caller}) func createGolfCourse(dto: DTOs.CreateGolfCourseDTO) : async Result.Result<(), T.Error>{
+  public shared ({caller}) func createGolfCourse(dto: GolfCourseCommands.CreateGolfCourse) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -201,7 +203,7 @@ actor class _GolfCoursesCanister() {
     return addGolfCourse(activeGroupIndex, newCourse);
   };
 
-  public shared ({caller}) func updateGolfCourse(dto: DTOs.UpdateGolfCourseDTO) : async Result.Result<(), T.Error>{
+  public shared ({caller}) func updateGolfCourse(dto: GolfCourseCommands.UpdateGolfCourse) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -264,7 +266,7 @@ actor class _GolfCoursesCanister() {
     };
   };
 
-  public shared ({caller}) func deleteGolfCourse(dto: DTOs.DeleteGolfCourseDTO) : async Result.Result<(), T.Error>{
+  public shared ({caller}) func deleteGolfCourse(dto: GolfCourseCommands.DeleteGolfCourse) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;

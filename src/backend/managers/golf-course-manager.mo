@@ -15,6 +15,10 @@ import Environment "../utilities/Environment";
 import Cycles "mo:base/ExperimentalCycles";
 import Array "mo:base/Array";
 import Base "mo:waterway-mops/BaseTypes";
+import GolferCommands "../commands/golfer_commands";
+import GolferQueries "../queries/golfer_queries";
+import GolfCourseQueries "../queries/golf_course_queries";
+import GolfCourseCommands "../commands/golf_course_commands";
 
 module {
   public class GolfCourseManager() {
@@ -30,7 +34,8 @@ module {
       return Option.isSome(course);
     };
 
-    public func listCourses(dto: DTOs.PaginationFilters, searchTerm: Text) : async Result.Result<DTOs.CoursesDTO, T.Error> {
+    public func listCourses(dto: GolfCourseQueries.ListCourses) : async Result.Result<DTOs.CoursesDTO, T.Error> {
+      let searchTerm = dto.searchTerm;
       let filteredEntries = List.filter<(T.GolfCourseId, Text)>(
         Iter.toList<(T.GolfCourseId, Text)>(golfCourseNames.entries()),
         func(entry : (T.GolfCourseId, Text)) : Bool {
@@ -44,7 +49,7 @@ module {
       let coursesBuffer = Buffer.fromArray<DTOs.GolfCourseDTO>([]);
 
       for (entry in Iter.fromList(paginatedEntries)){
-        let course = await getGolfCourse(entry.0);
+        let course = await getGolfCourse({ golfCourseId = entry.0 });
         switch(course){
           case (#ok foundCourse){
             coursesBuffer.add(foundCourse);
@@ -58,20 +63,20 @@ module {
       });
     };
 
-    public func getCourse(dto: DTOs.GetGolfCourseDTO) : async Result.Result<DTOs.GolfCourseDTO, T.Error> {
-      return await getGolfCourse(dto.courseId);
+    public func getCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<DTOs.GolfCourseDTO, T.Error> {
+      return await getGolfCourse(dto);
     };
 
-    private func getGolfCourse(courseId: T.GolfCourseId) : async Result.Result<DTOs.GolfCourseDTO, T.Error> {
-      let existingGolfCourseCanisterId = golfCourseCanisterIndex.get(courseId);
+    private func getGolfCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<DTOs.GolfCourseDTO, T.Error> {
+      let existingGolfCourseCanisterId = golfCourseCanisterIndex.get(dto.golfCourseId);
       switch(existingGolfCourseCanisterId){
         case (?foundCanisterId){
 
           let golfCourse_canister = actor (foundCanisterId) : actor {
-            getGolfCourse : (dto: DTOs.GetGolfCourseDTO) -> async Result.Result<DTOs.GolfCourseDTO, T.Error>;
+            getGolfCourse : (dto: GolfCourseQueries.GetGolfCourse) -> async Result.Result<DTOs.GolfCourseDTO, T.Error>;
           };
 
-          return await golfCourse_canister.getGolfCourse({ courseId = courseId });
+          return await golfCourse_canister.getGolfCourse({ golfCourseId = dto.golfCourseId });
         };
         case (null){
           return #err(#NotFound);
@@ -79,7 +84,7 @@ module {
       };
     };
 
-    public func validateAddGolfCourse(dto : DTOs.CreateGolfCourseDTO) : T.RustResult {
+    public func validateAddGolfCourse(dto : GolfCourseCommands.CreateGolfCourse) : T.RustResult {
       
       if(Text.size(dto.name) > 100){
         return #Err("Golf Course name too long, max 100 characters.");
@@ -92,10 +97,10 @@ module {
       return #Ok("Proposal Valid");
     };
 
-    public func executeAddGolfCourse(dto : DTOs.CreateGolfCourseDTO) : async () {
+    public func executeAddGolfCourse(dto : GolfCourseCommands.CreateGolfCourse) : async () {
       var golf_course_canister = actor (activeCanisterId) : actor {
         getLatestId : () -> async T.GolfCourseId;
-        createGolfCourse : (dto: DTOs.CreateGolfCourseDTO) -> async Result.Result<(), T.Error>;
+        createGolfCourse : (dto: GolfCourseCommands.CreateGolfCourse) -> async Result.Result<(), T.Error>;
         isCanisterFull : () -> async Bool;
       };
 
@@ -109,7 +114,7 @@ module {
 
         golf_course_canister := actor (activeCanisterId) : actor {
           getLatestId : () -> async T.GolfCourseId;
-          createGolfCourse : (dto: DTOs.CreateGolfCourseDTO) -> async Result.Result<(), T.Error>;
+          createGolfCourse : (dto: GolfCourseCommands.CreateGolfCourse) -> async Result.Result<(), T.Error>;
           isCanisterFull : () -> async Bool;
        };
 
@@ -118,7 +123,7 @@ module {
       let _ = await golf_course_canister.createGolfCourse(dto);
     };
 
-    public func validateUpdateGolfCourse(dto : DTOs.UpdateGolfCourseDTO) : T.RustResult {
+    public func validateUpdateGolfCourse(dto : GolfCourseCommands.UpdateGolfCourse) : T.RustResult {
       
       if(Text.size(dto.name) > 100){
         return #Err("Golf Course name too long, max 100 characters.");
@@ -136,13 +141,13 @@ module {
       return #Ok("Proposal Valid");
     };
 
-    public func executeUpdateGolfCourse(dto : DTOs.UpdateGolfCourseDTO) : async () {
+    public func executeUpdateGolfCourse(dto : GolfCourseCommands.UpdateGolfCourse) : async () {
 
       let golfCourseCanisterId = golfCourseCanisterIndex.get(dto.courseId);
       switch(golfCourseCanisterId){
         case (?foundCanisterId){
           let golf_course_canister = actor (foundCanisterId) : actor {
-            updateGolfCourse : (dto: DTOs.UpdateGolfCourseDTO) -> async Result.Result<(), T.Error>;
+            updateGolfCourse : (dto:  GolfCourseCommands.UpdateGolfCourse) -> async Result.Result<(), T.Error>;
           };
           let _ = await golf_course_canister.updateGolfCourse(dto);
         };

@@ -16,6 +16,8 @@ import Option "mo:base/Option";
 
 import Debug "mo:base/Debug";
 import Base "mo:waterway-mops/BaseTypes";
+import GameCommands "../commands/game_commands";
+import GameQueries "../queries/game_queries";
 
 module {
   public class GameManager() {
@@ -25,7 +27,7 @@ module {
     private var uniqueGameCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGames : Nat = 0;
 
-    public func createGame(dto: DTOs.CreateGameDTO, courseSnapshot: DTOs.GolfCourseSnaphotDTO) : async Result.Result<T.GameId, T.Error> {
+    public func createGame(dto: GameCommands.CreateGame, courseSnapshot: DTOs.GolfCourseSnaphotDTO) : async Result.Result<T.GameId, T.Error> {
       
       assert Option.isNull(Array.find<T.GolferId>(dto.inviteIds, func(playerId: T.GolferId){ playerId == dto.createdById  }));
       
@@ -47,7 +49,7 @@ module {
       };
       Debug.print("Past Switch");
       var game_canister = actor (activeCanisterId) : actor {
-        createGame : (dto: DTOs.CreateGameDTO, courseSnapshot: DTOs.GolfCourseSnaphotDTO) -> async Result.Result<T.GameId, T.Error>;
+        createGame : (dto: GameCommands.CreateGame, courseSnapshot: DTOs.GolfCourseSnaphotDTO) -> async Result.Result<T.GameId, T.Error>;
         getLatestId : () -> async T.GameId;
         isCanisterFull : () -> async Bool;
       };
@@ -56,7 +58,7 @@ module {
         case "" {
           await createNewCanister(1);
           game_canister := actor (activeCanisterId) : actor {
-            createGame : (dto: DTOs.CreateGameDTO, courseSnapshot: DTOs.GolfCourseSnaphotDTO) -> async Result.Result<T.GameId, T.Error>;
+            createGame : (dto: GameCommands.CreateGame, courseSnapshot: DTOs.GolfCourseSnaphotDTO) -> async Result.Result<T.GameId, T.Error>;
             getLatestId : () -> async T.GameId;
             isCanisterFull : () -> async Bool;
           };
@@ -68,7 +70,7 @@ module {
             let nextId: T.GameId = latestId + 1;
             await createNewCanister(nextId);
             game_canister := actor (activeCanisterId) : actor {
-              createGame : (dto: DTOs.CreateGameDTO, courseSnapshot: DTOs.GolfCourseSnaphotDTO) -> async Result.Result<T.GameId, T.Error>;
+              createGame : (dto: GameCommands.CreateGame, courseSnapshot: DTOs.GolfCourseSnaphotDTO) -> async Result.Result<T.GameId, T.Error>;
               getLatestId : () -> async T.GameId;
               isCanisterFull : () -> async Bool;
             };
@@ -79,12 +81,12 @@ module {
       return await game_canister.createGame(dto, courseSnapshot);
     };
 
-    public func getGame(dto: DTOs.GetGameDTO) : async Result.Result<DTOs.GameDTO, T.Error> {
+    public func getGame(dto: GameQueries.GetGame) : async Result.Result<DTOs.GameDTO, T.Error> {
       let gameCanisterId = gameCanisterIndex.get(dto.gameId);
       switch(gameCanisterId){
         case (?foundCanisterId){
           let game_canister = actor (foundCanisterId) : actor {
-            getGame : (dto: DTOs.GetGameDTO) -> async Result.Result<DTOs.GameDTO, T.Error>;
+            getGame : (dto: GameQueries.GetGame) -> async Result.Result<DTOs.GameDTO, T.Error>;
           };
           return await game_canister.getGame(dto);
         };
@@ -93,12 +95,12 @@ module {
       return #err(#NotFound);
     };
 
-    public func addGameInvites(dto: DTOs.AddGameInvitesDTO) : async Result.Result<(), T.Error>{
+    public func addGameInvites(dto: GameCommands.AddGameInvites) : async Result.Result<(), T.Error>{
       let gameCanisterId = gameCanisterIndex.get(dto.gameId);
       switch(gameCanisterId){
         case (?foundCanisterId){
           let game_canister = actor (foundCanisterId) : actor {
-            addGameInvites : (dto: DTOs.AddGameInvitesDTO) -> async Result.Result<(), T.Error>;
+            addGameInvites : (dto: GameCommands.AddGameInvites) -> async Result.Result<(), T.Error>;
           };
           return await game_canister.addGameInvites(dto);
         };
@@ -107,12 +109,12 @@ module {
       return #err(#NotFound);
     };
 
-    public func acceptGameInvite( dto: DTOs.AcceptGameInviteDTO) : async Result.Result<(), T.Error>{
+    public func acceptGameInvite( dto: GameCommands.AcceptGameInvite) : async Result.Result<(), T.Error>{
       let gameCanisterId = gameCanisterIndex.get(dto.gameId);
       switch(gameCanisterId){
         case (?foundCanisterId){
           let game_canister = actor (foundCanisterId) : actor {
-            acceptGameInvite : (dto: DTOs.AcceptGameInviteDTO) -> async Result.Result<(), T.Error>;
+            acceptGameInvite : (dto: GameCommands.AcceptGameInvite) -> async Result.Result<(), T.Error>;
           };
           return await game_canister.acceptGameInvite(dto);
         };
@@ -121,7 +123,7 @@ module {
       return #err(#NotFound);
     };
 
-    public func addGameScore(submittedById: T.GolferId, dto: DTOs.AddGameScoreDTO) :async  Result.Result<(), T.Error> {
+    public func addGameScore(submittedById: T.GolferId, dto: GameCommands.AddGameScore) :async  Result.Result<(), T.Error> {
       
       let existingGame = await getGame({ gameId = dto.gameId });
 
@@ -140,7 +142,7 @@ module {
           switch(gameCanisterId){
             case (?foundCanisterId){
               let game_canister = actor (foundCanisterId) : actor {
-                addGameScore : (dto: DTOs.AddGameScoreDTO) -> async Result.Result<(), T.Error>;
+                addGameScore : (dto: GameCommands.AddGameScore) -> async Result.Result<(), T.Error>;
               };
               return await game_canister.addGameScore(dto);
             };
@@ -154,7 +156,7 @@ module {
       
     };
 
-    public func beginGame(golferPrincipalId: T.GolferId, dto: DTOs.BeginGameDTO) : async Result.Result<(), T.Error> {
+    public func beginGame(golferPrincipalId: T.GolferId, dto: GameCommands.BeginGame) : async Result.Result<(), T.Error> {
       let existingGame = await getGame({ gameId = dto.gameId });
 
       switch(existingGame){
@@ -172,7 +174,7 @@ module {
           switch(gameCanisterId){
             case (?foundCanisterId){
               let game_canister = actor (foundCanisterId) : actor {
-                beginGame : (dto: DTOs.BeginGameDTO) -> async Result.Result<(), T.Error>;
+                beginGame : (dto: GameCommands.BeginGame) -> async Result.Result<(), T.Error>;
               };
               return await game_canister.beginGame(dto);
             };

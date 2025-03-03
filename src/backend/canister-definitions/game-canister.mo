@@ -10,6 +10,10 @@ import Int8 "mo:base/Int8";
 import DTOs "../dtos/DTOs";
 import Environment "../utilities/Environment";
 import T "../data-types/types";
+import GolferCommands "../commands/golfer_commands";
+import GolferQueries "../queries/golfer_queries";
+import GameCommands "../commands/game_commands";
+import GameQueries "../queries/game_queries";
 
 actor class _GameCanister() {
 
@@ -81,7 +85,7 @@ actor class _GameCanister() {
     nextGameId := nextId;
   };
 
-  public shared ({ caller }) func createGame(dto: DTOs.CreateGameDTO, courseSnapshot: DTOs.GolfCourseSnaphotDTO) : async Result.Result<T.GameId, T.Error>{
+  public shared ({ caller }) func createGame(dto: GameCommands.CreateGame, courseSnapshot: DTOs.GolfCourseSnaphotDTO) : async Result.Result<T.GameId, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -387,7 +391,7 @@ actor class _GameCanister() {
     return (totalGames >= MAX_GAMES_PER_CANISTER);
   };
 
-  public shared ({ caller }) func getGame(dto: DTOs.GetGameDTO) : async Result.Result<DTOs.GameDTO, T.Error>{
+  public shared ({ caller }) func getGame(dto: GameQueries.GetGame) : async Result.Result<DTOs.GameDTO, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -427,7 +431,7 @@ actor class _GameCanister() {
     };
   };
 
-  public shared ({ caller }) func addGameInvites(dto: DTOs.AddGameInvitesDTO) : async Result.Result<(), T.Error>{
+  public shared ({ caller }) func addGameInvites(dto: GameCommands.AddGameInvites) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -473,7 +477,7 @@ actor class _GameCanister() {
     };
   };
 
-  public shared ({ caller }) func acceptGameInvite(dto: DTOs.AcceptGameInviteDTO) : async Result.Result<(), T.Error>{
+  public shared ({ caller }) func acceptGameInvite(dto: GameCommands.AcceptGameInvite) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -524,7 +528,7 @@ actor class _GameCanister() {
     };
   };
 
-  public shared ({ caller }) func addGameScore(dto: DTOs.AddGameScoreDTO) : async Result.Result<(), T.Error>{
+  public shared ({ caller }) func addGameScore(dto: GameCommands.AddGameScore) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -629,7 +633,7 @@ actor class _GameCanister() {
     };
   };
 
-  public shared ({ caller }) func beginGame(dto: DTOs.BeginGameDTO) : async Result.Result<(), T.Error>{
+  public shared ({ caller }) func beginGame(dto: GameCommands.BeginGame) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
