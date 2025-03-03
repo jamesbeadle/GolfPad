@@ -7,7 +7,7 @@
     import { courseStore } from "$lib/stores/course-store";
     import { playerStore } from "$lib/stores/player-store";
     import type { CreateGameDTO, GolfCourseDTO, GameType, PaginationFilters, GolfersDTO, TeeGroup } from "../../../../../declarations/backend/backend.did";
-    import { formatDateStringtoBigInt } from "$lib/utils/helpers";
+    import { convertDateTimeInputToUnixNano } from "$lib/utils/helpers";
     
     export let gameTitle: string;
     export let opponentConfig: {
@@ -92,7 +92,7 @@
             return;
         }
         
-        const teeOffTime = formatDateStringtoBigInt(teeOffDateTime);
+        const teeOffTime = convertDateTimeInputToUnixNano(teeOffDateTime);
         
         const dto: CreateGameDTO = {
             createdById: "Kelly-Howlett",

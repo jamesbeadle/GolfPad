@@ -41,12 +41,7 @@
   
   {#if isOpen}
     <div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0">
-      <button
-        class="absolute inset-0 bg-black bg-opacity-50"
-        on:click={handleClose}
-        type="button"
-        aria-label="Close"
-      ></button>
+      
       <div class="relative z-10 w-full sm:w-[90vw] md:w-[60vw] lg:w-[40vw] bg-white rounded-lg shadow-xl">
         <div class="flex items-center justify-between p-4 sm:p-5">
           <h2 class="text-2xl text-black sm:text-3xl condensed">UPLOAD IMAGE</h2>

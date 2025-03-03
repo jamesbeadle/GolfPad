@@ -25,13 +25,7 @@
 
 {#if isOpen}
     <div class="fixed inset-0 z-50 flex items-center justify-center">
-        <button
-            type="button"
-            class="absolute inset-0 bg-black bg-opacity-50"
-            on:click={handleClose}
-        ></button>
-
-        <div class="relative z-50 w-full md:h-auto md:w-[60vw] overflow-y-auto bg-white rounded-lg">
+               <div class="relative z-50 w-full md:h-auto md:w-[60vw] overflow-y-auto bg-white rounded-lg">
             <div class="sticky top-0 z-10 flex items-center justify-between p-3 bg-white border-b md:p-4">
                 <h2 class="text-2xl text-black md:text-3xl condensed">EDIT HOME COURSE</h2>
                 <button 
