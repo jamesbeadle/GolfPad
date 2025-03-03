@@ -63,4 +63,24 @@ module DTOs {
         principalId: T.GolferId;
         requestTime: Int;
     };
+
+    public type GolfersDTO = {
+        golfers: [GolferSummaryDTO];
+    };
+
+    public type GolferSummaryDTO = {
+        golferPrincipalId: T.GolferId;
+        golferName: Text;
+        golferPicture: ?Blob;
+        golferPictureExtension: Text;
+        handicap: ?T.Handicap;
+    };
+
+    public type GolferGameSummariesDTO = {
+        entries: [T.GameSummary];
+        totalEntries: Nat;
+        limit: Nat;
+        offset: Nat;
+    };
+
 }

@@ -15,6 +15,7 @@ import Debug "mo:base/Debug";
 import BaseCommands "commands/base_commands";
 import GolferCommands "commands/golfer_commands";
 import GolferQueries "queries/golfer_queries";
+import GolfCourseCommands "commands/golf_course_commands";
 
 actor Self {
 
@@ -33,7 +34,7 @@ actor Self {
 
   //SNS Functions
 
-  public shared query ({ caller }) func validateAddGolfCourse(dto : DTOs.CreateGolfCourseDTO) : async T.RustResult {
+  public shared query ({ caller }) func validateAddGolfCourse(dto : GolfCourseCommands.CreateGolfCourse) : async T.RustResult {
     assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
     
     //Todo when functionality available: Make cross subnet call to governance canister to see if proposal already exists
@@ -41,12 +42,12 @@ actor Self {
     return courseManager.validateAddGolfCourse(dto);
   };
 
-  public shared ({ caller }) func executeAddGolfCourse(dto : DTOs.CreateGolfCourseDTO) : async () {
+  public shared ({ caller }) func executeAddGolfCourse(dto : GolfCourseCommands.CreateGolfCourse) : async () {
     assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
     return await courseManager.executeAddGolfCourse(dto);
   };
 
-  public shared query ({ caller }) func validateUpdateGolfCourse(dto : DTOs.UpdateGolfCourseDTO) : async T.RustResult {
+  public shared query ({ caller }) func validateUpdateGolfCourse(dto : GolfCourseCommands.UpdateGolfCourse) : async T.RustResult {
     assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
     
     //Todo when functionality available: Make cross subnet call to governance canister to see if proposal already exists
@@ -54,7 +55,7 @@ actor Self {
     return courseManager.validateUpdateGolfCourse(dto);
   };
 
-  public shared ({ caller }) func executeUpdateGolfCourse(dto : DTOs.UpdateGolfCourseDTO) : async () {
+  public shared ({ caller }) func executeUpdateGolfCourse(dto : GolfCourseCommands.UpdateGolfCourse) : async () {
     assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
     return await courseManager.executeUpdateGolfCourse(dto);
   };
@@ -70,63 +71,63 @@ actor Self {
 
   //check username available
 
-  public shared ({ caller }) func createGolfer(dto: GolfCommands.CreateGolfer) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func createGolfer(dto: GolferCommands.CreateGolfer) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return await golferManager.createGolfer(dto);
   };
 
-  public shared ({ caller }) func updateUsername(dto: GolfCommands.UpdateUsername) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateUsername(dto: GolferCommands.UpdateUsername) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.updateUsername(dto);
   };
 
-  public shared ({ caller }) func updateProfilePicture(dto: GolfCommands.UpdateProfilePicture) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateProfilePicture(dto: GolferCommands.UpdateProfilePicture) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.updateProfilePicture(dto);
   };
 
-  public shared ({ caller }) func updateHandicap(dto: GolfCommands.UpdateHandicap) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateHandicap(dto: GolferCommands.UpdateHandicap) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.updateHandicap(dto);
   };
 
-  public shared ({ caller }) func updateHomeCourse(dto: GolfCommands.UpdateHomeCourse) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateHomeCourse(dto: GolferCommands.UpdateHomeCourse) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.updateHomeCourse(dto);
   };
     
-  public shared ({ caller }) func acceptFriendRequest(dto: GolfCommands.AcceptFriendRequest) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func acceptFriendRequest(dto: GolferCommands.AcceptFriendRequest) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert await golferManager.friendRequestExists(principalId, dto.requestedBy);
-    return await golferManager.acceptFriendRequest(principalId, dto);
+    assert dto.principalId == Principal.toText(caller);
+    assert await golferManager.friendRequestExists(dto.principalId, dto.requestedBy);
+    return await golferManager.acceptFriendRequest(dto);
   };
     
-  public shared ({ caller }) func rejectFriendRequest(dto: GolfCommands.RejectFriendRequest) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func rejectFriendRequest(dto: GolferCommands.RejectFriendRequest) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return await golferManager.rejectFriendRequest(principalId, dto);
+    assert dto.principalId == Principal.toText(caller);
+    return await golferManager.rejectFriendRequest(dto);
   };
     
-  public shared ({ caller }) func sendFriendRequest(dto: GolfCommands.SendFriendRequest) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func sendFriendRequest(dto: GolferCommands.SendFriendRequest) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return await golferManager.sendFriendRequest(principalId, dto);
+    assert dto.principalId == Principal.toText(caller);
+    return await golferManager.sendFriendRequest(dto);
   };
 
 
   //get profile
 
 
-  public shared ({ caller }) func listFriendRequests(dto: GolfQueries.ListFriendRequests) : async Result.Result<DTOs.FriendRequestsDTO, T.Error> {
+  public shared ({ caller }) func listFriendRequests(dto: GolferQueries.ListFriendRequests) : async Result.Result<DTOs.FriendRequestsDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return await golferManager.listFriendRequests(principalId, dto);
+    assert dto.principalId == Principal.toText(caller);
+    return await golferManager.listFriendRequests(dto);
   };
 
 

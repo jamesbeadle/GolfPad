@@ -10,8 +10,6 @@ import Int8 "mo:base/Int8";
 import DTOs "../dtos/DTOs";
 import Environment "../utilities/Environment";
 import T "../data-types/types";
-import GolferCommands "../commands/golfer_commands";
-import GolferQueries "../queries/golfer_queries";
 import GameCommands "../commands/game_commands";
 import GameQueries "../queries/game_queries";
 
