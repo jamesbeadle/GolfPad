@@ -1,9 +1,9 @@
+import Base "mo:waterway-mops/BaseTypes";
+import GolfEnums "golf_enums";
+
 
 module Types {
 
-  public type PrincipalId = Text;
-  public type CanisterId = Text;
-  public type CalendarMonth = Nat8;
   public type ImageId = Nat;
   public type HoleNumber = Nat8;
   public type GolfCourseId = Nat;
@@ -14,6 +14,9 @@ module Types {
   public type ClubIndex = Nat16;
   public type CourseHistoryId = Nat16;
   public type GolfCourseVersion = Nat8;
+
+  public type GolferId = Base.PrincipalId;
+  public type GolfShotId = Nat;
   
   public type RustResult = { #Ok : Text; #Err : Text };
 
@@ -33,28 +36,61 @@ module Types {
     #CreateGameError;
   };
 
+
+
+
+
+
+
+
+
   public type Golfer = {
-    principalId: PrincipalId;
+    principalId: GolferId;
     username: Text;
-    profilePicture: ?Blob;
-    profilePictureFileExtension: Text;
+    firstName: Text;
+    lastName: Text;
     handicap: ?Handicap;
     homeCourseId: GolfCourseId;
+    termsAgreed: Bool;
+    profilePicture: ?Blob;
+    profilePictureFileExtension: Text;
+    favouriteGolfCourseIds: [GolfCourseId];
+    shots: [GolfShot];
+
+
     upcomingGames: [GameId];
     activeGames: [GameId];
     completedGames: [GameId];
     gameSummaries: [GameSummary];
     scheduledGames: [GameSummary];
-    yardageSets: [YardageSet];
     friendRequests: [FriendRequest];
-    friends: [PrincipalId];
-    courses: [GolfCourse];
+    friends: [Base.PrincipalId];
     buzzFeed: [BuzzFeedItem];
     gameInvites: [GameInvite];
   };
 
+  public type GolfShot = {
+    id: GolfShotId;
+    golferId: GolferId;
+    club: GolfEnums.GolfClub;
+    yardage: Nat;
+    lie: ?GolfEnums.Lie;
+    shotIntention: ?GolfEnums.ShotIntention;
+    shotResult: ?GolfEnums.ShotResult;
+    weatherType: ?GolfEnums.WeatherType;
+    shotStartPosition: ?GolfEnums.ShotPosition;
+    shotEndPosition: ?GolfEnums.ShotPosition;
+    swingLength: ?GolfEnums.SwingLength;
+    shotTime: Int;
+  }; 
+
+
+
+
+
+
   public type GameInvite = {
-    inviteFrom: PrincipalId;
+    inviteFrom: GolferId;
     gameId: GameId;
   };
 
@@ -79,25 +115,13 @@ module Types {
 
   public type GameSummary = {
     gameType: GameType;
-    players: [PrincipalId];
+    players: [GolferId];
     status: GameStatus;
     date: Int;
   };
 
-  public type YardageSet = {
-    id: YardageSetId;
-    name: Text;
-    clubs: [YardageClub];
-  };
-
-  public type YardageClub = {
-    index: ClubIndex;
-    name: Text;
-    yards: Nat16;
-  };
-
   public type FriendRequest = {
-    requestedBy : PrincipalId;
+    requestedBy : GolferId;
     requestedOn: Int;
   };
 
@@ -150,7 +174,7 @@ module Types {
     number: Nat8;
     tees: [TeeInfo];
     name: Text;
-    images: [(CanisterId, ImageId)];
+    images: [(Base.CanisterId, ImageId)];
   };
 
   public type TeeInfo = {
@@ -162,7 +186,7 @@ module Types {
   };
 
   public type Round = {
-    playerId: PrincipalId;
+    playerId: GolferId;
     courseId: GolfCourseId;
     holeScores: [HoleScore];
   };
@@ -171,7 +195,7 @@ module Types {
     hole: HoleNumber;
     shots: Nat;
     recorded: Nat;
-    recordedBy: PrincipalId;
+    recordedBy: GolferId;
   };
 
 
@@ -190,9 +214,9 @@ module Types {
     events: [GolferEvent];
     courseSnapshot: GolfCourseSnapshot;
     teeOffTime: Int;
-    playerIds: [PrincipalId];
-    invites: [PrincipalId];
-    winner: PrincipalId;
+    playerIds: [GolferId];
+    invites: [GolferId];
+    winner: GolferId;
   };
 
   public type GameScoreDetail = {
@@ -203,12 +227,12 @@ module Types {
     results: [MulligansHoleResult];
     golfer1HolesWonCount: Nat8;
     golfer2HolesWonCount: Nat8;
-    winner: PrincipalId;
+    winner: GolferId;
   };
 
   public type MulligansHoleResult = {
     holeNumber: HoleNumber;
-    winner: PrincipalId;
+    winner: GolferId;
     golfer1MulliganUsed: Bool;
     golfer2MulliganUsed: Bool;
   };
@@ -221,7 +245,7 @@ module Types {
   };
 
   public type BandsPrediction = {
-    golferId: PrincipalId;
+    golferId: GolferId;
     wontLoseBallStartHole: HoleNumber;
     wontHitTreeOrBunkerStartHole: HoleNumber;
     hit2Of3FairwaysStartHole: HoleNumber;
@@ -238,7 +262,7 @@ module Types {
   };
 
   public type GolferEvent = {
-    golferId: PrincipalId;
+    golferId: GolferId;
     hole: HoleNumber;
     event: GolfEvent;
     //the score each player gets on a hole
@@ -287,7 +311,7 @@ module Types {
   };
 
   public type PrizeSetup = {
-    token: CanisterId;
+    token: Base.CanisterId;
     prizePool: Nat;
   };
 

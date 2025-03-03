@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { CourseServices } from "$lib/services/course-services";
+import { CourseServices } from "$lib/services/course-service";
 import type {
   GolfCourseDTO,
   PaginationFilters,

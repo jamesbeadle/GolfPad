@@ -14,14 +14,15 @@ import GolfCoursesCanister "../canister-definitions/golf-courses-canister";
 import Environment "../utilities/Environment";
 import Cycles "mo:base/ExperimentalCycles";
 import Array "mo:base/Array";
+import Base "mo:waterway-mops/BaseTypes";
 
 module {
   public class GolfCourseManager() {
 
-    private var golfCourseCanisterIndex: TrieMap.TrieMap<T.GolfCourseId, T.CanisterId> = TrieMap.TrieMap<T.GolfCourseId, T.CanisterId>(Utilities.eqNat, Utilities.hashNat);
-    private var activeCanisterId: T.CanisterId = "";
+    private var golfCourseCanisterIndex: TrieMap.TrieMap<T.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<T.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
+    private var activeCanisterId: Base.CanisterId = "";
     private var golfCourseNames : TrieMap.TrieMap<T.GolfCourseId, Text> = TrieMap.TrieMap<T.GolfCourseId, Text>(Utilities.eqNat, Utilities.hashNat);
-    private var uniqueGolfCourseCanisterIds : List.List<T.CanisterId> = List.nil();
+    private var uniqueGolfCourseCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGolfCourses : Nat = 0;
     
     public func courseExists(courseId: T.GolfCourseId) : Bool {
@@ -151,12 +152,12 @@ module {
 
     //stable storage getters and setters
 
-    public func getStableCanisterIndex() : [(T.GolfCourseId, T.CanisterId)]{
+    public func getStableCanisterIndex() : [(T.GolfCourseId, Base.CanisterId)]{
       return Iter.toArray(golfCourseCanisterIndex.entries());
     };
 
-    public func setStableCanisterIndex(stable_golf_course_canister_index: [(T.GolfCourseId, T.CanisterId)]){
-      let canisterIds : TrieMap.TrieMap<T.GolfCourseId, T.CanisterId> = TrieMap.TrieMap<T.GolfCourseId, T.CanisterId>(Utilities.eqNat, Utilities.hashNat);
+    public func setStableCanisterIndex(stable_golf_course_canister_index: [(T.GolfCourseId, Base.CanisterId)]){
+      let canisterIds : TrieMap.TrieMap<T.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<T.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
 
       for (canisterId in Iter.fromArray(stable_golf_course_canister_index)) {
         canisterIds.put(canisterId);
@@ -164,11 +165,11 @@ module {
       golfCourseCanisterIndex := canisterIds;
     };
 
-    public func getStableActiveCanisterId() : T.CanisterId {
+    public func getStableActiveCanisterId() : Base.CanisterId {
       return activeCanisterId;
     };
 
-    public func setStableActiveCanisterId(stable_active_canister_id: T.CanisterId){
+    public func setStableActiveCanisterId(stable_active_canister_id: Base.CanisterId){
       activeCanisterId := stable_active_canister_id;
     };  
 
@@ -177,7 +178,7 @@ module {
     };
 
     public func setStableGolfCourseNames(stable_course_names : [(T.GolfCourseId, Text)]) : () {
-      let golf_course_map : TrieMap.TrieMap<T.GolfCourseId, T.CanisterId> = TrieMap.TrieMap<T.GolfCourseId, T.CanisterId>(Utilities.eqNat, Utilities.hashNat);
+      let golf_course_map : TrieMap.TrieMap<T.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<T.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
 
       for (courseName in Iter.fromArray(stable_course_names)) {
         golf_course_map.put(courseName);
@@ -185,12 +186,12 @@ module {
       golfCourseNames := golf_course_map;
     };
 
-    public func getStableUniqueCanisterIds() : [T.CanisterId] {
+    public func getStableUniqueCanisterIds() : [Base.CanisterId] {
       return List.toArray(uniqueGolfCourseCanisterIds);
     };
 
-    public func setStableUniqueCanisterIds(stable_unique_canister_ids : [T.CanisterId]) : () {
-      let canisterIdBuffer = Buffer.fromArray<T.CanisterId>([]);
+    public func setStableUniqueCanisterIds(stable_unique_canister_ids : [Base.CanisterId]) : () {
+      let canisterIdBuffer = Buffer.fromArray<Base.CanisterId>([]);
 
       for (canisterId in Iter.fromArray(stable_unique_canister_ids)) {
         canisterIdBuffer.add(canisterId);
@@ -228,7 +229,7 @@ module {
 
     await new_canister.updateNextId(nextId);
 
-    let uniqueCanisterIdBuffer = Buffer.fromArray<T.CanisterId>(List.toArray(uniqueGolfCourseCanisterIds));
+    let uniqueCanisterIdBuffer = Buffer.fromArray<Base.CanisterId>(List.toArray(uniqueGolfCourseCanisterIds));
     uniqueCanisterIdBuffer.add(canisterId);
     uniqueGolfCourseCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
     activeCanisterId := canisterId;

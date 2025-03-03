@@ -443,7 +443,7 @@ actor class _GameCanister() {
         let game = await getGame({gameId = dto.gameId});
         switch(game){
           case (#ok foundGame){
-            let updatedInvitesBuffer = Buffer.fromArray<T.PrincipalId>(foundGame.invites);
+            let updatedInvitesBuffer = Buffer.fromArray<T.GolferId>(foundGame.invites);
             updatedInvitesBuffer.append(Buffer.fromArray(dto.golferIds));
             
             let updatedGame: T.Game = {
@@ -490,11 +490,11 @@ actor class _GameCanister() {
         switch(game){
           case (#ok foundGame){
             
-            let updatedInvites = Array.filter<T.PrincipalId>(foundGame.invites, func(invite: T.PrincipalId){
+            let updatedInvites = Array.filter<T.GolferId>(foundGame.invites, func(invite: T.GolferId){
               invite != dto.acceptedById
             });
 
-            let updatedPlayerIdsBuffer = Buffer.fromArray<T.PrincipalId>(foundGame.playerIds);
+            let updatedPlayerIdsBuffer = Buffer.fromArray<T.GolferId>(foundGame.playerIds);
             updatedPlayerIdsBuffer.add(dto.acceptedById);
 
             let updatedGame: T.Game = {

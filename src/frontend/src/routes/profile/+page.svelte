@@ -9,7 +9,7 @@
     import EditIcon from "$lib/icons/edit-icon.svelte";
     import AddImage from "$lib/components/profile/add-image.svelte";
     import AddHomeCourse from "$lib/components/profile/add-home-course.svelte";
-    import AddYardages from "$lib/components/profile/add-yardages.svelte";
+    import AddYardages from "$lib/components/profile/add-shots.svelte";
     import { authStore } from "$lib/stores/auth-store";
     import { userGetProfilePicture } from "$lib/derived/user.derived";
 

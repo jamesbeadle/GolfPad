@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
-    import { yardagesStore } from "$lib/stores/yardages-store";
-    import type { CreateYardageSetDTO } from "../../../../../declarations/backend/backend.did";
+    import { shotsStore } from "$lib/stores/shots-store";
+    import type { CreateShotDTO } from "../../../../../declarations/backend/backend.did";
     
     export let isOpen = false;
   

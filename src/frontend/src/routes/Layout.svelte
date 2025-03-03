@@ -10,7 +10,7 @@
   import FullScreenSpinner from "$lib/components/shared/full-screen-spinner.svelte";
   import { appStore } from "$lib/stores/app-store";
     import { writable } from "svelte/store";
-    import { initAuthWorker } from "$lib/services/worker-auth.services";
+    import { initAuthWorker } from "$lib/services/worker-auth.service";
     import exp from "constants";
     import Toasts from "$lib/components/toasts/toasts.svelte";
     import Navigation from "$lib/components/shared/navigation.svelte";

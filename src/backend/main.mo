@@ -30,306 +30,17 @@ actor Self {
     return #ok(appStatus);
   };
 
-  private stable var golfCourses: [DTOs.GolfCourseDTO] = [
-      {
-          courseId = 1;
-          name = "Pebble Beach Golf Links";
-          tees = [
-              {
-                  name = "Blue";
-                  colour = "#0000FF";
-                  added = Time.now();
-                  strokeIndex = 1;
-                  holes = [
-                      {
-                          name = "Hole 1";
-                          number = 1;
-                          strokeIndex = 1;
-                          tees = [
-                              {
-                                  par = 4;
-                                  name = "Blue";
-                                  yardage = 400;
-                                  colour = "#0000FF";
-                                  strokeIndex = 1
-                              }
-                          ];
-                          images = [
-                              ("canister-id", 1) 
-                          ]
-                      }
-                  ]
-              }
-          ];
-          activeVersion = 1
-      },
-      {
-          courseId = 2;
-          name = "St. Andrews Links";
-          tees = [
-              {
-                  name = "Gold";
-                  colour = "#FFD700";
-                  added = Time.now();
-                  strokeIndex = 1;
-                  holes = [
-                      {
-                          name = "Hole 1";
-                          number = 1;
-                          strokeIndex = 1;
-                          tees = [
-                              {
-                                  par = 4;
-                                  name = "Gold";
-                                  yardage = 420;
-                                  colour = "#FFD700";
-                                  strokeIndex = 1
-                              }
-                          ];
-                          images = [
-                              ("canister-id", 2) 
-                          ]
-                      }
-                  ]
-              }
-          ];
-          activeVersion = 1
-      },
-      {
-          courseId = 3;
-          name = "Augusta National Golf Club";
-          tees = [
-              {
-                  name = "Green";
-                  colour = "#008000";
-                  added = Time.now();
-                  strokeIndex = 1;
-                  holes = [
-                      {
-                          name = "Hole 1";
-                          number = 1;
-                          strokeIndex = 1;
-                          tees = [
-                              {
-                                  par = 4;
-                                  name = "Green";
-                                  yardage = 450;
-                                  colour = "#008000";
-                                  strokeIndex = 1
-                              }
-                          ];
-                          images = [
-                              ("canister-id", 3)
-                          ]
-                      }
-                  ]
-              }
-          ];
-          activeVersion = 1
-      }
-  ];
+  private stable var golfCourses: [DTOs.GolfCourseDTO] = [];
 
-  private stable var golfers: [DTOs.GolferDTO] = [
-      {
-          principalId = "Zoe-Duffy";
-          username = "Zoe Duffy";
-          golferPicture = null; // No picture for now
-          golferPictureExtension = "jpg";
-          handicap = null;
-          upcomingGames = [];
-          activeGames = [];
-          completedGames = [];
-          gameInvites = [];
-      },
-      {
-          principalId = "Kelly-Howlett";
-          username = "Kelly Howlett";
-          golferPicture = null; // No picture for now
-          golferPictureExtension = "jpeg";
-          handicap = null;
-          upcomingGames = [];
-          activeGames = [];
-          completedGames = [];
-          gameInvites = [];
-      },
-      {
-          principalId = "James-Beadle";
-          username = "James Beadle";
-          golferPicture = null; // No picture for now
-          golferPictureExtension = "jpg";
-          handicap = null;
-          upcomingGames = [];
-          activeGames = [];
-          completedGames = [];
-          gameInvites = [];
-      },
-      {
-          principalId = "Thilly-Thana";
-          username = "Thilly Thana";
-          golferPicture = null; // No picture for now
-          golferPictureExtension = "jpg";
-          handicap = null;
-          upcomingGames = [];
-          activeGames = [];
-          completedGames = [];
-          gameInvites = [];
-      }
-  ];
+  private stable var golfers: [DTOs.GolferDTO] = [];
 
-  private stable var games: [DTOs.GameDTO] = [
-    {
-        id = 1;
-        gameType = #Mulligans;
-        scoreDetail = null;  // Assume no score details yet
-        status = #Unplayed; // Set all games to 'Unplayed'
-        courseId = 1; // Pebble Beach Golf Links
-        predictions = [];
-        events = [];
-        courseSnapshot = {
-            courseId = 1;
-            courseVersion = 1;
-            name = "Pebble Beach Golf Links";
-            teeGroup = {
-                name = "Blue";
-                colour = "#0000FF";
-                added = Time.now();
-                strokeIndex = 1;
-                holes = [
-                    {
-                        name = "Hole 1";
-                        number = 1;
-                        strokeIndex = 1;
-                        tees = [
-                            {
-                                par = 4;
-                                name = "Blue";
-                                yardage = 400;
-                                colour = "#0000FF";
-                                strokeIndex = 1
-                            }
-                        ];
-                        images = [("canister-id", 1)]
-                    }
-                ]
-            };
-        };
-        teeOffTime = Time.now() + 100000000; // Future tee-off time
-        playerIds = ["James-Beadle", "Zoe-Duffy"];
-        invites = ["Kelly-Howlett"];
-        winner = ""; // No winner yet
-    },
-    {
-        id = 2;
-        gameType = #BuildIt;
-        scoreDetail = null;
-        status = #Unplayed; // Set to 'Unplayed'
-        courseId = 2; // St. Andrews Links
-        predictions = [];
-        events = [];
-        courseSnapshot = {
-            courseId = 2;
-            courseVersion = 1;
-            name = "St. Andrews Links";
-            teeGroup = {
-                name = "Gold";
-                colour = "#FFD700";
-                added = Time.now();
-                strokeIndex = 1;
-                holes = [
-                    {
-                        name = "Hole 1";
-                        number = 1;
-                        strokeIndex = 1;
-                        tees = [
-                            {
-                                par = 4;
-                                name = "Gold";
-                                yardage = 420;
-                                colour = "#FFD700";
-                                strokeIndex = 1
-                            }
-                        ];
-                        images = [("canister-id", 2)]
-                    }
-                ]
-            };
-        };
-        teeOffTime = Time.now() + 200000000; // Future tee-off time
-        playerIds = ["Kelly-Howlett", "Thilly-Thana"];
-        invites = ["James-Beadle"];
-        winner = "";
-    },
-    {
-        id = 3;
-        gameType = #Bands;
-        scoreDetail = null;
-        status = #Unplayed; // Set to 'Unplayed'
-        courseId = 3; // Augusta National Golf Club
-        predictions = [];
-        events = [];
-        courseSnapshot = {
-            courseId = 3;
-            courseVersion = 1;
-            name = "Augusta National Golf Club";
-            teeGroup = {
-                name = "Green";
-                colour = "#008000";
-                added = Time.now();
-                strokeIndex = 1;
-                holes = [
-                    {
-                        name = "Hole 1";
-                        number = 1;
-                        strokeIndex = 1;
-                        tees = [
-                            {
-                                par = 4;
-                                name = "Green";
-                                yardage = 450;
-                                colour = "#008000";
-                                strokeIndex = 1
-                            }
-                        ];
-                        images = [("canister-id", 3)]
-                    }
-                ]
-            };
-        };
-        teeOffTime = Time.now() + 300000000; // Future tee-off time
-        playerIds = ["Thilly-Thana"];
-        invites = ["Kelly-Howlett"];
-        winner = "";
-    }
-];
-
-  private stable var golferGameSummaries: DTOs.GolferGameSummariesDTO = {
-      entries = [
-          {
-              gameType = #Mulligans;
-              players = ["James-Beadle", "Zoe-Duffy"];
-              status = #Unplayed; // Game has not been played yet
-              date = 1735197120000000000; // Future date for tee-off
-          },
-          {
-              gameType = #BuildIt;
-              players = ["Kelly-Howlett", "Thilly-Thana"];
-              status = #Unplayed; // Game has not been played yet
-              date = 1765197120000000000; // Future date for tee-off
-          }
-      ];
-      totalEntries = 2;
-      limit = 10;
-      offset = 0;
-  };
-
-
+  private stable var games: [DTOs.GameDTO] = [];
   
   //Golfer Functions
 
   public shared ({ caller }) func createGolfer(dto: DTOs.CreateGolferDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    Debug.print("Principal ID: " # principalId);
     return await golferManager.createGolfer(principalId, dto);
   };
 
@@ -374,33 +85,6 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return await golferManager.getUpcomingGames(principalId, dto);
-  };
-
-  //Yardage Sets
-
-  public shared ({ caller }) func getYardageSet(dto: DTOs.GetYardageSetDTO) : async Result.Result<DTOs.YardageSetDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return await golferManager.getYardageSet(principalId, dto);
-  };
-    
-  public shared ({ caller }) func createYardageSet(dto: DTOs.CreateYardageSetDTO) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    Debug.print("Principal ID: " # principalId);
-    return await golferManager.createYardageSet(principalId, dto);
-  };
-    
-  public shared ({ caller }) func updateYardageSet(dto: DTOs.UpdateYardageSetDTO) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return await golferManager.updateYardageSet(principalId, dto);
-  };
-    
-  public shared ({ caller }) func deleteYardageSet(dto: DTOs.DeleteYardageSetDTO) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return await golferManager.deleteYardageSet(principalId, dto);
   };
 
   //Friend requests
@@ -464,17 +148,6 @@ actor Self {
   };
       
   //Game
-    
-  public shared ({ caller }) func getMyGames(dto: DTOs.PaginationFilters) : async Result.Result<DTOs.GolferGameSummariesDTO, T.Error> {
-    /* assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return await golferManager.getGolferGameSummaries(principalId, dto); */
-    return #ok(golferGameSummaries);
-  };
-
-  public shared ({ caller }) func getDummyGames(dto: DTOs.PaginationFilters) : async Result.Result<[DTOs.GameDTO], T.Error> {
-    return #ok(games);
-  };
     
   public shared ({ caller }) func getGame(dto: DTOs.GetGameDTO) : async Result.Result<DTOs.GameDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
@@ -588,7 +261,7 @@ actor Self {
   public shared ({ caller }) func sendGameInvites(dto: DTOs.InviteGolfersDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert Option.isNull(Array.find<T.PrincipalId>(dto.invitedGolferIds, func(golferId: T.PrincipalId){ golferId == principalId }));
+    assert Option.isNull(Array.find<T.GolferId>(dto.invitedGolferIds, func(golferId: T.GolferId){ golferId == principalId }));
     
     let existingGame = await gameManager.getGame({ gameId = dto.gameId });
 
@@ -598,7 +271,7 @@ actor Self {
         assert game.status == #Unplayed;
 
         for(golferPrincipalId in Iter.fromArray(dto.invitedGolferIds)){
-          assert Option.isNull(Array.find<T.PrincipalId>(game.playerIds, func(playerId: T.PrincipalId){ playerId ==  golferPrincipalId}));
+          assert Option.isNull(Array.find<T.GolferId>(game.playerIds, func(playerId: T.GolferId){ playerId ==  golferPrincipalId}));
         };
 
         for(golferPrincipalId in Iter.fromArray(dto.invitedGolferIds)){
@@ -680,20 +353,20 @@ actor Self {
 
   //stable storage
 
-  private stable var stable_golfer_canister_index: [(T.PrincipalId, T.CanisterId)] = [];
-  private stable var stable_golf_course_canister_index: [(T.GolfCourseId, T.CanisterId)] = [];
-  private stable var stable_game_canister_index: [(T.GameId, T.CanisterId)] = [];
+  private stable var stable_golfer_canister_index: [(T.GolferId, Base.CanisterId)] = [];
+  private stable var stable_golf_course_canister_index: [(T.GolfCourseId, Base.CanisterId)] = [];
+  private stable var stable_game_canister_index: [(T.GameId, Base.CanisterId)] = [];
   
-  private stable var stable_active_golfer_canister_id: T.CanisterId = "";
-  private stable var stable_active_golf_course_canister_id: T.CanisterId = "";
-  private stable var stable_active_game_canister_id: T.CanisterId = "";
+  private stable var stable_active_golfer_canister_id: Base.CanisterId = "";
+  private stable var stable_active_golf_course_canister_id: Base.CanisterId = "";
+  private stable var stable_active_game_canister_id: Base.CanisterId = "";
 
-  private stable var stable_usernames : [(T.PrincipalId, Text)] = [];
+  private stable var stable_usernames : [(T.GolferId, Text)] = [];
   private stable var stable_golf_course_names : [(T.GolfCourseId, Text)] = [];
   
-  private stable var stable_unique_golfer_canister_ids : [T.CanisterId] = [];
-  private stable var stable_unique_golf_course_canister_ids : [T.CanisterId] = [];
-  private stable var stable_unique_game_canister_ids : [T.CanisterId] = [];
+  private stable var stable_unique_golfer_canister_ids : [Base.CanisterId] = [];
+  private stable var stable_unique_golf_course_canister_ids : [Base.CanisterId] = [];
+  private stable var stable_unique_game_canister_ids : [Base.CanisterId] = [];
 
   private stable var stable_total_golfers : Nat = 0;
   private stable var stable_total_golf_courses : Nat = 0;

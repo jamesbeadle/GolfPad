@@ -46,7 +46,7 @@ module DTOs {
     //Golfer DTOs
 
     public type GolferDTO = {
-        principalId: T.PrincipalId;
+        principalId: T.GolferId;
         username: Text;
         golferPicture: ?Blob;
         golferPictureExtension: Text;
@@ -58,7 +58,7 @@ module DTOs {
     };
 
     public type GetGolferDTO = {
-        golferPrincipalId: T.PrincipalId;
+        golferPrincipalId: T.GolferId;
     };
 
     public type CreateGolferDTO = {
@@ -72,56 +72,12 @@ module DTOs {
     };
 
     public type DeleteGolferDTO = {
-        golferPrincipalId: T.PrincipalId;
+        golferPrincipalId: T.GolferId;
     };
 
     public type UpdateGolferPictureDTO = {
         golferPicture: Blob;
         golferPictureExtension: Text;
-    };
-
-    //Yardage Set DTOs
-
-    public type YardageSetDTO = {
-
-    };
-
-    public type GetYardageSetDTO = {
-        yardageSetId: T.YardageSetId;
-    };
-
-    public type CreateYardageSetDTO = {
-        name: Text;
-        clubs: [T.YardageClub];
-    };
-
-    public type UpdateYardageSetDTO = {
-        yardageSetId: T.YardageSetId;
-        name: Text;
-        clubs: [T.YardageClub];
-    };
-
-    public type DeleteYardageSetDTO = {
-        yardageSetId: T.YardageSetId;
-    };
-
-    //Yardage Set Club DTOs
-
-    public type CreateYardageSetClubDTO = {
-
-    };
-
-    public type UpdateYardageSetClubDTO = {
-        index: T.ClubIndex;
-        yardageSetId: T.YardageSetId;
-        name: Text;
-        yards: Nat16;
-    };
-
-    public type DeleteYardageSetClubDTO = {
-        index: T.ClubIndex;
-        yardageSetId: T.YardageSetId;
-
     };
 
     //Game DTOs
@@ -136,9 +92,9 @@ module DTOs {
         events: [T.GolferEvent];
         courseSnapshot: T.GolfCourseSnapshot;
         teeOffTime: Int;
-        playerIds: [T.PrincipalId];
-        invites: [T.PrincipalId];
-        winner: T.PrincipalId;
+        playerIds: [T.GolferId];
+        invites: [T.GolferId];
+        winner: T.GolferId;
     };
 
     public type GetGameDTO = {
@@ -146,11 +102,11 @@ module DTOs {
     };
 
     public type CreateGameDTO = {
-        createdById: T.PrincipalId;
+        createdById: T.GolferId;
         courseType: T.CourseType;
         courseId: T.GolfCourseId;
         gameType: T.GameType;
-        inviteIds: [T.PrincipalId];
+        inviteIds: [T.GolferId];
         teeOffTime: Int;
         teeGroup: Text;
     };
@@ -179,7 +135,7 @@ module DTOs {
 
     public type MulligansScoreDTO = {
         holeNumber: T.HoleNumber;
-        winner: T.PrincipalId;
+        winner: T.GolferId;
         golfer1MulliganUsed: Bool;
         golfer2MulliganUsed: Bool;
     };
@@ -191,20 +147,20 @@ module DTOs {
     };
 
     public type FriendRequestDTO = {
-        principalId: T.PrincipalId;
+        principalId: T.GolferId;
         requestTime: Int;
     };
 
     public type SendFriendRequestDTO = {
-        requestedFriend: T.PrincipalId;
+        requestedFriend: T.GolferId;
     };
 
     public type AcceptFriendRequestDTO = {
-        requestedBy: T.PrincipalId;
+        requestedBy: T.GolferId;
     };
 
     public type RejectFriendRequestDTO = {
-        requestedBy: T.PrincipalId;
+        requestedBy: T.GolferId;
     };
 
     //Game Invite DTOs
@@ -212,17 +168,17 @@ module DTOs {
 
     public type InviteGolfersDTO = {
         gameId: T.GameId;
-        invitedGolferIds: [T.PrincipalId];
+        invitedGolferIds: [T.GolferId];
     };
 
     public type AddGameInvitesDTO = {
         gameId: T.GameId;
-        golferIds: [T.PrincipalId];
+        golferIds: [T.GolferId];
     };
 
     public type AcceptGameInviteDTO = {
         gameId: T.GameId;
-        acceptedById: T.PrincipalId;
+        acceptedById: T.GolferId;
     };
 
     public type RejectGameInviteDTO = {
@@ -248,7 +204,7 @@ module DTOs {
     };
 
     public type MyGolferDTO = {
-        principalId: T.PrincipalId;
+        principalId: T.GolferId;
         username: Text;
         golferPicture: ?Blob;
         golferPictureExtension: Text;
@@ -256,7 +212,7 @@ module DTOs {
     };
 
     public type GolferSummaryDTO = {
-        golferPrincipalId: T.PrincipalId;
+        golferPrincipalId: T.GolferId;
         golferName: Text;
         golferPicture: ?Blob;
         golferPictureExtension: Text;
@@ -281,7 +237,7 @@ module DTOs {
     //Gameplay DTOs
 
     public type CreateGameScoreDTO = {
-        submittedById: T.PrincipalId;
+        submittedById: T.GolferId;
         gameId: T.GameId;
         detail: AddScoreDetailDTO;
     };
@@ -292,10 +248,10 @@ module DTOs {
 
     public type MulligansAddScoreDTO = {
         hole: T.HoleNumber;
-        golferId: T.PrincipalId;
+        golferId: T.GolferId;
         golfer1MulliganUsed: Bool;
         golfer2MulliganUsed: Bool;
-        holeWinner: T.PrincipalId;
+        holeWinner: T.GolferId;
     };
 
 }

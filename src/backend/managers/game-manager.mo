@@ -15,18 +15,19 @@ import Cycles "mo:base/ExperimentalCycles";
 import Option "mo:base/Option";
 
 import Debug "mo:base/Debug";
+import Base "mo:waterway-mops/BaseTypes";
 
 module {
   public class GameManager() {
 
-    private var gameCanisterIndex: TrieMap.TrieMap<T.GameId, T.CanisterId> = TrieMap.TrieMap<T.GameId, T.CanisterId>(Utilities.eqNat, Utilities.hashNat);
-    private var activeCanisterId: T.CanisterId = "";
-    private var uniqueGameCanisterIds : List.List<T.CanisterId> = List.nil();
+    private var gameCanisterIndex: TrieMap.TrieMap<T.GameId, Base.CanisterId> = TrieMap.TrieMap<T.GameId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
+    private var activeCanisterId: Base.CanisterId = "";
+    private var uniqueGameCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGames : Nat = 0;
 
     public func createGame(dto: DTOs.CreateGameDTO, courseSnapshot: DTOs.GolfCourseSnaphotDTO) : async Result.Result<T.GameId, T.Error> {
       
-      assert Option.isNull(Array.find<T.PrincipalId>(dto.inviteIds, func(playerId: T.PrincipalId){ playerId == dto.createdById  }));
+      assert Option.isNull(Array.find<T.GolferId>(dto.inviteIds, func(playerId: T.GolferId){ playerId == dto.createdById  }));
       
       let totalPlayers = 1 + Array.size(dto.inviteIds); 
 
@@ -120,14 +121,14 @@ module {
       return #err(#NotFound);
     };
 
-    public func addGameScore(submittedById: T.PrincipalId, dto: DTOs.AddGameScoreDTO) :async  Result.Result<(), T.Error> {
+    public func addGameScore(submittedById: T.GolferId, dto: DTOs.AddGameScoreDTO) :async  Result.Result<(), T.Error> {
       
       let existingGame = await getGame({ gameId = dto.gameId });
 
       switch(existingGame){
         case (#ok foundGame){
 
-          let playerInGame = Option.isSome(Array.find<T.PrincipalId>(foundGame.playerIds, func(playerId: T.PrincipalId){
+          let playerInGame = Option.isSome(Array.find<T.GolferId>(foundGame.playerIds, func(playerId: T.GolferId){
             playerId == submittedById;
           }));
 
@@ -153,7 +154,7 @@ module {
       
     };
 
-    public func beginGame(golferPrincipalId: T.PrincipalId, dto: DTOs.BeginGameDTO) : async Result.Result<(), T.Error> {
+    public func beginGame(golferPrincipalId: T.GolferId, dto: DTOs.BeginGameDTO) : async Result.Result<(), T.Error> {
       let existingGame = await getGame({ gameId = dto.gameId });
 
       switch(existingGame){
@@ -203,7 +204,7 @@ module {
 
       await new_canister.updateNextId(nextId);
 
-      let uniqueCanisterIdBuffer = Buffer.fromArray<T.CanisterId>(List.toArray(uniqueGameCanisterIds));
+      let uniqueCanisterIdBuffer = Buffer.fromArray<Base.CanisterId>(List.toArray(uniqueGameCanisterIds));
       uniqueCanisterIdBuffer.add(canisterId);
       uniqueGameCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
       activeCanisterId := canisterId;
@@ -212,12 +213,12 @@ module {
     
     //stable storage getters and setters
 
-    public func getStableCanisterIndex() : [(T.GameId, T.CanisterId)]{
+    public func getStableCanisterIndex() : [(T.GameId, Base.CanisterId)]{
       return Iter.toArray(gameCanisterIndex.entries());
     };
 
-    public func setStableCanisterIndex(stable_game_canister_index: [(T.GameId, T.CanisterId)]){
-      let canisterIds : TrieMap.TrieMap<T.GameId, T.CanisterId> = TrieMap.TrieMap<T.GameId, T.CanisterId>(Utilities.eqNat, Utilities.hashNat);
+    public func setStableCanisterIndex(stable_game_canister_index: [(T.GameId, Base.CanisterId)]){
+      let canisterIds : TrieMap.TrieMap<T.GameId, Base.CanisterId> = TrieMap.TrieMap<T.GameId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
 
       for (canisterId in Iter.fromArray(stable_game_canister_index)) {
         canisterIds.put(canisterId);
@@ -225,20 +226,20 @@ module {
       gameCanisterIndex := canisterIds;
     };
 
-    public func getStableActiveCanisterId() : T.CanisterId {
+    public func getStableActiveCanisterId() : Base.CanisterId {
       return activeCanisterId;
     };
 
-    public func setStableActiveCanisterId(stable_active_canister_id: T.CanisterId){
+    public func setStableActiveCanisterId(stable_active_canister_id: Base.CanisterId){
       activeCanisterId := stable_active_canister_id;
     };  
 
-    public func getStableUniqueCanisterIds() : [T.CanisterId] {
+    public func getStableUniqueCanisterIds() : [Base.CanisterId] {
       return List.toArray(uniqueGameCanisterIds);
     };
 
-    public func setStableUniqueCanisterIds(stable_unique_canister_ids : [T.CanisterId]) : () {
-      let canisterIdBuffer = Buffer.fromArray<T.CanisterId>([]);
+    public func setStableUniqueCanisterIds(stable_unique_canister_ids : [Base.CanisterId]) : () {
+      let canisterIdBuffer = Buffer.fromArray<Base.CanisterId>([]);
 
       for (canisterId in Iter.fromArray(stable_unique_canister_ids)) {
         canisterIdBuffer.add(canisterId);

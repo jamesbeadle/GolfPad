@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { GameServices } from "$lib/services/game-services";
+import { GameServices } from "$lib/services/game-service";
 import type {
   GameDTO,
   CreateGameDTO,

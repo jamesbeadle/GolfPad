@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import Layout from "../Layout.svelte";
-    import AddYardages from "$lib/components/profile/add-yardages.svelte";
+    import AddYardages from "$lib/components/profile/add-shots.svelte";
     import AddClub from "$lib/components/yardages/add-club.svelte";
     import EditYardageName from "$lib/components/yardages/edit-yardage-name.svelte";
     import DeleteClub from "$lib/components/yardages/delete-club.svelte";

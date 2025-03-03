@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { PlayerServices } from "$lib/services/player-services";
+import { PlayerServices } from "$lib/services/player-service";
 import type {
   CreateGolferDTO,
   GolferDTO,

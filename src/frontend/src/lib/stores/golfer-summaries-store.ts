@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { GolferSummariesServices } from "$lib/services/golfer-sumaries-services";
+import { GolferSummariesServices } from "$lib/services/golfer-sumaries-service";
 import type {
   GolferGameSummariesDTO,
   PaginationFilters,

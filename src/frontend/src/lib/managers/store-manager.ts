@@ -2,9 +2,9 @@ import { courseStore } from "$lib/stores/course-store";
 import { gameStore } from "$lib/stores/game-store";
 import { playerStore } from "$lib/stores/player-store";
 
-import { CourseServices } from "$lib/services/course-services";
-import { GameServices } from "$lib/services/game-services";
-import { PlayerServices } from "$lib/services/player-services";
+import { CourseServices } from "$lib/services/course-service";
+import { GameServices } from "$lib/services/game-service";
+import { PlayerServices } from "$lib/services/player-service";
 
 import { isError, replacer } from "$lib/utils/helpers";
 
