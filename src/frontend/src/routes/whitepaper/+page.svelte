@@ -1,28 +1,23 @@
 <script lang="ts">
   import Layout from "../Layout.svelte";
-  import BlackLogoIcon from "$lib/icons/logo-icon.svelte";
 
   import Vision from "$lib/components/whitepaper/vision.svelte";
-  import Product from "$lib/components/whitepaper/product.svelte";
-  import Handicap from "$lib/components/whitepaper/handicap.svelte";
-  import DAO from "$lib/components/whitepaper/dao.svelte";
+  import Merve from "$lib/components/whitepaper/merve.svelte";
+  import SideGames from "$lib/components/whitepaper/side-games.svelte";
+  import NewGames from "$lib/components/whitepaper/new-games.svelte";
   import Marketing from "$lib/components/whitepaper/marketing.svelte";
   import RoadMap from "$lib/components/whitepaper/roadmap.svelte";
-  import Team from "$lib/components/whitepaper/team.svelte";
-  import SystemArchitecture from "$lib/components/whitepaper/system-architecture.svelte";
 
   let activeTab = "vision";
   let cropPositionY = "top";
 
   const tabs = [
     { name: "Vision", component: Vision },
-    { name: "Product", component: Product },
-    { name: "Handicaps", component: Handicap },
-    { name: "DAO", component: DAO },
+    { name: "Merve", component: Merve },
+    { name: "New Games", component: NewGames },
+    { name: "Side Games", component: SideGames },
     { name: "Marketing", component: Marketing },
-    { name: "Road Map", component: RoadMap },
-    { name: "Team", component: Team },
-    { name: "System Architecture", component: SystemArchitecture },
+    { name: "Road Map", component: RoadMap }
   ];
 
   function nextTab(): void {

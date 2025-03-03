@@ -1,7 +1,7 @@
 import { authStore } from "$lib/stores/auth-store";
 import { isError } from "$lib/utils/helpers";
 import { writable } from "svelte/store";
-import { ActorFactory } from "../utils/actor-factory";
+import { ActorFactory } from "$lib/utils/ActorFactory";
 import type {
   CreateGolferDTO,
   MyGolferDTO,

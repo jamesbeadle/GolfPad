@@ -4,7 +4,7 @@ import type {
   GolferGameSummariesDTO,
   PaginationFilters,
 } from "../../../../declarations/backend/backend.did";
-import { ActorFactory } from "$lib/utils/actor-factory";
+import { ActorFactory } from "$lib/utils/ActorFactory";
 
 export class GolferSummariesServices {
   private actor: any;

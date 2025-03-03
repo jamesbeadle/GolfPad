@@ -7,8 +7,8 @@ import type {
   CreateGolfCourseDTO,
   UpdateGolfCourseDTO,
 } from "../../../../declarations/backend/backend.did";
-import { ActorFactory } from "$lib/utils/actor-factory";
 import { authStore } from "$lib/stores/auth-store";
+import { ActorFactory } from "$lib/utils/ActorFactory";
 
 export class CourseServices {
   private actor: any;

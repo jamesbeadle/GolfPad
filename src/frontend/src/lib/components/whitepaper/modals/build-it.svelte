@@ -6,12 +6,7 @@
   
 {#if visible}
     <div class="fixed inset-0 z-50 flex items-center justify-center">
-      <button
-        type="button"
-        class="absolute inset-0 bg-black bg-opacity-50"
-        on:click={closeModal}
-      ></button>
-
+     
       <div class="relative z-50 w-[60vw] max-h-[90vh] overflow-y-auto bg-BrandYellow rounded-lg border border-black">
         <div class="p-4 mx-4">
           <div class="flex items-center justify-between mb-4">

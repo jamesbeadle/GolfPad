@@ -7,7 +7,7 @@ import type {
   GetYardageSetDTO,
   YardageSetDTO,
 } from "../../../../declarations/backend/backend.did";
-import { ActorFactory } from "$lib/utils/actor-factory";
+import { ActorFactory } from "$lib/utils/ActorFactory";
 import { authStore } from "$lib/stores/auth-store";
 
 export class YardagesServices {

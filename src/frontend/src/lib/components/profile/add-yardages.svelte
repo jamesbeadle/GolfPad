@@ -32,11 +32,7 @@
   
   {#if isOpen}
     <div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0">
-      <button
-        type="button"
-        class="absolute inset-0 bg-black bg-opacity-50"
-        on:click={handleClose}
-      ></button>
+      
       <div class="relative z-10 w-full sm:w-[90vw] md:w-[60vw] lg:w-[30vw] bg-white rounded-lg shadow-xl">
         <div class="flex items-center justify-between p-4">
           <h2 class="text-xl text-black sm:text-2xl md:text-3xl condensed">ADD NEW YARDAGE SET</h2>

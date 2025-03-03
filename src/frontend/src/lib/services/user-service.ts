@@ -1,4 +1,5 @@
-import { ActorFactory } from "../utils/actor-factory";
+
+import { ActorFactory } from "$lib/utils/ActorFactory";
 import { authStore } from "$lib/stores/auth-store";
 import { isError } from "$lib/utils/helpers";
 
