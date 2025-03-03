@@ -46,7 +46,7 @@
         <div class="flex items-center justify-between p-4 sm:p-5">
           <h2 class="text-2xl text-black sm:text-3xl condensed">UPLOAD IMAGE</h2>
           <button 
-            class="flex items-center justify-center text-base font-bold text-white bg-black rounded-full shadow-md w-7 h-7 sm:w-8 sm:h-8"
+            class="cancel-button"
             on:click={handleClose}
             type="button"
             aria-label="Close"
@@ -57,7 +57,7 @@
         <div class="p-4 sm:p-8">
           <button 
             type="button"
-            class="flex flex-col items-center justify-center w-full p-4 transition-all duration-200 ease-in-out border-2 border-dashed rounded-lg cursor-pointer sm:p-8 border-BrandLightGray hover:border-BrandForest"
+            class="brand-button"
             on:click={triggerFileInput}
             on:keydown={(e) => e.key === 'Enter' && triggerFileInput()}
           >
@@ -83,14 +83,14 @@
         <div class="flex justify-end gap-3 p-4 sm:gap-4 sm:p-6">
           <button
             type="button"
-            class="px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg sm:px-6 sm:text-base text-BrandDarkGray bg-BrandYellow hover:bg-yellow-400 focus:outline-none"
+            class="cancel-button"
             on:click={handleClose}
           >
             Cancel
           </button>
           <button
             type="button"
-            class="px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg sm:px-6 sm:text-base focus:outline-none"
+            class="brand-button"
             class:bg-BrandForest={hasFile}
             class:text-BrandYellow={hasFile}
             class:bg-BrandLightGray={!hasFile}

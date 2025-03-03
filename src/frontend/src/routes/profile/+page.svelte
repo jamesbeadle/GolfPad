@@ -1,16 +1,13 @@
 <script lang="ts">
     import Layout from "../Layout.svelte";
-    import CustomDropdown from '$lib/components/shared/dropdown.svelte';
     import { onMount } from 'svelte';
     import { playerStore } from "$lib/stores/player-store";
     import { courseStore } from "$lib/stores/course-store";
     import { userStore } from "$lib/stores/user-store";
-    import type { GolfCourseDTO, CreateGolferDTO, PaginationFilters, UpdateGolferPictureDTO, FriendRequestDTO, GolferSummaryDTO } from "../../../../declarations/backend/backend.did";
+    import type { GolfCourseDTO, CreateGolferDTO, PaginationFilters, FriendRequestDTO, GolferSummaryDTO } from "../../../../declarations/backend/backend.did";
     import EditIcon from "$lib/icons/edit-icon.svelte";
     import AddImage from "$lib/components/profile/add-image.svelte";
     import AddHomeCourse from "$lib/components/profile/add-home-course.svelte";
-    import { authStore } from "$lib/stores/auth-store";
-    import { userGetProfilePicture } from "$lib/derived/user.derived";
 
 
     let existingFriends = [

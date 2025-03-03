@@ -179,7 +179,7 @@
             <div class="flex items-center justify-between p-3 md:p-4">
                 <h2 class="text-2xl text-black md:text-3xl condensed">ADD HOME COURSE</h2>
                 <button 
-                class="flex items-center justify-center w-8 h-8 text-base font-bold text-white bg-black rounded-full shadow-md"
+                class="cancel-button"
                 on:click={handleClose}
                 type="button"
                 aria-label="Close"
@@ -193,7 +193,7 @@
 
             <div class="flex px-3 pt-4 md:px-6">
                 <button
-                class="px-4 py-2 text-xl condensed"
+                class="brand-button"
                 class:text-BrandForest={activeTab === 'SEARCH'}
                 class:text-BrandDarkGray={activeTab !== 'SEARCH'}
                 on:click={() => activeTab = 'SEARCH'}
@@ -201,7 +201,7 @@
                     SEARCH
                 </button>
                 <button
-                    class="px-4 py-2 text-xl condensed"
+                    class="brand-button"
                     class:text-BrandForest={activeTab === 'ADD_CUSTOM'}
                     class:text-BrandDarkGray={activeTab !== 'ADD_CUSTOM'}
                     on:click={() => activeTab = 'ADD_CUSTOM'}
@@ -244,7 +244,7 @@
                         {#each courses.filter(course => course.name.toLowerCase().includes(searchQuery.toLowerCase())) as course}
                             <button 
                                 type="button"
-                                class="relative flex flex-col w-full gap-2 p-2 text-left border rounded-lg cursor-pointer md:flex-row md:items-center md:gap-4 md:p-4 hover:bg-BrandLightGray"
+                                class="brand-button"
                                 on:click={() => selectedCourse = course}
                                 on:keydown={(e) => e.key === 'Enter' && (selectedCourse = course)}
                                 class:bg-BrandLightGray={selectedCourse === course}
@@ -314,7 +314,7 @@
                                         <button
                                             id="courseImageUpload"
                                             type="button"
-                                            class="flex items-center px-6 py-3 text-sm font-bold rounded text-BrandForest bg-BrandYellow hover:bg-yellow-600"
+                                            class="brand-button"
                                         >
                                             UPLOAD
                                         </button>
@@ -327,7 +327,7 @@
                             <div class="flex flex-col gap-4 items-left">
                                 <div class="flex items-center gap-4">
                                     <button
-                                        class="px-4 pt-5 text-xl condensed"
+                                        class="brand-button"
                                         class:text-BrandForest={addCustomTab === 'BASIC'}
                                         class:text-BrandDarkGray={addCustomTab !== 'BASIC'}
                                         on:click={() => addCustomTab = 'BASIC'}
@@ -335,7 +335,7 @@
                                         BASIC
                                     </button>
                                     <button
-                                        class="pt-5 text-xl condensed"
+                                        class="brand-button"
                                         class:text-BrandForest={addCustomTab === 'ADVANCED'}
                                         class:text-BrandDarkGray={addCustomTab !== 'ADVANCED'}
                                         on:click={() => addCustomTab = 'ADVANCED'}
@@ -349,7 +349,7 @@
                                         <button
                                             id="addTee"
                                             type="button"
-                                            class="flex items-center justify-center w-8 h-8 text-2xl font-bold rounded-full text-BrandForest bg-BrandYellow"
+                                            class="brand-button"
                                             on:click={() => {
                                                 console.log("All 18 holes are already added");
                                             }}
@@ -440,7 +440,7 @@
                             <div class="flex justify-end">
                                 <button
                                     type="button"
-                                    class="px-6 py-2 font-bold transition-all duration-200 ease-in-out rounded"
+                                    class="brand-button"
                                     class:bg-BrandLightGray={!newTeeGroup.name || !newTeeGroup.colour}
                                     class:text-BrandDarkGray={!newTeeGroup.name || !newTeeGroup.colour}
                                     class:bg-BrandForest={newTeeGroup.name && newTeeGroup.colour}
@@ -510,14 +510,14 @@
             </div>
             <div class="flex justify-end gap-3 p-3 border-t md:p-4 md:border-t-0">
                 <button
-                class="flex-1 px-4 py-2 transition-all duration-200 ease-in-out rounded-lg md:flex-initial md:px-6 text-BrandForest bg-BrandYellow hover:bg-yellow-400 focus:outline-none"
+                class="cancel-button"
                 on:click={handleClose}
                 >
                 CANCEL
                 </button>
                 <button
                     type="button"
-                    class="flex-1 px-4 py-2 font-bold transition-all duration-200 ease-in-out rounded md:flex-initial md:px-6"
+                    class="brand-button"
                     class:bg-BrandLightGray={!isValid()}
                     class:text-BrandDarkGray={!isValid()}
                     class:bg-BrandForest={isValid()}

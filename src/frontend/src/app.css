@@ -117,26 +117,10 @@ input {
   @apply self-stretch flex-shrink-0 h-px bg-BrandDarkGreen;
 }
 
-.btn {
-  @apply px-6 py-2 font-bold rounded cursor-pointer;
+.brand-button {
+  @apply px-6 py-3 rounded bg-BrandForest text-BrandYellow text-xl hover:bg-BrandYellow hover:text-BrandForest;
 }
 
-.btn-view {
-  @apply px-4 py-1 border rounded-md bg-BrandForest text-BrandYellow;
-}
-
-.btn-add {
-  @apply px-4 py-2 border rounded-md bg-BrandDarkGreen;
-}
-
-.btn-close {
-  @apply flex items-center justify-center w-10 h-10 mr-5 text-2xl font-bold text-white bg-black rounded-full shadow-md hover:bg-gray-800;
-}
-
-.btn-select {
-  @apply bg-BrandForest text-BrandYellow px-5 py-2.5 rounded cursor-pointer text-base mr-5;
-}
-
-.btn-new-game {
-  @apply font-bold rounded cursor-pointer mx-0 my-4 md:ml-6 bg-BrandYellow text-BrandForest border-none hover:bg-[#e4c013] hover:shadow-lg active:bg-[#d3a913] active:translate-y-0.5;
+.cancel-button {
+  @apply px-6 py-3 rounded text-BrandForest bg-BrandYellow text-xl hover:bg-BrandForest hover:text-BrandYellow focus:outline-none;
 }

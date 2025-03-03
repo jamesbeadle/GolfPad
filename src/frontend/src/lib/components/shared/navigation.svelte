@@ -6,7 +6,7 @@
     import { authSignedInStore } from "$lib/derived/auth.derived";
     import { authStore } from "$lib/stores/auth-store";
   
-    type Route = 'home' | 'whitepaper' | 'game-rules' | 'games';
+    type Route = 'home' | 'whitepaper' | 'governance' | 'game-rules' | 'games';
   
     export let expanded: boolean = false;
     export let selectedRoute: Route = 'home';
@@ -51,6 +51,9 @@
           break;
         case '/games':
           selectedRoute = 'games';
+          break;
+        case '/governance':
+          selectedRoute = 'governance';
           break;
         default:
           selectedRoute = 'home';

@@ -15,13 +15,15 @@
     import Navigation from "$lib/components/shared/navigation.svelte";
     import Landing from "$lib/components/landing/landing.svelte";
     import Header from "$lib/components/shared/header.svelte";
+    import NewUser from "$lib/components/profile/new-user.svelte";
 
   let worker: { syncAuthIdle: (auth: AuthStoreData) => void } | undefined;
 
   let isLoading = true;
   let isLoggedIn = false;
-  let selectedRoute: 'home' | 'whitepaper' = 'home';
+  let selectedRoute: 'home' | 'governance' | 'whitepaper' = 'home';
   let expanded = false;
+  let hasProfile = false;
 
   $: isHomepage = browser && window.location.pathname === "/";
 
@@ -44,9 +46,14 @@
     try{
       authStore.subscribe((store) => {
           isLoggedIn = store.identity !== null && store.identity !== undefined;
-          userStore.sync();
       });
       await appStore.checkServerVersion();
+      userStore.sync();
+      userStore.subscribe((user) => {
+        if(user){
+          hasProfile = true;
+        }
+      });
     } catch {
 
     } finally {
@@ -83,9 +90,13 @@
     {:else}
       <Header {toggleNav} />
       {#if isLoggedIn}
-        <div class="bg-white flex-1 flex">
-          <slot />
-        </div>
+        {#if hasProfile}
+          <div class="bg-white text-black flex-1 flex">
+            <slot />
+          </div>
+        {:else}
+          <NewUser />
+        {/if}
       {:else}
         <Landing />
       {/if}

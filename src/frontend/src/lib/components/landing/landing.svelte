@@ -17,7 +17,7 @@
     <h2 class="mx-16 mb-6 text-5xl font-black leading-tight text-black md:text-6xl condensed">THE FUTURE OF GOLF STARTS HERE</h2>
     
     <button 
-        class="px-10 py-3 text-sm font-semibold rounded shadow-lg md:px-12 md:text-lg bg-BrandForest text-BrandYellow"
+        class="brand-button"
         on:click={handleLogin}
     >
         CONNECT

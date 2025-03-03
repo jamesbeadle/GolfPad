@@ -5,7 +5,7 @@
     import { courseStore } from '$lib/stores/course-store';
     import type { GolfCourseDTO, PaginationFilters } from '../../../../../declarations/backend/backend.did.d.ts';
     import { page } from '$app/stores';
-    import EditCourse from '$lib/components/courses/edit-course.svelte';
+    import EditCourse from '$lib/components/goverance/golf-course/update-golf-course.svelte';
 
     let course: GolfCourseDTO | null = null;
     let editCourseIsOpen = false;

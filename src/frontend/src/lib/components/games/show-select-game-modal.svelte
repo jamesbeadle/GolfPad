@@ -19,7 +19,7 @@
         <div class="flex items-center justify-between mb-5">
           <h2 class="ml-5 text-4xl font-bold sm:text-5xl condensed">NEW GAME</h2>
           <button 
-            class="flex items-center justify-center w-10 h-10 text-2xl font-bold text-white bg-black rounded-full shadow-md hover:bg-gray-800"
+            class="brand-button"
             on:click={closeModal}
           >
             &times;
@@ -31,8 +31,7 @@
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-5 md:gap-5">
           {#each games as game (game.id)}
             <button 
-              class="flex flex-col justify-between sm:items-center w-full p-2.5 bg-white transition-all duration-200 
-                     hover:scale-105 hover:shadow-lg hover:rounded-lg"
+              class="brand-button"
               on:click={() => playGame(game.id)}
             >
               <img 
@@ -54,7 +53,7 @@
 
         <div class="hidden mt-5 text-right lg:block">
           <button 
-            class="bg-BrandForest text-BrandYellow px-4 py-2 md:px-5 md:py-2.5 rounded text-sm md:text-base"
+            class="brand-button"
             on:click={closeModal}
           >
             SELECT

@@ -212,7 +212,7 @@
                 </div>
             </div>
         </div>    
-        <button class="btn btn-new-game md:w-[400px] w-full" on:click={handleCreateGame}>
+        <button class="brand-button" on:click={handleCreateGame}>
             Create New Game
         </button>
     </div>
