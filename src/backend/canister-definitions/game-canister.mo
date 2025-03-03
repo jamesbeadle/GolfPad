@@ -1,11 +1,11 @@
 import Array "mo:base/Array";
 import Buffer "mo:base/Buffer";
+import Int "mo:base/Int";
+import Int8 "mo:base/Int8";
 import Iter "mo:base/Iter";
 import Nat8 "mo:base/Nat8";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
-import Int "mo:base/Int";
-import Int8 "mo:base/Int8";
 
 import DTOs "../dtos/DTOs";
 import Environment "../utilities/Environment";
@@ -15,13 +15,14 @@ import GameQueries "../queries/game_queries";
 
 actor class _GameCanister() {
 
+  private stable var MAX_GAMES_PER_GROUP: Nat = 250000;
+  private stable var MAX_GAMES_PER_CANISTER: Nat = 12500000;
+
   private stable var stable_game_group_indexes: [(T.GameId, Nat8)] = [];
 
   private stable var activeGroupIndex: Nat8 = 0;
   private stable var nextGameId: T.GameId = 1;
   private stable var totalGames = 0;
-  private stable var MAX_GAMES_PER_GROUP: Nat = 250000;
-  private stable var MAX_GAMES_PER_CANISTER: Nat = 12500000;
 
   private stable var gameGroup1 : [T.Game] = [];
   private stable var gameGroup2 : [T.Game] = [];
@@ -1601,8 +1602,5 @@ actor class _GameCanister() {
       }
     }
   };
-
-  //TODO
-  //post upgrade
   
 };
