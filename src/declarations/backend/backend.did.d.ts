@@ -3,11 +3,11 @@ import type { ActorMethod } from "@dfinity/agent";
 import type { IDL } from "@dfinity/candid";
 
 export interface AcceptFriendRequestDTO {
-  requestedBy: PrincipalId;
+  requestedBy: GolferId;
 }
 export interface AcceptGameInviteDTO {
   gameId: GameId;
-  acceptedById: PrincipalId;
+  acceptedById: GolferId;
 }
 export interface AddGameScoreDTO {
   gameId: GameId;
@@ -20,7 +20,7 @@ export interface AppStatusDTO {
 export interface BandsPrediction {
   wontHitTreeOrBunkerStartHole: HoleNumber;
   underParStartHole: HoleNumber;
-  golferId: PrincipalId;
+  golferId: GolferId;
   wontDoubleBogeyStartHole: HoleNumber;
   singlePutt2Of3GreensStartHole: HoleNumber;
   wontBogeyStartHole: HoleNumber;
@@ -33,14 +33,13 @@ export interface BeginGameDTO {
   gameId: GameId;
 }
 export type CanisterId = string;
-export type ClubIndex = number;
 export type CourseType = { Custom: null } | { Official: null };
 export interface CoursesDTO {
   courses: Array<GolfCourseDTO>;
 }
 export interface CreateGameDTO {
-  inviteIds: Array<PrincipalId>;
-  createdById: PrincipalId;
+  inviteIds: Array<GolferId>;
+  createdById: GolferId;
   teeOffTime: bigint;
   gameType: GameType;
   courseType: CourseType;
@@ -56,15 +55,8 @@ export interface CreateGolferDTO {
   username: string;
   handicap: [] | [Handicap];
 }
-export interface CreateYardageSetDTO {
-  clubs: Array<YardageClub>;
-  name: string;
-}
 export interface DeleteGolfCourseDTO {
   courseId: GolfCourseId;
-}
-export interface DeleteYardageSetDTO {
-  yardageSetId: YardageSetId;
 }
 export type Error =
   | { InvalidProfilePicture: null }
@@ -82,19 +74,19 @@ export type Error =
   | { CanisterFull: null };
 export interface FriendRequestDTO {
   requestTime: bigint;
-  principalId: PrincipalId;
+  principalId: GolferId;
 }
 export interface FriendRequestsDTO {
   friendRequests: Array<FriendRequestDTO>;
 }
 export interface GameDTO {
   id: GameId;
-  playerIds: Array<PrincipalId>;
+  playerIds: Array<GolferId>;
   status: GameStatus;
   scoreDetail: [] | [GameScoreDetail];
-  invites: Array<PrincipalId>;
+  invites: Array<GolferId>;
   predictions: Array<GamePrediction>;
-  winner: PrincipalId;
+  winner: GolferId;
   teeOffTime: bigint;
   courseSnapshot: GolfCourseSnapshot;
   events: Array<GolferEvent>;
@@ -104,7 +96,7 @@ export interface GameDTO {
 export type GameId = bigint;
 export interface GameInvite {
   gameId: GameId;
-  inviteFrom: PrincipalId;
+  inviteFrom: GolferId;
 }
 export type GamePrediction =
   | { Mulligans: MulligansPrediction }
@@ -120,7 +112,7 @@ export type GameStatus =
 export interface GameSummary {
   status: GameStatus;
   date: bigint;
-  players: Array<PrincipalId>;
+  players: Array<GolferId>;
   gameType: GameType;
 }
 export type GameType =
@@ -133,10 +125,7 @@ export interface GetGameDTO {
   gameId: GameId;
 }
 export interface GetGolferDTO {
-  golferPrincipalId: PrincipalId;
-}
-export interface GetYardageSetDTO {
-  yardageSetId: YardageSetId;
+  golferPrincipalId: GolferId;
 }
 export interface GolfCourseDTO {
   activeVersion: GolfCourseVersion;
@@ -177,11 +166,11 @@ export interface GolferDTO {
   completedGames: Array<GameId>;
   handicap: [] | [Handicap];
   golferPictureExtension: string;
-  principalId: PrincipalId;
+  principalId: GolferId;
   activeGames: Array<GameId>;
 }
 export interface GolferEvent {
-  golferId: PrincipalId;
+  golferId: GolferId;
   hole: HoleNumber;
   event: GolfEvent;
 }
@@ -191,8 +180,9 @@ export interface GolferGameSummariesDTO {
   limit: bigint;
   entries: Array<GameSummary>;
 }
+export type GolferId = string;
 export interface GolferSummaryDTO {
-  golferPrincipalId: PrincipalId;
+  golferPrincipalId: GolferId;
   golferPicture: [] | [Uint8Array | number[]];
   golferName: string;
   handicap: [] | [Handicap];
@@ -212,26 +202,26 @@ export type HoleNumber = number;
 export type ImageId = bigint;
 export interface InviteGolfersDTO {
   gameId: GameId;
-  invitedGolferIds: Array<PrincipalId>;
+  invitedGolferIds: Array<GolferId>;
 }
 export interface ListGolfersDTO {
   searchTerm: string;
 }
 export interface MulligansHoleResult {
   golfer2MulliganUsed: boolean;
-  winner: PrincipalId;
+  winner: GolferId;
   golfer1MulliganUsed: boolean;
   holeNumber: HoleNumber;
 }
 export type MulligansPrediction = {};
 export interface MulligansScoreDTO {
   golfer2MulliganUsed: boolean;
-  winner: PrincipalId;
+  winner: GolferId;
   golfer1MulliganUsed: boolean;
   holeNumber: HoleNumber;
 }
 export interface MulligansScores {
-  winner: PrincipalId;
+  winner: GolferId;
   results: Array<MulligansHoleResult>;
   golfer2HolesWonCount: number;
   golfer1HolesWonCount: number;
@@ -241,32 +231,29 @@ export interface MyGolferDTO {
   golferPicture: [] | [Uint8Array | number[]];
   handicap: [] | [Handicap];
   golferPictureExtension: string;
-  principalId: PrincipalId;
+  principalId: GolferId;
 }
 export interface PaginationFilters {
   offset: bigint;
   limit: bigint;
 }
-export type PrincipalId = string;
 export interface RejectFriendRequestDTO {
-  requestedBy: PrincipalId;
+  requestedBy: GolferId;
 }
 export type Result = { ok: null } | { err: Error };
 export type Result_1 = { ok: GolfersDTO } | { err: Error };
-export type Result_10 = { ok: GameDTO } | { err: Error };
-export type Result_11 = { ok: Array<GameDTO> } | { err: Error };
-export type Result_12 = { ok: AppStatusDTO } | { err: Error };
+export type Result_10 = { ok: AppStatusDTO } | { err: Error };
 export type Result_2 = { ok: FriendRequestsDTO } | { err: Error };
 export type Result_3 = { ok: CoursesDTO } | { err: Error };
-export type Result_4 = { ok: YardageSetDTO } | { err: Error };
-export type Result_5 = { ok: UpcomingGamesDTO } | { err: Error };
-export type Result_6 = { ok: MyGolferDTO } | { err: Error };
-export type Result_7 = { ok: GolferGameSummariesDTO } | { err: Error };
-export type Result_8 = { ok: GolferBuzzDTO } | { err: Error };
-export type Result_9 = { ok: GolferDTO } | { err: Error };
+export type Result_4 = { ok: UpcomingGamesDTO } | { err: Error };
+export type Result_5 = { ok: MyGolferDTO } | { err: Error };
+export type Result_6 = { ok: GolferGameSummariesDTO } | { err: Error };
+export type Result_7 = { ok: GolferBuzzDTO } | { err: Error };
+export type Result_8 = { ok: GolferDTO } | { err: Error };
+export type Result_9 = { ok: GameDTO } | { err: Error };
 export type RustResult = { Ok: string } | { Err: string };
 export interface SendFriendRequestDTO {
-  requestedFriend: PrincipalId;
+  requestedFriend: GolferId;
 }
 export interface TeeGroup {
   added: bigint;
@@ -296,18 +283,6 @@ export interface UpdateGolferPictureDTO {
   golferPicture: Uint8Array | number[];
   golferPictureExtension: string;
 }
-export interface UpdateYardageSetDTO {
-  clubs: Array<YardageClub>;
-  name: string;
-  yardageSetId: YardageSetId;
-}
-export interface YardageClub {
-  name: string;
-  index: ClubIndex;
-  yards: number;
-}
-export type YardageSetDTO = {};
-export type YardageSetId = number;
 export interface _SERVICE {
   acceptFriendRequest: ActorMethod<[AcceptFriendRequestDTO], Result>;
   acceptGameInvite: ActorMethod<[AcceptGameInviteDTO], Result>;
@@ -316,21 +291,16 @@ export interface _SERVICE {
   createGame: ActorMethod<[CreateGameDTO], Result>;
   createGolfCourse: ActorMethod<[CreateGolfCourseDTO], Result>;
   createGolfer: ActorMethod<[CreateGolferDTO], Result>;
-  createYardageSet: ActorMethod<[CreateYardageSetDTO], Result>;
   deleteGolfCourse: ActorMethod<[DeleteGolfCourseDTO], Result>;
-  deleteYardageSet: ActorMethod<[DeleteYardageSetDTO], Result>;
   executeAddGolfCourse: ActorMethod<[CreateGolfCourseDTO], undefined>;
   executeUpdateGolfCourse: ActorMethod<[UpdateGolfCourseDTO], undefined>;
-  getAppStatus: ActorMethod<[], Result_12>;
-  getDummyGames: ActorMethod<[PaginationFilters], Result_11>;
-  getGame: ActorMethod<[GetGameDTO], Result_10>;
-  getGolfer: ActorMethod<[GetGolferDTO], Result_9>;
-  getGolferBuzz: ActorMethod<[PaginationFilters], Result_8>;
-  getGolferGameHistory: ActorMethod<[PaginationFilters], Result_7>;
-  getMyGames: ActorMethod<[PaginationFilters], Result_7>;
-  getMyGolfer: ActorMethod<[], Result_6>;
-  getUpcomingGames: ActorMethod<[PaginationFilters], Result_5>;
-  getYardageSet: ActorMethod<[GetYardageSetDTO], Result_4>;
+  getAppStatus: ActorMethod<[], Result_10>;
+  getGame: ActorMethod<[GetGameDTO], Result_9>;
+  getGolfer: ActorMethod<[GetGolferDTO], Result_8>;
+  getGolferBuzz: ActorMethod<[PaginationFilters], Result_7>;
+  getGolferGameHistory: ActorMethod<[PaginationFilters], Result_6>;
+  getMyGolfer: ActorMethod<[], Result_5>;
+  getUpcomingGames: ActorMethod<[PaginationFilters], Result_4>;
   listCourses: ActorMethod<[PaginationFilters], Result_3>;
   listFriendRequests: ActorMethod<[PaginationFilters], Result_2>;
   listGolfers: ActorMethod<[ListGolfersDTO], Result_1>;
@@ -340,7 +310,6 @@ export interface _SERVICE {
   sendGameInvites: ActorMethod<[InviteGolfersDTO], Result>;
   updateGolfCourse: ActorMethod<[UpdateGolfCourseDTO], Result>;
   updateGolfer: ActorMethod<[UpdateGolferDTO], Result>;
-  updateYardageSet: ActorMethod<[UpdateYardageSetDTO], Result>;
   validateAddGolfCourse: ActorMethod<[CreateGolfCourseDTO], RustResult>;
   validateUpdateGolfCourse: ActorMethod<[UpdateGolfCourseDTO], RustResult>;
 }

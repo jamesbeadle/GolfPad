@@ -16,6 +16,16 @@ import BaseCommands "commands/base_commands";
 
 actor Self {
 
+
+  //functions required for sns
+    //validation functions to manage golf clubs
+    //profile management
+    //friend request management
+    //play mulligans
+    //record shots via ai and get them back
+    
+
+
   private let golferManager = GolferManager.GolferManager();
   private let courseManager = GolfCourseManager.GolfCourseManager();
   private let gameManager = GameManager.GameManager();

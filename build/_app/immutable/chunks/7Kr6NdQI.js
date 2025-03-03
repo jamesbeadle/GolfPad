@@ -1,19 +1,10049 @@
-var Cl=Object.defineProperty;var Ss=e=>{throw TypeError(e)};var Tl=(e,t,a)=>t in e?Cl(e,t,{enumerable:!0,configurable:!0,writable:!0,value:a}):e[t]=a;var Na=(e,t,a)=>Tl(e,typeof t!="symbol"?t+"":t,a),Cs=(e,t,a)=>t.has(e)||Ss("Cannot "+a);var te=(e,t,a)=>(Cs(e,t,"read from private field"),a?a.call(e):t.get(e)),ht=(e,t,a)=>t.has(e)?Ss("Cannot add the same private member more than once"):t instanceof WeakSet?t.add(e):t.set(e,a),yn=(e,t,a,r)=>(Cs(e,t,"write to private field"),r?r.call(e,a):t.set(e,a),a);import{D as Ts,c as Nl,u as Bl,B as Ol,A as Rl,b as Ns,H as On,a as co}from"./BcJAi0dZ.js";var tn=Array.isArray,Pl=Array.prototype.indexOf,Hn=Array.from,Yn=Object.defineProperty,ya=Object.getOwnPropertyDescriptor,uo=Object.getOwnPropertyDescriptors,Il=Object.prototype,Gl=Array.prototype,qn=Object.getPrototypeOf;function jl(e){return typeof e=="function"}const vt=()=>{};function Ml(e){return typeof e?.then=="function"}function Fl(e){return e()}function rr(e){for(var t=0;t<e.length;t++)e[t]()}const Ct=2,fo=4,an=8,rn=16,ea=32,_r=64,Mr=128,kt=256,Fr=512,nt=1024,ta=2048,Ea=4096,Jt=8192,nn=16384,vo=32768,$a=65536,po=1<<17,$l=1<<19,go=1<<20,xa=Symbol("$state"),ho=Symbol("legacy props"),Ul=Symbol("");function mo(e){return e===this.v}function bo(e,t){return e!=e?t==t:e!==t||e!==null&&typeof e=="object"||typeof e=="function"}function Wn(e){return!bo(e,this.v)}function Dl(e){throw new Error("https://svelte.dev/e/effect_in_teardown")}function Vl(){throw new Error("https://svelte.dev/e/effect_in_unowned_derived")}function Hl(e){throw new Error("https://svelte.dev/e/effect_orphan")}function Yl(){throw new Error("https://svelte.dev/e/effect_update_depth_exceeded")}function ql(){throw new Error("https://svelte.dev/e/hydration_failed")}function Wl(e){throw new Error("https://svelte.dev/e/props_invalid_value")}function Ll(){throw new Error("https://svelte.dev/e/state_descriptors_fixed")}function zl(){throw new Error("https://svelte.dev/e/state_prototype_fixed")}function Kl(){throw new Error("https://svelte.dev/e/state_unsafe_local_read")}function Jl(){throw new Error("https://svelte.dev/e/state_unsafe_mutation")}let Ua=!1,Xl=!1;function Zl(){Ua=!0}const Ln=1,zn=2,yo=4,Ql=8,ei=16,ti=1,ai=2,ri=4,ni=8,si=16,oi=1,li=2,ii=4,ci=1,di=2,xo="[",Kn="[!",Jn="]",Xa={},tt=Symbol();function Xn(e){console.warn("https://svelte.dev/e/hydration_mismatch")}function Zn(e){throw new Error("https://svelte.dev/e/lifecycle_outside_component")}let ge=null;function $r(e){ge=e}function fe(e,t=!1,a){ge={p:ge,c:null,e:null,m:!1,s:e,x:null,l:null},Ua&&!t&&(ge.l={s:null,u:null,r1:[],r2:ot(!1)})}function ve(e){const t=ge;if(t!==null){e!==void 0&&(t.x=e);const o=t.e;if(o!==null){var a=le,r=ue;t.e=null;try{for(var n=0;n<o.length;n++){var s=o[n];Nt(s.effect),Tt(s.reaction),sn(s.fn)}}finally{Nt(a),Tt(r)}}ge=t.p,t.m=!0}return e||{}}function Da(){return!Ua||ge!==null&&ge.l===null}function ot(e,t){var a={f:0,v:e,reactions:null,equals:mo,rv:0,wv:0};return a}function bt(e){return _o(ot(e))}function wa(e,t=!1){var r;const a=ot(e);return t||(a.equals=Wn),Ua&&ge!==null&&ge.l!==null&&((r=ge.l).s??(r.s=[])).push(a),a}function M(e,t=!1){return _o(wa(e,t))}function _o(e){return ue!==null&&!Rt&&ue.f&Ct&&(Ut===null?bi([e]):Ut.push(e)),e}function xt(e,t){return N(e,yt(()=>l(e))),t}function N(e,t){return ue!==null&&!Rt&&Da()&&ue.f&(Ct|rn)&&(Ut===null||!Ut.includes(e))&&Jl(),ia(e,t)}function ia(e,t){return e.equals(t)||(e.v,e.v=t,e.wv=$o(),wo(e,ta),Da()&&le!==null&&le.f&nt&&!(le.f&(ea|_r))&&(qt===null?yi([e]):qt.push(e))),t}function wo(e,t){var a=e.reactions;if(a!==null)for(var r=Da(),n=a.length,s=0;s<n;s++){var o=a[s],i=o.f;i&ta||!r&&o===le||(It(o,t),i&(nt|kt)&&(i&Ct?wo(o,Ea):cn(o)))}}let ee=!1;function Kt(e){ee=e}let ae;function Et(e){if(e===null)throw Xn(),Xa;return ae=e}function Aa(){return Et(aa(ae))}function d(e){if(ee){if(aa(ae)!==null)throw Xn(),Xa;ae=e}}function Ee(e=1){if(ee){for(var t=e,a=ae;t--;)a=aa(a);ae=a}}function Rn(){for(var e=0,t=ae;;){if(t.nodeType===8){var a=t.data;if(a===Jn){if(e===0)return t;e-=1}else(a===xo||a===Kn)&&(e+=1)}var r=aa(t);t.remove(),t=r}}function ma(e,t=null,a){if(typeof e!="object"||e===null||xa in e)return e;const r=qn(e);if(r!==Il&&r!==Gl)return e;var n=new Map,s=tn(e),o=ot(0);s&&n.set("length",ot(e.length));var i;return new Proxy(e,{defineProperty(f,u,p){(!("value"in p)||p.configurable===!1||p.enumerable===!1||p.writable===!1)&&Ll();var h=n.get(u);return h===void 0?(h=ot(p.value),n.set(u,h)):N(h,ma(p.value,i)),!0},deleteProperty(f,u){var p=n.get(u);if(p===void 0)u in f&&n.set(u,ot(tt));else{if(s&&typeof u=="string"){var h=n.get("length"),c=Number(u);Number.isInteger(c)&&c<h.v&&N(h,c)}N(p,tt),Bs(o)}return!0},get(f,u,p){if(u===xa)return e;var h=n.get(u),c=u in f;if(h===void 0&&(!c||ya(f,u)?.writable)&&(h=ot(ma(c?f[u]:tt,i)),n.set(u,h)),h!==void 0){var g=l(h);return g===tt?void 0:g}return Reflect.get(f,u,p)},getOwnPropertyDescriptor(f,u){var p=Reflect.getOwnPropertyDescriptor(f,u);if(p&&"value"in p){var h=n.get(u);h&&(p.value=l(h))}else if(p===void 0){var c=n.get(u),g=c?.v;if(c!==void 0&&g!==tt)return{enumerable:!0,configurable:!0,value:g,writable:!0}}return p},has(f,u){if(u===xa)return!0;var p=n.get(u),h=p!==void 0&&p.v!==tt||Reflect.has(f,u);if(p!==void 0||le!==null&&(!h||ya(f,u)?.writable)){p===void 0&&(p=ot(h?ma(f[u],i):tt),n.set(u,p));var c=l(p);if(c===tt)return!1}return h},set(f,u,p,h){var c=n.get(u),g=u in f;if(s&&u==="length")for(var b=p;b<c.v;b+=1){var x=n.get(b+"");x!==void 0?N(x,tt):b in f&&(x=ot(tt),n.set(b+"",x))}c===void 0?(!g||ya(f,u)?.writable)&&(c=ot(void 0),N(c,ma(p,i)),n.set(u,c)):(g=c.v!==tt,N(c,ma(p,i)));var y=Reflect.getOwnPropertyDescriptor(f,u);if(y?.set&&y.set.call(h,p),!g){if(s&&typeof u=="string"){var k=n.get("length"),E=Number(u);Number.isInteger(E)&&E>=k.v&&N(k,E+1)}Bs(o)}return!0},ownKeys(f){l(o);var u=Reflect.ownKeys(f).filter(c=>{var g=n.get(c);return g===void 0||g.v!==tt});for(var[p,h]of n)h.v!==tt&&!(p in f)&&u.push(p);return u},setPrototypeOf(){zl()}})}function Bs(e,t=1){N(e,e.v+t)}var Pn,ko,Eo,Ao;function In(){if(Pn===void 0){Pn=window,ko=/Firefox/.test(navigator.userAgent);var e=Element.prototype,t=Node.prototype;Eo=ya(t,"firstChild").get,Ao=ya(t,"nextSibling").get,e.__click=void 0,e.__className=void 0,e.__attributes=null,e.__styles=null,e.__e=void 0,Text.prototype.__t=void 0}}function ua(e=""){return document.createTextNode(e)}function Xt(e){return Eo.call(e)}function aa(e){return Ao.call(e)}function v(e,t){if(!ee)return Xt(e);var a=Xt(ae);if(a===null)a=ae.appendChild(ua());else if(t&&a.nodeType!==3){var r=ua();return a?.before(r),Et(r),r}return Et(a),a}function J(e,t){if(!ee){var a=Xt(e);return a instanceof Comment&&a.data===""?aa(a):a}return ae}function m(e,t=1,a=!1){let r=ee?ae:e;for(var n;t--;)n=r,r=aa(r);if(!ee)return r;var s=r?.nodeType;if(a&&s!==3){var o=ua();return r===null?n?.after(o):r.before(o),Et(o),o}return Et(r),r}function So(e){e.textContent=""}function ca(e){var t=Ct|ta,a=ue!==null&&ue.f&Ct?ue:null;return le===null||a!==null&&a.f&kt?t|=kt:le.f|=go,{ctx:ge,deps:null,effects:null,equals:mo,f:t,fn:e,reactions:null,rv:0,v:null,wv:0,parent:a??le}}function Oe(e){const t=ca(e);return t.equals=Wn,t}function Co(e){var t=e.effects;if(t!==null){e.effects=null;for(var a=0;a<t.length;a+=1)Zt(t[a])}}function ui(e){for(var t=e.parent;t!==null;){if(!(t.f&Ct))return t;t=t.parent}return null}function fi(e){var t,a=le;Nt(ui(e));try{Co(e),t=Do(e)}finally{Nt(a)}return t}function To(e){var t=fi(e),a=(sa||e.f&kt)&&e.deps!==null?Ea:nt;It(e,a),e.equals(t)||(e.v=t,e.wv=$o())}function No(e){le===null&&ue===null&&Hl(),ue!==null&&ue.f&kt&&le===null&&Vl(),ts&&Dl()}function vi(e,t){var a=t.last;a===null?t.last=t.first=e:(a.next=e,e.prev=a,t.last=e)}function Va(e,t,a,r=!0){var n=(e&_r)!==0,s=le,o={ctx:ge,deps:null,nodes_start:null,nodes_end:null,f:e|ta,first:null,fn:t,last:null,next:null,parent:n?null:s,prev:null,teardown:null,transitions:null,wv:0};if(a)try{ln(o),o.f|=vo}catch(u){throw Zt(o),u}else t!==null&&cn(o);var i=a&&o.deps===null&&o.first===null&&o.nodes_start===null&&o.teardown===null&&(o.f&(go|Mr))===0;if(!i&&!n&&r&&(s!==null&&vi(o,s),ue!==null&&ue.f&Ct)){var f=ue;(f.effects??(f.effects=[])).push(o)}return o}function Qn(e){const t=Va(an,null,!1);return It(t,nt),t.teardown=e,t}function Ur(e){No();var t=le!==null&&(le.f&ea)!==0&&ge!==null&&!ge.m;if(t){var a=ge;(a.e??(a.e=[])).push({fn:e,effect:le,reaction:ue})}else{var r=sn(e);return r}}function Bo(e){return No(),wr(e)}function pi(e){const t=Va(_r,e,!0);return(a={})=>new Promise(r=>{a.outro?da(t,()=>{Zt(t),r(void 0)}):(Zt(t),r(void 0))})}function sn(e){return Va(fo,e,!1)}function Pt(e,t){var a=ge,r={effect:null,ran:!1};a.l.r1.push(r),r.effect=wr(()=>{e(),!r.ran&&(r.ran=!0,N(a.l.r2,!0),yt(t))})}function Ha(){var e=ge;wr(()=>{if(l(e.l.r2)){for(var t of e.l.r1){var a=t.effect;a.f&nt&&It(a,Ea),qa(a)&&ln(a),t.ran=!1}e.l.r2.v=!1}})}function wr(e){return Va(an,e,!0)}function V(e,t=[],a=ca){const r=t.map(a);return Ya(()=>e(...r.map(l)))}function Ya(e,t=0){return Va(an|rn|t,e,!0)}function $t(e,t=!0){return Va(an|ea,e,!0,t)}function Oo(e){var t=e.teardown;if(t!==null){const a=ts,r=ue;Rs(!0),Tt(null);try{t.call(null)}finally{Rs(a),Tt(r)}}}function Ro(e,t=!1){var a=e.first;for(e.first=e.last=null;a!==null;){var r=a.next;Zt(a,t),a=r}}function gi(e){for(var t=e.first;t!==null;){var a=t.next;t.f&ea||Zt(t),t=a}}function Zt(e,t=!0){var a=!1;if((t||e.f&$l)&&e.nodes_start!==null){for(var r=e.nodes_start,n=e.nodes_end;r!==null;){var s=r===n?null:aa(r);r.remove(),r=s}a=!0}Ro(e,t&&!a),Yr(e,0),It(e,nn);var o=e.transitions;if(o!==null)for(const f of o)f.stop();Oo(e);var i=e.parent;i!==null&&i.first!==null&&Po(e),e.next=e.prev=e.teardown=e.ctx=e.deps=e.fn=e.nodes_start=e.nodes_end=null}function Po(e){var t=e.parent,a=e.prev,r=e.next;a!==null&&(a.next=r),r!==null&&(r.prev=a),t!==null&&(t.first===e&&(t.first=r),t.last===e&&(t.last=a))}function da(e,t){var a=[];es(e,a,!0),Io(a,()=>{Zt(e),t&&t()})}function Io(e,t){var a=e.length;if(a>0){var r=()=>--a||t();for(var n of e)n.out(r)}else t()}function es(e,t,a){if(!(e.f&Jt)){if(e.f^=Jt,e.transitions!==null)for(const o of e.transitions)(o.is_global||a)&&t.push(o);for(var r=e.first;r!==null;){var n=r.next,s=(r.f&$a)!==0||(r.f&ea)!==0;es(r,t,s?a:!1),r=n}}}function Ma(e){Go(e,!0)}function Go(e,t){if(e.f&Jt){e.f^=Jt,e.f&nt||(e.f^=nt),qa(e)&&(It(e,ta),cn(e));for(var a=e.first;a!==null;){var r=a.next,n=(a.f&$a)!==0||(a.f&ea)!==0;Go(a,n?t:!1),a=r}if(e.transitions!==null)for(const s of e.transitions)(s.is_global||t)&&s.in()}}const hi=typeof requestIdleCallback>"u"?e=>setTimeout(e,1):requestIdleCallback;let nr=[],sr=[];function jo(){var e=nr;nr=[],rr(e)}function Mo(){var e=sr;sr=[],rr(e)}function kr(e){nr.length===0&&queueMicrotask(jo),nr.push(e)}function mi(e){sr.length===0&&hi(Mo),sr.push(e)}function Os(){nr.length>0&&jo(),sr.length>0&&Mo()}let Rr=!1,Dr=!1,Vr=null,Pr=!1,ts=!1;function Rs(e){ts=e}let Za=[];let ue=null,Rt=!1;function Tt(e){ue=e}let le=null;function Nt(e){le=e}let Ut=null;function bi(e){Ut=e}let lt=null,mt=0,qt=null;function yi(e){qt=e}let Fo=1,Hr=0,sa=!1,na=null;function $o(){return++Fo}function qa(e){var t=e.f;if(t&ta)return!0;if(t&Ea){var a=e.deps,r=(t&kt)!==0;if(a!==null){var n,s,o=(t&Fr)!==0,i=r&&le!==null&&!sa,f=a.length;if(o||i){var u=e,p=u.parent;for(n=0;n<f;n++)s=a[n],(o||!s?.reactions?.includes(u))&&(s.reactions??(s.reactions=[])).push(u);o&&(u.f^=Fr),i&&p!==null&&!(p.f&kt)&&(u.f^=kt)}for(n=0;n<f;n++)if(s=a[n],qa(s)&&To(s),s.wv>e.wv)return!0}(!r||le!==null&&!sa)&&It(e,nt)}return!1}function xi(e,t){for(var a=t;a!==null;){if(a.f&Mr)try{a.fn(e);return}catch{a.f^=Mr}a=a.parent}throw Rr=!1,e}function _i(e){return(e.f&nn)===0&&(e.parent===null||(e.parent.f&Mr)===0)}function on(e,t,a,r){if(Rr){if(a===null&&(Rr=!1),_i(t))throw e;return}a!==null&&(Rr=!0);{xi(e,t);return}}function Uo(e,t,a=!0){var r=e.reactions;if(r!==null)for(var n=0;n<r.length;n++){var s=r[n];s.f&Ct?Uo(s,t,!1):t===s&&(a?It(s,ta):s.f&nt&&It(s,Ea),cn(s))}}function Do(e){var g;var t=lt,a=mt,r=qt,n=ue,s=sa,o=Ut,i=ge,f=Rt,u=e.f;lt=null,mt=0,qt=null,sa=(u&kt)!==0&&(Rt||!Pr||ue===null),ue=u&(ea|_r)?null:e,Ut=null,$r(e.ctx),Rt=!1,Hr++;try{var p=(0,e.fn)(),h=e.deps;if(lt!==null){var c;if(Yr(e,mt),h!==null&&mt>0)for(h.length=mt+lt.length,c=0;c<lt.length;c++)h[mt+c]=lt[c];else e.deps=h=lt;if(!sa)for(c=mt;c<h.length;c++)((g=h[c]).reactions??(g.reactions=[])).push(e)}else h!==null&&mt<h.length&&(Yr(e,mt),h.length=mt);if(Da()&&qt!==null&&!Rt&&h!==null&&!(e.f&(Ct|Ea|ta)))for(c=0;c<qt.length;c++)Uo(qt[c],e);return n!==null&&Hr++,p}finally{lt=t,mt=a,qt=r,ue=n,sa=s,Ut=o,$r(i),Rt=f}}function wi(e,t){let a=t.reactions;if(a!==null){var r=Pl.call(a,e);if(r!==-1){var n=a.length-1;n===0?a=t.reactions=null:(a[r]=a[n],a.pop())}}a===null&&t.f&Ct&&(lt===null||!lt.includes(t))&&(It(t,Ea),t.f&(kt|Fr)||(t.f^=Fr),Co(t),Yr(t,0))}function Yr(e,t){var a=e.deps;if(a!==null)for(var r=t;r<a.length;r++)wi(e,a[r])}function ln(e){var t=e.f;if(!(t&nn)){It(e,nt);var a=le,r=ge,n=Pr;le=e,Pr=!0;try{t&rn?gi(e):Ro(e),Oo(e);var s=Do(e);e.teardown=typeof s=="function"?s:null,e.wv=Fo;var o=e.deps,i;Ts&&Xl&&e.f&ta}catch(f){on(f,e,a,r||e.ctx)}finally{Pr=n,le=a}}}function ki(){try{Yl()}catch(e){if(Vr!==null)on(e,Vr,null);else throw e}}function Vo(){try{for(var e=0;Za.length>0;){e++>1e3&&ki();var t=Za,a=t.length;Za=[];for(var r=0;r<a;r++){var n=t[r];n.f&nt||(n.f^=nt);var s=Ai(n);Ei(s)}}}finally{Dr=!1,Vr=null}}function Ei(e){var t=e.length;if(t!==0)for(var a=0;a<t;a++){var r=e[a];if(!(r.f&(nn|Jt)))try{qa(r)&&(ln(r),r.deps===null&&r.first===null&&r.nodes_start===null&&(r.teardown===null?Po(r):r.fn=null))}catch(n){on(n,r,null,r.ctx)}}}function cn(e){Dr||(Dr=!0,queueMicrotask(Vo));for(var t=Vr=e;t.parent!==null;){t=t.parent;var a=t.f;if(a&(_r|ea)){if(!(a&nt))return;t.f^=nt}}Za.push(t)}function Ai(e){for(var t=[],a=e.first;a!==null;){var r=a.f,n=(r&ea)!==0,s=n&&(r&nt)!==0;if(!s&&!(r&Jt)){if(r&fo)t.push(a);else if(n)a.f^=nt;else{var o=ue;try{ue=a,qa(a)&&ln(a)}catch(u){on(u,a,null,a.ctx)}finally{ue=o}}var i=a.first;if(i!==null){a=i;continue}}var f=a.parent;for(a=a.next;a===null&&f!==null;)a=f.next,f=f.parent}return t}function as(e){var t;for(Os();Za.length>0;)Dr=!0,Vo(),Os();return t}async function Ho(){await Promise.resolve(),as()}function l(e){var t=e.f,a=(t&Ct)!==0;if(na!==null&&na.add(e),ue!==null&&!Rt){Ut!==null&&Ut.includes(e)&&Kl();var r=ue.deps;e.rv<Hr&&(e.rv=Hr,lt===null&&r!==null&&r[mt]===e?mt++:lt===null?lt=[e]:(!sa||!lt.includes(e))&&lt.push(e))}else if(a&&e.deps===null&&e.effects===null){var n=e,s=n.parent;s!==null&&!(s.f&kt)&&(n.f^=kt)}return a&&(n=e,qa(n)&&To(n)),e.v}function Si(e){var t=na;na=new Set;var a=na,r;try{if(yt(e),t!==null)for(r of na)t.add(r)}finally{na=t}return a}function Ci(e){var t=Si(()=>yt(e));for(var a of t)if(a.f&po)for(const r of a.deps||[])r.f&Ct||ia(r,r.v);else ia(a,a.v)}function yt(e){var t=Rt;try{return Rt=!0,e()}finally{Rt=t}}const Ti=-7169;function It(e,t){e.f=e.f&Ti|t}function qr(e){if(!(typeof e!="object"||!e||e instanceof EventTarget)){if(xa in e)Gn(e);else if(!Array.isArray(e))for(let t in e){const a=e[t];typeof a=="object"&&a&&xa in a&&Gn(a)}}}function Gn(e,t=new Set){if(typeof e=="object"&&e!==null&&!(e instanceof EventTarget)&&!t.has(e)){t.add(e),e instanceof Date&&e.getTime();for(let r in e)try{Gn(e[r],t)}catch{}const a=qn(e);if(a!==Object.prototype&&a!==Array.prototype&&a!==Map.prototype&&a!==Set.prototype&&a!==Date.prototype){const r=uo(a);for(let n in r){const s=r[n].get;if(s)try{s.call(e)}catch{}}}}}const Ni=["touchstart","touchmove"];function Bi(e){return Ni.includes(e)}let Ps=!1;function Yo(){Ps||(Ps=!0,document.addEventListener("reset",e=>{Promise.resolve().then(()=>{if(!e.defaultPrevented)for(const t of e.target.elements)t.__on_r?.()})},{capture:!0}))}function rs(e){var t=ue,a=le;Tt(null),Nt(null);try{return e()}finally{Tt(t),Nt(a)}}function Oi(e,t,a,r=a){e.addEventListener(t,()=>rs(a));const n=e.__on_r;n?e.__on_r=()=>{n(),r(!0)}:e.__on_r=()=>r(!0),Yo()}const Ri=new Set,Is=new Set;function Pi(e,t,a,r={}){function n(s){if(r.capture||Ka.call(t,s),!s.cancelBubble)return rs(()=>a?.call(this,s))}return e.startsWith("pointer")||e.startsWith("touch")||e==="wheel"?kr(()=>{t.addEventListener(e,n,r)}):t.addEventListener(e,n,r),n}function R(e,t,a,r,n){var s={capture:r,passive:n},o=Pi(e,t,a,s);(t===document.body||t===window||t===document)&&Qn(()=>{t.removeEventListener(e,o,s)})}function Ka(e){var t=this,a=t.ownerDocument,r=e.type,n=e.composedPath?.()||[],s=n[0]||e.target,o=0,i=e.__root;if(i){var f=n.indexOf(i);if(f!==-1&&(t===document||t===window)){e.__root=t;return}var u=n.indexOf(t);if(u===-1)return;f<=u&&(o=f)}if(s=n[o]||e.target,s!==t){Yn(e,"currentTarget",{configurable:!0,get(){return s||a}});var p=ue,h=le;Tt(null),Nt(null);try{for(var c,g=[];s!==null;){var b=s.assignedSlot||s.parentNode||s.host||null;try{var x=s["__"+r];if(x!==void 0&&(!s.disabled||e.target===s))if(tn(x)){var[y,...k]=x;y.apply(s,[e,...k])}else x.call(s,e)}catch(E){c?g.push(E):c=E}if(e.cancelBubble||b===t||b===null)break;s=b}if(c){for(let E of g)queueMicrotask(()=>{throw E});throw c}}finally{e.__root=t,delete e.currentTarget,Tt(p),Nt(h)}}}function qo(e){var t=document.createElement("template");return t.innerHTML=e,t.content}function Dt(e,t){var a=le;a.nodes_start===null&&(a.nodes_start=e,a.nodes_end=t)}function O(e,t){var a=(t&ci)!==0,r=(t&di)!==0,n,s=!e.startsWith("<!>");return()=>{if(ee)return Dt(ae,null),ae;n===void 0&&(n=qo(s?e:"<!>"+e),a||(n=Xt(n)));var o=r||ko?document.importNode(n,!0):n.cloneNode(!0);if(a){var i=Xt(o),f=o.lastChild;Dt(i,f)}else Dt(o,o);return o}}function ns(e,t,a="svg"){var r=!e.startsWith("<!>"),n=`<${a}>${r?e:"<!>"+e}</${a}>`,s;return()=>{if(ee)return Dt(ae,null),ae;if(!s){var o=qo(n),i=Xt(o);s=Xt(i)}var f=s.cloneNode(!0);return Dt(f,f),f}}function _a(e=""){if(!ee){var t=ua(e+"");return Dt(t,t),t}var a=ae;return a.nodeType!==3&&(a.before(a=ua()),Et(a)),Dt(a,a),a}function pe(){if(ee)return Dt(ae,null),ae;var e=document.createDocumentFragment(),t=document.createComment(""),a=ua();return e.append(t,a),Dt(t,a),e}function A(e,t){if(ee){le.nodes_end=ae,Aa();return}e!==null&&e.before(t)}let jn=!0;function D(e,t){var a=t==null?"":typeof t=="object"?t+"":t;a!==(e.__t??(e.__t=e.nodeValue))&&(e.__t=a,e.nodeValue=a+"")}function Wo(e,t){return Lo(e,t)}function Ii(e,t){In(),t.intro=t.intro??!1;const a=t.target,r=ee,n=ae;try{for(var s=Xt(a);s&&(s.nodeType!==8||s.data!==xo);)s=aa(s);if(!s)throw Xa;Kt(!0),Et(s),Aa();const o=Lo(e,{...t,anchor:s});if(ae===null||ae.nodeType!==8||ae.data!==Jn)throw Xn(),Xa;return Kt(!1),o}catch(o){if(o===Xa)return t.recover===!1&&ql(),In(),So(a),Kt(!1),Wo(e,t);throw o}finally{Kt(r),Et(n)}}const Ba=new Map;function Lo(e,{target:t,anchor:a,props:r={},events:n,context:s,intro:o=!0}){In();var i=new Set,f=h=>{for(var c=0;c<h.length;c++){var g=h[c];if(!i.has(g)){i.add(g);var b=Bi(g);t.addEventListener(g,Ka,{passive:b});var x=Ba.get(g);x===void 0?(document.addEventListener(g,Ka,{passive:b}),Ba.set(g,1)):Ba.set(g,x+1)}}};f(Hn(Ri)),Is.add(f);var u=void 0,p=pi(()=>{var h=a??t.appendChild(ua());return $t(()=>{if(s){fe({});var c=ge;c.c=s}n&&(r.$$events=n),ee&&Dt(h,null),jn=o,u=e(h,r)||{},jn=!0,ee&&(le.nodes_end=ae),s&&ve()}),()=>{for(var c of i){t.removeEventListener(c,Ka);var g=Ba.get(c);--g===0?(document.removeEventListener(c,Ka),Ba.delete(c)):Ba.set(c,g)}Is.delete(f),h!==a&&h.parentNode?.removeChild(h)}});return Mn.set(u,p),u}let Mn=new WeakMap;function Gi(e,t){const a=Mn.get(e);return a?(Mn.delete(e),a(t)):Promise.resolve()}const xn=0,Ar=1,_n=2;function ji(e,t,a,r,n){ee&&Aa();var s=e,o=Da(),i=ge,f=tt,u,p,h,c=(o?ot:wa)(void 0),g=(o?ot:wa)(void 0),b=!1;function x(k,E){b=!0,E&&(Nt(y),Tt(y),$r(i));try{k===xn&&a&&(u?Ma(u):u=$t(()=>a(s))),k===Ar&&r&&(p?Ma(p):p=$t(()=>r(s,c))),k!==xn&&u&&da(u,()=>u=null),k!==Ar&&p&&da(p,()=>p=null),k!==_n&&h&&da(h,()=>h=null)}finally{E&&($r(null),Tt(null),Nt(null),as())}}var y=Ya(()=>{if(f!==(f=t())){if(Ml(f)){var k=f;b=!1,k.then(E=>{k===f&&(ia(c,E),x(Ar,!0))},E=>{if(k===f)throw ia(g,E),x(_n,!0),g.v}),ee?a&&(u=$t(()=>a(s))):kr(()=>{b||x(xn,!0)})}else ia(c,f),x(Ar,!1);return()=>f=tt}});ee&&(s=ae)}function j(e,t,a=!1){ee&&Aa();var r=e,n=null,s=null,o=tt,i=a?$a:0,f=!1;const u=(h,c=!0)=>{f=!0,p(c,h)},p=(h,c)=>{if(o===(o=h))return;let g=!1;if(ee){const b=r.data===Kn;!!o===b&&(r=Rn(),Et(r),Kt(!1),g=!0)}o?(n?Ma(n):c&&(n=$t(()=>c(r))),s&&da(s,()=>{s=null})):(s?Ma(s):c&&(s=$t(()=>c(r))),n&&da(n,()=>{n=null})),g&&Kt(!0)};Ya(()=>{f=!1,t(u),f||p(null,null)},i),ee&&(r=ae)}function je(e,t){return t}function Mi(e,t,a,r){for(var n=[],s=t.length,o=0;o<s;o++)es(t[o].e,n,!0);var i=s>0&&n.length===0&&a!==null;if(i){var f=a.parentNode;So(f),f.append(a),r.clear(),ra(e,t[0].prev,t[s-1].next)}Io(n,()=>{for(var u=0;u<s;u++){var p=t[u];i||(r.delete(p.k),ra(e,p.prev,p.next)),Zt(p.e,!i)}})}function xe(e,t,a,r,n,s=null){var o=e,i={flags:t,items:new Map,first:null},f=(t&yo)!==0;if(f){var u=e;o=ee?Et(Xt(u)):u.appendChild(ua())}ee&&Aa();var p=null,h=!1,c=Oe(()=>{var g=a();return tn(g)?g:g==null?[]:Hn(g)});Ya(()=>{var g=l(c),b=g.length;if(h&&b===0)return;h=b===0;let x=!1;if(ee){var y=o.data===Kn;y!==(b===0)&&(o=Rn(),Et(o),Kt(!1),x=!0)}if(ee){for(var k=null,E,C=0;C<b;C++){if(ae.nodeType===8&&ae.data===Jn){o=ae,x=!0,Kt(!1);break}var _=g[C],w=r(_,C);E=zo(ae,i,k,null,_,w,C,n,t,a),i.items.set(w,E),k=E}b>0&&Et(Rn())}ee||Fi(g,i,o,n,t,r,a),s!==null&&(b===0?p?Ma(p):p=$t(()=>s(o)):p!==null&&da(p,()=>{p=null})),x&&Kt(!0),l(c)}),ee&&(o=ae)}function Fi(e,t,a,r,n,s,o){var i=(n&Ql)!==0,f=(n&(Ln|zn))!==0,u=e.length,p=t.items,h=t.first,c=h,g,b=null,x,y=[],k=[],E,C,_,w;if(i)for(w=0;w<u;w+=1)E=e[w],C=s(E,w),_=p.get(C),_!==void 0&&(_.a?.measure(),(x??(x=new Set)).add(_));for(w=0;w<u;w+=1){if(E=e[w],C=s(E,w),_=p.get(C),_===void 0){var B=c?c.e.nodes_start:a;b=zo(B,t,b,b===null?t.first:b.next,E,C,w,r,n,o),p.set(C,b),y=[],k=[],c=b.next;continue}if(f&&$i(_,E,w,n),_.e.f&Jt&&(Ma(_.e),i&&(_.a?.unfix(),(x??(x=new Set)).delete(_))),_!==c){if(g!==void 0&&g.has(_)){if(y.length<k.length){var S=k[0],T;b=S.prev;var P=y[0],I=y[y.length-1];for(T=0;T<y.length;T+=1)Gs(y[T],S,a);for(T=0;T<k.length;T+=1)g.delete(k[T]);ra(t,P.prev,I.next),ra(t,b,P),ra(t,I,S),c=S,b=I,w-=1,y=[],k=[]}else g.delete(_),Gs(_,c,a),ra(t,_.prev,_.next),ra(t,_,b===null?t.first:b.next),ra(t,b,_),b=_;continue}for(y=[],k=[];c!==null&&c.k!==C;)c.e.f&Jt||(g??(g=new Set)).add(c),k.push(c),c=c.next;if(c===null)continue;_=c}y.push(_),b=_,c=_.next}if(c!==null||g!==void 0){for(var U=g===void 0?[]:Hn(g);c!==null;)c.e.f&Jt||U.push(c),c=c.next;var G=U.length;if(G>0){var H=n&yo&&u===0?a:null;if(i){for(w=0;w<G;w+=1)U[w].a?.measure();for(w=0;w<G;w+=1)U[w].a?.fix()}Mi(t,U,H,p)}}i&&kr(()=>{if(x!==void 0)for(_ of x)_.a?.apply()}),le.first=t.first&&t.first.e,le.last=b&&b.e}function $i(e,t,a,r){r&Ln&&ia(e.v,t),r&zn?ia(e.i,a):e.i=a}function zo(e,t,a,r,n,s,o,i,f,u){var p=(f&Ln)!==0,h=(f&ei)===0,c=p?h?wa(n):ot(n):n,g=f&zn?ot(o):o,b={i:g,v:c,k:s,a:null,e:null,prev:a,next:r};try{return b.e=$t(()=>i(e,c,g,u),ee),b.e.prev=a&&a.e,b.e.next=r&&r.e,a===null?t.first=b:(a.next=b,a.e.next=b.e),r!==null&&(r.prev=b,r.e.prev=b.e),b}finally{}}function Gs(e,t,a){for(var r=e.next?e.next.e.nodes_start:a,n=t?t.e.nodes_start:a,s=e.e.nodes_start;s!==r;){var o=aa(s);n.before(s),s=o}}function ra(e,t,a){t===null?e.first=a:(t.next=a,t.e.next=a&&a.e),a!==null&&(a.prev=t,a.e.prev=t&&t.e)}function Ko(e,t,a,r,n){ee&&Aa();var s=t.$$slots?.[a],o=!1;s===!0&&(s=t.children,o=!0),s===void 0||s(e,o?()=>r:r)}function Ui(e,t,...a){var r=e,n=vt,s;Ya(()=>{n!==(n=t())&&(s&&(Zt(s),s=null),s=$t(()=>n(r,...a)))},$a),ee&&(r=ae)}function Ir(e,t,a){ee&&Aa();var r=e,n,s;Ya(()=>{n!==(n=t())&&(s&&(da(s),s=null),n&&(s=$t(()=>a(r,n))))},$a),ee&&(r=ae)}function ss(e){return typeof e=="object"?Nl(e):e??""}const js=[...` 	
-\r\f \v\uFEFF`];function Di(e,t,a){var r=e==null?"":""+e;if(t&&(r=r?r+" "+t:t),a){for(var n in a)if(a[n])r=r?r+" "+n:n;else if(r.length)for(var s=n.length,o=0;(o=r.indexOf(n,o))>=0;){var i=o+s;(o===0||js.includes(r[o-1]))&&(i===r.length||js.includes(r[i]))?r=(o===0?"":r.substring(0,o))+r.substring(i+1):o=i}}return r===""?null:r}function se(e,t,a,r,n,s){var o=e.__className;if(ee||o!==a){var i=Di(a,r,s);(!ee||i!==e.getAttribute("class"))&&(i==null?e.removeAttribute("class"):t?e.className=i:e.setAttribute("class",i)),e.__className=a}else if(s)for(var f in s){var u=!!s[f];(n==null||u!==!!n[f])&&e.classList.toggle(f,u)}return s}function Ne(e){if(ee){var t=!1,a=()=>{if(!t){if(t=!0,e.hasAttribute("value")){var r=e.value;Q(e,"value",null),e.value=r}if(e.hasAttribute("checked")){var n=e.checked;Q(e,"checked",null),e.checked=n}}};e.__on_r=a,mi(a),Yo()}}function Q(e,t,a,r){var n=e.__attributes??(e.__attributes={});ee&&(n[t]=e.getAttribute(t),t==="src"||t==="srcset"||t==="href"&&e.nodeName==="LINK")||n[t]!==(n[t]=a)&&(t==="style"&&"__styles"in e&&(e.__styles={}),t==="loading"&&(e[Ul]=a),a==null?e.removeAttribute(t):typeof a!="string"&&Vi(e).includes(t)?e[t]=a:e.setAttribute(t,a))}var Ms=new Map;function Vi(e){var t=Ms.get(e.nodeName);if(t)return t;Ms.set(e.nodeName,t=[]);for(var a,r=e,n=Element.prototype;n!==r;){a=uo(r);for(var s in a)a[s].set&&t.push(s);r=qn(r)}return t}const Hi=()=>performance.now(),Lt={tick:e=>requestAnimationFrame(e),now:()=>Hi(),tasks:new Set};function Jo(){const e=Lt.now();Lt.tasks.forEach(t=>{t.c(e)||(Lt.tasks.delete(t),t.f())}),Lt.tasks.size!==0&&Lt.tick(Jo)}function Yi(e){let t;return Lt.tasks.size===0&&Lt.tick(Jo),{promise:new Promise(a=>{Lt.tasks.add(t={c:e,f:a})}),abort(){Lt.tasks.delete(t)}}}function Sr(e,t){rs(()=>{e.dispatchEvent(new CustomEvent(t))})}function qi(e){if(e==="float")return"cssFloat";if(e==="offset")return"cssOffset";if(e.startsWith("--"))return e;const t=e.split("-");return t.length===1?t[0]:t[0]+t.slice(1).map(a=>a[0].toUpperCase()+a.slice(1)).join("")}function Fs(e){const t={},a=e.split(";");for(const r of a){const[n,s]=r.split(":");if(!n||s===void 0)break;const o=qi(n.trim());t[o]=s.trim()}return t}const Wi=e=>e;function oa(e,t,a,r){var n=(e&oi)!==0,s=(e&li)!==0,o=n&&s,i=(e&ii)!==0,f=o?"both":n?"in":"out",u,p=t.inert,h=t.style.overflow,c,g;function b(){var C=ue,_=le;Tt(null),Nt(null);try{return u??(u=a()(t,r?.()??{},{direction:f}))}finally{Tt(C),Nt(_)}}var x={is_global:i,in(){if(t.inert=p,!n){g?.abort(),g?.reset?.();return}s||c?.abort(),Sr(t,"introstart"),c=Fn(t,b(),g,1,()=>{Sr(t,"introend"),c?.abort(),c=u=void 0,t.style.overflow=h})},out(C){if(!s){C?.(),u=void 0;return}t.inert=!0,Sr(t,"outrostart"),g=Fn(t,b(),c,0,()=>{Sr(t,"outroend"),C?.()})},stop:()=>{c?.abort(),g?.abort()}},y=le;if((y.transitions??(y.transitions=[])).push(x),n&&jn){var k=i;if(!k){for(var E=y.parent;E&&E.f&$a;)for(;(E=E.parent)&&!(E.f&rn););k=!E||(E.f&vo)!==0}k&&sn(()=>{yt(()=>x.in())})}}function Fn(e,t,a,r,n){var s=r===1;if(jl(t)){var o,i=!1;return kr(()=>{if(!i){var y=t({direction:s?"in":"out"});o=Fn(e,y,a,r,n)}}),{abort:()=>{i=!0,o?.abort()},deactivate:()=>o.deactivate(),reset:()=>o.reset(),t:()=>o.t()}}if(a?.deactivate(),!t?.duration)return n(),{abort:vt,deactivate:vt,reset:vt,t:()=>r};const{delay:f=0,css:u,tick:p,easing:h=Wi}=t;var c=[];if(s&&a===void 0&&(p&&p(0,1),u)){var g=Fs(u(0,1));c.push(g,g)}var b=()=>1-r,x=e.animate(c,{duration:f});return x.onfinish=()=>{var y=a?.t()??1-r;a?.abort();var k=r-y,E=t.duration*Math.abs(k),C=[];if(E>0){var _=!1;if(u)for(var w=Math.ceil(E/16.666666666666668),B=0;B<=w;B+=1){var S=y+k*h(B/w),T=Fs(u(S,1-S));C.push(T),_||(_=T.overflow==="hidden")}_&&(e.style.overflow="hidden"),b=()=>{var P=x.currentTime;return y+k*h(P/E)},p&&Yi(()=>{if(x.playState!=="running")return!1;var P=b();return p(P,1-P),!0})}x=e.animate(C,{duration:E,fill:"forwards"}),x.onfinish=()=>{b=()=>r,p?.(r,1-r),n()}},{abort:()=>{x&&(x.cancel(),x.effect=null,x.onfinish=vt)},deactivate:()=>{n=vt},reset:()=>{r===0&&p?.(1,0)},t:()=>b()}}function Be(e,t,a=t){var r=Da();Oi(e,"input",n=>{var s=n?e.defaultValue:e.value;if(s=wn(e)?kn(s):s,a(s),r&&s!==(s=t())){var o=e.selectionStart,i=e.selectionEnd;e.value=s??"",i!==null&&(e.selectionStart=o,e.selectionEnd=Math.min(i,e.value.length))}}),(ee&&e.defaultValue!==e.value||yt(t)==null&&e.value)&&a(wn(e)?kn(e.value):e.value),wr(()=>{var n=t();wn(e)&&n===kn(e.value)||e.type==="date"&&!n&&!e.value||n!==e.value&&(e.value=n??"")})}function wn(e){var t=e.type;return t==="number"||t==="range"}function kn(e){return e===""?null:+e}function Li(e,t,a){var r=ya(e,t);r&&r.set&&(e[t]=a,Qn(()=>{e[t]=null}))}function $s(e,t){return e===t||e?.[xa]===t}function Gr(e={},t,a,r){return sn(()=>{var n,s;return wr(()=>{n=s,s=[],yt(()=>{e!==a(...s)&&(t(e,...s),n&&$s(a(...n),e)&&t(null,...n))})}),()=>{kr(()=>{s&&$s(a(...s),e)&&t(null,...s)})}}),e}function _e(e=!1){const t=ge,a=t.l.u;if(!a)return;let r=()=>qr(t.s);if(e){let n=0,s={};const o=ca(()=>{let i=!1;const f=t.s;for(const u in f)f[u]!==s[u]&&(s[u]=f[u],i=!0);return i&&n++,n});r=()=>l(o)}a.b.length&&Bo(()=>{Us(t,r),rr(a.b)}),Ur(()=>{const n=yt(()=>a.m.map(Fl));return()=>{for(const s of n)typeof s=="function"&&s()}}),a.a.length&&Ur(()=>{Us(t,r),rr(a.a)})}function Us(e,t){if(e.l.s)for(const a of e.l.s)l(a);t()}function os(e,t,a){if(e==null)return t(void 0),a&&a(void 0),vt;const r=yt(()=>e.subscribe(t,a));return r.unsubscribe?()=>r.unsubscribe():r}const Oa=[];function zi(e,t){return{subscribe:st(e,t).subscribe}}function st(e,t=vt){let a=null;const r=new Set;function n(i){if(bo(e,i)&&(e=i,a)){const f=!Oa.length;for(const u of r)u[1](),Oa.push(u,e);if(f){for(let u=0;u<Oa.length;u+=2)Oa[u][0](Oa[u+1]);Oa.length=0}}}function s(i){n(i(e))}function o(i,f=vt){const u=[i,f];return r.add(u),r.size===1&&(a=t(n,s)||vt),i(e),()=>{r.delete(u),r.size===0&&a&&(a(),a=null)}}return{set:n,update:s,subscribe:o}}function ls(e,t,a){const r=!Array.isArray(e),n=r?[e]:e;if(!n.every(Boolean))throw new Error("derived() expects stores as input, got a falsy value");const s=t.length<2;return zi(a,(o,i)=>{let f=!1;const u=[];let p=0,h=vt;const c=()=>{if(p)return;h();const b=t(r?u[0]:u,o,i);s?o(b):h=typeof b=="function"?b:vt},g=n.map((b,x)=>os(b,y=>{u[x]=y,p&=~(1<<x),f&&c()},()=>{p|=1<<x}));return f=!0,c(),function(){rr(g),h(),f=!1}})}function Ki(e){let t;return os(e,a=>t=a)(),t}let Cr=!1,$n=Symbol();function At(e,t,a){const r=a[t]??(a[t]={store:null,source:wa(void 0),unsubscribe:vt});if(r.store!==e&&!($n in a))if(r.unsubscribe(),r.store=e??null,e==null)r.source.v=void 0,r.unsubscribe=vt;else{var n=!0;r.unsubscribe=os(e,s=>{n?r.source.v=s:N(r.source,s)}),n=!1}return e&&$n in a?Ki(e):l(r.source)}function fa(){const e={};function t(){Qn(()=>{for(var a in e)e[a].unsubscribe();Yn(e,$n,{enumerable:!1,value:!0})})}return[e,t]}function Ji(e){var t=Cr;try{return Cr=!1,[e(),Cr]}finally{Cr=t}}function L(e,t,a,r){var n=(a&ti)!==0,s=!Ua||(a&ai)!==0,o=(a&ni)!==0,i=(a&si)!==0,f=!1,u;o?[u,f]=Ji(()=>e[t]):u=e[t];var p=xa in e||ho in e,h=o&&(ya(e,t)?.set??(p&&t in e&&(S=>e[t]=S)))||void 0,c=r,g=!0,b=!1,x=()=>(b=!0,g&&(g=!1,i?c=yt(r):c=r),c);u===void 0&&r!==void 0&&(h&&s&&Wl(),u=x(),h&&h(u));var y;if(s)y=()=>{var S=e[t];return S===void 0?x():(g=!0,b=!1,S)};else{var k=(n?ca:Oe)(()=>e[t]);k.f|=po,y=()=>{var S=l(k);return S!==void 0&&(c=void 0),S===void 0?c:S}}if(!(a&ri))return y;if(h){var E=e.$$legacy;return function(S,T){return arguments.length>0?((!s||!T||E||f)&&h(T?y():S),S):y()}}var C=!1,_=!1,w=wa(u),B=ca(()=>{var S=y(),T=l(w);return C?(C=!1,_=!0,T):(_=!1,w.v=S)});return n||(B.equals=Wn),function(S,T){if(na!==null&&(C=_,y(),l(w)),arguments.length>0){const P=T?l(B):s&&o?ma(S):S;return B.equals(P)||(C=!0,N(w,P),b&&c!==void 0&&(c=P),yt(()=>l(B))),S}return l(B)}}function Xi(e){return class extends Zi{constructor(t){super({component:e,...t})}}}var Wt,_t;class Zi{constructor(t){ht(this,Wt);ht(this,_t);var a=new Map,r=(s,o)=>{var i=wa(o);return a.set(s,i),i};const n=new Proxy({...t.props||{},$$events:{}},{get(s,o){return l(a.get(o)??r(o,Reflect.get(s,o)))},has(s,o){return o===ho?!0:(l(a.get(o)??r(o,Reflect.get(s,o))),Reflect.has(s,o))},set(s,o,i){return N(a.get(o)??r(o,i),i),Reflect.set(s,o,i)}});yn(this,_t,(t.hydrate?Ii:Wo)(t.component,{target:t.target,anchor:t.anchor,props:n,context:t.context,intro:t.intro??!1,recover:t.recover})),(!t?.props?.$$host||t.sync===!1)&&as(),yn(this,Wt,n.$$events);for(const s of Object.keys(te(this,_t)))s==="$set"||s==="$destroy"||s==="$on"||Yn(this,s,{get(){return te(this,_t)[s]},set(o){te(this,_t)[s]=o},enumerable:!0});te(this,_t).$set=s=>{Object.assign(n,s)},te(this,_t).$destroy=()=>{Gi(te(this,_t))}}$set(t){te(this,_t).$set(t)}$on(t,a){te(this,Wt)[t]=te(this,Wt)[t]||[];const r=(...n)=>a.call(this,...n);return te(this,Wt)[t].push(r),()=>{te(this,Wt)[t]=te(this,Wt)[t].filter(n=>n!==r)}}$destroy(){te(this,_t).$destroy()}}Wt=new WeakMap,_t=new WeakMap;function it(e){ge===null&&Zn(),Ua&&ge.l!==null?tc(ge).m.push(e):Ur(()=>{const t=yt(e);if(typeof t=="function")return t})}function Qi(e){ge===null&&Zn(),it(()=>()=>yt(e))}function ec(e,t,{bubbles:a=!1,cancelable:r=!1}={}){return new CustomEvent(e,{detail:t,bubbles:a,cancelable:r})}function va(){const e=ge;return e===null&&Zn(),(t,a,r)=>{const n=e.s.$$events?.[t];if(n){const s=tn(n)?n.slice():[n],o=ec(t,a,r);for(const i of s)i.call(e.x,o);return!o.defaultPrevented}return!0}}function tc(e){var t=e.l;return t.u??(t.u={a:[],b:[],m:[]})}new URL("sveltekit-internal://");function ac(e,t){return e==="/"||t==="ignore"?e:t==="never"?e.endsWith("/")?e.slice(0,-1):e:t==="always"&&!e.endsWith("/")?e+"/":e}function rc(e){return e.split("%25").map(decodeURI).join("%25")}function nc(e){for(const t in e)e[t]=decodeURIComponent(e[t]);return e}function En({href:e}){return e.split("#")[0]}function sc(e,t,a,r=!1){const n=new URL(e);Object.defineProperty(n,"searchParams",{value:new Proxy(n.searchParams,{get(o,i){if(i==="get"||i==="getAll"||i==="has")return u=>(a(u),o[i](u));t();const f=Reflect.get(o,i);return typeof f=="function"?f.bind(o):f}}),enumerable:!0,configurable:!0});const s=["href","pathname","search","toString","toJSON"];r&&s.push("hash");for(const o of s)Object.defineProperty(n,o,{get(){return t(),e[o]},enumerable:!0,configurable:!0});return n}function oc(...e){let t=5381;for(const a of e)if(typeof a=="string"){let r=a.length;for(;r;)t=t*33^a.charCodeAt(--r)}else if(ArrayBuffer.isView(a)){const r=new Uint8Array(a.buffer,a.byteOffset,a.byteLength);let n=r.length;for(;n;)t=t*33^r[--n]}else throw new TypeError("value must be a string or TypedArray");return(t>>>0).toString(36)}var Hv=typeof globalThis<"u"?globalThis:typeof window<"u"?window:typeof global<"u"?global:typeof self<"u"?self:{};function Yv(e){return e&&e.__esModule&&Object.prototype.hasOwnProperty.call(e,"default")?e.default:e}function lc(e){const t=atob(e),a=new Uint8Array(t.length);for(let r=0;r<t.length;r++)a[r]=t.charCodeAt(r);return a.buffer}const ic=window.fetch;window.fetch=(e,t)=>((e instanceof Request?e.method:t?.method||"GET")!=="GET"&&Qa.delete(is(e)),ic(e,t));const Qa=new Map;function cc(e,t){const a=is(e,t),r=document.querySelector(a);if(r?.textContent){let{body:n,...s}=JSON.parse(r.textContent);const o=r.getAttribute("data-ttl");return o&&Qa.set(a,{body:n,init:s,ttl:1e3*Number(o)}),r.getAttribute("data-b64")!==null&&(n=lc(n)),Promise.resolve(new Response(n,s))}return window.fetch(e,t)}function dc(e,t,a){if(Qa.size>0){const r=is(e,a),n=Qa.get(r);if(n){if(performance.now()<n.ttl&&["default","force-cache","only-if-cached",void 0].includes(a?.cache))return new Response(n.body,n.init);Qa.delete(r)}}return window.fetch(t,a)}function is(e,t){let r=`script[data-sveltekit-fetched][data-url=${JSON.stringify(e instanceof Request?e.url:e)}]`;if(t?.headers||t?.body){const n=[];t.headers&&n.push([...new Headers(t.headers)].join(",")),t.body&&(typeof t.body=="string"||ArrayBuffer.isView(t.body))&&n.push(t.body),r+=`[data-hash="${oc(...n)}"]`}return r}const uc=/^(\[)?(\.\.\.)?(\w+)(?:=(\w+))?(\])?$/;function fc(e){const t=[];return{pattern:e==="/"?/^\/$/:new RegExp(`^${pc(e).map(r=>{const n=/^\[\.\.\.(\w+)(?:=(\w+))?\]$/.exec(r);if(n)return t.push({name:n[1],matcher:n[2],optional:!1,rest:!0,chained:!0}),"(?:/(.*))?";const s=/^\[\[(\w+)(?:=(\w+))?\]\]$/.exec(r);if(s)return t.push({name:s[1],matcher:s[2],optional:!0,rest:!1,chained:!0}),"(?:/([^/]+))?";if(!r)return;const o=r.split(/\[(.+?)\](?!\])/);return"/"+o.map((f,u)=>{if(u%2){if(f.startsWith("x+"))return An(String.fromCharCode(parseInt(f.slice(2),16)));if(f.startsWith("u+"))return An(String.fromCharCode(...f.slice(2).split("-").map(x=>parseInt(x,16))));const p=uc.exec(f),[,h,c,g,b]=p;return t.push({name:g,matcher:b,optional:!!h,rest:!!c,chained:c?u===1&&o[0]==="":!1}),c?"(.*?)":h?"([^/]*)?":"([^/]+?)"}return An(f)}).join("")}).join("")}/?$`),params:t}}function vc(e){return!/^\([^)]+\)$/.test(e)}function pc(e){return e.slice(1).split("/").filter(vc)}function gc(e,t,a){const r={},n=e.slice(1),s=n.filter(i=>i!==void 0);let o=0;for(let i=0;i<t.length;i+=1){const f=t[i];let u=n[i-o];if(f.chained&&f.rest&&o&&(u=n.slice(i-o,i+1).filter(p=>p).join("/"),o=0),u===void 0){f.rest&&(r[f.name]="");continue}if(!f.matcher||a[f.matcher](u)){r[f.name]=u;const p=t[i+1],h=n[i+1];p&&!p.rest&&p.optional&&h&&f.chained&&(o=0),!p&&!h&&Object.keys(r).length===s.length&&(o=0);continue}if(f.optional&&f.chained){o++;continue}return}if(!o)return r}function An(e){return e.normalize().replace(/[[\]]/g,"\\$&").replace(/%/g,"%25").replace(/\//g,"%2[Ff]").replace(/\?/g,"%3[Ff]").replace(/#/g,"%23").replace(/[.*+?^${}()|\\]/g,"\\$&")}function hc({nodes:e,server_loads:t,dictionary:a,matchers:r}){const n=new Set(t);return Object.entries(a).map(([i,[f,u,p]])=>{const{pattern:h,params:c}=fc(i),g={id:i,exec:b=>{const x=h.exec(b);if(x)return gc(x,c,r)},errors:[1,...p||[]].map(b=>e[b]),layouts:[0,...u||[]].map(o),leaf:s(f)};return g.errors.length=g.layouts.length=Math.max(g.errors.length,g.layouts.length),g});function s(i){const f=i<0;return f&&(i=~i),[f,e[i]]}function o(i){return i===void 0?i:[n.has(i),e[i]]}}function Xo(e,t=JSON.parse){try{return t(sessionStorage[e])}catch{}}function Ds(e,t,a=JSON.stringify){const r=a(t);try{sessionStorage[e]=r}catch{}}const St=globalThis.__sveltekit_1dvdr86?.base??"",mc=globalThis.__sveltekit_1dvdr86?.assets??St,bc="1740996859650",Zo="sveltekit:snapshot",Qo="sveltekit:scroll",el="sveltekit:states",yc="sveltekit:pageurl",Pa="sveltekit:history",or="sveltekit:navigation",Wr={tap:1,hover:2,viewport:3,eager:4,off:-1,false:-1},Er=location.origin;function tl(e){if(e instanceof URL)return e;let t=document.baseURI;if(!t){const a=document.getElementsByTagName("base");t=a.length?a[0].href:document.URL}return new URL(e,t)}function cs(){return{x:pageXOffset,y:pageYOffset}}function Ra(e,t){return e.getAttribute(`data-sveltekit-${t}`)}const Vs={...Wr,"":Wr.hover};function al(e){let t=e.assignedSlot??e.parentNode;return t?.nodeType===11&&(t=t.host),t}function rl(e,t){for(;e&&e!==t;){if(e.nodeName.toUpperCase()==="A"&&e.hasAttribute("href"))return e;e=al(e)}}function Un(e,t,a){let r;try{if(r=new URL(e instanceof SVGAElement?e.href.baseVal:e.href,document.baseURI),a&&r.hash.match(/^#[^/]/)){const i=location.hash.split("#")[1]||"/";r.hash=`#${i}${r.hash}`}}catch{}const n=e instanceof SVGAElement?e.target.baseVal:e.target,s=!r||!!n||dn(r,t,a)||(e.getAttribute("rel")||"").split(/\s+/).includes("external"),o=r?.origin===Er&&e.hasAttribute("download");return{url:r,external:s,target:n,download:o}}function Lr(e){let t=null,a=null,r=null,n=null,s=null,o=null,i=e;for(;i&&i!==document.documentElement;)r===null&&(r=Ra(i,"preload-code")),n===null&&(n=Ra(i,"preload-data")),t===null&&(t=Ra(i,"keepfocus")),a===null&&(a=Ra(i,"noscroll")),s===null&&(s=Ra(i,"reload")),o===null&&(o=Ra(i,"replacestate")),i=al(i);function f(u){switch(u){case"":case"true":return!0;case"off":case"false":return!1;default:return}}return{preload_code:Vs[r??"off"],preload_data:Vs[n??"off"],keepfocus:f(t),noscroll:f(a),reload:f(s),replace_state:f(o)}}function Hs(e){const t=st(e);let a=!0;function r(){a=!0,t.update(o=>o)}function n(o){a=!1,t.set(o)}function s(o){let i;return t.subscribe(f=>{(i===void 0||a&&f!==i)&&o(i=f)})}return{notify:r,set:n,subscribe:s}}const nl={v:()=>{}};function xc(){const{set:e,subscribe:t}=st(!1);let a;async function r(){clearTimeout(a);try{const n=await fetch(`${mc}/_app/version.json`,{headers:{pragma:"no-cache","cache-control":"no-cache"}});if(!n.ok)return!1;const o=(await n.json()).version!==bc;return o&&(e(!0),nl.v(),clearTimeout(a)),o}catch{return!1}}return{subscribe:t,check:r}}function dn(e,t,a){return e.origin!==Er||!e.pathname.startsWith(t)?!0:a?!(e.pathname===t+"/"||e.pathname===t+"/index.html"||e.protocol==="file:"&&e.pathname.replace(/\/[^/]+\.html?$/,"")===t):!1}function qv(e){}const sl=new Set(["load","prerender","csr","ssr","trailingSlash","config"]);[...sl];const _c=new Set([...sl]);[..._c];function wc(e){return e.filter(t=>t!=null)}class un{constructor(t,a){this.status=t,typeof a=="string"?this.body={message:a}:a?this.body=a:this.body={message:`Error: ${t}`}}toString(){return JSON.stringify(this.body)}}class ds{constructor(t,a){this.status=t,this.location=a}}class us extends Error{constructor(t,a,r){super(r),this.status=t,this.text=a}}const kc="x-sveltekit-invalidated",Ec="x-sveltekit-trailing-slash";function zr(e){return e instanceof un||e instanceof us?e.status:500}function Ac(e){return e instanceof us?e.text:"Internal Error"}let rt,lr,Sn;const Sc=it.toString().includes("$$")||/function \w+\(\) \{\}/.test(it.toString());var ur,fr,vr,pr,gr,hr,mr,br,oo,yr,lo,xr,io;Sc?(rt={data:{},form:null,error:null,params:{},route:{id:null},state:{},status:-1,url:new URL("https://example.com")},lr={current:null},Sn={current:!1}):(rt=new(oo=class{constructor(){ht(this,ur,bt({}));ht(this,fr,bt(null));ht(this,vr,bt(null));ht(this,pr,bt({}));ht(this,gr,bt({id:null}));ht(this,hr,bt({}));ht(this,mr,bt(-1));ht(this,br,bt(new URL("https://example.com")))}get data(){return l(te(this,ur))}set data(t){N(te(this,ur),t)}get form(){return l(te(this,fr))}set form(t){N(te(this,fr),t)}get error(){return l(te(this,vr))}set error(t){N(te(this,vr),t)}get params(){return l(te(this,pr))}set params(t){N(te(this,pr),t)}get route(){return l(te(this,gr))}set route(t){N(te(this,gr),t)}get state(){return l(te(this,hr))}set state(t){N(te(this,hr),t)}get status(){return l(te(this,mr))}set status(t){N(te(this,mr),t)}get url(){return l(te(this,br))}set url(t){N(te(this,br),t)}},ur=new WeakMap,fr=new WeakMap,vr=new WeakMap,pr=new WeakMap,gr=new WeakMap,hr=new WeakMap,mr=new WeakMap,br=new WeakMap,oo),lr=new(lo=class{constructor(){ht(this,yr,bt(null))}get current(){return l(te(this,yr))}set current(t){N(te(this,yr),t)}},yr=new WeakMap,lo),Sn=new(io=class{constructor(){ht(this,xr,bt(!1))}get current(){return l(te(this,xr))}set current(t){N(te(this,xr),t)}},xr=new WeakMap,io),nl.v=()=>Sn.current=!0);function Cc(e){Object.assign(rt,e)}const Tc="/__data.json",Nc=".html__data.json";function Bc(e){return e.endsWith(".html")?e.replace(/\.html$/,Nc):e.replace(/\/$/,"")+Tc}const Oc=new Set(["icon","shortcut icon","apple-touch-icon"]),ka=Xo(Qo)??{},ir=Xo(Zo)??{},Vt={url:Hs({}),page:Hs({}),navigating:st(null),updated:xc()};function fs(e){ka[e]=cs()}function Rc(e,t){let a=e+1;for(;ka[a];)delete ka[a],a+=1;for(a=t+1;ir[a];)delete ir[a],a+=1}function Fa(e){return location.href=e.href,new Promise(()=>{})}async function ol(){if("serviceWorker"in navigator){const e=await navigator.serviceWorker.getRegistration(St||"/");e&&await e.update()}}function Ys(){}let vs,Dn,Kr,zt,Vn,$e;const Jr=[],Xr=[];let la=null;const ll=new Set,Pc=new Set,er=new Set;let ye={branch:[],error:null,url:null},ps=!1,Zr=!1,qs=!0,cr=!1,La=!1,il=!1,gs=!1,cl,at,wt,ba;const tr=new Set;async function Kv(e,t,a){document.URL!==location.href&&(location.href=location.href),$e=e,await e.hooks.init?.(),vs=hc(e),zt=document.documentElement,Vn=t,Dn=e.nodes[0],Kr=e.nodes[1],Dn(),Kr(),at=history.state?.[Pa],wt=history.state?.[or],at||(at=wt=Date.now(),history.replaceState({...history.state,[Pa]:at,[or]:wt},""));const r=ka[at];r&&(history.scrollRestoration="manual",scrollTo(r.x,r.y)),a?await Hc(Vn,a):await Ga($e.hash?yl(new URL(location.href)):location.href,{replaceState:!0}),Vc()}function Ic(){Jr.length=0,gs=!1}function dl(e){Xr.some(t=>t?.snapshot)&&(ir[e]=Xr.map(t=>t?.snapshot?.capture()))}function ul(e){ir[e]?.forEach((t,a)=>{Xr[a]?.snapshot?.restore(t)})}function Ws(){fs(at),Ds(Qo,ka),dl(wt),Ds(Zo,ir)}async function hs(e,t,a,r){return Ja({type:"goto",url:tl(e),keepfocus:t.keepFocus,noscroll:t.noScroll,replace_state:t.replaceState,state:t.state,redirect_count:a,nav_token:r,accept:()=>{t.invalidateAll&&(gs=!0),t.invalidate&&t.invalidate.forEach(Dc)}})}async function Gc(e){if(e.id!==la?.id){const t={};tr.add(t),la={id:e.id,token:t,promise:vl({...e,preload:t}).then(a=>(tr.delete(t),a.type==="loaded"&&a.state.error&&(la=null),a))}}return la.promise}async function Cn(e){const t=(await vn(e,!1))?.route;t&&await Promise.all([...t.layouts,t.leaf].map(a=>a?.[1]()))}function fl(e,t,a){ye=e.state;const r=document.querySelector("style[data-sveltekit]");r&&r.remove(),Object.assign(rt,e.props.page),cl=new $e.root({target:t,props:{...e.props,stores:Vt,components:Xr},hydrate:a,sync:!1}),ul(wt);const n={from:null,to:{params:ye.params,route:{id:ye.route?.id??null},url:new URL(location.href)},willUnload:!1,type:"enter",complete:Promise.resolve()};er.forEach(s=>s(n)),Zr=!0}function Qr({url:e,params:t,branch:a,status:r,error:n,route:s,form:o}){let i="never";if(St&&(e.pathname===St||e.pathname===St+"/"))i="always";else for(const g of a)g?.slash!==void 0&&(i=g.slash);e.pathname=ac(e.pathname,i),e.search=e.search;const f={type:"loaded",state:{url:e,params:t,branch:a,error:n,route:s},props:{constructors:wc(a).map(g=>g.node.component),page:ys(rt)}};o!==void 0&&(f.props.form=o);let u={},p=!rt,h=0;for(let g=0;g<Math.max(a.length,ye.branch.length);g+=1){const b=a[g],x=ye.branch[g];b?.data!==x?.data&&(p=!0),b&&(u={...u,...b.data},p&&(f.props[`data_${h}`]=u),h+=1)}return(!ye.url||e.href!==ye.url.href||ye.error!==n||o!==void 0&&o!==rt.form||p)&&(f.props.page={error:n,params:t,route:{id:s?.id??null},state:{},status:r,url:new URL(e),form:o??null,data:p?u:rt.data}),f}async function ms({loader:e,parent:t,url:a,params:r,route:n,server_data_node:s}){let o=null,i=!0;const f={dependencies:new Set,params:new Set,parent:!1,route:!1,url:!1,search_params:new Set},u=await e();if(u.universal?.load){let p=function(...c){for(const g of c){const{href:b}=new URL(g,a);f.dependencies.add(b)}};const h={route:new Proxy(n,{get:(c,g)=>(i&&(f.route=!0),c[g])}),params:new Proxy(r,{get:(c,g)=>(i&&f.params.add(g),c[g])}),data:s?.data??null,url:sc(a,()=>{i&&(f.url=!0)},c=>{i&&f.search_params.add(c)},$e.hash),async fetch(c,g){let b;c instanceof Request?(b=c.url,g={body:c.method==="GET"||c.method==="HEAD"?void 0:await c.blob(),cache:c.cache,credentials:c.credentials,headers:[...c.headers].length?c.headers:void 0,integrity:c.integrity,keepalive:c.keepalive,method:c.method,mode:c.mode,redirect:c.redirect,referrer:c.referrer,referrerPolicy:c.referrerPolicy,signal:c.signal,...g}):b=c;const x=new URL(b,a);return i&&p(x.href),x.origin===a.origin&&(b=x.href.slice(a.origin.length)),Zr?dc(b,x.href,g):cc(b,g)},setHeaders:()=>{},depends:p,parent(){return i&&(f.parent=!0),t()},untrack(c){i=!1;try{return c()}finally{i=!0}}};o=await u.universal.load.call(null,h)??null}return{node:u,loader:e,server:s,universal:u.universal?.load?{type:"data",data:o,uses:f}:null,data:o??s?.data??null,slash:u.universal?.trailingSlash??s?.slash}}function Ls(e,t,a,r,n,s){if(gs)return!0;if(!n)return!1;if(n.parent&&e||n.route&&t||n.url&&a)return!0;for(const o of n.search_params)if(r.has(o))return!0;for(const o of n.params)if(s[o]!==ye.params[o])return!0;for(const o of n.dependencies)if(Jr.some(i=>i(new URL(o))))return!0;return!1}function bs(e,t){return e?.type==="data"?e:e?.type==="skip"?t??null:null}function jc(e,t){if(!e)return new Set(t.searchParams.keys());const a=new Set([...e.searchParams.keys(),...t.searchParams.keys()]);for(const r of a){const n=e.searchParams.getAll(r),s=t.searchParams.getAll(r);n.every(o=>s.includes(o))&&s.every(o=>n.includes(o))&&a.delete(r)}return a}function zs({error:e,url:t,route:a,params:r}){return{type:"loaded",state:{error:e,url:t,route:a,params:r,branch:[]},props:{page:ys(rt),constructors:[]}}}async function vl({id:e,invalidating:t,url:a,params:r,route:n,preload:s}){if(la?.id===e)return tr.delete(la.token),la.promise;const{errors:o,layouts:i,leaf:f}=n,u=[...i,f];o.forEach(_=>_?.().catch(()=>{})),u.forEach(_=>_?.[1]().catch(()=>{}));let p=null;const h=ye.url?e!==en(ye.url):!1,c=ye.route?n.id!==ye.route.id:!1,g=jc(ye.url,a);let b=!1;const x=u.map((_,w)=>{const B=ye.branch[w],S=!!_?.[0]&&(B?.loader!==_[1]||Ls(b,c,h,g,B.server?.uses,r));return S&&(b=!0),S});if(x.some(Boolean)){try{p=await hl(a,x)}catch(_){const w=await Ia(_,{url:a,params:r,route:{id:e}});return tr.has(s)?zs({error:w,url:a,params:r,route:n}):fn({status:zr(_),error:w,url:a,route:n})}if(p.type==="redirect")return p}const y=p?.nodes;let k=!1;const E=u.map(async(_,w)=>{if(!_)return;const B=ye.branch[w],S=y?.[w];if((!S||S.type==="skip")&&_[1]===B?.loader&&!Ls(k,c,h,g,B.universal?.uses,r))return B;if(k=!0,S?.type==="error")throw S;return ms({loader:_[1],url:a,params:r,route:n,parent:async()=>{const P={};for(let I=0;I<w;I+=1)Object.assign(P,(await E[I])?.data);return P},server_data_node:bs(S===void 0&&_[0]?{type:"skip"}:S??null,_[0]?B?.server:void 0)})});for(const _ of E)_.catch(()=>{});const C=[];for(let _=0;_<u.length;_+=1)if(u[_])try{C.push(await E[_])}catch(w){if(w instanceof ds)return{type:"redirect",location:w.location};if(tr.has(s))return zs({error:await Ia(w,{params:r,url:a,route:{id:n.id}}),url:a,params:r,route:n});let B=zr(w),S;if(y?.includes(w))B=w.status??B,S=w.error;else if(w instanceof un)S=w.body;else{if(await Vt.updated.check())return await ol(),await Fa(a);S=await Ia(w,{params:r,url:a,route:{id:n.id}})}const T=await Mc(_,C,o);return T?Qr({url:a,params:r,branch:C.slice(0,T.idx).concat(T.node),status:B,error:S,route:n}):await gl(a,{id:n.id},S,B)}else C.push(void 0);return Qr({url:a,params:r,branch:C,status:200,error:null,route:n,form:t?void 0:null})}async function Mc(e,t,a){for(;e--;)if(a[e]){let r=e;for(;!t[r];)r-=1;try{return{idx:r+1,node:{node:await a[e](),loader:a[e],data:{},server:null,universal:null}}}catch{continue}}}async function fn({status:e,error:t,url:a,route:r}){const n={};let s=null;if($e.server_loads[0]===0)try{const i=await hl(a,[!0]);if(i.type!=="data"||i.nodes[0]&&i.nodes[0].type!=="data")throw 0;s=i.nodes[0]??null}catch{(a.origin!==Er||a.pathname!==location.pathname||ps)&&await Fa(a)}try{const i=await ms({loader:Dn,url:a,params:n,route:r,parent:()=>Promise.resolve({}),server_data_node:bs(s)}),f={node:await Kr(),loader:Kr,universal:null,server:null,data:null};return Qr({url:a,params:n,branch:[i,f],status:e,error:t,route:null})}catch(i){if(i instanceof ds)return hs(new URL(i.location,location.href),{},0);throw i}}function Fc(e){let t;try{if(t=$e.hooks.reroute({url:new URL(e)})??e,typeof t=="string"){const a=new URL(e);$e.hash?a.hash=t:a.pathname=t,t=a}}catch{return}return t}async function vn(e,t){if(e&&!dn(e,St,$e.hash)){const a=Fc(e);if(!a)return;const r=$c(a);for(const n of vs){const s=n.exec(r);if(s)return{id:en(e),invalidating:t,route:n,params:nc(s),url:e}}}}function $c(e){return rc($e.hash?e.hash.replace(/^#/,"").replace(/[?#].+/,""):e.pathname.slice(St.length))||"/"}function en(e){return($e.hash?e.hash.replace(/^#/,""):e.pathname)+e.search}function pl({url:e,type:t,intent:a,delta:r}){let n=!1;const s=bl(ye,a,e,t);r!==void 0&&(s.navigation.delta=r);const o={...s.navigation,cancel:()=>{n=!0,s.reject(new Error("navigation cancelled"))}};return cr||ll.forEach(i=>i(o)),n?null:s}async function Ja({type:e,url:t,popped:a,keepfocus:r,noscroll:n,replace_state:s,state:o={},redirect_count:i=0,nav_token:f={},accept:u=Ys,block:p=Ys}){const h=ba;ba=f;const c=await vn(t,!1),g=pl({url:t,type:e,delta:a?.delta,intent:c});if(!g){p(),ba===f&&(ba=h);return}const b=at,x=wt;u(),cr=!0,Zr&&Vt.navigating.set(lr.current=g.navigation);let y=c&&await vl(c);if(!y){if(dn(t,St,$e.hash))return await Fa(t);y=await gl(t,{id:null},await Ia(new us(404,"Not Found",`Not found: ${t.pathname}`),{url:t,params:{},route:{id:null}}),404)}if(t=c?.url||t,ba!==f)return g.reject(new Error("navigation aborted")),!1;if(y.type==="redirect")if(i>=20)y=await fn({status:500,error:await Ia(new Error("Redirect loop"),{url:t,params:{},route:{id:null}}),url:t,route:{id:null}});else return await hs(new URL(y.location,t).href,{},i+1,f),!1;else y.props.page.status>=400&&await Vt.updated.check()&&(await ol(),await Fa(t));if(Ic(),fs(b),dl(x),y.props.page.url.pathname!==t.pathname&&(t.pathname=y.props.page.url.pathname),o=a?a.state:o,!a){const _=s?0:1,w={[Pa]:at+=_,[or]:wt+=_,[el]:o};(s?history.replaceState:history.pushState).call(history,w,"",t),s||Rc(at,wt)}if(la=null,y.props.page.state=o,Zr){ye=y.state,y.props.page&&(y.props.page.url=t);const _=(await Promise.all(Array.from(Pc,w=>w(g.navigation)))).filter(w=>typeof w=="function");if(_.length>0){let w=function(){_.forEach(B=>{er.delete(B)})};_.push(w),_.forEach(B=>{er.add(B)})}cl.$set(y.props),Cc(y.props.page),il=!0}else fl(y,Vn,!1);const{activeElement:k}=document;await Ho();const E=a?a.scroll:n?cs():null;if(qs){const _=t.hash&&document.getElementById(decodeURIComponent($e.hash?t.hash.split("#")[2]??"":t.hash.slice(1)));E?scrollTo(E.x,E.y):_?_.scrollIntoView():scrollTo(0,0)}const C=document.activeElement!==k&&document.activeElement!==document.body;!r&&!C&&Yc(),qs=!0,y.props.page&&Object.assign(rt,y.props.page),cr=!1,e==="popstate"&&ul(wt),g.fulfil(void 0),er.forEach(_=>_(g.navigation)),Vt.navigating.set(lr.current=null)}async function gl(e,t,a,r){return e.origin===Er&&e.pathname===location.pathname&&!ps?await fn({status:r,error:a,url:e,route:t}):await Fa(e)}function Uc(){let e,t;zt.addEventListener("mousemove",o=>{const i=o.target;clearTimeout(e),e=setTimeout(()=>{n(i,2)},20)});function a(o){o.defaultPrevented||n(o.composedPath()[0],1)}zt.addEventListener("mousedown",a),zt.addEventListener("touchstart",a,{passive:!0});const r=new IntersectionObserver(o=>{for(const i of o)i.isIntersecting&&(Cn(new URL(i.target.href)),r.unobserve(i.target))},{threshold:0});async function n(o,i){const f=rl(o,zt);if(!f||f===t)return;const{url:u,external:p,download:h}=Un(f,St,$e.hash);if(p||h)return;const c=Lr(f),g=u&&en(ye.url)===en(u);if(!c.reload&&!g)if(i<=c.preload_data){t=f;const b=await vn(u,!1);b&&Gc(b)}else i<=c.preload_code&&(t=f,Cn(u))}function s(){r.disconnect();for(const o of zt.querySelectorAll("a")){const{url:i,external:f,download:u}=Un(o,St,$e.hash);if(f||u)continue;const p=Lr(o);p.reload||(p.preload_code===Wr.viewport&&r.observe(o),p.preload_code===Wr.eager&&Cn(i))}}er.add(s),s()}function Ia(e,t){if(e instanceof un)return e.body;const a=zr(e),r=Ac(e);return $e.hooks.handleError({error:e,event:t,status:a,message:r})??{message:r}}function Ga(e,t={}){return e=new URL(tl(e)),e.origin!==Er?Promise.reject(new Error("goto: invalid URL")):hs(e,t,0)}function Dc(e){if(typeof e=="function")Jr.push(e);else{const{href:t}=new URL(e,location.href);Jr.push(a=>a.href===t)}}function Vc(){history.scrollRestoration="manual",addEventListener("beforeunload",t=>{let a=!1;if(Ws(),!cr){const r=bl(ye,void 0,null,"leave"),n={...r.navigation,cancel:()=>{a=!0,r.reject(new Error("navigation cancelled"))}};ll.forEach(s=>s(n))}a?(t.preventDefault(),t.returnValue=""):history.scrollRestoration="auto"}),addEventListener("visibilitychange",()=>{document.visibilityState==="hidden"&&Ws()}),navigator.connection?.saveData||Uc(),zt.addEventListener("click",async t=>{if(t.button||t.which!==1||t.metaKey||t.ctrlKey||t.shiftKey||t.altKey||t.defaultPrevented)return;const a=rl(t.composedPath()[0],zt);if(!a)return;const{url:r,external:n,target:s,download:o}=Un(a,St,$e.hash);if(!r)return;if(s==="_parent"||s==="_top"){if(window.parent!==window)return}else if(s&&s!=="_self")return;const i=Lr(a);if(!(a instanceof SVGAElement)&&r.protocol!==location.protocol&&!(r.protocol==="https:"||r.protocol==="http:")||o)return;const[u,p]=($e.hash?r.hash.replace(/^#/,""):r.href).split("#"),h=u===En(location);if(n||i.reload&&(!h||!p)){pl({url:r,type:"link"})?cr=!0:t.preventDefault();return}if(p!==void 0&&h){const[,c]=ye.url.href.split("#");if(c===p){if(t.preventDefault(),p===""||p==="top"&&a.ownerDocument.getElementById("top")===null)window.scrollTo({top:0});else{const g=a.ownerDocument.getElementById(decodeURIComponent(p));g&&(g.scrollIntoView(),g.focus())}return}if(La=!0,fs(at),e(r),!i.replace_state)return;La=!1}t.preventDefault(),await new Promise(c=>{requestAnimationFrame(()=>{setTimeout(c,0)}),setTimeout(c,100)}),await Ja({type:"link",url:r,keepfocus:i.keepfocus,noscroll:i.noscroll,replace_state:i.replace_state??r.href===location.href})}),zt.addEventListener("submit",t=>{if(t.defaultPrevented)return;const a=HTMLFormElement.prototype.cloneNode.call(t.target),r=t.submitter;if((r?.formTarget||a.target)==="_blank"||(r?.formMethod||a.method)!=="get")return;const o=new URL(r?.hasAttribute("formaction")&&r?.formAction||a.action);if(dn(o,St,!1))return;const i=t.target,f=Lr(i);if(f.reload)return;t.preventDefault(),t.stopPropagation();const u=new FormData(i),p=r?.getAttribute("name");p&&u.append(p,r?.getAttribute("value")??""),o.search=new URLSearchParams(u).toString(),Ja({type:"form",url:o,keepfocus:f.keepfocus,noscroll:f.noscroll,replace_state:f.replace_state??o.href===location.href})}),addEventListener("popstate",async t=>{if(t.state?.[Pa]){const a=t.state[Pa];if(ba={},a===at)return;const r=ka[a],n=t.state[el]??{},s=new URL(t.state[yc]??location.href),o=t.state[or],i=ye.url?En(location)===En(ye.url):!1;if(o===wt&&(il||i)){n!==rt.state&&(rt.state=n),e(s),ka[at]=cs(),r&&scrollTo(r.x,r.y),at=a;return}const u=a-at;await Ja({type:"popstate",url:s,popped:{state:n,scroll:r,delta:u},accept:()=>{at=a,wt=o},block:()=>{history.go(-u)},nav_token:ba})}else if(!La){const a=new URL(location.href);e(a)}}),addEventListener("hashchange",()=>{La?(La=!1,history.replaceState({...history.state,[Pa]:++at,[or]:wt},"",location.href)):$e.hash&&ye.url.hash===location.hash&&Ja({type:"goto",url:yl(ye.url)})});for(const t of document.querySelectorAll("link"))Oc.has(t.rel)&&(t.href=t.href);addEventListener("pageshow",t=>{t.persisted&&Vt.navigating.set(lr.current=null)});function e(t){ye.url=rt.url=t,Vt.page.set(ys(rt)),Vt.page.notify()}}async function Hc(e,{status:t=200,error:a,node_ids:r,params:n,route:s,server_route:o,data:i,form:f}){ps=!0;const u=new URL(location.href);let p;({params:n={},route:s={id:null}}=await vn(u,!1)||{}),p=vs.find(({id:g})=>g===s.id);let h,c=!0;try{const g=r.map(async(x,y)=>{const k=i[y];return k?.uses&&(k.uses=ml(k.uses)),ms({loader:$e.nodes[x],url:u,params:n,route:s,parent:async()=>{const E={};for(let C=0;C<y;C+=1)Object.assign(E,(await g[C]).data);return E},server_data_node:bs(k)})}),b=await Promise.all(g);if(p){const x=p.layouts;for(let y=0;y<x.length;y++)x[y]||b.splice(y,0,void 0)}h=Qr({url:u,params:n,branch:b,status:t,error:a,form:f,route:p??null})}catch(g){if(g instanceof ds){await Fa(new URL(g.location,location.href));return}h=await fn({status:zr(g),error:await Ia(g,{url:u,params:n,route:s}),url:u,route:s}),e.textContent="",c=!1}h.props.page&&(h.props.page.state={}),fl(h,e,c)}async function hl(e,t){const a=new URL(e);a.pathname=Bc(e.pathname),e.pathname.endsWith("/")&&a.searchParams.append(Ec,"1"),a.searchParams.append(kc,t.map(s=>s?"1":"0").join(""));const r=window.fetch,n=await r(a.href,{});if(!n.ok){let s;throw n.headers.get("content-type")?.includes("application/json")?s=await n.json():n.status===404?s="Not Found":n.status===500&&(s="Internal Error"),new un(n.status,s)}return new Promise(async s=>{const o=new Map,i=n.body.getReader(),f=new TextDecoder;function u(h){return Bl(h,{...$e.decoders,Promise:c=>new Promise((g,b)=>{o.set(c,{fulfil:g,reject:b})})})}let p="";for(;;){const{done:h,value:c}=await i.read();if(h&&!p)break;for(p+=!c&&p?`
-`:f.decode(c,{stream:!0});;){const g=p.indexOf(`
-`);if(g===-1)break;const b=JSON.parse(p.slice(0,g));if(p=p.slice(g+1),b.type==="redirect")return s(b);if(b.type==="data")b.nodes?.forEach(x=>{x?.type==="data"&&(x.uses=ml(x.uses),x.data=u(x.data))}),s(b);else if(b.type==="chunk"){const{id:x,data:y,error:k}=b,E=o.get(x);o.delete(x),k?E.reject(u(k)):E.fulfil(u(y))}}}})}function ml(e){return{dependencies:new Set(e?.dependencies??[]),params:new Set(e?.params??[]),parent:!!e?.parent,route:!!e?.route,url:!!e?.url,search_params:new Set(e?.search_params??[])}}function Yc(){const e=document.querySelector("[autofocus]");if(e)e.focus();else{const t=document.body,a=t.getAttribute("tabindex");t.tabIndex=-1,t.focus({preventScroll:!0,focusVisible:!1}),a!==null?t.setAttribute("tabindex",a):t.removeAttribute("tabindex");const r=getSelection();if(r&&r.type!=="None"){const n=[];for(let s=0;s<r.rangeCount;s+=1)n.push(r.getRangeAt(s));setTimeout(()=>{if(r.rangeCount===n.length){for(let s=0;s<r.rangeCount;s+=1){const o=n[s],i=r.getRangeAt(s);if(o.commonAncestorContainer!==i.commonAncestorContainer||o.startContainer!==i.startContainer||o.endContainer!==i.endContainer||o.startOffset!==i.startOffset||o.endOffset!==i.endOffset)return}r.removeAllRanges()}})}}}function bl(e,t,a,r){let n,s;const o=new Promise((f,u)=>{n=f,s=u});return o.catch(()=>{}),{navigation:{from:{params:e.params,route:{id:e.route?.id??null},url:e.url},to:a&&{params:t?.params??null,route:{id:t?.route?.id??null},url:a},willUnload:!t,type:r,complete:o},fulfil:n,reject:s}}function ys(e){return{data:e.data,error:e.error,form:e.form,params:e.params,route:e.route,state:e.state,status:e.status,url:e.url}}function yl(e){const t=new URL(e);return t.hash=decodeURIComponent(e.hash),t}const qc="modulepreload",Wc=function(e,t){return new URL(e,t).href},Ks={},ft=function(t,a,r){let n=Promise.resolve();if(a&&a.length>0){const o=document.getElementsByTagName("link"),i=document.querySelector("meta[property=csp-nonce]"),f=i?.nonce||i?.getAttribute("nonce");n=Promise.allSettled(a.map(u=>{if(u=Wc(u,r),u in Ks)return;Ks[u]=!0;const p=u.endsWith(".css"),h=p?'[rel="stylesheet"]':"";if(!!r)for(let b=o.length-1;b>=0;b--){const x=o[b];if(x.href===u&&(!p||x.rel==="stylesheet"))return}else if(document.querySelector(`link[href="${u}"]${h}`))return;const g=document.createElement("link");if(g.rel=p?"stylesheet":qc,p||(g.as="script"),g.crossOrigin="",g.href=u,f&&g.setAttribute("nonce",f),document.head.appendChild(g),p)return new Promise((b,x)=>{g.addEventListener("load",b),g.addEventListener("error",()=>x(new Error(`Unable to preload CSS for ${u}`)))})}))}function s(o){const i=new Event("vite:preloadError",{cancelable:!0});if(i.payload=o,window.dispatchEvent(i),!i.defaultPrevented)throw o}return n.then(o=>{for(const i of o||[])i.status==="rejected"&&s(i.reason);return t().catch(s)})},Jv={},Lc="5";typeof window<"u"&&(window.__svelte||(window.__svelte={v:new Set})).v.add(Lc);const zc=Ol;var Kc=O('<div id="svelte-announcer" aria-live="assertive" aria-atomic="true" style="position: absolute; left: 0; top: 0; clip: rect(0 0 0 0); clip-path: inset(50%); overflow: hidden; white-space: nowrap; width: 1px; height: 1px"><!></div>'),Jc=O("<!> <!>",1);function Xc(e,t){fe(t,!0);let a=L(t,"components",23,()=>[]),r=L(t,"data_0",3,null),n=L(t,"data_1",3,null);Bo(()=>t.stores.page.set(t.page)),Ur(()=>{t.stores,t.page,t.constructors,a(),t.form,r(),n(),t.stores.page.notify()});let s=bt(!1),o=bt(!1),i=bt(null);it(()=>{const x=t.stores.page.subscribe(()=>{l(s)&&(N(o,!0),Ho().then(()=>{N(i,ma(document.title||"untitled page"))}))});return N(s,!0),x});const f=ca(()=>t.constructors[1]);var u=Jc(),p=J(u);{var h=x=>{var y=pe();const k=ca(()=>t.constructors[0]);var E=J(y);Ir(E,()=>l(k),(C,_)=>{Gr(_(C,{get data(){return r()},get form(){return t.form},children:(w,B)=>{var S=pe(),T=J(S);Ir(T,()=>l(f),(P,I)=>{Gr(I(P,{get data(){return n()},get form(){return t.form}}),U=>a()[1]=U,()=>a()?.[1])}),A(w,S)},$$slots:{default:!0}}),w=>a()[0]=w,()=>a()?.[0])}),A(x,y)},c=x=>{var y=pe();const k=ca(()=>t.constructors[0]);var E=J(y);Ir(E,()=>l(k),(C,_)=>{Gr(_(C,{get data(){return r()},get form(){return t.form}}),w=>a()[0]=w,()=>a()?.[0])}),A(x,y)};j(p,x=>{t.constructors[1]?x(h):x(c,!1)})}var g=m(p,2);{var b=x=>{var y=Kc(),k=v(y);{var E=C=>{var _=_a();V(()=>D(_,l(i))),A(C,_)};j(k,C=>{l(o)&&C(E)})}d(y),A(x,y)};j(g,x=>{l(s)&&x(b)})}A(e,u),ve()}const Xv=Xi(Xc),Zv=[()=>ft(()=>Promise.resolve().then(()=>td),void 0,import.meta.url),()=>ft(()=>Promise.resolve().then(()=>sd),void 0,import.meta.url),()=>ft(()=>Promise.resolve().then(()=>Jd),void 0,import.meta.url),()=>ft(()=>Promise.resolve().then(()=>Eu),void 0,import.meta.url),()=>ft(()=>Promise.resolve().then(()=>ju),void 0,import.meta.url),()=>ft(()=>Promise.resolve().then(()=>Hu),void 0,import.meta.url),()=>ft(()=>Promise.resolve().then(()=>lf),void 0,import.meta.url),()=>ft(()=>Promise.resolve().then(()=>mf),void 0,import.meta.url),()=>ft(()=>Promise.resolve().then(()=>xf),void 0,import.meta.url),()=>ft(()=>Promise.resolve().then(()=>Vf),void 0,import.meta.url),()=>ft(()=>Promise.resolve().then(()=>Lf),void 0,import.meta.url),()=>ft(()=>Promise.resolve().then(()=>Av),void 0,import.meta.url),()=>ft(()=>Promise.resolve().then(()=>Fv),void 0,import.meta.url)],Qv=[],ep={"/":[2],"/courses":[3],"/courses/[courseId]":[4],"/game-rules":[5],"/games":[6],"/games/create/[game]":[8],"/games/[gameId]":[7],"/profile":[9],"/team":[10],"/whitepaper":[11],"/yardages":[12]},Zc={handleError:({error:e})=>{console.error(e)},reroute:()=>{},transport:{}},Qc=Object.fromEntries(Object.entries(Zc.transport).map(([e,t])=>[e,t.decode])),tp=!1,ap=(e,t)=>Qc[e](t);function ed(e,t){var a=pe(),r=J(a);Ui(r,()=>t.children),A(e,a)}const td=Object.freeze(Object.defineProperty({__proto__:null,component:ed},Symbol.toStringTag,{value:"Module"}));Zl();const ad={get error(){return rt.error},get status(){return rt.status}};Vt.updated.check;const Js=ad;var rd=O("<h1> </h1> <p> </p>",1);function nd(e,t){fe(t,!1),_e();var a=rd(),r=J(a),n=v(r,!0);d(r);var s=m(r,2),o=v(s,!0);d(s),V(()=>{D(n,Js.status),D(o,Js.error?.message)}),A(e,a),ve()}const sd=Object.freeze(Object.defineProperty({__proto__:null,component:nd},Symbol.toStringTag,{value:"Module"})),od=BigInt(60*60*1e3*1e3*1e3*24*14),ld=576,id=625,Tn=()=>Rl.create({idleOptions:{disableIdle:!0,disableDefaultIdleCallback:!0}}),cd=({width:e,height:t})=>{if(Ns(window)||Ns(window.top))return;const{top:{innerWidth:a,innerHeight:r}}=window,n=r/2+screenY-t/2,s=a/2+screenX-e/2;return`toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=${e}, height=${t}, top=${n}, left=${s}`};let Ft;const dd="https://golfpad.xyz",ud="https://gw4gh-taaaa-aaaal-qjfia-cai.icp0.io",fd=()=>typeof window>"u"?!1:window.location.origin===dd,vd=()=>{const{subscribe:e,set:t,update:a}=st({identity:void 0});return{subscribe:e,sync:async()=>{Ft=Ft??await Tn();const r=await Ft.isAuthenticated();t({identity:r?Ft.getIdentity():null})},signIn:({domain:r})=>new Promise(async(n,s)=>{Ft=Ft??await Tn();const o=r;await Ft?.login({maxTimeToLive:od,onSuccess:()=>{a(i=>({...i,identity:Ft?.getIdentity()})),n()},onError:s,identityProvider:o,...fd()&&{derivationOrigin:ud},windowOpenerFeatures:cd({width:ld,height:id})})}),signOut:async()=>{await(Ft??await Tn()).logout(),Ft=null,a(n=>({...n,identity:null})),localStorage.removeItem("user_profile_data")}}},ke=vd(),pd=st(void 0),gd="nn75s-ayupf-j6mj3-kluyb-wjj7y-eang2-dwzzr-cfdxk-etbw7-cgwnb-lqe",xl=ls(ke,({identity:e})=>e!=null);ls(ke,({identity:e})=>e!=null&&e.getPrincipal().toString()===gd);function Xs(e){const t=Array.from(e).map(a=>String.fromCharCode(a)).join("");return btoa(t)}function hd(e){const[t,a]=e.split("T"),r=t.split("-");if(r.length!==3)throw new Error("Invalid date format. Expected YYYY-MM-DD");const n=parseInt(r[0],10),s=parseInt(r[1],10)-1,o=parseInt(r[2],10);let i=0,f=0,u=0;if(a){const c=a.split(":");i=parseInt(c[0],10),f=parseInt(c[1],10),c.length===3&&(u=parseInt(c[2],10))}const h=new Date(n,s,o,i,f,u).getTime();return BigInt(h)*BigInt(1e6)}function Me(e){return e&&e.err!==void 0}const Qt=({IDL:e})=>{const t=e.Text,a=e.Record({requestedBy:t}),r=e.Variant({InvalidProfilePicture:e.Null,DecodeError:e.Null,TooLong:e.Null,NotAllowed:e.Null,NotEnoughFunds:e.Null,TooShort:e.Null,NotFound:e.Null,NotAuthorized:e.Null,AlreadyExists:e.Null,CreateGameError:e.Null,OutOfRange:e.Null,PaymentError:e.Null,CanisterFull:e.Null}),n=e.Variant({ok:e.Null,err:r}),s=e.Nat,o=e.Record({gameId:s,acceptedById:t}),i=e.Nat8,f=e.Record({golfer2MulliganUsed:e.Bool,winner:t,golfer1MulliganUsed:e.Bool,holeNumber:i}),u=e.Variant({MulligansScores:f}),p=e.Record({gameId:s,detail:u}),h=e.Record({gameId:s}),c=e.Variant({Mulligans:e.Null,BuildIt:e.Null,Bands:e.Null,NextUp:e.Null,Prophet:e.Null}),g=e.Variant({Custom:e.Null,Official:e.Null}),b=e.Nat,x=e.Record({inviteIds:e.Vec(t),createdById:t,teeOffTime:e.Int,gameType:c,courseType:g,courseId:b,teeGroup:e.Text}),y=e.Record({par:e.Nat8,name:e.Text,yardage:e.Nat,colour:e.Text,strokeIndex:e.Nat8}),k=e.Text,E=e.Nat,C=e.Record({name:e.Text,tees:e.Vec(y),number:e.Nat8,images:e.Vec(e.Tuple(k,E))}),_=e.Record({added:e.Int,holes:e.Vec(C),name:e.Text,colour:e.Text,strokeIndex:e.Nat8}),w=e.Record({holes:e.Vec(C),name:e.Text,initialTeeGroup:_}),B=e.Int16,S=e.Record({username:e.Text,handicap:e.Opt(B)}),T=e.Nat16,P=e.Record({name:e.Text,index:T,yards:e.Nat16}),I=e.Record({clubs:e.Vec(P),name:e.Text}),U=e.Record({courseId:b}),G=e.Nat16,H=e.Record({yardageSetId:G}),F=e.Record({name:e.Text,updatedTeeGroup:e.Opt(_),courseId:b}),Y=e.Record({version:e.Text,onHold:e.Bool}),q=e.Variant({ok:Y,err:r}),$=e.Record({offset:e.Nat,limit:e.Nat}),z=e.Variant({Unplayed:e.Null,Active:e.Null,Complete:e.Null}),K=e.Record({golfer2MulliganUsed:e.Bool,winner:t,golfer1MulliganUsed:e.Bool,holeNumber:i}),oe=e.Record({winner:t,results:e.Vec(K),golfer2HolesWonCount:e.Nat8,golfer1HolesWonCount:e.Nat8}),W=e.Variant({MulligansScores:oe}),ie=e.Record({}),he=e.Record({wontHitTreeOrBunkerStartHole:i,underParStartHole:i,golferId:t,wontDoubleBogeyStartHole:i,singlePutt2Of3GreensStartHole:i,wontBogeyStartHole:i,parOrUnderStartHole:i,hit2Of3FairwaysStartHole:i,hit2Of3GreensStartHole:i,wontLoseBallStartHole:i}),me=e.Variant({Mulligans:ie,BuildIt:e.Record({}),Bands:he,NextUp:e.Record({})}),re=e.Nat8,ce=e.Record({courseVersion:re,courseId:b,teeGroup:_}),He=e.Variant({Par:e.Null,Scrub:e.Null,DoubleBogey:e.Null,Birdie:e.Null,BallNotLost:e.Null,Bogey:e.Null,HitFairway:e.Null,Albatross:e.Null,HitBunker:e.Null,HitTree:e.Null,HitGreen:e.Null,TakeMulligan:e.Null,HitWater:e.Null,LongestDrive:e.Null,Eagle:e.Null,OnePuttGreen:e.Null}),Z=e.Record({golferId:t,hole:i,event:He}),be=e.Record({id:s,playerIds:e.Vec(t),status:z,scoreDetail:e.Opt(W),invites:e.Vec(t),predictions:e.Vec(me),winner:t,teeOffTime:e.Int,courseSnapshot:ce,events:e.Vec(Z),gameType:c,courseId:b}),Ae=e.Variant({ok:e.Vec(be),err:r}),Te=e.Record({gameId:s}),Le=e.Variant({ok:be,err:r}),Qe=e.Record({golferPrincipalId:t}),Re=e.Record({gameId:s,inviteFrom:t}),ne=e.Record({username:e.Text,gameInvites:e.Vec(Re),upcomingGames:e.Vec(s),golferPicture:e.Opt(e.Vec(e.Nat8)),completedGames:e.Vec(s),handicap:e.Opt(B),golferPictureExtension:e.Text,principalId:t,activeGames:e.Vec(s)}),de=e.Variant({ok:ne,err:r}),Fe=e.Record({}),Pe=e.Variant({ok:Fe,err:r}),Ie=e.Record({status:z,date:e.Int,players:e.Vec(t),gameType:c}),Ge=e.Record({totalEntries:e.Nat,offset:e.Nat,limit:e.Nat,entries:e.Vec(Ie)}),Ue=e.Variant({ok:Ge,err:r}),et=e.Record({username:e.Text,golferPicture:e.Opt(e.Vec(e.Nat8)),handicap:e.Opt(B),golferPictureExtension:e.Text,principalId:t}),ze=e.Variant({ok:et,err:r}),De=e.Record({}),Ye=e.Variant({ok:De,err:r}),qe=e.Record({yardageSetId:G}),Ve=e.Record({}),We=e.Variant({ok:Ve,err:r}),Ke=e.Record({activeVersion:re,name:e.Text,tees:e.Vec(_),courseId:b}),X=e.Record({courses:e.Vec(Ke)}),Se=e.Variant({ok:X,err:r}),Je=e.Record({requestTime:e.Int,principalId:t}),ct=e.Record({friendRequests:e.Vec(Je)}),dt=e.Variant({ok:ct,err:r}),Ht=e.Record({searchTerm:e.Text}),pa=e.Record({golferPrincipalId:t,golferPicture:e.Opt(e.Vec(e.Nat8)),golferName:e.Text,handicap:e.Opt(B),golferPictureExtension:e.Text}),Ca=e.Record({golfers:e.Vec(pa)}),ut=e.Variant({ok:Ca,err:r}),Bt=e.Record({requestedBy:t}),we=e.Record({golferPicture:e.Vec(e.Nat8),golferPictureExtension:e.Text}),Xe=e.Record({requestedFriend:t}),pt=e.Record({gameId:s,invitedGolferIds:e.Vec(t)}),Ot=e.Record({username:e.Text,handicap:e.Opt(B)}),jt=e.Record({clubs:e.Vec(P),name:e.Text,yardageSetId:G}),Mt=e.Variant({Ok:e.Text,Err:e.Text});return e.Service({acceptFriendRequest:e.Func([a],[n],[]),acceptGameInvite:e.Func([o],[n],[]),addGameScore:e.Func([p],[n],[]),beginGame:e.Func([h],[n],[]),createGame:e.Func([x],[n],[]),createGolfCourse:e.Func([w],[n],[]),createGolfer:e.Func([S],[n],[]),createYardageSet:e.Func([I],[n],[]),deleteGolfCourse:e.Func([U],[n],[]),deleteYardageSet:e.Func([H],[n],[]),executeAddGolfCourse:e.Func([w],[],[]),executeUpdateGolfCourse:e.Func([F],[],[]),getAppStatus:e.Func([],[q],["query"]),getDummyGames:e.Func([$],[Ae],[]),getGame:e.Func([Te],[Le],[]),getGolfer:e.Func([Qe],[de],[]),getGolferBuzz:e.Func([$],[Pe],[]),getGolferGameHistory:e.Func([$],[Ue],[]),getMyGames:e.Func([$],[Ue],[]),getMyGolfer:e.Func([],[ze],[]),getUpcomingGames:e.Func([$],[Ye],[]),getYardageSet:e.Func([qe],[We],[]),listCourses:e.Func([$],[Se],[]),listFriendRequests:e.Func([$],[dt],[]),listGolfers:e.Func([Ht],[ut],[]),rejectFriendRequest:e.Func([Bt],[n],[]),saveGolferPicture:e.Func([we],[n],[]),sendFriendRequest:e.Func([Xe],[n],[]),sendGameInvites:e.Func([pt],[n],[]),updateGolfCourse:e.Func([F],[n],[]),updateGolfer:e.Func([Ot],[n],[]),updateYardageSet:e.Func([jt],[n],[]),validateAddGolfCourse:e.Func([w],[Mt],["query"]),validateUpdateGolfCourse:e.Func([F],[Mt],["query"])})},md="elbip-aiaaa-aaaal-qjfhq-cai",bd=(e,t={})=>{const a=t.agent||new On({...t.agentOptions});return t.agent&&t.agentOptions&&console.warn("Detected both agent and agentOptions passed to createActor. Ignoring agentOptions and proceeding with the provided agent."),co.createActor(Qt,{agent:a,canisterId:e,...t.actorOptions})};bd(md);class Ce{static createActor(t,a="",r=null,n=null){const s={host:`https://${a}.icp-api.io`,identity:r};n?n.agentOptions?n.agentOptions.host=s.host:n.agentOptions=s:n={agentOptions:s};const o=new On({...n.agentOptions});return co.createActor(t,{agent:o,canisterId:a,...n?.actorOptions})}static getAgent(t="",a=null,r=null){const n={host:`https://${t}.icp-api.io`,identity:a};return r?r.agentOptions?r.agentOptions.host=n.host:r.agentOptions=n:r={agentOptions:n},new On({...r.agentOptions})}static createIdentityActor(t,a){let r;return new Promise((n,s)=>{r=t.subscribe(o=>{o.identity&&n(o.identity)})}).then(n=>(r(),Ce.createActor(Qt,a,n)))}static createGovernanceAgent(t,a){let r;return new Promise((n,s)=>{r=t.subscribe(o=>{o.identity&&n(o.identity)})}).then(n=>(r(),Ce.createActor(Qt,a,n)))}}var yd={BACKEND_CANISTER_ID:"elbip-aiaaa-aaaal-qjfhq-cai"};class xd{constructor(){ke.sync()}async isAdmin(){const a=await(await Ce.createIdentityActor(ke,yd.BACKEND_CANISTER_ID)).isAdmin();if(Me(a))throw new Error("Failed to check is admin");return a.ok}}var za={BACKEND_CANISTER_ID:"elbip-aiaaa-aaaal-qjfhq-cai",FRONTEND_CANISTER_ID:"gw4gh-taaaa-aaaal-qjfia-cai",DFX_NETWORK:"ic"};function _d(){const{subscribe:e,set:t}=st(null);async function a(){let p=localStorage.getItem("user_profile_data");if(p){const h=JSON.parse(p);return t(h),console.log("Existing User"),!1}try{return await u(),console.log("New User"),!0}catch(h){throw console.error("Error fetching user profile:",h),h}}async function r(){return new xd().isAdmin()}async function n(p,h){try{const c=await Ce.createIdentityActor(ke,za.BACKEND_CANISTER_ID??"");try{let g={username:p,handicap:h};return await c.createGolfer(g)}catch(g){throw console.error("Error updating profile picture:",g),g}}catch(c){throw console.error("Error creating user:",c),c}}async function s(p){try{const c=await(await Ce.createIdentityActor(ke,za.BACKEND_CANISTER_ID??"")).updateUserDetail(p);return a(),c}catch(h){throw console.error("Error updating user:",h),h}}async function o(p){try{const c=i(p);if(p.size>1e3*1024)return null;const g=new FileReader;g.readAsArrayBuffer(p),g.onloadend=async()=>{const b=g.result,x=new Uint8Array(b);try{const y=await Ce.createIdentityActor(ke,za.BACKEND_CANISTER_ID??"");let k={golferPicture:x,golferPictureExtension:c};const E=await y.updateUserPicture(k);if(Me(E)){console.error("Error updating profile picture");return}return await u(),E}catch(y){console.error(y)}}}catch(h){throw console.error("Error updating profile picture:",h),h}}function i(p){const h=p.name,c=h.lastIndexOf(".");return c!==-1?h.substring(c+1):""}async function f(p){try{return await(await Ce.createIdentityActor(ke,za.BACKEND_CANISTER_ID??"")).isUsernameTaken(p)}catch(h){throw console.error("Error getting user:",h),h}}async function u(){let h=await(await Ce.createIdentityActor(ke,za.BACKEND_CANISTER_ID)).getMyGolfer();if(console.log("getProfileResponse: ",h),Me(h)){console.error("Error fetching user profile");return}let g=h.ok;t(g)}return{subscribe:e,sync:a,createUser:n,updateUser:s,cacheProfile:u,updateProfilePicture:o,isUsernameAvailable:f,isAdmin:r}}const Yt=_d(),wd=ls(Yt,e=>{try{let t;if(e&&e.profilePicture){if(Array.isArray(e.profilePicture)&&e.profilePicture[0]instanceof Uint8Array)return t=e.profilePicture[0],`data:image/${e.profilePictureType};base64,${Xs(t)}`;if(e.profilePicture instanceof Uint8Array)return`data:${e.profilePictureType};base64,${Xs(e.profilePicture)}`;if(typeof e.profilePicture=="string")return e.profilePicture.startsWith("data:image")?e.profilePicture:`data:${e.profilePictureType};base64,${e.profilePicture}`}return"placeholder.png"}catch(t){return console.error(t),"placeholder.png"}}),Zs=e=>"golfCourse.png",kd=e=>e;function _l(e){const t=e-1;return t*t*t+1}function Qs(e){const t=typeof e=="string"&&e.match(/^\s*(-?[\d.]+)([^\s]*)\s*$/);return t?[parseFloat(t[1]),t[2]||"px"]:[e,"px"]}function dr(e,{delay:t=0,duration:a=400,easing:r=kd}={}){const n=+getComputedStyle(e).opacity;return{delay:t,duration:a,easing:r,css:s=>`opacity: ${s*n}`}}function Ed(e,{delay:t=0,duration:a=400,easing:r=_l,x:n=0,y:s=0,opacity:o=0}={}){const i=getComputedStyle(e),f=+i.opacity,u=i.transform==="none"?"":i.transform,p=f*(1-o),[h,c]=Qs(n),[g,b]=Qs(s);return{delay:t,duration:a,easing:r,css:(x,y)=>`
-			transform: ${u} translate(${(1-x)*h}${c}, ${(1-x)*g}${b});
-			opacity: ${f-p*y}`}}function eo(e,{delay:t=0,duration:a=400,easing:r=_l,start:n=0,opacity:s=0}={}){const o=getComputedStyle(e),i=+o.opacity,f=o.transform==="none"?"":o.transform,u=1-n,p=i*(1-s);return{delay:t,duration:a,easing:r,css:(h,c)=>`
-			transform: ${f} scale(${1-u*c});
-			opacity: ${i-p*c}
-		`}}var Ad=O('<div class="local-spinner svelte-pvdm52"></div>');function to(e){var t=Ad();A(e,t)}var Sd={BACKEND_CANISTER_ID:"elbip-aiaaa-aaaal-qjfhq-cai"};class ao{constructor(){}async getAppStatus(){const a=await(await Ce.createActor(Qt,Sd.BACKEND_CANISTER_ID)).getAppStatus();if(Me(a))throw new Error("Failed to get app status");return a.ok}}function Cd(){const{subscribe:e,update:t}=st([]);let a=0;function r(s){t(o=>[...o,{...s,id:++a}])}function n(s){t(o=>o.filter(i=>i.id!==s))}return{subscribe:e,addToast:r,removeToast:n}}const pn=Cd(),{addToast:rp}=pn;function Td(){async function e(){const a=await new ao().getAppStatus();if(Me(a))throw new Error("Error fetching app status");let r=a;if(!localStorage.getItem("version")){localStorage.setItem("version",r.version);return}r.version!==localStorage.getItem("version")&&pn.addToast({message:`ICFC V${r.version} is now available. Click here to reload:`,type:"frontend-update"})}async function t(){const a=await new ao().getAppStatus();if(Me(a))throw new Error("Error fetching app status");let r=a;localStorage.setItem("version",r.version),window.location.replace(`${window.location.pathname}?v=${r.version}`)}return{checkServerVersion:e,updateFrontend:t}}const wl=Td(),Nd=async()=>Bd(),Bd=async()=>{await ke.signOut(),window.location.reload()},Od=async()=>{const e=await ft(()=>Promise.resolve().then(()=>Uv),void 0,import.meta.url),t=new e.default;return t.onmessage=async({data:a})=>{const{msg:r,data:n}=a;switch(r){case"signOutIdleTimer":await Nd();return;case"delegationRemainingTime":pd.set(n?.authRemainingTime);return}},{syncAuthIdle:a=>{if(!a.identity){t.postMessage({msg:"stopIdleTimer"});return}t.postMessage({msg:"startIdleTimer"})}}};var Rd=O('<button class="brand-button">Update Website</button>'),Pd=O('<div><span> </span> <!> <button class="font-bold ml-4">&times;</button></div>');function Id(e,t){fe(t,!1);let a=L(t,"toast",8);it(()=>{a().duration&&a().duration>0&&setTimeout(r,a().duration)});function r(){pn.removeToast(a().id)}function n(){wl.updateFrontend()}_e();var s=Pd(),o=v(s),i=v(o,!0);d(o);var f=m(o,2);{var u=h=>{var c=Rd();R("click",c,n),A(h,c)};j(f,h=>{a().type=="frontend-update"&&h(u)})}var p=m(f,2);d(s),V(()=>{se(s,1,`fixed top-0 left-0 right-0 z-[9999] p-4 text-white shadow-md flex justify-between items-center bg-${a().type}`),D(i,a().message)}),R("click",p,r),A(e,s),ve()}var Gd=O("<div><!></div>");function jd(e){const[t,a]=fa(),r=()=>At(pn,"$toasts",t);var n=pe(),s=J(n);xe(s,1,r,o=>o.id,(o,i)=>{var f=Gd(),u=v(f);Id(u,{get toast(){return l(i)}}),d(f),oa(1,f,()=>Ed,()=>({y:20,duration:200})),A(o,f)}),A(e,n),a()}const Md=()=>{const e=Vt;return{page:{subscribe:e.page.subscribe},navigating:{subscribe:e.navigating.subscribe},updated:e.updated}},xs={subscribe(e){return Md().page.subscribe(e)}};var Fd=O('<div class="nav-item expanded svelte-htsp64"><button> </button></div>'),$d=O('<div class="nav-item expanded svelte-htsp64"><button class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow">SIGN OUT</button></div>'),Ud=O('<div class="flex min-h-screen flex-col relative nav-overlay svelte-htsp64"><div class="absolute top-4 left-4 z-10"><button class="bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md">-</button></div> <div class="absolute top-4 right-4 z-10"><button><span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span></button></div> <div class="nav-content flex flex-col items-start pl-10 svelte-htsp64"><!> <!></div> <div class="flex justify-between items-center p-5 text-xs lg:text-base"><div class="social-links svelte-htsp64"><a href="https://twitter.com" target="_blank" class="svelte-htsp64">TWITTER</a> <a href="https://oc.app" target="_blank" class="svelte-htsp64">OPENCHAT</a> <a href="https://youtube.com" target="_blank" class="svelte-htsp64">YOUTUBE</a></div> <div><img src="placeholder.png" alt="Profile" class="w-12 h-12 rounded-full"></div></div></div>');function Dd(e,t){fe(t,!1);const[a,r]=fa(),n=()=>At(xs,"$page",a),s=()=>At(p,"$navItems",a),o=()=>At(xl,"$authSignedInStore",a);let i=L(t,"expanded",8,!1),f=L(t,"selectedRoute",12,"home"),u=L(t,"toggleNav",8);const p=st([{name:"HOME",route:"home"},{name:"MY GAMES",route:"games"},{name:"WHITEPAPER",route:"whitepaper"},{name:"GAME RULES",route:"game-rules"},{name:"TEAM",route:"team"}]);function h(E){if(f(E),u()(),E==="home"){Ga("/");return}Ga(`/${E}`)}function c(){u()()}function g(){u()(),Ga("/")}function b(){ke.signOut()}Pt(()=>n(),()=>{switch(n().url.pathname){case"/":f("home");break;case"/whitepaper":f("whitepaper");break;case"/team":f("team");break;case"/game-rules":f("game-rules");break;case"/games":f("games");break;default:f("home");break}}),Ha(),_e();var x=pe(),y=J(x);{var k=E=>{var C=Ud(),_=v(C),w=v(_);d(_);var B=m(_,2),S=v(B);d(B);var T=m(B,2),P=v(T);xe(P,1,s,G=>G.route,(G,H)=>{var F=Fd(),Y=v(F),q=v(Y,!0);d(Y),d(F),V(()=>{se(Y,1,`text-3xl lg:text-6xl font-bold condensed ${(f()===l(H).route?"text-white":"text-black")??""}`),D(q,l(H).name)}),R("click",Y,()=>h(l(H).route)),A(G,F)});var I=m(P,2);{var U=G=>{var H=$d(),F=v(H);d(H),R("click",F,b),A(G,H)};j(I,G=>{o()&&G(U)})}d(T),Ee(2),d(C),R("click",w,c),R("click",S,g),oa(1,C,()=>dr,()=>({duration:300})),oa(2,C,()=>dr,()=>({duration:300})),A(E,C)};j(y,E=>{i()&&E(k)})}A(e,x),ve(),r()}var Vd=O('<div class="bg-BrandYellow flex-none relative h-[50px] mt-auto"><div class="absolute z-10 bottom-4 left-4"><a href="/whitepaper" class="text-sm font-medium text-black">WHITEPAPER |</a> <a href="/team" class="text-sm font-medium text-black">TEAM |</a> <a target="_blank" href="https://github.com/jamesbeadle/golfpad" class="text-sm font-medium text-black">GITHUB</a></div></div>'),Hd=O('<div class="relative flex flex-col min-h-screen"><div class="flex-none h-[80px] relative"><div class="absolute z-10 top-4 left-4"><button class="flex items-center justify-center w-12 h-12 text-2xl font-bold text-white bg-black rounded-full shadow-md">+</button></div> <div class="absolute z-10 top-4 right-4"><a href="/"><span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span></a></div></div> <!> <div><!></div> <!></div> <!>',1),Yd=O('<div class="flex flex-col min-h-screen default-text"><!></div>'),qd=O("<div><!></div>");function Gt(e,t){fe(t,!1);const[a,r]=fa(),n=()=>At(ke,"$authStore",a),s=M();let o=M(),i=M(!0),f=!1,u="home",p=M(!1);const h=async()=>{await Promise.all([c()]),N(o,await Od())};async function c(){try{await ke.sync()}catch(y){console.error(y)}finally{}}it(async()=>{try{ke.subscribe(y=>{f=y.identity!==null&&y.identity!==void 0,Yt.sync()}),await wl.checkServerVersion()}catch{}finally{N(p,!1),N(i,!1)}});async function g(){N(p,!l(p))}Pt(()=>zc,()=>{N(s,window.location.pathname==="/")}),Pt(()=>(l(o),n()),()=>{l(o),n(),l(o)?.syncAuthIdle(n())}),Pt(()=>n(),()=>{(()=>{if(n()===void 0)return;document.querySelector("body > #app-spinner")?.remove()})()}),Ha(),_e();var b=pe();R("storage",Pn,c);var x=J(b);ji(x,h,y=>{var k=qd(),E=v(k);to(E),d(k),oa(1,k,()=>dr),A(y,k)},(y,k)=>{var E=Yd(),C=v(E);{var _=B=>{to(B)},w=B=>{var S=Hd(),T=J(S),P=v(T),I=v(P),U=v(I);d(I),Ee(2),d(P);var G=m(P,2);Dd(G,{get expanded(){return l(p)},selectedRoute:u,toggleNav:g});var H=m(G,2),F=v(H);Ko(F,t,"default",{}),d(H);var Y=m(H,2);{var q=z=>{var K=Vd();A(z,K)};j(Y,z=>{l(s)||z(q)})}d(T);var $=m(T,2);jd($),V(()=>se(H,1,`${(l(s)?"bg-BrandYellow  items-center justify-center relative":"bg-white")??""} flex-1 flex`)),R("click",U,g),A(B,S)};j(C,B=>{l(i)?B(_):B(w,!1)})}d(E),A(y,E)}),A(e,b),ve(),r()}var Wd=O('<button class="px-10 py-3 text-sm font-semibold rounded shadow-lg md:px-12 md:text-lg bg-BrandForest text-BrandYellow">CONNECT</button>'),Ld=O('<img alt="Profile" class="fixed w-12 h-12 rounded-full bottom-3 right-3" aria-label="Toggle Profile"> <button class="px-10 py-3 text-sm font-semibold rounded shadow-lg md:px-12 md:text-lg bg-BrandForest text-BrandYellow">PLAY</button>',1),zd=O('<div class="z-10 px-4 mb-20 text-center"><h1 class="mb-1 font-bold text-BrandForest">WELCOME TO <span class="condensed">GOLFPAD</span></h1> <h2 class="mx-16 mb-6 text-5xl font-black leading-tight text-black md:text-6xl condensed">THE FUTURE OF GOLF STARTS HERE</h2> <!> <!></div> <div class="absolute bottom-0 left-0 z-0 w-full"><img src="golfball_mobile.png" alt="Golf Ball" class="object-cover w-full h-auto md:hidden"> <img src="golfball.png" alt="Golf Ball" class="hidden object-cover w-full md:flex"></div>',1);function Kd(e,t){fe(t,!1);const[a,r]=fa(),n=()=>At(xl,"$authSignedInStore",a),s=()=>At(wd,"$userGetProfilePicture",a);function o(){let f={domain:void 0};ke.signIn(f)}function i(){ke.signOut()}_e(),Gt(e,{children:(f,u)=>{var p=zd(),h=J(p),c=m(v(h),4);{var g=y=>{var k=Wd();R("click",k,o),A(y,k)};j(c,y=>{n()||y(g)})}var b=m(c,2);{var x=y=>{var k=Ld(),E=J(k),C=m(E,2);V(()=>Q(E,"src",s())),R("click",C,i),A(y,k)};j(b,y=>{n()&&y(x)})}d(h),Ee(2),A(f,p)},$$slots:{default:!0}}),ve(),r()}const Jd=Object.freeze(Object.defineProperty({__proto__:null,component:Kd},Symbol.toStringTag,{value:"Module"}));var Xd=O("<span> </span>"),Zd=O("<span> </span>"),Qd=O('<span class="text-gray-400"> </span>'),eu=O('<input type="text" class="w-full p-2 border-b border-gray-300" placeholder="Search...">'),tu=O('<div class="p-2 cursor-pointer hover:bg-gray-200" role="button" tabindex="0"> <!></div>'),au=O('<div class="absolute z-10 w-full mt-1 overflow-auto bg-white border border-gray-300 rounded shadow max-h-60"><!> <!></div>'),ru=O('<div class="relative w-full"><button type="button" class="w-full p-2 text-left border border-gray-300 rounded-md cursor-pointer"><!></button> <!></div>');function ar(e,t){fe(t,!1);const a=M();let r=L(t,"items",24,()=>[]),n=L(t,"bindSelected",12,null),s=L(t,"placeholder",8,"Select an Option"),o=L(t,"multiple",8,!1),i=L(t,"searchEnabled",8,!1),f=M(""),u=M(!1);const p=va();function h(w){o()?Array.isArray(n())?n().find(B=>B.value===w.value)?n(n().filter(B=>B.value!==w.value)):n([...n(),w]):n([w]):(n(w),N(u,!1)),p("select",{value:o()?n():w})}function c(w){return o()&&Array.isArray(n())?!!n().find(B=>B.value===w.value):!o()&&n()&&typeof n()=="object"&&"value"in n()?n().value===w.value:!1}function g(){N(u,!l(u))}Pt(()=>(qr(r()),l(f)),()=>{N(a,r().filter(w=>w&&w.name&&w.name.toLowerCase().includes(l(f).toLowerCase())))}),Ha(),_e();var b=ru(),x=v(b),y=v(x);{var k=w=>{var B=Xd(),S=v(B,!0);d(B),V(T=>D(S,T),[()=>n().map(T=>T.name).join(", ")],Oe),A(w,B)},E=w=>{var B=pe(),S=J(B);{var T=I=>{var U=Zd(),G=v(U,!0);d(U),V(()=>D(G,n().name)),A(I,U)},P=I=>{var U=Qd(),G=v(U,!0);d(U),V(()=>D(G,s())),A(I,U)};j(S,I=>{!o()&&n()&&typeof n()=="object"&&"name"in n()?I(T):I(P,!1)},!0)}A(w,B)};j(y,w=>{o()&&Array.isArray(n())&&n().length>0?w(k):w(E,!1)})}d(x);var C=m(x,2);{var _=w=>{var B=au(),S=v(B);{var T=I=>{var U=eu();Ne(U),Be(U,()=>l(f),G=>N(f,G)),A(I,U)};j(S,I=>{i()&&I(T)})}var P=m(S,2);xe(P,1,()=>l(a),I=>I.value,(I,U)=>{var G=tu(),H=v(G),F=m(H);{var Y=q=>{var $=_a("✔");A(q,$)};j(F,q=>{c(l(U))&&q(Y)})}d(G),V(()=>D(H,`${l(U).name??""} `)),R("click",G,()=>h(l(U))),R("keydown",G,q=>q.key==="Enter"&&h(l(U))),A(I,G)}),d(B),A(w,B)};j(C,w=>{l(u)&&w(_)})}d(b),R("click",x,g),R("keydown",x,w=>w.key==="Enter"&&g()),A(e,b),ve()}var Nn={BACKEND_CANISTER_ID:"elbip-aiaaa-aaaal-qjfhq-cai"};class Tr{constructor(){Na(this,"actor");this.actor=Ce.createActor(Qt,Nn.BACKEND_CANISTER_ID)}async getCourse(t){const a=await this.actor.getCourse(t);if(Me(a))throw new Error("Failed to get course");return a.ok}async getCourses(t){const a=await this.actor.listCourses(t);if(Me(a))throw new Error("Failed to get courses");return a.ok}async createCourse(t){const r=await(await Ce.createIdentityActor(ke,Nn.BACKEND_CANISTER_ID)).createGolfCourse(t);if(console.log("Result: ",r),Me(r))throw new Error("Error Creating Course");return r}async updateCourse(t){const r=await(await Ce.createIdentityActor(ke,Nn.BACKEND_CANISTER_ID)).updateGolfCourse(t);if(Me(r))throw new Error("Error Updating Course")}}function nu(){const{subscribe:e,set:t}=st([]);async function a(o){return await new Tr().getCourse(o)}async function r(o){return(await new Tr().getCourses(o)).courses}async function n(o){return await new Tr().createCourse(o)}async function s(o){return await new Tr().updateCourse(o)}return{subscribe:e,setCourse:o=>t(o),getCourse:a,getCourses:r,createCourse:n,updateCourse:s}}const ja=nu();var su=ns('<svg viewBox="0 0 63 63" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.125 22.3125C13.125 20.139 14.889 18.375 17.0625 18.375C19.236 18.375 21 20.139 21 22.3125C21 24.4886 19.236 26.25 17.0625 26.25C14.889 26.25 13.125 24.4886 13.125 22.3125ZM36.75 23.625L30.1376 34.125L23.625 28.98L13.125 44.625H49.875L36.75 23.625ZM57.75 13.125V49.875H5.25V13.125H57.75ZM63 7.875H0V55.125H63V7.875Z"></path></svg>');function _s(e,t){fe(t,!1);let a=L(t,"className",8,"");const r="";var n=su(),s=v(n);return Q(s,"fill",r),d(n),V(()=>se(n,0,ss(a()))),A(e,n),Li(t,"fill",r),ve({fill:r})}var ou=O('<span class="px-1.5 py-0.5 text-2xs font-bold text-white rounded-full"> </span>'),lu=O('<span class="px-2 py-1 text-xs font-bold text-white rounded-full"> </span>'),iu=O('<button type="button"><div class="absolute flex flex-wrap gap-1 top-2 right-2 md:hidden"></div> <div class="flex items-center gap-2 md:gap-4"><div><span class="text-xs text-BrandDarkGray md:text-sm">ID</span> <h3 class="text-base text-black condensed md:text-lg"> </h3></div> <img src="golfCourse.png" alt="Course Thumbnail" class="w-8 h-8 rounded md:w-10 md:h-10"></div> <div class="flex items-center justify-between flex-1"><h3 class="text-base text-black condensed md:text-lg"> </h3> <div class="flex-wrap hidden gap-2 md:flex"></div></div></button>'),cu=O('<div class="flex flex-col gap-3 mb-3 text-black md:flex-row md:gap-4 md:mb-4"><div class="w-full md:w-1/2"><label for="courseName" class="block mb-1 text-xs font-medium text-BrandDarkGray md:text-sm">Course Name</label> <input id="courseName" type="text" placeholder="Search"></div> <div class="w-full md:w-1/2"><label for="country" class="block mb-1 text-xs font-medium text-BrandDarkGray md:text-sm">Country</label> <!></div></div> <div class="space-y-2 md:space-y-4"></div>',1),du=O('<div class="flex items-center justify-center w-12 h-12 rounded bg-BrandLightGray"><!></div>'),uu=O('<div class="flex gap-4"><div class="flex-1"><label for="teeName" class="block mb-2 text-sm font-bold">TEE NAME</label> <input id="teeName" type="text" class="w-full p-3 text-black bg-white border border-gray-300 rounded" placeholder="Enter"></div> <div class="flex-1"><label for="teeColor" class="block mb-2 text-sm font-bold">COLOR</label> <input id="teeColor" type="text" class="w-full p-3 text-black bg-white border border-gray-300 rounded" placeholder="Enter"></div></div>'),fu=O('<div class="flex flex-col space-y-6"><div class="flex flex-col gap-4"><div class="basis-1/2"><label for="teeName" class="block mb-2 text-sm font-bold">TEE NAME</label> <input id="teeName" type="text" class="w-full p-3 text-black bg-white border border-gray-300 rounded" placeholder="Enter"></div> <div class="basis-1/2"><label for="teeColorPicker" class="block mb-2 text-sm font-bold">COLOR</label> <div class="flex items-center gap-2"><div class="flex items-center justify-center w-10 h-10 border border-gray-300 rounded"><input id="teeColorPicker" type="color" class="w-full h-full border-none cursor-pointer"></div> <input type="text" class="flex-1 p-3 text-black bg-white border border-gray-300 rounded" placeholder="Hex code"></div></div></div></div>'),vu=O('<tr class="hover:bg-BrandLightGray"><td class="p-4 text-lg border-b condensed"></td><td class="p-4 border-b"><input type="text" placeholder="Enter"></td><td class="p-4 border-b"><input type="text" placeholder="Enter"></td><td class="p-4 border-b"><input type="text" placeholder="Enter"></td></tr>'),pu=O('<div class="overflow-x-auto"><div class="overflow-y-auto max-h-[50vh]"><table class="min-w-full bg-white border-collapse"><thead><tr><th class="p-4 text-xl text-left border-b condensed text-Black">HOLE</th><th class="p-4 text-xl text-left border-b condensed text-Black">PAR</th><th class="p-4 text-xl text-left border-b condensed text-Black">S.I.</th><th class="p-4 text-xl text-left border-b condensed text-Black">YARDS</th></tr></thead><tbody></tbody></table></div></div>'),gu=O('<div class="flex flex-col space-y-6"><div class="flex gap-4"><div class="basis-4/5"><label for="courseNameInput" class="block mb-2 text-sm font-bold">COURSE NAME</label> <input id="courseNameInput" type="text" class="w-full p-3 text-black bg-white border border-gray-300 rounded" placeholder="Enter Course Name"></div> <div class="basis-1/5"><label for="courseImageUpload" class="block mb-2 text-sm font-bold">COURSE IMAGE</label> <div class="flex items-center gap-1"><!> <div class="flex items-center gap-2"><button id="courseImageUpload" type="button" class="flex items-center px-6 py-3 text-sm font-bold rounded text-BrandForest bg-BrandYellow hover:bg-yellow-600">UPLOAD</button> <span class="text-xs text-BrandDarkGray">800px x 800px min</span></div></div></div></div> <div class="flex flex-col gap-4"><div class="flex flex-col gap-4 items-left"><div class="flex items-center gap-4"><button>BASIC</button> <button>ADVANCED</button></div> <div class="flex flex-row justify-between gap-4"><div class="flex flex-col px-2"><label for="addTee" class="block mb-2 text-sm font-bold">TEES</label> <button id="addTee" type="button" class="flex items-center justify-center w-8 h-8 text-2xl font-bold rounded-full text-BrandForest bg-BrandYellow">+</button></div> <div><label for="copyFromTeeGroup" class="block mb-2 text-sm font-bold">COPY FROM EXISTING TEE GROUP</label> <!></div></div></div> <!> <!> <div class="flex justify-end"><button type="button">CREATE TEE</button></div> <!></div></div>'),hu=O('<div class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-0"><div class="relative z-10 w-full md:w-[80vw] lg:w-[60vw] h-[95vh] overflow-y-auto bg-white rounded-lg shadow-xl"><div class="flex items-center justify-between p-3 md:p-4"><h2 class="text-2xl text-black md:text-3xl condensed">ADD HOME COURSE</h2> <button class="flex items-center justify-center w-8 h-8 text-base font-bold text-white bg-black rounded-full shadow-md" type="button" aria-label="Close">✕</button></div> <div class="px-3 pt-2 pb-2 md:px-6 md:pt-4"><p class="text-sm md:text-base text-BrandDarkGray">Your home course should be the one you play at most frequently, serving as your default for tracking scores.</p></div> <div class="flex px-3 pt-4 md:px-6"><button>SEARCH</button> <button>ADD CUSTOM</button></div> <div class="p-3 md:p-6"><!></div> <div class="flex justify-end gap-3 p-3 border-t md:p-4 md:border-t-0"><button class="flex-1 px-4 py-2 transition-all duration-200 ease-in-out rounded-lg md:flex-initial md:px-6 text-BrandForest bg-BrandYellow hover:bg-yellow-400 focus:outline-none">CANCEL</button> <button type="button">ADD COURSE</button></div></div></div>');function kl(e,t){fe(t,!1);let a=L(t,"isOpen",8,!1),r=L(t,"selectedCourse",12,null);const n=va();let s=M([]),o=null,i=M("ADD_CUSTOM"),f=M("ADVANCED"),u=M(""),p=M("Test Golf Club"),h=[],c=M({name:"Championship",colour:"#000000",strokeIndex:0,added:BigInt(Date.now()),holes:Array(18).fill(null).map((S,T)=>({number:T+1,name:`Hole ${T+1}`,images:[],tees:[{name:"Championship",colour:"#000000",yardage:BigInt(350+T*10),par:4,strokeIndex:T+1}]}))}),g=M(Array(18).fill(null).map((S,T)=>({name:"Championship",colour:"#000000",yardage:350+T*10,par:4,strokeIndex:T+1}))),b=null,x=M(!1);it(async()=>{try{const S={limit:BigInt(10),offset:BigInt(0)};N(s,await ja.getCourses(S))}catch(S){console.error("Error fetching courses:",S)}});function y(){n("close")}async function k(){try{if(l(i)==="SEARCH"&&r())n("courseSelect",{course:r()}),y();else if(l(i)==="ADD_CUSTOM"){if(!l(p)||!l(c).name||!l(c).colour){console.error("Course name, tee group name, and tee group color are required");return}if(l(f)==="ADVANCED"&&!E()){console.error("All 18 holes must have complete data");return}const S={name:l(p),initialTeeGroup:{name:l(c).name,colour:l(c).colour,added:BigInt(Date.now()),strokeIndex:l(c).strokeIndex??0,holes:l(f)==="ADVANCED"?l(c).holes:Array(18).fill(null).map((U,G)=>({number:G+1,name:`Hole ${G+1}`,images:[],tees:[{name:l(c).name||"",colour:l(c).colour||"",yardage:BigInt(0),par:4,strokeIndex:G+1}]}))},holes:[]};console.log("Creating Golf Course: ",S),await ja.createCourse(S);const T={limit:BigInt(10),offset:BigInt(0)},I=(await ja.getCourses(T)).find(U=>U.name===l(p));I&&n("courseSelect",{course:I}),y()}}catch(S){console.error("Error saving course:",S)}}function E(){return l(c).holes.length!==18?(console.log("Not enough holes:",l(c).holes.length),!1):l(c).holes.every((S,T)=>S.number!==T+1?(console.log(`Invalid hole number at index ${T}`),!1):!S.tees||S.tees.length===0?(console.log(`No tees for hole ${S.number}`),!1):S.tees.every(P=>{const I=P.name&&P.colour&&typeof P.yardage<"u"&&typeof P.par<"u"&&typeof P.strokeIndex<"u";return I||console.log(`Invalid tee data for hole ${S.number}:`,P),I}))}function C(){return!l(p)||!l(c).name||!l(c).colour?!1:l(f)==="ADVANCED"?E():!0}_e();var _=pe(),w=J(_);{var B=S=>{var T=hu(),P=v(T),I=v(P),U=m(v(I),2);d(I);var G=m(I,4),H=v(G);let F;var Y=m(H,2);let q;d(G);var $=m(G,2),z=v($);{var K=re=>{var ce=cu(),He=J(ce),Z=v(He),be=m(v(Z),2);Ne(be);let Ae;d(Z);var Te=m(Z,2),Le=m(v(Te),2);ar(Le,{items:[{value:"us",name:"United States"},{value:"uk",name:"United Kingdom"},{value:"ca",name:"Canada"},{value:"au",name:"Australia"}],bindSelected:o,placeholder:"Select Country",searchEnabled:!1,multiple:!1}),d(Te),d(He);var Qe=m(He,2);xe(Qe,5,()=>l(s).filter(Re=>Re.name.toLowerCase().includes(l(u).toLowerCase())),je,(Re,ne)=>{var de=iu();let Fe;var Pe=v(de);xe(Pe,5,()=>l(ne).tees,je,(Ve,We)=>{var Ke=ou(),X=v(Ke,!0);d(Ke),V(()=>{Q(Ke,"style",`background-color: ${l(We).colour??""}`),D(X,l(We).name)}),A(Ve,Ke)}),d(Pe);var Ie=m(Pe,2),Ge=v(Ie),Ue=m(v(Ge),2),et=v(Ue,!0);d(Ue),d(Ge),Ee(2),d(Ie);var ze=m(Ie,2),De=v(ze),Ye=v(De,!0);d(De);var qe=m(De,2);xe(qe,5,()=>l(ne).tees,je,(Ve,We)=>{var Ke=lu(),X=v(Ke,!0);d(Ke),V(()=>{Q(Ke,"style",`background-color: ${l(We).colour??""}`),D(X,l(We).name)}),A(Ve,Ke)}),d(qe),d(ze),d(de),V(()=>{Fe=se(de,1,"relative flex flex-col w-full gap-2 p-2 text-left border rounded-lg cursor-pointer md:flex-row md:items-center md:gap-4 md:p-4 hover:bg-BrandLightGray",null,Fe,{"bg-BrandLightGray":r()===l(ne)}),D(et,l(ne).courseId),D(Ye,l(ne).name)}),R("click",de,()=>r(l(ne))),R("keydown",de,Ve=>Ve.key==="Enter"&&r(l(ne))),A(Re,de)}),d(Qe),V(()=>Ae=se(be,1,"w-full p-2 text-sm text-black rounded md:text-base",null,Ae,{"bg-BrandLightGray":!l(u),"bg-white":l(u)})),Be(be,()=>l(u),Re=>N(u,Re)),A(re,ce)},oe=re=>{var ce=pe(),He=J(ce);{var Z=be=>{var Ae=gu(),Te=v(Ae),Le=v(Te),Qe=m(v(Le),2);Ne(Qe),d(Le);var Re=m(Le,2),ne=m(v(Re),2),de=v(ne);{var Fe=we=>{var Xe=du(),pt=v(Xe);_s(pt,{className:"w-6 h-6 fill-black"}),d(Xe),A(we,Xe)};j(de,we=>{we(Fe,!1)})}Ee(2),d(ne),d(Re),d(Te);var Pe=m(Te,2),Ie=v(Pe),Ge=v(Ie),Ue=v(Ge);let et;var ze=m(Ue,2);let De;d(Ge);var Ye=m(Ge,2),qe=v(Ye),Ve=m(v(qe),2);d(qe);var We=m(qe,2),Ke=m(v(We),2);const X=Oe(()=>h.map(we=>({name:we.name,value:we})));ar(Ke,{get items(){return l(X)},bindSelected:b,placeholder:"Select Tee Group",searchEnabled:!0,multiple:!1}),d(We),d(Ye),d(Ie);var Se=m(Ie,2);{var Je=we=>{var Xe=uu(),pt=v(Xe),Ot=m(v(pt),2);Ne(Ot),d(pt);var jt=m(pt,2),Mt=m(v(jt),2);Ne(Mt),d(jt),d(Xe),Be(Ot,()=>l(c).name,ga=>xt(c,l(c).name=ga)),Be(Mt,()=>l(c).colour,ga=>xt(c,l(c).colour=ga)),A(we,Xe)};j(Se,we=>{l(f)==="BASIC"&&we(Je)})}var ct=m(Se,2);{var dt=we=>{var Xe=fu(),pt=v(Xe),Ot=v(pt),jt=m(v(Ot),2);Ne(jt),d(Ot);var Mt=m(Ot,2),ga=m(v(Mt),2),Ze=v(ga),ha=v(Ze);Ne(ha),d(Ze);var Ta=m(Ze,2);Ne(Ta),d(ga),d(Mt),d(pt),d(Xe),Be(jt,()=>l(c).name,gt=>xt(c,l(c).name=gt)),Be(ha,()=>l(c).colour,gt=>xt(c,l(c).colour=gt)),R("input",ha,gt=>{xt(c,l(c).colour=gt.currentTarget.value)}),Be(Ta,()=>l(c).colour,gt=>xt(c,l(c).colour=gt)),R("input",Ta,gt=>{xt(c,l(c).colour=gt.currentTarget.value)}),A(we,Xe)};j(ct,we=>{l(f)==="ADVANCED"&&we(dt)})}var Ht=m(ct,2),pa=v(Ht);let Ca;d(Ht);var ut=m(Ht,2);{var Bt=we=>{var Xe=pu(),pt=v(Xe),Ot=v(pt),jt=m(v(Ot));xe(jt,5,()=>l(g),je,(Mt,ga,Ze)=>{var ha=vu(),Ta=v(ha);Ta.textContent=Ze+1;var gt=m(Ta),gn=v(gt);Ne(gn);let ws;d(gt);var hn=m(gt),mn=v(hn);Ne(mn);let ks;d(hn);var Es=m(hn),bn=v(Es);Ne(bn);let As;d(Es),d(ha),V(()=>{ws=se(gn,1,"w-full p-2 text-black border rounded",null,ws,{"bg-BrandLightGray":!l(g)[Ze].par,"bg-white":l(g)[Ze].par}),ks=se(mn,1,"w-full p-2 text-black border rounded",null,ks,{"bg-BrandLightGray":!l(g)[Ze].strokeIndex,"bg-white":l(g)[Ze].strokeIndex}),As=se(bn,1,"w-full p-2 text-black border rounded",null,As,{"bg-BrandLightGray":!l(g)[Ze].yardage,"bg-white":l(g)[Ze].yardage})}),Be(gn,()=>l(g)[Ze].par,Wa=>xt(g,l(g)[Ze].par=Wa)),Be(mn,()=>l(g)[Ze].strokeIndex,Wa=>xt(g,l(g)[Ze].strokeIndex=Wa)),Be(bn,()=>l(g)[Ze].yardage,Wa=>xt(g,l(g)[Ze].yardage=Wa)),A(Mt,ha)}),d(jt),d(Ot),d(pt),d(Xe),A(we,Xe)};j(ut,we=>{l(x)&&we(Bt)})}d(Pe),d(Ae),V(()=>{et=se(Ue,1,"px-4 pt-5 text-xl condensed",null,et,{"text-BrandForest":l(f)==="BASIC","text-BrandDarkGray":l(f)!=="BASIC"}),De=se(ze,1,"pt-5 text-xl condensed",null,De,{"text-BrandForest":l(f)==="ADVANCED","text-BrandDarkGray":l(f)!=="ADVANCED"}),Ca=se(pa,1,"px-6 py-2 font-bold transition-all duration-200 ease-in-out rounded",null,Ca,{"bg-BrandLightGray":!l(c).name||!l(c).colour,"text-BrandDarkGray":!l(c).name||!l(c).colour,"bg-BrandForest":l(c).name&&l(c).colour,"text-BrandYellow":l(c).name&&l(c).colour}),pa.disabled=!l(c).name||!l(c).colour}),Be(Qe,()=>l(p),we=>N(p,we)),R("click",Ue,()=>N(f,"BASIC")),R("click",ze,()=>N(f,"ADVANCED")),R("click",Ve,()=>{console.log("All 18 holes are already added")}),R("click",pa,()=>N(x,!0)),A(be,Ae)};j(He,be=>{l(i)==="ADD_CUSTOM"&&be(Z)},!0)}A(re,ce)};j(z,re=>{l(i)==="SEARCH"?re(K):re(oe,!1)})}d($);var W=m($,2),ie=v(W),he=m(ie,2);let me;d(W),d(P),d(T),V((re,ce)=>{F=se(H,1,"px-4 py-2 text-xl condensed",null,F,{"text-BrandForest":l(i)==="SEARCH","text-BrandDarkGray":l(i)!=="SEARCH"}),q=se(Y,1,"px-4 py-2 text-xl condensed",null,q,{"text-BrandForest":l(i)==="ADD_CUSTOM","text-BrandDarkGray":l(i)!=="ADD_CUSTOM"}),me=se(he,1,"flex-1 px-4 py-2 font-bold transition-all duration-200 ease-in-out rounded md:flex-initial md:px-6",null,me,{"bg-BrandLightGray":re,"text-BrandDarkGray":re,"bg-BrandForest":ce,"text-BrandYellow":ce})},[()=>!C(),C],Oe),R("click",U,y),R("click",H,()=>N(i,"SEARCH")),R("click",Y,()=>N(i,"ADD_CUSTOM")),R("click",ie,y),R("click",he,k),A(S,T)};j(w,S=>{a()&&S(B)})}A(e,_),ve()}var mu=O('<span class="px-2 py-1 text-sm text-black rounded-full"> </span>'),bu=O('<div class="grid items-center grid-cols-2 p-3 mb-2 bg-white rounded gap-y-4"><div class="flex items-center"><img class="object-cover w-16 h-16 mr-4 rounded-md"> <span class="text-2xl text-black condensed"> </span></div> <div class="flex items-center justify-between space-x-2 text-black"><!> <button class="px-5 py-1 text-sm rounded text-BrandYellow bg-BrandForest">VIEW</button></div></div>'),yu=O('<span class="px-3 py-1 text-sm text-white rounded-full"> </span>'),xu=O('<span class="px-3 py-1 text-sm text-black rounded-full"> </span>'),_u=O('<div class="p-4 bg-white rounded-lg"><div class="sm:hidden"><div class="flex items-center mb-4"><img class="w-16 h-16 mr-4 rounded-lg"> <span class="text-2xl text-black condensed"> </span></div> <div class="h-px mb-4 bg-BrandDivider"></div> <div class="flex flex-wrap gap-2"></div></div> <div class="hidden sm:block"><div class="flex items-center justify-between mb-4"><div class="flex items-center"><img class="w-16 h-16 mr-4 rounded-lg"> <span class="text-2xl text-black condensed"> </span></div> <div class="flex items-center gap-2"></div></div></div> <button class="w-full py-2 mt-4 text-sm rounded text-BrandYellow bg-BrandForest">VIEW</button></div>'),wu=O('<div class="w-full bg-white"><div class="flex items-center justify-between px-8 pt-4"><h2 class="text-4xl text-black condensed">MY COURSES</h2> <button class="hidden md:block btn btn-new-game">ADD NEW COURSE</button></div> <div class="w-full h-full px-2 pt-4"><div class="hidden p-2 rounded lg:block bg-BrandLightGray"><div class="grid items-center grid-cols-2 gap-4 p-4 text-xl text-black condensed"><span>NAME</span> <span>TEES</span></div> <div class="overflow-y-auto max-h-[60vh] p-2"></div></div> <div class="space-y-4 lg:hidden"></div> <button class="w-full py-2 mt-6 text-xl lg:hidden bg-BrandYellow text-BrandForest">ADD NEW COURSE</button></div> <!></div>');function ku(e,t){fe(t,!1);let a=[],r=M(!1),n=M([]),s=M(null);it(async()=>{try{const i={limit:BigInt(10),offset:BigInt(0)};a=await ja.getCourses(i),N(n,a.map(f=>({...f,teeColors:f.tees.map(u=>({name:u.name,color:o(u.name)}))}))),console.log("Courses Tees:",l(n))}catch(i){console.error("Error fetching courses:",i)}});function o(i){switch(i.toLowerCase()){case"black":return"#000000";case"blue":return"#0000FF";case"green":return"#008000";case"orange":return"#FFA500";case"pink":return"#FFC0CB";case"red":return"#FF0000";case"white":return"#FFFFFF";case"yellow":case"gold":return"#FFFF00";default:return"#CCCCCC"}}_e(),Gt(e,{children:(i,f)=>{var u=wu(),p=v(u),h=m(v(p),2);d(p);var c=m(p,2),g=v(c),b=m(v(g),2);xe(b,5,()=>l(n),je,(C,_)=>{var w=bu(),B=v(w),S=v(B),T=m(S,2),P=v(T,!0);d(T),d(B);var I=m(B,2),U=v(I);xe(U,1,()=>l(_).teeColors,je,(G,H)=>{var F=mu(),Y=v(F,!0);d(F),V(()=>{Q(F,"style",`background-color: ${l(H).color??""};`),D(Y,l(H).name)}),A(G,F)}),Ee(2),d(I),d(w),V(G=>{Q(S,"src",G),Q(S,"alt",l(_).name),D(P,l(_).name)},[()=>Zs(l(_))],Oe),A(C,w)}),d(b),d(g);var x=m(g,2);xe(x,5,()=>l(n),je,(C,_)=>{var w=_u(),B=v(w),S=v(B),T=v(S),P=m(T,2),I=v(P,!0);d(P),d(S);var U=m(S,4);xe(U,5,()=>l(_).teeColors,je,(K,oe)=>{var W=yu(),ie=v(W,!0);d(W),V(()=>{Q(W,"style",`background-color: ${l(oe).color??""};`),D(ie,l(oe).name)}),A(K,W)}),d(U),d(B);var G=m(B,2),H=v(G),F=v(H),Y=v(F),q=m(Y,2),$=v(q,!0);d(q),d(F);var z=m(F,2);xe(z,5,()=>l(_).teeColors,je,(K,oe)=>{var W=xu(),ie=v(W,!0);d(W),V(()=>{Q(W,"style",`background-color: ${l(oe).color??""};`),D(ie,l(oe).name)}),A(K,W)}),d(z),d(H),d(G),Ee(2),d(w),V(K=>{Q(T,"src",K),Q(T,"alt",l(_).name),D(I,l(_).name),Q(Y,"src",K),Q(Y,"alt",l(_).name),D($,l(_).name)},[()=>Zs(l(_))],Oe),A(C,w)}),d(x);var y=m(x,2);d(c);var k=m(c,2);{var E=C=>{kl(C,{get isOpen(){return l(r)},$$events:{close:()=>N(r,!1),courseSelect:_=>{N(s,_.detail.course),N(r,!1)}}})};j(k,C=>{l(r)&&C(E)})}d(u),R("click",h,()=>N(r,!0)),R("click",y,()=>N(r,!0)),A(i,u)},$$slots:{default:!0}}),ve()}const Eu=Object.freeze(Object.defineProperty({__proto__:null,component:ku},Symbol.toStringTag,{value:"Module"}));var Au=O('<img alt="Course thumbnail" class="object-cover w-16 h-16 rounded">'),Su=O('<div class="flex items-center justify-center w-12 h-12 rounded bg-BrandLightGray"><!></div>'),Cu=O('<div class="fixed inset-0 z-50 flex items-center justify-center"><div class="relative z-50 w-full md:h-auto md:w-[60vw] overflow-y-auto bg-white rounded-lg"><div class="sticky top-0 z-10 flex items-center justify-between p-3 bg-white border-b md:p-4"><h2 class="text-2xl text-black md:text-3xl condensed">EDIT HOME COURSE</h2> <button class="flex items-center justify-center w-8 h-8 text-base font-bold text-white bg-black rounded-full shadow-md" type="button" aria-label="Close">✕</button></div> <div class="p-3 md:p-6"><p class="text-sm md:text-base text-BrandDarkGray">Your home course should be the one you play at most frequently, serving as your default for tracking scores.</p> <div class="mt-4 md:mt-6"><label for="courseNameInput" class="block mb-2 text-sm font-bold text-BrandDarkGray">COURSE NAME</label> <input id="courseNameInput" type="text" class="w-full p-3 text-black bg-white border border-gray-300 rounded" placeholder="Enter Course Name"></div> <div class="mt-4 md:mt-6"><label for="courseImageUpload" class="block mb-2 text-sm font-bold">COURSE IMAGE</label> <div class="flex items-center gap-2"><!> <div class="flex flex-col gap-1"><button id="courseImageUpload" type="button" class="px-4 py-2 text-sm font-bold rounded md:px-6 md:py-3 text-BrandForest bg-BrandYellow hover:bg-yellow-600">UPLOAD</button> <span class="text-2xs md:text-xs text-BrandDarkGray">800px x 800px min</span></div></div></div></div> <div class="sticky bottom-0 flex justify-end gap-2 p-3 bg-white border-t md:p-4"><button class="flex-1 px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg md:text-base md:flex-initial md:px-6 text-BrandForest bg-BrandYellow hover:bg-yellow-400 focus:outline-none">CANCEL</button> <button type="button">SAVE CHANGES</button></div></div></div>');function Tu(e,t){fe(t,!1);let a=L(t,"isOpen",8,!1),r=L(t,"holes",24,()=>[]),n=L(t,"courseName",12,""),s=L(t,"courseImage",8,"");const o=va();function i(){o("close")}function f(){o("save",{holes:r()})}function u(){return n().trim().length>0}_e();var p=pe(),h=J(p);{var c=g=>{var b=Cu(),x=v(b),y=v(x),k=m(v(y),2);d(y);var E=m(y,2),C=m(v(E),2),_=m(v(C),2);Ne(_),d(C);var w=m(C,2),B=m(v(w),2),S=v(B);{var T=F=>{var Y=Au();V(()=>Q(Y,"src",s())),A(F,Y)},P=F=>{var Y=Su(),q=v(Y);_s(q,{className:"w-6 h-6 fill-black"}),d(Y),A(F,Y)};j(S,F=>{s()?F(T):F(P,!1)})}Ee(2),d(B),d(w),d(E);var I=m(E,2),U=v(I),G=m(U,2);let H;d(I),d(x),d(b),V((F,Y)=>H=se(G,1,"flex-1 px-4 py-2 text-sm font-bold transition-all duration-200 ease-in-out rounded md:text-base md:flex-initial md:px-6",null,H,{"bg-BrandLightGray":F,"text-BrandDarkGray":F,"bg-BrandForest":Y,"text-BrandYellow":Y}),[()=>!u(),u],Oe),R("click",k,i),Be(_,n),R("click",U,i),R("click",G,f),A(g,b)};j(h,g=>{a()&&g(c)})}A(e,p),ve()}var Nu=O('<div class="flex flex-col"><h3 class="hidden mb-4 text-xl text-black lg:block condensed">DETAILS</h3> <div class="flex flex-col"><p class="block pt-8 text-sm text-BrandDarkGray">COURSE NAME</p> <h2 class="text-5xl text-black md:text-6xl condensed"> </h2></div> <div class="flex flex-col"><p class="block pt-8 text-sm text-BrandDarkGray">LOCATION</p> <h1 class="text-2xl text-black condensed">UNITED KINGDOM</h1></div> <div class="w-full h-px my-4 bg-BrandDivider sm:hidden"></div></div>'),Bu=O('<span class="inline-block px-2 py-1 text-sm text-white rounded-full max-w-max"> </span>'),Ou=O('<tr><td class="p-3 text-black condensed"> </td><td class="p-3 text-black"> </td><td class="p-3 text-black"> </td><td class="p-3 text-black"> </td></tr>'),Ru=O('<div class="grid grid-cols-4 gap-4 p-2 text-black bg-white border-t"><div class="text-lg condensed"> </div> <div class="text-lg"> </div> <div class="text-lg"> </div> <div class="text-lg"> </div></div>'),Pu=O('<div class="w-full"><div class="p-2 px-4 text-black"><div class="flex items-center justify-between"><h2 class="text-5xl text-black md:text-4xl condensed">COURSE DETAILS</h2> <div class="hidden gap-4 md:flex"><button class="px-4 py-3 font-semibold rounded text-md bg-BrandLightGray">REMOVE COURSE</button> <button class="px-4 py-3 font-semibold rounded text-md text-BrandYellow bg-BrandForest">EDIT COURSE DETAILS</button></div></div></div> <div class="flex flex-col p-4 rounded-md lg:flex-row bg-BrandLightGray"><div class="w-full mb-6 lg:w-1/3 lg:mb-0"><h3 class="px-2 mb-4 text-2xl text-black lg:hidden condensed">DETAILS</h3> <img src="/course-placeholder.jpg" alt="golf course" class="object-cover w-full h-full rounded"></div> <div class="w-full px-0 mb-6 lg:w-1/3 lg:px-4 lg:mb-0"><!></div> <div class="w-full px-0 lg:w-1/3 lg:px-4"><h2 class="pb-3 text-xl text-black condensed">TEES</h2> <div class="flex flex-col p-5 bg-white border-b rounded"><!></div> <div class="overflow-x-auto"><div class="overflow-y-auto max-h-[65vh]"><table class="hidden min-w-full bg-white border-collapse sm:table"><thead><tr><th class="p-4 text-xl text-left text-black border-b condensed">HOLE</th><th class="p-4 text-xl text-left text-black border-b condensed">PAR</th><th class="p-4 text-xl text-left text-black border-b condensed">S.I.</th><th class="p-4 text-xl text-left text-black border-b condensed">YARDS</th></tr></thead><tbody></tbody></table> <div class="sm:hidden"><div class="grid grid-cols-4 gap-4 p-2 text-sm text-black bg-white condensed"><div>HOLE</div> <div>PAR</div> <div>S.I</div> <div>YARDS</div></div> <!></div></div></div> <div class="flex w-full gap-4 p-2 bg-white md:hidden"><button class="px-3 py-1 font-semibold text-black rounded text-md bg-BrandLightGray">REMOVE COURSE</button> <button class="px-3 py-1 font-semibold rounded text-md text-BrandYellow bg-BrandForest">EDIT COURSE DETAILS</button></div></div></div></div>'),Iu=O("<!> <!>",1);function Gu(e,t){fe(t,!1);let a=M(null),r=M(!1),n=[{hole:1,par:4,strokeIndex:8,yards:400},{hole:2,par:4,strokeIndex:3,yards:340},{hole:3,par:3,strokeIndex:12,yards:200},{hole:4,par:4,strokeIndex:6,yards:320},{hole:5,par:5,strokeIndex:1,yards:480},{hole:6,par:3,strokeIndex:5,yards:220},{hole:7,par:4,strokeIndex:11,yards:370},{hole:8,par:4,strokeIndex:2,yards:350},{hole:9,par:4,strokeIndex:7,yards:420},{hole:10,par:5,strokeIndex:9,yards:500},{hole:11,par:4,strokeIndex:14,yards:310},{hole:12,par:3,strokeIndex:18,yards:190},{hole:13,par:5,strokeIndex:4,yards:530},{hole:14,par:4,strokeIndex:13,yards:390},{hole:15,par:3,strokeIndex:17,yards:180},{hole:16,par:4,strokeIndex:10,yards:410},{hole:17,par:5,strokeIndex:15,yards:480},{hole:18,par:4,strokeIndex:16,yards:400}];it(async()=>{try{const u={limit:BigInt(10),offset:BigInt(0)},p=await ja.getCourses(u);N(a,p[0]||null)}catch(u){console.error("Error fetching course details:",u)}}),_e();var s=Iu(),o=J(s);Gt(o,{children:(u,p)=>{var h=Pu(),c=v(h),g=v(c),b=m(v(g),2),x=m(v(b),2);d(b),d(g),d(c);var y=m(c,2),k=m(v(y),2),E=v(k);{var C=q=>{var $=Nu(),z=m(v($),2),K=m(v(z),2),oe=v(K,!0);d(K),d(z),Ee(4),d($),V(W=>D(oe,W),[()=>l(a).name.toUpperCase()],Oe),A(q,$)};j(E,q=>{l(a)&&q(C)})}d(k);var _=m(k,2),w=m(v(_),2),B=v(w);{var S=q=>{var $=pe(),z=J($);xe(z,1,()=>l(a).tees,je,(K,oe)=>{var W=Bu(),ie=v(W,!0);d(W),V(()=>{Q(W,"style",`background-color: ${l(oe).colour??""};`),D(ie,l(oe).name)}),A(K,W)}),A(q,$)};j(B,q=>{l(a)&&l(a).tees&&q(S)})}d(w);var T=m(w,2),P=v(T),I=v(P),U=m(v(I));xe(U,5,()=>n,je,(q,$)=>{var z=Ou(),K=v(z),oe=v(K,!0);d(K);var W=m(K),ie=v(W,!0);d(W);var he=m(W),me=v(he,!0);d(he);var re=m(he),ce=v(re,!0);d(re),d(z),V(()=>{D(oe,l($).hole),D(ie,l($).par),D(me,l($).strokeIndex),D(ce,l($).yards)}),A(q,z)}),d(U),d(I);var G=m(I,2),H=m(v(G),2);xe(H,1,()=>n,je,(q,$)=>{var z=Ru(),K=v(z),oe=v(K,!0);d(K);var W=m(K,2),ie=v(W,!0);d(W);var he=m(W,2),me=v(he,!0);d(he);var re=m(he,2),ce=v(re,!0);d(re),d(z),V(()=>{D(oe,l($).hole),D(ie,l($).par),D(me,l($).strokeIndex),D(ce,l($).yards)}),A(q,z)}),d(G),d(P),d(T);var F=m(T,2),Y=m(v(F),2);d(F),d(_),d(y),d(h),R("click",x,()=>N(r,!0)),R("click",Y,()=>N(r,!0)),A(u,h)},$$slots:{default:!0}});var i=m(o,2);{var f=u=>{const p=Oe(()=>l(a)?.name||"");Tu(u,{get isOpen(){return l(r)},holes:n,get courseName(){return l(p)},courseImage:"/course-placeholder.jpg"})};j(i,u=>{l(r)&&u(f)})}A(e,s),ve()}const ju=Object.freeze(Object.defineProperty({__proto__:null,component:Gu},Symbol.toStringTag,{value:"Module"}));var Mu=O('<div class="flex flex-col items-center mb-4 md:flex-row"><img src="prophet.png" alt="mulligans" class="object-cover object-center w-full h-32 mb-4 rounded-lg md:w-20 md:h-20 md:object-contain md:mb-0 md:mr-4"> <h3 class="text-xl md:text-2xl condensed">MULLIGANS</h3></div> <ul class="space-y-2 text-sm text-gray-700 list-disc list-inside md:text-base"><li>A golfer receives a mulligan every 3 holes, specifically the 1st, 4th, 7th, 10th, 13th and 16th holes.</li> <li>Golfers play each hole in match play format, with scores adjusted by handicap.</li> <li>If a golfer wins a hole a mulligan is added to their available mulligans.</li> <li>A golfer can use as many mulligans as they have available on any hole.</li> <li>A golfer can build up as many mulligans as they can.</li> <li>The game is decided when a golfer is winning by more holes than are available to play.</li></ul>',1),Fu=O(`<div class="flex flex-col items-center mb-4 md:flex-row"><img src="bands.png" alt="bands" class="object-cover object-center w-full h-32 mb-4 rounded-lg md:w-20 md:h-20 md:object-contain md:mb-0 md:mr-4"> <h3 class="text-xl md:text-2xl condensed">BANDS</h3></div> <p class="mb-4 text-sm text-gray-700 md:text-base">Before a match, a golfer makes selections of 3 hole bands for each of the 9 game categories. 
-                    Each band must start on a different hole but they are allowed to overlap.</p> <p class="mb-4 text-sm text-gray-700 md:text-base">The points for each band are as follows:</p> <ul class="space-y-2 text-sm text-gray-700 list-disc list-inside md:text-base"><li><span class="semi-bold">Band 1:</span> Holes where you don’t hit a tree or enter a bunker. <span class="semi-bold">15 points</span></li> <li><span class="semi-bold">Band 2:</span> Holes where you won’t lose a ball. <span class="semi-bold">10 points</span></li> <li><span class="semi-bold">Band 3:</span> Holes where you hit 2/3 fairways. <span class="semi-bold">20 points</span></li> <li><span class="semi-bold">Band 4:</span> Holes where you hit 2/3 greens. <span class="semi-bold">25 points</span></li> <li><span class="semi-bold">Band 5:</span> Holes where you will 1-putt 2/3 greens. <span class="semi-bold">30 points</span></li> <li><span class="semi-bold">Band 6:</span> Holes where you won’t get a double bogey or worse. <span class="semi-bold">35 points</span></li> <li><span class="semi-bold">Band 7:</span> Holes where you won’t bogey or worse. <span class="semi-bold">40 points</span></li> <li><span class="semi-bold">Band 8:</span> Holes where you’ll be par or under. <span class="semi-bold">45 points</span></li> <li><span class="semi-bold">Band 9:</span> Holes where you’ll be under par. <span class="semi-bold">50 points</span></li></ul> <p class="mt-4 text-sm text-gray-700 md:text-base">A golfer can get a maximum possible total score of 270. Golfers receive the points for each band they achieve. The winner is the golfer with the most points at the end of the round.</p>`,1),$u=O(`<div class="flex flex-col items-center mb-4 md:flex-row"><img src="build-it.png" alt="build-it" class="object-cover object-center w-full h-32 mb-4 rounded-lg md:w-20 md:h-20 md:object-contain md:mb-0 md:mr-4"> <h3 class="text-xl md:text-2xl condensed">BUILD IT</h3></div> <ul class="space-y-2 text-sm text-gray-700 list-disc list-inside md:text-base"><li>A golfer can create a team in which they can compete against multiple other teams.</li> <li>The golfer who created the team becomes the team's captain.</li> <li>A team captain sets up a game on a specific course and tee to compete against other teams.</li> <li>A team captain invites other team's to join in a new game.</li> <li>A team captain selects a period of time to build their team card over.</li> <li>Golfers add their scorecards transferring any new lowest scores over to the team card.</li> <li>The winners are the team with the lowest scorecard at the end of the game's duration.</li></ul>`,1),Uu=O('<div class="flex flex-col items-center mb-4 md:flex-row"><img src="next-up.png" alt="next-up" class="object-cover object-center w-full h-32 mb-4 rounded-lg md:w-20 md:h-20 md:object-contain md:mb-0 md:mr-4"> <h3 class="text-xl md:text-2xl condensed">NEXT UP</h3></div> <ul class="space-y-2 text-sm text-gray-700 list-disc list-inside md:text-base"><li>Each golfer is assigned a random tee box, denoting the hole in which they must win.</li> <li>If a golfer wins the hole they are defending, they get 3 points.</li> <li>If a golfer wins a hole they are not defending, they get 1 point.</li> <li>The winner is the golfer with the most points at the end of the round.</li> <li>If the number of holes is not divisible by the number of players without a remainder, the holes are divided up and the remaining holes are assigned to the lowest scoring player who can potentially win.</li></ul>',1),Du=O('<div class="w-full max-w-4xl p-4 mx-auto text-black"><h2 class="mt-3 mb-6 text-2xl font-black text-black md:text-4xl">GAMEPLAY RULES</h2> <p class="mb-6 text-base leading-relaxed md:text-lg">Choose a game from the tabs below to view its specific rules. Understanding these rules is essential to ensure fair play and enjoyment for everyone involved.</p> <div class="mb-4 border-b border-gray-300"><div class="flex flex-wrap space-x-2 overflow-x-auto md:space-x-4"><button><span class="condensed">MULLIGANS</span></button> <button><span class="condensed">BANDS</span></button> <button><span class="condensed">BUILD IT</span></button> <button><span class="condensed">NEXT UP</span></button></div></div> <div class="p-4 bg-white rounded-lg shadow-lg md:p-6"><!> <!> <!> <!></div></div>');function Vu(e,t){fe(t,!1);const[a,r]=fa(),n=()=>At(s,"$selectedGame",a);it(()=>{window.scrollTo(0,0)});const s=st("Mulligans");_e(),Gt(e,{children:(o,i)=>{var f=Du(),u=m(v(f),4),p=v(u),h=v(p),c=m(h,2),g=m(c,2),b=m(g,2);d(p),d(u);var x=m(u,2),y=v(x);{var k=T=>{var P=Mu();Ee(2),A(T,P)};j(y,T=>{n()==="Mulligans"&&T(k)})}var E=m(y,2);{var C=T=>{var P=Fu();Ee(8),A(T,P)};j(E,T=>{n()==="Bands"&&T(C)})}var _=m(E,2);{var w=T=>{var P=$u();Ee(2),A(T,P)};j(_,T=>{n()==="Build It"&&T(w)})}var B=m(_,2);{var S=T=>{var P=Uu();Ee(2),A(T,P)};j(B,T=>{n()==="Next Up"&&T(S)})}d(x),d(f),V(()=>{se(h,1,`text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 ${(n()==="Mulligans"?"border-b-2 border-blue-500 text-blue-600":"text-gray-500 hover:text-blue-500")??""}`),se(c,1,`text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 ${(n()==="Bands"?"border-b-2 border-blue-500 text-blue-600":"text-gray-500 hover:text-blue-500")??""}`),se(g,1,`text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 ${(n()==="Build It"?"border-b-2 border-blue-500 text-blue-600":"text-gray-500 hover:text-blue-500")??""}`),se(b,1,`text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 ${(n()==="Next Up"?"border-b-2 border-blue-500 text-blue-600":"text-gray-500 hover:text-blue-500")??""}`)}),R("click",h,()=>s.set("Mulligans")),R("click",c,()=>s.set("Bands")),R("click",g,()=>s.set("Build It")),R("click",b,()=>s.set("Next Up")),A(o,f)},$$slots:{default:!0}}),ve(),r()}const Hu=Object.freeze(Object.defineProperty({__proto__:null,component:Vu},Symbol.toStringTag,{value:"Module"}));var Yu={BACKEND_CANISTER_ID:"elbip-aiaaa-aaaal-qjfhq-cai"};class qu{constructor(){Na(this,"actor");this.actor=Ce.createActor(Qt,Yu.BACKEND_CANISTER_ID)}async getGolferGameSummaries(t){const a=await this.actor.getMyGames(t);if(Me(a))throw new Error("Failed to get golfer game summaries");return a.ok}}function Wu(){const{subscribe:e,set:t}=st(void 0);async function a(r){return await new qu().getGolferGameSummaries(r)}return{subscribe:e,setGolferGameSummaries:r=>t(r),getGolferGameSummaries:a}}const ro=Wu(),Lu=[{id:"mulligans",title:"MULLIGANS",image:"/mulligans.png",description:"Mulligans offer golfers a second chance to retake a shot without penalty, providing a do-over opportunity to improve their game."},{id:"prophet",title:"PROPHET",image:"/prophet.png",description:"Prophet is a golf game format that emphasizes precise scoring based on the length of each putt made by players."},{id:"bands",title:"BANDS",image:"/bands.png",description:"Bands is a golf game where players hit designated targets to earn points."},{id:"build-it",title:"BUILD IT",image:"/build-it.png",description:"Build It is a golf game where players aim to progressively improve their scores over each hole."},{id:"next-up",title:"NEXT UP",image:"/next-up.png",description:"Next Up is a golf game where players compete to score the next best shot after each hole."}];var zu=O(`<button class="flex flex-col justify-between sm:items-center w-full p-2.5 bg-white transition-all duration-200 
-                     hover:scale-105 hover:shadow-lg hover:rounded-lg"><img class="object-cover object-[center_20%] h-[140px] sm:h-auto w-full mx-0 mb-4 rounded-lg sm:max-w-none sm:aspect-square sm:object-fill sm:mx-auto"> <div class="flex flex-col flex-grow w-full"><h3 class="text-2xl font-bold mb-1 condensed h-[2em] flex items-start sm:items-center text-left sm:text-center sm:justify-center"> </h3> <p class="text-sm text-left text-gray-500 md:text-sm font-inter font-med"> </p></div></button>`),Ku=O('<div class="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000] p-4"><div class="bg-white p-8 sm:p-5 rounded-lg max-w-[90%] w-full h-auto max-h-[90vh] overflow-y-auto shadow-lg relative"><div class="flex items-center justify-between mb-5"><h2 class="ml-5 text-4xl font-bold sm:text-5xl condensed">NEW GAME</h2> <button class="flex items-center justify-center w-10 h-10 text-2xl font-bold text-white bg-black rounded-full shadow-md hover:bg-gray-800">&times;</button></div> <p class="mb-5 ml-5 text-base text-gray-500 font-inter font-sub">SELECT GAME</p> <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-5 md:gap-5"></div> <div class="hidden mt-5 text-right lg:block"><button class="bg-BrandForest text-BrandYellow px-4 py-2 md:px-5 md:py-2.5 rounded text-sm md:text-base">SELECT</button></div></div></div>');function Ju(e,t){fe(t,!1);let a=L(t,"visible",8),r=L(t,"closeModal",8);function n(f){r()(),Ga(`/games/create/${f}`)}_e();var s=pe(),o=J(s);{var i=f=>{var u=Ku(),p=v(u),h=v(p),c=m(v(h),2);d(h);var g=m(h,4);xe(g,5,()=>Lu,y=>y.id,(y,k)=>{var E=zu(),C=v(E),_=m(C,2),w=v(_),B=v(w,!0);d(w);var S=m(w,2),T=v(S,!0);d(S),d(_),d(E),V(()=>{Q(C,"src",l(k).image),Q(C,"alt",l(k).title),D(B,l(k).title),D(T,l(k).description)}),R("click",E,()=>n(l(k).id)),A(y,E)}),d(g);var b=m(g,2),x=v(b);d(b),d(p),d(u),R("click",c,function(...y){r()?.apply(this,y)}),R("click",x,function(...y){r()?.apply(this,y)}),A(f,u)};j(o,f=>{a()&&f(i)})}A(e,s),ve()}var no={BACKEND_CANISTER_ID:"elbip-aiaaa-aaaal-qjfhq-cai"};class so{constructor(){Na(this,"actor");this.actor=Ce.createActor(Qt,no.BACKEND_CANISTER_ID)}async getGame(t){try{let a={gameId:BigInt(t)},r=await this.actor.getGame(a);return Me(r)&&console.error("Error Fetching Game",r),r.ok}catch(a){throw console.error("Error Fetching Game",a),a}}async createGame(t){const r=await(await Ce.createIdentityActor(ke,no.BACKEND_CANISTER_ID)).createGame(t);if(Me(r))throw new Error("Error Creating Game");return{ok:r.ok}}}function Xu(){const{subscribe:e,set:t}=st([]);async function a(n){return new so().getGame(n)}async function r(n){return new so().createGame(n)}return{subscribe:e,setGame:n=>t(n),getGame:a,createGame:r}}const El=Xu();var Bn={BACKEND_CANISTER_ID:"elbip-aiaaa-aaaal-qjfhq-cai"};class Nr{constructor(){Na(this,"actor");this.actor=Ce.createActor(Qt,Bn.BACKEND_CANISTER_ID)}async getPlayer(t){const a=await this.actor.getPlayer(t);if(Me(a))throw new Error("Failed to get player");return a.ok}async createPlayer(t){const r=await(await Ce.createIdentityActor(ke,Bn.BACKEND_CANISTER_ID)).createGolfer(t);if(console.log("Result:",r),Me(r))throw console.log("ERROR Result:",r),new Error("Error Creating Player")}async listPlayers(t){const a={searchTerm:t},r=await this.actor.listGolfers(a);if(Me(r))throw new Error("Failed to list players");return r.ok}async saveGolferPicture(t){const r=await(await Ce.createIdentityActor(ke,Bn.BACKEND_CANISTER_ID)).saveGolferPicture(t);if(Me(r))throw console.log("ERROR Result:",r),new Error("Error Saving Golfer Picture")}}function Zu(){const{subscribe:e,set:t}=st([]);async function a(o){return new Nr().getPlayer(o)}async function r(o=""){return new Nr().listPlayers(o)}async function n(o){return new Nr().createPlayer(o)}async function s(o){return new Nr().saveGolferPicture(o)}return{subscribe:e,setPlayer:o=>t(o),createPlayer:n,getPlayer:a,listPlayers:r,saveGolferPicture:s}}Zu();var Qu=O('<label for="tee" class="block mt-4 text-lg font-bold text-black">Select Tee Group</label> <div class="flex items-center w-full mt-2 text-black bg-gray-100"><div class="flex-grow max-w-md"><!></div></div>',1),ef=O("<div>Loading opponents...</div>"),tf=O('<div class="flex flex-col w-full"><div class="w-full p-2 px-4 text-black"><h2 class="mx-2 mt-2 mb-0 text-5xl font-black text-black md:mx-4 condensed"> </h2></div> <div class="w-full p-4 text-black bg-gray-100 rounded-lg"><label for="course" class="block mt-4 text-lg font-bold text-black">Course</label> <div class="flex items-center w-full mt-2 text-black bg-gray-100"><div class="flex-grow max-w-md"><!></div></div> <!> <label for="date" class="block mt-4 text-lg font-bold text-black">Select Tee Off Date</label> <div class="flex items-center w-full mt-2"><div class="flex-grow max-w-md"><input type="date" class="w-full p-2 mt-2 text-gray-400 bg-gray-100 border border-gray-300 rounded" placeholder="dd/mm/yyyy"></div></div> <label for="time" class="block mt-4 text-lg font-bold text-black">Select Tee Off Time</label> <div class="flex items-center w-full mt-2"><div class="flex-grow max-w-md"><input type="time" class="w-full p-2 mt-2 text-gray-400 bg-gray-100 border border-gray-300 rounded" placeholder="hh:mm"></div></div> <label for="opponent" class="block mt-4 text-lg font-bold text-black"> </label> <div class="flex items-center w-full mt-2 text-black bg-gray-100"><div class="flex-grow max-w-md"><!></div></div></div> <button class="btn btn-new-game md:w-[400px] w-full">Create New Game</button></div>');function Al(e,t){fe(t,!1);let a=L(t,"gameTitle",8),r=L(t,"opponentConfig",8),n=[],s=[],o=M([]),i=[],f=M([]),u=M(null),p=M(null),h=M(null),c=M(null),g=M(""),b=M(""),x=M("");async function y(){if(!l(u)||!l(c)||l(f).length===0){console.error("Please fill out all fields.");return}const E={Mulligans:{Mulligans:null},BuildIt:{BuildIt:null},Bands:{Bands:null},NextUp:{NextUp:null},Prophet:{Prophet:null}}[a()];if(!E){console.error(`Invalid gameTitle: ${a()}`);return}const C=hd(l(x)),_={createdById:"Kelly-Howlett",courseType:{Official:null},courseId:BigInt(l(u).courseId),gameType:E,inviteIds:["James-Beadle"],teeOffTime:C,teeGroup:l(c).value};console.log("DTO:",_);try{const w=await El.createGame(_);w.ok?(console.log("Game Created, Game ID:",w.ok),Ga(`/games/${w.ok}`)):console.error("Error Creating Game",w.err)}catch(w){console.error("Error Creating Game",w)}}Pt(()=>(l(g),l(b)),()=>{N(x,l(g)+"T"+l(b))}),Pt(()=>(l(h),l(u),l(o)),()=>{l(h)?.value&&(N(u,n.find(k=>k.courseId.toString()===l(h).value)||null),console.log("Selected Course:",l(h)),l(u)&&(N(o,l(u).tees.map(k=>({name:k.name,value:k.name}))),console.log("Tees:",l(o)),N(c,null)))}),Ha(),_e(),Gt(e,{children:(k,E)=>{var C=tf(),_=v(C),w=v(_),B=v(w,!0);d(w),d(_);var S=m(_,2),T=m(v(S),2),P=v(T),I=v(P);const U=Oe(()=>n.map(Z=>({name:Z.name,value:Z.courseId.toString()})));ar(I,{get items(){return l(U)},get bindSelected(){return l(p)},placeholder:"Select Course",multiple:!1,searchEnabled:!1,$$events:{select:Z=>{N(p,Z.detail),N(h,Z.detail.value)}}}),d(P),d(T);var G=m(T,2);{var H=Z=>{var be=Qu(),Ae=m(J(be),2),Te=v(Ae),Le=v(Te);ar(Le,{get items(){return l(o)},get bindSelected(){return l(c)},placeholder:"Select Tee Group",searchEnabled:!1,multiple:!1,$$events:{select:Qe=>{N(c,Qe.detail.value)}}}),d(Te),d(Ae),A(Z,be)};j(G,Z=>{l(h)&&Z(H)})}var F=m(G,4),Y=v(F),q=v(Y);Ne(q),d(Y),d(F);var $=m(F,4),z=v($),K=v(z);Ne(K),d(z),d($);var oe=m($,2),W=v(oe,!0);d(oe);var ie=m(oe,2),he=v(ie),me=v(he);{var re=Z=>{ar(Z,{items:i,get bindSelected(){return l(f)},placeholder:"Select your Opponent(s)",searchEnabled:!1,multiple:!1,$$events:{select:be=>{N(f,be.detail.value)}}})},ce=Z=>{var be=ef();A(Z,be)};j(me,Z=>{s.length>0?Z(re):Z(ce,!1)})}d(he),d(ie),d(S);var He=m(S,2);d(C),V(Z=>{D(B,Z),D(W,r().playerLabels?"Players":"Opponents")},[()=>a().toUpperCase()],Oe),Be(q,()=>l(g),Z=>N(g,Z)),Be(K,()=>l(b),Z=>N(b,Z)),R("click",He,y),A(k,C)},$$slots:{default:!0}}),ve()}var af=O("<p>No game history found. Start your first game!</p>"),rf=O('<div class="relative group"><div class="absolute left-0 z-50 hidden group-hover:block top-12"><p class="font-bold"> </p> <button class="px-2.5 py-1.5 bg-blue-500 text-white rounded">View Player</button></div></div>'),nf=O('<div class="w-full mt-5 text-left border-t border-gray-200 bg-gray-50"><div class="flex items-center p-4 border-b border-gray-200"><div class="flex items-center rounded w-15 h-15"></div> <div class="ml-4"><h3 class="font-bold"> </h3> <p class="text-sm"> </p></div></div> <div class="flex ml-auto bg-gray-50"></div> <div class="w-1/6 text-lg font-bold text-blue-500 bg-gray-50"> </div> <div class="w-1/6"><button class="px-4 py-2.5 bg-blue-500 text-white font-bold rounded">Predict</button></div></div>'),sf=O('<div class="w-full"><div class="w-full h-full p-2 px-4 text-black"><div class="flex items-center justify-between mb-4"><h2 class="px-2 my-3 text-3xl font-black text-black md:text-5xl condensed">MY GAMES</h2> <button class="mr-4 btn btn-new-game">New Game</button> <!></div> <div class="flex items-center w-full p-4 text-xl font-bold text-left bg-gray-50 condensed"><div class="w-2/6">Game</div> <div class="w-2/6">Players</div> <div class="w-1/6">Status</div> <div class="w-1/6"></div></div> <!> <!> <!></div></div>');function of(e,t){fe(t,!1);const[a,r]=fa(),n=()=>At(ro,"$golferSummariesStore",a);let s=M(!1),o=M(null),i=M();it(async()=>{try{const h={limit:BigInt(10),offset:BigInt(0)};N(i,await ro.getGolferGameSummaries(h)),console.log(l(i))}catch(h){console.error("Failed to fetch golfer game summaries:",h)}});function f(){N(s,!0)}function u(){N(s,!1)}function p(h){N(o,h.detail)}_e(),Gt(e,{children:(h,c)=>{var g=sf(),b=v(g),x=v(b),y=m(v(x),2),k=m(y,2);{var E=P=>{Ju(P,{get visible(){return l(s)},closeModal:u,$$events:{gameSelected:p}})};j(k,P=>{l(s)&&P(E)})}d(x);var C=m(x,4);{var _=P=>{var I=af();A(P,I)};j(C,P=>{l(i)&&l(i).totalEntries===BigInt(0)&&P(_)})}var w=m(C,2);{var B=P=>{var I=pe(),U=J(I);xe(U,1,()=>n().entries,je,(G,H)=>{var F=nf(),Y=v(F),q=m(v(Y),2),$=v(q),z=v($,!0);d($);var K=m($,2),oe=v(K,!0);d(K),d(q),d(Y);var W=m(Y,2);xe(W,5,()=>l(H).players,je,(me,re)=>{var ce=rf(),He=v(ce),Z=v(He),be=v(Z,!0);d(Z),Ee(2),d(He),d(ce),V(()=>D(be,l(re))),A(me,ce)}),d(W);var ie=m(W,2),he=v(ie,!0);d(ie),Ee(2),d(F),V(me=>{D(z,l(H).gameType),D(oe,me),D(he,l(H).status)},[()=>new Date(Number(l(H).date)*1e3).toLocaleDateString()],Oe),A(G,F)}),A(P,I)};j(w,P=>{n()&&n().entries.length>0&&P(B)})}var S=m(w,2);{var T=P=>{Al(P,{get gameTitle(){return l(o).config.title},get opponentConfig(){return l(o).config.opponentConfig}})};j(S,P=>{l(o)&&P(T)})}d(b),d(g),R("click",y,f),A(h,g)},$$slots:{default:!0}}),ve(),r()}const lf=Object.freeze(Object.defineProperty({__proto__:null,component:of},Symbol.toStringTag,{value:"Module"}));var cf=O('<div class="flex flex-col items-start justify-center w-full ml-8 mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500">GAMETYPE</span> <h1 class="font-black leading-none text-7xl font-condensed"> </h1> <div class="flex flex-col mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500 mt-2.5">DATE</span> <h3 class="mb-4 text-4xl font-bold text-center font-condensed"> </h3></div> <div class="flex items-center justify-start mt-2.5"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex flex-col"><span class="mb-0 text-sm font-medium text-gray-500">COURSE</span> <div><p class="text-3xl font-bold text-center font-condensed"> </p></div></div></div></div>');function df(e,t){fe(t,!1);let a=L(t,"gameType",8),r=L(t,"teeOffTime",8),n=L(t,"courseId",8);it(async()=>{}),_e();var s=cf(),o=m(v(s),2),i=v(o,!0);d(o);var f=m(o,2),u=m(v(f),2),p=v(u,!0);d(u),d(f);var h=m(f,2),c=m(v(h),2),g=m(v(c),2),b=v(g),x=v(b,!0);d(b),d(g),d(c),d(h),d(s),V(()=>{D(i,a()),D(p,r()),D(x,n())}),A(e,s),ve()}var uf=O('<div><h4 class="text-4xl font-bold condensed"><!></h4>  <!></div>');function ff(e,t){fe(t,!1);let a=L(t,"gameType",8),r=L(t,"gameStatus",8);L(t,"playerIds",8),L(t,"events",8),L(t,"winner",8),_e();var n=uf(),s=v(n),o=v(s);{var i=h=>{var c=_a("PLAYER SETUP");A(h,c)},f=h=>{var c=pe(),g=J(c);{var b=y=>{var k=_a("PLAYER SCORES");A(y,k)},x=y=>{var k=pe(),E=J(k);{var C=_=>{var w=_a("PLAYER DETAILS");A(_,w)};j(E,_=>{r()==="completed"&&_(C)},!0)}A(y,k)};j(g,y=>{r()==="active"?y(b):y(x,!1)},!0)}A(h,c)};j(o,h=>{r()==="unplayed"?h(i):h(f,!1)})}d(s);var u=m(s,2);{var p=h=>{var c=pe(),g=J(c);{var b=y=>{},x=y=>{var k=pe(),E=J(k);{var C=w=>{},_=w=>{var B=pe(),S=J(B);{var T=I=>{},P=I=>{var U=pe(),G=J(U);{var H=Y=>{},F=Y=>{var q=pe(),$=J(q);{var z=K=>{};j($,K=>{a()==="Prophet"&&K(z)},!0)}A(Y,q)};j(G,Y=>{a()==="BuildIt"?Y(H):Y(F,!1)},!0)}A(I,U)};j(S,I=>{a()==="NextUp"?I(T):I(P,!1)},!0)}A(w,B)};j(E,w=>{a()==="Mulligans"?w(C):w(_,!1)},!0)}A(y,k)};j(g,y=>{a()==="Bands"?y(b):y(x,!1)})}A(h,c)};j(u,h=>{a()&&h(p)})}d(n),A(e,n),ve()}var vf=O('<div class="flex items-center"><div class="w-3 h-3 bg-green-500 rounded-full"></div> <span class="ml-2 mr-4 text-xl font-bold text-green-500">LIVE</span></div>'),pf=O('<div class="flex items-center"><div class="w-3 h-3 bg-blue-500 rounded-full"></div> <span class="ml-2 mr-4 text-xl font-bold text-blue-500">PREDICT</span></div>'),gf=O('<div class="w-full"><div class="w-full p-2 px-4 text-black"><div class="flex items-center justify-between"><h2 class="px-5 mt-1 text-3xl font-black text-black md:text-5xl condensed">GAME DETAILS</h2> <!> <!></div></div> <div class="w-full"><div class="w-1/3 rounded-lg"><img class="game-image"></div> <!> <!></div></div>');function hf(e,t){fe(t,!1);const[a,r]=fa(),n=()=>At(xs,"$page",a),s=()=>At(i,"$gameData",a),o=M(),i=st({id:BigInt(0),gameType:{Mulligans:null},scoreDetail:[],status:{Unplayed:null},courseId:BigInt(0),predictions:[],events:[],courseSnapshot:{courseId:BigInt(0),courseVersion:0,teeGroup:{added:BigInt(0),holes:[],name:"",colour:"",strokeIndex:0}},teeOffTime:BigInt(0),playerIds:[],invites:[],winner:""});it(async()=>{try{if(l(o)){const p=await El.getGame(parseInt(l(o)));i.set(p)}}catch(p){console.error(p)}finally{}});function f(p){return"Bands"in p?"/bands.png":"Mulligans"in p?"/mulligans.png":"NextUp"in p?"/next-up.png":"BuildIt"in p?"/build-it.png":"Prophet"in p?"/prophet.png":""}function u(p){return"Unplayed"in p?"Unplayed":"Active"in p?"Active":"Complete"in p?"Complete":"Unknown"}Pt(()=>n(),()=>{N(o,n().url.searchParams.get("id"))}),Ha(),_e(),Gt(e,{children:(p,h)=>{var c=gf(),g=v(c),b=v(g),x=m(v(b),2);{var y=G=>{var H=vf();A(G,H)};j(x,G=>{u(s()?.status)==="Active"&&G(y)})}var k=m(x,2);{var E=G=>{var H=pf();A(G,H)};j(k,G=>{u(s()?.status)==="Unplayed"&&G(E)})}d(b),d(g);var C=m(g,2),_=v(C),w=v(_);d(_);var B=m(_,2);df(B,{get gameType(){return Object.keys(s()?.gameType||{})[0]},get teeOffTime(){return s().teeOffTime},get courseId(){return s().courseId}});var S=m(B,2);const T=Oe(()=>u(s()?.status)),P=Oe(()=>Object.keys(s().playerIds)),I=Oe(()=>Object.keys(s().events)),U=Oe(()=>Object.keys(s().winner));ff(S,{get gameType(){return Object.keys(s()?.gameType||{})[0]},get gameStatus(){return l(T)},get playerIds(){return l(P)},get events(){return l(I)},get winner(){return l(U)}}),d(C),d(c),V((G,H)=>{Q(w,"src",G),Q(w,"alt",H)},[()=>f(s()?.gameType),()=>Object.keys(s()?.gameType||{})[0]],Oe),A(p,c)},$$slots:{default:!0}}),ve(),r()}const mf=Object.freeze(Object.defineProperty({__proto__:null,component:hf},Symbol.toStringTag,{value:"Module"})),bf={mulligans:{title:"Mulligans",opponentConfig:{multiple:!0}},prophet:{title:"Prophet",opponentConfig:{multiple:!1}},bands:{title:"Bands",opponentConfig:{multiple:!0,maxPlayers:4}},"build-it":{title:"Build It",opponentConfig:{playerLabels:["Player A","Player B","Player C"]}},"next-up":{title:"Next Up",opponentConfig:{multiple:!0,maxPlayers:2}}};function yf(e,t){fe(t,!1);const[a,r]=fa(),s=At(xs,"$page",a).params.game,o=bf[s],f={...{multiple:!1},...o.opponentConfig};_e(),Al(e,{get gameTitle(){return o.title},opponentConfig:f}),ve(),r()}const xf=Object.freeze(Object.defineProperty({__proto__:null,component:yf},Symbol.toStringTag,{value:"Module"}));var _f=ns('<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><path d="m60 10c27.57 0 50 22.43 50 50s-22.43 50-50 50-50-22.43-50-50 22.43-50 50-50zm0-10c-33.135 0-60 26.865-60 60s26.865 60 60 60 60-26.865 60-60-26.865-60-60-60zm-19.97 64.82 15.53 15.525-20.56 4.655zm49.97-18.82-29.2 29.605-16.01-16.01 29.205-29.595z"></path></svg>');function jr(e,t){let a=L(t,"className",8,""),r=L(t,"fill",8,"");var n=_f();V(()=>{se(n,0,ss(a())),Q(n,"fill",r())}),A(e,n)}var wf=O('<img alt="Preview" class="object-cover w-24 h-24 mb-4 rounded sm:w-32 sm:h-32"> <p class="text-base font-medium sm:text-lg text-BrandDarkGray">Click to change image</p>',1),kf=O('<div class="mb-4"><!></div> <p class="text-base font-medium sm:text-lg text-BrandDarkGray">Drag and Drop or Browse</p>',1),Ef=O('<div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0"><div class="relative z-10 w-full sm:w-[90vw] md:w-[60vw] lg:w-[40vw] bg-white rounded-lg shadow-xl"><div class="flex items-center justify-between p-4 sm:p-5"><h2 class="text-2xl text-black sm:text-3xl condensed">UPLOAD IMAGE</h2> <button class="flex items-center justify-center text-base font-bold text-white bg-black rounded-full shadow-md w-7 h-7 sm:w-8 sm:h-8" type="button" aria-label="Close">✕</button></div> <div class="p-4 sm:p-8"><button type="button" class="flex flex-col items-center justify-center w-full p-4 transition-all duration-200 ease-in-out border-2 border-dashed rounded-lg cursor-pointer sm:p-8 border-BrandLightGray hover:border-BrandForest"><!> <input id="fileInput" type="file" accept="image/*" class="hidden"></button></div> <div class="flex justify-end gap-3 p-4 sm:gap-4 sm:p-6"><button type="button" class="px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg sm:px-6 sm:text-base text-BrandDarkGray bg-BrandYellow hover:bg-yellow-400 focus:outline-none">Cancel</button> <button type="button">Save</button></div></div></div>');function Af(e,t){fe(t,!1);let a=L(t,"isOpen",8,!1);const r=va();let n=M(!1),s=null,o=M(null),i=M();function f(){r("close")}function u(x){const y=x.target;y.files&&y.files[0]&&(N(n,!0),s=y.files[0],N(o,URL.createObjectURL(y.files[0])))}function p(){s&&(r("fileSelect",{file:s,preview:l(o)}),f())}function h(){l(i)?.click()}_e();var c=pe(),g=J(c);{var b=x=>{var y=Ef(),k=v(y),E=v(k),C=m(v(E),2);d(E);var _=m(E,2),w=v(_),B=v(w);{var S=F=>{var Y=wf(),q=J(Y);Ee(2),V(()=>Q(q,"src",l(o))),A(F,Y)},T=F=>{var Y=kf(),q=J(Y),$=v(q);_s($,{className:"w-10 h-10 sm:w-12 sm:h-12 fill-BrandDarkGray"}),d(q),Ee(2),A(F,Y)};j(B,F=>{l(o)?F(S):F(T,!1)})}var P=m(B,2);Gr(P,F=>N(i,F),()=>l(i)),d(w),d(_);var I=m(_,2),U=v(I),G=m(U,2);let H;d(I),d(k),d(y),V(()=>H=se(G,1,"px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg sm:px-6 sm:text-base focus:outline-none",null,H,{"bg-BrandForest":l(n),"text-BrandYellow":l(n),"bg-BrandLightGray":!l(n),"text-BrandDarkGray":!l(n)})),R("click",C,f),R("change",P,u),R("click",w,h),R("keydown",w,F=>F.key==="Enter"&&h()),R("click",U,f),R("click",G,p),A(x,y)};j(g,x=>{a()&&x(b)})}A(e,c),ve()}var Br={BACKEND_CANISTER_ID:"elbip-aiaaa-aaaal-qjfhq-cai"};class Or{constructor(){Na(this,"actor");this.actor=Ce.createActor(Qt,Br.BACKEND_CANISTER_ID)}async createYardageSet(t){const a=await Ce.createIdentityActor(ke,Br.BACKEND_CANISTER_ID);console.log("Creating Yardage Set",t);const r=await a.createYardageSet(t);if(console.log("Yardage Set Created",r),Me(r))throw new Error("Error Creating Yardage Set")}async updateYardageSet(t){const r=await(await Ce.createIdentityActor(ke,Br.BACKEND_CANISTER_ID)).updateYardageSet(t);if(Me(r))throw new Error("Error Updating Yardage Set")}async deleteYardageSet(t){const r=await(await Ce.createIdentityActor(ke,Br.BACKEND_CANISTER_ID)).deleteYardageSet(t);if(Me(r))throw new Error("Error Deleting Yardage Set")}async getYardageSet(t){const a=await this.actor.getYardageSet(t);if(Me(a))throw new Error("Error Getting Yardage Set");return a.ok}}function Sf(){const{subscribe:e,set:t}=st([]);async function a(o){return await new Or().createYardageSet(o)}async function r(o){return await new Or().updateYardageSet(o)}async function n(o){return await new Or().deleteYardageSet(o)}async function s(o){return await new Or().getYardageSet(o)}return{subscribe:e,setYardageSet:o=>t(o),createYardageSet:a,updateYardageSet:r,deleteYardageSet:n,getYardageSet:s}}const Cf=Sf();var Tf=O('<div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0"><div class="relative z-10 w-full sm:w-[90vw] md:w-[60vw] lg:w-[30vw] bg-white rounded-lg shadow-xl"><div class="flex items-center justify-between p-4"><h2 class="text-xl text-black sm:text-2xl md:text-3xl condensed">ADD NEW YARDAGE SET</h2> <button class="flex items-center justify-center text-base font-bold text-white bg-black rounded-full shadow-md w-7 h-7 sm:w-8 sm:h-8" type="button" aria-label="Close">✕</button></div> <div class="px-4 pt-2 pb-4 sm:px-6"><p class="text-sm text-BrandDarkGray">Create a new yardage set to track your performance in various settings. Specify the name of the set to help you manage and optimize your game across different conditions.</p></div> <div class="p-4 sm:p-6"><div class="flex flex-col gap-4"><div><label for="yardageSetName" class="block mb-2 text-sm text-black">NAME</label> <input id="yardageSetName" type="text" class="w-full p-3 text-black rounded bg-BrandLightGray" placeholder="Enter"></div></div></div> <div class="flex justify-end gap-3 p-4"><button class="px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg sm:px-6 sm:text-base text-BrandForest bg-BrandYellow hover:bg-yellow-400 focus:outline-none">CANCEL</button> <button type="button">ADD SET</button></div></div></div>');function Sl(e,t){fe(t,!1);let a=L(t,"isOpen",8,!1);const r=va();let n=M("");function s(){r("close")}async function o(){if(l(n).trim()!==""){const p={name:l(n),clubs:[]};try{await Cf.createYardageSet(p),console.log("Yardage Set Created"),s()}catch(h){console.error("Error Creating Yardage Set",h)}}}_e();var i=pe(),f=J(i);{var u=p=>{var h=Tf(),c=v(h),g=v(c),b=m(v(g),2);d(g);var x=m(g,4),y=v(x),k=v(y),E=m(v(k),2);Ne(E),d(k),d(y),d(x);var C=m(x,2),_=v(C),w=m(_,2);let B;d(C),d(c),d(h),V((S,T)=>{B=se(w,1,"px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg sm:px-6 sm:text-base focus:outline-none",null,B,{"bg-BrandForest":S,"text-BrandYellow":S,"bg-BrandLightGray":T,"text-BrandDarkGray":T}),w.disabled=T},[()=>l(n).trim()!=="",()=>l(n).trim()===""],Oe),R("click",b,s),Be(E,()=>l(n),S=>N(n,S)),R("click",_,s),R("click",w,o),A(p,h)};j(f,p=>{a()&&p(u)})}A(e,i),ve()}var Nf=O('<div class="relative w-full h-full"><img alt="Profile" class="object-cover w-full h-full rounded-lg"> <button class="absolute p-2 transition-all duration-200 bg-black bg-opacity-50 rounded-full top-4 right-4 hover:bg-opacity-70"><!></button></div>'),Bf=O('<img src="default-profile-picture.jpg" alt="Default Profile" class="object-cover w-full h-full rounded-lg"> <button class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"><!></button>',1),Of=O('<p class="mb-2 text-red-500"> </p>'),Rf=O('<!> <button class="px-2 py-2 mb-4 text-sm rounded lg:px-3 lg:py-1 text-BrandYellow bg-BrandForest hover:bg-green-700 disabled:opacity-50"><!></button>',1),Pf=O('<div class="relative"><p class="text-xl text-black condensed"> </p> <button type="button" class="absolute bottom-0 right-0 p-1 transition-all duration-200 rounded-full hover:bg-black/10"><!></button></div>'),If=O('<button type="button" class="w-full p-2 text-left rounded text-BrandDarkGray hover:bg-black/5">Select home course</button>'),Gf=O('<div class="w-full h-full px-2 pt-4"><div class="flex flex-col p-4 rounded-md lg:flex-row bg-BrandLightGray"><div class="w-full mb-6 lg:w-1/3 lg:mb-0"><h3 class="px-2 mb-4 text-2xl text-black lg:hidden condensed">DETAILS</h3> <div class="relative flex items-center justify-center w-full aspect-[16/9] lg:aspect-square bg-yellow-400 rounded-lg"><!> <!></div></div> <div class="w-full px-0 mb-6 lg:w-1/3 lg:px-4 lg:mb-0"><h3 class="hidden mb-4 text-xl text-black lg:block condensed">DETAILS</h3> <label for="username" class="block pt-8 pb-3 text-sm text-BrandDarkGray">USERNAME</label> <input id="username" placeholder="Enter your username" type="text" class="w-full p-2 mb-4 text-4xl text-black bg-transparent border-b rounded lg:text-2xl condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest"> <label for="handicap" class="block pt-4 pb-3 text-sm text-BrandDarkGray">HANDICAP</label> <input id="handicap" placeholder="Enter your handicap" type="number" class="w-full p-2 mb-4 text-xl text-black bg-transparent border-b rounded condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest" min="0" max="54"> <!> <div class="flex items-center mt-auto text-black"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex-1"><label for="homeCourse" class="block pb-3 text-sm text-BrandDarkGray">HOME COURSE</label> <!> <!></div></div></div> <div class="w-full px-0 lg:w-1/3 lg:px-4"><h3 class="text-xl text-black condensed">YARDAGES</h3> <div class="flex flex-col h-[calc(100%-1rem)] p-4 rounded-lg bg-BrandLightGray"><div class="flex flex-col h-full bg-white rounded-lg"><div class="flex items-center justify-between p-2 text-black lg:py-4 lg:mx-4 condensed"><span>CLUB</span> <span>YARDS</span></div> <div class="flex items-center justify-center flex-1"><p class="px-8 text-sm text-center text-BrandDarkGray">No yardages have been added. Click the button below to get started.</p></div> <div class="px-4 pb-4"><button class="w-full p-2 rounded text-BrandYellow bg-BrandForest hover:bg-green-700">ADD YARDAGES</button> <!></div></div></div></div></div></div>'),jf=O('<div class="grid items-center grid-cols-12 p-4 bg-white rounded-lg"><div class="flex items-center justify-between col-span-12 mb-2 lg:col-span-5 lg:mb-0"><div class="flex items-center"><img src="default-profile-picture.jpg" alt="Profile" class="mr-4 rounded-full w-14 h-14"> <div><span class="text-xxs text-BrandDarkGray"> </span> <h4 class="text-2xl text-black md:text-3xl condensed"> </h4></div></div> <div class="flex flex-col items-end lg:hidden"><span class="text-xxs text-BrandDarkGray">HANDICAP</span> <span class="text-2xl text-black md:text-3xl condensed">4</span></div></div> <div class="items-center hidden col-span-2 lg:flex lg:flex-col"><span class="text-xxs text-BrandDarkGray">HANDICAP</span> <span class="text-2xl text-black md:text-3xl condensed">4</span></div> <div class="flex justify-center col-span-12 space-x-2 lg:justify-end lg:col-span-5"><button class="flex-1 px-3 py-1 text-sm text-black rounded lg:flex-initial bg-BrandAcceptGreen">ACCEPT</button> <button class="flex-1 px-3 py-1 text-sm text-white rounded lg:flex-initial bg-BrandDeclineRed">REJECT</button></div></div>'),Mf=O('<div class="grid items-center grid-cols-12 p-4 bg-white rounded-lg"><div class="flex items-center justify-between col-span-12 mb-2 lg:col-span-5 lg:mb-0"><div class="flex items-center"><img src="default-profile-picture.jpg" alt="Profile" class="mr-4 rounded-full w-14 h-14"> <div><span class="text-xxs text-BrandDarkGray"> </span> <h4 class="text-2xl text-black md:text-3xl condensed"> </h4></div></div> <div class="flex flex-col items-end lg:hidden"><span class="text-xxs text-BrandDarkGray">HANDICAP</span> <span class="text-2xl text-black md:text-3xl condensed"> </span></div></div> <div class="items-center hidden col-span-2 lg:flex lg:flex-col"><span class="text-xxs text-BrandDarkGray">HANDICAP</span> <span class="text-3xl text-black condensed"> </span></div> <div class="flex justify-center col-span-12 lg:justify-end lg:col-span-5"><button class="w-full px-5 py-1 text-sm rounded lg:w-auto text-BrandYellow bg-BrandForest">VIEW</button></div></div>'),Ff=O('<button type="button" role="option"><div class="flex items-center justify-between col-span-12"><div class="flex items-center"><img src="default-profile-picture.jpg" alt="Profile" class="w-10 h-10 mr-4 rounded-full"> <div class="flex flex-col"><span class="text-xs text-BrandDarkGray"> </span> <span class="text-xl text-black condensed"> </span></div></div> <div class="flex flex-col items-end"><span class="text-xs text-BrandDarkGray">HANDICAP</span> <span class="text-xl text-black condensed"> </span></div></div></button>'),$f=O('<div class="w-full h-full px-2 pt-4"><div class="flex flex-col p-4 rounded-md lg:flex-row bg-BrandLightGray"><div class="w-full mb-8 lg:w-3/5 lg:pr-4 lg:mb-0"><div class="flex items-center justify-between mb-4"><h3 class="text-2xl text-black condensed">YOUR FRIENDS</h3> <span class="text-xxs lg:text-sm text-BrandDarkGray">SMOKE THESE GUYS</span></div> <div class="space-y-4"><!> <!></div></div> <div class="w-full rounded lg:w-2/5 lg:pl-4"><div class="flex items-center justify-between mb-4"><h3 class="text-2xl text-black condensed">PLAYER SEARCH</h3> <span class="md:text-sm text-xxs text-BrandDarkGray">TIME FOR NEW FRIENDS</span></div> <div class="p-4 mb-4 bg-white rounded"><h4 class="mb-4 text-xl text-black condensed">SEARCH PLAYERS BY NAME</h4> <input type="text" placeholder="Enter Name" class="w-full p-3 text-lg bg-white border rounded border-BrandDivider"> <div class="pt-4 space-y-4"></div> <button>ADD FRIEND</button></div></div></div></div>'),Uf=O('<div class="w-full"><div class="flex items-center justify-between px-8 pt-4"><h2 class="text-5xl text-black md:text-4xl condensed">PROFILE</h2> <div class="justify-end hidden md:flex"><button>DETAILS</button> <button>SOCIAL</button></div></div> <!> <!> <div class="sticky bottom-0 left-0 right-0 z-10 flex w-full bg-white md:hidden"><button>DETAILS</button> <button>SOCIAL</button></div></div>');function Df(e,t){fe(t,!1);let a=[{principalId:"LEE, M.W._4857357",displayName:"LEE, M.W.",handicap:[2]},{principalId:"WOLF_238475",displayName:"WOLF",handicap:[12]},{principalId:"MCELROY_238475",displayName:"MCELROY",handicap:[4]},{principalId:"HATTON_238475",displayName:"HATTON",handicap:[22]}],r=[{principalId:"DECHU_475",requestTime:BigInt(Date.now())},{principalId:"SMITH_238475",requestTime:BigInt(Date.now())}],n=[{golferPrincipalId:"SAVAGE3_238475",golferName:"SAVAGE3",golferPicture:[],golferPictureExtension:"jpg",handicap:[8]},{golferPrincipalId:"SAVAGE63_238475",golferName:"SAVAGE63",golferPicture:[],golferPictureExtension:"jpg",handicap:[22]}],s=M({username:"",handicap:[0]}),o=M(null),i=[],f=M(null),u=M("DETAILS"),p=M(!0),h=M(!1),c=M(!1),g=M(!1),b=M(!1),x=M(""),y=M(""),k=M(null);it(async()=>{try{N(p,await Yt.sync()),console.log("sync complete");const S={limit:BigInt(10),offset:BigInt(0)};i=await ja.getCourses(S)}catch(S){console.error("Creating Golfer Error:",S)}});async function E(){if(l(p)){if(!l(s).username){N(x,"Username is required");return}N(b,!0),N(x,"");try{const S=Number(l(s).handicap[0]);if(isNaN(S))throw new Error("Invalid handicap value");const T=[S];await Yt.createUser(l(s).username,T),N(p,!1),await Yt.cacheProfile(),await Yt.sync()}catch(S){N(x,"Failed to create user. Please try again."),console.error("Error creating user:",S)}finally{N(b,!1),console.log("createUser complete")}}}async function C(S){const{file:T,preview:P}=S.detail;N(o,P),N(h,!1);try{await Yt.updateProfilePicture(T),await Yt.cacheProfile(),await Yt.sync(),console.log("Profile picture updated successfully")}catch(I){console.error("Error updating profile picture:",I)}}async function _(S){}async function w(S){}function B(){l(k)&&console.log("Sending friend request to:",l(k).golferName)}_e(),Gt(e,{children:(S,T)=>{var P=Uf(),I=v(P),U=m(v(I),2),G=v(U),H=m(G,2);d(U),d(I);var F=m(I,2);{var Y=W=>{var ie=Gf(),he=v(ie),me=v(he),re=m(v(me),2),ce=v(re);{var He=X=>{var Se=Nf(),Je=v(Se),ct=m(Je,2),dt=v(ct);jr(dt,{className:"w-4 h-4",fill:"white"}),d(ct),d(Se),V(()=>Q(Je,"src",l(o))),R("click",ct,()=>N(h,!0)),A(X,Se)},Z=X=>{var Se=Bf(),Je=m(J(Se),2),ct=v(Je);jr(ct,{className:"w-20 h-20",fill:"white"}),d(Je),R("click",Je,()=>N(h,!0)),A(X,Se)};j(ce,X=>{l(o)?X(He):X(Z,!1)})}var be=m(ce,2);{var Ae=X=>{Af(X,{get isOpen(){return l(h)},$$events:{close:()=>N(h,!1),fileSelect:C}})};j(be,X=>{l(h)&&X(Ae)})}d(re),d(me);var Te=m(me,2),Le=m(v(Te),4);Ne(Le);var Qe=m(Le,4);Ne(Qe);var Re=m(Qe,2);{var ne=X=>{var Se=Rf(),Je=J(Se);{var ct=ut=>{var Bt=Of(),we=v(Bt,!0);d(Bt),V(()=>D(we,l(x))),A(ut,Bt)};j(Je,ut=>{l(x)&&ut(ct)})}var dt=m(Je,2),Ht=v(dt);{var pa=ut=>{var Bt=_a("Creating...");A(ut,Bt)},Ca=ut=>{var Bt=_a("CREATE USER");A(ut,Bt)};j(Ht,ut=>{l(b)?ut(pa):ut(Ca,!1)})}d(dt),V(()=>dt.disabled=!l(s).username||l(b)),R("click",dt,E),A(X,Se)};j(Re,X=>{l(p)&&X(ne)})}var de=m(Re,2),Fe=m(v(de),2),Pe=m(v(Fe),2);{var Ie=X=>{var Se=Pf(),Je=v(Se),ct=v(Je,!0);d(Je);var dt=m(Je,2),Ht=v(dt);jr(Ht,{className:"w-4 h-4 fill-black"}),d(dt),d(Se),V(()=>D(ct,l(f).name)),R("click",dt,()=>N(c,!0)),A(X,Se)},Ge=X=>{var Se=If();R("click",Se,()=>N(c,!0)),A(X,Se)};j(Pe,X=>{l(f)?X(Ie):X(Ge,!1)})}var Ue=m(Pe,2);{var et=X=>{kl(X,{get isOpen(){return l(c)},$$events:{close:()=>N(c,!1),courseSelect:Se=>{N(f,Se.detail.course),N(c,!1)}}})};j(Ue,X=>{l(c)&&X(et)})}d(Fe),d(de),d(Te);var ze=m(Te,2),De=m(v(ze),2),Ye=v(De),qe=m(v(Ye),4),Ve=v(qe),We=m(Ve,2);{var Ke=X=>{Sl(X,{get isOpen(){return l(g)},$$events:{close:()=>N(g,!1)}})};j(We,X=>{l(g)&&X(Ke)})}d(qe),d(Ye),d(De),d(ze),d(he),d(ie),Be(Le,()=>l(s).username,X=>xt(s,l(s).username=X)),Be(Qe,()=>l(s).handicap[0],X=>xt(s,l(s).handicap[0]=X)),R("click",Ve,()=>N(g,!0)),A(W,ie)};j(F,W=>{l(u)==="DETAILS"&&W(Y)})}var q=m(F,2);{var $=W=>{var ie=$f(),he=v(ie),me=v(he),re=m(v(me),2),ce=v(re);xe(ce,1,()=>r,je,(Re,ne)=>{var de=jf(),Fe=v(de),Pe=v(Fe),Ie=m(v(Pe),2),Ge=v(Ie),Ue=v(Ge,!0);d(Ge);var et=m(Ge,2),ze=v(et,!0);d(et),d(Ie),d(Pe),Ee(2),d(Fe);var De=m(Fe,4),Ye=v(De),qe=m(Ye,2);d(De),d(de),V(Ve=>{D(Ue,l(ne).principalId),D(ze,Ve)},[()=>l(ne).principalId.split("_")[0]],Oe),R("click",Ye,()=>_(l(ne))),R("click",qe,()=>w(l(ne))),A(Re,de)});var He=m(ce,2);xe(He,1,()=>a,je,(Re,ne)=>{var de=Mf(),Fe=v(de),Pe=v(Fe),Ie=m(v(Pe),2),Ge=v(Ie),Ue=v(Ge,!0);d(Ge);var et=m(Ge,2),ze=v(et,!0);d(et),d(Ie),d(Pe);var De=m(Pe,2),Ye=m(v(De),2),qe=v(Ye,!0);d(Ye),d(De),d(Fe);var Ve=m(Fe,2),We=m(v(Ve),2),Ke=v(We,!0);d(We),d(Ve),Ee(2),d(de),V(()=>{D(Ue,l(ne).principalId),D(ze,l(ne).displayName),D(qe,l(ne).handicap[0]),D(Ke,l(ne).handicap[0])}),A(Re,de)}),d(re),d(me);var Z=m(me,2),be=m(v(Z),2),Ae=m(v(be),2);Ne(Ae);var Te=m(Ae,2);xe(Te,5,()=>n,je,(Re,ne)=>{var de=Ff();let Fe;var Pe=v(de),Ie=v(Pe),Ge=m(v(Ie),2),Ue=v(Ge),et=v(Ue,!0);d(Ue);var ze=m(Ue,2),De=v(ze,!0);d(ze),d(Ge),d(Ie);var Ye=m(Ie,2),qe=m(v(Ye),2),Ve=v(qe,!0);d(qe),d(Ye),d(Pe),d(de),V(()=>{Fe=se(de,1,"grid items-center w-full grid-cols-12 p-4 text-left bg-white rounded cursor-pointer hover:bg-gray-50",null,Fe,{"bg-gray-50":l(k)===l(ne)}),Q(de,"aria-selected",l(k)===l(ne)),D(et,l(ne).golferPrincipalId),D(De,l(ne).golferName),D(Ve,l(ne).handicap[0])}),R("click",de,()=>N(k,l(ne))),R("keydown",de,We=>{(We.key==="Enter"||We.key===" ")&&N(k,l(ne))}),A(Re,de)}),d(Te);var Le=m(Te,2);let Qe;d(be),d(Z),d(he),d(ie),V(()=>{Qe=se(Le,1,"w-full p-3 mt-4 text-center transition-colors duration-200 rounded-lg",null,Qe,{"bg-BrandYellow":l(k),"text-BrandForest":l(k),"bg-gray-200":!l(k),"text-gray-400":!l(k),"cursor-not-allowed":!l(k)}),Le.disabled=!l(k)}),Be(Ae,()=>l(y),Re=>N(y,Re)),R("click",Le,B),A(W,ie)};j(q,W=>{l(u)==="SOCIAL"&&W($)})}var z=m(q,2),K=v(z),oe=m(K,2);d(z),d(P),V(()=>{se(G,1,`px-10 py-3 text-xl text-BrandYellow condensed rounded-l-md rounded-r-none ${(l(u)==="DETAILS"?"bg-BrandForest":"bg-[#F9F9F9] text-[#C0C0C0]")??""}`),se(H,1,`px-10 py-3 text-xl text-BrandYellow condensed rounded-t-md ${(l(u)==="SOCIAL"?"bg-BrandForest":"bg-[#F9F9F9] text-[#C0C0C0]")??""}`),se(K,1,`flex-1 py-2 text-xl condensed ${(l(u)==="DETAILS"?"bg-BrandForest text-BrandYellow":"bg-[#F9F9F9] text-[#C0C0C0]")??""}`),se(oe,1,`flex-1 py-2 text-xl condensed ${(l(u)==="SOCIAL"?"bg-BrandForest text-BrandYellow":"bg-[#F9F9F9] text-[#C0C0C0]")??""}`)}),R("click",G,()=>N(u,"DETAILS")),R("click",H,()=>N(u,"SOCIAL")),R("click",K,()=>N(u,"DETAILS")),R("click",oe,()=>N(u,"SOCIAL")),A(S,P)},$$slots:{default:!0}}),ve()}const Vf=Object.freeze(Object.defineProperty({__proto__:null,component:Df},Symbol.toStringTag,{value:"Module"}));var Hf=O("<p> </p>"),Yf=O('<div class="bg-gray-100 p-6 rounded-lg shadow-lg space-y-4"><div class="flex items-center space-x-4"><div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0"><img class="w-full h-full object-cover"></div> <div><h3 class="text-xl font-medium"> </h3> <p class="text-sm text-gray-500"> </p> <p class="text-sm text-gray-600"> </p></div></div> <div class="text-sm text-gray-700 space-y-2"></div></div>'),qf=O(`<div class="flex flex-col space-y-6 text-base text-black p-4"><h2 class="text-3xl md:text-5xl font-black text-black mb-4 mt-3 condensed">OUR TEAM</h2> <p class="text-lg leading-relaxed">Waterway Labs have a team of keen golfers. The team has experience of being long-time club members along with playing courses with friends on an ad-hoc basis. Using the team's domain knowledge will ensure that <span class="condensed">GOLFPAD</span> contains everything a golfer expects from an all-in-one golf solution and more.</p> <p class="text-lg leading-relaxed">The Waterway Labs team is in the process of expansion, bringing on a new Managing Director & Head of Operations in June 2024.</p> <h2 class="text-2xl font-semibold">Meet the Team</h2> <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>`);function Wf(e,t){fe(t,!1),it(()=>{});const a=[{name:"Zoe Duffy",title:"Managing Director",image:"zoe.jpg",handicap:"Unknown",bio:["With a robust background in the software development and technology industries, Zoe brings a wealth of experience to her role as Managing Director.","Her career spans over 20 years, during which she has cultivated expertise in sales, customer success, and marketing, driving growth and innovation across multiple organisations.","A passionate advocate for supporting women in tech, Zoe is committed to fostering an inclusive and diverse workplace where everyone can thrive.","She believes in empowering the next generation of female leaders and actively mentors women seeking to advance their careers in technology.","Outside of her professional life, Zoe is a dedicated mum to two children. She balances her dynamic career with a love for running, cycling, and exploring the great outdoors."]},{name:"Kelly Howlett",title:"Head of Operations",image:"kelly.jpeg",handicap:18,bio:["Kelly is head of Operations at Waterway Labs, ensuring our dynamic UK based team can work together smoothly. Kelly turns our vision to bring real world users to the Internet Computer into a reality with his dedication to our UK marketing strategy. Kelly lives with our unofficial head of security, Trevor, both of whom can be found touring the UK in the OpenFPL podcast studio.","Kelly studied Ecology and Conservation and Natural History in Cambridge, building extensive experience in geotechnical engineering in his professional career. Kelly has worked on large-scale projects throughout Europe and the United States, specialising in utilising advanced technology to acheive wide ranging goals.","Kelly has always had a passion for sports, previously being sponsored as a professional kiter. Nowadays he prefers to keep his feet on the ground, enjoying a game of football or round of golf."]},{name:"James Beadle",title:"Development Manager",image:"james.jpg",handicap:18,bio:["James oversees all of our development projects, ensuring that our software meets the highest standards.","James has over 15 years experience delivering projects for worldwide brands, including Ford, Coca Cola & GSK.","The Internet Computer blockchain attracted James due it's ability to create a more equitable future for people. James believes passionately about using this new technology to create truly decentralised services.","When he's not coding, you can find James on his narrowboat, where he enjoys thinking about his next big project while perfecting his short game."]},{name:"George Robinson",title:"Community Manager",image:"george.jpg",handicap:24,bio:["George is our go-to person for all things community-related. His ability to connect with users and understand their needs makes him an invaluable part of our team.","George has been in crypto for almost 5 years, specifically championing the unique features of ICP since 2021.","Needing something to do during the football offseason, George picked up golf at the start of the 2024 summer. If he’s not on the course or the driving range, he’ll be at the club bar!"]},{name:"Josh Wray",title:"Head of Promotion",image:"josh.jpg",handicap:28,bio:["Josh brings a wealth of experience from a background in the pharmaceutical industry, where attention to detail and a deep understanding of complex technologies were essential.","Over the past five years, Josh has shifted focus towards blockchain technology, with a particular interest in the Internet Computer (ICP) ecosystem.","Josh's passion for innovation and emerging technologies has driven their success in promoting and growing blockchain projects.","As Head of Promotion at Waterway Labs, Josh leverages this expertise to build strong relationships, drive engagement, and enhance the visibility of our cutting-edge initiatives within the tech community and beyond."]},{name:"Dfinity Designer",title:"Head of Design",image:"dfd.jpg",handicap:18,bio:["We believe we have the best designer in the world. Dfinity Designer maps out the user journey from start to finish, always ensuring a simple yet stunning product is created.","Dfinity Designer's work can be enjoyed throughout the ICP blockchain, having designed a range of applications including OpenChat and OpenFPL.","Dfinity Designer is also a keen golfer, making it even easier for him to design the perfect golf platform."]}];_e(),Gt(e,{children:(r,n)=>{var s=qf(),o=m(v(s),8);xe(o,5,()=>a,je,(i,f)=>{var u=Yf(),p=v(u),h=v(p),c=v(h);d(h);var g=m(h,2),b=v(g),x=v(b,!0);d(b);var y=m(b,2),k=v(y,!0);d(y);var E=m(y,2),C=v(E);d(E),d(g),d(p);var _=m(p,2);xe(_,5,()=>l(f).bio,je,(w,B)=>{var S=Hf(),T=v(S,!0);d(S),V(()=>D(T,l(B))),A(w,S)}),d(_),d(u),V(()=>{Q(c,"src",`team/${l(f).image}`),Q(c,"alt",l(f).name),D(x,l(f).name),D(k,l(f).title),D(C,`Handicap: ${l(f).handicap??""}`)}),A(i,u)}),d(o),d(s),A(r,s)},$$slots:{default:!0}}),ve()}const Lf=Object.freeze(Object.defineProperty({__proto__:null,component:Wf},Symbol.toStringTag,{value:"Module"}));var zf=O(`<div class="md:px-4"><h2 class="mb-2 text-2xl tracking-wide condensed">VISION</h2> <div class="space-y-4"><p class="relative"><img src="panel-bg.jpg" alt="vision" class="w-full h-auto mb-4 rounded-lg shadow-md md:mb-0 md:w-1/3 md:float-right md:ml-4"> <span class="condensed">GOLFPAD</span> is building the future of golf by building you a new range of games and tools powered by AI.
+var Cl = Object.defineProperty;
+var Ss = (e) => {
+  throw TypeError(e);
+};
+var Tl = (e, t, a) =>
+  t in e
+    ? Cl(e, t, { enumerable: !0, configurable: !0, writable: !0, value: a })
+    : (e[t] = a);
+var Na = (e, t, a) => Tl(e, typeof t != "symbol" ? t + "" : t, a),
+  Cs = (e, t, a) => t.has(e) || Ss("Cannot " + a);
+var te = (e, t, a) => (
+    Cs(e, t, "read from private field"), a ? a.call(e) : t.get(e)
+  ),
+  ht = (e, t, a) =>
+    t.has(e)
+      ? Ss("Cannot add the same private member more than once")
+      : t instanceof WeakSet
+        ? t.add(e)
+        : t.set(e, a),
+  yn = (e, t, a, r) => (
+    Cs(e, t, "write to private field"), r ? r.call(e, a) : t.set(e, a), a
+  );
+import {
+  D as Ts,
+  c as Nl,
+  u as Bl,
+  B as Ol,
+  A as Rl,
+  b as Ns,
+  H as On,
+  a as co,
+} from "./BcJAi0dZ.js";
+var tn = Array.isArray,
+  Pl = Array.prototype.indexOf,
+  Hn = Array.from,
+  Yn = Object.defineProperty,
+  ya = Object.getOwnPropertyDescriptor,
+  uo = Object.getOwnPropertyDescriptors,
+  Il = Object.prototype,
+  Gl = Array.prototype,
+  qn = Object.getPrototypeOf;
+function jl(e) {
+  return typeof e == "function";
+}
+const vt = () => {};
+function Ml(e) {
+  return typeof e?.then == "function";
+}
+function Fl(e) {
+  return e();
+}
+function rr(e) {
+  for (var t = 0; t < e.length; t++) e[t]();
+}
+const Ct = 2,
+  fo = 4,
+  an = 8,
+  rn = 16,
+  ea = 32,
+  _r = 64,
+  Mr = 128,
+  kt = 256,
+  Fr = 512,
+  nt = 1024,
+  ta = 2048,
+  Ea = 4096,
+  Jt = 8192,
+  nn = 16384,
+  vo = 32768,
+  $a = 65536,
+  po = 1 << 17,
+  $l = 1 << 19,
+  go = 1 << 20,
+  xa = Symbol("$state"),
+  ho = Symbol("legacy props"),
+  Ul = Symbol("");
+function mo(e) {
+  return e === this.v;
+}
+function bo(e, t) {
+  return e != e
+    ? t == t
+    : e !== t || (e !== null && typeof e == "object") || typeof e == "function";
+}
+function Wn(e) {
+  return !bo(e, this.v);
+}
+function Dl(e) {
+  throw new Error("https://svelte.dev/e/effect_in_teardown");
+}
+function Vl() {
+  throw new Error("https://svelte.dev/e/effect_in_unowned_derived");
+}
+function Hl(e) {
+  throw new Error("https://svelte.dev/e/effect_orphan");
+}
+function Yl() {
+  throw new Error("https://svelte.dev/e/effect_update_depth_exceeded");
+}
+function ql() {
+  throw new Error("https://svelte.dev/e/hydration_failed");
+}
+function Wl(e) {
+  throw new Error("https://svelte.dev/e/props_invalid_value");
+}
+function Ll() {
+  throw new Error("https://svelte.dev/e/state_descriptors_fixed");
+}
+function zl() {
+  throw new Error("https://svelte.dev/e/state_prototype_fixed");
+}
+function Kl() {
+  throw new Error("https://svelte.dev/e/state_unsafe_local_read");
+}
+function Jl() {
+  throw new Error("https://svelte.dev/e/state_unsafe_mutation");
+}
+let Ua = !1,
+  Xl = !1;
+function Zl() {
+  Ua = !0;
+}
+const Ln = 1,
+  zn = 2,
+  yo = 4,
+  Ql = 8,
+  ei = 16,
+  ti = 1,
+  ai = 2,
+  ri = 4,
+  ni = 8,
+  si = 16,
+  oi = 1,
+  li = 2,
+  ii = 4,
+  ci = 1,
+  di = 2,
+  xo = "[",
+  Kn = "[!",
+  Jn = "]",
+  Xa = {},
+  tt = Symbol();
+function Xn(e) {
+  console.warn("https://svelte.dev/e/hydration_mismatch");
+}
+function Zn(e) {
+  throw new Error("https://svelte.dev/e/lifecycle_outside_component");
+}
+let ge = null;
+function $r(e) {
+  ge = e;
+}
+function fe(e, t = !1, a) {
+  (ge = { p: ge, c: null, e: null, m: !1, s: e, x: null, l: null }),
+    Ua && !t && (ge.l = { s: null, u: null, r1: [], r2: ot(!1) });
+}
+function ve(e) {
+  const t = ge;
+  if (t !== null) {
+    e !== void 0 && (t.x = e);
+    const o = t.e;
+    if (o !== null) {
+      var a = le,
+        r = ue;
+      t.e = null;
+      try {
+        for (var n = 0; n < o.length; n++) {
+          var s = o[n];
+          Nt(s.effect), Tt(s.reaction), sn(s.fn);
+        }
+      } finally {
+        Nt(a), Tt(r);
+      }
+    }
+    (ge = t.p), (t.m = !0);
+  }
+  return e || {};
+}
+function Da() {
+  return !Ua || (ge !== null && ge.l === null);
+}
+function ot(e, t) {
+  var a = { f: 0, v: e, reactions: null, equals: mo, rv: 0, wv: 0 };
+  return a;
+}
+function bt(e) {
+  return _o(ot(e));
+}
+function wa(e, t = !1) {
+  var r;
+  const a = ot(e);
+  return (
+    t || (a.equals = Wn),
+    Ua && ge !== null && ge.l !== null && ((r = ge.l).s ?? (r.s = [])).push(a),
+    a
+  );
+}
+function M(e, t = !1) {
+  return _o(wa(e, t));
+}
+function _o(e) {
+  return (
+    ue !== null && !Rt && ue.f & Ct && (Ut === null ? bi([e]) : Ut.push(e)), e
+  );
+}
+function xt(e, t) {
+  return (
+    N(
+      e,
+      yt(() => l(e)),
+    ),
+    t
+  );
+}
+function N(e, t) {
+  return (
+    ue !== null &&
+      !Rt &&
+      Da() &&
+      ue.f & (Ct | rn) &&
+      (Ut === null || !Ut.includes(e)) &&
+      Jl(),
+    ia(e, t)
+  );
+}
+function ia(e, t) {
+  return (
+    e.equals(t) ||
+      (e.v,
+      (e.v = t),
+      (e.wv = $o()),
+      wo(e, ta),
+      Da() &&
+        le !== null &&
+        le.f & nt &&
+        !(le.f & (ea | _r)) &&
+        (qt === null ? yi([e]) : qt.push(e))),
+    t
+  );
+}
+function wo(e, t) {
+  var a = e.reactions;
+  if (a !== null)
+    for (var r = Da(), n = a.length, s = 0; s < n; s++) {
+      var o = a[s],
+        i = o.f;
+      i & ta ||
+        (!r && o === le) ||
+        (It(o, t), i & (nt | kt) && (i & Ct ? wo(o, Ea) : cn(o)));
+    }
+}
+let ee = !1;
+function Kt(e) {
+  ee = e;
+}
+let ae;
+function Et(e) {
+  if (e === null) throw (Xn(), Xa);
+  return (ae = e);
+}
+function Aa() {
+  return Et(aa(ae));
+}
+function d(e) {
+  if (ee) {
+    if (aa(ae) !== null) throw (Xn(), Xa);
+    ae = e;
+  }
+}
+function Ee(e = 1) {
+  if (ee) {
+    for (var t = e, a = ae; t--; ) a = aa(a);
+    ae = a;
+  }
+}
+function Rn() {
+  for (var e = 0, t = ae; ; ) {
+    if (t.nodeType === 8) {
+      var a = t.data;
+      if (a === Jn) {
+        if (e === 0) return t;
+        e -= 1;
+      } else (a === xo || a === Kn) && (e += 1);
+    }
+    var r = aa(t);
+    t.remove(), (t = r);
+  }
+}
+function ma(e, t = null, a) {
+  if (typeof e != "object" || e === null || xa in e) return e;
+  const r = qn(e);
+  if (r !== Il && r !== Gl) return e;
+  var n = new Map(),
+    s = tn(e),
+    o = ot(0);
+  s && n.set("length", ot(e.length));
+  var i;
+  return new Proxy(e, {
+    defineProperty(f, u, p) {
+      (!("value" in p) ||
+        p.configurable === !1 ||
+        p.enumerable === !1 ||
+        p.writable === !1) &&
+        Ll();
+      var h = n.get(u);
+      return (
+        h === void 0 ? ((h = ot(p.value)), n.set(u, h)) : N(h, ma(p.value, i)),
+        !0
+      );
+    },
+    deleteProperty(f, u) {
+      var p = n.get(u);
+      if (p === void 0) u in f && n.set(u, ot(tt));
+      else {
+        if (s && typeof u == "string") {
+          var h = n.get("length"),
+            c = Number(u);
+          Number.isInteger(c) && c < h.v && N(h, c);
+        }
+        N(p, tt), Bs(o);
+      }
+      return !0;
+    },
+    get(f, u, p) {
+      if (u === xa) return e;
+      var h = n.get(u),
+        c = u in f;
+      if (
+        (h === void 0 &&
+          (!c || ya(f, u)?.writable) &&
+          ((h = ot(ma(c ? f[u] : tt, i))), n.set(u, h)),
+        h !== void 0)
+      ) {
+        var g = l(h);
+        return g === tt ? void 0 : g;
+      }
+      return Reflect.get(f, u, p);
+    },
+    getOwnPropertyDescriptor(f, u) {
+      var p = Reflect.getOwnPropertyDescriptor(f, u);
+      if (p && "value" in p) {
+        var h = n.get(u);
+        h && (p.value = l(h));
+      } else if (p === void 0) {
+        var c = n.get(u),
+          g = c?.v;
+        if (c !== void 0 && g !== tt)
+          return { enumerable: !0, configurable: !0, value: g, writable: !0 };
+      }
+      return p;
+    },
+    has(f, u) {
+      if (u === xa) return !0;
+      var p = n.get(u),
+        h = (p !== void 0 && p.v !== tt) || Reflect.has(f, u);
+      if (p !== void 0 || (le !== null && (!h || ya(f, u)?.writable))) {
+        p === void 0 && ((p = ot(h ? ma(f[u], i) : tt)), n.set(u, p));
+        var c = l(p);
+        if (c === tt) return !1;
+      }
+      return h;
+    },
+    set(f, u, p, h) {
+      var c = n.get(u),
+        g = u in f;
+      if (s && u === "length")
+        for (var b = p; b < c.v; b += 1) {
+          var x = n.get(b + "");
+          x !== void 0 ? N(x, tt) : b in f && ((x = ot(tt)), n.set(b + "", x));
+        }
+      c === void 0
+        ? (!g || ya(f, u)?.writable) &&
+          ((c = ot(void 0)), N(c, ma(p, i)), n.set(u, c))
+        : ((g = c.v !== tt), N(c, ma(p, i)));
+      var y = Reflect.getOwnPropertyDescriptor(f, u);
+      if ((y?.set && y.set.call(h, p), !g)) {
+        if (s && typeof u == "string") {
+          var k = n.get("length"),
+            E = Number(u);
+          Number.isInteger(E) && E >= k.v && N(k, E + 1);
+        }
+        Bs(o);
+      }
+      return !0;
+    },
+    ownKeys(f) {
+      l(o);
+      var u = Reflect.ownKeys(f).filter((c) => {
+        var g = n.get(c);
+        return g === void 0 || g.v !== tt;
+      });
+      for (var [p, h] of n) h.v !== tt && !(p in f) && u.push(p);
+      return u;
+    },
+    setPrototypeOf() {
+      zl();
+    },
+  });
+}
+function Bs(e, t = 1) {
+  N(e, e.v + t);
+}
+var Pn, ko, Eo, Ao;
+function In() {
+  if (Pn === void 0) {
+    (Pn = window), (ko = /Firefox/.test(navigator.userAgent));
+    var e = Element.prototype,
+      t = Node.prototype;
+    (Eo = ya(t, "firstChild").get),
+      (Ao = ya(t, "nextSibling").get),
+      (e.__click = void 0),
+      (e.__className = void 0),
+      (e.__attributes = null),
+      (e.__styles = null),
+      (e.__e = void 0),
+      (Text.prototype.__t = void 0);
+  }
+}
+function ua(e = "") {
+  return document.createTextNode(e);
+}
+function Xt(e) {
+  return Eo.call(e);
+}
+function aa(e) {
+  return Ao.call(e);
+}
+function v(e, t) {
+  if (!ee) return Xt(e);
+  var a = Xt(ae);
+  if (a === null) a = ae.appendChild(ua());
+  else if (t && a.nodeType !== 3) {
+    var r = ua();
+    return a?.before(r), Et(r), r;
+  }
+  return Et(a), a;
+}
+function J(e, t) {
+  if (!ee) {
+    var a = Xt(e);
+    return a instanceof Comment && a.data === "" ? aa(a) : a;
+  }
+  return ae;
+}
+function m(e, t = 1, a = !1) {
+  let r = ee ? ae : e;
+  for (var n; t--; ) (n = r), (r = aa(r));
+  if (!ee) return r;
+  var s = r?.nodeType;
+  if (a && s !== 3) {
+    var o = ua();
+    return r === null ? n?.after(o) : r.before(o), Et(o), o;
+  }
+  return Et(r), r;
+}
+function So(e) {
+  e.textContent = "";
+}
+function ca(e) {
+  var t = Ct | ta,
+    a = ue !== null && ue.f & Ct ? ue : null;
+  return (
+    le === null || (a !== null && a.f & kt) ? (t |= kt) : (le.f |= go),
+    {
+      ctx: ge,
+      deps: null,
+      effects: null,
+      equals: mo,
+      f: t,
+      fn: e,
+      reactions: null,
+      rv: 0,
+      v: null,
+      wv: 0,
+      parent: a ?? le,
+    }
+  );
+}
+function Oe(e) {
+  const t = ca(e);
+  return (t.equals = Wn), t;
+}
+function Co(e) {
+  var t = e.effects;
+  if (t !== null) {
+    e.effects = null;
+    for (var a = 0; a < t.length; a += 1) Zt(t[a]);
+  }
+}
+function ui(e) {
+  for (var t = e.parent; t !== null; ) {
+    if (!(t.f & Ct)) return t;
+    t = t.parent;
+  }
+  return null;
+}
+function fi(e) {
+  var t,
+    a = le;
+  Nt(ui(e));
+  try {
+    Co(e), (t = Do(e));
+  } finally {
+    Nt(a);
+  }
+  return t;
+}
+function To(e) {
+  var t = fi(e),
+    a = (sa || e.f & kt) && e.deps !== null ? Ea : nt;
+  It(e, a), e.equals(t) || ((e.v = t), (e.wv = $o()));
+}
+function No(e) {
+  le === null && ue === null && Hl(),
+    ue !== null && ue.f & kt && le === null && Vl(),
+    ts && Dl();
+}
+function vi(e, t) {
+  var a = t.last;
+  a === null
+    ? (t.last = t.first = e)
+    : ((a.next = e), (e.prev = a), (t.last = e));
+}
+function Va(e, t, a, r = !0) {
+  var n = (e & _r) !== 0,
+    s = le,
+    o = {
+      ctx: ge,
+      deps: null,
+      nodes_start: null,
+      nodes_end: null,
+      f: e | ta,
+      first: null,
+      fn: t,
+      last: null,
+      next: null,
+      parent: n ? null : s,
+      prev: null,
+      teardown: null,
+      transitions: null,
+      wv: 0,
+    };
+  if (a)
+    try {
+      ln(o), (o.f |= vo);
+    } catch (u) {
+      throw (Zt(o), u);
+    }
+  else t !== null && cn(o);
+  var i =
+    a &&
+    o.deps === null &&
+    o.first === null &&
+    o.nodes_start === null &&
+    o.teardown === null &&
+    (o.f & (go | Mr)) === 0;
+  if (!i && !n && r && (s !== null && vi(o, s), ue !== null && ue.f & Ct)) {
+    var f = ue;
+    (f.effects ?? (f.effects = [])).push(o);
+  }
+  return o;
+}
+function Qn(e) {
+  const t = Va(an, null, !1);
+  return It(t, nt), (t.teardown = e), t;
+}
+function Ur(e) {
+  No();
+  var t = le !== null && (le.f & ea) !== 0 && ge !== null && !ge.m;
+  if (t) {
+    var a = ge;
+    (a.e ?? (a.e = [])).push({ fn: e, effect: le, reaction: ue });
+  } else {
+    var r = sn(e);
+    return r;
+  }
+}
+function Bo(e) {
+  return No(), wr(e);
+}
+function pi(e) {
+  const t = Va(_r, e, !0);
+  return (a = {}) =>
+    new Promise((r) => {
+      a.outro
+        ? da(t, () => {
+            Zt(t), r(void 0);
+          })
+        : (Zt(t), r(void 0));
+    });
+}
+function sn(e) {
+  return Va(fo, e, !1);
+}
+function Pt(e, t) {
+  var a = ge,
+    r = { effect: null, ran: !1 };
+  a.l.r1.push(r),
+    (r.effect = wr(() => {
+      e(), !r.ran && ((r.ran = !0), N(a.l.r2, !0), yt(t));
+    }));
+}
+function Ha() {
+  var e = ge;
+  wr(() => {
+    if (l(e.l.r2)) {
+      for (var t of e.l.r1) {
+        var a = t.effect;
+        a.f & nt && It(a, Ea), qa(a) && ln(a), (t.ran = !1);
+      }
+      e.l.r2.v = !1;
+    }
+  });
+}
+function wr(e) {
+  return Va(an, e, !0);
+}
+function V(e, t = [], a = ca) {
+  const r = t.map(a);
+  return Ya(() => e(...r.map(l)));
+}
+function Ya(e, t = 0) {
+  return Va(an | rn | t, e, !0);
+}
+function $t(e, t = !0) {
+  return Va(an | ea, e, !0, t);
+}
+function Oo(e) {
+  var t = e.teardown;
+  if (t !== null) {
+    const a = ts,
+      r = ue;
+    Rs(!0), Tt(null);
+    try {
+      t.call(null);
+    } finally {
+      Rs(a), Tt(r);
+    }
+  }
+}
+function Ro(e, t = !1) {
+  var a = e.first;
+  for (e.first = e.last = null; a !== null; ) {
+    var r = a.next;
+    Zt(a, t), (a = r);
+  }
+}
+function gi(e) {
+  for (var t = e.first; t !== null; ) {
+    var a = t.next;
+    t.f & ea || Zt(t), (t = a);
+  }
+}
+function Zt(e, t = !0) {
+  var a = !1;
+  if ((t || e.f & $l) && e.nodes_start !== null) {
+    for (var r = e.nodes_start, n = e.nodes_end; r !== null; ) {
+      var s = r === n ? null : aa(r);
+      r.remove(), (r = s);
+    }
+    a = !0;
+  }
+  Ro(e, t && !a), Yr(e, 0), It(e, nn);
+  var o = e.transitions;
+  if (o !== null) for (const f of o) f.stop();
+  Oo(e);
+  var i = e.parent;
+  i !== null && i.first !== null && Po(e),
+    (e.next =
+      e.prev =
+      e.teardown =
+      e.ctx =
+      e.deps =
+      e.fn =
+      e.nodes_start =
+      e.nodes_end =
+        null);
+}
+function Po(e) {
+  var t = e.parent,
+    a = e.prev,
+    r = e.next;
+  a !== null && (a.next = r),
+    r !== null && (r.prev = a),
+    t !== null &&
+      (t.first === e && (t.first = r), t.last === e && (t.last = a));
+}
+function da(e, t) {
+  var a = [];
+  es(e, a, !0),
+    Io(a, () => {
+      Zt(e), t && t();
+    });
+}
+function Io(e, t) {
+  var a = e.length;
+  if (a > 0) {
+    var r = () => --a || t();
+    for (var n of e) n.out(r);
+  } else t();
+}
+function es(e, t, a) {
+  if (!(e.f & Jt)) {
+    if (((e.f ^= Jt), e.transitions !== null))
+      for (const o of e.transitions) (o.is_global || a) && t.push(o);
+    for (var r = e.first; r !== null; ) {
+      var n = r.next,
+        s = (r.f & $a) !== 0 || (r.f & ea) !== 0;
+      es(r, t, s ? a : !1), (r = n);
+    }
+  }
+}
+function Ma(e) {
+  Go(e, !0);
+}
+function Go(e, t) {
+  if (e.f & Jt) {
+    (e.f ^= Jt), e.f & nt || (e.f ^= nt), qa(e) && (It(e, ta), cn(e));
+    for (var a = e.first; a !== null; ) {
+      var r = a.next,
+        n = (a.f & $a) !== 0 || (a.f & ea) !== 0;
+      Go(a, n ? t : !1), (a = r);
+    }
+    if (e.transitions !== null)
+      for (const s of e.transitions) (s.is_global || t) && s.in();
+  }
+}
+const hi =
+  typeof requestIdleCallback > "u"
+    ? (e) => setTimeout(e, 1)
+    : requestIdleCallback;
+let nr = [],
+  sr = [];
+function jo() {
+  var e = nr;
+  (nr = []), rr(e);
+}
+function Mo() {
+  var e = sr;
+  (sr = []), rr(e);
+}
+function kr(e) {
+  nr.length === 0 && queueMicrotask(jo), nr.push(e);
+}
+function mi(e) {
+  sr.length === 0 && hi(Mo), sr.push(e);
+}
+function Os() {
+  nr.length > 0 && jo(), sr.length > 0 && Mo();
+}
+let Rr = !1,
+  Dr = !1,
+  Vr = null,
+  Pr = !1,
+  ts = !1;
+function Rs(e) {
+  ts = e;
+}
+let Za = [];
+let ue = null,
+  Rt = !1;
+function Tt(e) {
+  ue = e;
+}
+let le = null;
+function Nt(e) {
+  le = e;
+}
+let Ut = null;
+function bi(e) {
+  Ut = e;
+}
+let lt = null,
+  mt = 0,
+  qt = null;
+function yi(e) {
+  qt = e;
+}
+let Fo = 1,
+  Hr = 0,
+  sa = !1,
+  na = null;
+function $o() {
+  return ++Fo;
+}
+function qa(e) {
+  var t = e.f;
+  if (t & ta) return !0;
+  if (t & Ea) {
+    var a = e.deps,
+      r = (t & kt) !== 0;
+    if (a !== null) {
+      var n,
+        s,
+        o = (t & Fr) !== 0,
+        i = r && le !== null && !sa,
+        f = a.length;
+      if (o || i) {
+        var u = e,
+          p = u.parent;
+        for (n = 0; n < f; n++)
+          (s = a[n]),
+            (o || !s?.reactions?.includes(u)) &&
+              (s.reactions ?? (s.reactions = [])).push(u);
+        o && (u.f ^= Fr), i && p !== null && !(p.f & kt) && (u.f ^= kt);
+      }
+      for (n = 0; n < f; n++)
+        if (((s = a[n]), qa(s) && To(s), s.wv > e.wv)) return !0;
+    }
+    (!r || (le !== null && !sa)) && It(e, nt);
+  }
+  return !1;
+}
+function xi(e, t) {
+  for (var a = t; a !== null; ) {
+    if (a.f & Mr)
+      try {
+        a.fn(e);
+        return;
+      } catch {
+        a.f ^= Mr;
+      }
+    a = a.parent;
+  }
+  throw ((Rr = !1), e);
+}
+function _i(e) {
+  return (e.f & nn) === 0 && (e.parent === null || (e.parent.f & Mr) === 0);
+}
+function on(e, t, a, r) {
+  if (Rr) {
+    if ((a === null && (Rr = !1), _i(t))) throw e;
+    return;
+  }
+  a !== null && (Rr = !0);
+  {
+    xi(e, t);
+    return;
+  }
+}
+function Uo(e, t, a = !0) {
+  var r = e.reactions;
+  if (r !== null)
+    for (var n = 0; n < r.length; n++) {
+      var s = r[n];
+      s.f & Ct
+        ? Uo(s, t, !1)
+        : t === s && (a ? It(s, ta) : s.f & nt && It(s, Ea), cn(s));
+    }
+}
+function Do(e) {
+  var g;
+  var t = lt,
+    a = mt,
+    r = qt,
+    n = ue,
+    s = sa,
+    o = Ut,
+    i = ge,
+    f = Rt,
+    u = e.f;
+  (lt = null),
+    (mt = 0),
+    (qt = null),
+    (sa = (u & kt) !== 0 && (Rt || !Pr || ue === null)),
+    (ue = u & (ea | _r) ? null : e),
+    (Ut = null),
+    $r(e.ctx),
+    (Rt = !1),
+    Hr++;
+  try {
+    var p = (0, e.fn)(),
+      h = e.deps;
+    if (lt !== null) {
+      var c;
+      if ((Yr(e, mt), h !== null && mt > 0))
+        for (h.length = mt + lt.length, c = 0; c < lt.length; c++)
+          h[mt + c] = lt[c];
+      else e.deps = h = lt;
+      if (!sa)
+        for (c = mt; c < h.length; c++)
+          ((g = h[c]).reactions ?? (g.reactions = [])).push(e);
+    } else h !== null && mt < h.length && (Yr(e, mt), (h.length = mt));
+    if (Da() && qt !== null && !Rt && h !== null && !(e.f & (Ct | Ea | ta)))
+      for (c = 0; c < qt.length; c++) Uo(qt[c], e);
+    return n !== null && Hr++, p;
+  } finally {
+    (lt = t), (mt = a), (qt = r), (ue = n), (sa = s), (Ut = o), $r(i), (Rt = f);
+  }
+}
+function wi(e, t) {
+  let a = t.reactions;
+  if (a !== null) {
+    var r = Pl.call(a, e);
+    if (r !== -1) {
+      var n = a.length - 1;
+      n === 0 ? (a = t.reactions = null) : ((a[r] = a[n]), a.pop());
+    }
+  }
+  a === null &&
+    t.f & Ct &&
+    (lt === null || !lt.includes(t)) &&
+    (It(t, Ea), t.f & (kt | Fr) || (t.f ^= Fr), Co(t), Yr(t, 0));
+}
+function Yr(e, t) {
+  var a = e.deps;
+  if (a !== null) for (var r = t; r < a.length; r++) wi(e, a[r]);
+}
+function ln(e) {
+  var t = e.f;
+  if (!(t & nn)) {
+    It(e, nt);
+    var a = le,
+      r = ge,
+      n = Pr;
+    (le = e), (Pr = !0);
+    try {
+      t & rn ? gi(e) : Ro(e), Oo(e);
+      var s = Do(e);
+      (e.teardown = typeof s == "function" ? s : null), (e.wv = Fo);
+      var o = e.deps,
+        i;
+      Ts && Xl && e.f & ta;
+    } catch (f) {
+      on(f, e, a, r || e.ctx);
+    } finally {
+      (Pr = n), (le = a);
+    }
+  }
+}
+function ki() {
+  try {
+    Yl();
+  } catch (e) {
+    if (Vr !== null) on(e, Vr, null);
+    else throw e;
+  }
+}
+function Vo() {
+  try {
+    for (var e = 0; Za.length > 0; ) {
+      e++ > 1e3 && ki();
+      var t = Za,
+        a = t.length;
+      Za = [];
+      for (var r = 0; r < a; r++) {
+        var n = t[r];
+        n.f & nt || (n.f ^= nt);
+        var s = Ai(n);
+        Ei(s);
+      }
+    }
+  } finally {
+    (Dr = !1), (Vr = null);
+  }
+}
+function Ei(e) {
+  var t = e.length;
+  if (t !== 0)
+    for (var a = 0; a < t; a++) {
+      var r = e[a];
+      if (!(r.f & (nn | Jt)))
+        try {
+          qa(r) &&
+            (ln(r),
+            r.deps === null &&
+              r.first === null &&
+              r.nodes_start === null &&
+              (r.teardown === null ? Po(r) : (r.fn = null)));
+        } catch (n) {
+          on(n, r, null, r.ctx);
+        }
+    }
+}
+function cn(e) {
+  Dr || ((Dr = !0), queueMicrotask(Vo));
+  for (var t = (Vr = e); t.parent !== null; ) {
+    t = t.parent;
+    var a = t.f;
+    if (a & (_r | ea)) {
+      if (!(a & nt)) return;
+      t.f ^= nt;
+    }
+  }
+  Za.push(t);
+}
+function Ai(e) {
+  for (var t = [], a = e.first; a !== null; ) {
+    var r = a.f,
+      n = (r & ea) !== 0,
+      s = n && (r & nt) !== 0;
+    if (!s && !(r & Jt)) {
+      if (r & fo) t.push(a);
+      else if (n) a.f ^= nt;
+      else {
+        var o = ue;
+        try {
+          (ue = a), qa(a) && ln(a);
+        } catch (u) {
+          on(u, a, null, a.ctx);
+        } finally {
+          ue = o;
+        }
+      }
+      var i = a.first;
+      if (i !== null) {
+        a = i;
+        continue;
+      }
+    }
+    var f = a.parent;
+    for (a = a.next; a === null && f !== null; ) (a = f.next), (f = f.parent);
+  }
+  return t;
+}
+function as(e) {
+  var t;
+  for (Os(); Za.length > 0; ) (Dr = !0), Vo(), Os();
+  return t;
+}
+async function Ho() {
+  await Promise.resolve(), as();
+}
+function l(e) {
+  var t = e.f,
+    a = (t & Ct) !== 0;
+  if ((na !== null && na.add(e), ue !== null && !Rt)) {
+    Ut !== null && Ut.includes(e) && Kl();
+    var r = ue.deps;
+    e.rv < Hr &&
+      ((e.rv = Hr),
+      lt === null && r !== null && r[mt] === e
+        ? mt++
+        : lt === null
+          ? (lt = [e])
+          : (!sa || !lt.includes(e)) && lt.push(e));
+  } else if (a && e.deps === null && e.effects === null) {
+    var n = e,
+      s = n.parent;
+    s !== null && !(s.f & kt) && (n.f ^= kt);
+  }
+  return a && ((n = e), qa(n) && To(n)), e.v;
+}
+function Si(e) {
+  var t = na;
+  na = new Set();
+  var a = na,
+    r;
+  try {
+    if ((yt(e), t !== null)) for (r of na) t.add(r);
+  } finally {
+    na = t;
+  }
+  return a;
+}
+function Ci(e) {
+  var t = Si(() => yt(e));
+  for (var a of t)
+    if (a.f & po) for (const r of a.deps || []) r.f & Ct || ia(r, r.v);
+    else ia(a, a.v);
+}
+function yt(e) {
+  var t = Rt;
+  try {
+    return (Rt = !0), e();
+  } finally {
+    Rt = t;
+  }
+}
+const Ti = -7169;
+function It(e, t) {
+  e.f = (e.f & Ti) | t;
+}
+function qr(e) {
+  if (!(typeof e != "object" || !e || e instanceof EventTarget)) {
+    if (xa in e) Gn(e);
+    else if (!Array.isArray(e))
+      for (let t in e) {
+        const a = e[t];
+        typeof a == "object" && a && xa in a && Gn(a);
+      }
+  }
+}
+function Gn(e, t = new Set()) {
+  if (
+    typeof e == "object" &&
+    e !== null &&
+    !(e instanceof EventTarget) &&
+    !t.has(e)
+  ) {
+    t.add(e), e instanceof Date && e.getTime();
+    for (let r in e)
+      try {
+        Gn(e[r], t);
+      } catch {}
+    const a = qn(e);
+    if (
+      a !== Object.prototype &&
+      a !== Array.prototype &&
+      a !== Map.prototype &&
+      a !== Set.prototype &&
+      a !== Date.prototype
+    ) {
+      const r = uo(a);
+      for (let n in r) {
+        const s = r[n].get;
+        if (s)
+          try {
+            s.call(e);
+          } catch {}
+      }
+    }
+  }
+}
+const Ni = ["touchstart", "touchmove"];
+function Bi(e) {
+  return Ni.includes(e);
+}
+let Ps = !1;
+function Yo() {
+  Ps ||
+    ((Ps = !0),
+    document.addEventListener(
+      "reset",
+      (e) => {
+        Promise.resolve().then(() => {
+          if (!e.defaultPrevented)
+            for (const t of e.target.elements) t.__on_r?.();
+        });
+      },
+      { capture: !0 },
+    ));
+}
+function rs(e) {
+  var t = ue,
+    a = le;
+  Tt(null), Nt(null);
+  try {
+    return e();
+  } finally {
+    Tt(t), Nt(a);
+  }
+}
+function Oi(e, t, a, r = a) {
+  e.addEventListener(t, () => rs(a));
+  const n = e.__on_r;
+  n
+    ? (e.__on_r = () => {
+        n(), r(!0);
+      })
+    : (e.__on_r = () => r(!0)),
+    Yo();
+}
+const Ri = new Set(),
+  Is = new Set();
+function Pi(e, t, a, r = {}) {
+  function n(s) {
+    if ((r.capture || Ka.call(t, s), !s.cancelBubble))
+      return rs(() => a?.call(this, s));
+  }
+  return (
+    e.startsWith("pointer") || e.startsWith("touch") || e === "wheel"
+      ? kr(() => {
+          t.addEventListener(e, n, r);
+        })
+      : t.addEventListener(e, n, r),
+    n
+  );
+}
+function R(e, t, a, r, n) {
+  var s = { capture: r, passive: n },
+    o = Pi(e, t, a, s);
+  (t === document.body || t === window || t === document) &&
+    Qn(() => {
+      t.removeEventListener(e, o, s);
+    });
+}
+function Ka(e) {
+  var t = this,
+    a = t.ownerDocument,
+    r = e.type,
+    n = e.composedPath?.() || [],
+    s = n[0] || e.target,
+    o = 0,
+    i = e.__root;
+  if (i) {
+    var f = n.indexOf(i);
+    if (f !== -1 && (t === document || t === window)) {
+      e.__root = t;
+      return;
+    }
+    var u = n.indexOf(t);
+    if (u === -1) return;
+    f <= u && (o = f);
+  }
+  if (((s = n[o] || e.target), s !== t)) {
+    Yn(e, "currentTarget", {
+      configurable: !0,
+      get() {
+        return s || a;
+      },
+    });
+    var p = ue,
+      h = le;
+    Tt(null), Nt(null);
+    try {
+      for (var c, g = []; s !== null; ) {
+        var b = s.assignedSlot || s.parentNode || s.host || null;
+        try {
+          var x = s["__" + r];
+          if (x !== void 0 && (!s.disabled || e.target === s))
+            if (tn(x)) {
+              var [y, ...k] = x;
+              y.apply(s, [e, ...k]);
+            } else x.call(s, e);
+        } catch (E) {
+          c ? g.push(E) : (c = E);
+        }
+        if (e.cancelBubble || b === t || b === null) break;
+        s = b;
+      }
+      if (c) {
+        for (let E of g)
+          queueMicrotask(() => {
+            throw E;
+          });
+        throw c;
+      }
+    } finally {
+      (e.__root = t), delete e.currentTarget, Tt(p), Nt(h);
+    }
+  }
+}
+function qo(e) {
+  var t = document.createElement("template");
+  return (t.innerHTML = e), t.content;
+}
+function Dt(e, t) {
+  var a = le;
+  a.nodes_start === null && ((a.nodes_start = e), (a.nodes_end = t));
+}
+function O(e, t) {
+  var a = (t & ci) !== 0,
+    r = (t & di) !== 0,
+    n,
+    s = !e.startsWith("<!>");
+  return () => {
+    if (ee) return Dt(ae, null), ae;
+    n === void 0 && ((n = qo(s ? e : "<!>" + e)), a || (n = Xt(n)));
+    var o = r || ko ? document.importNode(n, !0) : n.cloneNode(!0);
+    if (a) {
+      var i = Xt(o),
+        f = o.lastChild;
+      Dt(i, f);
+    } else Dt(o, o);
+    return o;
+  };
+}
+function ns(e, t, a = "svg") {
+  var r = !e.startsWith("<!>"),
+    n = `<${a}>${r ? e : "<!>" + e}</${a}>`,
+    s;
+  return () => {
+    if (ee) return Dt(ae, null), ae;
+    if (!s) {
+      var o = qo(n),
+        i = Xt(o);
+      s = Xt(i);
+    }
+    var f = s.cloneNode(!0);
+    return Dt(f, f), f;
+  };
+}
+function _a(e = "") {
+  if (!ee) {
+    var t = ua(e + "");
+    return Dt(t, t), t;
+  }
+  var a = ae;
+  return a.nodeType !== 3 && (a.before((a = ua())), Et(a)), Dt(a, a), a;
+}
+function pe() {
+  if (ee) return Dt(ae, null), ae;
+  var e = document.createDocumentFragment(),
+    t = document.createComment(""),
+    a = ua();
+  return e.append(t, a), Dt(t, a), e;
+}
+function A(e, t) {
+  if (ee) {
+    (le.nodes_end = ae), Aa();
+    return;
+  }
+  e !== null && e.before(t);
+}
+let jn = !0;
+function D(e, t) {
+  var a = t == null ? "" : typeof t == "object" ? t + "" : t;
+  a !== (e.__t ?? (e.__t = e.nodeValue)) &&
+    ((e.__t = a), (e.nodeValue = a + ""));
+}
+function Wo(e, t) {
+  return Lo(e, t);
+}
+function Ii(e, t) {
+  In(), (t.intro = t.intro ?? !1);
+  const a = t.target,
+    r = ee,
+    n = ae;
+  try {
+    for (var s = Xt(a); s && (s.nodeType !== 8 || s.data !== xo); ) s = aa(s);
+    if (!s) throw Xa;
+    Kt(!0), Et(s), Aa();
+    const o = Lo(e, { ...t, anchor: s });
+    if (ae === null || ae.nodeType !== 8 || ae.data !== Jn) throw (Xn(), Xa);
+    return Kt(!1), o;
+  } catch (o) {
+    if (o === Xa)
+      return t.recover === !1 && ql(), In(), So(a), Kt(!1), Wo(e, t);
+    throw o;
+  } finally {
+    Kt(r), Et(n);
+  }
+}
+const Ba = new Map();
+function Lo(
+  e,
+  { target: t, anchor: a, props: r = {}, events: n, context: s, intro: o = !0 },
+) {
+  In();
+  var i = new Set(),
+    f = (h) => {
+      for (var c = 0; c < h.length; c++) {
+        var g = h[c];
+        if (!i.has(g)) {
+          i.add(g);
+          var b = Bi(g);
+          t.addEventListener(g, Ka, { passive: b });
+          var x = Ba.get(g);
+          x === void 0
+            ? (document.addEventListener(g, Ka, { passive: b }), Ba.set(g, 1))
+            : Ba.set(g, x + 1);
+        }
+      }
+    };
+  f(Hn(Ri)), Is.add(f);
+  var u = void 0,
+    p = pi(() => {
+      var h = a ?? t.appendChild(ua());
+      return (
+        $t(() => {
+          if (s) {
+            fe({});
+            var c = ge;
+            c.c = s;
+          }
+          n && (r.$$events = n),
+            ee && Dt(h, null),
+            (jn = o),
+            (u = e(h, r) || {}),
+            (jn = !0),
+            ee && (le.nodes_end = ae),
+            s && ve();
+        }),
+        () => {
+          for (var c of i) {
+            t.removeEventListener(c, Ka);
+            var g = Ba.get(c);
+            --g === 0
+              ? (document.removeEventListener(c, Ka), Ba.delete(c))
+              : Ba.set(c, g);
+          }
+          Is.delete(f), h !== a && h.parentNode?.removeChild(h);
+        }
+      );
+    });
+  return Mn.set(u, p), u;
+}
+let Mn = new WeakMap();
+function Gi(e, t) {
+  const a = Mn.get(e);
+  return a ? (Mn.delete(e), a(t)) : Promise.resolve();
+}
+const xn = 0,
+  Ar = 1,
+  _n = 2;
+function ji(e, t, a, r, n) {
+  ee && Aa();
+  var s = e,
+    o = Da(),
+    i = ge,
+    f = tt,
+    u,
+    p,
+    h,
+    c = (o ? ot : wa)(void 0),
+    g = (o ? ot : wa)(void 0),
+    b = !1;
+  function x(k, E) {
+    (b = !0), E && (Nt(y), Tt(y), $r(i));
+    try {
+      k === xn && a && (u ? Ma(u) : (u = $t(() => a(s)))),
+        k === Ar && r && (p ? Ma(p) : (p = $t(() => r(s, c)))),
+        k !== xn && u && da(u, () => (u = null)),
+        k !== Ar && p && da(p, () => (p = null)),
+        k !== _n && h && da(h, () => (h = null));
+    } finally {
+      E && ($r(null), Tt(null), Nt(null), as());
+    }
+  }
+  var y = Ya(() => {
+    if (f !== (f = t())) {
+      if (Ml(f)) {
+        var k = f;
+        (b = !1),
+          k.then(
+            (E) => {
+              k === f && (ia(c, E), x(Ar, !0));
+            },
+            (E) => {
+              if (k === f) throw (ia(g, E), x(_n, !0), g.v);
+            },
+          ),
+          ee
+            ? a && (u = $t(() => a(s)))
+            : kr(() => {
+                b || x(xn, !0);
+              });
+      } else ia(c, f), x(Ar, !1);
+      return () => (f = tt);
+    }
+  });
+  ee && (s = ae);
+}
+function j(e, t, a = !1) {
+  ee && Aa();
+  var r = e,
+    n = null,
+    s = null,
+    o = tt,
+    i = a ? $a : 0,
+    f = !1;
+  const u = (h, c = !0) => {
+      (f = !0), p(c, h);
+    },
+    p = (h, c) => {
+      if (o === (o = h)) return;
+      let g = !1;
+      if (ee) {
+        const b = r.data === Kn;
+        !!o === b && ((r = Rn()), Et(r), Kt(!1), (g = !0));
+      }
+      o
+        ? (n ? Ma(n) : c && (n = $t(() => c(r))),
+          s &&
+            da(s, () => {
+              s = null;
+            }))
+        : (s ? Ma(s) : c && (s = $t(() => c(r))),
+          n &&
+            da(n, () => {
+              n = null;
+            })),
+        g && Kt(!0);
+    };
+  Ya(() => {
+    (f = !1), t(u), f || p(null, null);
+  }, i),
+    ee && (r = ae);
+}
+function je(e, t) {
+  return t;
+}
+function Mi(e, t, a, r) {
+  for (var n = [], s = t.length, o = 0; o < s; o++) es(t[o].e, n, !0);
+  var i = s > 0 && n.length === 0 && a !== null;
+  if (i) {
+    var f = a.parentNode;
+    So(f), f.append(a), r.clear(), ra(e, t[0].prev, t[s - 1].next);
+  }
+  Io(n, () => {
+    for (var u = 0; u < s; u++) {
+      var p = t[u];
+      i || (r.delete(p.k), ra(e, p.prev, p.next)), Zt(p.e, !i);
+    }
+  });
+}
+function xe(e, t, a, r, n, s = null) {
+  var o = e,
+    i = { flags: t, items: new Map(), first: null },
+    f = (t & yo) !== 0;
+  if (f) {
+    var u = e;
+    o = ee ? Et(Xt(u)) : u.appendChild(ua());
+  }
+  ee && Aa();
+  var p = null,
+    h = !1,
+    c = Oe(() => {
+      var g = a();
+      return tn(g) ? g : g == null ? [] : Hn(g);
+    });
+  Ya(() => {
+    var g = l(c),
+      b = g.length;
+    if (h && b === 0) return;
+    h = b === 0;
+    let x = !1;
+    if (ee) {
+      var y = o.data === Kn;
+      y !== (b === 0) && ((o = Rn()), Et(o), Kt(!1), (x = !0));
+    }
+    if (ee) {
+      for (var k = null, E, C = 0; C < b; C++) {
+        if (ae.nodeType === 8 && ae.data === Jn) {
+          (o = ae), (x = !0), Kt(!1);
+          break;
+        }
+        var _ = g[C],
+          w = r(_, C);
+        (E = zo(ae, i, k, null, _, w, C, n, t, a)), i.items.set(w, E), (k = E);
+      }
+      b > 0 && Et(Rn());
+    }
+    ee || Fi(g, i, o, n, t, r, a),
+      s !== null &&
+        (b === 0
+          ? p
+            ? Ma(p)
+            : (p = $t(() => s(o)))
+          : p !== null &&
+            da(p, () => {
+              p = null;
+            })),
+      x && Kt(!0),
+      l(c);
+  }),
+    ee && (o = ae);
+}
+function Fi(e, t, a, r, n, s, o) {
+  var i = (n & Ql) !== 0,
+    f = (n & (Ln | zn)) !== 0,
+    u = e.length,
+    p = t.items,
+    h = t.first,
+    c = h,
+    g,
+    b = null,
+    x,
+    y = [],
+    k = [],
+    E,
+    C,
+    _,
+    w;
+  if (i)
+    for (w = 0; w < u; w += 1)
+      (E = e[w]),
+        (C = s(E, w)),
+        (_ = p.get(C)),
+        _ !== void 0 && (_.a?.measure(), (x ?? (x = new Set())).add(_));
+  for (w = 0; w < u; w += 1) {
+    if (((E = e[w]), (C = s(E, w)), (_ = p.get(C)), _ === void 0)) {
+      var B = c ? c.e.nodes_start : a;
+      (b = zo(B, t, b, b === null ? t.first : b.next, E, C, w, r, n, o)),
+        p.set(C, b),
+        (y = []),
+        (k = []),
+        (c = b.next);
+      continue;
+    }
+    if (
+      (f && $i(_, E, w, n),
+      _.e.f & Jt &&
+        (Ma(_.e), i && (_.a?.unfix(), (x ?? (x = new Set())).delete(_))),
+      _ !== c)
+    ) {
+      if (g !== void 0 && g.has(_)) {
+        if (y.length < k.length) {
+          var S = k[0],
+            T;
+          b = S.prev;
+          var P = y[0],
+            I = y[y.length - 1];
+          for (T = 0; T < y.length; T += 1) Gs(y[T], S, a);
+          for (T = 0; T < k.length; T += 1) g.delete(k[T]);
+          ra(t, P.prev, I.next),
+            ra(t, b, P),
+            ra(t, I, S),
+            (c = S),
+            (b = I),
+            (w -= 1),
+            (y = []),
+            (k = []);
+        } else
+          g.delete(_),
+            Gs(_, c, a),
+            ra(t, _.prev, _.next),
+            ra(t, _, b === null ? t.first : b.next),
+            ra(t, b, _),
+            (b = _);
+        continue;
+      }
+      for (y = [], k = []; c !== null && c.k !== C; )
+        c.e.f & Jt || (g ?? (g = new Set())).add(c), k.push(c), (c = c.next);
+      if (c === null) continue;
+      _ = c;
+    }
+    y.push(_), (b = _), (c = _.next);
+  }
+  if (c !== null || g !== void 0) {
+    for (var U = g === void 0 ? [] : Hn(g); c !== null; )
+      c.e.f & Jt || U.push(c), (c = c.next);
+    var G = U.length;
+    if (G > 0) {
+      var H = n & yo && u === 0 ? a : null;
+      if (i) {
+        for (w = 0; w < G; w += 1) U[w].a?.measure();
+        for (w = 0; w < G; w += 1) U[w].a?.fix();
+      }
+      Mi(t, U, H, p);
+    }
+  }
+  i &&
+    kr(() => {
+      if (x !== void 0) for (_ of x) _.a?.apply();
+    }),
+    (le.first = t.first && t.first.e),
+    (le.last = b && b.e);
+}
+function $i(e, t, a, r) {
+  r & Ln && ia(e.v, t), r & zn ? ia(e.i, a) : (e.i = a);
+}
+function zo(e, t, a, r, n, s, o, i, f, u) {
+  var p = (f & Ln) !== 0,
+    h = (f & ei) === 0,
+    c = p ? (h ? wa(n) : ot(n)) : n,
+    g = f & zn ? ot(o) : o,
+    b = { i: g, v: c, k: s, a: null, e: null, prev: a, next: r };
+  try {
+    return (
+      (b.e = $t(() => i(e, c, g, u), ee)),
+      (b.e.prev = a && a.e),
+      (b.e.next = r && r.e),
+      a === null ? (t.first = b) : ((a.next = b), (a.e.next = b.e)),
+      r !== null && ((r.prev = b), (r.e.prev = b.e)),
+      b
+    );
+  } finally {
+  }
+}
+function Gs(e, t, a) {
+  for (
+    var r = e.next ? e.next.e.nodes_start : a,
+      n = t ? t.e.nodes_start : a,
+      s = e.e.nodes_start;
+    s !== r;
+
+  ) {
+    var o = aa(s);
+    n.before(s), (s = o);
+  }
+}
+function ra(e, t, a) {
+  t === null ? (e.first = a) : ((t.next = a), (t.e.next = a && a.e)),
+    a !== null && ((a.prev = t), (a.e.prev = t && t.e));
+}
+function Ko(e, t, a, r, n) {
+  ee && Aa();
+  var s = t.$$slots?.[a],
+    o = !1;
+  s === !0 && ((s = t.children), (o = !0)),
+    s === void 0 || s(e, o ? () => r : r);
+}
+function Ui(e, t, ...a) {
+  var r = e,
+    n = vt,
+    s;
+  Ya(() => {
+    n !== (n = t()) && (s && (Zt(s), (s = null)), (s = $t(() => n(r, ...a))));
+  }, $a),
+    ee && (r = ae);
+}
+function Ir(e, t, a) {
+  ee && Aa();
+  var r = e,
+    n,
+    s;
+  Ya(() => {
+    n !== (n = t()) && (s && (da(s), (s = null)), n && (s = $t(() => a(r, n))));
+  }, $a),
+    ee && (r = ae);
+}
+function ss(e) {
+  return typeof e == "object" ? Nl(e) : e ?? "";
+}
+const js = [
+  ...` 	
+\r\f \v\uFEFF`,
+];
+function Di(e, t, a) {
+  var r = e == null ? "" : "" + e;
+  if ((t && (r = r ? r + " " + t : t), a)) {
+    for (var n in a)
+      if (a[n]) r = r ? r + " " + n : n;
+      else if (r.length)
+        for (var s = n.length, o = 0; (o = r.indexOf(n, o)) >= 0; ) {
+          var i = o + s;
+          (o === 0 || js.includes(r[o - 1])) &&
+          (i === r.length || js.includes(r[i]))
+            ? (r = (o === 0 ? "" : r.substring(0, o)) + r.substring(i + 1))
+            : (o = i);
+        }
+  }
+  return r === "" ? null : r;
+}
+function se(e, t, a, r, n, s) {
+  var o = e.__className;
+  if (ee || o !== a) {
+    var i = Di(a, r, s);
+    (!ee || i !== e.getAttribute("class")) &&
+      (i == null
+        ? e.removeAttribute("class")
+        : t
+          ? (e.className = i)
+          : e.setAttribute("class", i)),
+      (e.__className = a);
+  } else if (s)
+    for (var f in s) {
+      var u = !!s[f];
+      (n == null || u !== !!n[f]) && e.classList.toggle(f, u);
+    }
+  return s;
+}
+function Ne(e) {
+  if (ee) {
+    var t = !1,
+      a = () => {
+        if (!t) {
+          if (((t = !0), e.hasAttribute("value"))) {
+            var r = e.value;
+            Q(e, "value", null), (e.value = r);
+          }
+          if (e.hasAttribute("checked")) {
+            var n = e.checked;
+            Q(e, "checked", null), (e.checked = n);
+          }
+        }
+      };
+    (e.__on_r = a), mi(a), Yo();
+  }
+}
+function Q(e, t, a, r) {
+  var n = e.__attributes ?? (e.__attributes = {});
+  (ee &&
+    ((n[t] = e.getAttribute(t)),
+    t === "src" ||
+      t === "srcset" ||
+      (t === "href" && e.nodeName === "LINK"))) ||
+    (n[t] !== (n[t] = a) &&
+      (t === "style" && "__styles" in e && (e.__styles = {}),
+      t === "loading" && (e[Ul] = a),
+      a == null
+        ? e.removeAttribute(t)
+        : typeof a != "string" && Vi(e).includes(t)
+          ? (e[t] = a)
+          : e.setAttribute(t, a)));
+}
+var Ms = new Map();
+function Vi(e) {
+  var t = Ms.get(e.nodeName);
+  if (t) return t;
+  Ms.set(e.nodeName, (t = []));
+  for (var a, r = e, n = Element.prototype; n !== r; ) {
+    a = uo(r);
+    for (var s in a) a[s].set && t.push(s);
+    r = qn(r);
+  }
+  return t;
+}
+const Hi = () => performance.now(),
+  Lt = {
+    tick: (e) => requestAnimationFrame(e),
+    now: () => Hi(),
+    tasks: new Set(),
+  };
+function Jo() {
+  const e = Lt.now();
+  Lt.tasks.forEach((t) => {
+    t.c(e) || (Lt.tasks.delete(t), t.f());
+  }),
+    Lt.tasks.size !== 0 && Lt.tick(Jo);
+}
+function Yi(e) {
+  let t;
+  return (
+    Lt.tasks.size === 0 && Lt.tick(Jo),
+    {
+      promise: new Promise((a) => {
+        Lt.tasks.add((t = { c: e, f: a }));
+      }),
+      abort() {
+        Lt.tasks.delete(t);
+      },
+    }
+  );
+}
+function Sr(e, t) {
+  rs(() => {
+    e.dispatchEvent(new CustomEvent(t));
+  });
+}
+function qi(e) {
+  if (e === "float") return "cssFloat";
+  if (e === "offset") return "cssOffset";
+  if (e.startsWith("--")) return e;
+  const t = e.split("-");
+  return t.length === 1
+    ? t[0]
+    : t[0] +
+        t
+          .slice(1)
+          .map((a) => a[0].toUpperCase() + a.slice(1))
+          .join("");
+}
+function Fs(e) {
+  const t = {},
+    a = e.split(";");
+  for (const r of a) {
+    const [n, s] = r.split(":");
+    if (!n || s === void 0) break;
+    const o = qi(n.trim());
+    t[o] = s.trim();
+  }
+  return t;
+}
+const Wi = (e) => e;
+function oa(e, t, a, r) {
+  var n = (e & oi) !== 0,
+    s = (e & li) !== 0,
+    o = n && s,
+    i = (e & ii) !== 0,
+    f = o ? "both" : n ? "in" : "out",
+    u,
+    p = t.inert,
+    h = t.style.overflow,
+    c,
+    g;
+  function b() {
+    var C = ue,
+      _ = le;
+    Tt(null), Nt(null);
+    try {
+      return u ?? (u = a()(t, r?.() ?? {}, { direction: f }));
+    } finally {
+      Tt(C), Nt(_);
+    }
+  }
+  var x = {
+      is_global: i,
+      in() {
+        if (((t.inert = p), !n)) {
+          g?.abort(), g?.reset?.();
+          return;
+        }
+        s || c?.abort(),
+          Sr(t, "introstart"),
+          (c = Fn(t, b(), g, 1, () => {
+            Sr(t, "introend"),
+              c?.abort(),
+              (c = u = void 0),
+              (t.style.overflow = h);
+          }));
+      },
+      out(C) {
+        if (!s) {
+          C?.(), (u = void 0);
+          return;
+        }
+        (t.inert = !0),
+          Sr(t, "outrostart"),
+          (g = Fn(t, b(), c, 0, () => {
+            Sr(t, "outroend"), C?.();
+          }));
+      },
+      stop: () => {
+        c?.abort(), g?.abort();
+      },
+    },
+    y = le;
+  if (((y.transitions ?? (y.transitions = [])).push(x), n && jn)) {
+    var k = i;
+    if (!k) {
+      for (var E = y.parent; E && E.f & $a; )
+        for (; (E = E.parent) && !(E.f & rn); );
+      k = !E || (E.f & vo) !== 0;
+    }
+    k &&
+      sn(() => {
+        yt(() => x.in());
+      });
+  }
+}
+function Fn(e, t, a, r, n) {
+  var s = r === 1;
+  if (jl(t)) {
+    var o,
+      i = !1;
+    return (
+      kr(() => {
+        if (!i) {
+          var y = t({ direction: s ? "in" : "out" });
+          o = Fn(e, y, a, r, n);
+        }
+      }),
+      {
+        abort: () => {
+          (i = !0), o?.abort();
+        },
+        deactivate: () => o.deactivate(),
+        reset: () => o.reset(),
+        t: () => o.t(),
+      }
+    );
+  }
+  if ((a?.deactivate(), !t?.duration))
+    return n(), { abort: vt, deactivate: vt, reset: vt, t: () => r };
+  const { delay: f = 0, css: u, tick: p, easing: h = Wi } = t;
+  var c = [];
+  if (s && a === void 0 && (p && p(0, 1), u)) {
+    var g = Fs(u(0, 1));
+    c.push(g, g);
+  }
+  var b = () => 1 - r,
+    x = e.animate(c, { duration: f });
+  return (
+    (x.onfinish = () => {
+      var y = a?.t() ?? 1 - r;
+      a?.abort();
+      var k = r - y,
+        E = t.duration * Math.abs(k),
+        C = [];
+      if (E > 0) {
+        var _ = !1;
+        if (u)
+          for (
+            var w = Math.ceil(E / 16.666666666666668), B = 0;
+            B <= w;
+            B += 1
+          ) {
+            var S = y + k * h(B / w),
+              T = Fs(u(S, 1 - S));
+            C.push(T), _ || (_ = T.overflow === "hidden");
+          }
+        _ && (e.style.overflow = "hidden"),
+          (b = () => {
+            var P = x.currentTime;
+            return y + k * h(P / E);
+          }),
+          p &&
+            Yi(() => {
+              if (x.playState !== "running") return !1;
+              var P = b();
+              return p(P, 1 - P), !0;
+            });
+      }
+      (x = e.animate(C, { duration: E, fill: "forwards" })),
+        (x.onfinish = () => {
+          (b = () => r), p?.(r, 1 - r), n();
+        });
+    }),
+    {
+      abort: () => {
+        x && (x.cancel(), (x.effect = null), (x.onfinish = vt));
+      },
+      deactivate: () => {
+        n = vt;
+      },
+      reset: () => {
+        r === 0 && p?.(1, 0);
+      },
+      t: () => b(),
+    }
+  );
+}
+function Be(e, t, a = t) {
+  var r = Da();
+  Oi(e, "input", (n) => {
+    var s = n ? e.defaultValue : e.value;
+    if (((s = wn(e) ? kn(s) : s), a(s), r && s !== (s = t()))) {
+      var o = e.selectionStart,
+        i = e.selectionEnd;
+      (e.value = s ?? ""),
+        i !== null &&
+          ((e.selectionStart = o),
+          (e.selectionEnd = Math.min(i, e.value.length)));
+    }
+  }),
+    ((ee && e.defaultValue !== e.value) || (yt(t) == null && e.value)) &&
+      a(wn(e) ? kn(e.value) : e.value),
+    wr(() => {
+      var n = t();
+      (wn(e) && n === kn(e.value)) ||
+        (e.type === "date" && !n && !e.value) ||
+        (n !== e.value && (e.value = n ?? ""));
+    });
+}
+function wn(e) {
+  var t = e.type;
+  return t === "number" || t === "range";
+}
+function kn(e) {
+  return e === "" ? null : +e;
+}
+function Li(e, t, a) {
+  var r = ya(e, t);
+  r &&
+    r.set &&
+    ((e[t] = a),
+    Qn(() => {
+      e[t] = null;
+    }));
+}
+function $s(e, t) {
+  return e === t || e?.[xa] === t;
+}
+function Gr(e = {}, t, a, r) {
+  return (
+    sn(() => {
+      var n, s;
+      return (
+        wr(() => {
+          (n = s),
+            (s = []),
+            yt(() => {
+              e !== a(...s) &&
+                (t(e, ...s), n && $s(a(...n), e) && t(null, ...n));
+            });
+        }),
+        () => {
+          kr(() => {
+            s && $s(a(...s), e) && t(null, ...s);
+          });
+        }
+      );
+    }),
+    e
+  );
+}
+function _e(e = !1) {
+  const t = ge,
+    a = t.l.u;
+  if (!a) return;
+  let r = () => qr(t.s);
+  if (e) {
+    let n = 0,
+      s = {};
+    const o = ca(() => {
+      let i = !1;
+      const f = t.s;
+      for (const u in f) f[u] !== s[u] && ((s[u] = f[u]), (i = !0));
+      return i && n++, n;
+    });
+    r = () => l(o);
+  }
+  a.b.length &&
+    Bo(() => {
+      Us(t, r), rr(a.b);
+    }),
+    Ur(() => {
+      const n = yt(() => a.m.map(Fl));
+      return () => {
+        for (const s of n) typeof s == "function" && s();
+      };
+    }),
+    a.a.length &&
+      Ur(() => {
+        Us(t, r), rr(a.a);
+      });
+}
+function Us(e, t) {
+  if (e.l.s) for (const a of e.l.s) l(a);
+  t();
+}
+function os(e, t, a) {
+  if (e == null) return t(void 0), a && a(void 0), vt;
+  const r = yt(() => e.subscribe(t, a));
+  return r.unsubscribe ? () => r.unsubscribe() : r;
+}
+const Oa = [];
+function zi(e, t) {
+  return { subscribe: st(e, t).subscribe };
+}
+function st(e, t = vt) {
+  let a = null;
+  const r = new Set();
+  function n(i) {
+    if (bo(e, i) && ((e = i), a)) {
+      const f = !Oa.length;
+      for (const u of r) u[1](), Oa.push(u, e);
+      if (f) {
+        for (let u = 0; u < Oa.length; u += 2) Oa[u][0](Oa[u + 1]);
+        Oa.length = 0;
+      }
+    }
+  }
+  function s(i) {
+    n(i(e));
+  }
+  function o(i, f = vt) {
+    const u = [i, f];
+    return (
+      r.add(u),
+      r.size === 1 && (a = t(n, s) || vt),
+      i(e),
+      () => {
+        r.delete(u), r.size === 0 && a && (a(), (a = null));
+      }
+    );
+  }
+  return { set: n, update: s, subscribe: o };
+}
+function ls(e, t, a) {
+  const r = !Array.isArray(e),
+    n = r ? [e] : e;
+  if (!n.every(Boolean))
+    throw new Error("derived() expects stores as input, got a falsy value");
+  const s = t.length < 2;
+  return zi(a, (o, i) => {
+    let f = !1;
+    const u = [];
+    let p = 0,
+      h = vt;
+    const c = () => {
+        if (p) return;
+        h();
+        const b = t(r ? u[0] : u, o, i);
+        s ? o(b) : (h = typeof b == "function" ? b : vt);
+      },
+      g = n.map((b, x) =>
+        os(
+          b,
+          (y) => {
+            (u[x] = y), (p &= ~(1 << x)), f && c();
+          },
+          () => {
+            p |= 1 << x;
+          },
+        ),
+      );
+    return (
+      (f = !0),
+      c(),
+      function () {
+        rr(g), h(), (f = !1);
+      }
+    );
+  });
+}
+function Ki(e) {
+  let t;
+  return os(e, (a) => (t = a))(), t;
+}
+let Cr = !1,
+  $n = Symbol();
+function At(e, t, a) {
+  const r =
+    a[t] ?? (a[t] = { store: null, source: wa(void 0), unsubscribe: vt });
+  if (r.store !== e && !($n in a))
+    if ((r.unsubscribe(), (r.store = e ?? null), e == null))
+      (r.source.v = void 0), (r.unsubscribe = vt);
+    else {
+      var n = !0;
+      (r.unsubscribe = os(e, (s) => {
+        n ? (r.source.v = s) : N(r.source, s);
+      })),
+        (n = !1);
+    }
+  return e && $n in a ? Ki(e) : l(r.source);
+}
+function fa() {
+  const e = {};
+  function t() {
+    Qn(() => {
+      for (var a in e) e[a].unsubscribe();
+      Yn(e, $n, { enumerable: !1, value: !0 });
+    });
+  }
+  return [e, t];
+}
+function Ji(e) {
+  var t = Cr;
+  try {
+    return (Cr = !1), [e(), Cr];
+  } finally {
+    Cr = t;
+  }
+}
+function L(e, t, a, r) {
+  var n = (a & ti) !== 0,
+    s = !Ua || (a & ai) !== 0,
+    o = (a & ni) !== 0,
+    i = (a & si) !== 0,
+    f = !1,
+    u;
+  o ? ([u, f] = Ji(() => e[t])) : (u = e[t]);
+  var p = xa in e || ho in e,
+    h =
+      (o && (ya(e, t)?.set ?? (p && t in e && ((S) => (e[t] = S))))) || void 0,
+    c = r,
+    g = !0,
+    b = !1,
+    x = () => ((b = !0), g && ((g = !1), i ? (c = yt(r)) : (c = r)), c);
+  u === void 0 && r !== void 0 && (h && s && Wl(), (u = x()), h && h(u));
+  var y;
+  if (s)
+    y = () => {
+      var S = e[t];
+      return S === void 0 ? x() : ((g = !0), (b = !1), S);
+    };
+  else {
+    var k = (n ? ca : Oe)(() => e[t]);
+    (k.f |= po),
+      (y = () => {
+        var S = l(k);
+        return S !== void 0 && (c = void 0), S === void 0 ? c : S;
+      });
+  }
+  if (!(a & ri)) return y;
+  if (h) {
+    var E = e.$$legacy;
+    return function (S, T) {
+      return arguments.length > 0
+        ? ((!s || !T || E || f) && h(T ? y() : S), S)
+        : y();
+    };
+  }
+  var C = !1,
+    _ = !1,
+    w = wa(u),
+    B = ca(() => {
+      var S = y(),
+        T = l(w);
+      return C ? ((C = !1), (_ = !0), T) : ((_ = !1), (w.v = S));
+    });
+  return (
+    n || (B.equals = Wn),
+    function (S, T) {
+      if ((na !== null && ((C = _), y(), l(w)), arguments.length > 0)) {
+        const P = T ? l(B) : s && o ? ma(S) : S;
+        return (
+          B.equals(P) ||
+            ((C = !0), N(w, P), b && c !== void 0 && (c = P), yt(() => l(B))),
+          S
+        );
+      }
+      return l(B);
+    }
+  );
+}
+function Xi(e) {
+  return class extends Zi {
+    constructor(t) {
+      super({ component: e, ...t });
+    }
+  };
+}
+var Wt, _t;
+class Zi {
+  constructor(t) {
+    ht(this, Wt);
+    ht(this, _t);
+    var a = new Map(),
+      r = (s, o) => {
+        var i = wa(o);
+        return a.set(s, i), i;
+      };
+    const n = new Proxy(
+      { ...(t.props || {}), $$events: {} },
+      {
+        get(s, o) {
+          return l(a.get(o) ?? r(o, Reflect.get(s, o)));
+        },
+        has(s, o) {
+          return o === ho
+            ? !0
+            : (l(a.get(o) ?? r(o, Reflect.get(s, o))), Reflect.has(s, o));
+        },
+        set(s, o, i) {
+          return N(a.get(o) ?? r(o, i), i), Reflect.set(s, o, i);
+        },
+      },
+    );
+    yn(
+      this,
+      _t,
+      (t.hydrate ? Ii : Wo)(t.component, {
+        target: t.target,
+        anchor: t.anchor,
+        props: n,
+        context: t.context,
+        intro: t.intro ?? !1,
+        recover: t.recover,
+      }),
+    ),
+      (!t?.props?.$$host || t.sync === !1) && as(),
+      yn(this, Wt, n.$$events);
+    for (const s of Object.keys(te(this, _t)))
+      s === "$set" ||
+        s === "$destroy" ||
+        s === "$on" ||
+        Yn(this, s, {
+          get() {
+            return te(this, _t)[s];
+          },
+          set(o) {
+            te(this, _t)[s] = o;
+          },
+          enumerable: !0,
+        });
+    (te(this, _t).$set = (s) => {
+      Object.assign(n, s);
+    }),
+      (te(this, _t).$destroy = () => {
+        Gi(te(this, _t));
+      });
+  }
+  $set(t) {
+    te(this, _t).$set(t);
+  }
+  $on(t, a) {
+    te(this, Wt)[t] = te(this, Wt)[t] || [];
+    const r = (...n) => a.call(this, ...n);
+    return (
+      te(this, Wt)[t].push(r),
+      () => {
+        te(this, Wt)[t] = te(this, Wt)[t].filter((n) => n !== r);
+      }
+    );
+  }
+  $destroy() {
+    te(this, _t).$destroy();
+  }
+}
+(Wt = new WeakMap()), (_t = new WeakMap());
+function it(e) {
+  ge === null && Zn(),
+    Ua && ge.l !== null
+      ? tc(ge).m.push(e)
+      : Ur(() => {
+          const t = yt(e);
+          if (typeof t == "function") return t;
+        });
+}
+function Qi(e) {
+  ge === null && Zn(), it(() => () => yt(e));
+}
+function ec(e, t, { bubbles: a = !1, cancelable: r = !1 } = {}) {
+  return new CustomEvent(e, { detail: t, bubbles: a, cancelable: r });
+}
+function va() {
+  const e = ge;
+  return (
+    e === null && Zn(),
+    (t, a, r) => {
+      const n = e.s.$$events?.[t];
+      if (n) {
+        const s = tn(n) ? n.slice() : [n],
+          o = ec(t, a, r);
+        for (const i of s) i.call(e.x, o);
+        return !o.defaultPrevented;
+      }
+      return !0;
+    }
+  );
+}
+function tc(e) {
+  var t = e.l;
+  return t.u ?? (t.u = { a: [], b: [], m: [] });
+}
+new URL("sveltekit-internal://");
+function ac(e, t) {
+  return e === "/" || t === "ignore"
+    ? e
+    : t === "never"
+      ? e.endsWith("/")
+        ? e.slice(0, -1)
+        : e
+      : t === "always" && !e.endsWith("/")
+        ? e + "/"
+        : e;
+}
+function rc(e) {
+  return e.split("%25").map(decodeURI).join("%25");
+}
+function nc(e) {
+  for (const t in e) e[t] = decodeURIComponent(e[t]);
+  return e;
+}
+function En({ href: e }) {
+  return e.split("#")[0];
+}
+function sc(e, t, a, r = !1) {
+  const n = new URL(e);
+  Object.defineProperty(n, "searchParams", {
+    value: new Proxy(n.searchParams, {
+      get(o, i) {
+        if (i === "get" || i === "getAll" || i === "has")
+          return (u) => (a(u), o[i](u));
+        t();
+        const f = Reflect.get(o, i);
+        return typeof f == "function" ? f.bind(o) : f;
+      },
+    }),
+    enumerable: !0,
+    configurable: !0,
+  });
+  const s = ["href", "pathname", "search", "toString", "toJSON"];
+  r && s.push("hash");
+  for (const o of s)
+    Object.defineProperty(n, o, {
+      get() {
+        return t(), e[o];
+      },
+      enumerable: !0,
+      configurable: !0,
+    });
+  return n;
+}
+function oc(...e) {
+  let t = 5381;
+  for (const a of e)
+    if (typeof a == "string") {
+      let r = a.length;
+      for (; r; ) t = (t * 33) ^ a.charCodeAt(--r);
+    } else if (ArrayBuffer.isView(a)) {
+      const r = new Uint8Array(a.buffer, a.byteOffset, a.byteLength);
+      let n = r.length;
+      for (; n; ) t = (t * 33) ^ r[--n];
+    } else throw new TypeError("value must be a string or TypedArray");
+  return (t >>> 0).toString(36);
+}
+var Hv =
+  typeof globalThis < "u"
+    ? globalThis
+    : typeof window < "u"
+      ? window
+      : typeof global < "u"
+        ? global
+        : typeof self < "u"
+          ? self
+          : {};
+function Yv(e) {
+  return e && e.__esModule && Object.prototype.hasOwnProperty.call(e, "default")
+    ? e.default
+    : e;
+}
+function lc(e) {
+  const t = atob(e),
+    a = new Uint8Array(t.length);
+  for (let r = 0; r < t.length; r++) a[r] = t.charCodeAt(r);
+  return a.buffer;
+}
+const ic = window.fetch;
+window.fetch = (e, t) => (
+  (e instanceof Request ? e.method : t?.method || "GET") !== "GET" &&
+    Qa.delete(is(e)),
+  ic(e, t)
+);
+const Qa = new Map();
+function cc(e, t) {
+  const a = is(e, t),
+    r = document.querySelector(a);
+  if (r?.textContent) {
+    let { body: n, ...s } = JSON.parse(r.textContent);
+    const o = r.getAttribute("data-ttl");
+    return (
+      o && Qa.set(a, { body: n, init: s, ttl: 1e3 * Number(o) }),
+      r.getAttribute("data-b64") !== null && (n = lc(n)),
+      Promise.resolve(new Response(n, s))
+    );
+  }
+  return window.fetch(e, t);
+}
+function dc(e, t, a) {
+  if (Qa.size > 0) {
+    const r = is(e, a),
+      n = Qa.get(r);
+    if (n) {
+      if (
+        performance.now() < n.ttl &&
+        ["default", "force-cache", "only-if-cached", void 0].includes(a?.cache)
+      )
+        return new Response(n.body, n.init);
+      Qa.delete(r);
+    }
+  }
+  return window.fetch(t, a);
+}
+function is(e, t) {
+  let r = `script[data-sveltekit-fetched][data-url=${JSON.stringify(e instanceof Request ? e.url : e)}]`;
+  if (t?.headers || t?.body) {
+    const n = [];
+    t.headers && n.push([...new Headers(t.headers)].join(",")),
+      t.body &&
+        (typeof t.body == "string" || ArrayBuffer.isView(t.body)) &&
+        n.push(t.body),
+      (r += `[data-hash="${oc(...n)}"]`);
+  }
+  return r;
+}
+const uc = /^(\[)?(\.\.\.)?(\w+)(?:=(\w+))?(\])?$/;
+function fc(e) {
+  const t = [];
+  return {
+    pattern:
+      e === "/"
+        ? /^\/$/
+        : new RegExp(
+            `^${pc(e)
+              .map((r) => {
+                const n = /^\[\.\.\.(\w+)(?:=(\w+))?\]$/.exec(r);
+                if (n)
+                  return (
+                    t.push({
+                      name: n[1],
+                      matcher: n[2],
+                      optional: !1,
+                      rest: !0,
+                      chained: !0,
+                    }),
+                    "(?:/(.*))?"
+                  );
+                const s = /^\[\[(\w+)(?:=(\w+))?\]\]$/.exec(r);
+                if (s)
+                  return (
+                    t.push({
+                      name: s[1],
+                      matcher: s[2],
+                      optional: !0,
+                      rest: !1,
+                      chained: !0,
+                    }),
+                    "(?:/([^/]+))?"
+                  );
+                if (!r) return;
+                const o = r.split(/\[(.+?)\](?!\])/);
+                return (
+                  "/" +
+                  o
+                    .map((f, u) => {
+                      if (u % 2) {
+                        if (f.startsWith("x+"))
+                          return An(
+                            String.fromCharCode(parseInt(f.slice(2), 16)),
+                          );
+                        if (f.startsWith("u+"))
+                          return An(
+                            String.fromCharCode(
+                              ...f
+                                .slice(2)
+                                .split("-")
+                                .map((x) => parseInt(x, 16)),
+                            ),
+                          );
+                        const p = uc.exec(f),
+                          [, h, c, g, b] = p;
+                        return (
+                          t.push({
+                            name: g,
+                            matcher: b,
+                            optional: !!h,
+                            rest: !!c,
+                            chained: c ? u === 1 && o[0] === "" : !1,
+                          }),
+                          c ? "(.*?)" : h ? "([^/]*)?" : "([^/]+?)"
+                        );
+                      }
+                      return An(f);
+                    })
+                    .join("")
+                );
+              })
+              .join("")}/?$`,
+          ),
+    params: t,
+  };
+}
+function vc(e) {
+  return !/^\([^)]+\)$/.test(e);
+}
+function pc(e) {
+  return e.slice(1).split("/").filter(vc);
+}
+function gc(e, t, a) {
+  const r = {},
+    n = e.slice(1),
+    s = n.filter((i) => i !== void 0);
+  let o = 0;
+  for (let i = 0; i < t.length; i += 1) {
+    const f = t[i];
+    let u = n[i - o];
+    if (
+      (f.chained &&
+        f.rest &&
+        o &&
+        ((u = n
+          .slice(i - o, i + 1)
+          .filter((p) => p)
+          .join("/")),
+        (o = 0)),
+      u === void 0)
+    ) {
+      f.rest && (r[f.name] = "");
+      continue;
+    }
+    if (!f.matcher || a[f.matcher](u)) {
+      r[f.name] = u;
+      const p = t[i + 1],
+        h = n[i + 1];
+      p && !p.rest && p.optional && h && f.chained && (o = 0),
+        !p && !h && Object.keys(r).length === s.length && (o = 0);
+      continue;
+    }
+    if (f.optional && f.chained) {
+      o++;
+      continue;
+    }
+    return;
+  }
+  if (!o) return r;
+}
+function An(e) {
+  return e
+    .normalize()
+    .replace(/[[\]]/g, "\\$&")
+    .replace(/%/g, "%25")
+    .replace(/\//g, "%2[Ff]")
+    .replace(/\?/g, "%3[Ff]")
+    .replace(/#/g, "%23")
+    .replace(/[.*+?^${}()|\\]/g, "\\$&");
+}
+function hc({ nodes: e, server_loads: t, dictionary: a, matchers: r }) {
+  const n = new Set(t);
+  return Object.entries(a).map(([i, [f, u, p]]) => {
+    const { pattern: h, params: c } = fc(i),
+      g = {
+        id: i,
+        exec: (b) => {
+          const x = h.exec(b);
+          if (x) return gc(x, c, r);
+        },
+        errors: [1, ...(p || [])].map((b) => e[b]),
+        layouts: [0, ...(u || [])].map(o),
+        leaf: s(f),
+      };
+    return (
+      (g.errors.length = g.layouts.length =
+        Math.max(g.errors.length, g.layouts.length)),
+      g
+    );
+  });
+  function s(i) {
+    const f = i < 0;
+    return f && (i = ~i), [f, e[i]];
+  }
+  function o(i) {
+    return i === void 0 ? i : [n.has(i), e[i]];
+  }
+}
+function Xo(e, t = JSON.parse) {
+  try {
+    return t(sessionStorage[e]);
+  } catch {}
+}
+function Ds(e, t, a = JSON.stringify) {
+  const r = a(t);
+  try {
+    sessionStorage[e] = r;
+  } catch {}
+}
+const St = globalThis.__sveltekit_1dvdr86?.base ?? "",
+  mc = globalThis.__sveltekit_1dvdr86?.assets ?? St,
+  bc = "1740996859650",
+  Zo = "sveltekit:snapshot",
+  Qo = "sveltekit:scroll",
+  el = "sveltekit:states",
+  yc = "sveltekit:pageurl",
+  Pa = "sveltekit:history",
+  or = "sveltekit:navigation",
+  Wr = { tap: 1, hover: 2, viewport: 3, eager: 4, off: -1, false: -1 },
+  Er = location.origin;
+function tl(e) {
+  if (e instanceof URL) return e;
+  let t = document.baseURI;
+  if (!t) {
+    const a = document.getElementsByTagName("base");
+    t = a.length ? a[0].href : document.URL;
+  }
+  return new URL(e, t);
+}
+function cs() {
+  return { x: pageXOffset, y: pageYOffset };
+}
+function Ra(e, t) {
+  return e.getAttribute(`data-sveltekit-${t}`);
+}
+const Vs = { ...Wr, "": Wr.hover };
+function al(e) {
+  let t = e.assignedSlot ?? e.parentNode;
+  return t?.nodeType === 11 && (t = t.host), t;
+}
+function rl(e, t) {
+  for (; e && e !== t; ) {
+    if (e.nodeName.toUpperCase() === "A" && e.hasAttribute("href")) return e;
+    e = al(e);
+  }
+}
+function Un(e, t, a) {
+  let r;
+  try {
+    if (
+      ((r = new URL(
+        e instanceof SVGAElement ? e.href.baseVal : e.href,
+        document.baseURI,
+      )),
+      a && r.hash.match(/^#[^/]/))
+    ) {
+      const i = location.hash.split("#")[1] || "/";
+      r.hash = `#${i}${r.hash}`;
+    }
+  } catch {}
+  const n = e instanceof SVGAElement ? e.target.baseVal : e.target,
+    s =
+      !r ||
+      !!n ||
+      dn(r, t, a) ||
+      (e.getAttribute("rel") || "").split(/\s+/).includes("external"),
+    o = r?.origin === Er && e.hasAttribute("download");
+  return { url: r, external: s, target: n, download: o };
+}
+function Lr(e) {
+  let t = null,
+    a = null,
+    r = null,
+    n = null,
+    s = null,
+    o = null,
+    i = e;
+  for (; i && i !== document.documentElement; )
+    r === null && (r = Ra(i, "preload-code")),
+      n === null && (n = Ra(i, "preload-data")),
+      t === null && (t = Ra(i, "keepfocus")),
+      a === null && (a = Ra(i, "noscroll")),
+      s === null && (s = Ra(i, "reload")),
+      o === null && (o = Ra(i, "replacestate")),
+      (i = al(i));
+  function f(u) {
+    switch (u) {
+      case "":
+      case "true":
+        return !0;
+      case "off":
+      case "false":
+        return !1;
+      default:
+        return;
+    }
+  }
+  return {
+    preload_code: Vs[r ?? "off"],
+    preload_data: Vs[n ?? "off"],
+    keepfocus: f(t),
+    noscroll: f(a),
+    reload: f(s),
+    replace_state: f(o),
+  };
+}
+function Hs(e) {
+  const t = st(e);
+  let a = !0;
+  function r() {
+    (a = !0), t.update((o) => o);
+  }
+  function n(o) {
+    (a = !1), t.set(o);
+  }
+  function s(o) {
+    let i;
+    return t.subscribe((f) => {
+      (i === void 0 || (a && f !== i)) && o((i = f));
+    });
+  }
+  return { notify: r, set: n, subscribe: s };
+}
+const nl = { v: () => {} };
+function xc() {
+  const { set: e, subscribe: t } = st(!1);
+  let a;
+  async function r() {
+    clearTimeout(a);
+    try {
+      const n = await fetch(`${mc}/_app/version.json`, {
+        headers: { pragma: "no-cache", "cache-control": "no-cache" },
+      });
+      if (!n.ok) return !1;
+      const o = (await n.json()).version !== bc;
+      return o && (e(!0), nl.v(), clearTimeout(a)), o;
+    } catch {
+      return !1;
+    }
+  }
+  return { subscribe: t, check: r };
+}
+function dn(e, t, a) {
+  return e.origin !== Er || !e.pathname.startsWith(t)
+    ? !0
+    : a
+      ? !(
+          e.pathname === t + "/" ||
+          e.pathname === t + "/index.html" ||
+          (e.protocol === "file:" &&
+            e.pathname.replace(/\/[^/]+\.html?$/, "") === t)
+        )
+      : !1;
+}
+function qv(e) {}
+const sl = new Set([
+  "load",
+  "prerender",
+  "csr",
+  "ssr",
+  "trailingSlash",
+  "config",
+]);
+[...sl];
+const _c = new Set([...sl]);
+[..._c];
+function wc(e) {
+  return e.filter((t) => t != null);
+}
+class un {
+  constructor(t, a) {
+    (this.status = t),
+      typeof a == "string"
+        ? (this.body = { message: a })
+        : a
+          ? (this.body = a)
+          : (this.body = { message: `Error: ${t}` });
+  }
+  toString() {
+    return JSON.stringify(this.body);
+  }
+}
+class ds {
+  constructor(t, a) {
+    (this.status = t), (this.location = a);
+  }
+}
+class us extends Error {
+  constructor(t, a, r) {
+    super(r), (this.status = t), (this.text = a);
+  }
+}
+const kc = "x-sveltekit-invalidated",
+  Ec = "x-sveltekit-trailing-slash";
+function zr(e) {
+  return e instanceof un || e instanceof us ? e.status : 500;
+}
+function Ac(e) {
+  return e instanceof us ? e.text : "Internal Error";
+}
+let rt, lr, Sn;
+const Sc =
+  it.toString().includes("$$") || /function \w+\(\) \{\}/.test(it.toString());
+var ur, fr, vr, pr, gr, hr, mr, br, oo, yr, lo, xr, io;
+Sc
+  ? ((rt = {
+      data: {},
+      form: null,
+      error: null,
+      params: {},
+      route: { id: null },
+      state: {},
+      status: -1,
+      url: new URL("https://example.com"),
+    }),
+    (lr = { current: null }),
+    (Sn = { current: !1 }))
+  : ((rt = new ((oo = class {
+      constructor() {
+        ht(this, ur, bt({}));
+        ht(this, fr, bt(null));
+        ht(this, vr, bt(null));
+        ht(this, pr, bt({}));
+        ht(this, gr, bt({ id: null }));
+        ht(this, hr, bt({}));
+        ht(this, mr, bt(-1));
+        ht(this, br, bt(new URL("https://example.com")));
+      }
+      get data() {
+        return l(te(this, ur));
+      }
+      set data(t) {
+        N(te(this, ur), t);
+      }
+      get form() {
+        return l(te(this, fr));
+      }
+      set form(t) {
+        N(te(this, fr), t);
+      }
+      get error() {
+        return l(te(this, vr));
+      }
+      set error(t) {
+        N(te(this, vr), t);
+      }
+      get params() {
+        return l(te(this, pr));
+      }
+      set params(t) {
+        N(te(this, pr), t);
+      }
+      get route() {
+        return l(te(this, gr));
+      }
+      set route(t) {
+        N(te(this, gr), t);
+      }
+      get state() {
+        return l(te(this, hr));
+      }
+      set state(t) {
+        N(te(this, hr), t);
+      }
+      get status() {
+        return l(te(this, mr));
+      }
+      set status(t) {
+        N(te(this, mr), t);
+      }
+      get url() {
+        return l(te(this, br));
+      }
+      set url(t) {
+        N(te(this, br), t);
+      }
+    }),
+    (ur = new WeakMap()),
+    (fr = new WeakMap()),
+    (vr = new WeakMap()),
+    (pr = new WeakMap()),
+    (gr = new WeakMap()),
+    (hr = new WeakMap()),
+    (mr = new WeakMap()),
+    (br = new WeakMap()),
+    oo)()),
+    (lr = new ((lo = class {
+      constructor() {
+        ht(this, yr, bt(null));
+      }
+      get current() {
+        return l(te(this, yr));
+      }
+      set current(t) {
+        N(te(this, yr), t);
+      }
+    }),
+    (yr = new WeakMap()),
+    lo)()),
+    (Sn = new ((io = class {
+      constructor() {
+        ht(this, xr, bt(!1));
+      }
+      get current() {
+        return l(te(this, xr));
+      }
+      set current(t) {
+        N(te(this, xr), t);
+      }
+    }),
+    (xr = new WeakMap()),
+    io)()),
+    (nl.v = () => (Sn.current = !0)));
+function Cc(e) {
+  Object.assign(rt, e);
+}
+const Tc = "/__data.json",
+  Nc = ".html__data.json";
+function Bc(e) {
+  return e.endsWith(".html")
+    ? e.replace(/\.html$/, Nc)
+    : e.replace(/\/$/, "") + Tc;
+}
+const Oc = new Set(["icon", "shortcut icon", "apple-touch-icon"]),
+  ka = Xo(Qo) ?? {},
+  ir = Xo(Zo) ?? {},
+  Vt = { url: Hs({}), page: Hs({}), navigating: st(null), updated: xc() };
+function fs(e) {
+  ka[e] = cs();
+}
+function Rc(e, t) {
+  let a = e + 1;
+  for (; ka[a]; ) delete ka[a], (a += 1);
+  for (a = t + 1; ir[a]; ) delete ir[a], (a += 1);
+}
+function Fa(e) {
+  return (location.href = e.href), new Promise(() => {});
+}
+async function ol() {
+  if ("serviceWorker" in navigator) {
+    const e = await navigator.serviceWorker.getRegistration(St || "/");
+    e && (await e.update());
+  }
+}
+function Ys() {}
+let vs, Dn, Kr, zt, Vn, $e;
+const Jr = [],
+  Xr = [];
+let la = null;
+const ll = new Set(),
+  Pc = new Set(),
+  er = new Set();
+let ye = { branch: [], error: null, url: null },
+  ps = !1,
+  Zr = !1,
+  qs = !0,
+  cr = !1,
+  La = !1,
+  il = !1,
+  gs = !1,
+  cl,
+  at,
+  wt,
+  ba;
+const tr = new Set();
+async function Kv(e, t, a) {
+  document.URL !== location.href && (location.href = location.href),
+    ($e = e),
+    await e.hooks.init?.(),
+    (vs = hc(e)),
+    (zt = document.documentElement),
+    (Vn = t),
+    (Dn = e.nodes[0]),
+    (Kr = e.nodes[1]),
+    Dn(),
+    Kr(),
+    (at = history.state?.[Pa]),
+    (wt = history.state?.[or]),
+    at ||
+      ((at = wt = Date.now()),
+      history.replaceState({ ...history.state, [Pa]: at, [or]: wt }, ""));
+  const r = ka[at];
+  r && ((history.scrollRestoration = "manual"), scrollTo(r.x, r.y)),
+    a
+      ? await Hc(Vn, a)
+      : await Ga($e.hash ? yl(new URL(location.href)) : location.href, {
+          replaceState: !0,
+        }),
+    Vc();
+}
+function Ic() {
+  (Jr.length = 0), (gs = !1);
+}
+function dl(e) {
+  Xr.some((t) => t?.snapshot) &&
+    (ir[e] = Xr.map((t) => t?.snapshot?.capture()));
+}
+function ul(e) {
+  ir[e]?.forEach((t, a) => {
+    Xr[a]?.snapshot?.restore(t);
+  });
+}
+function Ws() {
+  fs(at), Ds(Qo, ka), dl(wt), Ds(Zo, ir);
+}
+async function hs(e, t, a, r) {
+  return Ja({
+    type: "goto",
+    url: tl(e),
+    keepfocus: t.keepFocus,
+    noscroll: t.noScroll,
+    replace_state: t.replaceState,
+    state: t.state,
+    redirect_count: a,
+    nav_token: r,
+    accept: () => {
+      t.invalidateAll && (gs = !0), t.invalidate && t.invalidate.forEach(Dc);
+    },
+  });
+}
+async function Gc(e) {
+  if (e.id !== la?.id) {
+    const t = {};
+    tr.add(t),
+      (la = {
+        id: e.id,
+        token: t,
+        promise: vl({ ...e, preload: t }).then(
+          (a) => (
+            tr.delete(t), a.type === "loaded" && a.state.error && (la = null), a
+          ),
+        ),
+      });
+  }
+  return la.promise;
+}
+async function Cn(e) {
+  const t = (await vn(e, !1))?.route;
+  t && (await Promise.all([...t.layouts, t.leaf].map((a) => a?.[1]())));
+}
+function fl(e, t, a) {
+  ye = e.state;
+  const r = document.querySelector("style[data-sveltekit]");
+  r && r.remove(),
+    Object.assign(rt, e.props.page),
+    (cl = new $e.root({
+      target: t,
+      props: { ...e.props, stores: Vt, components: Xr },
+      hydrate: a,
+      sync: !1,
+    })),
+    ul(wt);
+  const n = {
+    from: null,
+    to: {
+      params: ye.params,
+      route: { id: ye.route?.id ?? null },
+      url: new URL(location.href),
+    },
+    willUnload: !1,
+    type: "enter",
+    complete: Promise.resolve(),
+  };
+  er.forEach((s) => s(n)), (Zr = !0);
+}
+function Qr({
+  url: e,
+  params: t,
+  branch: a,
+  status: r,
+  error: n,
+  route: s,
+  form: o,
+}) {
+  let i = "never";
+  if (St && (e.pathname === St || e.pathname === St + "/")) i = "always";
+  else for (const g of a) g?.slash !== void 0 && (i = g.slash);
+  (e.pathname = ac(e.pathname, i)), (e.search = e.search);
+  const f = {
+    type: "loaded",
+    state: { url: e, params: t, branch: a, error: n, route: s },
+    props: { constructors: wc(a).map((g) => g.node.component), page: ys(rt) },
+  };
+  o !== void 0 && (f.props.form = o);
+  let u = {},
+    p = !rt,
+    h = 0;
+  for (let g = 0; g < Math.max(a.length, ye.branch.length); g += 1) {
+    const b = a[g],
+      x = ye.branch[g];
+    b?.data !== x?.data && (p = !0),
+      b &&
+        ((u = { ...u, ...b.data }), p && (f.props[`data_${h}`] = u), (h += 1));
+  }
+  return (
+    (!ye.url ||
+      e.href !== ye.url.href ||
+      ye.error !== n ||
+      (o !== void 0 && o !== rt.form) ||
+      p) &&
+      (f.props.page = {
+        error: n,
+        params: t,
+        route: { id: s?.id ?? null },
+        state: {},
+        status: r,
+        url: new URL(e),
+        form: o ?? null,
+        data: p ? u : rt.data,
+      }),
+    f
+  );
+}
+async function ms({
+  loader: e,
+  parent: t,
+  url: a,
+  params: r,
+  route: n,
+  server_data_node: s,
+}) {
+  let o = null,
+    i = !0;
+  const f = {
+      dependencies: new Set(),
+      params: new Set(),
+      parent: !1,
+      route: !1,
+      url: !1,
+      search_params: new Set(),
+    },
+    u = await e();
+  if (u.universal?.load) {
+    let p = function (...c) {
+      for (const g of c) {
+        const { href: b } = new URL(g, a);
+        f.dependencies.add(b);
+      }
+    };
+    const h = {
+      route: new Proxy(n, { get: (c, g) => (i && (f.route = !0), c[g]) }),
+      params: new Proxy(r, { get: (c, g) => (i && f.params.add(g), c[g]) }),
+      data: s?.data ?? null,
+      url: sc(
+        a,
+        () => {
+          i && (f.url = !0);
+        },
+        (c) => {
+          i && f.search_params.add(c);
+        },
+        $e.hash,
+      ),
+      async fetch(c, g) {
+        let b;
+        c instanceof Request
+          ? ((b = c.url),
+            (g = {
+              body:
+                c.method === "GET" || c.method === "HEAD"
+                  ? void 0
+                  : await c.blob(),
+              cache: c.cache,
+              credentials: c.credentials,
+              headers: [...c.headers].length ? c.headers : void 0,
+              integrity: c.integrity,
+              keepalive: c.keepalive,
+              method: c.method,
+              mode: c.mode,
+              redirect: c.redirect,
+              referrer: c.referrer,
+              referrerPolicy: c.referrerPolicy,
+              signal: c.signal,
+              ...g,
+            }))
+          : (b = c);
+        const x = new URL(b, a);
+        return (
+          i && p(x.href),
+          x.origin === a.origin && (b = x.href.slice(a.origin.length)),
+          Zr ? dc(b, x.href, g) : cc(b, g)
+        );
+      },
+      setHeaders: () => {},
+      depends: p,
+      parent() {
+        return i && (f.parent = !0), t();
+      },
+      untrack(c) {
+        i = !1;
+        try {
+          return c();
+        } finally {
+          i = !0;
+        }
+      },
+    };
+    o = (await u.universal.load.call(null, h)) ?? null;
+  }
+  return {
+    node: u,
+    loader: e,
+    server: s,
+    universal: u.universal?.load ? { type: "data", data: o, uses: f } : null,
+    data: o ?? s?.data ?? null,
+    slash: u.universal?.trailingSlash ?? s?.slash,
+  };
+}
+function Ls(e, t, a, r, n, s) {
+  if (gs) return !0;
+  if (!n) return !1;
+  if ((n.parent && e) || (n.route && t) || (n.url && a)) return !0;
+  for (const o of n.search_params) if (r.has(o)) return !0;
+  for (const o of n.params) if (s[o] !== ye.params[o]) return !0;
+  for (const o of n.dependencies) if (Jr.some((i) => i(new URL(o)))) return !0;
+  return !1;
+}
+function bs(e, t) {
+  return e?.type === "data" ? e : e?.type === "skip" ? t ?? null : null;
+}
+function jc(e, t) {
+  if (!e) return new Set(t.searchParams.keys());
+  const a = new Set([...e.searchParams.keys(), ...t.searchParams.keys()]);
+  for (const r of a) {
+    const n = e.searchParams.getAll(r),
+      s = t.searchParams.getAll(r);
+    n.every((o) => s.includes(o)) &&
+      s.every((o) => n.includes(o)) &&
+      a.delete(r);
+  }
+  return a;
+}
+function zs({ error: e, url: t, route: a, params: r }) {
+  return {
+    type: "loaded",
+    state: { error: e, url: t, route: a, params: r, branch: [] },
+    props: { page: ys(rt), constructors: [] },
+  };
+}
+async function vl({
+  id: e,
+  invalidating: t,
+  url: a,
+  params: r,
+  route: n,
+  preload: s,
+}) {
+  if (la?.id === e) return tr.delete(la.token), la.promise;
+  const { errors: o, layouts: i, leaf: f } = n,
+    u = [...i, f];
+  o.forEach((_) => _?.().catch(() => {})),
+    u.forEach((_) => _?.[1]().catch(() => {}));
+  let p = null;
+  const h = ye.url ? e !== en(ye.url) : !1,
+    c = ye.route ? n.id !== ye.route.id : !1,
+    g = jc(ye.url, a);
+  let b = !1;
+  const x = u.map((_, w) => {
+    const B = ye.branch[w],
+      S = !!_?.[0] && (B?.loader !== _[1] || Ls(b, c, h, g, B.server?.uses, r));
+    return S && (b = !0), S;
+  });
+  if (x.some(Boolean)) {
+    try {
+      p = await hl(a, x);
+    } catch (_) {
+      const w = await Ia(_, { url: a, params: r, route: { id: e } });
+      return tr.has(s)
+        ? zs({ error: w, url: a, params: r, route: n })
+        : fn({ status: zr(_), error: w, url: a, route: n });
+    }
+    if (p.type === "redirect") return p;
+  }
+  const y = p?.nodes;
+  let k = !1;
+  const E = u.map(async (_, w) => {
+    if (!_) return;
+    const B = ye.branch[w],
+      S = y?.[w];
+    if (
+      (!S || S.type === "skip") &&
+      _[1] === B?.loader &&
+      !Ls(k, c, h, g, B.universal?.uses, r)
+    )
+      return B;
+    if (((k = !0), S?.type === "error")) throw S;
+    return ms({
+      loader: _[1],
+      url: a,
+      params: r,
+      route: n,
+      parent: async () => {
+        const P = {};
+        for (let I = 0; I < w; I += 1) Object.assign(P, (await E[I])?.data);
+        return P;
+      },
+      server_data_node: bs(
+        S === void 0 && _[0] ? { type: "skip" } : S ?? null,
+        _[0] ? B?.server : void 0,
+      ),
+    });
+  });
+  for (const _ of E) _.catch(() => {});
+  const C = [];
+  for (let _ = 0; _ < u.length; _ += 1)
+    if (u[_])
+      try {
+        C.push(await E[_]);
+      } catch (w) {
+        if (w instanceof ds) return { type: "redirect", location: w.location };
+        if (tr.has(s))
+          return zs({
+            error: await Ia(w, { params: r, url: a, route: { id: n.id } }),
+            url: a,
+            params: r,
+            route: n,
+          });
+        let B = zr(w),
+          S;
+        if (y?.includes(w)) (B = w.status ?? B), (S = w.error);
+        else if (w instanceof un) S = w.body;
+        else {
+          if (await Vt.updated.check()) return await ol(), await Fa(a);
+          S = await Ia(w, { params: r, url: a, route: { id: n.id } });
+        }
+        const T = await Mc(_, C, o);
+        return T
+          ? Qr({
+              url: a,
+              params: r,
+              branch: C.slice(0, T.idx).concat(T.node),
+              status: B,
+              error: S,
+              route: n,
+            })
+          : await gl(a, { id: n.id }, S, B);
+      }
+    else C.push(void 0);
+  return Qr({
+    url: a,
+    params: r,
+    branch: C,
+    status: 200,
+    error: null,
+    route: n,
+    form: t ? void 0 : null,
+  });
+}
+async function Mc(e, t, a) {
+  for (; e--; )
+    if (a[e]) {
+      let r = e;
+      for (; !t[r]; ) r -= 1;
+      try {
+        return {
+          idx: r + 1,
+          node: {
+            node: await a[e](),
+            loader: a[e],
+            data: {},
+            server: null,
+            universal: null,
+          },
+        };
+      } catch {
+        continue;
+      }
+    }
+}
+async function fn({ status: e, error: t, url: a, route: r }) {
+  const n = {};
+  let s = null;
+  if ($e.server_loads[0] === 0)
+    try {
+      const i = await hl(a, [!0]);
+      if (i.type !== "data" || (i.nodes[0] && i.nodes[0].type !== "data"))
+        throw 0;
+      s = i.nodes[0] ?? null;
+    } catch {
+      (a.origin !== Er || a.pathname !== location.pathname || ps) &&
+        (await Fa(a));
+    }
+  try {
+    const i = await ms({
+        loader: Dn,
+        url: a,
+        params: n,
+        route: r,
+        parent: () => Promise.resolve({}),
+        server_data_node: bs(s),
+      }),
+      f = {
+        node: await Kr(),
+        loader: Kr,
+        universal: null,
+        server: null,
+        data: null,
+      };
+    return Qr({
+      url: a,
+      params: n,
+      branch: [i, f],
+      status: e,
+      error: t,
+      route: null,
+    });
+  } catch (i) {
+    if (i instanceof ds) return hs(new URL(i.location, location.href), {}, 0);
+    throw i;
+  }
+}
+function Fc(e) {
+  let t;
+  try {
+    if (
+      ((t = $e.hooks.reroute({ url: new URL(e) }) ?? e), typeof t == "string")
+    ) {
+      const a = new URL(e);
+      $e.hash ? (a.hash = t) : (a.pathname = t), (t = a);
+    }
+  } catch {
+    return;
+  }
+  return t;
+}
+async function vn(e, t) {
+  if (e && !dn(e, St, $e.hash)) {
+    const a = Fc(e);
+    if (!a) return;
+    const r = $c(a);
+    for (const n of vs) {
+      const s = n.exec(r);
+      if (s)
+        return { id: en(e), invalidating: t, route: n, params: nc(s), url: e };
+    }
+  }
+}
+function $c(e) {
+  return (
+    rc(
+      $e.hash
+        ? e.hash.replace(/^#/, "").replace(/[?#].+/, "")
+        : e.pathname.slice(St.length),
+    ) || "/"
+  );
+}
+function en(e) {
+  return ($e.hash ? e.hash.replace(/^#/, "") : e.pathname) + e.search;
+}
+function pl({ url: e, type: t, intent: a, delta: r }) {
+  let n = !1;
+  const s = bl(ye, a, e, t);
+  r !== void 0 && (s.navigation.delta = r);
+  const o = {
+    ...s.navigation,
+    cancel: () => {
+      (n = !0), s.reject(new Error("navigation cancelled"));
+    },
+  };
+  return cr || ll.forEach((i) => i(o)), n ? null : s;
+}
+async function Ja({
+  type: e,
+  url: t,
+  popped: a,
+  keepfocus: r,
+  noscroll: n,
+  replace_state: s,
+  state: o = {},
+  redirect_count: i = 0,
+  nav_token: f = {},
+  accept: u = Ys,
+  block: p = Ys,
+}) {
+  const h = ba;
+  ba = f;
+  const c = await vn(t, !1),
+    g = pl({ url: t, type: e, delta: a?.delta, intent: c });
+  if (!g) {
+    p(), ba === f && (ba = h);
+    return;
+  }
+  const b = at,
+    x = wt;
+  u(), (cr = !0), Zr && Vt.navigating.set((lr.current = g.navigation));
+  let y = c && (await vl(c));
+  if (!y) {
+    if (dn(t, St, $e.hash)) return await Fa(t);
+    y = await gl(
+      t,
+      { id: null },
+      await Ia(new us(404, "Not Found", `Not found: ${t.pathname}`), {
+        url: t,
+        params: {},
+        route: { id: null },
+      }),
+      404,
+    );
+  }
+  if (((t = c?.url || t), ba !== f))
+    return g.reject(new Error("navigation aborted")), !1;
+  if (y.type === "redirect")
+    if (i >= 20)
+      y = await fn({
+        status: 500,
+        error: await Ia(new Error("Redirect loop"), {
+          url: t,
+          params: {},
+          route: { id: null },
+        }),
+        url: t,
+        route: { id: null },
+      });
+    else return await hs(new URL(y.location, t).href, {}, i + 1, f), !1;
+  else
+    y.props.page.status >= 400 &&
+      (await Vt.updated.check()) &&
+      (await ol(), await Fa(t));
+  if (
+    (Ic(),
+    fs(b),
+    dl(x),
+    y.props.page.url.pathname !== t.pathname &&
+      (t.pathname = y.props.page.url.pathname),
+    (o = a ? a.state : o),
+    !a)
+  ) {
+    const _ = s ? 0 : 1,
+      w = { [Pa]: (at += _), [or]: (wt += _), [el]: o };
+    (s ? history.replaceState : history.pushState).call(history, w, "", t),
+      s || Rc(at, wt);
+  }
+  if (((la = null), (y.props.page.state = o), Zr)) {
+    (ye = y.state), y.props.page && (y.props.page.url = t);
+    const _ = (
+      await Promise.all(Array.from(Pc, (w) => w(g.navigation)))
+    ).filter((w) => typeof w == "function");
+    if (_.length > 0) {
+      let w = function () {
+        _.forEach((B) => {
+          er.delete(B);
+        });
+      };
+      _.push(w),
+        _.forEach((B) => {
+          er.add(B);
+        });
+    }
+    cl.$set(y.props), Cc(y.props.page), (il = !0);
+  } else fl(y, Vn, !1);
+  const { activeElement: k } = document;
+  await Ho();
+  const E = a ? a.scroll : n ? cs() : null;
+  if (qs) {
+    const _ =
+      t.hash &&
+      document.getElementById(
+        decodeURIComponent(
+          $e.hash ? t.hash.split("#")[2] ?? "" : t.hash.slice(1),
+        ),
+      );
+    E ? scrollTo(E.x, E.y) : _ ? _.scrollIntoView() : scrollTo(0, 0);
+  }
+  const C =
+    document.activeElement !== k && document.activeElement !== document.body;
+  !r && !C && Yc(),
+    (qs = !0),
+    y.props.page && Object.assign(rt, y.props.page),
+    (cr = !1),
+    e === "popstate" && ul(wt),
+    g.fulfil(void 0),
+    er.forEach((_) => _(g.navigation)),
+    Vt.navigating.set((lr.current = null));
+}
+async function gl(e, t, a, r) {
+  return e.origin === Er && e.pathname === location.pathname && !ps
+    ? await fn({ status: r, error: a, url: e, route: t })
+    : await Fa(e);
+}
+function Uc() {
+  let e, t;
+  zt.addEventListener("mousemove", (o) => {
+    const i = o.target;
+    clearTimeout(e),
+      (e = setTimeout(() => {
+        n(i, 2);
+      }, 20));
+  });
+  function a(o) {
+    o.defaultPrevented || n(o.composedPath()[0], 1);
+  }
+  zt.addEventListener("mousedown", a),
+    zt.addEventListener("touchstart", a, { passive: !0 });
+  const r = new IntersectionObserver(
+    (o) => {
+      for (const i of o)
+        i.isIntersecting && (Cn(new URL(i.target.href)), r.unobserve(i.target));
+    },
+    { threshold: 0 },
+  );
+  async function n(o, i) {
+    const f = rl(o, zt);
+    if (!f || f === t) return;
+    const { url: u, external: p, download: h } = Un(f, St, $e.hash);
+    if (p || h) return;
+    const c = Lr(f),
+      g = u && en(ye.url) === en(u);
+    if (!c.reload && !g)
+      if (i <= c.preload_data) {
+        t = f;
+        const b = await vn(u, !1);
+        b && Gc(b);
+      } else i <= c.preload_code && ((t = f), Cn(u));
+  }
+  function s() {
+    r.disconnect();
+    for (const o of zt.querySelectorAll("a")) {
+      const { url: i, external: f, download: u } = Un(o, St, $e.hash);
+      if (f || u) continue;
+      const p = Lr(o);
+      p.reload ||
+        (p.preload_code === Wr.viewport && r.observe(o),
+        p.preload_code === Wr.eager && Cn(i));
+    }
+  }
+  er.add(s), s();
+}
+function Ia(e, t) {
+  if (e instanceof un) return e.body;
+  const a = zr(e),
+    r = Ac(e);
+  return (
+    $e.hooks.handleError({ error: e, event: t, status: a, message: r }) ?? {
+      message: r,
+    }
+  );
+}
+function Ga(e, t = {}) {
+  return (
+    (e = new URL(tl(e))),
+    e.origin !== Er
+      ? Promise.reject(new Error("goto: invalid URL"))
+      : hs(e, t, 0)
+  );
+}
+function Dc(e) {
+  if (typeof e == "function") Jr.push(e);
+  else {
+    const { href: t } = new URL(e, location.href);
+    Jr.push((a) => a.href === t);
+  }
+}
+function Vc() {
+  (history.scrollRestoration = "manual"),
+    addEventListener("beforeunload", (t) => {
+      let a = !1;
+      if ((Ws(), !cr)) {
+        const r = bl(ye, void 0, null, "leave"),
+          n = {
+            ...r.navigation,
+            cancel: () => {
+              (a = !0), r.reject(new Error("navigation cancelled"));
+            },
+          };
+        ll.forEach((s) => s(n));
+      }
+      a
+        ? (t.preventDefault(), (t.returnValue = ""))
+        : (history.scrollRestoration = "auto");
+    }),
+    addEventListener("visibilitychange", () => {
+      document.visibilityState === "hidden" && Ws();
+    }),
+    navigator.connection?.saveData || Uc(),
+    zt.addEventListener("click", async (t) => {
+      if (
+        t.button ||
+        t.which !== 1 ||
+        t.metaKey ||
+        t.ctrlKey ||
+        t.shiftKey ||
+        t.altKey ||
+        t.defaultPrevented
+      )
+        return;
+      const a = rl(t.composedPath()[0], zt);
+      if (!a) return;
+      const {
+        url: r,
+        external: n,
+        target: s,
+        download: o,
+      } = Un(a, St, $e.hash);
+      if (!r) return;
+      if (s === "_parent" || s === "_top") {
+        if (window.parent !== window) return;
+      } else if (s && s !== "_self") return;
+      const i = Lr(a);
+      if (
+        (!(a instanceof SVGAElement) &&
+          r.protocol !== location.protocol &&
+          !(r.protocol === "https:" || r.protocol === "http:")) ||
+        o
+      )
+        return;
+      const [u, p] = ($e.hash ? r.hash.replace(/^#/, "") : r.href).split("#"),
+        h = u === En(location);
+      if (n || (i.reload && (!h || !p))) {
+        pl({ url: r, type: "link" }) ? (cr = !0) : t.preventDefault();
+        return;
+      }
+      if (p !== void 0 && h) {
+        const [, c] = ye.url.href.split("#");
+        if (c === p) {
+          if (
+            (t.preventDefault(),
+            p === "" ||
+              (p === "top" && a.ownerDocument.getElementById("top") === null))
+          )
+            window.scrollTo({ top: 0 });
+          else {
+            const g = a.ownerDocument.getElementById(decodeURIComponent(p));
+            g && (g.scrollIntoView(), g.focus());
+          }
+          return;
+        }
+        if (((La = !0), fs(at), e(r), !i.replace_state)) return;
+        La = !1;
+      }
+      t.preventDefault(),
+        await new Promise((c) => {
+          requestAnimationFrame(() => {
+            setTimeout(c, 0);
+          }),
+            setTimeout(c, 100);
+        }),
+        await Ja({
+          type: "link",
+          url: r,
+          keepfocus: i.keepfocus,
+          noscroll: i.noscroll,
+          replace_state: i.replace_state ?? r.href === location.href,
+        });
+    }),
+    zt.addEventListener("submit", (t) => {
+      if (t.defaultPrevented) return;
+      const a = HTMLFormElement.prototype.cloneNode.call(t.target),
+        r = t.submitter;
+      if (
+        (r?.formTarget || a.target) === "_blank" ||
+        (r?.formMethod || a.method) !== "get"
+      )
+        return;
+      const o = new URL(
+        (r?.hasAttribute("formaction") && r?.formAction) || a.action,
+      );
+      if (dn(o, St, !1)) return;
+      const i = t.target,
+        f = Lr(i);
+      if (f.reload) return;
+      t.preventDefault(), t.stopPropagation();
+      const u = new FormData(i),
+        p = r?.getAttribute("name");
+      p && u.append(p, r?.getAttribute("value") ?? ""),
+        (o.search = new URLSearchParams(u).toString()),
+        Ja({
+          type: "form",
+          url: o,
+          keepfocus: f.keepfocus,
+          noscroll: f.noscroll,
+          replace_state: f.replace_state ?? o.href === location.href,
+        });
+    }),
+    addEventListener("popstate", async (t) => {
+      if (t.state?.[Pa]) {
+        const a = t.state[Pa];
+        if (((ba = {}), a === at)) return;
+        const r = ka[a],
+          n = t.state[el] ?? {},
+          s = new URL(t.state[yc] ?? location.href),
+          o = t.state[or],
+          i = ye.url ? En(location) === En(ye.url) : !1;
+        if (o === wt && (il || i)) {
+          n !== rt.state && (rt.state = n),
+            e(s),
+            (ka[at] = cs()),
+            r && scrollTo(r.x, r.y),
+            (at = a);
+          return;
+        }
+        const u = a - at;
+        await Ja({
+          type: "popstate",
+          url: s,
+          popped: { state: n, scroll: r, delta: u },
+          accept: () => {
+            (at = a), (wt = o);
+          },
+          block: () => {
+            history.go(-u);
+          },
+          nav_token: ba,
+        });
+      } else if (!La) {
+        const a = new URL(location.href);
+        e(a);
+      }
+    }),
+    addEventListener("hashchange", () => {
+      La
+        ? ((La = !1),
+          history.replaceState(
+            { ...history.state, [Pa]: ++at, [or]: wt },
+            "",
+            location.href,
+          ))
+        : $e.hash &&
+          ye.url.hash === location.hash &&
+          Ja({ type: "goto", url: yl(ye.url) });
+    });
+  for (const t of document.querySelectorAll("link"))
+    Oc.has(t.rel) && (t.href = t.href);
+  addEventListener("pageshow", (t) => {
+    t.persisted && Vt.navigating.set((lr.current = null));
+  });
+  function e(t) {
+    (ye.url = rt.url = t), Vt.page.set(ys(rt)), Vt.page.notify();
+  }
+}
+async function Hc(
+  e,
+  {
+    status: t = 200,
+    error: a,
+    node_ids: r,
+    params: n,
+    route: s,
+    server_route: o,
+    data: i,
+    form: f,
+  },
+) {
+  ps = !0;
+  const u = new URL(location.href);
+  let p;
+  ({ params: n = {}, route: s = { id: null } } = (await vn(u, !1)) || {}),
+    (p = vs.find(({ id: g }) => g === s.id));
+  let h,
+    c = !0;
+  try {
+    const g = r.map(async (x, y) => {
+        const k = i[y];
+        return (
+          k?.uses && (k.uses = ml(k.uses)),
+          ms({
+            loader: $e.nodes[x],
+            url: u,
+            params: n,
+            route: s,
+            parent: async () => {
+              const E = {};
+              for (let C = 0; C < y; C += 1)
+                Object.assign(E, (await g[C]).data);
+              return E;
+            },
+            server_data_node: bs(k),
+          })
+        );
+      }),
+      b = await Promise.all(g);
+    if (p) {
+      const x = p.layouts;
+      for (let y = 0; y < x.length; y++) x[y] || b.splice(y, 0, void 0);
+    }
+    h = Qr({
+      url: u,
+      params: n,
+      branch: b,
+      status: t,
+      error: a,
+      form: f,
+      route: p ?? null,
+    });
+  } catch (g) {
+    if (g instanceof ds) {
+      await Fa(new URL(g.location, location.href));
+      return;
+    }
+    (h = await fn({
+      status: zr(g),
+      error: await Ia(g, { url: u, params: n, route: s }),
+      url: u,
+      route: s,
+    })),
+      (e.textContent = ""),
+      (c = !1);
+  }
+  h.props.page && (h.props.page.state = {}), fl(h, e, c);
+}
+async function hl(e, t) {
+  const a = new URL(e);
+  (a.pathname = Bc(e.pathname)),
+    e.pathname.endsWith("/") && a.searchParams.append(Ec, "1"),
+    a.searchParams.append(kc, t.map((s) => (s ? "1" : "0")).join(""));
+  const r = window.fetch,
+    n = await r(a.href, {});
+  if (!n.ok) {
+    let s;
+    throw (
+      (n.headers.get("content-type")?.includes("application/json")
+        ? (s = await n.json())
+        : n.status === 404
+          ? (s = "Not Found")
+          : n.status === 500 && (s = "Internal Error"),
+      new un(n.status, s))
+    );
+  }
+  return new Promise(async (s) => {
+    const o = new Map(),
+      i = n.body.getReader(),
+      f = new TextDecoder();
+    function u(h) {
+      return Bl(h, {
+        ...$e.decoders,
+        Promise: (c) =>
+          new Promise((g, b) => {
+            o.set(c, { fulfil: g, reject: b });
+          }),
+      });
+    }
+    let p = "";
+    for (;;) {
+      const { done: h, value: c } = await i.read();
+      if (h && !p) break;
+      for (
+        p +=
+          !c && p
+            ? `
+`
+            : f.decode(c, { stream: !0 });
+        ;
+
+      ) {
+        const g = p.indexOf(`
+`);
+        if (g === -1) break;
+        const b = JSON.parse(p.slice(0, g));
+        if (((p = p.slice(g + 1)), b.type === "redirect")) return s(b);
+        if (b.type === "data")
+          b.nodes?.forEach((x) => {
+            x?.type === "data" && ((x.uses = ml(x.uses)), (x.data = u(x.data)));
+          }),
+            s(b);
+        else if (b.type === "chunk") {
+          const { id: x, data: y, error: k } = b,
+            E = o.get(x);
+          o.delete(x), k ? E.reject(u(k)) : E.fulfil(u(y));
+        }
+      }
+    }
+  });
+}
+function ml(e) {
+  return {
+    dependencies: new Set(e?.dependencies ?? []),
+    params: new Set(e?.params ?? []),
+    parent: !!e?.parent,
+    route: !!e?.route,
+    url: !!e?.url,
+    search_params: new Set(e?.search_params ?? []),
+  };
+}
+function Yc() {
+  const e = document.querySelector("[autofocus]");
+  if (e) e.focus();
+  else {
+    const t = document.body,
+      a = t.getAttribute("tabindex");
+    (t.tabIndex = -1),
+      t.focus({ preventScroll: !0, focusVisible: !1 }),
+      a !== null
+        ? t.setAttribute("tabindex", a)
+        : t.removeAttribute("tabindex");
+    const r = getSelection();
+    if (r && r.type !== "None") {
+      const n = [];
+      for (let s = 0; s < r.rangeCount; s += 1) n.push(r.getRangeAt(s));
+      setTimeout(() => {
+        if (r.rangeCount === n.length) {
+          for (let s = 0; s < r.rangeCount; s += 1) {
+            const o = n[s],
+              i = r.getRangeAt(s);
+            if (
+              o.commonAncestorContainer !== i.commonAncestorContainer ||
+              o.startContainer !== i.startContainer ||
+              o.endContainer !== i.endContainer ||
+              o.startOffset !== i.startOffset ||
+              o.endOffset !== i.endOffset
+            )
+              return;
+          }
+          r.removeAllRanges();
+        }
+      });
+    }
+  }
+}
+function bl(e, t, a, r) {
+  let n, s;
+  const o = new Promise((f, u) => {
+    (n = f), (s = u);
+  });
+  return (
+    o.catch(() => {}),
+    {
+      navigation: {
+        from: {
+          params: e.params,
+          route: { id: e.route?.id ?? null },
+          url: e.url,
+        },
+        to: a && {
+          params: t?.params ?? null,
+          route: { id: t?.route?.id ?? null },
+          url: a,
+        },
+        willUnload: !t,
+        type: r,
+        complete: o,
+      },
+      fulfil: n,
+      reject: s,
+    }
+  );
+}
+function ys(e) {
+  return {
+    data: e.data,
+    error: e.error,
+    form: e.form,
+    params: e.params,
+    route: e.route,
+    state: e.state,
+    status: e.status,
+    url: e.url,
+  };
+}
+function yl(e) {
+  const t = new URL(e);
+  return (t.hash = decodeURIComponent(e.hash)), t;
+}
+const qc = "modulepreload",
+  Wc = function (e, t) {
+    return new URL(e, t).href;
+  },
+  Ks = {},
+  ft = function (t, a, r) {
+    let n = Promise.resolve();
+    if (a && a.length > 0) {
+      const o = document.getElementsByTagName("link"),
+        i = document.querySelector("meta[property=csp-nonce]"),
+        f = i?.nonce || i?.getAttribute("nonce");
+      n = Promise.allSettled(
+        a.map((u) => {
+          if (((u = Wc(u, r)), u in Ks)) return;
+          Ks[u] = !0;
+          const p = u.endsWith(".css"),
+            h = p ? '[rel="stylesheet"]' : "";
+          if (!!r)
+            for (let b = o.length - 1; b >= 0; b--) {
+              const x = o[b];
+              if (x.href === u && (!p || x.rel === "stylesheet")) return;
+            }
+          else if (document.querySelector(`link[href="${u}"]${h}`)) return;
+          const g = document.createElement("link");
+          if (
+            ((g.rel = p ? "stylesheet" : qc),
+            p || (g.as = "script"),
+            (g.crossOrigin = ""),
+            (g.href = u),
+            f && g.setAttribute("nonce", f),
+            document.head.appendChild(g),
+            p)
+          )
+            return new Promise((b, x) => {
+              g.addEventListener("load", b),
+                g.addEventListener("error", () =>
+                  x(new Error(`Unable to preload CSS for ${u}`)),
+                );
+            });
+        }),
+      );
+    }
+    function s(o) {
+      const i = new Event("vite:preloadError", { cancelable: !0 });
+      if (((i.payload = o), window.dispatchEvent(i), !i.defaultPrevented))
+        throw o;
+    }
+    return n.then((o) => {
+      for (const i of o || []) i.status === "rejected" && s(i.reason);
+      return t().catch(s);
+    });
+  },
+  Jv = {},
+  Lc = "5";
+typeof window < "u" &&
+  (window.__svelte || (window.__svelte = { v: new Set() })).v.add(Lc);
+const zc = Ol;
+var Kc = O(
+    '<div id="svelte-announcer" aria-live="assertive" aria-atomic="true" style="position: absolute; left: 0; top: 0; clip: rect(0 0 0 0); clip-path: inset(50%); overflow: hidden; white-space: nowrap; width: 1px; height: 1px"><!></div>',
+  ),
+  Jc = O("<!> <!>", 1);
+function Xc(e, t) {
+  fe(t, !0);
+  let a = L(t, "components", 23, () => []),
+    r = L(t, "data_0", 3, null),
+    n = L(t, "data_1", 3, null);
+  Bo(() => t.stores.page.set(t.page)),
+    Ur(() => {
+      t.stores,
+        t.page,
+        t.constructors,
+        a(),
+        t.form,
+        r(),
+        n(),
+        t.stores.page.notify();
+    });
+  let s = bt(!1),
+    o = bt(!1),
+    i = bt(null);
+  it(() => {
+    const x = t.stores.page.subscribe(() => {
+      l(s) &&
+        (N(o, !0),
+        Ho().then(() => {
+          N(i, ma(document.title || "untitled page"));
+        }));
+    });
+    return N(s, !0), x;
+  });
+  const f = ca(() => t.constructors[1]);
+  var u = Jc(),
+    p = J(u);
+  {
+    var h = (x) => {
+        var y = pe();
+        const k = ca(() => t.constructors[0]);
+        var E = J(y);
+        Ir(
+          E,
+          () => l(k),
+          (C, _) => {
+            Gr(
+              _(C, {
+                get data() {
+                  return r();
+                },
+                get form() {
+                  return t.form;
+                },
+                children: (w, B) => {
+                  var S = pe(),
+                    T = J(S);
+                  Ir(
+                    T,
+                    () => l(f),
+                    (P, I) => {
+                      Gr(
+                        I(P, {
+                          get data() {
+                            return n();
+                          },
+                          get form() {
+                            return t.form;
+                          },
+                        }),
+                        (U) => (a()[1] = U),
+                        () => a()?.[1],
+                      );
+                    },
+                  ),
+                    A(w, S);
+                },
+                $$slots: { default: !0 },
+              }),
+              (w) => (a()[0] = w),
+              () => a()?.[0],
+            );
+          },
+        ),
+          A(x, y);
+      },
+      c = (x) => {
+        var y = pe();
+        const k = ca(() => t.constructors[0]);
+        var E = J(y);
+        Ir(
+          E,
+          () => l(k),
+          (C, _) => {
+            Gr(
+              _(C, {
+                get data() {
+                  return r();
+                },
+                get form() {
+                  return t.form;
+                },
+              }),
+              (w) => (a()[0] = w),
+              () => a()?.[0],
+            );
+          },
+        ),
+          A(x, y);
+      };
+    j(p, (x) => {
+      t.constructors[1] ? x(h) : x(c, !1);
+    });
+  }
+  var g = m(p, 2);
+  {
+    var b = (x) => {
+      var y = Kc(),
+        k = v(y);
+      {
+        var E = (C) => {
+          var _ = _a();
+          V(() => D(_, l(i))), A(C, _);
+        };
+        j(k, (C) => {
+          l(o) && C(E);
+        });
+      }
+      d(y), A(x, y);
+    };
+    j(g, (x) => {
+      l(s) && x(b);
+    });
+  }
+  A(e, u), ve();
+}
+const Xv = Xi(Xc),
+  Zv = [
+    () => ft(() => Promise.resolve().then(() => td), void 0, import.meta.url),
+    () => ft(() => Promise.resolve().then(() => sd), void 0, import.meta.url),
+    () => ft(() => Promise.resolve().then(() => Jd), void 0, import.meta.url),
+    () => ft(() => Promise.resolve().then(() => Eu), void 0, import.meta.url),
+    () => ft(() => Promise.resolve().then(() => ju), void 0, import.meta.url),
+    () => ft(() => Promise.resolve().then(() => Hu), void 0, import.meta.url),
+    () => ft(() => Promise.resolve().then(() => lf), void 0, import.meta.url),
+    () => ft(() => Promise.resolve().then(() => mf), void 0, import.meta.url),
+    () => ft(() => Promise.resolve().then(() => xf), void 0, import.meta.url),
+    () => ft(() => Promise.resolve().then(() => Vf), void 0, import.meta.url),
+    () => ft(() => Promise.resolve().then(() => Lf), void 0, import.meta.url),
+    () => ft(() => Promise.resolve().then(() => Av), void 0, import.meta.url),
+    () => ft(() => Promise.resolve().then(() => Fv), void 0, import.meta.url),
+  ],
+  Qv = [],
+  ep = {
+    "/": [2],
+    "/courses": [3],
+    "/courses/[courseId]": [4],
+    "/game-rules": [5],
+    "/games": [6],
+    "/games/create/[game]": [8],
+    "/games/[gameId]": [7],
+    "/profile": [9],
+    "/team": [10],
+    "/whitepaper": [11],
+    "/yardages": [12],
+  },
+  Zc = {
+    handleError: ({ error: e }) => {
+      console.error(e);
+    },
+    reroute: () => {},
+    transport: {},
+  },
+  Qc = Object.fromEntries(
+    Object.entries(Zc.transport).map(([e, t]) => [e, t.decode]),
+  ),
+  tp = !1,
+  ap = (e, t) => Qc[e](t);
+function ed(e, t) {
+  var a = pe(),
+    r = J(a);
+  Ui(r, () => t.children), A(e, a);
+}
+const td = Object.freeze(
+  Object.defineProperty(
+    { __proto__: null, component: ed },
+    Symbol.toStringTag,
+    { value: "Module" },
+  ),
+);
+Zl();
+const ad = {
+  get error() {
+    return rt.error;
+  },
+  get status() {
+    return rt.status;
+  },
+};
+Vt.updated.check;
+const Js = ad;
+var rd = O("<h1> </h1> <p> </p>", 1);
+function nd(e, t) {
+  fe(t, !1), _e();
+  var a = rd(),
+    r = J(a),
+    n = v(r, !0);
+  d(r);
+  var s = m(r, 2),
+    o = v(s, !0);
+  d(s),
+    V(() => {
+      D(n, Js.status), D(o, Js.error?.message);
+    }),
+    A(e, a),
+    ve();
+}
+const sd = Object.freeze(
+    Object.defineProperty(
+      { __proto__: null, component: nd },
+      Symbol.toStringTag,
+      { value: "Module" },
+    ),
+  ),
+  od = BigInt(60 * 60 * 1e3 * 1e3 * 1e3 * 24 * 14),
+  ld = 576,
+  id = 625,
+  Tn = () =>
+    Rl.create({
+      idleOptions: { disableIdle: !0, disableDefaultIdleCallback: !0 },
+    }),
+  cd = ({ width: e, height: t }) => {
+    if (Ns(window) || Ns(window.top)) return;
+    const {
+        top: { innerWidth: a, innerHeight: r },
+      } = window,
+      n = r / 2 + screenY - t / 2,
+      s = a / 2 + screenX - e / 2;
+    return `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=${e}, height=${t}, top=${n}, left=${s}`;
+  };
+let Ft;
+const dd = "https://golfpad.xyz",
+  ud = "https://gw4gh-taaaa-aaaal-qjfia-cai.icp0.io",
+  fd = () => (typeof window > "u" ? !1 : window.location.origin === dd),
+  vd = () => {
+    const { subscribe: e, set: t, update: a } = st({ identity: void 0 });
+    return {
+      subscribe: e,
+      sync: async () => {
+        Ft = Ft ?? (await Tn());
+        const r = await Ft.isAuthenticated();
+        t({ identity: r ? Ft.getIdentity() : null });
+      },
+      signIn: ({ domain: r }) =>
+        new Promise(async (n, s) => {
+          Ft = Ft ?? (await Tn());
+          const o = r;
+          await Ft?.login({
+            maxTimeToLive: od,
+            onSuccess: () => {
+              a((i) => ({ ...i, identity: Ft?.getIdentity() })), n();
+            },
+            onError: s,
+            identityProvider: o,
+            ...(fd() && { derivationOrigin: ud }),
+            windowOpenerFeatures: cd({ width: ld, height: id }),
+          });
+        }),
+      signOut: async () => {
+        await (Ft ?? (await Tn())).logout(),
+          (Ft = null),
+          a((n) => ({ ...n, identity: null })),
+          localStorage.removeItem("user_profile_data");
+      },
+    };
+  },
+  ke = vd(),
+  pd = st(void 0),
+  gd = "nn75s-ayupf-j6mj3-kluyb-wjj7y-eang2-dwzzr-cfdxk-etbw7-cgwnb-lqe",
+  xl = ls(ke, ({ identity: e }) => e != null);
+ls(ke, ({ identity: e }) => e != null && e.getPrincipal().toString() === gd);
+function Xs(e) {
+  const t = Array.from(e)
+    .map((a) => String.fromCharCode(a))
+    .join("");
+  return btoa(t);
+}
+function hd(e) {
+  const [t, a] = e.split("T"),
+    r = t.split("-");
+  if (r.length !== 3)
+    throw new Error("Invalid date format. Expected YYYY-MM-DD");
+  const n = parseInt(r[0], 10),
+    s = parseInt(r[1], 10) - 1,
+    o = parseInt(r[2], 10);
+  let i = 0,
+    f = 0,
+    u = 0;
+  if (a) {
+    const c = a.split(":");
+    (i = parseInt(c[0], 10)),
+      (f = parseInt(c[1], 10)),
+      c.length === 3 && (u = parseInt(c[2], 10));
+  }
+  const h = new Date(n, s, o, i, f, u).getTime();
+  return BigInt(h) * BigInt(1e6);
+}
+function Me(e) {
+  return e && e.err !== void 0;
+}
+const Qt = ({ IDL: e }) => {
+    const t = e.Text,
+      a = e.Record({ requestedBy: t }),
+      r = e.Variant({
+        InvalidProfilePicture: e.Null,
+        DecodeError: e.Null,
+        TooLong: e.Null,
+        NotAllowed: e.Null,
+        NotEnoughFunds: e.Null,
+        TooShort: e.Null,
+        NotFound: e.Null,
+        NotAuthorized: e.Null,
+        AlreadyExists: e.Null,
+        CreateGameError: e.Null,
+        OutOfRange: e.Null,
+        PaymentError: e.Null,
+        CanisterFull: e.Null,
+      }),
+      n = e.Variant({ ok: e.Null, err: r }),
+      s = e.Nat,
+      o = e.Record({ gameId: s, acceptedById: t }),
+      i = e.Nat8,
+      f = e.Record({
+        golfer2MulliganUsed: e.Bool,
+        winner: t,
+        golfer1MulliganUsed: e.Bool,
+        holeNumber: i,
+      }),
+      u = e.Variant({ MulligansScores: f }),
+      p = e.Record({ gameId: s, detail: u }),
+      h = e.Record({ gameId: s }),
+      c = e.Variant({
+        Mulligans: e.Null,
+        BuildIt: e.Null,
+        Bands: e.Null,
+        NextUp: e.Null,
+        Prophet: e.Null,
+      }),
+      g = e.Variant({ Custom: e.Null, Official: e.Null }),
+      b = e.Nat,
+      x = e.Record({
+        inviteIds: e.Vec(t),
+        createdById: t,
+        teeOffTime: e.Int,
+        gameType: c,
+        courseType: g,
+        courseId: b,
+        teeGroup: e.Text,
+      }),
+      y = e.Record({
+        par: e.Nat8,
+        name: e.Text,
+        yardage: e.Nat,
+        colour: e.Text,
+        strokeIndex: e.Nat8,
+      }),
+      k = e.Text,
+      E = e.Nat,
+      C = e.Record({
+        name: e.Text,
+        tees: e.Vec(y),
+        number: e.Nat8,
+        images: e.Vec(e.Tuple(k, E)),
+      }),
+      _ = e.Record({
+        added: e.Int,
+        holes: e.Vec(C),
+        name: e.Text,
+        colour: e.Text,
+        strokeIndex: e.Nat8,
+      }),
+      w = e.Record({ holes: e.Vec(C), name: e.Text, initialTeeGroup: _ }),
+      B = e.Int16,
+      S = e.Record({ username: e.Text, handicap: e.Opt(B) }),
+      T = e.Nat16,
+      P = e.Record({ name: e.Text, index: T, yards: e.Nat16 }),
+      I = e.Record({ clubs: e.Vec(P), name: e.Text }),
+      U = e.Record({ courseId: b }),
+      G = e.Nat16,
+      H = e.Record({ yardageSetId: G }),
+      F = e.Record({ name: e.Text, updatedTeeGroup: e.Opt(_), courseId: b }),
+      Y = e.Record({ version: e.Text, onHold: e.Bool }),
+      q = e.Variant({ ok: Y, err: r }),
+      $ = e.Record({ offset: e.Nat, limit: e.Nat }),
+      z = e.Variant({ Unplayed: e.Null, Active: e.Null, Complete: e.Null }),
+      K = e.Record({
+        golfer2MulliganUsed: e.Bool,
+        winner: t,
+        golfer1MulliganUsed: e.Bool,
+        holeNumber: i,
+      }),
+      oe = e.Record({
+        winner: t,
+        results: e.Vec(K),
+        golfer2HolesWonCount: e.Nat8,
+        golfer1HolesWonCount: e.Nat8,
+      }),
+      W = e.Variant({ MulligansScores: oe }),
+      ie = e.Record({}),
+      he = e.Record({
+        wontHitTreeOrBunkerStartHole: i,
+        underParStartHole: i,
+        golferId: t,
+        wontDoubleBogeyStartHole: i,
+        singlePutt2Of3GreensStartHole: i,
+        wontBogeyStartHole: i,
+        parOrUnderStartHole: i,
+        hit2Of3FairwaysStartHole: i,
+        hit2Of3GreensStartHole: i,
+        wontLoseBallStartHole: i,
+      }),
+      me = e.Variant({
+        Mulligans: ie,
+        BuildIt: e.Record({}),
+        Bands: he,
+        NextUp: e.Record({}),
+      }),
+      re = e.Nat8,
+      ce = e.Record({ courseVersion: re, courseId: b, teeGroup: _ }),
+      He = e.Variant({
+        Par: e.Null,
+        Scrub: e.Null,
+        DoubleBogey: e.Null,
+        Birdie: e.Null,
+        BallNotLost: e.Null,
+        Bogey: e.Null,
+        HitFairway: e.Null,
+        Albatross: e.Null,
+        HitBunker: e.Null,
+        HitTree: e.Null,
+        HitGreen: e.Null,
+        TakeMulligan: e.Null,
+        HitWater: e.Null,
+        LongestDrive: e.Null,
+        Eagle: e.Null,
+        OnePuttGreen: e.Null,
+      }),
+      Z = e.Record({ golferId: t, hole: i, event: He }),
+      be = e.Record({
+        id: s,
+        playerIds: e.Vec(t),
+        status: z,
+        scoreDetail: e.Opt(W),
+        invites: e.Vec(t),
+        predictions: e.Vec(me),
+        winner: t,
+        teeOffTime: e.Int,
+        courseSnapshot: ce,
+        events: e.Vec(Z),
+        gameType: c,
+        courseId: b,
+      }),
+      Ae = e.Variant({ ok: e.Vec(be), err: r }),
+      Te = e.Record({ gameId: s }),
+      Le = e.Variant({ ok: be, err: r }),
+      Qe = e.Record({ golferPrincipalId: t }),
+      Re = e.Record({ gameId: s, inviteFrom: t }),
+      ne = e.Record({
+        username: e.Text,
+        gameInvites: e.Vec(Re),
+        upcomingGames: e.Vec(s),
+        golferPicture: e.Opt(e.Vec(e.Nat8)),
+        completedGames: e.Vec(s),
+        handicap: e.Opt(B),
+        golferPictureExtension: e.Text,
+        principalId: t,
+        activeGames: e.Vec(s),
+      }),
+      de = e.Variant({ ok: ne, err: r }),
+      Fe = e.Record({}),
+      Pe = e.Variant({ ok: Fe, err: r }),
+      Ie = e.Record({ status: z, date: e.Int, players: e.Vec(t), gameType: c }),
+      Ge = e.Record({
+        totalEntries: e.Nat,
+        offset: e.Nat,
+        limit: e.Nat,
+        entries: e.Vec(Ie),
+      }),
+      Ue = e.Variant({ ok: Ge, err: r }),
+      et = e.Record({
+        username: e.Text,
+        golferPicture: e.Opt(e.Vec(e.Nat8)),
+        handicap: e.Opt(B),
+        golferPictureExtension: e.Text,
+        principalId: t,
+      }),
+      ze = e.Variant({ ok: et, err: r }),
+      De = e.Record({}),
+      Ye = e.Variant({ ok: De, err: r }),
+      qe = e.Record({ yardageSetId: G }),
+      Ve = e.Record({}),
+      We = e.Variant({ ok: Ve, err: r }),
+      Ke = e.Record({
+        activeVersion: re,
+        name: e.Text,
+        tees: e.Vec(_),
+        courseId: b,
+      }),
+      X = e.Record({ courses: e.Vec(Ke) }),
+      Se = e.Variant({ ok: X, err: r }),
+      Je = e.Record({ requestTime: e.Int, principalId: t }),
+      ct = e.Record({ friendRequests: e.Vec(Je) }),
+      dt = e.Variant({ ok: ct, err: r }),
+      Ht = e.Record({ searchTerm: e.Text }),
+      pa = e.Record({
+        golferPrincipalId: t,
+        golferPicture: e.Opt(e.Vec(e.Nat8)),
+        golferName: e.Text,
+        handicap: e.Opt(B),
+        golferPictureExtension: e.Text,
+      }),
+      Ca = e.Record({ golfers: e.Vec(pa) }),
+      ut = e.Variant({ ok: Ca, err: r }),
+      Bt = e.Record({ requestedBy: t }),
+      we = e.Record({
+        golferPicture: e.Vec(e.Nat8),
+        golferPictureExtension: e.Text,
+      }),
+      Xe = e.Record({ requestedFriend: t }),
+      pt = e.Record({ gameId: s, invitedGolferIds: e.Vec(t) }),
+      Ot = e.Record({ username: e.Text, handicap: e.Opt(B) }),
+      jt = e.Record({ clubs: e.Vec(P), name: e.Text, yardageSetId: G }),
+      Mt = e.Variant({ Ok: e.Text, Err: e.Text });
+    return e.Service({
+      acceptFriendRequest: e.Func([a], [n], []),
+      acceptGameInvite: e.Func([o], [n], []),
+      addGameScore: e.Func([p], [n], []),
+      beginGame: e.Func([h], [n], []),
+      createGame: e.Func([x], [n], []),
+      createGolfCourse: e.Func([w], [n], []),
+      createGolfer: e.Func([S], [n], []),
+      createYardageSet: e.Func([I], [n], []),
+      deleteGolfCourse: e.Func([U], [n], []),
+      deleteYardageSet: e.Func([H], [n], []),
+      executeAddGolfCourse: e.Func([w], [], []),
+      executeUpdateGolfCourse: e.Func([F], [], []),
+      getAppStatus: e.Func([], [q], ["query"]),
+      getDummyGames: e.Func([$], [Ae], []),
+      getGame: e.Func([Te], [Le], []),
+      getGolfer: e.Func([Qe], [de], []),
+      getGolferBuzz: e.Func([$], [Pe], []),
+      getGolferGameHistory: e.Func([$], [Ue], []),
+      getMyGames: e.Func([$], [Ue], []),
+      getMyGolfer: e.Func([], [ze], []),
+      getUpcomingGames: e.Func([$], [Ye], []),
+      getYardageSet: e.Func([qe], [We], []),
+      listCourses: e.Func([$], [Se], []),
+      listFriendRequests: e.Func([$], [dt], []),
+      listGolfers: e.Func([Ht], [ut], []),
+      rejectFriendRequest: e.Func([Bt], [n], []),
+      saveGolferPicture: e.Func([we], [n], []),
+      sendFriendRequest: e.Func([Xe], [n], []),
+      sendGameInvites: e.Func([pt], [n], []),
+      updateGolfCourse: e.Func([F], [n], []),
+      updateGolfer: e.Func([Ot], [n], []),
+      updateYardageSet: e.Func([jt], [n], []),
+      validateAddGolfCourse: e.Func([w], [Mt], ["query"]),
+      validateUpdateGolfCourse: e.Func([F], [Mt], ["query"]),
+    });
+  },
+  md = "elbip-aiaaa-aaaal-qjfhq-cai",
+  bd = (e, t = {}) => {
+    const a = t.agent || new On({ ...t.agentOptions });
+    return (
+      t.agent &&
+        t.agentOptions &&
+        console.warn(
+          "Detected both agent and agentOptions passed to createActor. Ignoring agentOptions and proceeding with the provided agent.",
+        ),
+      co.createActor(Qt, { agent: a, canisterId: e, ...t.actorOptions })
+    );
+  };
+bd(md);
+class Ce {
+  static createActor(t, a = "", r = null, n = null) {
+    const s = { host: `https://${a}.icp-api.io`, identity: r };
+    n
+      ? n.agentOptions
+        ? (n.agentOptions.host = s.host)
+        : (n.agentOptions = s)
+      : (n = { agentOptions: s });
+    const o = new On({ ...n.agentOptions });
+    return co.createActor(t, { agent: o, canisterId: a, ...n?.actorOptions });
+  }
+  static getAgent(t = "", a = null, r = null) {
+    const n = { host: `https://${t}.icp-api.io`, identity: a };
+    return (
+      r
+        ? r.agentOptions
+          ? (r.agentOptions.host = n.host)
+          : (r.agentOptions = n)
+        : (r = { agentOptions: n }),
+      new On({ ...r.agentOptions })
+    );
+  }
+  static createIdentityActor(t, a) {
+    let r;
+    return new Promise((n, s) => {
+      r = t.subscribe((o) => {
+        o.identity && n(o.identity);
+      });
+    }).then((n) => (r(), Ce.createActor(Qt, a, n)));
+  }
+  static createGovernanceAgent(t, a) {
+    let r;
+    return new Promise((n, s) => {
+      r = t.subscribe((o) => {
+        o.identity && n(o.identity);
+      });
+    }).then((n) => (r(), Ce.createActor(Qt, a, n)));
+  }
+}
+var yd = { BACKEND_CANISTER_ID: "elbip-aiaaa-aaaal-qjfhq-cai" };
+class xd {
+  constructor() {
+    ke.sync();
+  }
+  async isAdmin() {
+    const a = await (
+      await Ce.createIdentityActor(ke, yd.BACKEND_CANISTER_ID)
+    ).isAdmin();
+    if (Me(a)) throw new Error("Failed to check is admin");
+    return a.ok;
+  }
+}
+var za = {
+  BACKEND_CANISTER_ID: "elbip-aiaaa-aaaal-qjfhq-cai",
+  FRONTEND_CANISTER_ID: "gw4gh-taaaa-aaaal-qjfia-cai",
+  DFX_NETWORK: "ic",
+};
+function _d() {
+  const { subscribe: e, set: t } = st(null);
+  async function a() {
+    let p = localStorage.getItem("user_profile_data");
+    if (p) {
+      const h = JSON.parse(p);
+      return t(h), console.log("Existing User"), !1;
+    }
+    try {
+      return await u(), console.log("New User"), !0;
+    } catch (h) {
+      throw (console.error("Error fetching user profile:", h), h);
+    }
+  }
+  async function r() {
+    return new xd().isAdmin();
+  }
+  async function n(p, h) {
+    try {
+      const c = await Ce.createIdentityActor(ke, za.BACKEND_CANISTER_ID ?? "");
+      try {
+        let g = { username: p, handicap: h };
+        return await c.createGolfer(g);
+      } catch (g) {
+        throw (console.error("Error updating profile picture:", g), g);
+      }
+    } catch (c) {
+      throw (console.error("Error creating user:", c), c);
+    }
+  }
+  async function s(p) {
+    try {
+      const c = await (
+        await Ce.createIdentityActor(ke, za.BACKEND_CANISTER_ID ?? "")
+      ).updateUserDetail(p);
+      return a(), c;
+    } catch (h) {
+      throw (console.error("Error updating user:", h), h);
+    }
+  }
+  async function o(p) {
+    try {
+      const c = i(p);
+      if (p.size > 1e3 * 1024) return null;
+      const g = new FileReader();
+      g.readAsArrayBuffer(p),
+        (g.onloadend = async () => {
+          const b = g.result,
+            x = new Uint8Array(b);
+          try {
+            const y = await Ce.createIdentityActor(
+              ke,
+              za.BACKEND_CANISTER_ID ?? "",
+            );
+            let k = { golferPicture: x, golferPictureExtension: c };
+            const E = await y.updateUserPicture(k);
+            if (Me(E)) {
+              console.error("Error updating profile picture");
+              return;
+            }
+            return await u(), E;
+          } catch (y) {
+            console.error(y);
+          }
+        });
+    } catch (h) {
+      throw (console.error("Error updating profile picture:", h), h);
+    }
+  }
+  function i(p) {
+    const h = p.name,
+      c = h.lastIndexOf(".");
+    return c !== -1 ? h.substring(c + 1) : "";
+  }
+  async function f(p) {
+    try {
+      return await (
+        await Ce.createIdentityActor(ke, za.BACKEND_CANISTER_ID ?? "")
+      ).isUsernameTaken(p);
+    } catch (h) {
+      throw (console.error("Error getting user:", h), h);
+    }
+  }
+  async function u() {
+    let h = await (
+      await Ce.createIdentityActor(ke, za.BACKEND_CANISTER_ID)
+    ).getMyGolfer();
+    if ((console.log("getProfileResponse: ", h), Me(h))) {
+      console.error("Error fetching user profile");
+      return;
+    }
+    let g = h.ok;
+    t(g);
+  }
+  return {
+    subscribe: e,
+    sync: a,
+    createUser: n,
+    updateUser: s,
+    cacheProfile: u,
+    updateProfilePicture: o,
+    isUsernameAvailable: f,
+    isAdmin: r,
+  };
+}
+const Yt = _d(),
+  wd = ls(Yt, (e) => {
+    try {
+      let t;
+      if (e && e.profilePicture) {
+        if (
+          Array.isArray(e.profilePicture) &&
+          e.profilePicture[0] instanceof Uint8Array
+        )
+          return (
+            (t = e.profilePicture[0]),
+            `data:image/${e.profilePictureType};base64,${Xs(t)}`
+          );
+        if (e.profilePicture instanceof Uint8Array)
+          return `data:${e.profilePictureType};base64,${Xs(e.profilePicture)}`;
+        if (typeof e.profilePicture == "string")
+          return e.profilePicture.startsWith("data:image")
+            ? e.profilePicture
+            : `data:${e.profilePictureType};base64,${e.profilePicture}`;
+      }
+      return "placeholder.png";
+    } catch (t) {
+      return console.error(t), "placeholder.png";
+    }
+  }),
+  Zs = (e) => "golfCourse.png",
+  kd = (e) => e;
+function _l(e) {
+  const t = e - 1;
+  return t * t * t + 1;
+}
+function Qs(e) {
+  const t = typeof e == "string" && e.match(/^\s*(-?[\d.]+)([^\s]*)\s*$/);
+  return t ? [parseFloat(t[1]), t[2] || "px"] : [e, "px"];
+}
+function dr(e, { delay: t = 0, duration: a = 400, easing: r = kd } = {}) {
+  const n = +getComputedStyle(e).opacity;
+  return { delay: t, duration: a, easing: r, css: (s) => `opacity: ${s * n}` };
+}
+function Ed(
+  e,
+  {
+    delay: t = 0,
+    duration: a = 400,
+    easing: r = _l,
+    x: n = 0,
+    y: s = 0,
+    opacity: o = 0,
+  } = {},
+) {
+  const i = getComputedStyle(e),
+    f = +i.opacity,
+    u = i.transform === "none" ? "" : i.transform,
+    p = f * (1 - o),
+    [h, c] = Qs(n),
+    [g, b] = Qs(s);
+  return {
+    delay: t,
+    duration: a,
+    easing: r,
+    css: (x, y) => `
+			transform: ${u} translate(${(1 - x) * h}${c}, ${(1 - x) * g}${b});
+			opacity: ${f - p * y}`,
+  };
+}
+function eo(
+  e,
+  {
+    delay: t = 0,
+    duration: a = 400,
+    easing: r = _l,
+    start: n = 0,
+    opacity: s = 0,
+  } = {},
+) {
+  const o = getComputedStyle(e),
+    i = +o.opacity,
+    f = o.transform === "none" ? "" : o.transform,
+    u = 1 - n,
+    p = i * (1 - s);
+  return {
+    delay: t,
+    duration: a,
+    easing: r,
+    css: (h, c) => `
+			transform: ${f} scale(${1 - u * c});
+			opacity: ${i - p * c}
+		`,
+  };
+}
+var Ad = O('<div class="local-spinner svelte-pvdm52"></div>');
+function to(e) {
+  var t = Ad();
+  A(e, t);
+}
+var Sd = { BACKEND_CANISTER_ID: "elbip-aiaaa-aaaal-qjfhq-cai" };
+class ao {
+  constructor() {}
+  async getAppStatus() {
+    const a = await (
+      await Ce.createActor(Qt, Sd.BACKEND_CANISTER_ID)
+    ).getAppStatus();
+    if (Me(a)) throw new Error("Failed to get app status");
+    return a.ok;
+  }
+}
+function Cd() {
+  const { subscribe: e, update: t } = st([]);
+  let a = 0;
+  function r(s) {
+    t((o) => [...o, { ...s, id: ++a }]);
+  }
+  function n(s) {
+    t((o) => o.filter((i) => i.id !== s));
+  }
+  return { subscribe: e, addToast: r, removeToast: n };
+}
+const pn = Cd(),
+  { addToast: rp } = pn;
+function Td() {
+  async function e() {
+    const a = await new ao().getAppStatus();
+    if (Me(a)) throw new Error("Error fetching app status");
+    let r = a;
+    if (!localStorage.getItem("version")) {
+      localStorage.setItem("version", r.version);
+      return;
+    }
+    r.version !== localStorage.getItem("version") &&
+      pn.addToast({
+        message: `ICFC V${r.version} is now available. Click here to reload:`,
+        type: "frontend-update",
+      });
+  }
+  async function t() {
+    const a = await new ao().getAppStatus();
+    if (Me(a)) throw new Error("Error fetching app status");
+    let r = a;
+    localStorage.setItem("version", r.version),
+      window.location.replace(`${window.location.pathname}?v=${r.version}`);
+  }
+  return { checkServerVersion: e, updateFrontend: t };
+}
+const wl = Td(),
+  Nd = async () => Bd(),
+  Bd = async () => {
+    await ke.signOut(), window.location.reload();
+  },
+  Od = async () => {
+    const e = await ft(
+        () => Promise.resolve().then(() => Uv),
+        void 0,
+        import.meta.url,
+      ),
+      t = new e.default();
+    return (
+      (t.onmessage = async ({ data: a }) => {
+        const { msg: r, data: n } = a;
+        switch (r) {
+          case "signOutIdleTimer":
+            await Nd();
+            return;
+          case "delegationRemainingTime":
+            pd.set(n?.authRemainingTime);
+            return;
+        }
+      }),
+      {
+        syncAuthIdle: (a) => {
+          if (!a.identity) {
+            t.postMessage({ msg: "stopIdleTimer" });
+            return;
+          }
+          t.postMessage({ msg: "startIdleTimer" });
+        },
+      }
+    );
+  };
+var Rd = O('<button class="brand-button">Update Website</button>'),
+  Pd = O(
+    '<div><span> </span> <!> <button class="font-bold ml-4">&times;</button></div>',
+  );
+function Id(e, t) {
+  fe(t, !1);
+  let a = L(t, "toast", 8);
+  it(() => {
+    a().duration && a().duration > 0 && setTimeout(r, a().duration);
+  });
+  function r() {
+    pn.removeToast(a().id);
+  }
+  function n() {
+    wl.updateFrontend();
+  }
+  _e();
+  var s = Pd(),
+    o = v(s),
+    i = v(o, !0);
+  d(o);
+  var f = m(o, 2);
+  {
+    var u = (h) => {
+      var c = Rd();
+      R("click", c, n), A(h, c);
+    };
+    j(f, (h) => {
+      a().type == "frontend-update" && h(u);
+    });
+  }
+  var p = m(f, 2);
+  d(s),
+    V(() => {
+      se(
+        s,
+        1,
+        `fixed top-0 left-0 right-0 z-[9999] p-4 text-white shadow-md flex justify-between items-center bg-${a().type}`,
+      ),
+        D(i, a().message);
+    }),
+    R("click", p, r),
+    A(e, s),
+    ve();
+}
+var Gd = O("<div><!></div>");
+function jd(e) {
+  const [t, a] = fa(),
+    r = () => At(pn, "$toasts", t);
+  var n = pe(),
+    s = J(n);
+  xe(
+    s,
+    1,
+    r,
+    (o) => o.id,
+    (o, i) => {
+      var f = Gd(),
+        u = v(f);
+      Id(u, {
+        get toast() {
+          return l(i);
+        },
+      }),
+        d(f),
+        oa(
+          1,
+          f,
+          () => Ed,
+          () => ({ y: 20, duration: 200 }),
+        ),
+        A(o, f);
+    },
+  ),
+    A(e, n),
+    a();
+}
+const Md = () => {
+    const e = Vt;
+    return {
+      page: { subscribe: e.page.subscribe },
+      navigating: { subscribe: e.navigating.subscribe },
+      updated: e.updated,
+    };
+  },
+  xs = {
+    subscribe(e) {
+      return Md().page.subscribe(e);
+    },
+  };
+var Fd = O(
+    '<div class="nav-item expanded svelte-htsp64"><button> </button></div>',
+  ),
+  $d = O(
+    '<div class="nav-item expanded svelte-htsp64"><button class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow">SIGN OUT</button></div>',
+  ),
+  Ud = O(
+    '<div class="flex min-h-screen flex-col relative nav-overlay svelte-htsp64"><div class="absolute top-4 left-4 z-10"><button class="bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md">-</button></div> <div class="absolute top-4 right-4 z-10"><button><span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span></button></div> <div class="nav-content flex flex-col items-start pl-10 svelte-htsp64"><!> <!></div> <div class="flex justify-between items-center p-5 text-xs lg:text-base"><div class="social-links svelte-htsp64"><a href="https://twitter.com" target="_blank" class="svelte-htsp64">TWITTER</a> <a href="https://oc.app" target="_blank" class="svelte-htsp64">OPENCHAT</a> <a href="https://youtube.com" target="_blank" class="svelte-htsp64">YOUTUBE</a></div> <div><img src="placeholder.png" alt="Profile" class="w-12 h-12 rounded-full"></div></div></div>',
+  );
+function Dd(e, t) {
+  fe(t, !1);
+  const [a, r] = fa(),
+    n = () => At(xs, "$page", a),
+    s = () => At(p, "$navItems", a),
+    o = () => At(xl, "$authSignedInStore", a);
+  let i = L(t, "expanded", 8, !1),
+    f = L(t, "selectedRoute", 12, "home"),
+    u = L(t, "toggleNav", 8);
+  const p = st([
+    { name: "HOME", route: "home" },
+    { name: "MY GAMES", route: "games" },
+    { name: "WHITEPAPER", route: "whitepaper" },
+    { name: "GAME RULES", route: "game-rules" },
+    { name: "TEAM", route: "team" },
+  ]);
+  function h(E) {
+    if ((f(E), u()(), E === "home")) {
+      Ga("/");
+      return;
+    }
+    Ga(`/${E}`);
+  }
+  function c() {
+    u()();
+  }
+  function g() {
+    u()(), Ga("/");
+  }
+  function b() {
+    ke.signOut();
+  }
+  Pt(
+    () => n(),
+    () => {
+      switch (n().url.pathname) {
+        case "/":
+          f("home");
+          break;
+        case "/whitepaper":
+          f("whitepaper");
+          break;
+        case "/team":
+          f("team");
+          break;
+        case "/game-rules":
+          f("game-rules");
+          break;
+        case "/games":
+          f("games");
+          break;
+        default:
+          f("home");
+          break;
+      }
+    },
+  ),
+    Ha(),
+    _e();
+  var x = pe(),
+    y = J(x);
+  {
+    var k = (E) => {
+      var C = Ud(),
+        _ = v(C),
+        w = v(_);
+      d(_);
+      var B = m(_, 2),
+        S = v(B);
+      d(B);
+      var T = m(B, 2),
+        P = v(T);
+      xe(
+        P,
+        1,
+        s,
+        (G) => G.route,
+        (G, H) => {
+          var F = Fd(),
+            Y = v(F),
+            q = v(Y, !0);
+          d(Y),
+            d(F),
+            V(() => {
+              se(
+                Y,
+                1,
+                `text-3xl lg:text-6xl font-bold condensed ${(f() === l(H).route ? "text-white" : "text-black") ?? ""}`,
+              ),
+                D(q, l(H).name);
+            }),
+            R("click", Y, () => h(l(H).route)),
+            A(G, F);
+        },
+      );
+      var I = m(P, 2);
+      {
+        var U = (G) => {
+          var H = $d(),
+            F = v(H);
+          d(H), R("click", F, b), A(G, H);
+        };
+        j(I, (G) => {
+          o() && G(U);
+        });
+      }
+      d(T),
+        Ee(2),
+        d(C),
+        R("click", w, c),
+        R("click", S, g),
+        oa(
+          1,
+          C,
+          () => dr,
+          () => ({ duration: 300 }),
+        ),
+        oa(
+          2,
+          C,
+          () => dr,
+          () => ({ duration: 300 }),
+        ),
+        A(E, C);
+    };
+    j(y, (E) => {
+      i() && E(k);
+    });
+  }
+  A(e, x), ve(), r();
+}
+var Vd = O(
+    '<div class="bg-BrandYellow flex-none relative h-[50px] mt-auto"><div class="absolute z-10 bottom-4 left-4"><a href="/whitepaper" class="text-sm font-medium text-black">WHITEPAPER |</a> <a href="/team" class="text-sm font-medium text-black">TEAM |</a> <a target="_blank" href="https://github.com/jamesbeadle/golfpad" class="text-sm font-medium text-black">GITHUB</a></div></div>',
+  ),
+  Hd = O(
+    '<div class="relative flex flex-col min-h-screen"><div class="flex-none h-[80px] relative"><div class="absolute z-10 top-4 left-4"><button class="flex items-center justify-center w-12 h-12 text-2xl font-bold text-white bg-black rounded-full shadow-md">+</button></div> <div class="absolute z-10 top-4 right-4"><a href="/"><span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span></a></div></div> <!> <div><!></div> <!></div> <!>',
+    1,
+  ),
+  Yd = O('<div class="flex flex-col min-h-screen default-text"><!></div>'),
+  qd = O("<div><!></div>");
+function Gt(e, t) {
+  fe(t, !1);
+  const [a, r] = fa(),
+    n = () => At(ke, "$authStore", a),
+    s = M();
+  let o = M(),
+    i = M(!0),
+    f = !1,
+    u = "home",
+    p = M(!1);
+  const h = async () => {
+    await Promise.all([c()]), N(o, await Od());
+  };
+  async function c() {
+    try {
+      await ke.sync();
+    } catch (y) {
+      console.error(y);
+    } finally {
+    }
+  }
+  it(async () => {
+    try {
+      ke.subscribe((y) => {
+        (f = y.identity !== null && y.identity !== void 0), Yt.sync();
+      }),
+        await wl.checkServerVersion();
+    } catch {
+    } finally {
+      N(p, !1), N(i, !1);
+    }
+  });
+  async function g() {
+    N(p, !l(p));
+  }
+  Pt(
+    () => zc,
+    () => {
+      N(s, window.location.pathname === "/");
+    },
+  ),
+    Pt(
+      () => (l(o), n()),
+      () => {
+        l(o), n(), l(o)?.syncAuthIdle(n());
+      },
+    ),
+    Pt(
+      () => n(),
+      () => {
+        (() => {
+          if (n() === void 0) return;
+          document.querySelector("body > #app-spinner")?.remove();
+        })();
+      },
+    ),
+    Ha(),
+    _e();
+  var b = pe();
+  R("storage", Pn, c);
+  var x = J(b);
+  ji(
+    x,
+    h,
+    (y) => {
+      var k = qd(),
+        E = v(k);
+      to(E), d(k), oa(1, k, () => dr), A(y, k);
+    },
+    (y, k) => {
+      var E = Yd(),
+        C = v(E);
+      {
+        var _ = (B) => {
+            to(B);
+          },
+          w = (B) => {
+            var S = Hd(),
+              T = J(S),
+              P = v(T),
+              I = v(P),
+              U = v(I);
+            d(I), Ee(2), d(P);
+            var G = m(P, 2);
+            Dd(G, {
+              get expanded() {
+                return l(p);
+              },
+              selectedRoute: u,
+              toggleNav: g,
+            });
+            var H = m(G, 2),
+              F = v(H);
+            Ko(F, t, "default", {}), d(H);
+            var Y = m(H, 2);
+            {
+              var q = (z) => {
+                var K = Vd();
+                A(z, K);
+              };
+              j(Y, (z) => {
+                l(s) || z(q);
+              });
+            }
+            d(T);
+            var $ = m(T, 2);
+            jd($),
+              V(() =>
+                se(
+                  H,
+                  1,
+                  `${(l(s) ? "bg-BrandYellow  items-center justify-center relative" : "bg-white") ?? ""} flex-1 flex`,
+                ),
+              ),
+              R("click", U, g),
+              A(B, S);
+          };
+        j(C, (B) => {
+          l(i) ? B(_) : B(w, !1);
+        });
+      }
+      d(E), A(y, E);
+    },
+  ),
+    A(e, b),
+    ve(),
+    r();
+}
+var Wd = O(
+    '<button class="px-10 py-3 text-sm font-semibold rounded shadow-lg md:px-12 md:text-lg bg-BrandForest text-BrandYellow">CONNECT</button>',
+  ),
+  Ld = O(
+    '<img alt="Profile" class="fixed w-12 h-12 rounded-full bottom-3 right-3" aria-label="Toggle Profile"> <button class="px-10 py-3 text-sm font-semibold rounded shadow-lg md:px-12 md:text-lg bg-BrandForest text-BrandYellow">PLAY</button>',
+    1,
+  ),
+  zd = O(
+    '<div class="z-10 px-4 mb-20 text-center"><h1 class="mb-1 font-bold text-BrandForest">WELCOME TO <span class="condensed">GOLFPAD</span></h1> <h2 class="mx-16 mb-6 text-5xl font-black leading-tight text-black md:text-6xl condensed">THE FUTURE OF GOLF STARTS HERE</h2> <!> <!></div> <div class="absolute bottom-0 left-0 z-0 w-full"><img src="golfball_mobile.png" alt="Golf Ball" class="object-cover w-full h-auto md:hidden"> <img src="golfball.png" alt="Golf Ball" class="hidden object-cover w-full md:flex"></div>',
+    1,
+  );
+function Kd(e, t) {
+  fe(t, !1);
+  const [a, r] = fa(),
+    n = () => At(xl, "$authSignedInStore", a),
+    s = () => At(wd, "$userGetProfilePicture", a);
+  function o() {
+    let f = { domain: void 0 };
+    ke.signIn(f);
+  }
+  function i() {
+    ke.signOut();
+  }
+  _e(),
+    Gt(e, {
+      children: (f, u) => {
+        var p = zd(),
+          h = J(p),
+          c = m(v(h), 4);
+        {
+          var g = (y) => {
+            var k = Wd();
+            R("click", k, o), A(y, k);
+          };
+          j(c, (y) => {
+            n() || y(g);
+          });
+        }
+        var b = m(c, 2);
+        {
+          var x = (y) => {
+            var k = Ld(),
+              E = J(k),
+              C = m(E, 2);
+            V(() => Q(E, "src", s())), R("click", C, i), A(y, k);
+          };
+          j(b, (y) => {
+            n() && y(x);
+          });
+        }
+        d(h), Ee(2), A(f, p);
+      },
+      $$slots: { default: !0 },
+    }),
+    ve(),
+    r();
+}
+const Jd = Object.freeze(
+  Object.defineProperty(
+    { __proto__: null, component: Kd },
+    Symbol.toStringTag,
+    { value: "Module" },
+  ),
+);
+var Xd = O("<span> </span>"),
+  Zd = O("<span> </span>"),
+  Qd = O('<span class="text-gray-400"> </span>'),
+  eu = O(
+    '<input type="text" class="w-full p-2 border-b border-gray-300" placeholder="Search...">',
+  ),
+  tu = O(
+    '<div class="p-2 cursor-pointer hover:bg-gray-200" role="button" tabindex="0"> <!></div>',
+  ),
+  au = O(
+    '<div class="absolute z-10 w-full mt-1 overflow-auto bg-white border border-gray-300 rounded shadow max-h-60"><!> <!></div>',
+  ),
+  ru = O(
+    '<div class="relative w-full"><button type="button" class="w-full p-2 text-left border border-gray-300 rounded-md cursor-pointer"><!></button> <!></div>',
+  );
+function ar(e, t) {
+  fe(t, !1);
+  const a = M();
+  let r = L(t, "items", 24, () => []),
+    n = L(t, "bindSelected", 12, null),
+    s = L(t, "placeholder", 8, "Select an Option"),
+    o = L(t, "multiple", 8, !1),
+    i = L(t, "searchEnabled", 8, !1),
+    f = M(""),
+    u = M(!1);
+  const p = va();
+  function h(w) {
+    o()
+      ? Array.isArray(n())
+        ? n().find((B) => B.value === w.value)
+          ? n(n().filter((B) => B.value !== w.value))
+          : n([...n(), w])
+        : n([w])
+      : (n(w), N(u, !1)),
+      p("select", { value: o() ? n() : w });
+  }
+  function c(w) {
+    return o() && Array.isArray(n())
+      ? !!n().find((B) => B.value === w.value)
+      : !o() && n() && typeof n() == "object" && "value" in n()
+        ? n().value === w.value
+        : !1;
+  }
+  function g() {
+    N(u, !l(u));
+  }
+  Pt(
+    () => (qr(r()), l(f)),
+    () => {
+      N(
+        a,
+        r().filter(
+          (w) =>
+            w && w.name && w.name.toLowerCase().includes(l(f).toLowerCase()),
+        ),
+      );
+    },
+  ),
+    Ha(),
+    _e();
+  var b = ru(),
+    x = v(b),
+    y = v(x);
+  {
+    var k = (w) => {
+        var B = Xd(),
+          S = v(B, !0);
+        d(B),
+          V(
+            (T) => D(S, T),
+            [
+              () =>
+                n()
+                  .map((T) => T.name)
+                  .join(", "),
+            ],
+            Oe,
+          ),
+          A(w, B);
+      },
+      E = (w) => {
+        var B = pe(),
+          S = J(B);
+        {
+          var T = (I) => {
+              var U = Zd(),
+                G = v(U, !0);
+              d(U), V(() => D(G, n().name)), A(I, U);
+            },
+            P = (I) => {
+              var U = Qd(),
+                G = v(U, !0);
+              d(U), V(() => D(G, s())), A(I, U);
+            };
+          j(
+            S,
+            (I) => {
+              !o() && n() && typeof n() == "object" && "name" in n()
+                ? I(T)
+                : I(P, !1);
+            },
+            !0,
+          );
+        }
+        A(w, B);
+      };
+    j(y, (w) => {
+      o() && Array.isArray(n()) && n().length > 0 ? w(k) : w(E, !1);
+    });
+  }
+  d(x);
+  var C = m(x, 2);
+  {
+    var _ = (w) => {
+      var B = au(),
+        S = v(B);
+      {
+        var T = (I) => {
+          var U = eu();
+          Ne(U),
+            Be(
+              U,
+              () => l(f),
+              (G) => N(f, G),
+            ),
+            A(I, U);
+        };
+        j(S, (I) => {
+          i() && I(T);
+        });
+      }
+      var P = m(S, 2);
+      xe(
+        P,
+        1,
+        () => l(a),
+        (I) => I.value,
+        (I, U) => {
+          var G = tu(),
+            H = v(G),
+            F = m(H);
+          {
+            var Y = (q) => {
+              var $ = _a("✔");
+              A(q, $);
+            };
+            j(F, (q) => {
+              c(l(U)) && q(Y);
+            });
+          }
+          d(G),
+            V(() => D(H, `${l(U).name ?? ""} `)),
+            R("click", G, () => h(l(U))),
+            R("keydown", G, (q) => q.key === "Enter" && h(l(U))),
+            A(I, G);
+        },
+      ),
+        d(B),
+        A(w, B);
+    };
+    j(C, (w) => {
+      l(u) && w(_);
+    });
+  }
+  d(b),
+    R("click", x, g),
+    R("keydown", x, (w) => w.key === "Enter" && g()),
+    A(e, b),
+    ve();
+}
+var Nn = { BACKEND_CANISTER_ID: "elbip-aiaaa-aaaal-qjfhq-cai" };
+class Tr {
+  constructor() {
+    Na(this, "actor");
+    this.actor = Ce.createActor(Qt, Nn.BACKEND_CANISTER_ID);
+  }
+  async getCourse(t) {
+    const a = await this.actor.getCourse(t);
+    if (Me(a)) throw new Error("Failed to get course");
+    return a.ok;
+  }
+  async getCourses(t) {
+    const a = await this.actor.listCourses(t);
+    if (Me(a)) throw new Error("Failed to get courses");
+    return a.ok;
+  }
+  async createCourse(t) {
+    const r = await (
+      await Ce.createIdentityActor(ke, Nn.BACKEND_CANISTER_ID)
+    ).createGolfCourse(t);
+    if ((console.log("Result: ", r), Me(r)))
+      throw new Error("Error Creating Course");
+    return r;
+  }
+  async updateCourse(t) {
+    const r = await (
+      await Ce.createIdentityActor(ke, Nn.BACKEND_CANISTER_ID)
+    ).updateGolfCourse(t);
+    if (Me(r)) throw new Error("Error Updating Course");
+  }
+}
+function nu() {
+  const { subscribe: e, set: t } = st([]);
+  async function a(o) {
+    return await new Tr().getCourse(o);
+  }
+  async function r(o) {
+    return (await new Tr().getCourses(o)).courses;
+  }
+  async function n(o) {
+    return await new Tr().createCourse(o);
+  }
+  async function s(o) {
+    return await new Tr().updateCourse(o);
+  }
+  return {
+    subscribe: e,
+    setCourse: (o) => t(o),
+    getCourse: a,
+    getCourses: r,
+    createCourse: n,
+    updateCourse: s,
+  };
+}
+const ja = nu();
+var su = ns(
+  '<svg viewBox="0 0 63 63" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.125 22.3125C13.125 20.139 14.889 18.375 17.0625 18.375C19.236 18.375 21 20.139 21 22.3125C21 24.4886 19.236 26.25 17.0625 26.25C14.889 26.25 13.125 24.4886 13.125 22.3125ZM36.75 23.625L30.1376 34.125L23.625 28.98L13.125 44.625H49.875L36.75 23.625ZM57.75 13.125V49.875H5.25V13.125H57.75ZM63 7.875H0V55.125H63V7.875Z"></path></svg>',
+);
+function _s(e, t) {
+  fe(t, !1);
+  let a = L(t, "className", 8, "");
+  const r = "";
+  var n = su(),
+    s = v(n);
+  return (
+    Q(s, "fill", r),
+    d(n),
+    V(() => se(n, 0, ss(a()))),
+    A(e, n),
+    Li(t, "fill", r),
+    ve({ fill: r })
+  );
+}
+var ou = O(
+    '<span class="px-1.5 py-0.5 text-2xs font-bold text-white rounded-full"> </span>',
+  ),
+  lu = O(
+    '<span class="px-2 py-1 text-xs font-bold text-white rounded-full"> </span>',
+  ),
+  iu = O(
+    '<button type="button"><div class="absolute flex flex-wrap gap-1 top-2 right-2 md:hidden"></div> <div class="flex items-center gap-2 md:gap-4"><div><span class="text-xs text-BrandDarkGray md:text-sm">ID</span> <h3 class="text-base text-black condensed md:text-lg"> </h3></div> <img src="golfCourse.png" alt="Course Thumbnail" class="w-8 h-8 rounded md:w-10 md:h-10"></div> <div class="flex items-center justify-between flex-1"><h3 class="text-base text-black condensed md:text-lg"> </h3> <div class="flex-wrap hidden gap-2 md:flex"></div></div></button>',
+  ),
+  cu = O(
+    '<div class="flex flex-col gap-3 mb-3 text-black md:flex-row md:gap-4 md:mb-4"><div class="w-full md:w-1/2"><label for="courseName" class="block mb-1 text-xs font-medium text-BrandDarkGray md:text-sm">Course Name</label> <input id="courseName" type="text" placeholder="Search"></div> <div class="w-full md:w-1/2"><label for="country" class="block mb-1 text-xs font-medium text-BrandDarkGray md:text-sm">Country</label> <!></div></div> <div class="space-y-2 md:space-y-4"></div>',
+    1,
+  ),
+  du = O(
+    '<div class="flex items-center justify-center w-12 h-12 rounded bg-BrandLightGray"><!></div>',
+  ),
+  uu = O(
+    '<div class="flex gap-4"><div class="flex-1"><label for="teeName" class="block mb-2 text-sm font-bold">TEE NAME</label> <input id="teeName" type="text" class="w-full p-3 text-black bg-white border border-gray-300 rounded" placeholder="Enter"></div> <div class="flex-1"><label for="teeColor" class="block mb-2 text-sm font-bold">COLOR</label> <input id="teeColor" type="text" class="w-full p-3 text-black bg-white border border-gray-300 rounded" placeholder="Enter"></div></div>',
+  ),
+  fu = O(
+    '<div class="flex flex-col space-y-6"><div class="flex flex-col gap-4"><div class="basis-1/2"><label for="teeName" class="block mb-2 text-sm font-bold">TEE NAME</label> <input id="teeName" type="text" class="w-full p-3 text-black bg-white border border-gray-300 rounded" placeholder="Enter"></div> <div class="basis-1/2"><label for="teeColorPicker" class="block mb-2 text-sm font-bold">COLOR</label> <div class="flex items-center gap-2"><div class="flex items-center justify-center w-10 h-10 border border-gray-300 rounded"><input id="teeColorPicker" type="color" class="w-full h-full border-none cursor-pointer"></div> <input type="text" class="flex-1 p-3 text-black bg-white border border-gray-300 rounded" placeholder="Hex code"></div></div></div></div>',
+  ),
+  vu = O(
+    '<tr class="hover:bg-BrandLightGray"><td class="p-4 text-lg border-b condensed"></td><td class="p-4 border-b"><input type="text" placeholder="Enter"></td><td class="p-4 border-b"><input type="text" placeholder="Enter"></td><td class="p-4 border-b"><input type="text" placeholder="Enter"></td></tr>',
+  ),
+  pu = O(
+    '<div class="overflow-x-auto"><div class="overflow-y-auto max-h-[50vh]"><table class="min-w-full bg-white border-collapse"><thead><tr><th class="p-4 text-xl text-left border-b condensed text-Black">HOLE</th><th class="p-4 text-xl text-left border-b condensed text-Black">PAR</th><th class="p-4 text-xl text-left border-b condensed text-Black">S.I.</th><th class="p-4 text-xl text-left border-b condensed text-Black">YARDS</th></tr></thead><tbody></tbody></table></div></div>',
+  ),
+  gu = O(
+    '<div class="flex flex-col space-y-6"><div class="flex gap-4"><div class="basis-4/5"><label for="courseNameInput" class="block mb-2 text-sm font-bold">COURSE NAME</label> <input id="courseNameInput" type="text" class="w-full p-3 text-black bg-white border border-gray-300 rounded" placeholder="Enter Course Name"></div> <div class="basis-1/5"><label for="courseImageUpload" class="block mb-2 text-sm font-bold">COURSE IMAGE</label> <div class="flex items-center gap-1"><!> <div class="flex items-center gap-2"><button id="courseImageUpload" type="button" class="flex items-center px-6 py-3 text-sm font-bold rounded text-BrandForest bg-BrandYellow hover:bg-yellow-600">UPLOAD</button> <span class="text-xs text-BrandDarkGray">800px x 800px min</span></div></div></div></div> <div class="flex flex-col gap-4"><div class="flex flex-col gap-4 items-left"><div class="flex items-center gap-4"><button>BASIC</button> <button>ADVANCED</button></div> <div class="flex flex-row justify-between gap-4"><div class="flex flex-col px-2"><label for="addTee" class="block mb-2 text-sm font-bold">TEES</label> <button id="addTee" type="button" class="flex items-center justify-center w-8 h-8 text-2xl font-bold rounded-full text-BrandForest bg-BrandYellow">+</button></div> <div><label for="copyFromTeeGroup" class="block mb-2 text-sm font-bold">COPY FROM EXISTING TEE GROUP</label> <!></div></div></div> <!> <!> <div class="flex justify-end"><button type="button">CREATE TEE</button></div> <!></div></div>',
+  ),
+  hu = O(
+    '<div class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-0"><div class="relative z-10 w-full md:w-[80vw] lg:w-[60vw] h-[95vh] overflow-y-auto bg-white rounded-lg shadow-xl"><div class="flex items-center justify-between p-3 md:p-4"><h2 class="text-2xl text-black md:text-3xl condensed">ADD HOME COURSE</h2> <button class="flex items-center justify-center w-8 h-8 text-base font-bold text-white bg-black rounded-full shadow-md" type="button" aria-label="Close">✕</button></div> <div class="px-3 pt-2 pb-2 md:px-6 md:pt-4"><p class="text-sm md:text-base text-BrandDarkGray">Your home course should be the one you play at most frequently, serving as your default for tracking scores.</p></div> <div class="flex px-3 pt-4 md:px-6"><button>SEARCH</button> <button>ADD CUSTOM</button></div> <div class="p-3 md:p-6"><!></div> <div class="flex justify-end gap-3 p-3 border-t md:p-4 md:border-t-0"><button class="flex-1 px-4 py-2 transition-all duration-200 ease-in-out rounded-lg md:flex-initial md:px-6 text-BrandForest bg-BrandYellow hover:bg-yellow-400 focus:outline-none">CANCEL</button> <button type="button">ADD COURSE</button></div></div></div>',
+  );
+function kl(e, t) {
+  fe(t, !1);
+  let a = L(t, "isOpen", 8, !1),
+    r = L(t, "selectedCourse", 12, null);
+  const n = va();
+  let s = M([]),
+    o = null,
+    i = M("ADD_CUSTOM"),
+    f = M("ADVANCED"),
+    u = M(""),
+    p = M("Test Golf Club"),
+    h = [],
+    c = M({
+      name: "Championship",
+      colour: "#000000",
+      strokeIndex: 0,
+      added: BigInt(Date.now()),
+      holes: Array(18)
+        .fill(null)
+        .map((S, T) => ({
+          number: T + 1,
+          name: `Hole ${T + 1}`,
+          images: [],
+          tees: [
+            {
+              name: "Championship",
+              colour: "#000000",
+              yardage: BigInt(350 + T * 10),
+              par: 4,
+              strokeIndex: T + 1,
+            },
+          ],
+        })),
+    }),
+    g = M(
+      Array(18)
+        .fill(null)
+        .map((S, T) => ({
+          name: "Championship",
+          colour: "#000000",
+          yardage: 350 + T * 10,
+          par: 4,
+          strokeIndex: T + 1,
+        })),
+    ),
+    b = null,
+    x = M(!1);
+  it(async () => {
+    try {
+      const S = { limit: BigInt(10), offset: BigInt(0) };
+      N(s, await ja.getCourses(S));
+    } catch (S) {
+      console.error("Error fetching courses:", S);
+    }
+  });
+  function y() {
+    n("close");
+  }
+  async function k() {
+    try {
+      if (l(i) === "SEARCH" && r()) n("courseSelect", { course: r() }), y();
+      else if (l(i) === "ADD_CUSTOM") {
+        if (!l(p) || !l(c).name || !l(c).colour) {
+          console.error(
+            "Course name, tee group name, and tee group color are required",
+          );
+          return;
+        }
+        if (l(f) === "ADVANCED" && !E()) {
+          console.error("All 18 holes must have complete data");
+          return;
+        }
+        const S = {
+          name: l(p),
+          initialTeeGroup: {
+            name: l(c).name,
+            colour: l(c).colour,
+            added: BigInt(Date.now()),
+            strokeIndex: l(c).strokeIndex ?? 0,
+            holes:
+              l(f) === "ADVANCED"
+                ? l(c).holes
+                : Array(18)
+                    .fill(null)
+                    .map((U, G) => ({
+                      number: G + 1,
+                      name: `Hole ${G + 1}`,
+                      images: [],
+                      tees: [
+                        {
+                          name: l(c).name || "",
+                          colour: l(c).colour || "",
+                          yardage: BigInt(0),
+                          par: 4,
+                          strokeIndex: G + 1,
+                        },
+                      ],
+                    })),
+          },
+          holes: [],
+        };
+        console.log("Creating Golf Course: ", S), await ja.createCourse(S);
+        const T = { limit: BigInt(10), offset: BigInt(0) },
+          I = (await ja.getCourses(T)).find((U) => U.name === l(p));
+        I && n("courseSelect", { course: I }), y();
+      }
+    } catch (S) {
+      console.error("Error saving course:", S);
+    }
+  }
+  function E() {
+    return l(c).holes.length !== 18
+      ? (console.log("Not enough holes:", l(c).holes.length), !1)
+      : l(c).holes.every((S, T) =>
+          S.number !== T + 1
+            ? (console.log(`Invalid hole number at index ${T}`), !1)
+            : !S.tees || S.tees.length === 0
+              ? (console.log(`No tees for hole ${S.number}`), !1)
+              : S.tees.every((P) => {
+                  const I =
+                    P.name &&
+                    P.colour &&
+                    typeof P.yardage < "u" &&
+                    typeof P.par < "u" &&
+                    typeof P.strokeIndex < "u";
+                  return (
+                    I ||
+                      console.log(`Invalid tee data for hole ${S.number}:`, P),
+                    I
+                  );
+                }),
+        );
+  }
+  function C() {
+    return !l(p) || !l(c).name || !l(c).colour
+      ? !1
+      : l(f) === "ADVANCED"
+        ? E()
+        : !0;
+  }
+  _e();
+  var _ = pe(),
+    w = J(_);
+  {
+    var B = (S) => {
+      var T = hu(),
+        P = v(T),
+        I = v(P),
+        U = m(v(I), 2);
+      d(I);
+      var G = m(I, 4),
+        H = v(G);
+      let F;
+      var Y = m(H, 2);
+      let q;
+      d(G);
+      var $ = m(G, 2),
+        z = v($);
+      {
+        var K = (re) => {
+            var ce = cu(),
+              He = J(ce),
+              Z = v(He),
+              be = m(v(Z), 2);
+            Ne(be);
+            let Ae;
+            d(Z);
+            var Te = m(Z, 2),
+              Le = m(v(Te), 2);
+            ar(Le, {
+              items: [
+                { value: "us", name: "United States" },
+                { value: "uk", name: "United Kingdom" },
+                { value: "ca", name: "Canada" },
+                { value: "au", name: "Australia" },
+              ],
+              bindSelected: o,
+              placeholder: "Select Country",
+              searchEnabled: !1,
+              multiple: !1,
+            }),
+              d(Te),
+              d(He);
+            var Qe = m(He, 2);
+            xe(
+              Qe,
+              5,
+              () =>
+                l(s).filter((Re) =>
+                  Re.name.toLowerCase().includes(l(u).toLowerCase()),
+                ),
+              je,
+              (Re, ne) => {
+                var de = iu();
+                let Fe;
+                var Pe = v(de);
+                xe(
+                  Pe,
+                  5,
+                  () => l(ne).tees,
+                  je,
+                  (Ve, We) => {
+                    var Ke = ou(),
+                      X = v(Ke, !0);
+                    d(Ke),
+                      V(() => {
+                        Q(
+                          Ke,
+                          "style",
+                          `background-color: ${l(We).colour ?? ""}`,
+                        ),
+                          D(X, l(We).name);
+                      }),
+                      A(Ve, Ke);
+                  },
+                ),
+                  d(Pe);
+                var Ie = m(Pe, 2),
+                  Ge = v(Ie),
+                  Ue = m(v(Ge), 2),
+                  et = v(Ue, !0);
+                d(Ue), d(Ge), Ee(2), d(Ie);
+                var ze = m(Ie, 2),
+                  De = v(ze),
+                  Ye = v(De, !0);
+                d(De);
+                var qe = m(De, 2);
+                xe(
+                  qe,
+                  5,
+                  () => l(ne).tees,
+                  je,
+                  (Ve, We) => {
+                    var Ke = lu(),
+                      X = v(Ke, !0);
+                    d(Ke),
+                      V(() => {
+                        Q(
+                          Ke,
+                          "style",
+                          `background-color: ${l(We).colour ?? ""}`,
+                        ),
+                          D(X, l(We).name);
+                      }),
+                      A(Ve, Ke);
+                  },
+                ),
+                  d(qe),
+                  d(ze),
+                  d(de),
+                  V(() => {
+                    (Fe = se(
+                      de,
+                      1,
+                      "relative flex flex-col w-full gap-2 p-2 text-left border rounded-lg cursor-pointer md:flex-row md:items-center md:gap-4 md:p-4 hover:bg-BrandLightGray",
+                      null,
+                      Fe,
+                      { "bg-BrandLightGray": r() === l(ne) },
+                    )),
+                      D(et, l(ne).courseId),
+                      D(Ye, l(ne).name);
+                  }),
+                  R("click", de, () => r(l(ne))),
+                  R("keydown", de, (Ve) => Ve.key === "Enter" && r(l(ne))),
+                  A(Re, de);
+              },
+            ),
+              d(Qe),
+              V(
+                () =>
+                  (Ae = se(
+                    be,
+                    1,
+                    "w-full p-2 text-sm text-black rounded md:text-base",
+                    null,
+                    Ae,
+                    { "bg-BrandLightGray": !l(u), "bg-white": l(u) },
+                  )),
+              ),
+              Be(
+                be,
+                () => l(u),
+                (Re) => N(u, Re),
+              ),
+              A(re, ce);
+          },
+          oe = (re) => {
+            var ce = pe(),
+              He = J(ce);
+            {
+              var Z = (be) => {
+                var Ae = gu(),
+                  Te = v(Ae),
+                  Le = v(Te),
+                  Qe = m(v(Le), 2);
+                Ne(Qe), d(Le);
+                var Re = m(Le, 2),
+                  ne = m(v(Re), 2),
+                  de = v(ne);
+                {
+                  var Fe = (we) => {
+                    var Xe = du(),
+                      pt = v(Xe);
+                    _s(pt, { className: "w-6 h-6 fill-black" }),
+                      d(Xe),
+                      A(we, Xe);
+                  };
+                  j(de, (we) => {
+                    we(Fe, !1);
+                  });
+                }
+                Ee(2), d(ne), d(Re), d(Te);
+                var Pe = m(Te, 2),
+                  Ie = v(Pe),
+                  Ge = v(Ie),
+                  Ue = v(Ge);
+                let et;
+                var ze = m(Ue, 2);
+                let De;
+                d(Ge);
+                var Ye = m(Ge, 2),
+                  qe = v(Ye),
+                  Ve = m(v(qe), 2);
+                d(qe);
+                var We = m(qe, 2),
+                  Ke = m(v(We), 2);
+                const X = Oe(() =>
+                  h.map((we) => ({ name: we.name, value: we })),
+                );
+                ar(Ke, {
+                  get items() {
+                    return l(X);
+                  },
+                  bindSelected: b,
+                  placeholder: "Select Tee Group",
+                  searchEnabled: !0,
+                  multiple: !1,
+                }),
+                  d(We),
+                  d(Ye),
+                  d(Ie);
+                var Se = m(Ie, 2);
+                {
+                  var Je = (we) => {
+                    var Xe = uu(),
+                      pt = v(Xe),
+                      Ot = m(v(pt), 2);
+                    Ne(Ot), d(pt);
+                    var jt = m(pt, 2),
+                      Mt = m(v(jt), 2);
+                    Ne(Mt),
+                      d(jt),
+                      d(Xe),
+                      Be(
+                        Ot,
+                        () => l(c).name,
+                        (ga) => xt(c, (l(c).name = ga)),
+                      ),
+                      Be(
+                        Mt,
+                        () => l(c).colour,
+                        (ga) => xt(c, (l(c).colour = ga)),
+                      ),
+                      A(we, Xe);
+                  };
+                  j(Se, (we) => {
+                    l(f) === "BASIC" && we(Je);
+                  });
+                }
+                var ct = m(Se, 2);
+                {
+                  var dt = (we) => {
+                    var Xe = fu(),
+                      pt = v(Xe),
+                      Ot = v(pt),
+                      jt = m(v(Ot), 2);
+                    Ne(jt), d(Ot);
+                    var Mt = m(Ot, 2),
+                      ga = m(v(Mt), 2),
+                      Ze = v(ga),
+                      ha = v(Ze);
+                    Ne(ha), d(Ze);
+                    var Ta = m(Ze, 2);
+                    Ne(Ta),
+                      d(ga),
+                      d(Mt),
+                      d(pt),
+                      d(Xe),
+                      Be(
+                        jt,
+                        () => l(c).name,
+                        (gt) => xt(c, (l(c).name = gt)),
+                      ),
+                      Be(
+                        ha,
+                        () => l(c).colour,
+                        (gt) => xt(c, (l(c).colour = gt)),
+                      ),
+                      R("input", ha, (gt) => {
+                        xt(c, (l(c).colour = gt.currentTarget.value));
+                      }),
+                      Be(
+                        Ta,
+                        () => l(c).colour,
+                        (gt) => xt(c, (l(c).colour = gt)),
+                      ),
+                      R("input", Ta, (gt) => {
+                        xt(c, (l(c).colour = gt.currentTarget.value));
+                      }),
+                      A(we, Xe);
+                  };
+                  j(ct, (we) => {
+                    l(f) === "ADVANCED" && we(dt);
+                  });
+                }
+                var Ht = m(ct, 2),
+                  pa = v(Ht);
+                let Ca;
+                d(Ht);
+                var ut = m(Ht, 2);
+                {
+                  var Bt = (we) => {
+                    var Xe = pu(),
+                      pt = v(Xe),
+                      Ot = v(pt),
+                      jt = m(v(Ot));
+                    xe(
+                      jt,
+                      5,
+                      () => l(g),
+                      je,
+                      (Mt, ga, Ze) => {
+                        var ha = vu(),
+                          Ta = v(ha);
+                        Ta.textContent = Ze + 1;
+                        var gt = m(Ta),
+                          gn = v(gt);
+                        Ne(gn);
+                        let ws;
+                        d(gt);
+                        var hn = m(gt),
+                          mn = v(hn);
+                        Ne(mn);
+                        let ks;
+                        d(hn);
+                        var Es = m(hn),
+                          bn = v(Es);
+                        Ne(bn);
+                        let As;
+                        d(Es),
+                          d(ha),
+                          V(() => {
+                            (ws = se(
+                              gn,
+                              1,
+                              "w-full p-2 text-black border rounded",
+                              null,
+                              ws,
+                              {
+                                "bg-BrandLightGray": !l(g)[Ze].par,
+                                "bg-white": l(g)[Ze].par,
+                              },
+                            )),
+                              (ks = se(
+                                mn,
+                                1,
+                                "w-full p-2 text-black border rounded",
+                                null,
+                                ks,
+                                {
+                                  "bg-BrandLightGray": !l(g)[Ze].strokeIndex,
+                                  "bg-white": l(g)[Ze].strokeIndex,
+                                },
+                              )),
+                              (As = se(
+                                bn,
+                                1,
+                                "w-full p-2 text-black border rounded",
+                                null,
+                                As,
+                                {
+                                  "bg-BrandLightGray": !l(g)[Ze].yardage,
+                                  "bg-white": l(g)[Ze].yardage,
+                                },
+                              ));
+                          }),
+                          Be(
+                            gn,
+                            () => l(g)[Ze].par,
+                            (Wa) => xt(g, (l(g)[Ze].par = Wa)),
+                          ),
+                          Be(
+                            mn,
+                            () => l(g)[Ze].strokeIndex,
+                            (Wa) => xt(g, (l(g)[Ze].strokeIndex = Wa)),
+                          ),
+                          Be(
+                            bn,
+                            () => l(g)[Ze].yardage,
+                            (Wa) => xt(g, (l(g)[Ze].yardage = Wa)),
+                          ),
+                          A(Mt, ha);
+                      },
+                    ),
+                      d(jt),
+                      d(Ot),
+                      d(pt),
+                      d(Xe),
+                      A(we, Xe);
+                  };
+                  j(ut, (we) => {
+                    l(x) && we(Bt);
+                  });
+                }
+                d(Pe),
+                  d(Ae),
+                  V(() => {
+                    (et = se(Ue, 1, "px-4 pt-5 text-xl condensed", null, et, {
+                      "text-BrandForest": l(f) === "BASIC",
+                      "text-BrandDarkGray": l(f) !== "BASIC",
+                    })),
+                      (De = se(ze, 1, "pt-5 text-xl condensed", null, De, {
+                        "text-BrandForest": l(f) === "ADVANCED",
+                        "text-BrandDarkGray": l(f) !== "ADVANCED",
+                      })),
+                      (Ca = se(
+                        pa,
+                        1,
+                        "px-6 py-2 font-bold transition-all duration-200 ease-in-out rounded",
+                        null,
+                        Ca,
+                        {
+                          "bg-BrandLightGray": !l(c).name || !l(c).colour,
+                          "text-BrandDarkGray": !l(c).name || !l(c).colour,
+                          "bg-BrandForest": l(c).name && l(c).colour,
+                          "text-BrandYellow": l(c).name && l(c).colour,
+                        },
+                      )),
+                      (pa.disabled = !l(c).name || !l(c).colour);
+                  }),
+                  Be(
+                    Qe,
+                    () => l(p),
+                    (we) => N(p, we),
+                  ),
+                  R("click", Ue, () => N(f, "BASIC")),
+                  R("click", ze, () => N(f, "ADVANCED")),
+                  R("click", Ve, () => {
+                    console.log("All 18 holes are already added");
+                  }),
+                  R("click", pa, () => N(x, !0)),
+                  A(be, Ae);
+              };
+              j(
+                He,
+                (be) => {
+                  l(i) === "ADD_CUSTOM" && be(Z);
+                },
+                !0,
+              );
+            }
+            A(re, ce);
+          };
+        j(z, (re) => {
+          l(i) === "SEARCH" ? re(K) : re(oe, !1);
+        });
+      }
+      d($);
+      var W = m($, 2),
+        ie = v(W),
+        he = m(ie, 2);
+      let me;
+      d(W),
+        d(P),
+        d(T),
+        V(
+          (re, ce) => {
+            (F = se(H, 1, "px-4 py-2 text-xl condensed", null, F, {
+              "text-BrandForest": l(i) === "SEARCH",
+              "text-BrandDarkGray": l(i) !== "SEARCH",
+            })),
+              (q = se(Y, 1, "px-4 py-2 text-xl condensed", null, q, {
+                "text-BrandForest": l(i) === "ADD_CUSTOM",
+                "text-BrandDarkGray": l(i) !== "ADD_CUSTOM",
+              })),
+              (me = se(
+                he,
+                1,
+                "flex-1 px-4 py-2 font-bold transition-all duration-200 ease-in-out rounded md:flex-initial md:px-6",
+                null,
+                me,
+                {
+                  "bg-BrandLightGray": re,
+                  "text-BrandDarkGray": re,
+                  "bg-BrandForest": ce,
+                  "text-BrandYellow": ce,
+                },
+              ));
+          },
+          [() => !C(), C],
+          Oe,
+        ),
+        R("click", U, y),
+        R("click", H, () => N(i, "SEARCH")),
+        R("click", Y, () => N(i, "ADD_CUSTOM")),
+        R("click", ie, y),
+        R("click", he, k),
+        A(S, T);
+    };
+    j(w, (S) => {
+      a() && S(B);
+    });
+  }
+  A(e, _), ve();
+}
+var mu = O('<span class="px-2 py-1 text-sm text-black rounded-full"> </span>'),
+  bu = O(
+    '<div class="grid items-center grid-cols-2 p-3 mb-2 bg-white rounded gap-y-4"><div class="flex items-center"><img class="object-cover w-16 h-16 mr-4 rounded-md"> <span class="text-2xl text-black condensed"> </span></div> <div class="flex items-center justify-between space-x-2 text-black"><!> <button class="px-5 py-1 text-sm rounded text-BrandYellow bg-BrandForest">VIEW</button></div></div>',
+  ),
+  yu = O('<span class="px-3 py-1 text-sm text-white rounded-full"> </span>'),
+  xu = O('<span class="px-3 py-1 text-sm text-black rounded-full"> </span>'),
+  _u = O(
+    '<div class="p-4 bg-white rounded-lg"><div class="sm:hidden"><div class="flex items-center mb-4"><img class="w-16 h-16 mr-4 rounded-lg"> <span class="text-2xl text-black condensed"> </span></div> <div class="h-px mb-4 bg-BrandDivider"></div> <div class="flex flex-wrap gap-2"></div></div> <div class="hidden sm:block"><div class="flex items-center justify-between mb-4"><div class="flex items-center"><img class="w-16 h-16 mr-4 rounded-lg"> <span class="text-2xl text-black condensed"> </span></div> <div class="flex items-center gap-2"></div></div></div> <button class="w-full py-2 mt-4 text-sm rounded text-BrandYellow bg-BrandForest">VIEW</button></div>',
+  ),
+  wu = O(
+    '<div class="w-full bg-white"><div class="flex items-center justify-between px-8 pt-4"><h2 class="text-4xl text-black condensed">MY COURSES</h2> <button class="hidden md:block btn btn-new-game">ADD NEW COURSE</button></div> <div class="w-full h-full px-2 pt-4"><div class="hidden p-2 rounded lg:block bg-BrandLightGray"><div class="grid items-center grid-cols-2 gap-4 p-4 text-xl text-black condensed"><span>NAME</span> <span>TEES</span></div> <div class="overflow-y-auto max-h-[60vh] p-2"></div></div> <div class="space-y-4 lg:hidden"></div> <button class="w-full py-2 mt-6 text-xl lg:hidden bg-BrandYellow text-BrandForest">ADD NEW COURSE</button></div> <!></div>',
+  );
+function ku(e, t) {
+  fe(t, !1);
+  let a = [],
+    r = M(!1),
+    n = M([]),
+    s = M(null);
+  it(async () => {
+    try {
+      const i = { limit: BigInt(10), offset: BigInt(0) };
+      (a = await ja.getCourses(i)),
+        N(
+          n,
+          a.map((f) => ({
+            ...f,
+            teeColors: f.tees.map((u) => ({ name: u.name, color: o(u.name) })),
+          })),
+        ),
+        console.log("Courses Tees:", l(n));
+    } catch (i) {
+      console.error("Error fetching courses:", i);
+    }
+  });
+  function o(i) {
+    switch (i.toLowerCase()) {
+      case "black":
+        return "#000000";
+      case "blue":
+        return "#0000FF";
+      case "green":
+        return "#008000";
+      case "orange":
+        return "#FFA500";
+      case "pink":
+        return "#FFC0CB";
+      case "red":
+        return "#FF0000";
+      case "white":
+        return "#FFFFFF";
+      case "yellow":
+      case "gold":
+        return "#FFFF00";
+      default:
+        return "#CCCCCC";
+    }
+  }
+  _e(),
+    Gt(e, {
+      children: (i, f) => {
+        var u = wu(),
+          p = v(u),
+          h = m(v(p), 2);
+        d(p);
+        var c = m(p, 2),
+          g = v(c),
+          b = m(v(g), 2);
+        xe(
+          b,
+          5,
+          () => l(n),
+          je,
+          (C, _) => {
+            var w = bu(),
+              B = v(w),
+              S = v(B),
+              T = m(S, 2),
+              P = v(T, !0);
+            d(T), d(B);
+            var I = m(B, 2),
+              U = v(I);
+            xe(
+              U,
+              1,
+              () => l(_).teeColors,
+              je,
+              (G, H) => {
+                var F = mu(),
+                  Y = v(F, !0);
+                d(F),
+                  V(() => {
+                    Q(F, "style", `background-color: ${l(H).color ?? ""};`),
+                      D(Y, l(H).name);
+                  }),
+                  A(G, F);
+              },
+            ),
+              Ee(2),
+              d(I),
+              d(w),
+              V(
+                (G) => {
+                  Q(S, "src", G), Q(S, "alt", l(_).name), D(P, l(_).name);
+                },
+                [() => Zs(l(_))],
+                Oe,
+              ),
+              A(C, w);
+          },
+        ),
+          d(b),
+          d(g);
+        var x = m(g, 2);
+        xe(
+          x,
+          5,
+          () => l(n),
+          je,
+          (C, _) => {
+            var w = _u(),
+              B = v(w),
+              S = v(B),
+              T = v(S),
+              P = m(T, 2),
+              I = v(P, !0);
+            d(P), d(S);
+            var U = m(S, 4);
+            xe(
+              U,
+              5,
+              () => l(_).teeColors,
+              je,
+              (K, oe) => {
+                var W = yu(),
+                  ie = v(W, !0);
+                d(W),
+                  V(() => {
+                    Q(W, "style", `background-color: ${l(oe).color ?? ""};`),
+                      D(ie, l(oe).name);
+                  }),
+                  A(K, W);
+              },
+            ),
+              d(U),
+              d(B);
+            var G = m(B, 2),
+              H = v(G),
+              F = v(H),
+              Y = v(F),
+              q = m(Y, 2),
+              $ = v(q, !0);
+            d(q), d(F);
+            var z = m(F, 2);
+            xe(
+              z,
+              5,
+              () => l(_).teeColors,
+              je,
+              (K, oe) => {
+                var W = xu(),
+                  ie = v(W, !0);
+                d(W),
+                  V(() => {
+                    Q(W, "style", `background-color: ${l(oe).color ?? ""};`),
+                      D(ie, l(oe).name);
+                  }),
+                  A(K, W);
+              },
+            ),
+              d(z),
+              d(H),
+              d(G),
+              Ee(2),
+              d(w),
+              V(
+                (K) => {
+                  Q(T, "src", K),
+                    Q(T, "alt", l(_).name),
+                    D(I, l(_).name),
+                    Q(Y, "src", K),
+                    Q(Y, "alt", l(_).name),
+                    D($, l(_).name);
+                },
+                [() => Zs(l(_))],
+                Oe,
+              ),
+              A(C, w);
+          },
+        ),
+          d(x);
+        var y = m(x, 2);
+        d(c);
+        var k = m(c, 2);
+        {
+          var E = (C) => {
+            kl(C, {
+              get isOpen() {
+                return l(r);
+              },
+              $$events: {
+                close: () => N(r, !1),
+                courseSelect: (_) => {
+                  N(s, _.detail.course), N(r, !1);
+                },
+              },
+            });
+          };
+          j(k, (C) => {
+            l(r) && C(E);
+          });
+        }
+        d(u),
+          R("click", h, () => N(r, !0)),
+          R("click", y, () => N(r, !0)),
+          A(i, u);
+      },
+      $$slots: { default: !0 },
+    }),
+    ve();
+}
+const Eu = Object.freeze(
+  Object.defineProperty(
+    { __proto__: null, component: ku },
+    Symbol.toStringTag,
+    { value: "Module" },
+  ),
+);
+var Au = O(
+    '<img alt="Course thumbnail" class="object-cover w-16 h-16 rounded">',
+  ),
+  Su = O(
+    '<div class="flex items-center justify-center w-12 h-12 rounded bg-BrandLightGray"><!></div>',
+  ),
+  Cu = O(
+    '<div class="fixed inset-0 z-50 flex items-center justify-center"><div class="relative z-50 w-full md:h-auto md:w-[60vw] overflow-y-auto bg-white rounded-lg"><div class="sticky top-0 z-10 flex items-center justify-between p-3 bg-white border-b md:p-4"><h2 class="text-2xl text-black md:text-3xl condensed">EDIT HOME COURSE</h2> <button class="flex items-center justify-center w-8 h-8 text-base font-bold text-white bg-black rounded-full shadow-md" type="button" aria-label="Close">✕</button></div> <div class="p-3 md:p-6"><p class="text-sm md:text-base text-BrandDarkGray">Your home course should be the one you play at most frequently, serving as your default for tracking scores.</p> <div class="mt-4 md:mt-6"><label for="courseNameInput" class="block mb-2 text-sm font-bold text-BrandDarkGray">COURSE NAME</label> <input id="courseNameInput" type="text" class="w-full p-3 text-black bg-white border border-gray-300 rounded" placeholder="Enter Course Name"></div> <div class="mt-4 md:mt-6"><label for="courseImageUpload" class="block mb-2 text-sm font-bold">COURSE IMAGE</label> <div class="flex items-center gap-2"><!> <div class="flex flex-col gap-1"><button id="courseImageUpload" type="button" class="px-4 py-2 text-sm font-bold rounded md:px-6 md:py-3 text-BrandForest bg-BrandYellow hover:bg-yellow-600">UPLOAD</button> <span class="text-2xs md:text-xs text-BrandDarkGray">800px x 800px min</span></div></div></div></div> <div class="sticky bottom-0 flex justify-end gap-2 p-3 bg-white border-t md:p-4"><button class="flex-1 px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg md:text-base md:flex-initial md:px-6 text-BrandForest bg-BrandYellow hover:bg-yellow-400 focus:outline-none">CANCEL</button> <button type="button">SAVE CHANGES</button></div></div></div>',
+  );
+function Tu(e, t) {
+  fe(t, !1);
+  let a = L(t, "isOpen", 8, !1),
+    r = L(t, "holes", 24, () => []),
+    n = L(t, "courseName", 12, ""),
+    s = L(t, "courseImage", 8, "");
+  const o = va();
+  function i() {
+    o("close");
+  }
+  function f() {
+    o("save", { holes: r() });
+  }
+  function u() {
+    return n().trim().length > 0;
+  }
+  _e();
+  var p = pe(),
+    h = J(p);
+  {
+    var c = (g) => {
+      var b = Cu(),
+        x = v(b),
+        y = v(x),
+        k = m(v(y), 2);
+      d(y);
+      var E = m(y, 2),
+        C = m(v(E), 2),
+        _ = m(v(C), 2);
+      Ne(_), d(C);
+      var w = m(C, 2),
+        B = m(v(w), 2),
+        S = v(B);
+      {
+        var T = (F) => {
+            var Y = Au();
+            V(() => Q(Y, "src", s())), A(F, Y);
+          },
+          P = (F) => {
+            var Y = Su(),
+              q = v(Y);
+            _s(q, { className: "w-6 h-6 fill-black" }), d(Y), A(F, Y);
+          };
+        j(S, (F) => {
+          s() ? F(T) : F(P, !1);
+        });
+      }
+      Ee(2), d(B), d(w), d(E);
+      var I = m(E, 2),
+        U = v(I),
+        G = m(U, 2);
+      let H;
+      d(I),
+        d(x),
+        d(b),
+        V(
+          (F, Y) =>
+            (H = se(
+              G,
+              1,
+              "flex-1 px-4 py-2 text-sm font-bold transition-all duration-200 ease-in-out rounded md:text-base md:flex-initial md:px-6",
+              null,
+              H,
+              {
+                "bg-BrandLightGray": F,
+                "text-BrandDarkGray": F,
+                "bg-BrandForest": Y,
+                "text-BrandYellow": Y,
+              },
+            )),
+          [() => !u(), u],
+          Oe,
+        ),
+        R("click", k, i),
+        Be(_, n),
+        R("click", U, i),
+        R("click", G, f),
+        A(g, b);
+    };
+    j(h, (g) => {
+      a() && g(c);
+    });
+  }
+  A(e, p), ve();
+}
+var Nu = O(
+    '<div class="flex flex-col"><h3 class="hidden mb-4 text-xl text-black lg:block condensed">DETAILS</h3> <div class="flex flex-col"><p class="block pt-8 text-sm text-BrandDarkGray">COURSE NAME</p> <h2 class="text-5xl text-black md:text-6xl condensed"> </h2></div> <div class="flex flex-col"><p class="block pt-8 text-sm text-BrandDarkGray">LOCATION</p> <h1 class="text-2xl text-black condensed">UNITED KINGDOM</h1></div> <div class="w-full h-px my-4 bg-BrandDivider sm:hidden"></div></div>',
+  ),
+  Bu = O(
+    '<span class="inline-block px-2 py-1 text-sm text-white rounded-full max-w-max"> </span>',
+  ),
+  Ou = O(
+    '<tr><td class="p-3 text-black condensed"> </td><td class="p-3 text-black"> </td><td class="p-3 text-black"> </td><td class="p-3 text-black"> </td></tr>',
+  ),
+  Ru = O(
+    '<div class="grid grid-cols-4 gap-4 p-2 text-black bg-white border-t"><div class="text-lg condensed"> </div> <div class="text-lg"> </div> <div class="text-lg"> </div> <div class="text-lg"> </div></div>',
+  ),
+  Pu = O(
+    '<div class="w-full"><div class="p-2 px-4 text-black"><div class="flex items-center justify-between"><h2 class="text-5xl text-black md:text-4xl condensed">COURSE DETAILS</h2> <div class="hidden gap-4 md:flex"><button class="px-4 py-3 font-semibold rounded text-md bg-BrandLightGray">REMOVE COURSE</button> <button class="px-4 py-3 font-semibold rounded text-md text-BrandYellow bg-BrandForest">EDIT COURSE DETAILS</button></div></div></div> <div class="flex flex-col p-4 rounded-md lg:flex-row bg-BrandLightGray"><div class="w-full mb-6 lg:w-1/3 lg:mb-0"><h3 class="px-2 mb-4 text-2xl text-black lg:hidden condensed">DETAILS</h3> <img src="/course-placeholder.jpg" alt="golf course" class="object-cover w-full h-full rounded"></div> <div class="w-full px-0 mb-6 lg:w-1/3 lg:px-4 lg:mb-0"><!></div> <div class="w-full px-0 lg:w-1/3 lg:px-4"><h2 class="pb-3 text-xl text-black condensed">TEES</h2> <div class="flex flex-col p-5 bg-white border-b rounded"><!></div> <div class="overflow-x-auto"><div class="overflow-y-auto max-h-[65vh]"><table class="hidden min-w-full bg-white border-collapse sm:table"><thead><tr><th class="p-4 text-xl text-left text-black border-b condensed">HOLE</th><th class="p-4 text-xl text-left text-black border-b condensed">PAR</th><th class="p-4 text-xl text-left text-black border-b condensed">S.I.</th><th class="p-4 text-xl text-left text-black border-b condensed">YARDS</th></tr></thead><tbody></tbody></table> <div class="sm:hidden"><div class="grid grid-cols-4 gap-4 p-2 text-sm text-black bg-white condensed"><div>HOLE</div> <div>PAR</div> <div>S.I</div> <div>YARDS</div></div> <!></div></div></div> <div class="flex w-full gap-4 p-2 bg-white md:hidden"><button class="px-3 py-1 font-semibold text-black rounded text-md bg-BrandLightGray">REMOVE COURSE</button> <button class="px-3 py-1 font-semibold rounded text-md text-BrandYellow bg-BrandForest">EDIT COURSE DETAILS</button></div></div></div></div>',
+  ),
+  Iu = O("<!> <!>", 1);
+function Gu(e, t) {
+  fe(t, !1);
+  let a = M(null),
+    r = M(!1),
+    n = [
+      { hole: 1, par: 4, strokeIndex: 8, yards: 400 },
+      { hole: 2, par: 4, strokeIndex: 3, yards: 340 },
+      { hole: 3, par: 3, strokeIndex: 12, yards: 200 },
+      { hole: 4, par: 4, strokeIndex: 6, yards: 320 },
+      { hole: 5, par: 5, strokeIndex: 1, yards: 480 },
+      { hole: 6, par: 3, strokeIndex: 5, yards: 220 },
+      { hole: 7, par: 4, strokeIndex: 11, yards: 370 },
+      { hole: 8, par: 4, strokeIndex: 2, yards: 350 },
+      { hole: 9, par: 4, strokeIndex: 7, yards: 420 },
+      { hole: 10, par: 5, strokeIndex: 9, yards: 500 },
+      { hole: 11, par: 4, strokeIndex: 14, yards: 310 },
+      { hole: 12, par: 3, strokeIndex: 18, yards: 190 },
+      { hole: 13, par: 5, strokeIndex: 4, yards: 530 },
+      { hole: 14, par: 4, strokeIndex: 13, yards: 390 },
+      { hole: 15, par: 3, strokeIndex: 17, yards: 180 },
+      { hole: 16, par: 4, strokeIndex: 10, yards: 410 },
+      { hole: 17, par: 5, strokeIndex: 15, yards: 480 },
+      { hole: 18, par: 4, strokeIndex: 16, yards: 400 },
+    ];
+  it(async () => {
+    try {
+      const u = { limit: BigInt(10), offset: BigInt(0) },
+        p = await ja.getCourses(u);
+      N(a, p[0] || null);
+    } catch (u) {
+      console.error("Error fetching course details:", u);
+    }
+  }),
+    _e();
+  var s = Iu(),
+    o = J(s);
+  Gt(o, {
+    children: (u, p) => {
+      var h = Pu(),
+        c = v(h),
+        g = v(c),
+        b = m(v(g), 2),
+        x = m(v(b), 2);
+      d(b), d(g), d(c);
+      var y = m(c, 2),
+        k = m(v(y), 2),
+        E = v(k);
+      {
+        var C = (q) => {
+          var $ = Nu(),
+            z = m(v($), 2),
+            K = m(v(z), 2),
+            oe = v(K, !0);
+          d(K),
+            d(z),
+            Ee(4),
+            d($),
+            V((W) => D(oe, W), [() => l(a).name.toUpperCase()], Oe),
+            A(q, $);
+        };
+        j(E, (q) => {
+          l(a) && q(C);
+        });
+      }
+      d(k);
+      var _ = m(k, 2),
+        w = m(v(_), 2),
+        B = v(w);
+      {
+        var S = (q) => {
+          var $ = pe(),
+            z = J($);
+          xe(
+            z,
+            1,
+            () => l(a).tees,
+            je,
+            (K, oe) => {
+              var W = Bu(),
+                ie = v(W, !0);
+              d(W),
+                V(() => {
+                  Q(W, "style", `background-color: ${l(oe).colour ?? ""};`),
+                    D(ie, l(oe).name);
+                }),
+                A(K, W);
+            },
+          ),
+            A(q, $);
+        };
+        j(B, (q) => {
+          l(a) && l(a).tees && q(S);
+        });
+      }
+      d(w);
+      var T = m(w, 2),
+        P = v(T),
+        I = v(P),
+        U = m(v(I));
+      xe(
+        U,
+        5,
+        () => n,
+        je,
+        (q, $) => {
+          var z = Ou(),
+            K = v(z),
+            oe = v(K, !0);
+          d(K);
+          var W = m(K),
+            ie = v(W, !0);
+          d(W);
+          var he = m(W),
+            me = v(he, !0);
+          d(he);
+          var re = m(he),
+            ce = v(re, !0);
+          d(re),
+            d(z),
+            V(() => {
+              D(oe, l($).hole),
+                D(ie, l($).par),
+                D(me, l($).strokeIndex),
+                D(ce, l($).yards);
+            }),
+            A(q, z);
+        },
+      ),
+        d(U),
+        d(I);
+      var G = m(I, 2),
+        H = m(v(G), 2);
+      xe(
+        H,
+        1,
+        () => n,
+        je,
+        (q, $) => {
+          var z = Ru(),
+            K = v(z),
+            oe = v(K, !0);
+          d(K);
+          var W = m(K, 2),
+            ie = v(W, !0);
+          d(W);
+          var he = m(W, 2),
+            me = v(he, !0);
+          d(he);
+          var re = m(he, 2),
+            ce = v(re, !0);
+          d(re),
+            d(z),
+            V(() => {
+              D(oe, l($).hole),
+                D(ie, l($).par),
+                D(me, l($).strokeIndex),
+                D(ce, l($).yards);
+            }),
+            A(q, z);
+        },
+      ),
+        d(G),
+        d(P),
+        d(T);
+      var F = m(T, 2),
+        Y = m(v(F), 2);
+      d(F),
+        d(_),
+        d(y),
+        d(h),
+        R("click", x, () => N(r, !0)),
+        R("click", Y, () => N(r, !0)),
+        A(u, h);
+    },
+    $$slots: { default: !0 },
+  });
+  var i = m(o, 2);
+  {
+    var f = (u) => {
+      const p = Oe(() => l(a)?.name || "");
+      Tu(u, {
+        get isOpen() {
+          return l(r);
+        },
+        holes: n,
+        get courseName() {
+          return l(p);
+        },
+        courseImage: "/course-placeholder.jpg",
+      });
+    };
+    j(i, (u) => {
+      l(r) && u(f);
+    });
+  }
+  A(e, s), ve();
+}
+const ju = Object.freeze(
+  Object.defineProperty(
+    { __proto__: null, component: Gu },
+    Symbol.toStringTag,
+    { value: "Module" },
+  ),
+);
+var Mu = O(
+    '<div class="flex flex-col items-center mb-4 md:flex-row"><img src="prophet.png" alt="mulligans" class="object-cover object-center w-full h-32 mb-4 rounded-lg md:w-20 md:h-20 md:object-contain md:mb-0 md:mr-4"> <h3 class="text-xl md:text-2xl condensed">MULLIGANS</h3></div> <ul class="space-y-2 text-sm text-gray-700 list-disc list-inside md:text-base"><li>A golfer receives a mulligan every 3 holes, specifically the 1st, 4th, 7th, 10th, 13th and 16th holes.</li> <li>Golfers play each hole in match play format, with scores adjusted by handicap.</li> <li>If a golfer wins a hole a mulligan is added to their available mulligans.</li> <li>A golfer can use as many mulligans as they have available on any hole.</li> <li>A golfer can build up as many mulligans as they can.</li> <li>The game is decided when a golfer is winning by more holes than are available to play.</li></ul>',
+    1,
+  ),
+  Fu = O(
+    `<div class="flex flex-col items-center mb-4 md:flex-row"><img src="bands.png" alt="bands" class="object-cover object-center w-full h-32 mb-4 rounded-lg md:w-20 md:h-20 md:object-contain md:mb-0 md:mr-4"> <h3 class="text-xl md:text-2xl condensed">BANDS</h3></div> <p class="mb-4 text-sm text-gray-700 md:text-base">Before a match, a golfer makes selections of 3 hole bands for each of the 9 game categories. 
+                    Each band must start on a different hole but they are allowed to overlap.</p> <p class="mb-4 text-sm text-gray-700 md:text-base">The points for each band are as follows:</p> <ul class="space-y-2 text-sm text-gray-700 list-disc list-inside md:text-base"><li><span class="semi-bold">Band 1:</span> Holes where you don’t hit a tree or enter a bunker. <span class="semi-bold">15 points</span></li> <li><span class="semi-bold">Band 2:</span> Holes where you won’t lose a ball. <span class="semi-bold">10 points</span></li> <li><span class="semi-bold">Band 3:</span> Holes where you hit 2/3 fairways. <span class="semi-bold">20 points</span></li> <li><span class="semi-bold">Band 4:</span> Holes where you hit 2/3 greens. <span class="semi-bold">25 points</span></li> <li><span class="semi-bold">Band 5:</span> Holes where you will 1-putt 2/3 greens. <span class="semi-bold">30 points</span></li> <li><span class="semi-bold">Band 6:</span> Holes where you won’t get a double bogey or worse. <span class="semi-bold">35 points</span></li> <li><span class="semi-bold">Band 7:</span> Holes where you won’t bogey or worse. <span class="semi-bold">40 points</span></li> <li><span class="semi-bold">Band 8:</span> Holes where you’ll be par or under. <span class="semi-bold">45 points</span></li> <li><span class="semi-bold">Band 9:</span> Holes where you’ll be under par. <span class="semi-bold">50 points</span></li></ul> <p class="mt-4 text-sm text-gray-700 md:text-base">A golfer can get a maximum possible total score of 270. Golfers receive the points for each band they achieve. The winner is the golfer with the most points at the end of the round.</p>`,
+    1,
+  ),
+  $u = O(
+    `<div class="flex flex-col items-center mb-4 md:flex-row"><img src="build-it.png" alt="build-it" class="object-cover object-center w-full h-32 mb-4 rounded-lg md:w-20 md:h-20 md:object-contain md:mb-0 md:mr-4"> <h3 class="text-xl md:text-2xl condensed">BUILD IT</h3></div> <ul class="space-y-2 text-sm text-gray-700 list-disc list-inside md:text-base"><li>A golfer can create a team in which they can compete against multiple other teams.</li> <li>The golfer who created the team becomes the team's captain.</li> <li>A team captain sets up a game on a specific course and tee to compete against other teams.</li> <li>A team captain invites other team's to join in a new game.</li> <li>A team captain selects a period of time to build their team card over.</li> <li>Golfers add their scorecards transferring any new lowest scores over to the team card.</li> <li>The winners are the team with the lowest scorecard at the end of the game's duration.</li></ul>`,
+    1,
+  ),
+  Uu = O(
+    '<div class="flex flex-col items-center mb-4 md:flex-row"><img src="next-up.png" alt="next-up" class="object-cover object-center w-full h-32 mb-4 rounded-lg md:w-20 md:h-20 md:object-contain md:mb-0 md:mr-4"> <h3 class="text-xl md:text-2xl condensed">NEXT UP</h3></div> <ul class="space-y-2 text-sm text-gray-700 list-disc list-inside md:text-base"><li>Each golfer is assigned a random tee box, denoting the hole in which they must win.</li> <li>If a golfer wins the hole they are defending, they get 3 points.</li> <li>If a golfer wins a hole they are not defending, they get 1 point.</li> <li>The winner is the golfer with the most points at the end of the round.</li> <li>If the number of holes is not divisible by the number of players without a remainder, the holes are divided up and the remaining holes are assigned to the lowest scoring player who can potentially win.</li></ul>',
+    1,
+  ),
+  Du = O(
+    '<div class="w-full max-w-4xl p-4 mx-auto text-black"><h2 class="mt-3 mb-6 text-2xl font-black text-black md:text-4xl">GAMEPLAY RULES</h2> <p class="mb-6 text-base leading-relaxed md:text-lg">Choose a game from the tabs below to view its specific rules. Understanding these rules is essential to ensure fair play and enjoyment for everyone involved.</p> <div class="mb-4 border-b border-gray-300"><div class="flex flex-wrap space-x-2 overflow-x-auto md:space-x-4"><button><span class="condensed">MULLIGANS</span></button> <button><span class="condensed">BANDS</span></button> <button><span class="condensed">BUILD IT</span></button> <button><span class="condensed">NEXT UP</span></button></div></div> <div class="p-4 bg-white rounded-lg shadow-lg md:p-6"><!> <!> <!> <!></div></div>',
+  );
+function Vu(e, t) {
+  fe(t, !1);
+  const [a, r] = fa(),
+    n = () => At(s, "$selectedGame", a);
+  it(() => {
+    window.scrollTo(0, 0);
+  });
+  const s = st("Mulligans");
+  _e(),
+    Gt(e, {
+      children: (o, i) => {
+        var f = Du(),
+          u = m(v(f), 4),
+          p = v(u),
+          h = v(p),
+          c = m(h, 2),
+          g = m(c, 2),
+          b = m(g, 2);
+        d(p), d(u);
+        var x = m(u, 2),
+          y = v(x);
+        {
+          var k = (T) => {
+            var P = Mu();
+            Ee(2), A(T, P);
+          };
+          j(y, (T) => {
+            n() === "Mulligans" && T(k);
+          });
+        }
+        var E = m(y, 2);
+        {
+          var C = (T) => {
+            var P = Fu();
+            Ee(8), A(T, P);
+          };
+          j(E, (T) => {
+            n() === "Bands" && T(C);
+          });
+        }
+        var _ = m(E, 2);
+        {
+          var w = (T) => {
+            var P = $u();
+            Ee(2), A(T, P);
+          };
+          j(_, (T) => {
+            n() === "Build It" && T(w);
+          });
+        }
+        var B = m(_, 2);
+        {
+          var S = (T) => {
+            var P = Uu();
+            Ee(2), A(T, P);
+          };
+          j(B, (T) => {
+            n() === "Next Up" && T(S);
+          });
+        }
+        d(x),
+          d(f),
+          V(() => {
+            se(
+              h,
+              1,
+              `text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 ${(n() === "Mulligans" ? "border-b-2 border-blue-500 text-blue-600" : "text-gray-500 hover:text-blue-500") ?? ""}`,
+            ),
+              se(
+                c,
+                1,
+                `text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 ${(n() === "Bands" ? "border-b-2 border-blue-500 text-blue-600" : "text-gray-500 hover:text-blue-500") ?? ""}`,
+              ),
+              se(
+                g,
+                1,
+                `text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 ${(n() === "Build It" ? "border-b-2 border-blue-500 text-blue-600" : "text-gray-500 hover:text-blue-500") ?? ""}`,
+              ),
+              se(
+                b,
+                1,
+                `text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 ${(n() === "Next Up" ? "border-b-2 border-blue-500 text-blue-600" : "text-gray-500 hover:text-blue-500") ?? ""}`,
+              );
+          }),
+          R("click", h, () => s.set("Mulligans")),
+          R("click", c, () => s.set("Bands")),
+          R("click", g, () => s.set("Build It")),
+          R("click", b, () => s.set("Next Up")),
+          A(o, f);
+      },
+      $$slots: { default: !0 },
+    }),
+    ve(),
+    r();
+}
+const Hu = Object.freeze(
+  Object.defineProperty(
+    { __proto__: null, component: Vu },
+    Symbol.toStringTag,
+    { value: "Module" },
+  ),
+);
+var Yu = { BACKEND_CANISTER_ID: "elbip-aiaaa-aaaal-qjfhq-cai" };
+class qu {
+  constructor() {
+    Na(this, "actor");
+    this.actor = Ce.createActor(Qt, Yu.BACKEND_CANISTER_ID);
+  }
+  async getGolferGameSummaries(t) {
+    const a = await this.actor.getMyGames(t);
+    if (Me(a)) throw new Error("Failed to get golfer game summaries");
+    return a.ok;
+  }
+}
+function Wu() {
+  const { subscribe: e, set: t } = st(void 0);
+  async function a(r) {
+    return await new qu().getGolferGameSummaries(r);
+  }
+  return {
+    subscribe: e,
+    setGolferGameSummaries: (r) => t(r),
+    getGolferGameSummaries: a,
+  };
+}
+const ro = Wu(),
+  Lu = [
+    {
+      id: "mulligans",
+      title: "MULLIGANS",
+      image: "/mulligans.png",
+      description:
+        "Mulligans offer golfers a second chance to retake a shot without penalty, providing a do-over opportunity to improve their game.",
+    },
+    {
+      id: "prophet",
+      title: "PROPHET",
+      image: "/prophet.png",
+      description:
+        "Prophet is a golf game format that emphasizes precise scoring based on the length of each putt made by players.",
+    },
+    {
+      id: "bands",
+      title: "BANDS",
+      image: "/bands.png",
+      description:
+        "Bands is a golf game where players hit designated targets to earn points.",
+    },
+    {
+      id: "build-it",
+      title: "BUILD IT",
+      image: "/build-it.png",
+      description:
+        "Build It is a golf game where players aim to progressively improve their scores over each hole.",
+    },
+    {
+      id: "next-up",
+      title: "NEXT UP",
+      image: "/next-up.png",
+      description:
+        "Next Up is a golf game where players compete to score the next best shot after each hole.",
+    },
+  ];
+var zu =
+    O(`<button class="flex flex-col justify-between sm:items-center w-full p-2.5 bg-white transition-all duration-200 
+                     hover:scale-105 hover:shadow-lg hover:rounded-lg"><img class="object-cover object-[center_20%] h-[140px] sm:h-auto w-full mx-0 mb-4 rounded-lg sm:max-w-none sm:aspect-square sm:object-fill sm:mx-auto"> <div class="flex flex-col flex-grow w-full"><h3 class="text-2xl font-bold mb-1 condensed h-[2em] flex items-start sm:items-center text-left sm:text-center sm:justify-center"> </h3> <p class="text-sm text-left text-gray-500 md:text-sm font-inter font-med"> </p></div></button>`),
+  Ku = O(
+    '<div class="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000] p-4"><div class="bg-white p-8 sm:p-5 rounded-lg max-w-[90%] w-full h-auto max-h-[90vh] overflow-y-auto shadow-lg relative"><div class="flex items-center justify-between mb-5"><h2 class="ml-5 text-4xl font-bold sm:text-5xl condensed">NEW GAME</h2> <button class="flex items-center justify-center w-10 h-10 text-2xl font-bold text-white bg-black rounded-full shadow-md hover:bg-gray-800">&times;</button></div> <p class="mb-5 ml-5 text-base text-gray-500 font-inter font-sub">SELECT GAME</p> <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-5 md:gap-5"></div> <div class="hidden mt-5 text-right lg:block"><button class="bg-BrandForest text-BrandYellow px-4 py-2 md:px-5 md:py-2.5 rounded text-sm md:text-base">SELECT</button></div></div></div>',
+  );
+function Ju(e, t) {
+  fe(t, !1);
+  let a = L(t, "visible", 8),
+    r = L(t, "closeModal", 8);
+  function n(f) {
+    r()(), Ga(`/games/create/${f}`);
+  }
+  _e();
+  var s = pe(),
+    o = J(s);
+  {
+    var i = (f) => {
+      var u = Ku(),
+        p = v(u),
+        h = v(p),
+        c = m(v(h), 2);
+      d(h);
+      var g = m(h, 4);
+      xe(
+        g,
+        5,
+        () => Lu,
+        (y) => y.id,
+        (y, k) => {
+          var E = zu(),
+            C = v(E),
+            _ = m(C, 2),
+            w = v(_),
+            B = v(w, !0);
+          d(w);
+          var S = m(w, 2),
+            T = v(S, !0);
+          d(S),
+            d(_),
+            d(E),
+            V(() => {
+              Q(C, "src", l(k).image),
+                Q(C, "alt", l(k).title),
+                D(B, l(k).title),
+                D(T, l(k).description);
+            }),
+            R("click", E, () => n(l(k).id)),
+            A(y, E);
+        },
+      ),
+        d(g);
+      var b = m(g, 2),
+        x = v(b);
+      d(b),
+        d(p),
+        d(u),
+        R("click", c, function (...y) {
+          r()?.apply(this, y);
+        }),
+        R("click", x, function (...y) {
+          r()?.apply(this, y);
+        }),
+        A(f, u);
+    };
+    j(o, (f) => {
+      a() && f(i);
+    });
+  }
+  A(e, s), ve();
+}
+var no = { BACKEND_CANISTER_ID: "elbip-aiaaa-aaaal-qjfhq-cai" };
+class so {
+  constructor() {
+    Na(this, "actor");
+    this.actor = Ce.createActor(Qt, no.BACKEND_CANISTER_ID);
+  }
+  async getGame(t) {
+    try {
+      let a = { gameId: BigInt(t) },
+        r = await this.actor.getGame(a);
+      return Me(r) && console.error("Error Fetching Game", r), r.ok;
+    } catch (a) {
+      throw (console.error("Error Fetching Game", a), a);
+    }
+  }
+  async createGame(t) {
+    const r = await (
+      await Ce.createIdentityActor(ke, no.BACKEND_CANISTER_ID)
+    ).createGame(t);
+    if (Me(r)) throw new Error("Error Creating Game");
+    return { ok: r.ok };
+  }
+}
+function Xu() {
+  const { subscribe: e, set: t } = st([]);
+  async function a(n) {
+    return new so().getGame(n);
+  }
+  async function r(n) {
+    return new so().createGame(n);
+  }
+  return { subscribe: e, setGame: (n) => t(n), getGame: a, createGame: r };
+}
+const El = Xu();
+var Bn = { BACKEND_CANISTER_ID: "elbip-aiaaa-aaaal-qjfhq-cai" };
+class Nr {
+  constructor() {
+    Na(this, "actor");
+    this.actor = Ce.createActor(Qt, Bn.BACKEND_CANISTER_ID);
+  }
+  async getPlayer(t) {
+    const a = await this.actor.getPlayer(t);
+    if (Me(a)) throw new Error("Failed to get player");
+    return a.ok;
+  }
+  async createPlayer(t) {
+    const r = await (
+      await Ce.createIdentityActor(ke, Bn.BACKEND_CANISTER_ID)
+    ).createGolfer(t);
+    if ((console.log("Result:", r), Me(r)))
+      throw (
+        (console.log("ERROR Result:", r), new Error("Error Creating Player"))
+      );
+  }
+  async listPlayers(t) {
+    const a = { searchTerm: t },
+      r = await this.actor.listGolfers(a);
+    if (Me(r)) throw new Error("Failed to list players");
+    return r.ok;
+  }
+  async saveGolferPicture(t) {
+    const r = await (
+      await Ce.createIdentityActor(ke, Bn.BACKEND_CANISTER_ID)
+    ).saveGolferPicture(t);
+    if (Me(r))
+      throw (
+        (console.log("ERROR Result:", r),
+        new Error("Error Saving Golfer Picture"))
+      );
+  }
+}
+function Zu() {
+  const { subscribe: e, set: t } = st([]);
+  async function a(o) {
+    return new Nr().getPlayer(o);
+  }
+  async function r(o = "") {
+    return new Nr().listPlayers(o);
+  }
+  async function n(o) {
+    return new Nr().createPlayer(o);
+  }
+  async function s(o) {
+    return new Nr().saveGolferPicture(o);
+  }
+  return {
+    subscribe: e,
+    setPlayer: (o) => t(o),
+    createPlayer: n,
+    getPlayer: a,
+    listPlayers: r,
+    saveGolferPicture: s,
+  };
+}
+Zu();
+var Qu = O(
+    '<label for="tee" class="block mt-4 text-lg font-bold text-black">Select Tee Group</label> <div class="flex items-center w-full mt-2 text-black bg-gray-100"><div class="flex-grow max-w-md"><!></div></div>',
+    1,
+  ),
+  ef = O("<div>Loading opponents...</div>"),
+  tf = O(
+    '<div class="flex flex-col w-full"><div class="w-full p-2 px-4 text-black"><h2 class="mx-2 mt-2 mb-0 text-5xl font-black text-black md:mx-4 condensed"> </h2></div> <div class="w-full p-4 text-black bg-gray-100 rounded-lg"><label for="course" class="block mt-4 text-lg font-bold text-black">Course</label> <div class="flex items-center w-full mt-2 text-black bg-gray-100"><div class="flex-grow max-w-md"><!></div></div> <!> <label for="date" class="block mt-4 text-lg font-bold text-black">Select Tee Off Date</label> <div class="flex items-center w-full mt-2"><div class="flex-grow max-w-md"><input type="date" class="w-full p-2 mt-2 text-gray-400 bg-gray-100 border border-gray-300 rounded" placeholder="dd/mm/yyyy"></div></div> <label for="time" class="block mt-4 text-lg font-bold text-black">Select Tee Off Time</label> <div class="flex items-center w-full mt-2"><div class="flex-grow max-w-md"><input type="time" class="w-full p-2 mt-2 text-gray-400 bg-gray-100 border border-gray-300 rounded" placeholder="hh:mm"></div></div> <label for="opponent" class="block mt-4 text-lg font-bold text-black"> </label> <div class="flex items-center w-full mt-2 text-black bg-gray-100"><div class="flex-grow max-w-md"><!></div></div></div> <button class="btn btn-new-game md:w-[400px] w-full">Create New Game</button></div>',
+  );
+function Al(e, t) {
+  fe(t, !1);
+  let a = L(t, "gameTitle", 8),
+    r = L(t, "opponentConfig", 8),
+    n = [],
+    s = [],
+    o = M([]),
+    i = [],
+    f = M([]),
+    u = M(null),
+    p = M(null),
+    h = M(null),
+    c = M(null),
+    g = M(""),
+    b = M(""),
+    x = M("");
+  async function y() {
+    if (!l(u) || !l(c) || l(f).length === 0) {
+      console.error("Please fill out all fields.");
+      return;
+    }
+    const E = {
+      Mulligans: { Mulligans: null },
+      BuildIt: { BuildIt: null },
+      Bands: { Bands: null },
+      NextUp: { NextUp: null },
+      Prophet: { Prophet: null },
+    }[a()];
+    if (!E) {
+      console.error(`Invalid gameTitle: ${a()}`);
+      return;
+    }
+    const C = hd(l(x)),
+      _ = {
+        createdById: "Kelly-Howlett",
+        courseType: { Official: null },
+        courseId: BigInt(l(u).courseId),
+        gameType: E,
+        inviteIds: ["James-Beadle"],
+        teeOffTime: C,
+        teeGroup: l(c).value,
+      };
+    console.log("DTO:", _);
+    try {
+      const w = await El.createGame(_);
+      w.ok
+        ? (console.log("Game Created, Game ID:", w.ok), Ga(`/games/${w.ok}`))
+        : console.error("Error Creating Game", w.err);
+    } catch (w) {
+      console.error("Error Creating Game", w);
+    }
+  }
+  Pt(
+    () => (l(g), l(b)),
+    () => {
+      N(x, l(g) + "T" + l(b));
+    },
+  ),
+    Pt(
+      () => (l(h), l(u), l(o)),
+      () => {
+        l(h)?.value &&
+          (N(u, n.find((k) => k.courseId.toString() === l(h).value) || null),
+          console.log("Selected Course:", l(h)),
+          l(u) &&
+            (N(
+              o,
+              l(u).tees.map((k) => ({ name: k.name, value: k.name })),
+            ),
+            console.log("Tees:", l(o)),
+            N(c, null)));
+      },
+    ),
+    Ha(),
+    _e(),
+    Gt(e, {
+      children: (k, E) => {
+        var C = tf(),
+          _ = v(C),
+          w = v(_),
+          B = v(w, !0);
+        d(w), d(_);
+        var S = m(_, 2),
+          T = m(v(S), 2),
+          P = v(T),
+          I = v(P);
+        const U = Oe(() =>
+          n.map((Z) => ({ name: Z.name, value: Z.courseId.toString() })),
+        );
+        ar(I, {
+          get items() {
+            return l(U);
+          },
+          get bindSelected() {
+            return l(p);
+          },
+          placeholder: "Select Course",
+          multiple: !1,
+          searchEnabled: !1,
+          $$events: {
+            select: (Z) => {
+              N(p, Z.detail), N(h, Z.detail.value);
+            },
+          },
+        }),
+          d(P),
+          d(T);
+        var G = m(T, 2);
+        {
+          var H = (Z) => {
+            var be = Qu(),
+              Ae = m(J(be), 2),
+              Te = v(Ae),
+              Le = v(Te);
+            ar(Le, {
+              get items() {
+                return l(o);
+              },
+              get bindSelected() {
+                return l(c);
+              },
+              placeholder: "Select Tee Group",
+              searchEnabled: !1,
+              multiple: !1,
+              $$events: {
+                select: (Qe) => {
+                  N(c, Qe.detail.value);
+                },
+              },
+            }),
+              d(Te),
+              d(Ae),
+              A(Z, be);
+          };
+          j(G, (Z) => {
+            l(h) && Z(H);
+          });
+        }
+        var F = m(G, 4),
+          Y = v(F),
+          q = v(Y);
+        Ne(q), d(Y), d(F);
+        var $ = m(F, 4),
+          z = v($),
+          K = v(z);
+        Ne(K), d(z), d($);
+        var oe = m($, 2),
+          W = v(oe, !0);
+        d(oe);
+        var ie = m(oe, 2),
+          he = v(ie),
+          me = v(he);
+        {
+          var re = (Z) => {
+              ar(Z, {
+                items: i,
+                get bindSelected() {
+                  return l(f);
+                },
+                placeholder: "Select your Opponent(s)",
+                searchEnabled: !1,
+                multiple: !1,
+                $$events: {
+                  select: (be) => {
+                    N(f, be.detail.value);
+                  },
+                },
+              });
+            },
+            ce = (Z) => {
+              var be = ef();
+              A(Z, be);
+            };
+          j(me, (Z) => {
+            s.length > 0 ? Z(re) : Z(ce, !1);
+          });
+        }
+        d(he), d(ie), d(S);
+        var He = m(S, 2);
+        d(C),
+          V(
+            (Z) => {
+              D(B, Z), D(W, r().playerLabels ? "Players" : "Opponents");
+            },
+            [() => a().toUpperCase()],
+            Oe,
+          ),
+          Be(
+            q,
+            () => l(g),
+            (Z) => N(g, Z),
+          ),
+          Be(
+            K,
+            () => l(b),
+            (Z) => N(b, Z),
+          ),
+          R("click", He, y),
+          A(k, C);
+      },
+      $$slots: { default: !0 },
+    }),
+    ve();
+}
+var af = O("<p>No game history found. Start your first game!</p>"),
+  rf = O(
+    '<div class="relative group"><div class="absolute left-0 z-50 hidden group-hover:block top-12"><p class="font-bold"> </p> <button class="px-2.5 py-1.5 bg-blue-500 text-white rounded">View Player</button></div></div>',
+  ),
+  nf = O(
+    '<div class="w-full mt-5 text-left border-t border-gray-200 bg-gray-50"><div class="flex items-center p-4 border-b border-gray-200"><div class="flex items-center rounded w-15 h-15"></div> <div class="ml-4"><h3 class="font-bold"> </h3> <p class="text-sm"> </p></div></div> <div class="flex ml-auto bg-gray-50"></div> <div class="w-1/6 text-lg font-bold text-blue-500 bg-gray-50"> </div> <div class="w-1/6"><button class="px-4 py-2.5 bg-blue-500 text-white font-bold rounded">Predict</button></div></div>',
+  ),
+  sf = O(
+    '<div class="w-full"><div class="w-full h-full p-2 px-4 text-black"><div class="flex items-center justify-between mb-4"><h2 class="px-2 my-3 text-3xl font-black text-black md:text-5xl condensed">MY GAMES</h2> <button class="mr-4 btn btn-new-game">New Game</button> <!></div> <div class="flex items-center w-full p-4 text-xl font-bold text-left bg-gray-50 condensed"><div class="w-2/6">Game</div> <div class="w-2/6">Players</div> <div class="w-1/6">Status</div> <div class="w-1/6"></div></div> <!> <!> <!></div></div>',
+  );
+function of(e, t) {
+  fe(t, !1);
+  const [a, r] = fa(),
+    n = () => At(ro, "$golferSummariesStore", a);
+  let s = M(!1),
+    o = M(null),
+    i = M();
+  it(async () => {
+    try {
+      const h = { limit: BigInt(10), offset: BigInt(0) };
+      N(i, await ro.getGolferGameSummaries(h)), console.log(l(i));
+    } catch (h) {
+      console.error("Failed to fetch golfer game summaries:", h);
+    }
+  });
+  function f() {
+    N(s, !0);
+  }
+  function u() {
+    N(s, !1);
+  }
+  function p(h) {
+    N(o, h.detail);
+  }
+  _e(),
+    Gt(e, {
+      children: (h, c) => {
+        var g = sf(),
+          b = v(g),
+          x = v(b),
+          y = m(v(x), 2),
+          k = m(y, 2);
+        {
+          var E = (P) => {
+            Ju(P, {
+              get visible() {
+                return l(s);
+              },
+              closeModal: u,
+              $$events: { gameSelected: p },
+            });
+          };
+          j(k, (P) => {
+            l(s) && P(E);
+          });
+        }
+        d(x);
+        var C = m(x, 4);
+        {
+          var _ = (P) => {
+            var I = af();
+            A(P, I);
+          };
+          j(C, (P) => {
+            l(i) && l(i).totalEntries === BigInt(0) && P(_);
+          });
+        }
+        var w = m(C, 2);
+        {
+          var B = (P) => {
+            var I = pe(),
+              U = J(I);
+            xe(
+              U,
+              1,
+              () => n().entries,
+              je,
+              (G, H) => {
+                var F = nf(),
+                  Y = v(F),
+                  q = m(v(Y), 2),
+                  $ = v(q),
+                  z = v($, !0);
+                d($);
+                var K = m($, 2),
+                  oe = v(K, !0);
+                d(K), d(q), d(Y);
+                var W = m(Y, 2);
+                xe(
+                  W,
+                  5,
+                  () => l(H).players,
+                  je,
+                  (me, re) => {
+                    var ce = rf(),
+                      He = v(ce),
+                      Z = v(He),
+                      be = v(Z, !0);
+                    d(Z), Ee(2), d(He), d(ce), V(() => D(be, l(re))), A(me, ce);
+                  },
+                ),
+                  d(W);
+                var ie = m(W, 2),
+                  he = v(ie, !0);
+                d(ie),
+                  Ee(2),
+                  d(F),
+                  V(
+                    (me) => {
+                      D(z, l(H).gameType), D(oe, me), D(he, l(H).status);
+                    },
+                    [
+                      () =>
+                        new Date(Number(l(H).date) * 1e3).toLocaleDateString(),
+                    ],
+                    Oe,
+                  ),
+                  A(G, F);
+              },
+            ),
+              A(P, I);
+          };
+          j(w, (P) => {
+            n() && n().entries.length > 0 && P(B);
+          });
+        }
+        var S = m(w, 2);
+        {
+          var T = (P) => {
+            Al(P, {
+              get gameTitle() {
+                return l(o).config.title;
+              },
+              get opponentConfig() {
+                return l(o).config.opponentConfig;
+              },
+            });
+          };
+          j(S, (P) => {
+            l(o) && P(T);
+          });
+        }
+        d(b), d(g), R("click", y, f), A(h, g);
+      },
+      $$slots: { default: !0 },
+    }),
+    ve(),
+    r();
+}
+const lf = Object.freeze(
+  Object.defineProperty(
+    { __proto__: null, component: of },
+    Symbol.toStringTag,
+    { value: "Module" },
+  ),
+);
+var cf = O(
+  '<div class="flex flex-col items-start justify-center w-full ml-8 mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500">GAMETYPE</span> <h1 class="font-black leading-none text-7xl font-condensed"> </h1> <div class="flex flex-col mt-2.5"><span class="mb-0 text-sm font-medium text-gray-500 mt-2.5">DATE</span> <h3 class="mb-4 text-4xl font-bold text-center font-condensed"> </h3></div> <div class="flex items-center justify-start mt-2.5"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex flex-col"><span class="mb-0 text-sm font-medium text-gray-500">COURSE</span> <div><p class="text-3xl font-bold text-center font-condensed"> </p></div></div></div></div>',
+);
+function df(e, t) {
+  fe(t, !1);
+  let a = L(t, "gameType", 8),
+    r = L(t, "teeOffTime", 8),
+    n = L(t, "courseId", 8);
+  it(async () => {}), _e();
+  var s = cf(),
+    o = m(v(s), 2),
+    i = v(o, !0);
+  d(o);
+  var f = m(o, 2),
+    u = m(v(f), 2),
+    p = v(u, !0);
+  d(u), d(f);
+  var h = m(f, 2),
+    c = m(v(h), 2),
+    g = m(v(c), 2),
+    b = v(g),
+    x = v(b, !0);
+  d(b),
+    d(g),
+    d(c),
+    d(h),
+    d(s),
+    V(() => {
+      D(i, a()), D(p, r()), D(x, n());
+    }),
+    A(e, s),
+    ve();
+}
+var uf = O('<div><h4 class="text-4xl font-bold condensed"><!></h4>  <!></div>');
+function ff(e, t) {
+  fe(t, !1);
+  let a = L(t, "gameType", 8),
+    r = L(t, "gameStatus", 8);
+  L(t, "playerIds", 8), L(t, "events", 8), L(t, "winner", 8), _e();
+  var n = uf(),
+    s = v(n),
+    o = v(s);
+  {
+    var i = (h) => {
+        var c = _a("PLAYER SETUP");
+        A(h, c);
+      },
+      f = (h) => {
+        var c = pe(),
+          g = J(c);
+        {
+          var b = (y) => {
+              var k = _a("PLAYER SCORES");
+              A(y, k);
+            },
+            x = (y) => {
+              var k = pe(),
+                E = J(k);
+              {
+                var C = (_) => {
+                  var w = _a("PLAYER DETAILS");
+                  A(_, w);
+                };
+                j(
+                  E,
+                  (_) => {
+                    r() === "completed" && _(C);
+                  },
+                  !0,
+                );
+              }
+              A(y, k);
+            };
+          j(
+            g,
+            (y) => {
+              r() === "active" ? y(b) : y(x, !1);
+            },
+            !0,
+          );
+        }
+        A(h, c);
+      };
+    j(o, (h) => {
+      r() === "unplayed" ? h(i) : h(f, !1);
+    });
+  }
+  d(s);
+  var u = m(s, 2);
+  {
+    var p = (h) => {
+      var c = pe(),
+        g = J(c);
+      {
+        var b = (y) => {},
+          x = (y) => {
+            var k = pe(),
+              E = J(k);
+            {
+              var C = (w) => {},
+                _ = (w) => {
+                  var B = pe(),
+                    S = J(B);
+                  {
+                    var T = (I) => {},
+                      P = (I) => {
+                        var U = pe(),
+                          G = J(U);
+                        {
+                          var H = (Y) => {},
+                            F = (Y) => {
+                              var q = pe(),
+                                $ = J(q);
+                              {
+                                var z = (K) => {};
+                                j(
+                                  $,
+                                  (K) => {
+                                    a() === "Prophet" && K(z);
+                                  },
+                                  !0,
+                                );
+                              }
+                              A(Y, q);
+                            };
+                          j(
+                            G,
+                            (Y) => {
+                              a() === "BuildIt" ? Y(H) : Y(F, !1);
+                            },
+                            !0,
+                          );
+                        }
+                        A(I, U);
+                      };
+                    j(
+                      S,
+                      (I) => {
+                        a() === "NextUp" ? I(T) : I(P, !1);
+                      },
+                      !0,
+                    );
+                  }
+                  A(w, B);
+                };
+              j(
+                E,
+                (w) => {
+                  a() === "Mulligans" ? w(C) : w(_, !1);
+                },
+                !0,
+              );
+            }
+            A(y, k);
+          };
+        j(g, (y) => {
+          a() === "Bands" ? y(b) : y(x, !1);
+        });
+      }
+      A(h, c);
+    };
+    j(u, (h) => {
+      a() && h(p);
+    });
+  }
+  d(n), A(e, n), ve();
+}
+var vf = O(
+    '<div class="flex items-center"><div class="w-3 h-3 bg-green-500 rounded-full"></div> <span class="ml-2 mr-4 text-xl font-bold text-green-500">LIVE</span></div>',
+  ),
+  pf = O(
+    '<div class="flex items-center"><div class="w-3 h-3 bg-blue-500 rounded-full"></div> <span class="ml-2 mr-4 text-xl font-bold text-blue-500">PREDICT</span></div>',
+  ),
+  gf = O(
+    '<div class="w-full"><div class="w-full p-2 px-4 text-black"><div class="flex items-center justify-between"><h2 class="px-5 mt-1 text-3xl font-black text-black md:text-5xl condensed">GAME DETAILS</h2> <!> <!></div></div> <div class="w-full"><div class="w-1/3 rounded-lg"><img class="game-image"></div> <!> <!></div></div>',
+  );
+function hf(e, t) {
+  fe(t, !1);
+  const [a, r] = fa(),
+    n = () => At(xs, "$page", a),
+    s = () => At(i, "$gameData", a),
+    o = M(),
+    i = st({
+      id: BigInt(0),
+      gameType: { Mulligans: null },
+      scoreDetail: [],
+      status: { Unplayed: null },
+      courseId: BigInt(0),
+      predictions: [],
+      events: [],
+      courseSnapshot: {
+        courseId: BigInt(0),
+        courseVersion: 0,
+        teeGroup: {
+          added: BigInt(0),
+          holes: [],
+          name: "",
+          colour: "",
+          strokeIndex: 0,
+        },
+      },
+      teeOffTime: BigInt(0),
+      playerIds: [],
+      invites: [],
+      winner: "",
+    });
+  it(async () => {
+    try {
+      if (l(o)) {
+        const p = await El.getGame(parseInt(l(o)));
+        i.set(p);
+      }
+    } catch (p) {
+      console.error(p);
+    } finally {
+    }
+  });
+  function f(p) {
+    return "Bands" in p
+      ? "/bands.png"
+      : "Mulligans" in p
+        ? "/mulligans.png"
+        : "NextUp" in p
+          ? "/next-up.png"
+          : "BuildIt" in p
+            ? "/build-it.png"
+            : "Prophet" in p
+              ? "/prophet.png"
+              : "";
+  }
+  function u(p) {
+    return "Unplayed" in p
+      ? "Unplayed"
+      : "Active" in p
+        ? "Active"
+        : "Complete" in p
+          ? "Complete"
+          : "Unknown";
+  }
+  Pt(
+    () => n(),
+    () => {
+      N(o, n().url.searchParams.get("id"));
+    },
+  ),
+    Ha(),
+    _e(),
+    Gt(e, {
+      children: (p, h) => {
+        var c = gf(),
+          g = v(c),
+          b = v(g),
+          x = m(v(b), 2);
+        {
+          var y = (G) => {
+            var H = vf();
+            A(G, H);
+          };
+          j(x, (G) => {
+            u(s()?.status) === "Active" && G(y);
+          });
+        }
+        var k = m(x, 2);
+        {
+          var E = (G) => {
+            var H = pf();
+            A(G, H);
+          };
+          j(k, (G) => {
+            u(s()?.status) === "Unplayed" && G(E);
+          });
+        }
+        d(b), d(g);
+        var C = m(g, 2),
+          _ = v(C),
+          w = v(_);
+        d(_);
+        var B = m(_, 2);
+        df(B, {
+          get gameType() {
+            return Object.keys(s()?.gameType || {})[0];
+          },
+          get teeOffTime() {
+            return s().teeOffTime;
+          },
+          get courseId() {
+            return s().courseId;
+          },
+        });
+        var S = m(B, 2);
+        const T = Oe(() => u(s()?.status)),
+          P = Oe(() => Object.keys(s().playerIds)),
+          I = Oe(() => Object.keys(s().events)),
+          U = Oe(() => Object.keys(s().winner));
+        ff(S, {
+          get gameType() {
+            return Object.keys(s()?.gameType || {})[0];
+          },
+          get gameStatus() {
+            return l(T);
+          },
+          get playerIds() {
+            return l(P);
+          },
+          get events() {
+            return l(I);
+          },
+          get winner() {
+            return l(U);
+          },
+        }),
+          d(C),
+          d(c),
+          V(
+            (G, H) => {
+              Q(w, "src", G), Q(w, "alt", H);
+            },
+            [() => f(s()?.gameType), () => Object.keys(s()?.gameType || {})[0]],
+            Oe,
+          ),
+          A(p, c);
+      },
+      $$slots: { default: !0 },
+    }),
+    ve(),
+    r();
+}
+const mf = Object.freeze(
+    Object.defineProperty(
+      { __proto__: null, component: hf },
+      Symbol.toStringTag,
+      { value: "Module" },
+    ),
+  ),
+  bf = {
+    mulligans: { title: "Mulligans", opponentConfig: { multiple: !0 } },
+    prophet: { title: "Prophet", opponentConfig: { multiple: !1 } },
+    bands: { title: "Bands", opponentConfig: { multiple: !0, maxPlayers: 4 } },
+    "build-it": {
+      title: "Build It",
+      opponentConfig: { playerLabels: ["Player A", "Player B", "Player C"] },
+    },
+    "next-up": {
+      title: "Next Up",
+      opponentConfig: { multiple: !0, maxPlayers: 2 },
+    },
+  };
+function yf(e, t) {
+  fe(t, !1);
+  const [a, r] = fa(),
+    s = At(xs, "$page", a).params.game,
+    o = bf[s],
+    f = { ...{ multiple: !1 }, ...o.opponentConfig };
+  _e(),
+    Al(e, {
+      get gameTitle() {
+        return o.title;
+      },
+      opponentConfig: f,
+    }),
+    ve(),
+    r();
+}
+const xf = Object.freeze(
+  Object.defineProperty(
+    { __proto__: null, component: yf },
+    Symbol.toStringTag,
+    { value: "Module" },
+  ),
+);
+var _f = ns(
+  '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><path d="m60 10c27.57 0 50 22.43 50 50s-22.43 50-50 50-50-22.43-50-50 22.43-50 50-50zm0-10c-33.135 0-60 26.865-60 60s26.865 60 60 60 60-26.865 60-60-26.865-60-60-60zm-19.97 64.82 15.53 15.525-20.56 4.655zm49.97-18.82-29.2 29.605-16.01-16.01 29.205-29.595z"></path></svg>',
+);
+function jr(e, t) {
+  let a = L(t, "className", 8, ""),
+    r = L(t, "fill", 8, "");
+  var n = _f();
+  V(() => {
+    se(n, 0, ss(a())), Q(n, "fill", r());
+  }),
+    A(e, n);
+}
+var wf = O(
+    '<img alt="Preview" class="object-cover w-24 h-24 mb-4 rounded sm:w-32 sm:h-32"> <p class="text-base font-medium sm:text-lg text-BrandDarkGray">Click to change image</p>',
+    1,
+  ),
+  kf = O(
+    '<div class="mb-4"><!></div> <p class="text-base font-medium sm:text-lg text-BrandDarkGray">Drag and Drop or Browse</p>',
+    1,
+  ),
+  Ef = O(
+    '<div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0"><div class="relative z-10 w-full sm:w-[90vw] md:w-[60vw] lg:w-[40vw] bg-white rounded-lg shadow-xl"><div class="flex items-center justify-between p-4 sm:p-5"><h2 class="text-2xl text-black sm:text-3xl condensed">UPLOAD IMAGE</h2> <button class="flex items-center justify-center text-base font-bold text-white bg-black rounded-full shadow-md w-7 h-7 sm:w-8 sm:h-8" type="button" aria-label="Close">✕</button></div> <div class="p-4 sm:p-8"><button type="button" class="flex flex-col items-center justify-center w-full p-4 transition-all duration-200 ease-in-out border-2 border-dashed rounded-lg cursor-pointer sm:p-8 border-BrandLightGray hover:border-BrandForest"><!> <input id="fileInput" type="file" accept="image/*" class="hidden"></button></div> <div class="flex justify-end gap-3 p-4 sm:gap-4 sm:p-6"><button type="button" class="px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg sm:px-6 sm:text-base text-BrandDarkGray bg-BrandYellow hover:bg-yellow-400 focus:outline-none">Cancel</button> <button type="button">Save</button></div></div></div>',
+  );
+function Af(e, t) {
+  fe(t, !1);
+  let a = L(t, "isOpen", 8, !1);
+  const r = va();
+  let n = M(!1),
+    s = null,
+    o = M(null),
+    i = M();
+  function f() {
+    r("close");
+  }
+  function u(x) {
+    const y = x.target;
+    y.files &&
+      y.files[0] &&
+      (N(n, !0), (s = y.files[0]), N(o, URL.createObjectURL(y.files[0])));
+  }
+  function p() {
+    s && (r("fileSelect", { file: s, preview: l(o) }), f());
+  }
+  function h() {
+    l(i)?.click();
+  }
+  _e();
+  var c = pe(),
+    g = J(c);
+  {
+    var b = (x) => {
+      var y = Ef(),
+        k = v(y),
+        E = v(k),
+        C = m(v(E), 2);
+      d(E);
+      var _ = m(E, 2),
+        w = v(_),
+        B = v(w);
+      {
+        var S = (F) => {
+            var Y = wf(),
+              q = J(Y);
+            Ee(2), V(() => Q(q, "src", l(o))), A(F, Y);
+          },
+          T = (F) => {
+            var Y = kf(),
+              q = J(Y),
+              $ = v(q);
+            _s($, {
+              className: "w-10 h-10 sm:w-12 sm:h-12 fill-BrandDarkGray",
+            }),
+              d(q),
+              Ee(2),
+              A(F, Y);
+          };
+        j(B, (F) => {
+          l(o) ? F(S) : F(T, !1);
+        });
+      }
+      var P = m(B, 2);
+      Gr(
+        P,
+        (F) => N(i, F),
+        () => l(i),
+      ),
+        d(w),
+        d(_);
+      var I = m(_, 2),
+        U = v(I),
+        G = m(U, 2);
+      let H;
+      d(I),
+        d(k),
+        d(y),
+        V(
+          () =>
+            (H = se(
+              G,
+              1,
+              "px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg sm:px-6 sm:text-base focus:outline-none",
+              null,
+              H,
+              {
+                "bg-BrandForest": l(n),
+                "text-BrandYellow": l(n),
+                "bg-BrandLightGray": !l(n),
+                "text-BrandDarkGray": !l(n),
+              },
+            )),
+        ),
+        R("click", C, f),
+        R("change", P, u),
+        R("click", w, h),
+        R("keydown", w, (F) => F.key === "Enter" && h()),
+        R("click", U, f),
+        R("click", G, p),
+        A(x, y);
+    };
+    j(g, (x) => {
+      a() && x(b);
+    });
+  }
+  A(e, c), ve();
+}
+var Br = { BACKEND_CANISTER_ID: "elbip-aiaaa-aaaal-qjfhq-cai" };
+class Or {
+  constructor() {
+    Na(this, "actor");
+    this.actor = Ce.createActor(Qt, Br.BACKEND_CANISTER_ID);
+  }
+  async createYardageSet(t) {
+    const a = await Ce.createIdentityActor(ke, Br.BACKEND_CANISTER_ID);
+    console.log("Creating Yardage Set", t);
+    const r = await a.createYardageSet(t);
+    if ((console.log("Yardage Set Created", r), Me(r)))
+      throw new Error("Error Creating Yardage Set");
+  }
+  async updateYardageSet(t) {
+    const r = await (
+      await Ce.createIdentityActor(ke, Br.BACKEND_CANISTER_ID)
+    ).updateYardageSet(t);
+    if (Me(r)) throw new Error("Error Updating Yardage Set");
+  }
+  async deleteYardageSet(t) {
+    const r = await (
+      await Ce.createIdentityActor(ke, Br.BACKEND_CANISTER_ID)
+    ).deleteYardageSet(t);
+    if (Me(r)) throw new Error("Error Deleting Yardage Set");
+  }
+  async getYardageSet(t) {
+    const a = await this.actor.getYardageSet(t);
+    if (Me(a)) throw new Error("Error Getting Yardage Set");
+    return a.ok;
+  }
+}
+function Sf() {
+  const { subscribe: e, set: t } = st([]);
+  async function a(o) {
+    return await new Or().createYardageSet(o);
+  }
+  async function r(o) {
+    return await new Or().updateYardageSet(o);
+  }
+  async function n(o) {
+    return await new Or().deleteYardageSet(o);
+  }
+  async function s(o) {
+    return await new Or().getYardageSet(o);
+  }
+  return {
+    subscribe: e,
+    setYardageSet: (o) => t(o),
+    createYardageSet: a,
+    updateYardageSet: r,
+    deleteYardageSet: n,
+    getYardageSet: s,
+  };
+}
+const Cf = Sf();
+var Tf = O(
+  '<div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0"><div class="relative z-10 w-full sm:w-[90vw] md:w-[60vw] lg:w-[30vw] bg-white rounded-lg shadow-xl"><div class="flex items-center justify-between p-4"><h2 class="text-xl text-black sm:text-2xl md:text-3xl condensed">ADD NEW YARDAGE SET</h2> <button class="flex items-center justify-center text-base font-bold text-white bg-black rounded-full shadow-md w-7 h-7 sm:w-8 sm:h-8" type="button" aria-label="Close">✕</button></div> <div class="px-4 pt-2 pb-4 sm:px-6"><p class="text-sm text-BrandDarkGray">Create a new yardage set to track your performance in various settings. Specify the name of the set to help you manage and optimize your game across different conditions.</p></div> <div class="p-4 sm:p-6"><div class="flex flex-col gap-4"><div><label for="yardageSetName" class="block mb-2 text-sm text-black">NAME</label> <input id="yardageSetName" type="text" class="w-full p-3 text-black rounded bg-BrandLightGray" placeholder="Enter"></div></div></div> <div class="flex justify-end gap-3 p-4"><button class="px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg sm:px-6 sm:text-base text-BrandForest bg-BrandYellow hover:bg-yellow-400 focus:outline-none">CANCEL</button> <button type="button">ADD SET</button></div></div></div>',
+);
+function Sl(e, t) {
+  fe(t, !1);
+  let a = L(t, "isOpen", 8, !1);
+  const r = va();
+  let n = M("");
+  function s() {
+    r("close");
+  }
+  async function o() {
+    if (l(n).trim() !== "") {
+      const p = { name: l(n), clubs: [] };
+      try {
+        await Cf.createYardageSet(p), console.log("Yardage Set Created"), s();
+      } catch (h) {
+        console.error("Error Creating Yardage Set", h);
+      }
+    }
+  }
+  _e();
+  var i = pe(),
+    f = J(i);
+  {
+    var u = (p) => {
+      var h = Tf(),
+        c = v(h),
+        g = v(c),
+        b = m(v(g), 2);
+      d(g);
+      var x = m(g, 4),
+        y = v(x),
+        k = v(y),
+        E = m(v(k), 2);
+      Ne(E), d(k), d(y), d(x);
+      var C = m(x, 2),
+        _ = v(C),
+        w = m(_, 2);
+      let B;
+      d(C),
+        d(c),
+        d(h),
+        V(
+          (S, T) => {
+            (B = se(
+              w,
+              1,
+              "px-4 py-2 text-sm transition-all duration-200 ease-in-out rounded-lg sm:px-6 sm:text-base focus:outline-none",
+              null,
+              B,
+              {
+                "bg-BrandForest": S,
+                "text-BrandYellow": S,
+                "bg-BrandLightGray": T,
+                "text-BrandDarkGray": T,
+              },
+            )),
+              (w.disabled = T);
+          },
+          [() => l(n).trim() !== "", () => l(n).trim() === ""],
+          Oe,
+        ),
+        R("click", b, s),
+        Be(
+          E,
+          () => l(n),
+          (S) => N(n, S),
+        ),
+        R("click", _, s),
+        R("click", w, o),
+        A(p, h);
+    };
+    j(f, (p) => {
+      a() && p(u);
+    });
+  }
+  A(e, i), ve();
+}
+var Nf = O(
+    '<div class="relative w-full h-full"><img alt="Profile" class="object-cover w-full h-full rounded-lg"> <button class="absolute p-2 transition-all duration-200 bg-black bg-opacity-50 rounded-full top-4 right-4 hover:bg-opacity-70"><!></button></div>',
+  ),
+  Bf = O(
+    '<img src="default-profile-picture.jpg" alt="Default Profile" class="object-cover w-full h-full rounded-lg"> <button class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"><!></button>',
+    1,
+  ),
+  Of = O('<p class="mb-2 text-red-500"> </p>'),
+  Rf = O(
+    '<!> <button class="px-2 py-2 mb-4 text-sm rounded lg:px-3 lg:py-1 text-BrandYellow bg-BrandForest hover:bg-green-700 disabled:opacity-50"><!></button>',
+    1,
+  ),
+  Pf = O(
+    '<div class="relative"><p class="text-xl text-black condensed"> </p> <button type="button" class="absolute bottom-0 right-0 p-1 transition-all duration-200 rounded-full hover:bg-black/10"><!></button></div>',
+  ),
+  If = O(
+    '<button type="button" class="w-full p-2 text-left rounded text-BrandDarkGray hover:bg-black/5">Select home course</button>',
+  ),
+  Gf = O(
+    '<div class="w-full h-full px-2 pt-4"><div class="flex flex-col p-4 rounded-md lg:flex-row bg-BrandLightGray"><div class="w-full mb-6 lg:w-1/3 lg:mb-0"><h3 class="px-2 mb-4 text-2xl text-black lg:hidden condensed">DETAILS</h3> <div class="relative flex items-center justify-center w-full aspect-[16/9] lg:aspect-square bg-yellow-400 rounded-lg"><!> <!></div></div> <div class="w-full px-0 mb-6 lg:w-1/3 lg:px-4 lg:mb-0"><h3 class="hidden mb-4 text-xl text-black lg:block condensed">DETAILS</h3> <label for="username" class="block pt-8 pb-3 text-sm text-BrandDarkGray">USERNAME</label> <input id="username" placeholder="Enter your username" type="text" class="w-full p-2 mb-4 text-4xl text-black bg-transparent border-b rounded lg:text-2xl condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest"> <label for="handicap" class="block pt-4 pb-3 text-sm text-BrandDarkGray">HANDICAP</label> <input id="handicap" placeholder="Enter your handicap" type="number" class="w-full p-2 mb-4 text-xl text-black bg-transparent border-b rounded condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest" min="0" max="54"> <!> <div class="flex items-center mt-auto text-black"><img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"> <div class="flex-1"><label for="homeCourse" class="block pb-3 text-sm text-BrandDarkGray">HOME COURSE</label> <!> <!></div></div></div> <div class="w-full px-0 lg:w-1/3 lg:px-4"><h3 class="text-xl text-black condensed">YARDAGES</h3> <div class="flex flex-col h-[calc(100%-1rem)] p-4 rounded-lg bg-BrandLightGray"><div class="flex flex-col h-full bg-white rounded-lg"><div class="flex items-center justify-between p-2 text-black lg:py-4 lg:mx-4 condensed"><span>CLUB</span> <span>YARDS</span></div> <div class="flex items-center justify-center flex-1"><p class="px-8 text-sm text-center text-BrandDarkGray">No yardages have been added. Click the button below to get started.</p></div> <div class="px-4 pb-4"><button class="w-full p-2 rounded text-BrandYellow bg-BrandForest hover:bg-green-700">ADD YARDAGES</button> <!></div></div></div></div></div></div>',
+  ),
+  jf = O(
+    '<div class="grid items-center grid-cols-12 p-4 bg-white rounded-lg"><div class="flex items-center justify-between col-span-12 mb-2 lg:col-span-5 lg:mb-0"><div class="flex items-center"><img src="default-profile-picture.jpg" alt="Profile" class="mr-4 rounded-full w-14 h-14"> <div><span class="text-xxs text-BrandDarkGray"> </span> <h4 class="text-2xl text-black md:text-3xl condensed"> </h4></div></div> <div class="flex flex-col items-end lg:hidden"><span class="text-xxs text-BrandDarkGray">HANDICAP</span> <span class="text-2xl text-black md:text-3xl condensed">4</span></div></div> <div class="items-center hidden col-span-2 lg:flex lg:flex-col"><span class="text-xxs text-BrandDarkGray">HANDICAP</span> <span class="text-2xl text-black md:text-3xl condensed">4</span></div> <div class="flex justify-center col-span-12 space-x-2 lg:justify-end lg:col-span-5"><button class="flex-1 px-3 py-1 text-sm text-black rounded lg:flex-initial bg-BrandAcceptGreen">ACCEPT</button> <button class="flex-1 px-3 py-1 text-sm text-white rounded lg:flex-initial bg-BrandDeclineRed">REJECT</button></div></div>',
+  ),
+  Mf = O(
+    '<div class="grid items-center grid-cols-12 p-4 bg-white rounded-lg"><div class="flex items-center justify-between col-span-12 mb-2 lg:col-span-5 lg:mb-0"><div class="flex items-center"><img src="default-profile-picture.jpg" alt="Profile" class="mr-4 rounded-full w-14 h-14"> <div><span class="text-xxs text-BrandDarkGray"> </span> <h4 class="text-2xl text-black md:text-3xl condensed"> </h4></div></div> <div class="flex flex-col items-end lg:hidden"><span class="text-xxs text-BrandDarkGray">HANDICAP</span> <span class="text-2xl text-black md:text-3xl condensed"> </span></div></div> <div class="items-center hidden col-span-2 lg:flex lg:flex-col"><span class="text-xxs text-BrandDarkGray">HANDICAP</span> <span class="text-3xl text-black condensed"> </span></div> <div class="flex justify-center col-span-12 lg:justify-end lg:col-span-5"><button class="w-full px-5 py-1 text-sm rounded lg:w-auto text-BrandYellow bg-BrandForest">VIEW</button></div></div>',
+  ),
+  Ff = O(
+    '<button type="button" role="option"><div class="flex items-center justify-between col-span-12"><div class="flex items-center"><img src="default-profile-picture.jpg" alt="Profile" class="w-10 h-10 mr-4 rounded-full"> <div class="flex flex-col"><span class="text-xs text-BrandDarkGray"> </span> <span class="text-xl text-black condensed"> </span></div></div> <div class="flex flex-col items-end"><span class="text-xs text-BrandDarkGray">HANDICAP</span> <span class="text-xl text-black condensed"> </span></div></div></button>',
+  ),
+  $f = O(
+    '<div class="w-full h-full px-2 pt-4"><div class="flex flex-col p-4 rounded-md lg:flex-row bg-BrandLightGray"><div class="w-full mb-8 lg:w-3/5 lg:pr-4 lg:mb-0"><div class="flex items-center justify-between mb-4"><h3 class="text-2xl text-black condensed">YOUR FRIENDS</h3> <span class="text-xxs lg:text-sm text-BrandDarkGray">SMOKE THESE GUYS</span></div> <div class="space-y-4"><!> <!></div></div> <div class="w-full rounded lg:w-2/5 lg:pl-4"><div class="flex items-center justify-between mb-4"><h3 class="text-2xl text-black condensed">PLAYER SEARCH</h3> <span class="md:text-sm text-xxs text-BrandDarkGray">TIME FOR NEW FRIENDS</span></div> <div class="p-4 mb-4 bg-white rounded"><h4 class="mb-4 text-xl text-black condensed">SEARCH PLAYERS BY NAME</h4> <input type="text" placeholder="Enter Name" class="w-full p-3 text-lg bg-white border rounded border-BrandDivider"> <div class="pt-4 space-y-4"></div> <button>ADD FRIEND</button></div></div></div></div>',
+  ),
+  Uf = O(
+    '<div class="w-full"><div class="flex items-center justify-between px-8 pt-4"><h2 class="text-5xl text-black md:text-4xl condensed">PROFILE</h2> <div class="justify-end hidden md:flex"><button>DETAILS</button> <button>SOCIAL</button></div></div> <!> <!> <div class="sticky bottom-0 left-0 right-0 z-10 flex w-full bg-white md:hidden"><button>DETAILS</button> <button>SOCIAL</button></div></div>',
+  );
+function Df(e, t) {
+  fe(t, !1);
+  let a = [
+      {
+        principalId: "LEE, M.W._4857357",
+        displayName: "LEE, M.W.",
+        handicap: [2],
+      },
+      { principalId: "WOLF_238475", displayName: "WOLF", handicap: [12] },
+      { principalId: "MCELROY_238475", displayName: "MCELROY", handicap: [4] },
+      { principalId: "HATTON_238475", displayName: "HATTON", handicap: [22] },
+    ],
+    r = [
+      { principalId: "DECHU_475", requestTime: BigInt(Date.now()) },
+      { principalId: "SMITH_238475", requestTime: BigInt(Date.now()) },
+    ],
+    n = [
+      {
+        golferPrincipalId: "SAVAGE3_238475",
+        golferName: "SAVAGE3",
+        golferPicture: [],
+        golferPictureExtension: "jpg",
+        handicap: [8],
+      },
+      {
+        golferPrincipalId: "SAVAGE63_238475",
+        golferName: "SAVAGE63",
+        golferPicture: [],
+        golferPictureExtension: "jpg",
+        handicap: [22],
+      },
+    ],
+    s = M({ username: "", handicap: [0] }),
+    o = M(null),
+    i = [],
+    f = M(null),
+    u = M("DETAILS"),
+    p = M(!0),
+    h = M(!1),
+    c = M(!1),
+    g = M(!1),
+    b = M(!1),
+    x = M(""),
+    y = M(""),
+    k = M(null);
+  it(async () => {
+    try {
+      N(p, await Yt.sync()), console.log("sync complete");
+      const S = { limit: BigInt(10), offset: BigInt(0) };
+      i = await ja.getCourses(S);
+    } catch (S) {
+      console.error("Creating Golfer Error:", S);
+    }
+  });
+  async function E() {
+    if (l(p)) {
+      if (!l(s).username) {
+        N(x, "Username is required");
+        return;
+      }
+      N(b, !0), N(x, "");
+      try {
+        const S = Number(l(s).handicap[0]);
+        if (isNaN(S)) throw new Error("Invalid handicap value");
+        const T = [S];
+        await Yt.createUser(l(s).username, T),
+          N(p, !1),
+          await Yt.cacheProfile(),
+          await Yt.sync();
+      } catch (S) {
+        N(x, "Failed to create user. Please try again."),
+          console.error("Error creating user:", S);
+      } finally {
+        N(b, !1), console.log("createUser complete");
+      }
+    }
+  }
+  async function C(S) {
+    const { file: T, preview: P } = S.detail;
+    N(o, P), N(h, !1);
+    try {
+      await Yt.updateProfilePicture(T),
+        await Yt.cacheProfile(),
+        await Yt.sync(),
+        console.log("Profile picture updated successfully");
+    } catch (I) {
+      console.error("Error updating profile picture:", I);
+    }
+  }
+  async function _(S) {}
+  async function w(S) {}
+  function B() {
+    l(k) && console.log("Sending friend request to:", l(k).golferName);
+  }
+  _e(),
+    Gt(e, {
+      children: (S, T) => {
+        var P = Uf(),
+          I = v(P),
+          U = m(v(I), 2),
+          G = v(U),
+          H = m(G, 2);
+        d(U), d(I);
+        var F = m(I, 2);
+        {
+          var Y = (W) => {
+            var ie = Gf(),
+              he = v(ie),
+              me = v(he),
+              re = m(v(me), 2),
+              ce = v(re);
+            {
+              var He = (X) => {
+                  var Se = Nf(),
+                    Je = v(Se),
+                    ct = m(Je, 2),
+                    dt = v(ct);
+                  jr(dt, { className: "w-4 h-4", fill: "white" }),
+                    d(ct),
+                    d(Se),
+                    V(() => Q(Je, "src", l(o))),
+                    R("click", ct, () => N(h, !0)),
+                    A(X, Se);
+                },
+                Z = (X) => {
+                  var Se = Bf(),
+                    Je = m(J(Se), 2),
+                    ct = v(Je);
+                  jr(ct, { className: "w-20 h-20", fill: "white" }),
+                    d(Je),
+                    R("click", Je, () => N(h, !0)),
+                    A(X, Se);
+                };
+              j(ce, (X) => {
+                l(o) ? X(He) : X(Z, !1);
+              });
+            }
+            var be = m(ce, 2);
+            {
+              var Ae = (X) => {
+                Af(X, {
+                  get isOpen() {
+                    return l(h);
+                  },
+                  $$events: { close: () => N(h, !1), fileSelect: C },
+                });
+              };
+              j(be, (X) => {
+                l(h) && X(Ae);
+              });
+            }
+            d(re), d(me);
+            var Te = m(me, 2),
+              Le = m(v(Te), 4);
+            Ne(Le);
+            var Qe = m(Le, 4);
+            Ne(Qe);
+            var Re = m(Qe, 2);
+            {
+              var ne = (X) => {
+                var Se = Rf(),
+                  Je = J(Se);
+                {
+                  var ct = (ut) => {
+                    var Bt = Of(),
+                      we = v(Bt, !0);
+                    d(Bt), V(() => D(we, l(x))), A(ut, Bt);
+                  };
+                  j(Je, (ut) => {
+                    l(x) && ut(ct);
+                  });
+                }
+                var dt = m(Je, 2),
+                  Ht = v(dt);
+                {
+                  var pa = (ut) => {
+                      var Bt = _a("Creating...");
+                      A(ut, Bt);
+                    },
+                    Ca = (ut) => {
+                      var Bt = _a("CREATE USER");
+                      A(ut, Bt);
+                    };
+                  j(Ht, (ut) => {
+                    l(b) ? ut(pa) : ut(Ca, !1);
+                  });
+                }
+                d(dt),
+                  V(() => (dt.disabled = !l(s).username || l(b))),
+                  R("click", dt, E),
+                  A(X, Se);
+              };
+              j(Re, (X) => {
+                l(p) && X(ne);
+              });
+            }
+            var de = m(Re, 2),
+              Fe = m(v(de), 2),
+              Pe = m(v(Fe), 2);
+            {
+              var Ie = (X) => {
+                  var Se = Pf(),
+                    Je = v(Se),
+                    ct = v(Je, !0);
+                  d(Je);
+                  var dt = m(Je, 2),
+                    Ht = v(dt);
+                  jr(Ht, { className: "w-4 h-4 fill-black" }),
+                    d(dt),
+                    d(Se),
+                    V(() => D(ct, l(f).name)),
+                    R("click", dt, () => N(c, !0)),
+                    A(X, Se);
+                },
+                Ge = (X) => {
+                  var Se = If();
+                  R("click", Se, () => N(c, !0)), A(X, Se);
+                };
+              j(Pe, (X) => {
+                l(f) ? X(Ie) : X(Ge, !1);
+              });
+            }
+            var Ue = m(Pe, 2);
+            {
+              var et = (X) => {
+                kl(X, {
+                  get isOpen() {
+                    return l(c);
+                  },
+                  $$events: {
+                    close: () => N(c, !1),
+                    courseSelect: (Se) => {
+                      N(f, Se.detail.course), N(c, !1);
+                    },
+                  },
+                });
+              };
+              j(Ue, (X) => {
+                l(c) && X(et);
+              });
+            }
+            d(Fe), d(de), d(Te);
+            var ze = m(Te, 2),
+              De = m(v(ze), 2),
+              Ye = v(De),
+              qe = m(v(Ye), 4),
+              Ve = v(qe),
+              We = m(Ve, 2);
+            {
+              var Ke = (X) => {
+                Sl(X, {
+                  get isOpen() {
+                    return l(g);
+                  },
+                  $$events: { close: () => N(g, !1) },
+                });
+              };
+              j(We, (X) => {
+                l(g) && X(Ke);
+              });
+            }
+            d(qe),
+              d(Ye),
+              d(De),
+              d(ze),
+              d(he),
+              d(ie),
+              Be(
+                Le,
+                () => l(s).username,
+                (X) => xt(s, (l(s).username = X)),
+              ),
+              Be(
+                Qe,
+                () => l(s).handicap[0],
+                (X) => xt(s, (l(s).handicap[0] = X)),
+              ),
+              R("click", Ve, () => N(g, !0)),
+              A(W, ie);
+          };
+          j(F, (W) => {
+            l(u) === "DETAILS" && W(Y);
+          });
+        }
+        var q = m(F, 2);
+        {
+          var $ = (W) => {
+            var ie = $f(),
+              he = v(ie),
+              me = v(he),
+              re = m(v(me), 2),
+              ce = v(re);
+            xe(
+              ce,
+              1,
+              () => r,
+              je,
+              (Re, ne) => {
+                var de = jf(),
+                  Fe = v(de),
+                  Pe = v(Fe),
+                  Ie = m(v(Pe), 2),
+                  Ge = v(Ie),
+                  Ue = v(Ge, !0);
+                d(Ge);
+                var et = m(Ge, 2),
+                  ze = v(et, !0);
+                d(et), d(Ie), d(Pe), Ee(2), d(Fe);
+                var De = m(Fe, 4),
+                  Ye = v(De),
+                  qe = m(Ye, 2);
+                d(De),
+                  d(de),
+                  V(
+                    (Ve) => {
+                      D(Ue, l(ne).principalId), D(ze, Ve);
+                    },
+                    [() => l(ne).principalId.split("_")[0]],
+                    Oe,
+                  ),
+                  R("click", Ye, () => _(l(ne))),
+                  R("click", qe, () => w(l(ne))),
+                  A(Re, de);
+              },
+            );
+            var He = m(ce, 2);
+            xe(
+              He,
+              1,
+              () => a,
+              je,
+              (Re, ne) => {
+                var de = Mf(),
+                  Fe = v(de),
+                  Pe = v(Fe),
+                  Ie = m(v(Pe), 2),
+                  Ge = v(Ie),
+                  Ue = v(Ge, !0);
+                d(Ge);
+                var et = m(Ge, 2),
+                  ze = v(et, !0);
+                d(et), d(Ie), d(Pe);
+                var De = m(Pe, 2),
+                  Ye = m(v(De), 2),
+                  qe = v(Ye, !0);
+                d(Ye), d(De), d(Fe);
+                var Ve = m(Fe, 2),
+                  We = m(v(Ve), 2),
+                  Ke = v(We, !0);
+                d(We),
+                  d(Ve),
+                  Ee(2),
+                  d(de),
+                  V(() => {
+                    D(Ue, l(ne).principalId),
+                      D(ze, l(ne).displayName),
+                      D(qe, l(ne).handicap[0]),
+                      D(Ke, l(ne).handicap[0]);
+                  }),
+                  A(Re, de);
+              },
+            ),
+              d(re),
+              d(me);
+            var Z = m(me, 2),
+              be = m(v(Z), 2),
+              Ae = m(v(be), 2);
+            Ne(Ae);
+            var Te = m(Ae, 2);
+            xe(
+              Te,
+              5,
+              () => n,
+              je,
+              (Re, ne) => {
+                var de = Ff();
+                let Fe;
+                var Pe = v(de),
+                  Ie = v(Pe),
+                  Ge = m(v(Ie), 2),
+                  Ue = v(Ge),
+                  et = v(Ue, !0);
+                d(Ue);
+                var ze = m(Ue, 2),
+                  De = v(ze, !0);
+                d(ze), d(Ge), d(Ie);
+                var Ye = m(Ie, 2),
+                  qe = m(v(Ye), 2),
+                  Ve = v(qe, !0);
+                d(qe),
+                  d(Ye),
+                  d(Pe),
+                  d(de),
+                  V(() => {
+                    (Fe = se(
+                      de,
+                      1,
+                      "grid items-center w-full grid-cols-12 p-4 text-left bg-white rounded cursor-pointer hover:bg-gray-50",
+                      null,
+                      Fe,
+                      { "bg-gray-50": l(k) === l(ne) },
+                    )),
+                      Q(de, "aria-selected", l(k) === l(ne)),
+                      D(et, l(ne).golferPrincipalId),
+                      D(De, l(ne).golferName),
+                      D(Ve, l(ne).handicap[0]);
+                  }),
+                  R("click", de, () => N(k, l(ne))),
+                  R("keydown", de, (We) => {
+                    (We.key === "Enter" || We.key === " ") && N(k, l(ne));
+                  }),
+                  A(Re, de);
+              },
+            ),
+              d(Te);
+            var Le = m(Te, 2);
+            let Qe;
+            d(be),
+              d(Z),
+              d(he),
+              d(ie),
+              V(() => {
+                (Qe = se(
+                  Le,
+                  1,
+                  "w-full p-3 mt-4 text-center transition-colors duration-200 rounded-lg",
+                  null,
+                  Qe,
+                  {
+                    "bg-BrandYellow": l(k),
+                    "text-BrandForest": l(k),
+                    "bg-gray-200": !l(k),
+                    "text-gray-400": !l(k),
+                    "cursor-not-allowed": !l(k),
+                  },
+                )),
+                  (Le.disabled = !l(k));
+              }),
+              Be(
+                Ae,
+                () => l(y),
+                (Re) => N(y, Re),
+              ),
+              R("click", Le, B),
+              A(W, ie);
+          };
+          j(q, (W) => {
+            l(u) === "SOCIAL" && W($);
+          });
+        }
+        var z = m(q, 2),
+          K = v(z),
+          oe = m(K, 2);
+        d(z),
+          d(P),
+          V(() => {
+            se(
+              G,
+              1,
+              `px-10 py-3 text-xl text-BrandYellow condensed rounded-l-md rounded-r-none ${(l(u) === "DETAILS" ? "bg-BrandForest" : "bg-[#F9F9F9] text-[#C0C0C0]") ?? ""}`,
+            ),
+              se(
+                H,
+                1,
+                `px-10 py-3 text-xl text-BrandYellow condensed rounded-t-md ${(l(u) === "SOCIAL" ? "bg-BrandForest" : "bg-[#F9F9F9] text-[#C0C0C0]") ?? ""}`,
+              ),
+              se(
+                K,
+                1,
+                `flex-1 py-2 text-xl condensed ${(l(u) === "DETAILS" ? "bg-BrandForest text-BrandYellow" : "bg-[#F9F9F9] text-[#C0C0C0]") ?? ""}`,
+              ),
+              se(
+                oe,
+                1,
+                `flex-1 py-2 text-xl condensed ${(l(u) === "SOCIAL" ? "bg-BrandForest text-BrandYellow" : "bg-[#F9F9F9] text-[#C0C0C0]") ?? ""}`,
+              );
+          }),
+          R("click", G, () => N(u, "DETAILS")),
+          R("click", H, () => N(u, "SOCIAL")),
+          R("click", K, () => N(u, "DETAILS")),
+          R("click", oe, () => N(u, "SOCIAL")),
+          A(S, P);
+      },
+      $$slots: { default: !0 },
+    }),
+    ve();
+}
+const Vf = Object.freeze(
+  Object.defineProperty(
+    { __proto__: null, component: Df },
+    Symbol.toStringTag,
+    { value: "Module" },
+  ),
+);
+var Hf = O("<p> </p>"),
+  Yf = O(
+    '<div class="bg-gray-100 p-6 rounded-lg shadow-lg space-y-4"><div class="flex items-center space-x-4"><div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0"><img class="w-full h-full object-cover"></div> <div><h3 class="text-xl font-medium"> </h3> <p class="text-sm text-gray-500"> </p> <p class="text-sm text-gray-600"> </p></div></div> <div class="text-sm text-gray-700 space-y-2"></div></div>',
+  ),
+  qf = O(
+    `<div class="flex flex-col space-y-6 text-base text-black p-4"><h2 class="text-3xl md:text-5xl font-black text-black mb-4 mt-3 condensed">OUR TEAM</h2> <p class="text-lg leading-relaxed">Waterway Labs have a team of keen golfers. The team has experience of being long-time club members along with playing courses with friends on an ad-hoc basis. Using the team's domain knowledge will ensure that <span class="condensed">GOLFPAD</span> contains everything a golfer expects from an all-in-one golf solution and more.</p> <p class="text-lg leading-relaxed">The Waterway Labs team is in the process of expansion, bringing on a new Managing Director & Head of Operations in June 2024.</p> <h2 class="text-2xl font-semibold">Meet the Team</h2> <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>`,
+  );
+function Wf(e, t) {
+  fe(t, !1), it(() => {});
+  const a = [
+    {
+      name: "Zoe Duffy",
+      title: "Managing Director",
+      image: "zoe.jpg",
+      handicap: "Unknown",
+      bio: [
+        "With a robust background in the software development and technology industries, Zoe brings a wealth of experience to her role as Managing Director.",
+        "Her career spans over 20 years, during which she has cultivated expertise in sales, customer success, and marketing, driving growth and innovation across multiple organisations.",
+        "A passionate advocate for supporting women in tech, Zoe is committed to fostering an inclusive and diverse workplace where everyone can thrive.",
+        "She believes in empowering the next generation of female leaders and actively mentors women seeking to advance their careers in technology.",
+        "Outside of her professional life, Zoe is a dedicated mum to two children. She balances her dynamic career with a love for running, cycling, and exploring the great outdoors.",
+      ],
+    },
+    {
+      name: "Kelly Howlett",
+      title: "Head of Operations",
+      image: "kelly.jpeg",
+      handicap: 18,
+      bio: [
+        "Kelly is head of Operations at Waterway Labs, ensuring our dynamic UK based team can work together smoothly. Kelly turns our vision to bring real world users to the Internet Computer into a reality with his dedication to our UK marketing strategy. Kelly lives with our unofficial head of security, Trevor, both of whom can be found touring the UK in the OpenFPL podcast studio.",
+        "Kelly studied Ecology and Conservation and Natural History in Cambridge, building extensive experience in geotechnical engineering in his professional career. Kelly has worked on large-scale projects throughout Europe and the United States, specialising in utilising advanced technology to acheive wide ranging goals.",
+        "Kelly has always had a passion for sports, previously being sponsored as a professional kiter. Nowadays he prefers to keep his feet on the ground, enjoying a game of football or round of golf.",
+      ],
+    },
+    {
+      name: "James Beadle",
+      title: "Development Manager",
+      image: "james.jpg",
+      handicap: 18,
+      bio: [
+        "James oversees all of our development projects, ensuring that our software meets the highest standards.",
+        "James has over 15 years experience delivering projects for worldwide brands, including Ford, Coca Cola & GSK.",
+        "The Internet Computer blockchain attracted James due it's ability to create a more equitable future for people. James believes passionately about using this new technology to create truly decentralised services.",
+        "When he's not coding, you can find James on his narrowboat, where he enjoys thinking about his next big project while perfecting his short game.",
+      ],
+    },
+    {
+      name: "George Robinson",
+      title: "Community Manager",
+      image: "george.jpg",
+      handicap: 24,
+      bio: [
+        "George is our go-to person for all things community-related. His ability to connect with users and understand their needs makes him an invaluable part of our team.",
+        "George has been in crypto for almost 5 years, specifically championing the unique features of ICP since 2021.",
+        "Needing something to do during the football offseason, George picked up golf at the start of the 2024 summer. If he’s not on the course or the driving range, he’ll be at the club bar!",
+      ],
+    },
+    {
+      name: "Josh Wray",
+      title: "Head of Promotion",
+      image: "josh.jpg",
+      handicap: 28,
+      bio: [
+        "Josh brings a wealth of experience from a background in the pharmaceutical industry, where attention to detail and a deep understanding of complex technologies were essential.",
+        "Over the past five years, Josh has shifted focus towards blockchain technology, with a particular interest in the Internet Computer (ICP) ecosystem.",
+        "Josh's passion for innovation and emerging technologies has driven their success in promoting and growing blockchain projects.",
+        "As Head of Promotion at Waterway Labs, Josh leverages this expertise to build strong relationships, drive engagement, and enhance the visibility of our cutting-edge initiatives within the tech community and beyond.",
+      ],
+    },
+    {
+      name: "Dfinity Designer",
+      title: "Head of Design",
+      image: "dfd.jpg",
+      handicap: 18,
+      bio: [
+        "We believe we have the best designer in the world. Dfinity Designer maps out the user journey from start to finish, always ensuring a simple yet stunning product is created.",
+        "Dfinity Designer's work can be enjoyed throughout the ICP blockchain, having designed a range of applications including OpenChat and OpenFPL.",
+        "Dfinity Designer is also a keen golfer, making it even easier for him to design the perfect golf platform.",
+      ],
+    },
+  ];
+  _e(),
+    Gt(e, {
+      children: (r, n) => {
+        var s = qf(),
+          o = m(v(s), 8);
+        xe(
+          o,
+          5,
+          () => a,
+          je,
+          (i, f) => {
+            var u = Yf(),
+              p = v(u),
+              h = v(p),
+              c = v(h);
+            d(h);
+            var g = m(h, 2),
+              b = v(g),
+              x = v(b, !0);
+            d(b);
+            var y = m(b, 2),
+              k = v(y, !0);
+            d(y);
+            var E = m(y, 2),
+              C = v(E);
+            d(E), d(g), d(p);
+            var _ = m(p, 2);
+            xe(
+              _,
+              5,
+              () => l(f).bio,
+              je,
+              (w, B) => {
+                var S = Hf(),
+                  T = v(S, !0);
+                d(S), V(() => D(T, l(B))), A(w, S);
+              },
+            ),
+              d(_),
+              d(u),
+              V(() => {
+                Q(c, "src", `team/${l(f).image}`),
+                  Q(c, "alt", l(f).name),
+                  D(x, l(f).name),
+                  D(k, l(f).title),
+                  D(C, `Handicap: ${l(f).handicap ?? ""}`);
+              }),
+              A(i, u);
+          },
+        ),
+          d(o),
+          d(s),
+          A(r, s);
+      },
+      $$slots: { default: !0 },
+    }),
+    ve();
+}
+const Lf = Object.freeze(
+  Object.defineProperty(
+    { __proto__: null, component: Wf },
+    Symbol.toStringTag,
+    { value: "Module" },
+  ),
+);
+var zf =
+  O(`<div class="md:px-4"><h2 class="mb-2 text-2xl tracking-wide condensed">VISION</h2> <div class="space-y-4"><p class="relative"><img src="panel-bg.jpg" alt="vision" class="w-full h-auto mb-4 rounded-lg shadow-md md:mb-0 md:w-1/3 md:float-right md:ml-4"> <span class="condensed">GOLFPAD</span> is building the future of golf by building you a new range of games and tools powered by AI.
       Whether you’re a seasoned player who thrives on the game’s challenges or a newcomer discovering its unique joys, <span class="condensed">GOLFPAD</span> is designed to enhance every step of your golfing journey.</p> <p>At the heart of our platform is <span class="condensed">MERVE</span>, your own personalised AI assistant there to help transform your game. <span class="condensed">MERVE</span> will chat to you about how far you are hitting specific clubs, let you know a specific ruling and even enter the scores for your weekend fourball. <span class="condensed">MERVE</span> will grow to do more than just the things a perfect caddy does, <span class="condensed">MERVE</span> will become your coach using AI powered swing analysis. 
-      Begin chatting with <span class="condensed">MERVE</span> whenever you're ready to begin your golfing relationship.</p> <p><span class="condensed">GOLFPAD</span> also challenges players with our 4 new game formats, training golfers with new skills while they compete out on the course. <span class="condensed">GOLFPAD</span> will provide 3 new AI-driven side games that allow you and your friends to enjoy a more meaningful range & short game area experience.</p> <p class="mb-4"><span class="condensed">GOLFPAD</span> aims to preserve the traditions of golf whilst enabling cutting-edge technology to improve your golfing journey.</p></div></div>`);function Kf(e){var t=zf();A(e,t)}var Jf=O('<div class="md:px-4"><h2 class="text-2xl condensed tracking-wide mb-2">MERVE</h2> <div class="space-y-4"><p class="relative"><span class="condensed">MERVE</span> is your new chat-based AI assistant, ready to become the most useful tool in your golf bag. Whether you’re out on the course or at the range, let <span class="condensed">MERVE</span> know about any shot that may help build your golfer profile. Tell <span class="condensed">MERVE</span> about the shot types you’re playing, the club you’re hitting, and even the course conditions. <span class="condensed">MERVE</span> brings together all kinds of information about your game to provide you with personalised advice that feels like having a coach in your pocket.</p> <p class="relative">But <span class="condensed">MERVE</span> doesn’t stop there. By recording where your ball ends up off the tee, <span class="condensed">MERVE</span>helps you play percentage golf—ensuring you’re making the smartest decisions on every shot. With the ability to gather and analyse data from multiple sources, <span class="condensed">MERVE</span> delivers advanced insights and tooling that take your game to the next level.</p> <p>With a friendly chat interface and voice input, <span class="condensed">MERVE</span>is easy to talk to in any weather. Beyond your game, <span class="condensed">MERVE</span> has been trained on the rules of golf to settle any on-course dispute. Just share the details of any situation, and <span class="condensed">MERVE</span> will reply with helpful, easy-to-understand guidance for all golfers involved, including the steps to follow.</p> <p>Whether you’re a weekend golfer or chasing your next handicap milestone, <span class="condensed">MERVE</span> combines cutting-edge AI with the personalised touch you need to get the most out of your golf game.</p> <p>As <span class="condensed">MERVE</span> grows he will offer his services to golf courses, offering a new simpler way to manage memberships, share course information and set up competitions. By enabling courses to communicate with each other, <span class="condensed">MERVE</span> will offer groundbreaking management features, from creating promotional offerings to hosting inter-club tournaments.</p> <p><span class="condensed">GOLFPAD</span>, our integrated platform, will benefit from <span class="condensed">MERVE</span> evolution, providing advanced tools to manage courses, tournaments, and handicaps with AI driven efficiency.</p> <p><span class="condensed">MERVE</span> will also revolutionise the social side of golf. He’ll connect users to arrange rounds with friends, or even pair golfers looking for a partner, making your entire golf experience as seamless as possible. And with swing analysis on the horizon, <span class="condensed">MERVE</span> will unlock deeper insights into your game, helping you refine your skills and lower your scores.</p> <p>Our voice-first interface ensures that you can talk to <span class="condensed">MERVE</span> easily, even when the weather makes typing difficult. Whether you’re seeking shot advice, settling on-course rules, or planning your next tournament, <span class="condensed">MERVE</span> is always ready to help - bringing cutting edge AI and a friendly conversational touch to every aspect of your golf journey.</p></div></div>');function Xf(e){var t=Jf();A(e,t)}var Zf=O('<div class="fixed inset-0 z-50 overflow-visible bg-black bg-opacity-50 shadow-lg modal-backdrop" aria-hidden="true"><div><div class="bg-BrandLightGray rounded-lg w-full overflow-y-auto max-h-[90vh] px-4 py-4 md:px-6" role="dialog" aria-modal="true"><!></div></div></div>');function Sa(e,t){fe(t,!1);const a=M();let r=L(t,"showModal",8),n=L(t,"onClose",8),s=L(t,"useFixedPosition",8,!1),o=M(),i=M(),f=!1;const u=k=>{k.key==="Escape"&&r()&&n()()};typeof window<"u"&&window.addEventListener("keydown",u),Qi(()=>{typeof window<"u"&&(window.removeEventListener("keydown",u),document.body.style.overflow="auto")});const p=k=>{const E=document.querySelector('[role="dialog"]'),C=k.target;!E?.contains(C)&&!f&&n()()},h=()=>{f=!1},c=()=>{f=!0},g=()=>{setTimeout(()=>{f=!1},0)};Pt(()=>qr(r()),()=>{typeof window<"u"&&r()&&(N(o,window.scrollY),N(i,window.innerWidth<768))}),Pt(()=>(l(i),l(o)),()=>{N(a,l(i)?l(o)+window.innerHeight*.45:l(o)+window.innerHeight/2)}),Pt(()=>qr(r()),()=>{typeof window<"u"&&(r()?document.body.style.overflow="hidden":document.body.style.overflow="auto")}),Ha(),_e();var b=pe(),x=J(b);{var y=k=>{var E=Zf(),C=v(E),_=v(C),w=v(_);Ko(w,t,"default",{}),d(_),d(C),d(E),V(()=>{se(C,1,`border-2 shadow-md rounded-lg border-BrandPurple/50 ${(s()?"absolute":"fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2")??""} 
-           w-full max-w-lg px-4 md:px-0`),Q(C,"style",s()?`top: ${l(a)}px; transform: translate(-50%, -50%); left: 50%;`:"")}),oa(1,_,()=>eo,()=>({duration:2e3})),oa(2,_,()=>eo,()=>({duration:2e3})),R("click",E,p),R("mousedown",E,h),R("mousemove",E,c),R("mouseup",E,g),oa(1,E,()=>dr,()=>({duration:2e3})),oa(2,E,()=>dr,()=>({duration:2e3})),A(k,E)};j(x,k=>{r()&&k(y)})}A(e,b),ve()}var Qf=O('<div class="flex flex-col md:flex-row md:items-start md:space-x-4 space-y-4 md:space-y-0"><div class="flex flex-col space-y-2 text-xl leading-relaxed p-4"><p class="relative"><span class="condensed">BOMBS</span> is a cutting-edge game format that transforms your driving range sessions into interactive, competitive, and endlessly entertaining experiences. Designed to bring a social element to your practice, <span class="condensed">BOMBS</span> introduces an exciting new way to challenge yourself and your friends while sharpening your accuracy and focus.</p> <p class="relative">Here’s how it works: Friends can tune into each other’s live driving range streams, creating a shared experience no matter where they are. Using their devices, they select specific targets on the range for the player on the tee to aim for. This isn’t just about hitting long drives—it’s about precision, strategy, and rising to the challenge your friends set for you.</p> <p class="relative">Thanks to advanced AI capabilities, the game identifies when a golfer successfully hits a target, awarding points in real time. Every successful shot brings a mix of satisfaction and bragging rights, while missed targets fuel the fun and banter that makes <span class="condensed">BOMBS</span> so engaging.</p> <p class="relative">Whether you’re practicing solo and inviting friends to join remotely or competing side-by-side at the range, <span class="condensed">BOMBS</span> adds an electrifying layer of competition and camaraderie to every session. It’s not just about hitting the ball; it’s about making every shot count in a dynamic, interactive game that keeps you coming back for more.</p></div></div>');function ev(e){let t=M(!1);Sa(e,{get showModal(){return l(t)},onClose:()=>{N(t,!1)},children:(a,r)=>{var n=Qf();A(a,n)},$$slots:{default:!0}})}var tv=O('<div class="flex flex-col md:flex-row md:items-start md:space-x-4 space-y-4 md:space-y-0"><div class="flex flex-col space-y-2 text-xl leading-relaxed p-4"><p class="relative"><span class="condensed">BULLSEYE</span> takes your putting practice to a whole new level, turning every putt into a fun, competitive challenge that sharpens your accuracy and touch. Designed for groups, <span class="condensed">BULLSEYE</span> adds an exciting twist to your putting sessions, making it a game of skill and precision with every stroke.</p> <p class="relative">Here’s how it works: Players take turns attempting to hit designated targets on the green, with points awarded for getting within a putter’s length of the hole. It’s all about precision, as each putt must be carefully judged to land as close to the hole as possible. The more accurate your putts, the higher your score, creating a thrilling dynamic of friendly competition.</p> <p class="relative"><span class="condensed">BULLSEYE</span> encourages players to refine their putting technique in a relaxed yet challenging environment, fostering both individual focus and group camaraderie. Whether you’re practicing with friends or challenging yourself to beat your best, <span class="condensed">BULLSEYE</span> makes every putting session a rewarding experience.</p> <p class="relative">Ideal for groups of golfers, <span class="condensed">BULLSEYE</span> turns your practice into an engaging game that’s as fun as it is effective. Perfect your putting, engage in friendly competition, and make every round count—one precise putt at a time.</p></div></div>');function av(e){let t=M(!1);Sa(e,{get showModal(){return l(t)},onClose:()=>{N(t,!1)},children:(a,r)=>{var n=tv();A(a,n)},$$slots:{default:!0}})}var rv=O('<div class="flex flex-col md:flex-row md:items-start md:space-x-4 space-y-4 md:space-y-0"><div class="flex flex-col space-y-2 text-xl leading-relaxed p-4"><p class="relative"><span class="condensed">PIN HIGH</span> reimagines your chipping practice, turning it into an engaging and competitive experience that sharpens your skills while keeping things fun and social. Designed for groups of golfers, <span class="condensed">PIN HIGH</span> challenges you to perfect your touch and precision around the green, making every practice session as rewarding as it is enjoyable.</p> <p class="relative">Here’s how it works: Players take turns aiming for specific targets, with points awarded for hitting the right distance and getting close to the hole. It’s not just about making the shot—it’s about dialing in your control and accuracy to outscore your friends. Whether you’re playing casually or competing fiercely, <span class="condensed">PIN HIGH</span> transforms chipping practice into a game that’s easy to play and hard to put down.</p> <p class="relative">With its dynamic scoring and interactive approach, <span class="condensed">PIN HIGH</span> encourages strategic thinking and steady improvement. Each shot becomes an opportunity to test your skills, refine your technique, and gain valuable feedback—all while enjoying the camaraderie of friendly competition.</p> <p class="relative">Whether you’re at the range or in a backyard setup, <span class="condensed">PIN HIGH</span> brings a new level of excitement to your short game. It’s the perfect way to elevate your practice, connect with others, and master the art of getting up and down.</p></div></div>');function nv(e){let t=M(!1);Sa(e,{get showModal(){return l(t)},onClose:()=>{N(t,!1)},children:(a,r)=>{var n=rv();A(a,n)},$$slots:{default:!0}})}var sv=O(`<!> <!> <!> <div class="md:px-4"><h2 class="text-2xl condensed tracking-wide mb-2">OUR AI POWERED SIDE GAMES</h2> <div class="space-y-4"><p class="relative">We’re excited to unveil <span class="condensed">THREE</span> groundbreaking AI-powered side game formats, designed to revolutionise the way you practice and enhance your social golf experience—no matter where you are in the world.</p> <p class="relative">These innovative formats harness the power of your mobile device’s AI capabilities, transforming traditional practice facilities into dynamic game arenas for you and your friends. Whether you’re looking to sharpen your skills, engage in friendly competition, or simply add some excitement to your practice routine, these games bring a whole new dimension to the way you train.
+      Begin chatting with <span class="condensed">MERVE</span> whenever you're ready to begin your golfing relationship.</p> <p><span class="condensed">GOLFPAD</span> also challenges players with our 4 new game formats, training golfers with new skills while they compete out on the course. <span class="condensed">GOLFPAD</span> will provide 3 new AI-driven side games that allow you and your friends to enjoy a more meaningful range & short game area experience.</p> <p class="mb-4"><span class="condensed">GOLFPAD</span> aims to preserve the traditions of golf whilst enabling cutting-edge technology to improve your golfing journey.</p></div></div>`);
+function Kf(e) {
+  var t = zf();
+  A(e, t);
+}
+var Jf = O(
+  '<div class="md:px-4"><h2 class="text-2xl condensed tracking-wide mb-2">MERVE</h2> <div class="space-y-4"><p class="relative"><span class="condensed">MERVE</span> is your new chat-based AI assistant, ready to become the most useful tool in your golf bag. Whether you’re out on the course or at the range, let <span class="condensed">MERVE</span> know about any shot that may help build your golfer profile. Tell <span class="condensed">MERVE</span> about the shot types you’re playing, the club you’re hitting, and even the course conditions. <span class="condensed">MERVE</span> brings together all kinds of information about your game to provide you with personalised advice that feels like having a coach in your pocket.</p> <p class="relative">But <span class="condensed">MERVE</span> doesn’t stop there. By recording where your ball ends up off the tee, <span class="condensed">MERVE</span>helps you play percentage golf—ensuring you’re making the smartest decisions on every shot. With the ability to gather and analyse data from multiple sources, <span class="condensed">MERVE</span> delivers advanced insights and tooling that take your game to the next level.</p> <p>With a friendly chat interface and voice input, <span class="condensed">MERVE</span>is easy to talk to in any weather. Beyond your game, <span class="condensed">MERVE</span> has been trained on the rules of golf to settle any on-course dispute. Just share the details of any situation, and <span class="condensed">MERVE</span> will reply with helpful, easy-to-understand guidance for all golfers involved, including the steps to follow.</p> <p>Whether you’re a weekend golfer or chasing your next handicap milestone, <span class="condensed">MERVE</span> combines cutting-edge AI with the personalised touch you need to get the most out of your golf game.</p> <p>As <span class="condensed">MERVE</span> grows he will offer his services to golf courses, offering a new simpler way to manage memberships, share course information and set up competitions. By enabling courses to communicate with each other, <span class="condensed">MERVE</span> will offer groundbreaking management features, from creating promotional offerings to hosting inter-club tournaments.</p> <p><span class="condensed">GOLFPAD</span>, our integrated platform, will benefit from <span class="condensed">MERVE</span> evolution, providing advanced tools to manage courses, tournaments, and handicaps with AI driven efficiency.</p> <p><span class="condensed">MERVE</span> will also revolutionise the social side of golf. He’ll connect users to arrange rounds with friends, or even pair golfers looking for a partner, making your entire golf experience as seamless as possible. And with swing analysis on the horizon, <span class="condensed">MERVE</span> will unlock deeper insights into your game, helping you refine your skills and lower your scores.</p> <p>Our voice-first interface ensures that you can talk to <span class="condensed">MERVE</span> easily, even when the weather makes typing difficult. Whether you’re seeking shot advice, settling on-course rules, or planning your next tournament, <span class="condensed">MERVE</span> is always ready to help - bringing cutting edge AI and a friendly conversational touch to every aspect of your golf journey.</p></div></div>',
+);
+function Xf(e) {
+  var t = Jf();
+  A(e, t);
+}
+var Zf = O(
+  '<div class="fixed inset-0 z-50 overflow-visible bg-black bg-opacity-50 shadow-lg modal-backdrop" aria-hidden="true"><div><div class="bg-BrandLightGray rounded-lg w-full overflow-y-auto max-h-[90vh] px-4 py-4 md:px-6" role="dialog" aria-modal="true"><!></div></div></div>',
+);
+function Sa(e, t) {
+  fe(t, !1);
+  const a = M();
+  let r = L(t, "showModal", 8),
+    n = L(t, "onClose", 8),
+    s = L(t, "useFixedPosition", 8, !1),
+    o = M(),
+    i = M(),
+    f = !1;
+  const u = (k) => {
+    k.key === "Escape" && r() && n()();
+  };
+  typeof window < "u" && window.addEventListener("keydown", u),
+    Qi(() => {
+      typeof window < "u" &&
+        (window.removeEventListener("keydown", u),
+        (document.body.style.overflow = "auto"));
+    });
+  const p = (k) => {
+      const E = document.querySelector('[role="dialog"]'),
+        C = k.target;
+      !E?.contains(C) && !f && n()();
+    },
+    h = () => {
+      f = !1;
+    },
+    c = () => {
+      f = !0;
+    },
+    g = () => {
+      setTimeout(() => {
+        f = !1;
+      }, 0);
+    };
+  Pt(
+    () => qr(r()),
+    () => {
+      typeof window < "u" &&
+        r() &&
+        (N(o, window.scrollY), N(i, window.innerWidth < 768));
+    },
+  ),
+    Pt(
+      () => (l(i), l(o)),
+      () => {
+        N(
+          a,
+          l(i)
+            ? l(o) + window.innerHeight * 0.45
+            : l(o) + window.innerHeight / 2,
+        );
+      },
+    ),
+    Pt(
+      () => qr(r()),
+      () => {
+        typeof window < "u" &&
+          (r()
+            ? (document.body.style.overflow = "hidden")
+            : (document.body.style.overflow = "auto"));
+      },
+    ),
+    Ha(),
+    _e();
+  var b = pe(),
+    x = J(b);
+  {
+    var y = (k) => {
+      var E = Zf(),
+        C = v(E),
+        _ = v(C),
+        w = v(_);
+      Ko(w, t, "default", {}),
+        d(_),
+        d(C),
+        d(E),
+        V(() => {
+          se(
+            C,
+            1,
+            `border-2 shadow-md rounded-lg border-BrandPurple/50 ${(s() ? "absolute" : "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2") ?? ""} 
+           w-full max-w-lg px-4 md:px-0`,
+          ),
+            Q(
+              C,
+              "style",
+              s()
+                ? `top: ${l(a)}px; transform: translate(-50%, -50%); left: 50%;`
+                : "",
+            );
+        }),
+        oa(
+          1,
+          _,
+          () => eo,
+          () => ({ duration: 2e3 }),
+        ),
+        oa(
+          2,
+          _,
+          () => eo,
+          () => ({ duration: 2e3 }),
+        ),
+        R("click", E, p),
+        R("mousedown", E, h),
+        R("mousemove", E, c),
+        R("mouseup", E, g),
+        oa(
+          1,
+          E,
+          () => dr,
+          () => ({ duration: 2e3 }),
+        ),
+        oa(
+          2,
+          E,
+          () => dr,
+          () => ({ duration: 2e3 }),
+        ),
+        A(k, E);
+    };
+    j(x, (k) => {
+      r() && k(y);
+    });
+  }
+  A(e, b), ve();
+}
+var Qf = O(
+  '<div class="flex flex-col md:flex-row md:items-start md:space-x-4 space-y-4 md:space-y-0"><div class="flex flex-col space-y-2 text-xl leading-relaxed p-4"><p class="relative"><span class="condensed">BOMBS</span> is a cutting-edge game format that transforms your driving range sessions into interactive, competitive, and endlessly entertaining experiences. Designed to bring a social element to your practice, <span class="condensed">BOMBS</span> introduces an exciting new way to challenge yourself and your friends while sharpening your accuracy and focus.</p> <p class="relative">Here’s how it works: Friends can tune into each other’s live driving range streams, creating a shared experience no matter where they are. Using their devices, they select specific targets on the range for the player on the tee to aim for. This isn’t just about hitting long drives—it’s about precision, strategy, and rising to the challenge your friends set for you.</p> <p class="relative">Thanks to advanced AI capabilities, the game identifies when a golfer successfully hits a target, awarding points in real time. Every successful shot brings a mix of satisfaction and bragging rights, while missed targets fuel the fun and banter that makes <span class="condensed">BOMBS</span> so engaging.</p> <p class="relative">Whether you’re practicing solo and inviting friends to join remotely or competing side-by-side at the range, <span class="condensed">BOMBS</span> adds an electrifying layer of competition and camaraderie to every session. It’s not just about hitting the ball; it’s about making every shot count in a dynamic, interactive game that keeps you coming back for more.</p></div></div>',
+);
+function ev(e) {
+  let t = M(!1);
+  Sa(e, {
+    get showModal() {
+      return l(t);
+    },
+    onClose: () => {
+      N(t, !1);
+    },
+    children: (a, r) => {
+      var n = Qf();
+      A(a, n);
+    },
+    $$slots: { default: !0 },
+  });
+}
+var tv = O(
+  '<div class="flex flex-col md:flex-row md:items-start md:space-x-4 space-y-4 md:space-y-0"><div class="flex flex-col space-y-2 text-xl leading-relaxed p-4"><p class="relative"><span class="condensed">BULLSEYE</span> takes your putting practice to a whole new level, turning every putt into a fun, competitive challenge that sharpens your accuracy and touch. Designed for groups, <span class="condensed">BULLSEYE</span> adds an exciting twist to your putting sessions, making it a game of skill and precision with every stroke.</p> <p class="relative">Here’s how it works: Players take turns attempting to hit designated targets on the green, with points awarded for getting within a putter’s length of the hole. It’s all about precision, as each putt must be carefully judged to land as close to the hole as possible. The more accurate your putts, the higher your score, creating a thrilling dynamic of friendly competition.</p> <p class="relative"><span class="condensed">BULLSEYE</span> encourages players to refine their putting technique in a relaxed yet challenging environment, fostering both individual focus and group camaraderie. Whether you’re practicing with friends or challenging yourself to beat your best, <span class="condensed">BULLSEYE</span> makes every putting session a rewarding experience.</p> <p class="relative">Ideal for groups of golfers, <span class="condensed">BULLSEYE</span> turns your practice into an engaging game that’s as fun as it is effective. Perfect your putting, engage in friendly competition, and make every round count—one precise putt at a time.</p></div></div>',
+);
+function av(e) {
+  let t = M(!1);
+  Sa(e, {
+    get showModal() {
+      return l(t);
+    },
+    onClose: () => {
+      N(t, !1);
+    },
+    children: (a, r) => {
+      var n = tv();
+      A(a, n);
+    },
+    $$slots: { default: !0 },
+  });
+}
+var rv = O(
+  '<div class="flex flex-col md:flex-row md:items-start md:space-x-4 space-y-4 md:space-y-0"><div class="flex flex-col space-y-2 text-xl leading-relaxed p-4"><p class="relative"><span class="condensed">PIN HIGH</span> reimagines your chipping practice, turning it into an engaging and competitive experience that sharpens your skills while keeping things fun and social. Designed for groups of golfers, <span class="condensed">PIN HIGH</span> challenges you to perfect your touch and precision around the green, making every practice session as rewarding as it is enjoyable.</p> <p class="relative">Here’s how it works: Players take turns aiming for specific targets, with points awarded for hitting the right distance and getting close to the hole. It’s not just about making the shot—it’s about dialing in your control and accuracy to outscore your friends. Whether you’re playing casually or competing fiercely, <span class="condensed">PIN HIGH</span> transforms chipping practice into a game that’s easy to play and hard to put down.</p> <p class="relative">With its dynamic scoring and interactive approach, <span class="condensed">PIN HIGH</span> encourages strategic thinking and steady improvement. Each shot becomes an opportunity to test your skills, refine your technique, and gain valuable feedback—all while enjoying the camaraderie of friendly competition.</p> <p class="relative">Whether you’re at the range or in a backyard setup, <span class="condensed">PIN HIGH</span> brings a new level of excitement to your short game. It’s the perfect way to elevate your practice, connect with others, and master the art of getting up and down.</p></div></div>',
+);
+function nv(e) {
+  let t = M(!1);
+  Sa(e, {
+    get showModal() {
+      return l(t);
+    },
+    onClose: () => {
+      N(t, !1);
+    },
+    children: (a, r) => {
+      var n = rv();
+      A(a, n);
+    },
+    $$slots: { default: !0 },
+  });
+}
+var sv = O(
+  `<!> <!> <!> <div class="md:px-4"><h2 class="text-2xl condensed tracking-wide mb-2">OUR AI POWERED SIDE GAMES</h2> <div class="space-y-4"><p class="relative">We’re excited to unveil <span class="condensed">THREE</span> groundbreaking AI-powered side game formats, designed to revolutionise the way you practice and enhance your social golf experience—no matter where you are in the world.</p> <p class="relative">These innovative formats harness the power of your mobile device’s AI capabilities, transforming traditional practice facilities into dynamic game arenas for you and your friends. Whether you’re looking to sharpen your skills, engage in friendly competition, or simply add some excitement to your practice routine, these games bring a whole new dimension to the way you train.
       In the sections that follow, we’ll introduce each of these three AI-driven experiences, detailing how they work and the specific aspects of your game they’re designed to improve. Get ready to practice smarter, play better, and have more fun than ever before.</p> <p class="relative">These innovative formats harness the power of your mobile device’s AI capabilities, transforming traditional practice facilities into dynamic game arenas for you and your friends. Whether you’re looking to sharpen your skills, engage in friendly competition, or simply add some excitement to your practice routine, these games bring a whole new dimension to the way you train.
-      In the sections that follow, we’ll introduce each of these three AI-driven experiences, detailing how they work and the specific aspects of your game they’re designed to improve. Get ready to practice smarter, play better, and have more fun than ever before.</p></div> <div class="pt-4 flex flex-col w-full space-y-4 md:flex-row md:space-y-0 md:space-x-2 mt-2 mb-32"><div class="flex flex-col w-full space-y-2 md:w-1/3"><div class="aspect-square rounded-2xl overflow-hidden"><img src="game-images/bombs.jpg" alt="bombs" class="w-full h-full object-fill"></div> <p class="text-3xl text-center condensed md:text-lg">BOMBS</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div> <div class="flex flex-col w-full space-y-2 md:w-1/3"><div class="aspect-square rounded-2xl overflow-hidden"><img src="game-images/pin-high.jpg" alt="pin-high" class="w-full h-full object-cover"></div> <p class="text-3xl text-center condensed md:text-lg">PIN HIGH</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div> <div class="flex flex-col w-full space-y-2 md:w-1/3"><div class=" overflow-hidden"><img src="game-images/bullseye.jpg" alt="bullseye" class="w-full h-full object-cover"></div> <p class="text-3xl text-center condensed md:text-lg">BULLSEYE</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div></div></div>`,1);function ov(e){let t=M(!1),a=M(!1),r=M(!1);var n=sv(),s=J(n);{var o=C=>{ev(C)};j(s,C=>{l(t)&&C(o)})}var i=m(s,2);{var f=C=>{nv(C)};j(i,C=>{l(a)&&C(f)})}var u=m(i,2);{var p=C=>{av(C)};j(u,C=>{l(r)&&C(p)})}var h=m(u,2),c=m(v(h),4),g=v(c),b=m(v(g),4);d(g);var x=m(g,2),y=m(v(x),4);d(x);var k=m(x,2),E=m(v(k),4);d(k),d(c),d(h),R("click",b,()=>{N(t,!0)}),R("click",y,()=>{N(a,!0)}),R("click",E,()=>{N(r,!0)}),A(e,n)}var lv=O('<div class="flex flex-col px-2 py-4 space-y-4 md:flex-row md:items-start md:space-x-4 md:space-y-0"><div class="flex flex-col items-center space-y-4 md:items-start md:w-1/3"><img class="object-cover w-full rounded-lg shadow-lg"> <button class="w-full brand-button"> </button></div> <div class="flex flex-col space-y-2 text-xl leading-relaxed md:w-2/3"><p class="relative"><span class="condensed">BANDS</span> is an exciting new game format designed to help you capitalise on those "purple patches"—the stretches in your golf round where you know you tend to play your best. It’s a game that rewards strategic thinking, consistency, and your ability to perform under pressure, no matter when your game heats up.</p> <p class="relative">Here’s how it works: At the start of your round, you’ll select a three-hole stretch, known as your <span class="condensed">BANDS</span>, where you aim to shine. This is your moment to rack up points by excelling in one of our nine achievement categories. From hitting fairways and greens to avoiding penalties like lost balls, every element of your game contributes to your overall score.</p> <p class="relative">Points are awarded for performing well during your <span class="condensed">BANDS</span>, whether it’s a string of solid pars, hitting every green in regulation, or nailing a clutch birdie. The goal is simple: train your focus and precision during this chosen stretch to maximise your scoring potential. But the impact goes beyond just the BAND itself—<span class="condensed">BANDS</span> is designed to enhance every part of your game, helping you build consistency and confidence across the board, from tee to green.</p> <p class="relative">What makes <span class="condensed">BANDS</span> so exciting is its flexibility. Whether you’re the type of golfer who starts strong, finishes with a flourish, or peaks somewhere in the middle, <span class="condensed">BANDS</span> allows you to choose the part of your round where you’re most likely to excel. It’s not just about playing well—it’s about playing well at the right time.</p> <p class="relative">Perfect for friendly matches, practice rounds, or personal challenges, <span class="condensed">BANDS</span> adds a fresh dimension to your game, encouraging you to refine your skills while keeping the competition fun and engaging. With its innovative approach to training and scoring, <span class="condensed">BANDS</span> is your opportunity to make every round more rewarding, one BAND at a time.</p></div></div>');function iv(e){let t=M(!1),a=M(0),r=[{src:"whitepaper/bands1.jpg",alt:"Prediction view",nextLabel:"Show Live View"},{src:"whitepaper/bands2.jpg",alt:"Live view",nextLabel:"Show Results View"},{src:"whitepaper/bands3.jpg",alt:"Results view",nextLabel:"Show Prediction View"}];async function n(){N(a,(l(a)+1)%r.length)}Sa(e,{get showModal(){return l(t)},onClose:()=>{N(t,!1)},children:(s,o)=>{var i=lv(),f=v(i),u=v(f),p=m(u,2),h=v(p,!0);d(p),d(f),Ee(2),d(i),V(()=>{Q(u,"src",r[l(a)].src),Q(u,"alt",r[l(a)].alt),D(h,r[l(a)].nextLabel)}),R("click",p,n),A(s,i)},$$slots:{default:!0}})}var cv=O('<div class="flex flex-col px-2 py-4 space-y-4 md:flex-row md:items-start md:space-x-4 md:space-y-0"><div class="flex flex-col items-center space-y-4 md:items-start md:w-1/3"><img class="object-cover w-full rounded-lg shadow-lg"> <button class="w-full brand-button"> </button></div> <div class="flex flex-col space-y-2 text-xl leading-relaxed md:w-2/3"><p class="relative"><span class="condensed">BUILD IT</span> is an innovative and customisable team-based format that brings a new level of camaraderie and competition to golf. Designed for groups of friends, it allows golfers to create their own unique tournaments, playing together over a chosen course and timeframe that suits their schedules and ambitions.</p> <p class="relative">Here’s how it works: Players form teams and compete against other teams, building a combined scorecard using their lowest individual scores. This collaborative approach ensures that every contribution matters, while also encouraging teammates to push each other to perform their best. The format is entirely flexible, letting golfers decide how long the competition runs—whether it’s a single round, a weeklong event, or even an epic season that stretches across an entire year.</p> <p class="relative">The magic of <span class="condensed">BUILD IT</span> lies in its adaptability. Teams can tailor the experience to fit their goals, preferences, and schedules, making it perfect for everything from casual weekend rivalries to long-term leaderboards. With its ability to bring friends together in a shared quest for victory, <span class="condensed">BUILD IT</span> fosters stronger bonds and plenty of friendly banter along the way.</p> <p class="relative">By focusing on teamwork, strategy, and consistency, <span class="condensed">BUILD IT</span> offers golfers a fresh and engaging way to enjoy the sport they love. It’s not just about individual performance—it’s about creating something greater together and enjoying every step of the journey. Whether you’re competing for bragging rights or organising a yearlong competition, <span class="condensed">BUILD IT</span> transforms golf into a truly collaborative adventure.</p></div></div>');function dv(e){let t=M(!1),a=M(0),r=[{src:"whitepaper/build-it1.jpg",alt:"Team Creation View",nextLabel:"Show Results View"},{src:"whitepaper/build-it2.jpg",alt:"Results screen",nextLabel:"Show Team View"}];async function n(){N(a,(l(a)+1)%r.length)}Sa(e,{get showModal(){return l(t)},onClose:()=>{N(t,!1)},children:(s,o)=>{var i=cv(),f=v(i),u=v(f),p=m(u,2),h=v(p,!0);d(p),d(f),Ee(2),d(i),V(()=>{Q(u,"src",r[l(a)].src),Q(u,"alt",r[l(a)].alt),D(h,r[l(a)].nextLabel)}),R("click",p,n),A(s,i)},$$slots:{default:!0}})}var uv=O('<div class="flex flex-col px-2 py-4 space-y-4 md:flex-row md:items-start md:space-x-4 md:space-y-0"><div class="flex flex-col items-center space-y-4 md:items-start md:w-1/3"><img class="object-cover w-full rounded-lg shadow-lg"> <button class="w-full brand-button"> </button></div> <div class="flex flex-col space-y-2 text-xl leading-relaxed md:w-2/3"><p class="relative"><span class="condensed">MULLIGANS</span> is an exciting new twist on the traditional match play format, designed to add a layer of strategy and fun to your round of golf. It’s a game that rewards tactical thinking, careful decision-making, and the ability to bounce back from mistakes—perfect for golfers looking to shake up their usual match play routine.</p> <p class="relative">In <span class="condensed">MULLIGANS</span>, both players automatically receive a mulligan every three holes, starting with the 1st hole and continuing on the 4th, 7th, 10th, 13th, and 16th. These "do-over" shots can be used at any time, giving golfers the opportunity to replay a wayward drive, take another approach shot, or try again on the greens—all with the aim of staying competitive in the match.</p> <p class="relative">But here’s where the strategy deepens: golfers also compete to earn additional mulligans by winning a hole. Each hole becomes a battle not just for the lead but for valuable resources that can change the tide of the game. Will you save your mulligan for a critical moment later in the round, or use it now to put pressure on your opponent?</p> <p class="relative">The key to <span class="condensed">MULLIGANS</span> lies in how you play them. A well-timed mulligan can help secure a win on a tough hole or stop your opponent from running away with the match. Every decision becomes part of the strategy, keeping the competition fresh, engaging, and unpredictable from start to finish.</p> <p class="relative">With <span class="condensed">MULLIGANS</span>, golfers can enjoy their round with a little less pressure, knowing that a few mistakes are not just allowed—they’re part of the fun. It’s a format that brings out the competitive spirit while encouraging players to laugh off the occasional misstep, making it perfect for friendly matches or lively rivalries.</p> <p class="relative">Whether you’re a seasoned golfer or a casual player, <span class="condensed">MULLIGANS</span> offers a new way to enjoy the game, combining tradition with innovation for a round that’s as entertaining as it is strategic.</p></div></div>');function fv(e){let t=M(!1),a=M(0),r=[{src:"whitepaper/mulligans1.jpg",alt:"In-game view",nextLabel:"Show Results View"},{src:"whitepaper/mulligans2.jpg",alt:"Results screen",nextLabel:"Show In-game View"}];async function n(){N(a,(l(a)+1)%r.length)}Sa(e,{get showModal(){return l(t)},onClose:()=>{N(t,!1)},children:(s,o)=>{var i=uv(),f=v(i),u=v(f),p=m(u,2),h=v(p,!0);d(p),d(f),Ee(2),d(i),V(()=>{Q(u,"src",r[l(a)].src),Q(u,"alt",r[l(a)].alt),D(h,r[l(a)].nextLabel)}),R("click",p,n),A(s,i)},$$slots:{default:!0}})}var vv=O('<div class="flex flex-col px-2 py-4 space-y-4 md:flex-row md:items-start md:space-x-4 md:space-y-0"><div class="flex flex-col items-center space-y-4 md:items-start md:w-1/3"><img class="object-cover w-full rounded-lg shadow-lg"> <button class="w-full brand-button"> </button></div> <div class="flex flex-col space-y-2 text-xl leading-relaxed md:w-2/3"><p class="relative"><span class="condensed">NEXT UP</span> is a dynamic and competitive new game format that puts a spotlight on performing under pressure, especially when it’s your turn to go first off the tee. It’s all about stepping up when it matters most, defending your assigned holes, and seizing opportunities to gain an edge over your opponents.</p> <p class="relative">Here’s how it works: Each hole is a chance to earn points. A golfer earns 3 points for successfully defending a hole when they’re first off the tee, while their opponent can earn 1 point if they manage to beat the defender. The game keeps things fair and exciting by randomising who tees off first across the round, ensuring everyone gets their share of opportunities to defend.</p> <p class="relative">But that’s not all—<span class="condensed">NEXT UP</span> has a clever comeback mechanic. Any remaining unassigned holes are given to the golfer with the lowest score at the time of tee-off. This creates a unique opportunity for the trailing player to defend the hole, potentially swinging momentum back in their favor and leveling the playing field.</p> <p class="relative">The genius of <span class="condensed">NEXT UP</span> lies in its focus on pressure situations. By training golfers to perform when they’re first off the tee, this format sharpens your ability to stay composed, deliver clutch drives, and take control of the hole from the very start.</p> <p class="relative">Whether you’re playing with friends or looking to refine your skills under competition-like conditions, <span class="condensed">NEXT UP</span> keeps every round fresh, engaging, and full of strategic decisions. It’s a format that builds confidence and adds an extra layer of excitement to your golf game, ensuring that every hole is packed with purpose and potential.</p></div></div>');function pv(e){let t=M(!1),a=M(0),r=[{src:"whitepaper/next-up1.jpg",alt:"Live View",nextLabel:"Show Results View"},{src:"whitepaper/next-up2.jpg",alt:"Results screen",nextLabel:"Show Live View"}];async function n(){N(a,(l(a)+1)%r.length)}Sa(e,{get showModal(){return l(t)},onClose:()=>{N(t,!1)},children:(s,o)=>{var i=vv(),f=v(i),u=v(f),p=m(u,2),h=v(p,!0);d(p),d(f),Ee(2),d(i),V(()=>{Q(u,"src",r[l(a)].src),Q(u,"alt",r[l(a)].alt),D(h,r[l(a)].nextLabel)}),R("click",p,n),A(s,i)},$$slots:{default:!0}})}var gv=O('<!> <!> <!> <!> <div class="md:px-4"><h2 class="mb-2 text-2xl tracking-wide condensed">OUR NEW GAMES</h2> <div class="space-y-4"><p class="relative">We’re excited to introduce <span class="condensed">FOUR</span> new game formats designed with the next generation of golfers in mind. These fresh takes on the sport offer opportunities to challenge yourself, refine your skills, and enjoy the game in new ways. Whether you’re aiming for serious competition or just some lighthearted fun, these formats have something for everyone.</p> <p class="relative">Blending the traditions of golf with creative innovations, each format adds a unique twist to the game. Some reimagine classic rules for a modern edge, while others take an entirely new approach to keep things fresh and engaging. They’re designed to make every round memorable, no matter your skill level.</p> <p class="relative">In the following sections, you’ll learn what makes each format stand out and why they’re worth trying. With <span class="condensed">GOLFPAD</span>, golf’s rich history and exciting future come together, offering new ways to play, compete, and grow.</p></div> <div class="flex flex-col w-full pt-4 mt-2 space-y-4 md:flex-row md:space-y-0 md:space-x-2"><div class="flex flex-col w-full space-y-2 md:w-1/4"><div class="overflow-hidden aspect-square rounded-2xl"><img src="game-images/mulligans.jpg" alt="mulligans" class="object-fill w-full h-full"></div> <p class="text-3xl text-center condensed md:text-lg">MULLIGANS</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div> <div class="flex flex-col w-full space-y-2 md:w-1/4"><div class="overflow-hidden aspect-square rounded-2xl"><img src="game-images/bands.jpg" alt="bands" class="object-cover w-full h-full"></div> <p class="text-3xl text-center condensed md:text-lg">BANDS</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div> <div class="flex flex-col w-full space-y-2 md:w-1/4"><div class="overflow-hidden "><img src="game-images/next-up.jpg" alt="next-up" class="object-cover w-full h-full"></div> <p class="text-3xl text-center condensed md:text-lg">NEXT UP</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div> <div class="flex flex-col w-full space-y-2 md:w-1/4"><div class="overflow-hidden aspect-square rounded-2xl"><img src="game-images/build-it.jpg" alt="build-it" class="object-cover w-full h-full"></div> <p class="text-3xl text-center condensed md:text-lg">BUILD IT</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div></div></div>',1);function hv(e){let t=M(!1),a=M(!1),r=M(!1),n=M(!1);var s=gv(),o=J(s);{var i=T=>{fv(T)};j(o,T=>{l(t)&&T(i)})}var f=m(o,2);{var u=T=>{iv(T)};j(f,T=>{l(a)&&T(u)})}var p=m(f,2);{var h=T=>{dv(T)};j(p,T=>{l(n)&&T(h)})}var c=m(p,2);{var g=T=>{pv(T)};j(c,T=>{l(r)&&T(g)})}var b=m(c,2),x=m(v(b),4),y=v(x),k=m(v(y),4);d(y);var E=m(y,2),C=m(v(E),4);d(E);var _=m(E,2),w=m(v(_),4);d(_);var B=m(_,2),S=m(v(B),4);d(B),d(x),d(b),R("click",k,()=>{N(t,!0)}),R("click",C,()=>{N(a,!0)}),R("click",w,()=>{N(r,!0)}),R("click",S,()=>{N(n,!0)}),A(e,s)}var mv=O('<div class="flex flex-col space-y-4"><h2 class="text-2xl font-black text-black condensed">MARKETING</h2> <p>At Waterway Labs, we are more than just a tech company—we are innovators on a mission to create groundbreaking, community-driven applications that bridge the gap between digital and real-world experiences. Our passion for creating memorable events that introduce people to new technologies is the driving force behind everything we do.</p> <p>What sets us apart? Our unique niche. At Waterway Labs, we use narrowboats—an unexpected yet beloved element—to infuse excitement and originality into our projects. This distinctive approach adds a fresh, unforgettable twist to each of our products, making them truly stand out. It’s not just about creating tech, it’s about creating experiences that resonate with our audience.</p> <div class="w-full mt-4"><img src="whitepaper/boat.jpg" alt="boat" class="w-full h-64 md:h-72 lg:h-80 rounded-md shadow-md object-cover object-center"></div> <p><span class="condensed">GOLFPAD</span>, will carry this philosophy to new heights. We are bringing the ultimate combination of fun, technology, and community to life by creating a floating mini-golf course that will be used for promotional events across the UK. This innovative concept will allow golf enthusiasts and casual players alike to enjoy a new way to play and connect with others.</p> <p>To ensure maximum exposure, we will anchor our floating <span class="condensed">GOLFPAD MINI-PUTT</span> course near some of the world’s most renowned golf courses, with our debut location nestled in the heart of Surrey, one of the UK’s premier golfing regions. By mooring our course at these prestigious sites, we’ll introduce our unique gamified golf experience to both seasoned players and curious newcomers. We’re not just creating another mini-golf course—we’re creating a destination for fun, entertainment, and social connection.</p> <p>Our goal is to seamlessly merge the real-world excitement of golf with the power of social media and digital engagement, positioning <span class="condensed">GOLFPAD</span> at the center of an already competitive and passionate golfing community. With an eye on growth, we’re strategically building a strong online presence, engaging with influencers, and promoting our events to connect with a broader audience. We believe <span class="condensed">GOLFPAD</span> will quickly become the must-visit attraction for golf fans in the UK and beyond.</p> <p>As we set our sights on expansion, we recognise that the US will be a key market for <span class="condensed">GOLFPAD</span>. To ensure a smooth entry, our promotional team is already cultivating strong relationships with some of the country’s most prestigious golf courses, showcasing their beauty and features on our platform. By showcasing these stunning locations, we aim to build a connection with American golfers and inspire the next generation to embrace the world of golf in new and exciting ways.</p> <p>With <span class="condensed">GOLFPAD</span>, we’re not just building a product—we’re creating a global movement that brings people together, elevates the golfing experience, and fuels a passion for innovation. Join us on this journey as we change the way people experience golf—one floating course at a time.</p> <p>Like most successful brands, we too have our niche. We use narrowboats, something most people we have met love, to bring a unique excitement to each one of our products.</p></div>');function bv(e){var t=mv();A(e,t)}var yv=O('<div class="flex flex-col space-y-4 text-base"><h2 class="text-2xl font-black text-black condensed">ROADMAP</h2> <div class="w-full mt-4"><img src="whitepaper/roadmap.jpg" alt="roadmap" class="w-full h-64 md:h-72 lg:h-80 rounded-md shadow-md object-cover object-center"></div> <p class="relative"><span class="condensed">Q1 2025:</span> The year kicks off with an exciting beginning as we engage and welcome our first users to the <span class="condensed">GOLFPAD</span> ecosystem. Our initial focus will be on introducing them to our first player tool—<span class="condensed">SHOTS</span>—setting the stage for a seamless golfing experience. Early adopters will dive into a world of smarter play, building the foundation for what’s to come.</p> <p class="relative"><span class="condensed">Q2 2025:</span> As the summer season heats up, so will the excitement around <span class="condensed">GOLFPAD</span>. This quarter, users will immerse themselves in our innovative game formats—<span class="condensed">MULLIGANS</span>, <span class="condensed">BANDS</span>, and <span class="condensed">NEXT UP</span>. These formats will empower golfers to elevate their skills, connect with friends, and enjoy friendly competition on the course. By the end of Q2, our community will be fully engaged, creating a buzz that sets the stage for what’s next.</p> <p class="relative"><span class="condensed">Q3 2025:</span> Building on the success of our 4-ball formats, we will introduce our first team-based game—<span class="condensed">BUILD-IT</span>. Designed to bring friends, families, and communities together, <span class="condensed">BUILD-IT</span> will take the <span class="condensed">GOLFPAD</span> experience to new heights, offering a dynamic and strategic way for golfers to collaborate, compete, and refine their skills as a team.</p> <p class="relative"><span class="condensed">Q4 2025:</span> As we approach the end of the year, we’ll evaluate the evolving technology landscape and explore opportunities for decentralisation within the <span class="condensed">GOLFPAD</span> platform. Whether through shared ownership or profit-sharing models, we’re committed to giving our users a more direct stake in the future of <span class="condensed">GOLFPAD</span>—ensuring that the platform remains community-driven and that everyone who contributes to our success can reap the rewards.</p> <p class="relative">With each step, <span class="condensed">GOLFPAD</span> will grow stronger, more innovative, and more aligned with the evolving needs of the golf community. This roadmap represents just the beginning of our journey towards reshaping the future of golf, and we’re excited to have users like you along for the ride.</p></div>');function xv(e){var t=yv();A(e,t)}var _v=O("<button></button>"),wv=O('<div class="flex flex-col"><div class="flex"><!></div> <div class="flex flex-col mt-8 text-xs"><div class="flex flex-row space-x-2"><button class="w-1/2 px-4 py-2 text-black rounded bg-BrandYellow disabled:bg-BrandDarkGreen disabled:text-white">Previous Section</button> <button class="w-1/2 px-4 py-2 text-black rounded bg-BrandYellow disabled:bg-BrandDarkGreen disabled:text-white">Next Section</button></div> <div class="flex flex-row justify-center my-4"></div></div></div>'),kv=O('<div class="w-full h-full p-2 px-4 text-black"><h2 class="mt-3 mb-4 text-3xl font-black text-black md:text-5xl condensed">GOLFPAD WHITEPAPER</h2> <div class="flex flex-col w-full md:flex-row"><img src="mulligans.png" alt="hero" class="w-full h-48 md:w-1/4 md:h-auto object-cover object-[50%_var(--crop-position-y)] rounded-lg"> <div class="w-full px-2 mt-4 md:w-3/4 md:mt-0"></div></div></div>');function Ev(e){let t=M("vision"),a="top";const r=[{name:"Vision",component:Kf},{name:"Merve",component:Xf},{name:"New Games",component:hv},{name:"Side Games",component:ov},{name:"Marketing",component:bv},{name:"Road Map",component:xv}];function n(){const f=r.findIndex(u=>u.name.toLowerCase()===l(t));f<r.length-1&&N(t,r[f+1].name.toLowerCase())}function s(){const f=r.findIndex(u=>u.name.toLowerCase()===l(t));f>0&&N(t,r[f-1].name.toLowerCase())}function o(f){return r[f].name.toLowerCase()===l(t)}function i(f){N(t,r[f].name.toLowerCase())}Gt(e,{children:(f,u)=>{var p=kv(),h=m(v(p),2),c=v(h);Q(c,"style",`--crop-position-y: ${a};`);var g=m(c,2);xe(g,5,()=>r,je,(b,x)=>{let y=()=>l(x).name,k=()=>l(x).component;var E=pe(),C=J(E);{var _=w=>{var B=wv(),S=v(B),T=v(S);Ir(T,k,(F,Y)=>{Y(F,{})}),d(S);var P=m(S,2),I=v(P),U=v(I),G=m(U,2);d(I);var H=m(I,2);xe(H,5,()=>r,je,(F,Y,q,$)=>{var z=_v();V(K=>{se(z,1,K),Q(z,"aria-label",`Go to ${r[q].name} section`)},[()=>`
+      In the sections that follow, we’ll introduce each of these three AI-driven experiences, detailing how they work and the specific aspects of your game they’re designed to improve. Get ready to practice smarter, play better, and have more fun than ever before.</p></div> <div class="pt-4 flex flex-col w-full space-y-4 md:flex-row md:space-y-0 md:space-x-2 mt-2 mb-32"><div class="flex flex-col w-full space-y-2 md:w-1/3"><div class="aspect-square rounded-2xl overflow-hidden"><img src="game-images/bombs.jpg" alt="bombs" class="w-full h-full object-fill"></div> <p class="text-3xl text-center condensed md:text-lg">BOMBS</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div> <div class="flex flex-col w-full space-y-2 md:w-1/3"><div class="aspect-square rounded-2xl overflow-hidden"><img src="game-images/pin-high.jpg" alt="pin-high" class="w-full h-full object-cover"></div> <p class="text-3xl text-center condensed md:text-lg">PIN HIGH</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div> <div class="flex flex-col w-full space-y-2 md:w-1/3"><div class=" overflow-hidden"><img src="game-images/bullseye.jpg" alt="bullseye" class="w-full h-full object-cover"></div> <p class="text-3xl text-center condensed md:text-lg">BULLSEYE</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div></div></div>`,
+  1,
+);
+function ov(e) {
+  let t = M(!1),
+    a = M(!1),
+    r = M(!1);
+  var n = sv(),
+    s = J(n);
+  {
+    var o = (C) => {
+      ev(C);
+    };
+    j(s, (C) => {
+      l(t) && C(o);
+    });
+  }
+  var i = m(s, 2);
+  {
+    var f = (C) => {
+      nv(C);
+    };
+    j(i, (C) => {
+      l(a) && C(f);
+    });
+  }
+  var u = m(i, 2);
+  {
+    var p = (C) => {
+      av(C);
+    };
+    j(u, (C) => {
+      l(r) && C(p);
+    });
+  }
+  var h = m(u, 2),
+    c = m(v(h), 4),
+    g = v(c),
+    b = m(v(g), 4);
+  d(g);
+  var x = m(g, 2),
+    y = m(v(x), 4);
+  d(x);
+  var k = m(x, 2),
+    E = m(v(k), 4);
+  d(k),
+    d(c),
+    d(h),
+    R("click", b, () => {
+      N(t, !0);
+    }),
+    R("click", y, () => {
+      N(a, !0);
+    }),
+    R("click", E, () => {
+      N(r, !0);
+    }),
+    A(e, n);
+}
+var lv = O(
+  '<div class="flex flex-col px-2 py-4 space-y-4 md:flex-row md:items-start md:space-x-4 md:space-y-0"><div class="flex flex-col items-center space-y-4 md:items-start md:w-1/3"><img class="object-cover w-full rounded-lg shadow-lg"> <button class="w-full brand-button"> </button></div> <div class="flex flex-col space-y-2 text-xl leading-relaxed md:w-2/3"><p class="relative"><span class="condensed">BANDS</span> is an exciting new game format designed to help you capitalise on those "purple patches"—the stretches in your golf round where you know you tend to play your best. It’s a game that rewards strategic thinking, consistency, and your ability to perform under pressure, no matter when your game heats up.</p> <p class="relative">Here’s how it works: At the start of your round, you’ll select a three-hole stretch, known as your <span class="condensed">BANDS</span>, where you aim to shine. This is your moment to rack up points by excelling in one of our nine achievement categories. From hitting fairways and greens to avoiding penalties like lost balls, every element of your game contributes to your overall score.</p> <p class="relative">Points are awarded for performing well during your <span class="condensed">BANDS</span>, whether it’s a string of solid pars, hitting every green in regulation, or nailing a clutch birdie. The goal is simple: train your focus and precision during this chosen stretch to maximise your scoring potential. But the impact goes beyond just the BAND itself—<span class="condensed">BANDS</span> is designed to enhance every part of your game, helping you build consistency and confidence across the board, from tee to green.</p> <p class="relative">What makes <span class="condensed">BANDS</span> so exciting is its flexibility. Whether you’re the type of golfer who starts strong, finishes with a flourish, or peaks somewhere in the middle, <span class="condensed">BANDS</span> allows you to choose the part of your round where you’re most likely to excel. It’s not just about playing well—it’s about playing well at the right time.</p> <p class="relative">Perfect for friendly matches, practice rounds, or personal challenges, <span class="condensed">BANDS</span> adds a fresh dimension to your game, encouraging you to refine your skills while keeping the competition fun and engaging. With its innovative approach to training and scoring, <span class="condensed">BANDS</span> is your opportunity to make every round more rewarding, one BAND at a time.</p></div></div>',
+);
+function iv(e) {
+  let t = M(!1),
+    a = M(0),
+    r = [
+      {
+        src: "whitepaper/bands1.jpg",
+        alt: "Prediction view",
+        nextLabel: "Show Live View",
+      },
+      {
+        src: "whitepaper/bands2.jpg",
+        alt: "Live view",
+        nextLabel: "Show Results View",
+      },
+      {
+        src: "whitepaper/bands3.jpg",
+        alt: "Results view",
+        nextLabel: "Show Prediction View",
+      },
+    ];
+  async function n() {
+    N(a, (l(a) + 1) % r.length);
+  }
+  Sa(e, {
+    get showModal() {
+      return l(t);
+    },
+    onClose: () => {
+      N(t, !1);
+    },
+    children: (s, o) => {
+      var i = lv(),
+        f = v(i),
+        u = v(f),
+        p = m(u, 2),
+        h = v(p, !0);
+      d(p),
+        d(f),
+        Ee(2),
+        d(i),
+        V(() => {
+          Q(u, "src", r[l(a)].src),
+            Q(u, "alt", r[l(a)].alt),
+            D(h, r[l(a)].nextLabel);
+        }),
+        R("click", p, n),
+        A(s, i);
+    },
+    $$slots: { default: !0 },
+  });
+}
+var cv = O(
+  '<div class="flex flex-col px-2 py-4 space-y-4 md:flex-row md:items-start md:space-x-4 md:space-y-0"><div class="flex flex-col items-center space-y-4 md:items-start md:w-1/3"><img class="object-cover w-full rounded-lg shadow-lg"> <button class="w-full brand-button"> </button></div> <div class="flex flex-col space-y-2 text-xl leading-relaxed md:w-2/3"><p class="relative"><span class="condensed">BUILD IT</span> is an innovative and customisable team-based format that brings a new level of camaraderie and competition to golf. Designed for groups of friends, it allows golfers to create their own unique tournaments, playing together over a chosen course and timeframe that suits their schedules and ambitions.</p> <p class="relative">Here’s how it works: Players form teams and compete against other teams, building a combined scorecard using their lowest individual scores. This collaborative approach ensures that every contribution matters, while also encouraging teammates to push each other to perform their best. The format is entirely flexible, letting golfers decide how long the competition runs—whether it’s a single round, a weeklong event, or even an epic season that stretches across an entire year.</p> <p class="relative">The magic of <span class="condensed">BUILD IT</span> lies in its adaptability. Teams can tailor the experience to fit their goals, preferences, and schedules, making it perfect for everything from casual weekend rivalries to long-term leaderboards. With its ability to bring friends together in a shared quest for victory, <span class="condensed">BUILD IT</span> fosters stronger bonds and plenty of friendly banter along the way.</p> <p class="relative">By focusing on teamwork, strategy, and consistency, <span class="condensed">BUILD IT</span> offers golfers a fresh and engaging way to enjoy the sport they love. It’s not just about individual performance—it’s about creating something greater together and enjoying every step of the journey. Whether you’re competing for bragging rights or organising a yearlong competition, <span class="condensed">BUILD IT</span> transforms golf into a truly collaborative adventure.</p></div></div>',
+);
+function dv(e) {
+  let t = M(!1),
+    a = M(0),
+    r = [
+      {
+        src: "whitepaper/build-it1.jpg",
+        alt: "Team Creation View",
+        nextLabel: "Show Results View",
+      },
+      {
+        src: "whitepaper/build-it2.jpg",
+        alt: "Results screen",
+        nextLabel: "Show Team View",
+      },
+    ];
+  async function n() {
+    N(a, (l(a) + 1) % r.length);
+  }
+  Sa(e, {
+    get showModal() {
+      return l(t);
+    },
+    onClose: () => {
+      N(t, !1);
+    },
+    children: (s, o) => {
+      var i = cv(),
+        f = v(i),
+        u = v(f),
+        p = m(u, 2),
+        h = v(p, !0);
+      d(p),
+        d(f),
+        Ee(2),
+        d(i),
+        V(() => {
+          Q(u, "src", r[l(a)].src),
+            Q(u, "alt", r[l(a)].alt),
+            D(h, r[l(a)].nextLabel);
+        }),
+        R("click", p, n),
+        A(s, i);
+    },
+    $$slots: { default: !0 },
+  });
+}
+var uv = O(
+  '<div class="flex flex-col px-2 py-4 space-y-4 md:flex-row md:items-start md:space-x-4 md:space-y-0"><div class="flex flex-col items-center space-y-4 md:items-start md:w-1/3"><img class="object-cover w-full rounded-lg shadow-lg"> <button class="w-full brand-button"> </button></div> <div class="flex flex-col space-y-2 text-xl leading-relaxed md:w-2/3"><p class="relative"><span class="condensed">MULLIGANS</span> is an exciting new twist on the traditional match play format, designed to add a layer of strategy and fun to your round of golf. It’s a game that rewards tactical thinking, careful decision-making, and the ability to bounce back from mistakes—perfect for golfers looking to shake up their usual match play routine.</p> <p class="relative">In <span class="condensed">MULLIGANS</span>, both players automatically receive a mulligan every three holes, starting with the 1st hole and continuing on the 4th, 7th, 10th, 13th, and 16th. These "do-over" shots can be used at any time, giving golfers the opportunity to replay a wayward drive, take another approach shot, or try again on the greens—all with the aim of staying competitive in the match.</p> <p class="relative">But here’s where the strategy deepens: golfers also compete to earn additional mulligans by winning a hole. Each hole becomes a battle not just for the lead but for valuable resources that can change the tide of the game. Will you save your mulligan for a critical moment later in the round, or use it now to put pressure on your opponent?</p> <p class="relative">The key to <span class="condensed">MULLIGANS</span> lies in how you play them. A well-timed mulligan can help secure a win on a tough hole or stop your opponent from running away with the match. Every decision becomes part of the strategy, keeping the competition fresh, engaging, and unpredictable from start to finish.</p> <p class="relative">With <span class="condensed">MULLIGANS</span>, golfers can enjoy their round with a little less pressure, knowing that a few mistakes are not just allowed—they’re part of the fun. It’s a format that brings out the competitive spirit while encouraging players to laugh off the occasional misstep, making it perfect for friendly matches or lively rivalries.</p> <p class="relative">Whether you’re a seasoned golfer or a casual player, <span class="condensed">MULLIGANS</span> offers a new way to enjoy the game, combining tradition with innovation for a round that’s as entertaining as it is strategic.</p></div></div>',
+);
+function fv(e) {
+  let t = M(!1),
+    a = M(0),
+    r = [
+      {
+        src: "whitepaper/mulligans1.jpg",
+        alt: "In-game view",
+        nextLabel: "Show Results View",
+      },
+      {
+        src: "whitepaper/mulligans2.jpg",
+        alt: "Results screen",
+        nextLabel: "Show In-game View",
+      },
+    ];
+  async function n() {
+    N(a, (l(a) + 1) % r.length);
+  }
+  Sa(e, {
+    get showModal() {
+      return l(t);
+    },
+    onClose: () => {
+      N(t, !1);
+    },
+    children: (s, o) => {
+      var i = uv(),
+        f = v(i),
+        u = v(f),
+        p = m(u, 2),
+        h = v(p, !0);
+      d(p),
+        d(f),
+        Ee(2),
+        d(i),
+        V(() => {
+          Q(u, "src", r[l(a)].src),
+            Q(u, "alt", r[l(a)].alt),
+            D(h, r[l(a)].nextLabel);
+        }),
+        R("click", p, n),
+        A(s, i);
+    },
+    $$slots: { default: !0 },
+  });
+}
+var vv = O(
+  '<div class="flex flex-col px-2 py-4 space-y-4 md:flex-row md:items-start md:space-x-4 md:space-y-0"><div class="flex flex-col items-center space-y-4 md:items-start md:w-1/3"><img class="object-cover w-full rounded-lg shadow-lg"> <button class="w-full brand-button"> </button></div> <div class="flex flex-col space-y-2 text-xl leading-relaxed md:w-2/3"><p class="relative"><span class="condensed">NEXT UP</span> is a dynamic and competitive new game format that puts a spotlight on performing under pressure, especially when it’s your turn to go first off the tee. It’s all about stepping up when it matters most, defending your assigned holes, and seizing opportunities to gain an edge over your opponents.</p> <p class="relative">Here’s how it works: Each hole is a chance to earn points. A golfer earns 3 points for successfully defending a hole when they’re first off the tee, while their opponent can earn 1 point if they manage to beat the defender. The game keeps things fair and exciting by randomising who tees off first across the round, ensuring everyone gets their share of opportunities to defend.</p> <p class="relative">But that’s not all—<span class="condensed">NEXT UP</span> has a clever comeback mechanic. Any remaining unassigned holes are given to the golfer with the lowest score at the time of tee-off. This creates a unique opportunity for the trailing player to defend the hole, potentially swinging momentum back in their favor and leveling the playing field.</p> <p class="relative">The genius of <span class="condensed">NEXT UP</span> lies in its focus on pressure situations. By training golfers to perform when they’re first off the tee, this format sharpens your ability to stay composed, deliver clutch drives, and take control of the hole from the very start.</p> <p class="relative">Whether you’re playing with friends or looking to refine your skills under competition-like conditions, <span class="condensed">NEXT UP</span> keeps every round fresh, engaging, and full of strategic decisions. It’s a format that builds confidence and adds an extra layer of excitement to your golf game, ensuring that every hole is packed with purpose and potential.</p></div></div>',
+);
+function pv(e) {
+  let t = M(!1),
+    a = M(0),
+    r = [
+      {
+        src: "whitepaper/next-up1.jpg",
+        alt: "Live View",
+        nextLabel: "Show Results View",
+      },
+      {
+        src: "whitepaper/next-up2.jpg",
+        alt: "Results screen",
+        nextLabel: "Show Live View",
+      },
+    ];
+  async function n() {
+    N(a, (l(a) + 1) % r.length);
+  }
+  Sa(e, {
+    get showModal() {
+      return l(t);
+    },
+    onClose: () => {
+      N(t, !1);
+    },
+    children: (s, o) => {
+      var i = vv(),
+        f = v(i),
+        u = v(f),
+        p = m(u, 2),
+        h = v(p, !0);
+      d(p),
+        d(f),
+        Ee(2),
+        d(i),
+        V(() => {
+          Q(u, "src", r[l(a)].src),
+            Q(u, "alt", r[l(a)].alt),
+            D(h, r[l(a)].nextLabel);
+        }),
+        R("click", p, n),
+        A(s, i);
+    },
+    $$slots: { default: !0 },
+  });
+}
+var gv = O(
+  '<!> <!> <!> <!> <div class="md:px-4"><h2 class="mb-2 text-2xl tracking-wide condensed">OUR NEW GAMES</h2> <div class="space-y-4"><p class="relative">We’re excited to introduce <span class="condensed">FOUR</span> new game formats designed with the next generation of golfers in mind. These fresh takes on the sport offer opportunities to challenge yourself, refine your skills, and enjoy the game in new ways. Whether you’re aiming for serious competition or just some lighthearted fun, these formats have something for everyone.</p> <p class="relative">Blending the traditions of golf with creative innovations, each format adds a unique twist to the game. Some reimagine classic rules for a modern edge, while others take an entirely new approach to keep things fresh and engaging. They’re designed to make every round memorable, no matter your skill level.</p> <p class="relative">In the following sections, you’ll learn what makes each format stand out and why they’re worth trying. With <span class="condensed">GOLFPAD</span>, golf’s rich history and exciting future come together, offering new ways to play, compete, and grow.</p></div> <div class="flex flex-col w-full pt-4 mt-2 space-y-4 md:flex-row md:space-y-0 md:space-x-2"><div class="flex flex-col w-full space-y-2 md:w-1/4"><div class="overflow-hidden aspect-square rounded-2xl"><img src="game-images/mulligans.jpg" alt="mulligans" class="object-fill w-full h-full"></div> <p class="text-3xl text-center condensed md:text-lg">MULLIGANS</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div> <div class="flex flex-col w-full space-y-2 md:w-1/4"><div class="overflow-hidden aspect-square rounded-2xl"><img src="game-images/bands.jpg" alt="bands" class="object-cover w-full h-full"></div> <p class="text-3xl text-center condensed md:text-lg">BANDS</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div> <div class="flex flex-col w-full space-y-2 md:w-1/4"><div class="overflow-hidden "><img src="game-images/next-up.jpg" alt="next-up" class="object-cover w-full h-full"></div> <p class="text-3xl text-center condensed md:text-lg">NEXT UP</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div> <div class="flex flex-col w-full space-y-2 md:w-1/4"><div class="overflow-hidden aspect-square rounded-2xl"><img src="game-images/build-it.jpg" alt="build-it" class="object-cover w-full h-full"></div> <p class="text-3xl text-center condensed md:text-lg">BUILD IT</p> <button class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow">More Info</button></div></div></div>',
+  1,
+);
+function hv(e) {
+  let t = M(!1),
+    a = M(!1),
+    r = M(!1),
+    n = M(!1);
+  var s = gv(),
+    o = J(s);
+  {
+    var i = (T) => {
+      fv(T);
+    };
+    j(o, (T) => {
+      l(t) && T(i);
+    });
+  }
+  var f = m(o, 2);
+  {
+    var u = (T) => {
+      iv(T);
+    };
+    j(f, (T) => {
+      l(a) && T(u);
+    });
+  }
+  var p = m(f, 2);
+  {
+    var h = (T) => {
+      dv(T);
+    };
+    j(p, (T) => {
+      l(n) && T(h);
+    });
+  }
+  var c = m(p, 2);
+  {
+    var g = (T) => {
+      pv(T);
+    };
+    j(c, (T) => {
+      l(r) && T(g);
+    });
+  }
+  var b = m(c, 2),
+    x = m(v(b), 4),
+    y = v(x),
+    k = m(v(y), 4);
+  d(y);
+  var E = m(y, 2),
+    C = m(v(E), 4);
+  d(E);
+  var _ = m(E, 2),
+    w = m(v(_), 4);
+  d(_);
+  var B = m(_, 2),
+    S = m(v(B), 4);
+  d(B),
+    d(x),
+    d(b),
+    R("click", k, () => {
+      N(t, !0);
+    }),
+    R("click", C, () => {
+      N(a, !0);
+    }),
+    R("click", w, () => {
+      N(r, !0);
+    }),
+    R("click", S, () => {
+      N(n, !0);
+    }),
+    A(e, s);
+}
+var mv = O(
+  '<div class="flex flex-col space-y-4"><h2 class="text-2xl font-black text-black condensed">MARKETING</h2> <p>At Waterway Labs, we are more than just a tech company—we are innovators on a mission to create groundbreaking, community-driven applications that bridge the gap between digital and real-world experiences. Our passion for creating memorable events that introduce people to new technologies is the driving force behind everything we do.</p> <p>What sets us apart? Our unique niche. At Waterway Labs, we use narrowboats—an unexpected yet beloved element—to infuse excitement and originality into our projects. This distinctive approach adds a fresh, unforgettable twist to each of our products, making them truly stand out. It’s not just about creating tech, it’s about creating experiences that resonate with our audience.</p> <div class="w-full mt-4"><img src="whitepaper/boat.jpg" alt="boat" class="w-full h-64 md:h-72 lg:h-80 rounded-md shadow-md object-cover object-center"></div> <p><span class="condensed">GOLFPAD</span>, will carry this philosophy to new heights. We are bringing the ultimate combination of fun, technology, and community to life by creating a floating mini-golf course that will be used for promotional events across the UK. This innovative concept will allow golf enthusiasts and casual players alike to enjoy a new way to play and connect with others.</p> <p>To ensure maximum exposure, we will anchor our floating <span class="condensed">GOLFPAD MINI-PUTT</span> course near some of the world’s most renowned golf courses, with our debut location nestled in the heart of Surrey, one of the UK’s premier golfing regions. By mooring our course at these prestigious sites, we’ll introduce our unique gamified golf experience to both seasoned players and curious newcomers. We’re not just creating another mini-golf course—we’re creating a destination for fun, entertainment, and social connection.</p> <p>Our goal is to seamlessly merge the real-world excitement of golf with the power of social media and digital engagement, positioning <span class="condensed">GOLFPAD</span> at the center of an already competitive and passionate golfing community. With an eye on growth, we’re strategically building a strong online presence, engaging with influencers, and promoting our events to connect with a broader audience. We believe <span class="condensed">GOLFPAD</span> will quickly become the must-visit attraction for golf fans in the UK and beyond.</p> <p>As we set our sights on expansion, we recognise that the US will be a key market for <span class="condensed">GOLFPAD</span>. To ensure a smooth entry, our promotional team is already cultivating strong relationships with some of the country’s most prestigious golf courses, showcasing their beauty and features on our platform. By showcasing these stunning locations, we aim to build a connection with American golfers and inspire the next generation to embrace the world of golf in new and exciting ways.</p> <p>With <span class="condensed">GOLFPAD</span>, we’re not just building a product—we’re creating a global movement that brings people together, elevates the golfing experience, and fuels a passion for innovation. Join us on this journey as we change the way people experience golf—one floating course at a time.</p> <p>Like most successful brands, we too have our niche. We use narrowboats, something most people we have met love, to bring a unique excitement to each one of our products.</p></div>',
+);
+function bv(e) {
+  var t = mv();
+  A(e, t);
+}
+var yv = O(
+  '<div class="flex flex-col space-y-4 text-base"><h2 class="text-2xl font-black text-black condensed">ROADMAP</h2> <div class="w-full mt-4"><img src="whitepaper/roadmap.jpg" alt="roadmap" class="w-full h-64 md:h-72 lg:h-80 rounded-md shadow-md object-cover object-center"></div> <p class="relative"><span class="condensed">Q1 2025:</span> The year kicks off with an exciting beginning as we engage and welcome our first users to the <span class="condensed">GOLFPAD</span> ecosystem. Our initial focus will be on introducing them to our first player tool—<span class="condensed">SHOTS</span>—setting the stage for a seamless golfing experience. Early adopters will dive into a world of smarter play, building the foundation for what’s to come.</p> <p class="relative"><span class="condensed">Q2 2025:</span> As the summer season heats up, so will the excitement around <span class="condensed">GOLFPAD</span>. This quarter, users will immerse themselves in our innovative game formats—<span class="condensed">MULLIGANS</span>, <span class="condensed">BANDS</span>, and <span class="condensed">NEXT UP</span>. These formats will empower golfers to elevate their skills, connect with friends, and enjoy friendly competition on the course. By the end of Q2, our community will be fully engaged, creating a buzz that sets the stage for what’s next.</p> <p class="relative"><span class="condensed">Q3 2025:</span> Building on the success of our 4-ball formats, we will introduce our first team-based game—<span class="condensed">BUILD-IT</span>. Designed to bring friends, families, and communities together, <span class="condensed">BUILD-IT</span> will take the <span class="condensed">GOLFPAD</span> experience to new heights, offering a dynamic and strategic way for golfers to collaborate, compete, and refine their skills as a team.</p> <p class="relative"><span class="condensed">Q4 2025:</span> As we approach the end of the year, we’ll evaluate the evolving technology landscape and explore opportunities for decentralisation within the <span class="condensed">GOLFPAD</span> platform. Whether through shared ownership or profit-sharing models, we’re committed to giving our users a more direct stake in the future of <span class="condensed">GOLFPAD</span>—ensuring that the platform remains community-driven and that everyone who contributes to our success can reap the rewards.</p> <p class="relative">With each step, <span class="condensed">GOLFPAD</span> will grow stronger, more innovative, and more aligned with the evolving needs of the golf community. This roadmap represents just the beginning of our journey towards reshaping the future of golf, and we’re excited to have users like you along for the ride.</p></div>',
+);
+function xv(e) {
+  var t = yv();
+  A(e, t);
+}
+var _v = O("<button></button>"),
+  wv = O(
+    '<div class="flex flex-col"><div class="flex"><!></div> <div class="flex flex-col mt-8 text-xs"><div class="flex flex-row space-x-2"><button class="w-1/2 px-4 py-2 text-black rounded bg-BrandYellow disabled:bg-BrandDarkGreen disabled:text-white">Previous Section</button> <button class="w-1/2 px-4 py-2 text-black rounded bg-BrandYellow disabled:bg-BrandDarkGreen disabled:text-white">Next Section</button></div> <div class="flex flex-row justify-center my-4"></div></div></div>',
+  ),
+  kv = O(
+    '<div class="w-full h-full p-2 px-4 text-black"><h2 class="mt-3 mb-4 text-3xl font-black text-black md:text-5xl condensed">GOLFPAD WHITEPAPER</h2> <div class="flex flex-col w-full md:flex-row"><img src="mulligans.png" alt="hero" class="w-full h-48 md:w-1/4 md:h-auto object-cover object-[50%_var(--crop-position-y)] rounded-lg"> <div class="w-full px-2 mt-4 md:w-3/4 md:mt-0"></div></div></div>',
+  );
+function Ev(e) {
+  let t = M("vision"),
+    a = "top";
+  const r = [
+    { name: "Vision", component: Kf },
+    { name: "Merve", component: Xf },
+    { name: "New Games", component: hv },
+    { name: "Side Games", component: ov },
+    { name: "Marketing", component: bv },
+    { name: "Road Map", component: xv },
+  ];
+  function n() {
+    const f = r.findIndex((u) => u.name.toLowerCase() === l(t));
+    f < r.length - 1 && N(t, r[f + 1].name.toLowerCase());
+  }
+  function s() {
+    const f = r.findIndex((u) => u.name.toLowerCase() === l(t));
+    f > 0 && N(t, r[f - 1].name.toLowerCase());
+  }
+  function o(f) {
+    return r[f].name.toLowerCase() === l(t);
+  }
+  function i(f) {
+    N(t, r[f].name.toLowerCase());
+  }
+  Gt(e, {
+    children: (f, u) => {
+      var p = kv(),
+        h = m(v(p), 2),
+        c = v(h);
+      Q(c, "style", `--crop-position-y: ${a};`);
+      var g = m(c, 2);
+      xe(
+        g,
+        5,
+        () => r,
+        je,
+        (b, x) => {
+          let y = () => l(x).name,
+            k = () => l(x).component;
+          var E = pe(),
+            C = J(E);
+          {
+            var _ = (w) => {
+              var B = wv(),
+                S = v(B),
+                T = v(S);
+              Ir(T, k, (F, Y) => {
+                Y(F, {});
+              }),
+                d(S);
+              var P = m(S, 2),
+                I = v(P),
+                U = v(I),
+                G = m(U, 2);
+              d(I);
+              var H = m(I, 2);
+              xe(
+                H,
+                5,
+                () => r,
+                je,
+                (F, Y, q, $) => {
+                  var z = _v();
+                  V(
+                    (K) => {
+                      se(z, 1, K),
+                        Q(z, "aria-label", `Go to ${r[q].name} section`);
+                    },
+                    [
+                      () => `
                       w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full mx-0.5 cursor-pointer border-none
-                      ${o(q)?"bg-BrandBlue":"bg-gray-500 hover:bg-gray-600"}
-                    `],Oe),R("click",z,()=>i(q)),A(F,z)}),d(H),d(P),d(B),V((F,Y)=>{U.disabled=F,G.disabled=Y},[()=>r.findIndex(F=>F.name.toLowerCase()===l(t))===0,()=>r.findIndex(F=>F.name.toLowerCase()===l(t))===r.length-1],Oe),R("click",U,s),R("click",G,n),A(w,B)};j(C,w=>{l(t)===y().toLowerCase()&&w(_)})}A(b,E)}),d(g),d(h),d(p),A(f,p)},$$slots:{default:!0}})}const Av=Object.freeze(Object.defineProperty({__proto__:null,component:Ev},Symbol.toStringTag,{value:"Module"}));var Sv=O('<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 sm:p-0"><div class="w-full sm:w-[90vw] md:w-[60vw] lg:w-1/3 p-4 sm:p-8 bg-white rounded-lg"><div class="flex items-center justify-between mb-4"><h2 class="text-xl text-black sm:text-2xl md:text-3xl condensed">ADD GOLF CLUB</h2> <button class="flex items-center justify-center text-base font-bold text-white bg-black rounded-full shadow-md w-7 h-7 sm:w-8 sm:h-8" type="button" aria-label="Close">✕</button></div> <p class="mb-6 text-sm text-BrandDarkGray">To tailor your yardage set, please enter the name of your golf club and its corresponding yardage. This information will help you track and optimize your game.</p> <div class="mb-4"><label for="clubName" class="block mb-2 text-sm text-black">CLUB NAME</label> <input id="clubName" type="text" placeholder="e.g. Driver" class="w-full p-2 rounded-md sm:p-3 bg-BrandLightGray"></div> <div class="mb-4"><label for="yardage" class="block mb-2 text-sm text-black">YARDAGE</label> <input id="yardage" type="number" placeholder="Enter" class="w-full p-2 rounded-md sm:p-3 bg-BrandLightGray"></div> <div class="flex justify-end gap-3 mt-6 sm:gap-4"><button class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandForest bg-BrandYellow">CANCEL</button> <button class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandYellow bg-BrandForest">ADD CLUB</button></div></div></div>');function Cv(e,t){fe(t,!1);let a=M(""),r=M(null),n=L(t,"isOpen",8);const s=va();function o(){s("close")}function i(){l(a)&&l(r)&&(s("addClub",{clubName:l(a),yardage:l(r)}),close())}_e();var f=pe(),u=J(f);{var p=h=>{var c=Sv(),g=v(c),b=v(g),x=m(v(b),2);d(b);var y=m(b,4),k=m(v(y),2);Ne(k),d(y);var E=m(y,2),C=m(v(E),2);Ne(C),d(E);var _=m(E,2),w=v(_),B=m(w,2);d(_),d(g),d(c),V(()=>B.disabled=!l(a)||l(r)===null),R("click",x,o),Be(k,()=>l(a),S=>N(a,S)),Be(C,()=>l(r),S=>N(r,S)),R("click",w,o),R("click",B,i),A(h,c)};j(u,h=>{n()&&h(p)})}A(e,f),ve()}var Tv=O('<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 sm:p-0"><div class="w-full sm:w-[90vw] md:w-[60vw] lg:w-1/3 p-4 sm:p-8 bg-white rounded-lg"><div class="flex items-center justify-between mb-4"><h2 class="text-xl text-black sm:text-2xl md:text-3xl condensed">EDIT YARDAGE NAME</h2> <button class="flex items-center justify-center text-base font-bold text-white bg-black rounded-full shadow-md w-7 h-7 sm:w-8 sm:h-8" type="button" aria-label="Close">✕</button></div> <p class="mb-6 text-sm text-BrandDarkGray">Give it a good one!</p> <div><label for="yardageSetName" class="block mb-2 text-sm text-black">NAME</label> <input id="yardageSetName" type="text" class="w-full p-2 text-black rounded sm:p-3 bg-BrandLightGray" placeholder="Enter"></div> <div class="flex justify-end gap-3 mt-6 sm:gap-4"><button class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandForest bg-BrandYellow">CANCEL</button> <button class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandYellow bg-BrandForest">Save</button></div></div></div>');function Nv(e,t){fe(t,!1);let a=L(t,"isOpen",8),r=L(t,"yardageSetName",12);const n=va();function s(){n("close")}_e();var o=pe(),i=J(o);{var f=u=>{var p=Tv(),h=v(p),c=v(h),g=m(v(c),2);d(c);var b=m(c,4),x=m(v(b),2);Ne(x),d(b);var y=m(b,2),k=v(y),E=m(k,2);d(y),d(h),d(p),R("click",g,s),Be(x,r),R("click",k,s),R("click",E,s),A(u,p)};j(i,u=>{a()&&u(f)})}A(e,o),ve()}var Bv=O('<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 sm:p-0"><div class="w-full sm:w-[90vw] md:w-[60vw] lg:w-1/3 p-4 sm:p-8 bg-white rounded-lg"><div class="flex items-center justify-between mb-4"><h2 class="text-xl text-black sm:text-2xl md:text-3xl condensed">REMOVE GOLF CLUB</h2> <button class="flex items-center justify-center text-base font-bold text-white bg-black rounded-full shadow-md w-7 h-7 sm:w-8 sm:h-8" type="button" aria-label="Close">✕</button></div> <p class="mb-6 text-sm text-BrandDarkGray">Are you sure you want to delete this golf club from your yardage set?</p> <div class="flex justify-end gap-3 mt-6 sm:gap-4"><button class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandForest bg-BrandYellow">CANCEL</button> <button class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandYellow bg-BrandForest">DELETE</button></div></div></div>');function Ov(e,t){fe(t,!1);let a=L(t,"isOpen",8);const r=va();function n(){r("close")}_e();var s=pe(),o=J(s);{var i=f=>{var u=Bv(),p=v(u),h=v(p),c=m(v(h),2);d(h);var g=m(h,4),b=v(g),x=m(b,2);d(g),d(p),d(u),R("click",c,n),R("click",b,n),R("click",x,n),A(f,u)};j(o,f=>{a()&&f(i)})}A(e,s),ve()}var Rv=ns('<svg viewBox="0 0 18 20" xmlns="http://www.w3.org/2000/svg"><path d="M7 16C7.26522 16 7.51957 15.8946 7.70711 15.7071C7.89464 15.5196 8 15.2652 8 15V9C8 8.73478 7.89464 8.48043 7.70711 8.29289C7.51957 8.10536 7.26522 8 7 8C6.73478 8 6.48043 8.10536 6.29289 8.29289C6.10536 8.48043 6 8.73478 6 9V15C6 15.2652 6.10536 15.5196 6.29289 15.7071C6.48043 15.8946 6.73478 16 7 16ZM17 4H13V3C13 2.20435 12.6839 1.44129 12.1213 0.87868C11.5587 0.316071 10.7956 0 10 0H8C7.20435 0 6.44129 0.316071 5.87868 0.87868C5.31607 1.44129 5 2.20435 5 3V4H1C0.734784 4 0.48043 4.10536 0.292893 4.29289C0.105357 4.48043 0 4.73478 0 5C0 5.26522 0.105357 5.51957 0.292893 5.70711C0.48043 5.89464 0.734784 6 1 6H2V17C2 17.7956 2.31607 18.5587 2.87868 19.1213C3.44129 19.6839 4.20435 20 5 20H13C13.7956 20 14.5587 19.6839 15.1213 19.1213C15.6839 18.5587 16 17.7956 16 17V6H17C17.2652 6 17.5196 5.89464 17.7071 5.70711C17.8946 5.51957 18 5.26522 18 5C18 4.73478 17.8946 4.48043 17.7071 4.29289C17.5196 4.10536 17.2652 4 17 4ZM7 3C7 2.73478 7.10536 2.48043 7.29289 2.29289C7.48043 2.10536 7.73478 2 8 2H10C10.2652 2 10.5196 2.10536 10.7071 2.29289C10.8946 2.48043 11 2.73478 11 3V4H7V3ZM14 17C14 17.2652 13.8946 17.5196 13.7071 17.7071C13.5196 17.8946 13.2652 18 13 18H5C4.73478 18 4.48043 17.8946 4.29289 17.7071C4.10536 17.5196 4 17.2652 4 17V6H14V17ZM11 16C11.2652 16 11.5196 15.8946 11.7071 15.7071C11.8946 15.5196 12 15.2652 12 15V9C12 8.73478 11.8946 8.48043 11.7071 8.29289C11.5196 8.10536 11.2652 8 11 8C10.7348 8 10.4804 8.10536 10.2929 8.29289C10.1054 8.48043 10 8.73478 10 9V15C10 15.2652 10.1054 15.5196 10.2929 15.7071C10.4804 15.8946 10.7348 16 11 16Z" fill="#C0C0C0"></path></svg>');function Pv(e,t){let a=L(t,"className",8,""),r=L(t,"fill",8,"");var n=Rv();V(()=>{se(n,0,ss(a())),Q(n,"fill",r())}),A(e,n)}var Iv=O('<button type="button" class="p-2 text-center rounded-md w-28 text-BrandYellow bg-BrandForest">ADD CLUB</button>'),Gv=O('<div class="grid items-center grid-cols-3 gap-4 mt-4 group"><span class="col-span-1 text-black condensed"> </span> <div class="flex items-center justify-between col-span-2"><div class="flex items-center gap-2"><input type="number" class="w-1/3 p-2 text-black border rounded-md bg-BrandLightGray focus:outline-none focus:ring-2 focus:ring-BrandForest" placeholder="Enter"> <button type="button" class="invisible p-1 rounded-full hover:bg-BrandLightGray group-hover:visible"><!></button></div> <!></div></div>'),jv=O('<div class="w-full bg-white"><div class="flex items-center justify-between px-8 pt-4"><h2 class="text-4xl text-black condensed">MY YARDAGES</h2></div> <div class="w-full h-full px-2 pt-4"><div class="flex flex-col gap-4 p-4 rounded-lg lg:flex-row bg-BrandLightGray"><div class="flex flex-col w-full p-4 rounded-md lg:w-1/3"><label for="yardage-set" class="pb-2 text-2xl text-black condensed">YARDAGE SET</label> <select id="yardage-set" class="p-2 mb-6 text-lg text-black border rounded-md"><option> </option></select> <button type="button" class="w-full p-4 mt-auto rounded-md text-BrandForest bg-BrandYellow">ADD NEW SET</button> <!></div> <div class="flex-1 p-4 bg-white rounded-md"><div class="flex items-center justify-between pb-4 border-b"><div class="flex items-center gap-2"><h3 class="text-2xl text-black condensed"> </h3> <button type="button" class="p-1 rounded-full hover:bg-gray-100"><!></button> <!></div> <button class="p-2 text-sm text-black rounded-md bg-BrandLightGray">Copy From</button></div> <div class="grid grid-cols-3 gap-4 mt-4 text-sm sm:text-base"><span class="col-span-1 text-black condensed">CLUB</span> <span class="col-span-2 text-black condensed">YARDS</span></div> <!> <!> <!></div></div></div></div>');function Mv(e){let t=M({id:1,name:"Championship Tees",clubs:[{index:1,name:"Driver",yards:320},{index:2,name:"3 Wood",yards:210},{index:3,name:"5 Wood",yards:190},{index:4,name:"3 Iron",yards:183},{index:5,name:"4 Iron",yards:176},{index:6,name:"5 Iron",yards:164},{index:7,name:"6 Iron",yards:144},{index:8,name:"7 Iron",yards:135},{index:9,name:"8 Iron",yards:133},{index:10,name:"9 Iron",yards:128},{index:11,name:"PW",yards:0}]}),a=M(!1),r=M(!1),n=M(!1),s=M(!1);Gt(e,{children:(o,i)=>{var f=jv(),u=m(v(f),2),p=v(u),h=v(p),c=m(v(h),2),g=v(c),b={},x=v(g,!0);d(g),d(c);var y=m(c,2),k=m(y,2);{var E=$=>{Sl($,{get isOpen(){return l(a)},$$events:{close:()=>N(a,!1)}})};j(k,$=>{l(a)&&$(E)})}d(h);var C=m(h,2),_=v(C),w=v(_),B=v(w),S=v(B,!0);d(B);var T=m(B,2),P=v(T);jr(P,{className:"w-4 h-4"}),d(T);var I=m(T,2);{var U=$=>{Nv($,{get isOpen(){return l(n)},get yardageSetName(){return l(t).name},$$events:{close:()=>N(n,!1)}})};j(I,$=>{l(n)&&$(U)})}d(w),Ee(2),d(_);var G=m(_,4);xe(G,3,()=>l(t).clubs,$=>$.index,($,z,K)=>{var oe=Gv(),W=v(oe),ie=v(W,!0);d(W);var he=m(W,2),me=v(he),re=v(me);Ne(re);var ce=m(re,2),He=v(ce);Pv(He,{className:"w-4 h-4"}),d(ce),d(me);var Z=m(me,2);{var be=Ae=>{var Te=Iv();R("click",Te,()=>{N(r,!0)}),A(Ae,Te)};j(Z,Ae=>{l(K)===l(t).clubs.length-1&&Ae(be)})}d(he),d(oe),V(()=>D(ie,l(z).name)),Be(re,()=>l(z).yards,Ae=>(l(z).yards=Ae,Ci(()=>l(t).clubs))),R("click",ce,()=>{N(s,!0)}),A($,oe)});var H=m(G,2);{var F=$=>{Ov($,{get isOpen(){return l(s)},$$events:{close:()=>N(s,!1)}})};j(H,$=>{l(s)&&$(F)})}var Y=m(H,2);{var q=$=>{Cv($,{get isOpen(){return l(r)},$$events:{close:()=>N(r,!1)}})};j(Y,$=>{l(r)&&$(q)})}d(C),d(p),d(u),d(f),V(()=>{b!==(b=l(t).name)&&(g.value=(g.__value=l(t).name)==null?"":l(t).name),D(x,l(t).name),D(S,l(t).name)}),R("click",y,()=>{N(a,!0)}),R("click",T,()=>{N(n,!0)}),A(o,f)},$$slots:{default:!0}})}const Fv=Object.freeze(Object.defineProperty({__proto__:null,component:Mv},Symbol.toStringTag,{value:"Module"}));function $v(e){return new Worker(""+new URL("../workers/auth.worker-7D_JHySN.js",import.meta.url).href,{type:"module",name:e?.name})}const Uv=Object.freeze(Object.defineProperty({__proto__:null,default:$v},Symbol.toStringTag,{value:"Module"}));export{nd as E,ed as L,ft as _,Qv as a,Qc as b,Hv as c,ep as d,tp as e,ap as f,Yv as g,Zc as h,Kd as i,ku as j,Gu as k,qv as l,Jv as m,Zv as n,Vu as o,of as p,hf as q,Xv as r,Kv as s,yf as t,Df as u,Wf as v,Ev as w,Mv as x};
+                      ${o(q) ? "bg-BrandBlue" : "bg-gray-500 hover:bg-gray-600"}
+                    `,
+                    ],
+                    Oe,
+                  ),
+                    R("click", z, () => i(q)),
+                    A(F, z);
+                },
+              ),
+                d(H),
+                d(P),
+                d(B),
+                V(
+                  (F, Y) => {
+                    (U.disabled = F), (G.disabled = Y);
+                  },
+                  [
+                    () =>
+                      r.findIndex((F) => F.name.toLowerCase() === l(t)) === 0,
+                    () =>
+                      r.findIndex((F) => F.name.toLowerCase() === l(t)) ===
+                      r.length - 1,
+                  ],
+                  Oe,
+                ),
+                R("click", U, s),
+                R("click", G, n),
+                A(w, B);
+            };
+            j(C, (w) => {
+              l(t) === y().toLowerCase() && w(_);
+            });
+          }
+          A(b, E);
+        },
+      ),
+        d(g),
+        d(h),
+        d(p),
+        A(f, p);
+    },
+    $$slots: { default: !0 },
+  });
+}
+const Av = Object.freeze(
+  Object.defineProperty(
+    { __proto__: null, component: Ev },
+    Symbol.toStringTag,
+    { value: "Module" },
+  ),
+);
+var Sv = O(
+  '<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 sm:p-0"><div class="w-full sm:w-[90vw] md:w-[60vw] lg:w-1/3 p-4 sm:p-8 bg-white rounded-lg"><div class="flex items-center justify-between mb-4"><h2 class="text-xl text-black sm:text-2xl md:text-3xl condensed">ADD GOLF CLUB</h2> <button class="flex items-center justify-center text-base font-bold text-white bg-black rounded-full shadow-md w-7 h-7 sm:w-8 sm:h-8" type="button" aria-label="Close">✕</button></div> <p class="mb-6 text-sm text-BrandDarkGray">To tailor your yardage set, please enter the name of your golf club and its corresponding yardage. This information will help you track and optimize your game.</p> <div class="mb-4"><label for="clubName" class="block mb-2 text-sm text-black">CLUB NAME</label> <input id="clubName" type="text" placeholder="e.g. Driver" class="w-full p-2 rounded-md sm:p-3 bg-BrandLightGray"></div> <div class="mb-4"><label for="yardage" class="block mb-2 text-sm text-black">YARDAGE</label> <input id="yardage" type="number" placeholder="Enter" class="w-full p-2 rounded-md sm:p-3 bg-BrandLightGray"></div> <div class="flex justify-end gap-3 mt-6 sm:gap-4"><button class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandForest bg-BrandYellow">CANCEL</button> <button class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandYellow bg-BrandForest">ADD CLUB</button></div></div></div>',
+);
+function Cv(e, t) {
+  fe(t, !1);
+  let a = M(""),
+    r = M(null),
+    n = L(t, "isOpen", 8);
+  const s = va();
+  function o() {
+    s("close");
+  }
+  function i() {
+    l(a) && l(r) && (s("addClub", { clubName: l(a), yardage: l(r) }), close());
+  }
+  _e();
+  var f = pe(),
+    u = J(f);
+  {
+    var p = (h) => {
+      var c = Sv(),
+        g = v(c),
+        b = v(g),
+        x = m(v(b), 2);
+      d(b);
+      var y = m(b, 4),
+        k = m(v(y), 2);
+      Ne(k), d(y);
+      var E = m(y, 2),
+        C = m(v(E), 2);
+      Ne(C), d(E);
+      var _ = m(E, 2),
+        w = v(_),
+        B = m(w, 2);
+      d(_),
+        d(g),
+        d(c),
+        V(() => (B.disabled = !l(a) || l(r) === null)),
+        R("click", x, o),
+        Be(
+          k,
+          () => l(a),
+          (S) => N(a, S),
+        ),
+        Be(
+          C,
+          () => l(r),
+          (S) => N(r, S),
+        ),
+        R("click", w, o),
+        R("click", B, i),
+        A(h, c);
+    };
+    j(u, (h) => {
+      n() && h(p);
+    });
+  }
+  A(e, f), ve();
+}
+var Tv = O(
+  '<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 sm:p-0"><div class="w-full sm:w-[90vw] md:w-[60vw] lg:w-1/3 p-4 sm:p-8 bg-white rounded-lg"><div class="flex items-center justify-between mb-4"><h2 class="text-xl text-black sm:text-2xl md:text-3xl condensed">EDIT YARDAGE NAME</h2> <button class="flex items-center justify-center text-base font-bold text-white bg-black rounded-full shadow-md w-7 h-7 sm:w-8 sm:h-8" type="button" aria-label="Close">✕</button></div> <p class="mb-6 text-sm text-BrandDarkGray">Give it a good one!</p> <div><label for="yardageSetName" class="block mb-2 text-sm text-black">NAME</label> <input id="yardageSetName" type="text" class="w-full p-2 text-black rounded sm:p-3 bg-BrandLightGray" placeholder="Enter"></div> <div class="flex justify-end gap-3 mt-6 sm:gap-4"><button class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandForest bg-BrandYellow">CANCEL</button> <button class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandYellow bg-BrandForest">Save</button></div></div></div>',
+);
+function Nv(e, t) {
+  fe(t, !1);
+  let a = L(t, "isOpen", 8),
+    r = L(t, "yardageSetName", 12);
+  const n = va();
+  function s() {
+    n("close");
+  }
+  _e();
+  var o = pe(),
+    i = J(o);
+  {
+    var f = (u) => {
+      var p = Tv(),
+        h = v(p),
+        c = v(h),
+        g = m(v(c), 2);
+      d(c);
+      var b = m(c, 4),
+        x = m(v(b), 2);
+      Ne(x), d(b);
+      var y = m(b, 2),
+        k = v(y),
+        E = m(k, 2);
+      d(y),
+        d(h),
+        d(p),
+        R("click", g, s),
+        Be(x, r),
+        R("click", k, s),
+        R("click", E, s),
+        A(u, p);
+    };
+    j(i, (u) => {
+      a() && u(f);
+    });
+  }
+  A(e, o), ve();
+}
+var Bv = O(
+  '<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 sm:p-0"><div class="w-full sm:w-[90vw] md:w-[60vw] lg:w-1/3 p-4 sm:p-8 bg-white rounded-lg"><div class="flex items-center justify-between mb-4"><h2 class="text-xl text-black sm:text-2xl md:text-3xl condensed">REMOVE GOLF CLUB</h2> <button class="flex items-center justify-center text-base font-bold text-white bg-black rounded-full shadow-md w-7 h-7 sm:w-8 sm:h-8" type="button" aria-label="Close">✕</button></div> <p class="mb-6 text-sm text-BrandDarkGray">Are you sure you want to delete this golf club from your yardage set?</p> <div class="flex justify-end gap-3 mt-6 sm:gap-4"><button class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandForest bg-BrandYellow">CANCEL</button> <button class="px-4 py-2 text-sm rounded-md sm:px-6 sm:text-base text-BrandYellow bg-BrandForest">DELETE</button></div></div></div>',
+);
+function Ov(e, t) {
+  fe(t, !1);
+  let a = L(t, "isOpen", 8);
+  const r = va();
+  function n() {
+    r("close");
+  }
+  _e();
+  var s = pe(),
+    o = J(s);
+  {
+    var i = (f) => {
+      var u = Bv(),
+        p = v(u),
+        h = v(p),
+        c = m(v(h), 2);
+      d(h);
+      var g = m(h, 4),
+        b = v(g),
+        x = m(b, 2);
+      d(g),
+        d(p),
+        d(u),
+        R("click", c, n),
+        R("click", b, n),
+        R("click", x, n),
+        A(f, u);
+    };
+    j(o, (f) => {
+      a() && f(i);
+    });
+  }
+  A(e, s), ve();
+}
+var Rv = ns(
+  '<svg viewBox="0 0 18 20" xmlns="http://www.w3.org/2000/svg"><path d="M7 16C7.26522 16 7.51957 15.8946 7.70711 15.7071C7.89464 15.5196 8 15.2652 8 15V9C8 8.73478 7.89464 8.48043 7.70711 8.29289C7.51957 8.10536 7.26522 8 7 8C6.73478 8 6.48043 8.10536 6.29289 8.29289C6.10536 8.48043 6 8.73478 6 9V15C6 15.2652 6.10536 15.5196 6.29289 15.7071C6.48043 15.8946 6.73478 16 7 16ZM17 4H13V3C13 2.20435 12.6839 1.44129 12.1213 0.87868C11.5587 0.316071 10.7956 0 10 0H8C7.20435 0 6.44129 0.316071 5.87868 0.87868C5.31607 1.44129 5 2.20435 5 3V4H1C0.734784 4 0.48043 4.10536 0.292893 4.29289C0.105357 4.48043 0 4.73478 0 5C0 5.26522 0.105357 5.51957 0.292893 5.70711C0.48043 5.89464 0.734784 6 1 6H2V17C2 17.7956 2.31607 18.5587 2.87868 19.1213C3.44129 19.6839 4.20435 20 5 20H13C13.7956 20 14.5587 19.6839 15.1213 19.1213C15.6839 18.5587 16 17.7956 16 17V6H17C17.2652 6 17.5196 5.89464 17.7071 5.70711C17.8946 5.51957 18 5.26522 18 5C18 4.73478 17.8946 4.48043 17.7071 4.29289C17.5196 4.10536 17.2652 4 17 4ZM7 3C7 2.73478 7.10536 2.48043 7.29289 2.29289C7.48043 2.10536 7.73478 2 8 2H10C10.2652 2 10.5196 2.10536 10.7071 2.29289C10.8946 2.48043 11 2.73478 11 3V4H7V3ZM14 17C14 17.2652 13.8946 17.5196 13.7071 17.7071C13.5196 17.8946 13.2652 18 13 18H5C4.73478 18 4.48043 17.8946 4.29289 17.7071C4.10536 17.5196 4 17.2652 4 17V6H14V17ZM11 16C11.2652 16 11.5196 15.8946 11.7071 15.7071C11.8946 15.5196 12 15.2652 12 15V9C12 8.73478 11.8946 8.48043 11.7071 8.29289C11.5196 8.10536 11.2652 8 11 8C10.7348 8 10.4804 8.10536 10.2929 8.29289C10.1054 8.48043 10 8.73478 10 9V15C10 15.2652 10.1054 15.5196 10.2929 15.7071C10.4804 15.8946 10.7348 16 11 16Z" fill="#C0C0C0"></path></svg>',
+);
+function Pv(e, t) {
+  let a = L(t, "className", 8, ""),
+    r = L(t, "fill", 8, "");
+  var n = Rv();
+  V(() => {
+    se(n, 0, ss(a())), Q(n, "fill", r());
+  }),
+    A(e, n);
+}
+var Iv = O(
+    '<button type="button" class="p-2 text-center rounded-md w-28 text-BrandYellow bg-BrandForest">ADD CLUB</button>',
+  ),
+  Gv = O(
+    '<div class="grid items-center grid-cols-3 gap-4 mt-4 group"><span class="col-span-1 text-black condensed"> </span> <div class="flex items-center justify-between col-span-2"><div class="flex items-center gap-2"><input type="number" class="w-1/3 p-2 text-black border rounded-md bg-BrandLightGray focus:outline-none focus:ring-2 focus:ring-BrandForest" placeholder="Enter"> <button type="button" class="invisible p-1 rounded-full hover:bg-BrandLightGray group-hover:visible"><!></button></div> <!></div></div>',
+  ),
+  jv = O(
+    '<div class="w-full bg-white"><div class="flex items-center justify-between px-8 pt-4"><h2 class="text-4xl text-black condensed">MY YARDAGES</h2></div> <div class="w-full h-full px-2 pt-4"><div class="flex flex-col gap-4 p-4 rounded-lg lg:flex-row bg-BrandLightGray"><div class="flex flex-col w-full p-4 rounded-md lg:w-1/3"><label for="yardage-set" class="pb-2 text-2xl text-black condensed">YARDAGE SET</label> <select id="yardage-set" class="p-2 mb-6 text-lg text-black border rounded-md"><option> </option></select> <button type="button" class="w-full p-4 mt-auto rounded-md text-BrandForest bg-BrandYellow">ADD NEW SET</button> <!></div> <div class="flex-1 p-4 bg-white rounded-md"><div class="flex items-center justify-between pb-4 border-b"><div class="flex items-center gap-2"><h3 class="text-2xl text-black condensed"> </h3> <button type="button" class="p-1 rounded-full hover:bg-gray-100"><!></button> <!></div> <button class="p-2 text-sm text-black rounded-md bg-BrandLightGray">Copy From</button></div> <div class="grid grid-cols-3 gap-4 mt-4 text-sm sm:text-base"><span class="col-span-1 text-black condensed">CLUB</span> <span class="col-span-2 text-black condensed">YARDS</span></div> <!> <!> <!></div></div></div></div>',
+  );
+function Mv(e) {
+  let t = M({
+      id: 1,
+      name: "Championship Tees",
+      clubs: [
+        { index: 1, name: "Driver", yards: 320 },
+        { index: 2, name: "3 Wood", yards: 210 },
+        { index: 3, name: "5 Wood", yards: 190 },
+        { index: 4, name: "3 Iron", yards: 183 },
+        { index: 5, name: "4 Iron", yards: 176 },
+        { index: 6, name: "5 Iron", yards: 164 },
+        { index: 7, name: "6 Iron", yards: 144 },
+        { index: 8, name: "7 Iron", yards: 135 },
+        { index: 9, name: "8 Iron", yards: 133 },
+        { index: 10, name: "9 Iron", yards: 128 },
+        { index: 11, name: "PW", yards: 0 },
+      ],
+    }),
+    a = M(!1),
+    r = M(!1),
+    n = M(!1),
+    s = M(!1);
+  Gt(e, {
+    children: (o, i) => {
+      var f = jv(),
+        u = m(v(f), 2),
+        p = v(u),
+        h = v(p),
+        c = m(v(h), 2),
+        g = v(c),
+        b = {},
+        x = v(g, !0);
+      d(g), d(c);
+      var y = m(c, 2),
+        k = m(y, 2);
+      {
+        var E = ($) => {
+          Sl($, {
+            get isOpen() {
+              return l(a);
+            },
+            $$events: { close: () => N(a, !1) },
+          });
+        };
+        j(k, ($) => {
+          l(a) && $(E);
+        });
+      }
+      d(h);
+      var C = m(h, 2),
+        _ = v(C),
+        w = v(_),
+        B = v(w),
+        S = v(B, !0);
+      d(B);
+      var T = m(B, 2),
+        P = v(T);
+      jr(P, { className: "w-4 h-4" }), d(T);
+      var I = m(T, 2);
+      {
+        var U = ($) => {
+          Nv($, {
+            get isOpen() {
+              return l(n);
+            },
+            get yardageSetName() {
+              return l(t).name;
+            },
+            $$events: { close: () => N(n, !1) },
+          });
+        };
+        j(I, ($) => {
+          l(n) && $(U);
+        });
+      }
+      d(w), Ee(2), d(_);
+      var G = m(_, 4);
+      xe(
+        G,
+        3,
+        () => l(t).clubs,
+        ($) => $.index,
+        ($, z, K) => {
+          var oe = Gv(),
+            W = v(oe),
+            ie = v(W, !0);
+          d(W);
+          var he = m(W, 2),
+            me = v(he),
+            re = v(me);
+          Ne(re);
+          var ce = m(re, 2),
+            He = v(ce);
+          Pv(He, { className: "w-4 h-4" }), d(ce), d(me);
+          var Z = m(me, 2);
+          {
+            var be = (Ae) => {
+              var Te = Iv();
+              R("click", Te, () => {
+                N(r, !0);
+              }),
+                A(Ae, Te);
+            };
+            j(Z, (Ae) => {
+              l(K) === l(t).clubs.length - 1 && Ae(be);
+            });
+          }
+          d(he),
+            d(oe),
+            V(() => D(ie, l(z).name)),
+            Be(
+              re,
+              () => l(z).yards,
+              (Ae) => ((l(z).yards = Ae), Ci(() => l(t).clubs)),
+            ),
+            R("click", ce, () => {
+              N(s, !0);
+            }),
+            A($, oe);
+        },
+      );
+      var H = m(G, 2);
+      {
+        var F = ($) => {
+          Ov($, {
+            get isOpen() {
+              return l(s);
+            },
+            $$events: { close: () => N(s, !1) },
+          });
+        };
+        j(H, ($) => {
+          l(s) && $(F);
+        });
+      }
+      var Y = m(H, 2);
+      {
+        var q = ($) => {
+          Cv($, {
+            get isOpen() {
+              return l(r);
+            },
+            $$events: { close: () => N(r, !1) },
+          });
+        };
+        j(Y, ($) => {
+          l(r) && $(q);
+        });
+      }
+      d(C),
+        d(p),
+        d(u),
+        d(f),
+        V(() => {
+          b !== (b = l(t).name) &&
+            (g.value = (g.__value = l(t).name) == null ? "" : l(t).name),
+            D(x, l(t).name),
+            D(S, l(t).name);
+        }),
+        R("click", y, () => {
+          N(a, !0);
+        }),
+        R("click", T, () => {
+          N(n, !0);
+        }),
+        A(o, f);
+    },
+    $$slots: { default: !0 },
+  });
+}
+const Fv = Object.freeze(
+  Object.defineProperty(
+    { __proto__: null, component: Mv },
+    Symbol.toStringTag,
+    { value: "Module" },
+  ),
+);
+function $v(e) {
+  return new Worker(
+    "" + new URL("../workers/auth.worker-7D_JHySN.js", import.meta.url).href,
+    { type: "module", name: e?.name },
+  );
+}
+const Uv = Object.freeze(
+  Object.defineProperty({ __proto__: null, default: $v }, Symbol.toStringTag, {
+    value: "Module",
+  }),
+);
+export {
+  nd as E,
+  ed as L,
+  ft as _,
+  Qv as a,
+  Qc as b,
+  Hv as c,
+  ep as d,
+  tp as e,
+  ap as f,
+  Yv as g,
+  Zc as h,
+  Kd as i,
+  ku as j,
+  Gu as k,
+  qv as l,
+  Jv as m,
+  Zv as n,
+  Vu as o,
+  of as p,
+  hf as q,
+  Xv as r,
+  Kv as s,
+  yf as t,
+  Df as u,
+  Wf as v,
+  Ev as w,
+  Mv as x,
+};
