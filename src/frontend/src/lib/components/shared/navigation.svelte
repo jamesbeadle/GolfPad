@@ -14,7 +14,6 @@
   
     const navItems = writable<{ name: string; route: Route }[]>([
       { name: 'HOME', route: 'home' },
-      { name: 'MY GAMES', route: 'games' },
       { name: 'WHITEPAPER', route: 'whitepaper' },
       { name: 'GAME RULES', route: 'game-rules' }
     ]);
