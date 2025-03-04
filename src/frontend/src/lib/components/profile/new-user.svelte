@@ -19,24 +19,20 @@
 
       try {
         creatingProfile = true;
-        console.log('create profile')
         let createHandicap : [number] | [] = [];
-        console.log(handicap)
         if(handicap != undefined){
           createHandicap = [handicap]
         } else {
           createHandicap = []
         }
 
-        console.log(createHandicap)
         let dto: CreateUser = {
           username,
           profilePictureExtension: [''],
           profilePicture: [],
           handicap: createHandicap
         };
-
-        console.log(dto)
+        
         await userStore.createUser(dto);
         toasts.addToast({type: 'success', message: 'Profile created.'})
 

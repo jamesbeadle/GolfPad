@@ -252,17 +252,10 @@ actor Self {
    ignore Timer.setTimer<system>(#nanoseconds(Int.abs(1)), postUpgradeCallback); 
   };
 
-  public shared ({ caller }) func getCaller() : async Text {
-    return await golferManager.getCaller(); 
-  };
-
-  public shared ({ caller }) func getTotalGolfers() : async Nat {
-    return await golferManager.getTotalGolfers(); 
-  };
-
   private func postUpgradeCallback() : async (){
+       //await golferManager.fixData();
     //await golferManager.resetActiveManagerCanister();
-    //await updateGolferCanisterWasms();
+    await updateGolferCanisterWasms();
     //await updateGolfCoursesCanisterWasms();
     //await updateGameCanisterWasms();
   };

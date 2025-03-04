@@ -37,16 +37,17 @@ module {
     };
 
     public func getProfile(dto: GolferQueries.GetProfile) : async Result.Result<GolferQueries.Profile, T.Error> {
-      
+      Debug.print("getting profile");
+      Debug.print(debug_show dto);
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getMyGolfer : (dto: GolferQueries.GetProfile) -> async Result.Result<GolferQueries.Profile, T.Error>;
+            getProfile : (dto: GolferQueries.GetProfile) -> async Result.Result<GolferQueries.Profile, T.Error>;
           };
 
-          let golfer = await golfer_canister.getMyGolfer(dto);
+          let golfer = await golfer_canister.getProfile(dto);
           return golfer;
         };
         case (null){
@@ -197,6 +198,7 @@ module {
       };
     };
 
+/*
     public func resetActiveManagerCanister() : async(){
       golferCanisterIndex := TrieMap.TrieMap<T.GolferId, Base.CanisterId>(Text.equal, Text.hash);
       activeCanisterId := "";
@@ -206,8 +208,21 @@ module {
       activeCanisterId := "";
       await createNewCanister();
     };
+*/
 
+    public func getCanisterIds() : [Text]{
+      return List.toArray(uniqueGolferCanisterIds);
+    };
 
+    /*
+
+    public func fixData() : async () {
+
+          golferCanisterIndex.put("mqqpz-m6umk-qbqlb-ivujq-pvfcg-pxaf7-tex5w-vciga-7viba-xq375-mae", "6w5of-uaaaa-aaaal-qsj6a-cai");
+          usernames.put("mqqpz-m6umk-qbqlb-ivujq-pvfcg-pxaf7-tex5w-vciga-7viba-xq375-mae", "beadle");
+    };
+
+    */
 
     //Update functions
     
@@ -255,6 +270,10 @@ module {
               createUser : (principalId: T.GolferId, dto: GolferCommands.CreateUser) -> async Result.Result<(), T.Error>;  
             };
           };
+
+
+          golferCanisterIndex.put((principalId, activeCanisterId));
+          usernames.put(principalId, activeCanisterId);
           return await golfer_canister.createUser(principalId, dto);
         }
       };    
@@ -277,6 +296,7 @@ module {
           let golfer_canister = actor (foundCanisterId) : actor {
             updateUsername : (dto: GolferCommands.UpdateUsername) -> async Result.Result<(), T.Error>
           };
+          usernames.put(dto.principalId, activeCanisterId);
           return await golfer_canister.updateUsername(dto);
         };
         case (null){
@@ -561,22 +581,6 @@ module {
       activeCanisterId := canisterId;
       Debug.print("Set Active Canister ID");
       return;
-    };
-
-    public func getCaller() : async Text{
-      let golfer_canister = actor (activeCanisterId) : actor {
-        getCaller : () -> async Text
-      };
-    
-      return await golfer_canister.getCaller();
-    };
-
-    public func getTotalGolfers() : async Nat{
-      let golfer_canister = actor (activeCanisterId) : actor {
-        getTotalGolfers : () -> async Nat
-      };
-    
-      return await golfer_canister.getTotalGolfers();
     };
 
     //stable storage getters and setters

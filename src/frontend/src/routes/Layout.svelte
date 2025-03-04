@@ -22,6 +22,7 @@
   let selectedRoute: 'home' | 'governance' | 'whitepaper' = 'home';
   let expanded = false;
   let principalId: string | undefined;
+  let user: any | undefined = undefined;
 
   $: isWhitepaper = browser && page.url.pathname === "/whitepaper";
 
@@ -41,40 +42,31 @@
     }
   }
   onMount(() => {
-    console.log('On mount');
 
     let unsubscribe: () => void;
 
-    // Perform async operations
     (async () => {
       try {
         await appStore.checkServerVersion();
         await authStore.sync();
-        console.log('Auth store synced');
 
-        // Subscribe to auth store
         unsubscribe = authStore.subscribe((store) => {
           isLoggedIn = store.identity !== null && store.identity !== undefined;
-          console.log(isLoggedIn);
           if (isLoggedIn) {
             principalId = store.identity?.getPrincipal().toString();
-            userStore.sync();
+            if (principalId) {
+              user = userStore.getProfile(principalId);
+              isLoading = false;
+            }
           }
         });
       } catch (error) {
         console.error('Error syncing auth store:', error);
       } finally {
-        isLoading = false;
       }
     })();
 
-
-    if (principalId) {
-      setContext('principalId', principalId);
-    }
-
     return () => {
-      console.log('Cleanup on unmount');
       if (unsubscribe) {
         unsubscribe();
       }
@@ -113,7 +105,7 @@
         </div>
       {:else}
         {#if isLoggedIn}
-          {#if $userStore}
+          {#if user}
             <div class="bg-white text-black flex-1 flex">
               <slot />
             </div>

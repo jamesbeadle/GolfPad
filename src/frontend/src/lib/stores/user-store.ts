@@ -6,6 +6,7 @@ import { UserService } from "$lib/services/user-service";
 import type {
   CreateUser,
   GetProfile,
+  Profile,
   UpdateFirstName,
   UpdateHandicap,
   UpdateHomeCourse,
@@ -18,7 +19,6 @@ function createUserStore() {
   const { subscribe, set } = writable<any>(null);
 
   async function sync() {
-    console.log("syncing user storage");
     let localStorageString = localStorage.getItem("user_profile_data");
     if (localStorageString) {
       const localProfile = JSON.parse(localStorageString);
@@ -142,7 +142,6 @@ function createUserStore() {
       };
 
       let getProfileResponse = await identityActor.getProfile(dto);
-      console.log("getProfileResponse: ", getProfileResponse);
       let error = isError(getProfileResponse);
       if (error) {
         console.error("Error fetching user profile");
@@ -153,9 +152,29 @@ function createUserStore() {
     });
   }
 
+  async function getProfile(principalId: string): Promise<Profile | null> {
+    const identityActor: any = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+
+    let dto: GetProfile = {
+      principalId,
+    };
+
+    let getProfileResponse = await identityActor.getProfile(dto);
+    let error = isError(getProfileResponse);
+    if (error) {
+      console.error("Error fetching user profile");
+      return null;
+    }
+    return getProfileResponse.ok;
+  }
+
   return {
     subscribe,
     sync,
+    getProfile,
     createUser,
     updateUsername,
     updateHandicap,

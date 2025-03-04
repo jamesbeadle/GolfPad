@@ -37,7 +37,6 @@
                     }))
                 };
             });
-            console.log("Courses Tees:", coursesTees);
         } catch (err) {
             console.error("Error fetching courses:", err);
         }

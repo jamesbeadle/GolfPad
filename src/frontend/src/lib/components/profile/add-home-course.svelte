@@ -108,7 +108,6 @@
                     holes: []
                 };
 
-                console.log("Creating Golf Course: ", createGolfCourseDTO);
 
                 await courseStore.createCourse(createGolfCourseDTO);
 
@@ -128,18 +127,15 @@
 
     function isAdvancedTabFilled() {
         if (newTeeGroup.holes.length !== 18) {
-            console.log("Not enough holes:", newTeeGroup.holes.length);
             return false;
         }
 
         return newTeeGroup.holes.every((hole, index) => {
             if (hole.number !== index + 1) {
-                console.log(`Invalid hole number at index ${index}`);
                 return false;
             }
 
             if (!hole.tees || hole.tees.length === 0) {
-                console.log(`No tees for hole ${hole.number}`);
                 return false;
             }
 
@@ -152,7 +148,6 @@
                     typeof tee.strokeIndex !== 'undefined';
 
                 if (!isValid) {
-                    console.log(`Invalid tee data for hole ${hole.number}:`, tee);
                 }
 
                 return isValid;
@@ -351,7 +346,6 @@
                                             type="button"
                                             class="brand-button"
                                             on:click={() => {
-                                                console.log("All 18 holes are already added");
                                             }}
                                         >
                                             +

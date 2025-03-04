@@ -55,13 +55,11 @@
 
     $: if (selectedCourseId?.value) {
         selectedCourse = courses.find((course) => course.courseId.toString() === selectedCourseId!.value) || null;
-        console.log("Selected Course:", selectedCourseId);
         if (selectedCourse) {
             tees = selectedCourse.tees.map((tee: TeeGroup) => ({
                 name: tee.name,
                 value: tee.name,
             }));
-            console.log("Tees:", tees);
             selectedTee = null;
         }
     }
@@ -99,11 +97,9 @@
             teeOffTime: teeOffTime,
             teeGroup: selectedTee.value,
         };
-        console.log("DTO:", dto);
         try{
             const result = await gameStore.createGame(dto);
             if (result.ok) {
-                console.log("Game Created, Game ID:", result.ok);
                 goto(`/games/${result.ok}`);
             } else {
                 console.error("Error Creating Game", result.err);

@@ -13,6 +13,7 @@ import T "../data-types/types";
 import Debug "mo:base/Debug";
 import GolferCommands "../commands/golfer_commands";
 import GolferQueries "../queries/golfer_queries";
+
 actor class _GolferCanister() {
 
   private stable var stable_golfer_group_indexes: [(T.GolferId, Nat8)] = [];
@@ -37,7 +38,13 @@ actor class _GolferCanister() {
  
   //Public endpoints
 
+  public shared ({caller}) func getIndexes() : async [(T.GolferId, Nat8)] {
+    stable_golfer_group_indexes
+  };
 
+  public shared ({caller}) func getgg1() : async [T.Golfer] {
+    golferGroup1
+  };
 
   public shared ({caller}) func getCaller() : async Text{
     return Principal.toText(caller);
@@ -128,6 +135,7 @@ actor class _GolferCanister() {
     };
     Debug.print("Adding golfer to group");
     addGolfer(newGolfer);
+
   };  
 
   public shared ({caller}) func updateUsername(dto: GolferCommands.UpdateUsername) : async Result.Result<(), T.Error>{
@@ -958,6 +966,10 @@ actor class _GolferCanister() {
       }
     };
     totalGolfers += 1;
+
+    let groupIndexBuffer = Buffer.fromArray<(T.GolferId, Nat8)>(stable_golfer_group_indexes);
+    groupIndexBuffer.add((newGolfer.principalId, activeGroupIndex));
+    stable_golfer_group_indexes := Buffer.toArray(groupIndexBuffer);
     return #ok();
   };
 
@@ -1189,6 +1201,8 @@ actor class _GolferCanister() {
         return 0;
       }
     }
+  };
+  system func postupgrade() {
   };
 
 };

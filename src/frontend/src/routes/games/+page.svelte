@@ -17,7 +17,6 @@
                 offset: BigInt(0),
             };
             gameSummaries = await golferSummariesStore.getGolferGameSummaries(filters);
-            console.log(gameSummaries);
         }
         catch(err){
             console.error("Failed to fetch golfer game summaries:", err);

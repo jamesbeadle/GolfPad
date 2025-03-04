@@ -52,8 +52,6 @@
             
             userStore.subscribe((user) => {
                 if(!user){ return }
-                console.log("user")
-                console.log(user)
                 golfer = user;
             });
 
@@ -73,7 +71,6 @@
         await userStore.updateProfilePicture(file);
         await userStore.cacheProfile();
         await userStore.sync();
-        console.log("Profile picture updated successfully");
         } catch (error) {
         console.error("Error updating profile picture:", error);
         }
