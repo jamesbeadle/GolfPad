@@ -22,6 +22,10 @@ module GolfCourseQueries {
     public type GolfCourses = {
         entries: [GolfCourse];
     };
+
+    public type GolfCourseSnaphot = {
+        id: Nat;
+    };
     
 }
 

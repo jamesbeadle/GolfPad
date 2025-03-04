@@ -430,7 +430,7 @@ actor class _GameCanister() {
     };
   };
 
-  public shared ({ caller }) func addGameInvites(dto: GameCommands.AddGameInvites) : async Result.Result<(), T.Error>{
+  public shared ({ caller }) func inviteGolfers(dto: GameCommands.InviteGolfers) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -447,7 +447,7 @@ actor class _GameCanister() {
         switch(game){
           case (#ok foundGame){
             let updatedInvitesBuffer = Buffer.fromArray<T.GolferId>(foundGame.invites);
-            updatedInvitesBuffer.append(Buffer.fromArray(dto.golferIds));
+            updatedInvitesBuffer.append(Buffer.fromArray(dto.invitedGolferIds));
             
             let updatedGame: T.Game = {
               courseId = foundGame.courseId;

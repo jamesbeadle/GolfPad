@@ -44,27 +44,6 @@ module GolferCommands {
         principalId: T.GolferId;
         confirm: Bool;
     };
-    
-    public type AcceptFriendRequest = {
-        principalId: T.GolferId;
-        requestedBy: T.GolferId;
-    };
-    
-    public type RejectFriendRequest = {
-        principalId: T.GolferId;
-        requestedBy: T.GolferId;
-    };
-    
-    public type SendFriendRequest = {
-        principalId: T.GolferId;
-        requestedFriend: T.GolferId;
-    };
-    
-    public type AddGame = {
-        invitedByPrincipalId: T.GolferId;
-        gameId: T.GameId;
-        inviteIds: [T.GolferId];
-    }
 }
 
   

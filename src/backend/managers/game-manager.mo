@@ -94,14 +94,29 @@ module {
       return #err(#NotFound);
     };
 
-    public func addGameInvites(dto: GameCommands.AddGameInvites) : async Result.Result<(), T.Error>{
+    public func isGameOwner(principalId: Base.PrincipalId) : async Bool {
+      return false;//TODO
+    };
+
+    public func isGameMember(principalId: Base.PrincipalId) : async Bool {
+
+/*
+          if(dto.princpial != foundGame.playerIds[0]){
+            return #err(#NotAllowed);
+          };
+          */
+
+      return false;//TODO
+    };
+
+    public func inviteGolfers(dto: GameCommands.InviteGolfers) : async Result.Result<(), T.Error>{
       let gameCanisterId = gameCanisterIndex.get(dto.gameId);
       switch(gameCanisterId){
         case (?foundCanisterId){
           let game_canister = actor (foundCanisterId) : actor {
-            addGameInvites : (dto: GameCommands.AddGameInvites) -> async Result.Result<(), T.Error>;
+            inviteGolfers : (dto: GameCommands.InviteGolfers) -> async Result.Result<(), T.Error>;
           };
-          return await game_canister.addGameInvites(dto);
+          return await game_canister.inviteGolfers(dto);
         };
         case _ { }
       };  
@@ -122,7 +137,21 @@ module {
       return #err(#NotFound);
     };
 
-    public func addGameScore(submittedById: T.GolferId, dto: GameCommands.AddGameScore) :async  Result.Result<(), T.Error> {
+    public func rejectGameInvite( dto: GameCommands.RejectGameInvite) : async Result.Result<(), T.Error>{
+      let gameCanisterId = gameCanisterIndex.get(dto.gameId);
+      switch(gameCanisterId){
+        case (?foundCanisterId){
+          let game_canister = actor (foundCanisterId) : actor {
+            rejectGameInvite : (dto: GameCommands.RejectGameInvite) -> async Result.Result<(), T.Error>;
+          };
+          return await game_canister.rejectGameInvite(dto);
+        };
+        case _ { }
+      };  
+      return #err(#NotFound);
+    };
+
+    public func addGameScore(dto: GameCommands.AddGameScore) :async  Result.Result<(), T.Error> {
       
       let existingGame = await getGame({ gameId = dto.gameId });
 
@@ -130,7 +159,7 @@ module {
         case (#ok foundGame){
 
           let playerInGame = Option.isSome(Array.find<T.GolferId>(foundGame.playerIds, func(playerId: T.GolferId){
-            playerId == submittedById;
+            playerId == dto.submittedById;
           }));
 
           if(not playerInGame){
@@ -155,17 +184,13 @@ module {
       
     };
 
-    public func beginGame(golferPrincipalId: T.GolferId, dto: GameCommands.BeginGame) : async Result.Result<(), T.Error> {
+    public func beginGame(dto: GameCommands.BeginGame) : async Result.Result<(), T.Error> {
       let existingGame = await getGame({ gameId = dto.gameId });
 
       switch(existingGame){
         case (#ok foundGame){
           
           if(foundGame.status != #Unplayed){
-            return #err(#NotAllowed);
-          };
-
-          if(golferPrincipalId != foundGame.playerIds[0]){
             return #err(#NotAllowed);
           };
 
@@ -183,6 +208,14 @@ module {
         };
         case (#err _) { return #err(#NotFound) };
       };
+    };
+
+    public func updateGame(dto: GameCommands.UpdateGame) : async Result.Result<(), T.Error> {
+      return #err(#NotFound)//TODO
+    };
+
+    public func deleteGame(dto: GameCommands.DeleteGame) : async Result.Result<(), T.Error> {
+      return #err(#NotFound)//TODO
     };
 
     private func createNewCanister(nextId: T.GameId) : async (){

@@ -1,6 +1,12 @@
 import T "../data-types/types";
 
 module GameCommands {
+    
+    public type AddGame = {
+        invitedByPrincipalId: T.GolferId;
+        gameId: T.GameId;
+        inviteIds: [T.GolferId];
+    };
 
     public type CreateGame = {
         createdById: T.GolferId;
@@ -11,10 +17,6 @@ module GameCommands {
         name: Text;
         teeGroup: T.TeeGroup;
         courseVersion: T.GolfCourseVersion;
-    };
-
-    public type GolfCourseSnaphot = {
-        id: Nat;
     };
 
     public type BeginGame = {
@@ -32,10 +34,11 @@ module GameCommands {
 
     public type AddGameScore = {
         gameId: T.GameId;
-        detail: GameScoreSubmissionDTO;
+        detail: GameScoreSubmission;
+        submittedById: T.GolferId;
     };
 
-    public type GameScoreSubmissionDTO = {
+    public type GameScoreSubmission = {
       #MulligansScores: MulligansScore;
     };
 
@@ -46,10 +49,6 @@ module GameCommands {
         golfer2MulliganUsed: Bool;
     };
 
-    public type AddGameInvites = {
-        gameId: T.GameId;
-        golferIds: [T.GolferId];
-    };
     public type InviteGolfers = {
         gameId: T.GameId;
         invitedGolferIds: [T.GolferId];
@@ -61,6 +60,7 @@ module GameCommands {
     };
 
     public type RejectGameInvite = {
+        rejectedById: T.GolferId;
         gameId: T.GameId;
     };
 }

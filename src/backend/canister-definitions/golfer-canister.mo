@@ -13,6 +13,7 @@ import T "../data-types/types";
 import Debug "mo:base/Debug";
 import GolferCommands "../commands/golfer_commands";
 import GolferQueries "../queries/golfer_queries";
+import FriendRequestCommands "../commands/friend_request_commands";
 
 actor class _GolferCanister() {
 
@@ -620,7 +621,7 @@ actor class _GolferCanister() {
     };
   };
 
-  public shared ({caller}) func acceptFriendRequest(dto: GolferCommands.AcceptFriendRequest) : async Result.Result<(), T.Error>{
+  public shared ({caller}) func acceptFriendRequest(dto: FriendRequestCommands.AcceptFriendRequest) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -675,7 +676,7 @@ actor class _GolferCanister() {
     };
   };
 
-  public shared ({caller}) func rejectFriendRequest(golferPrincipalId: T.GolferId, dto: GolferCommands.RejectFriendRequest) : async Result.Result<(), T.Error>{
+  public shared ({caller}) func rejectFriendRequest(golferPrincipalId: T.GolferId, dto: FriendRequestCommands.RejectFriendRequest) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -727,7 +728,7 @@ actor class _GolferCanister() {
     };
   };
 
-  public shared ({caller}) func sendFriendRequest(golferPrincipalId: T.GolferId, dto: GolferCommands.SendFriendRequest) : async Result.Result<(), T.Error>{
+  public shared ({caller}) func sendFriendRequest(golferPrincipalId: T.GolferId, dto: FriendRequestCommands.SendFriendRequest) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;

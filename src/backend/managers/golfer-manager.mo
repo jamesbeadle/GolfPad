@@ -20,6 +20,8 @@ import GolferCommands "../commands/golfer_commands";
 import GolferQueries "../queries/golfer_queries";
 import GolfCourseCommands "../commands/golf_course_commands";
 import GolfCourseQueries "../queries/golf_course_queries";
+import FriendRequestCommands "../commands/friend_request_commands";
+import GameCommands "../commands/game_commands";
 
 module {
   public class GolferManager() {
@@ -428,17 +430,17 @@ module {
       return #err(#NotFound);
     };
 
-    public func acceptFriendRequest(dto: GolferCommands.AcceptFriendRequest) : async Result.Result<(), T.Error> {
+    public func acceptFriendRequest(dto: FriendRequestCommands.AcceptFriendRequest) : async Result.Result<(), T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            acceptFriendRequest : (principalId: T.GolferId, dto: GolferCommands.AcceptFriendRequest) -> async Result.Result<(), T.Error>;
+            acceptFriendRequest : (dto: FriendRequestCommands.AcceptFriendRequest) -> async Result.Result<(), T.Error>;
           };
 
-          let _  = await golfer_canister.acceptFriendRequest(dto.principalId, dto);
-          return await golfer_canister.acceptFriendRequest(dto.requestedBy, dto);
+          let _  = await golfer_canister.acceptFriendRequest(dto);
+          return await golfer_canister.acceptFriendRequest(dto);
         };
         case (null){
           return #err(#NotFound);
@@ -446,13 +448,13 @@ module {
       };
     };
 
-    public func rejectFriendRequest(dto: GolferCommands.RejectFriendRequest) : async Result.Result<(), T.Error> {
+    public func rejectFriendRequest(dto: FriendRequestCommands.RejectFriendRequest) : async Result.Result<(), T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            rejectFriendRequest : (dto: GolferCommands.RejectFriendRequest) -> async Result.Result<(), T.Error>;
+            rejectFriendRequest : (dto: FriendRequestCommands.RejectFriendRequest) -> async Result.Result<(), T.Error>;
           };
 
           return await golfer_canister.rejectFriendRequest(dto);
@@ -463,13 +465,13 @@ module {
       };
     };
 
-    public func sendFriendRequest(dto: GolferCommands.SendFriendRequest) : async Result.Result<(), T.Error> {
+    public func sendFriendRequest(dto: FriendRequestCommands.SendFriendRequest) : async Result.Result<(), T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            sendFriendRequest : (dto: GolferCommands.SendFriendRequest) -> async Result.Result<(), T.Error>;
+            sendFriendRequest : (dto: FriendRequestCommands.SendFriendRequest) -> async Result.Result<(), T.Error>;
           };
 
           return await golfer_canister.sendFriendRequest(dto);
@@ -480,7 +482,7 @@ module {
       };
     };
 
-    public func addGame(dto: GolferCommands.AddGame) : async Result.Result<(), T.Error>{
+    public func addGame(dto: GameCommands.AddGame) : async Result.Result<(), T.Error>{
       for(principalId in Iter.fromArray(dto.inviteIds)){
         let golferCanisterId = golferCanisterIndex.get(principalId);
 
@@ -488,7 +490,7 @@ module {
           case (?foundCanisterId){
 
             let golfer_canister = actor (foundCanisterId) : actor {
-              addGameInvite : (dto: GolferCommands.AddGame) -> async Result.Result<(), T.Error>
+              addGameInvite : (dto: GameCommands.AddGame) -> async Result.Result<(), T.Error>
             };
           
             return await golfer_canister.addGameInvite(dto);

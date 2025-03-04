@@ -17,6 +17,7 @@ module Types {
 
   public type GolferId = Base.PrincipalId;
   public type GolfShotId = Nat;
+  public type GolfChannelId = Nat;
   
   public type RustResult = { #Ok : Text; #Err : Text };
 
