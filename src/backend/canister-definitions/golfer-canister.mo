@@ -75,17 +75,15 @@ actor class _GolferCanister() {
     };
   };
 
-  public shared ({caller}) func createGolfer(golferPrincipalId: T.GolferId, dto: GolferCommands.CreateGolfer) : async Result.Result<(), T.Error>{
-    Debug.print("Entering golfer canister");
+  public shared ({caller}) func createUser(golferPrincipalId: T.GolferId, dto: GolferCommands.CreateUser) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
-    Debug.print("Got backend principal id");
-
+    
     if(totalGolfers >= MAX_GOLFERS_PER_CANISTER){
       return #err(#CanisterFull);
     };
-    Debug.print("Total golfers is less than max golfers per canister");
+    
     if(getGolferCountInGroup(activeGroupIndex) >= MAX_GOLFERS_PER_GROUP){
       activeGroupIndex += 1;
     };

@@ -2,8 +2,7 @@ import T "../data-types/types";
 
 module GolferCommands {
 
-    public type CreateGolfer = {
-        principalId: T.GolferId;
+    public type CreateUser = {
         username: Text;
         handicap: ?T.Handicap;
         profilePicture: ?Blob;

@@ -1,3 +1,4 @@
+type UsernameAvailable = bool;
 type UpdateUsername = 
  record {
    principalId: GolferId;
@@ -8,6 +9,11 @@ type UpdateProfilePicture =
    principalId: GolferId;
    profilePicture: opt blob;
    profilePictureExtension: text;
+ };
+type UpdateLastName = 
+ record {
+   lastName: text;
+   principalId: GolferId;
  };
 type UpdateHomeCourse = 
  record {
@@ -24,6 +30,11 @@ type UpdateGolfCourse =
    courseId: GolfCourseId;
    name: text;
    updatedTeeGroup: opt TeeGroup;
+ };
+type UpdateFirstName = 
+ record {
+   firstName: text;
+   principalId: GolferId;
  };
 type TeeInfo = 
  record {
@@ -51,20 +62,40 @@ type RustResult =
    Err: text;
    Ok: text;
  };
-type Result_3 = 
+type Result_7 = 
  variant {
    err: Error;
    ok: AppStatusDTO;
  };
-type Result_2 = 
+type Result_6 = 
+ variant {
+   err: Error;
+   ok: GolfCourse;
+ };
+type Result_5 = 
  variant {
    err: Error;
    ok: GolfCourses;
  };
+type Result_4 = 
+ variant {
+   err: Error;
+   ok: Profile;
+ };
+type Result_3 = 
+ variant {
+   err: Error;
+   ok: UsernameAvailable;
+ };
+type Result_2 = 
+ variant {
+   err: Error;
+   ok: FriendRequests;
+ };
 type Result_1 = 
  variant {
    err: Error;
-   ok: FriendRequestsDTO;
+   ok: Friends;
  };
 type Result = 
  variant {
@@ -76,12 +107,32 @@ type RejectFriendRequest =
    principalId: GolferId;
    requestedBy: GolferId;
  };
+type Profile = 
+ record {
+   golferPicture: opt blob;
+   golferPictureExtension: text;
+   handicap: opt Handicap;
+   principalId: GolferId;
+   username: text;
+ };
+type ListFriends = 
+ record {
+   limit: nat;
+   offset: nat;
+   principalId: GolferId;
+   totalEntries: nat;
+ };
 type ListFriendRequests = 
  record {
    limit: nat;
    offset: nat;
    principalId: GolferId;
    totalEntries: nat;
+ };
+type IsUsernameAvailable = 
+ record {
+   principalId: GolferId;
+   username: text;
  };
 type ImageId = nat;
 type Hole = 
@@ -97,19 +148,31 @@ type Hole =
 type Handicap = int16;
 type GolferId = text;
 type GolfCourses = record {};
+type GolfCourseVersion = nat8;
 type GolfCourseId = nat;
+type GolfCourse = 
+ record {
+   activeVersion: GolfCourseVersion;
+   courseId: GolfCourseId;
+   name: text;
+   tees: vec TeeGroup;
+ };
+type GetProfile = record {principalId: GolferId;};
 type GetGolfCourses = 
  record {
    limit: nat;
    offset: nat;
    searchTerm: text;
  };
-type FriendRequestsDTO = record {friendRequests: vec FriendRequestDTO;};
-type FriendRequestDTO = 
+type GetGolfCourse = record {golfCourseId: GolfCourseId;};
+type Friends = record {friendRequests: vec Friend;};
+type FriendRequests = record {friendRequests: vec FriendRequest;};
+type FriendRequest = 
  record {
    principalId: GolferId;
    requestTime: int;
  };
+type Friend = record {principalId: GolferId;};
 type Error = 
  variant {
    AlreadyExists;
@@ -126,10 +189,9 @@ type Error =
    TooLong;
    TooShort;
  };
-type CreateGolfer = 
+type CreateUser = 
  record {
    handicap: opt Handicap;
-   principalId: GolferId;
    profilePicture: opt blob;
    profilePictureExtension: opt text;
    username: text;
@@ -153,16 +215,22 @@ type AcceptFriendRequest =
  };
 service : {
   acceptFriendRequest: (AcceptFriendRequest) -> (Result);
-  createGolfer: (CreateGolfer) -> (Result);
+  createUser: (CreateUser) -> (Result);
   executeAddGolfCourse: (CreateGolfCourse) -> ();
   executeUpdateGolfCourse: (UpdateGolfCourse) -> ();
-  getAppStatus: () -> (Result_3) query;
-  getGolfCourses: (GetGolfCourses) -> (Result_2);
-  listFriendRequests: (ListFriendRequests) -> (Result_1);
+  getAppStatus: () -> (Result_7) query;
+  getGolfCourse: (GetGolfCourse) -> (Result_6);
+  getGolfCourses: (GetGolfCourses) -> (Result_5);
+  getProfile: (GetProfile) -> (Result_4);
+  isUsernameAvailable: (IsUsernameAvailable) -> (Result_3) query;
+  listFriendRequests: (ListFriendRequests) -> (Result_2);
+  listFriends: (ListFriends) -> (Result_1);
   rejectFriendRequest: (RejectFriendRequest) -> (Result);
   sendFriendRequest: (SendFriendRequest) -> (Result);
+  updateFirstName: (UpdateFirstName) -> (Result);
   updateHandicap: (UpdateHandicap) -> (Result);
   updateHomeCourse: (UpdateHomeCourse) -> (Result);
+  updateLastName: (UpdateLastName) -> (Result);
   updateProfilePicture: (UpdateProfilePicture) -> (Result);
   updateUsername: (UpdateUsername) -> (Result);
   validateAddGolfCourse: (CreateGolfCourse) -> (RustResult) query;

@@ -73,16 +73,28 @@ actor Self {
 
   //Golfer Profile Commands:
 
-  public shared ({ caller }) func createGolfer(dto: GolferCommands.CreateGolfer) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func createUser(dto: GolferCommands.CreateUser) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
-    assert dto.principalId == Principal.toText(caller);
-    return await golferManager.createGolfer(dto);
+    let principalId = Principal.toText(caller);
+    return await golferManager.createUser(principalId, dto);
   };
 
   public shared ({ caller }) func updateUsername(dto: GolferCommands.UpdateUsername) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.updateUsername(dto);
+  };
+
+  public shared ({ caller }) func updateFirstName(dto: GolferCommands.UpdateFirstName) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+    return await golferManager.updateFirstName(dto);
+  };
+
+  public shared ({ caller }) func updateLastName(dto: GolferCommands.UpdateLastName) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+    return await golferManager.updateLastName(dto);
   };
 
   public shared ({ caller }) func updateProfilePicture(dto: GolferCommands.UpdateProfilePicture) : async Result.Result<(), T.Error> {
@@ -152,6 +164,8 @@ actor Self {
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.listFriends(dto);
   };
+
+  //Golfer Game Queries
 
   //Golfer Shot Managermant Functions:
     //add shot

@@ -2,14 +2,16 @@ import { authStore } from "$lib/stores/auth-store";
 import { isError } from "$lib/utils/helpers";
 import { writable } from "svelte/store";
 import { ActorFactory } from "$lib/utils/ActorFactory";
-import type {
-  CreateGolferDTO,
-  MyGolferDTO,
-  PrincipalId,
-  UpdateGolferDTO,
-  UpdateGolferPictureDTO,
-} from "../../../../declarations/backend/backend.did";
 import { UserService } from "$lib/services/user-service";
+import type {
+  CreateUser,
+  UpdateFirstName,
+  UpdateHandicap,
+  UpdateHomeCourse,
+  UpdateLastName,
+  UpdateProfilePicture,
+  UpdateUsername,
+} from "../../../../declarations/backend/backend.did";
 
 function createUserStore() {
   const { subscribe, set } = writable<any>(null);
@@ -19,12 +21,10 @@ function createUserStore() {
     if (localStorageString) {
       const localProfile = JSON.parse(localStorageString);
       set(localProfile);
-      console.log("Existing User");
       return false;
     }
     try {
       await cacheProfile();
-      console.log("New User");
       return true;
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -36,47 +36,28 @@ function createUserStore() {
     return new UserService().isAdmin();
   }
 
-  async function createUser(
-    username: string,
-    handicap: [number] | [],
-  ): Promise<any> {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        process.env.BACKEND_CANISTER_ID ?? "",
-      );
-
-      try {
-        let dto: CreateGolferDTO = {
-          username: username,
-          handicap: handicap,
-        };
-
-        const result = await identityActor.createGolfer(dto);
-        return result;
-      } catch (error) {
-        console.error("Error updating profile picture:", error);
-        throw error;
-      }
-    } catch (error) {
-      console.error("Error creating user:", error);
-      throw error;
-    }
+  async function createUser(dto: CreateUser): Promise<any> {
+    return new UserService().createUser(dto);
   }
 
-  async function updateUser(updatedUser: UpdateGolferDTO): Promise<any> {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        process.env.BACKEND_CANISTER_ID ?? "",
-      );
-      const result = await identityActor.updateUserDetail(updatedUser);
-      sync();
-      return result;
-    } catch (error) {
-      console.error("Error updating user:", error);
-      throw error;
-    }
+  async function updateUsername(dto: UpdateUsername): Promise<any> {
+    return new UserService().updateUsername(dto);
+  }
+
+  async function updateHandicap(dto: UpdateHandicap): Promise<any> {
+    return new UserService().updateHandicap(dto);
+  }
+
+  async function updateFirstName(dto: UpdateFirstName): Promise<any> {
+    return new UserService().updateFirstName(dto);
+  }
+
+  async function updateLastName(dto: UpdateLastName): Promise<any> {
+    return new UserService().updateLastName(dto);
+  }
+
+  async function updateHomeCourse(dto: UpdateHomeCourse): Promise<any> {
+    return new UserService().updateHomeCourse(dto);
   }
 
   async function updateProfilePicture(picture: File): Promise<any> {
@@ -98,9 +79,10 @@ function createUserStore() {
             process.env.BACKEND_CANISTER_ID ?? "",
           );
 
-          let dto: UpdateGolferPictureDTO = {
-            golferPicture: uint8Array,
-            golferPictureExtension: extension,
+          let dto: UpdateProfilePicture = {
+            principalId: "",
+            profilePicture: [uint8Array],
+            profilePictureExtension: extension,
           };
           const result = await identityActor.updateUserPicture(dto);
           if (isError(result)) {
@@ -163,7 +145,11 @@ function createUserStore() {
     subscribe,
     sync,
     createUser,
-    updateUser,
+    updateUsername,
+    updateHandicap,
+    updateFirstName,
+    updateLastName,
+    updateHomeCourse,
     cacheProfile,
     updateProfilePicture,
     isUsernameAvailable,

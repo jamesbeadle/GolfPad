@@ -203,7 +203,7 @@ module {
 
     //Update functions
     
-    public func createGolfer(dto: GolferCommands.CreateGolfer) : async Result.Result<(), T.Error> {
+    public func createUser(principalId: T.GolferId, dto: GolferCommands.CreateUser) : async Result.Result<(), T.Error> {
       
       if(Text.size(dto.username) < 5 or Text.size(dto.username) > 20){
         return #err(#TooLong);
@@ -218,12 +218,12 @@ module {
         }
       };
 
-      let invalidUsername = isUsernameTaken(dto.username, dto.principalId);
+      let invalidUsername = isUsernameTaken(dto.username, principalId);
       if(invalidUsername){
         return #err(#AlreadyExists);
       };
       
-      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
+      let existingGolferCanisterId = golferCanisterIndex.get(principalId);
       switch(existingGolferCanisterId){
         case (?_){
           return #err(#AlreadyExists);
@@ -235,7 +235,7 @@ module {
 
           var golfer_canister = actor (activeCanisterId) : actor {
             isCanisterFull : () -> async Bool;
-            createGolfer : (dto: GolferCommands.CreateGolfer) -> async Result.Result<(), T.Error>;  
+            createUser : (principalId: T.GolferId, dto: GolferCommands.CreateUser) -> async Result.Result<(), T.Error>;  
           };
 
           let isCanisterFull = await golfer_canister.isCanisterFull(); 
@@ -244,10 +244,10 @@ module {
             await createNewCanister();
             golfer_canister := actor (activeCanisterId) : actor {
               isCanisterFull : () -> async Bool;
-              createGolfer : (dto: GolferCommands.CreateGolfer) -> async Result.Result<(), T.Error>;  
+              createUser : (principalId: T.GolferId, dto: GolferCommands.CreateUser) -> async Result.Result<(), T.Error>;  
             };
           };
-          return await golfer_canister.createGolfer(dto);
+          return await golfer_canister.createUser(principalId, dto);
         }
       };    
     };

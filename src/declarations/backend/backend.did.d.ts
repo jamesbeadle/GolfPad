@@ -16,12 +16,11 @@ export interface CreateGolfCourse {
   name: string;
   initialTeeGroup: TeeGroup;
 }
-export interface CreateGolfer {
+export interface CreateUser {
   username: string;
   profilePictureExtension: [] | [string];
   profilePicture: [] | [Uint8Array | number[]];
   handicap: [] | [Handicap];
-  principalId: GolferId;
 }
 export type Error =
   | { InvalidProfilePicture: null }
@@ -37,19 +36,38 @@ export type Error =
   | { OutOfRange: null }
   | { PaymentError: null }
   | { CanisterFull: null };
-export interface FriendRequestDTO {
+export interface Friend {
+  principalId: GolferId;
+}
+export interface FriendRequest {
   requestTime: bigint;
   principalId: GolferId;
 }
-export interface FriendRequestsDTO {
-  friendRequests: Array<FriendRequestDTO>;
+export interface FriendRequests {
+  friendRequests: Array<FriendRequest>;
+}
+export interface Friends {
+  friendRequests: Array<Friend>;
+}
+export interface GetGolfCourse {
+  golfCourseId: GolfCourseId;
 }
 export interface GetGolfCourses {
   offset: bigint;
   limit: bigint;
   searchTerm: string;
 }
+export interface GetProfile {
+  principalId: GolferId;
+}
+export interface GolfCourse {
+  activeVersion: GolfCourseVersion;
+  name: string;
+  tees: Array<TeeGroup>;
+  courseId: GolfCourseId;
+}
 export type GolfCourseId = bigint;
+export type GolfCourseVersion = number;
 export type GolfCourses = {};
 export type GolferId = string;
 export type Handicap = number;
@@ -60,10 +78,27 @@ export interface Hole {
   images: Array<[CanisterId, ImageId]>;
 }
 export type ImageId = bigint;
+export interface IsUsernameAvailable {
+  username: string;
+  principalId: GolferId;
+}
 export interface ListFriendRequests {
   totalEntries: bigint;
   offset: bigint;
   limit: bigint;
+  principalId: GolferId;
+}
+export interface ListFriends {
+  totalEntries: bigint;
+  offset: bigint;
+  limit: bigint;
+  principalId: GolferId;
+}
+export interface Profile {
+  username: string;
+  golferPicture: [] | [Uint8Array | number[]];
+  handicap: [] | [Handicap];
+  golferPictureExtension: string;
   principalId: GolferId;
 }
 export interface RejectFriendRequest {
@@ -71,9 +106,13 @@ export interface RejectFriendRequest {
   requestedBy: GolferId;
 }
 export type Result = { ok: null } | { err: Error };
-export type Result_1 = { ok: FriendRequestsDTO } | { err: Error };
-export type Result_2 = { ok: GolfCourses } | { err: Error };
-export type Result_3 = { ok: AppStatusDTO } | { err: Error };
+export type Result_1 = { ok: Friends } | { err: Error };
+export type Result_2 = { ok: FriendRequests } | { err: Error };
+export type Result_3 = { ok: UsernameAvailable } | { err: Error };
+export type Result_4 = { ok: Profile } | { err: Error };
+export type Result_5 = { ok: GolfCourses } | { err: Error };
+export type Result_6 = { ok: GolfCourse } | { err: Error };
+export type Result_7 = { ok: AppStatusDTO } | { err: Error };
 export type RustResult = { Ok: string } | { Err: string };
 export interface SendFriendRequest {
   requestedFriend: GolferId;
@@ -93,6 +132,10 @@ export interface TeeInfo {
   colour: string;
   strokeIndex: number;
 }
+export interface UpdateFirstName {
+  principalId: GolferId;
+  firstName: string;
+}
 export interface UpdateGolfCourse {
   name: string;
   updatedTeeGroup: [] | [TeeGroup];
@@ -106,6 +149,10 @@ export interface UpdateHomeCourse {
   homeCourseId: [] | [GolfCourseId];
   principalId: GolferId;
 }
+export interface UpdateLastName {
+  lastName: string;
+  principalId: GolferId;
+}
 export interface UpdateProfilePicture {
   profilePictureExtension: string;
   profilePicture: [] | [Uint8Array | number[]];
@@ -115,18 +162,25 @@ export interface UpdateUsername {
   username: string;
   principalId: GolferId;
 }
+export type UsernameAvailable = boolean;
 export interface _SERVICE {
   acceptFriendRequest: ActorMethod<[AcceptFriendRequest], Result>;
-  createGolfer: ActorMethod<[CreateGolfer], Result>;
+  createUser: ActorMethod<[CreateUser], Result>;
   executeAddGolfCourse: ActorMethod<[CreateGolfCourse], undefined>;
   executeUpdateGolfCourse: ActorMethod<[UpdateGolfCourse], undefined>;
-  getAppStatus: ActorMethod<[], Result_3>;
-  getGolfCourses: ActorMethod<[GetGolfCourses], Result_2>;
-  listFriendRequests: ActorMethod<[ListFriendRequests], Result_1>;
+  getAppStatus: ActorMethod<[], Result_7>;
+  getGolfCourse: ActorMethod<[GetGolfCourse], Result_6>;
+  getGolfCourses: ActorMethod<[GetGolfCourses], Result_5>;
+  getProfile: ActorMethod<[GetProfile], Result_4>;
+  isUsernameAvailable: ActorMethod<[IsUsernameAvailable], Result_3>;
+  listFriendRequests: ActorMethod<[ListFriendRequests], Result_2>;
+  listFriends: ActorMethod<[ListFriends], Result_1>;
   rejectFriendRequest: ActorMethod<[RejectFriendRequest], Result>;
   sendFriendRequest: ActorMethod<[SendFriendRequest], Result>;
+  updateFirstName: ActorMethod<[UpdateFirstName], Result>;
   updateHandicap: ActorMethod<[UpdateHandicap], Result>;
   updateHomeCourse: ActorMethod<[UpdateHomeCourse], Result>;
+  updateLastName: ActorMethod<[UpdateLastName], Result>;
   updateProfilePicture: ActorMethod<[UpdateProfilePicture], Result>;
   updateUsername: ActorMethod<[UpdateUsername], Result>;
   validateAddGolfCourse: ActorMethod<[CreateGolfCourse], RustResult>;
