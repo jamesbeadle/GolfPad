@@ -21,6 +21,8 @@ import GolferQueries "../queries/golfer_queries";
 import FriendRequestCommands "../commands/friend_request_commands";
 import GameCommands "../commands/game_commands";
 import ShotManager "shot-manager";
+import ShotCommands "../commands/shot_commands";
+import ShotQueries "../queries/shot_queries";
 
 module {
   public class GolferManager() {
@@ -504,17 +506,21 @@ module {
       return #ok();
     };
 
+    //Shot Functions
+      
+    public func addShot(dto: ShotCommands.AddShot) : async Result.Result<(), T.Error> {
+      return await shotManager.addShot(dto);
+    };
 
+    //Golfer Shot Management Queries:
 
+    public func getShot(dto: ShotQueries.GetShot) : async Result.Result<ShotQueries.Shot, T.Error> {
+      return await shotManager.getShot(dto);
+    };
 
-
-
-
-
-
-
-
-
+    public func predictShot(dto: ShotQueries.PredictShot) : async Result.Result<ShotQueries.PredictedShot, T.Error> {
+      return await shotManager.predictShot(dto);
+    };
 
 
 

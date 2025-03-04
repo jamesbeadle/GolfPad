@@ -64,6 +64,10 @@ module {
       return await getChannel(dto);
     };
 
+    public func getGolfChannelVideos(dto : GolfChannelQueries.GetGolfChannelVideos) : async Result.Result<GolfChannelQueries.GolfChannelVideos, T.Error> {
+      return #err(#NotFound);//TODO
+    };
+
     private func getChannel(dto: GolfChannelQueries.GetGolfChannel) : async Result.Result<GolfChannelQueries.GolfChannel, T.Error> {
       let existingGolfChannelCanisterId = golfChannelCanisterIndex.get(dto.golfChannelId);
       switch(existingGolfChannelCanisterId){
@@ -81,13 +85,53 @@ module {
       };
     };
 
-    public func addGolfChannel(dto : GolfChannelCommands.CreateGolfChannel) : async () {
+    public func getGolfChannelVideo(dto : GolfChannelQueries.GetGolfChannelVideo) : async Result.Result<GolfChannelQueries.GolfChannelVideo, T.Error> {
+      return #err(#NotFound);//TODO
+    };
+
+    public func isSubscribed(dto: GolfChannelQueries.GetGolfChannelVideo) : async Bool {
+      return false;//TODO
+    };
+
+    public func createGolfChannel(dto : GolfChannelCommands.CreateGolfChannel) : async Result.Result<(), T.Error> {
       
       if(Text.size(dto.name) > 100){
-        return;
+        return #err(#TooLong);
       };
 
-      return;
+      return #ok;
+    };
+
+    public func updateGolfChannel(dto : GolfChannelCommands.UpdateGolfChannel) : async Result.Result<(), T.Error> {
+      return #err(#NotFound);//TODO
+    };
+
+    public func deleteGolfChannel(dto : GolfChannelCommands.DeleteGolfChannel) : async Result.Result<(), T.Error> {
+      return #err(#NotFound);//TODO
+    };
+
+    public func subscribeToGolfChannel(dto : GolfChannelCommands.SubscribeToGolfChannel) : async Result.Result<(), T.Error> {
+      return #err(#NotFound);//TODO
+    };
+
+    public func unsubscribeFromGolfChannel(dto : GolfChannelCommands.UnsubscribeFromGolfChannel) : async Result.Result<(), T.Error> {
+      return #err(#NotFound);//TODO
+    };
+
+    public func uploadGolfChannelVideo(dto : GolfChannelCommands.UploadGolfChannelVideo) : async Result.Result<(), T.Error> {
+      return #err(#NotFound);//TODO
+    };
+
+    public func updateGolfChannelVideo(dto : GolfChannelCommands.UpdateGolfChannelVideo) : async Result.Result<(), T.Error> {
+      return #err(#NotFound);//TODO
+    };
+
+    public func removeGolfChannelVideo(dto : GolfChannelCommands.RemoveGolfChannelVideo) : async Result.Result<(), T.Error> {
+      return #err(#NotFound);//TODO
+    };
+
+    public func isChannelOwner(principalId: T.GolferId) : async Bool{
+      return false; //TODO
     };
 
     //stable storage getters and setters

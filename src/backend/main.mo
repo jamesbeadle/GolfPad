@@ -12,7 +12,6 @@ import Environment "utilities/Environment";
 import GolferManager "managers/golfer-manager";
 import GolfCourseManager "managers/golf-course-manager";
 import GameManager "managers/game-manager";
-import ShotManager "managers/shot-manager";
 import GolfChannelManager "managers/golf-channel-manager";
 
 import GameCommands "commands/game_commands";
@@ -34,6 +33,7 @@ import Management "utilities/Management";
 import GolferCanister "canister-definitions/golfer-canister";
 import GolfCoursesCanister "canister-definitions/golf-courses-canister";
 import GameCanister "canister-definitions/game-canister";
+import GolfChannelsCanister "canister-definitions/golf-channels-canister";
 
 actor Self {
 
@@ -333,17 +333,17 @@ actor Self {
 
   //Golf Channel Queries:
 
-  public shared query ({ caller }) func getGolfChannel(dto: GolfChannelQueries.GetGolfChannel) : async Result.Result<GolfChannelQueries.GolfChannel, T.Error> {
+  public shared ({ caller }) func getGolfChannel(dto: GolfChannelQueries.GetGolfChannel) : async Result.Result<GolfChannelQueries.GolfChannel, T.Error> {
     assert not Principal.isAnonymous(caller);
     return await golfChannelManager.getGolfChannel(dto); 
   };
 
-  public shared query ({ caller }) func getGolfChannelVideos(dto: GolfChannelQueries.GetGolfChannelVideos) : async Result.Result<GolfChannelQueries.GolfChannelVideos, T.Error> {
+  public shared ({ caller }) func getGolfChannelVideos(dto: GolfChannelQueries.GetGolfChannelVideos) : async Result.Result<GolfChannelQueries.GolfChannelVideos, T.Error> {
     assert not Principal.isAnonymous(caller);
     return await golfChannelManager.getGolfChannelVideos(dto); 
   };
 
-  public shared query ({ caller }) func getGolfChannelVideo(dto: GolfChannelQueries.GetGolfChannelVideo) : async Result.Result<GolfChannelQueries.GolfChannelVideo, T.Error> {
+  public shared ({ caller }) func getGolfChannelVideo(dto: GolfChannelQueries.GetGolfChannelVideo) : async Result.Result<GolfChannelQueries.GolfChannelVideo, T.Error> {
     assert not Principal.isAnonymous(caller);
     assert await golfChannelManager.isSubscribed(dto);
     return await golfChannelManager.getGolfChannelVideo(dto); 
@@ -354,43 +354,53 @@ actor Self {
   private stable var stable_golfer_canister_index: [(T.GolferId, Base.CanisterId)] = [];
   private stable var stable_golf_course_canister_index: [(T.GolfCourseId, Base.CanisterId)] = [];
   private stable var stable_game_canister_index: [(T.GameId, Base.CanisterId)] = [];
+  private stable var stable_golf_channel_canister_index: [(T.GolfChannelId, Base.CanisterId)] = [];
   
   //todo add golf channel
   
   private stable var stable_active_golfer_canister_id: Base.CanisterId = "";
   private stable var stable_active_golf_course_canister_id: Base.CanisterId = "";
   private stable var stable_active_game_canister_id: Base.CanisterId = "";
+  private stable var stable_active_golf_channel_canister_id: Base.CanisterId = "";
 
   private stable var stable_usernames : [(T.GolferId, Text)] = [];
   private stable var stable_golf_course_names : [(T.GolfCourseId, Text)] = [];
+  private stable var stable_golf_channel_names : [(T.GolfChannelId, Text)] = [];
   
   private stable var stable_unique_golfer_canister_ids : [Base.CanisterId] = [];
   private stable var stable_unique_golf_course_canister_ids : [Base.CanisterId] = [];
   private stable var stable_unique_game_canister_ids : [Base.CanisterId] = [];
+  private stable var stable_unique_golf_channel_canister_ids : [Base.CanisterId] = [];
 
   private stable var stable_total_golfers : Nat = 0;
   private stable var stable_total_golf_courses : Nat = 0;
+  private stable var stable_total_golf_channels : Nat = 0;
   private stable var stable_total_games : Nat = 0;
   
   system func preupgrade() {
     stable_golfer_canister_index := golferManager.getStableCanisterIndex();
     stable_golf_course_canister_index := courseManager.getStableCanisterIndex();
+    stable_golf_channel_canister_index := golfChannelManager.getStableCanisterIndex();
     stable_game_canister_index := gameManager.getStableCanisterIndex();
-    stable_golf_shots := shotManager.getStableShots();
+    
     
     stable_active_golfer_canister_id := golferManager.getStableActiveCanisterId();
     stable_active_golf_course_canister_id := courseManager.getStableActiveCanisterId();
     stable_active_game_canister_id := gameManager.getStableActiveCanisterId();
+    stable_active_golf_channel_canister_id := golfChannelManager.getStableActiveCanisterId();
 
     stable_usernames := golferManager.getStableUsernames();
     stable_golf_course_names := courseManager.getStableGolfCourseNames();
+    stable_golf_channel_names := golfChannelManager.getStableGolfChannelNames();
     
     stable_unique_golfer_canister_ids := golferManager.getStableUniqueCanisterIds();
     stable_unique_golf_course_canister_ids := courseManager.getStableUniqueCanisterIds();
+    stable_unique_golf_channel_canister_ids := golfChannelManager.getStableUniqueCanisterIds();
     stable_unique_game_canister_ids := gameManager.getStableUniqueCanisterIds();
 
     stable_total_golfers := golferManager.getStableTotalGolfers();
     stable_total_golf_courses := courseManager.getStableTotalGolfCourses();
+    stable_total_golf_channels := golfChannelManager.getStableTotalGolfChannels();
     stable_total_games := gameManager.getStableTotalGames();
   };
 
@@ -399,18 +409,21 @@ actor Self {
     golferManager.setStableCanisterIndex(stable_golfer_canister_index);
     courseManager.setStableCanisterIndex(stable_golf_course_canister_index);
     gameManager.setStableCanisterIndex(stable_game_canister_index);
-    shotManager.setStableShots(stable_golf_shots);
+    golfChannelManager.setStableCanisterIndex(stable_golf_channel_canister_index);
     
     golferManager.setStableActiveCanisterId(stable_active_golfer_canister_id);
     courseManager.setStableActiveCanisterId(stable_active_golf_course_canister_id);
     gameManager.setStableActiveCanisterId(stable_active_game_canister_id);
+    golfChannelManager.setStableActiveCanisterId(stable_active_golf_channel_canister_id);
 
     golferManager.setStableUsernames(stable_usernames);
     courseManager.setStableGolfCourseNames(stable_golf_course_names);
+    golfChannelManager.setStableGolfChannelNames(stable_golf_channel_names);
     
     golferManager.setStableUniqueCanisterIds(stable_unique_golfer_canister_ids);
     courseManager.setStableUniqueCanisterIds(stable_unique_golf_course_canister_ids);
     gameManager.setStableUniqueCanisterIds(stable_unique_game_canister_ids);
+    golfChannelManager.setStableUniqueCanisterIds(stable_unique_golf_channel_canister_ids);
 
    ignore Timer.setTimer<system>(#nanoseconds(Int.abs(1)), postUpgradeCallback); 
   };
@@ -419,6 +432,7 @@ actor Self {
     await updateGolferCanisterWasms();
     await updateGolfCoursesCanisterWasms();
     await updateGameCanisterWasms();
+    await updateGolfChannelsCanisterWasms();
   };
 
   //Canister Update Functions
@@ -453,6 +467,17 @@ actor Self {
       await IC.stop_canister({ canister_id = Principal.fromText(canisterId); });
       let oldProfileCanister = actor (canisterId) : actor {};
       let _ = await (system GameCanister._GameCanister)(#upgrade oldProfileCanister)();
+      await IC.start_canister({ canister_id = Principal.fromText(canisterId); });
+    };
+  };
+
+  private func updateGolfChannelsCanisterWasms() : async (){
+    let golfChannelCanisterIds = golfChannelManager.getStableUniqueCanisterIds();
+    let IC : Management.Management = actor (Environment.Default);
+    for(canisterId in Iter.fromArray(golfChannelCanisterIds)){
+      await IC.stop_canister({ canister_id = Principal.fromText(canisterId); });
+      let oldProfileCanister = actor (canisterId) : actor {};
+      let _ = await (system GolfChannelsCanister._GolfChannelsCanister)(#upgrade oldProfileCanister)();
       await IC.start_canister({ canister_id = Principal.fromText(canisterId); });
     };
   };

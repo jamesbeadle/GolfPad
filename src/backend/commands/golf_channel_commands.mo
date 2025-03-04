@@ -23,11 +23,13 @@ module GolfChannelCommands {
     };
 
     public type SubscribeToGolfChannel = {
+        principalId: T.GolferId;
         channelId: T.GolfChannelId;
 
     };
 
     public type UnsubscribeFromGolfChannel = {
+        principalId: T.GolferId;
         channelId: T.GolfChannelId;
 
     };
