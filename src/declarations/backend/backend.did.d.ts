@@ -188,9 +188,11 @@ export interface _SERVICE {
   executeAddGolfCourse: ActorMethod<[CreateGolfCourse], undefined>;
   executeUpdateGolfCourse: ActorMethod<[UpdateGolfCourse], undefined>;
   getAppStatus: ActorMethod<[], Result_8>;
+  getCaller: ActorMethod<[], string>;
   getGolfCourse: ActorMethod<[GetGolfCourse], Result_7>;
   getGolfCourses: ActorMethod<[GetGolfCourses], Result_6>;
   getProfile: ActorMethod<[GetProfile], Result_5>;
+  getTotalGolfers: ActorMethod<[], bigint>;
   isUsernameAvailable: ActorMethod<[IsUsernameAvailable], Result_4>;
   listFriendRequests: ActorMethod<[ListFriendRequests], Result_3>;
   listFriends: ActorMethod<[ListFriends], Result_2>;

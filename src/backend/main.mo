@@ -1,6 +1,10 @@
 import Base "mo:waterway-mops/BaseTypes";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
+import Timer "mo:base/Timer";
+import Int "mo:base/Int";
+import Iter "mo:base/Iter";
+import Debug "mo:base/Debug";
 
 import BaseCommands "commands/base_commands";
 import T "data-types/types";
@@ -17,6 +21,10 @@ import GolferCommands "commands/golfer_commands";
 import GameQueries "queries/game_queries";
 import GolfCourseQueries "queries/golf_course_queries";
 import GolferQueries "queries/golfer_queries";
+import Management "utilities/Management";
+import GolferCanister "canister-definitions/golfer-canister";
+import GolfCoursesCanister "canister-definitions/golf-courses-canister";
+import GameCanister "canister-definitions/game-canister";
 
 actor Self {
 
@@ -240,5 +248,60 @@ actor Self {
     golferManager.setStableUniqueCanisterIds(stable_unique_golfer_canister_ids);
     courseManager.setStableUniqueCanisterIds(stable_unique_golf_course_canister_ids);
     gameManager.setStableUniqueCanisterIds(stable_unique_game_canister_ids);
+
+   ignore Timer.setTimer<system>(#nanoseconds(Int.abs(1)), postUpgradeCallback); 
   };
+
+  public shared ({ caller }) func getCaller() : async Text {
+    return await golferManager.getCaller(); 
+  };
+
+  public shared ({ caller }) func getTotalGolfers() : async Nat {
+    return await golferManager.getTotalGolfers(); 
+  };
+
+  private func postUpgradeCallback() : async (){
+    //await golferManager.resetActiveManagerCanister();
+    //await updateGolferCanisterWasms();
+    //await updateGolfCoursesCanisterWasms();
+    //await updateGameCanisterWasms();
+  };
+
+  private func updateGolferCanisterWasms() : async (){
+    let golferCanisterIds = golferManager.getStableUniqueCanisterIds();
+    Debug.print(debug_show golferCanisterIds);
+    let IC : Management.Management = actor (Environment.Default);
+    for(canisterId in Iter.fromArray(golferCanisterIds)){
+      Debug.print("stopping canister");
+      await IC.stop_canister({ canister_id = Principal.fromText(canisterId); });
+      Debug.print("old profile canister");
+      let oldProfileCanister = actor (canisterId) : actor {};
+      Debug.print("upgrade");
+      let _ = await (system GolferCanister._GolferCanister)(#upgrade oldProfileCanister)();
+      await IC.start_canister({ canister_id = Principal.fromText(canisterId); });
+    };
+  };
+
+  private func updateGolfCoursesCanisterWasms() : async (){
+    let golfCourseCanisterIds = courseManager.getStableUniqueCanisterIds();
+    let IC : Management.Management = actor (Environment.Default);
+    for(canisterId in Iter.fromArray(golfCourseCanisterIds)){
+      await IC.stop_canister({ canister_id = Principal.fromText(canisterId); });
+      let oldProfileCanister = actor (canisterId) : actor {};
+      let _ = await (system GolfCoursesCanister._GolfCoursesCanister)(#upgrade oldProfileCanister)();
+      await IC.start_canister({ canister_id = Principal.fromText(canisterId); });
+    };
+  };
+
+  private func updateGameCanisterWasms() : async (){
+    let gameCanisterIds = gameManager.getStableUniqueCanisterIds();
+    let IC : Management.Management = actor (Environment.Default);
+    for(canisterId in Iter.fromArray(gameCanisterIds)){
+      await IC.stop_canister({ canister_id = Principal.fromText(canisterId); });
+      let oldProfileCanister = actor (canisterId) : actor {};
+      let _ = await (system GameCanister._GameCanister)(#upgrade oldProfileCanister)();
+      await IC.start_canister({ canister_id = Principal.fromText(canisterId); });
+    };
+  };
+
 };

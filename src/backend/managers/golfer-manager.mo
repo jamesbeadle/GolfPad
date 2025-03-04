@@ -197,7 +197,15 @@ module {
       };
     };
 
-
+    public func resetActiveManagerCanister() : async(){
+      golferCanisterIndex := TrieMap.TrieMap<T.GolferId, Base.CanisterId>(Text.equal, Text.hash);
+      activeCanisterId := "";
+      usernames := TrieMap.TrieMap<T.GolferId, Text>(Text.equal, Text.hash);
+      uniqueGolferCanisterIds := List.nil();
+      totalGolfers := 0;
+      activeCanisterId := "";
+      await createNewCanister();
+    };
 
 
 
@@ -533,19 +541,12 @@ module {
     
     private func createNewCanister() : async (){
       Cycles.add<system>(10_000_000_000_000);
-      Debug.print("Got Cycles");
       let canister = await GolferCanister._GolferCanister();
-      Debug.print("Created Canister");
       let IC : Management.Management = actor (Environment.Default);
-      Debug.print("Got IC");
       let principal = ?Principal.fromText(Environment.BACKEND_CANISTER_ID);
-      Debug.print("Got Principal");
       let _ = await Utilities.updateCanister_(canister, principal, IC);
-      Debug.print("Updated Canister");
       let canister_principal = Principal.fromActor(canister);
-      Debug.print("Got Canister Principal");
       let canisterId = Principal.toText(canister_principal);
-      Debug.print("Got Canister ID");
 
       if (canisterId == "") {
         return;
@@ -560,6 +561,22 @@ module {
       activeCanisterId := canisterId;
       Debug.print("Set Active Canister ID");
       return;
+    };
+
+    public func getCaller() : async Text{
+      let golfer_canister = actor (activeCanisterId) : actor {
+        getCaller : () -> async Text
+      };
+    
+      return await golfer_canister.getCaller();
+    };
+
+    public func getTotalGolfers() : async Nat{
+      let golfer_canister = actor (activeCanisterId) : actor {
+        getTotalGolfers : () -> async Nat
+      };
+    
+      return await golfer_canister.getTotalGolfers();
     };
 
     //stable storage getters and setters

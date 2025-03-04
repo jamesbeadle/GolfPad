@@ -323,8 +323,20 @@ module {
 
   public type bitcoin_get_current_fee_percentiles_result = [millisatoshi_per_byte];
 
+
+  public type fetch_canister_logs_args = {
+      canister_id : canister_id;
+  };
+  public type canister_log_record =  {
+      idx : Int;
+      timestamp_nanos : Nat64;
+      content: [Int];
+  };
+  
+  public type canister_logs_result = { canister_log_records: [canister_log_record] };
+
   public type Management = actor {
-     
+    
       create_canister : shared (create_canister_args) -> async (create_canister_result);
       update_settings : shared (update_settings_args) -> async ();
       upload_chunk : shared (upload_chunk_args) -> async (upload_chunk_result);
@@ -360,6 +372,8 @@ module {
       // provisional interfaces for the pre-ledger world
       provisional_create_canister_with_cycles : shared (provisional_create_canister_with_cycles_args) -> async (provisional_create_canister_with_cycles_result);
       provisional_top_up_canister : shared (provisional_top_up_canister_args) -> async ();
+
+      fetch_canister_logs: shared (fetch_canister_logs_args) -> async (canister_logs_result);
   };
 
 

@@ -37,6 +37,16 @@ actor class _GolferCanister() {
  
   //Public endpoints
 
+
+
+  public shared ({caller}) func getCaller() : async Text{
+    return Principal.toText(caller);
+  };
+
+  public shared ({caller}) func getTotalGolfers() : async Nat{
+    return totalGolfers;
+  };
+
   public shared ({caller}) func getGolfer(dto: GolferQueries.GetGolfer) : async Result.Result<GolferQueries.Golfer, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);

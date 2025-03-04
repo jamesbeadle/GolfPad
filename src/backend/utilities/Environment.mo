@@ -17,8 +17,8 @@ module Environment {
   */
 
   //Local
-  public let DFX_NETWORK = "local";
-  public let BACKEND_CANISTER_ID = "bd3sg-teaaa-aaaaa-qaaba-cai";
-  public let FRONTEND_CANISTER_ID = "be2us-64aaa-aaaaa-qaabq-cai";
+  public let DFX_NETWORK = "ic";
+  public let BACKEND_CANISTER_ID = "elbip-aiaaa-aaaal-qjfhq-cai";
+  public let FRONTEND_CANISTER_ID = "gw4gh-taaaa-aaaal-qjfia-cai";
   public let SNS_GOVERNANCE_CANISTER_ID = "";
 };

@@ -240,9 +240,11 @@ service : {
   executeAddGolfCourse: (CreateGolfCourse) -> ();
   executeUpdateGolfCourse: (UpdateGolfCourse) -> ();
   getAppStatus: () -> (Result_8) query;
+  getCaller: () -> (text);
   getGolfCourse: (GetGolfCourse) -> (Result_7);
   getGolfCourses: (GetGolfCourses) -> (Result_6);
   getProfile: (GetProfile) -> (Result_5);
+  getTotalGolfers: () -> (nat);
   isUsernameAvailable: (IsUsernameAvailable) -> (Result_4) query;
   listFriendRequests: (ListFriendRequests) -> (Result_3);
   listFriends: (ListFriends) -> (Result_2);
