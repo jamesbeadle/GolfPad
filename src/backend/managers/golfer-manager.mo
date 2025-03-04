@@ -18,14 +18,15 @@ import Debug "mo:base/Debug";
 import Base "mo:waterway-mops/BaseTypes";
 import GolferCommands "../commands/golfer_commands";
 import GolferQueries "../queries/golfer_queries";
-import GolfCourseCommands "../commands/golf_course_commands";
-import GolfCourseQueries "../queries/golf_course_queries";
 import FriendRequestCommands "../commands/friend_request_commands";
 import GameCommands "../commands/game_commands";
+import ShotManager "shot-manager";
 
 module {
   public class GolferManager() {
 
+    private let shotManager = ShotManager.ShotManager();
+    
     private var golferCanisterIndex: TrieMap.TrieMap<T.GolferId, Base.CanisterId> = TrieMap.TrieMap<T.GolferId, Base.CanisterId>(Text.equal, Text.hash);
     private var activeCanisterId: Base.CanisterId = "";
     private var usernames : TrieMap.TrieMap<T.GolferId, Text> = TrieMap.TrieMap<T.GolferId, Text>(Text.equal, Text.hash);

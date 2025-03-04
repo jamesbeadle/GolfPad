@@ -3,8 +3,18 @@ import T "../data-types/types";
 
 module GolfChannelQueries {
 
-    public type GetGolfChannel = {
+    public type GetGolfChannels = {
+        limit : Nat;
+        offset : Nat;
+        searchTerm: Text;
+    };
 
+    public type GolfChannels = {
+
+    };
+
+    public type GetGolfChannel = {
+        golfChannelId: T.GolfChannelId;
     };
 
     public type GolfChannel = {

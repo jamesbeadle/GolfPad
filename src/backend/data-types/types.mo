@@ -311,4 +311,15 @@ module Types {
     prizePool: Nat;
   };
 
+  public type GolfChannel = {
+    id: GolfChannelId;
+    name: Text;
+    createdBy: GolferId;
+    createdOn: Int;
+    channelImage: ?Blob;
+    channelImageExtension: Text;
+    channelBanner: ?Blob;
+    channelBannerExtension: Text;
+  };
+
 };

@@ -40,7 +40,6 @@ actor Self {
   private let golferManager = GolferManager.GolferManager();
   private let courseManager = GolfCourseManager.GolfCourseManager();
   private let gameManager = GameManager.GameManager();
-  private let shotManager = ShotManager.ShotManager();
   private let golfChannelManager = GolfChannelManager.GolfChannelManager();
 
   private var appStatus: Base.AppStatus = { 
@@ -137,8 +136,6 @@ actor Self {
     return await golferManager.updateHomeCourse(dto);
   };
 
-
-
   //Golfer Profile Queries:
     
   public shared query ({ caller }) func isUsernameAvailable(dto: GolferQueries.IsUsernameAvailable) : async Result.Result<GolferQueries.UsernameAvailable, T.Error> {
@@ -198,7 +195,7 @@ actor Self {
   public shared ({ caller }) func addShot(dto: ShotCommands.AddShot) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
-    return await shotManager.addShot(dto);
+    return await golferManager.addShot(dto);
   };
 
   //Golfer Shot Management Queries:
@@ -206,13 +203,13 @@ actor Self {
   public shared ({ caller }) func getShot(dto: ShotQueries.GetShot) : async Result.Result<ShotQueries.Shot, T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
-    return await shotManager.getShot(dto);
+    return await golferManager.getShot(dto);
   };
 
   public shared ({ caller }) func predictShot(dto: ShotQueries.PredictShot) : async Result.Result<ShotQueries.PredictedShot, T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
-    return await shotManager.predictShot(dto);
+    return await golferManager.predictShot(dto);
   };
 
   //Game Commands:
@@ -357,7 +354,7 @@ actor Self {
   private stable var stable_golfer_canister_index: [(T.GolferId, Base.CanisterId)] = [];
   private stable var stable_golf_course_canister_index: [(T.GolfCourseId, Base.CanisterId)] = [];
   private stable var stable_game_canister_index: [(T.GameId, Base.CanisterId)] = [];
-  private stable var stable_golf_shots: [T.GolfShot] = [];
+  
   //todo add golf channel
   
   private stable var stable_active_golfer_canister_id: Base.CanisterId = "";
