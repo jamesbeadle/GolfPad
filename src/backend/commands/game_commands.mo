@@ -4,12 +4,17 @@ module GameCommands {
 
     public type CreateGame = {
         createdById: T.GolferId;
-        courseType: T.CourseType;
         courseId: T.GolfCourseId;
         gameType: T.GameType;
         inviteIds: [T.GolferId];
         teeOffTime: Int;
-        teeGroup: Text;
+        name: Text;
+        teeGroup: T.TeeGroup;
+        courseVersion: T.GolfCourseVersion;
+    };
+
+    public type GolfCourseSnaphot = {
+        id: Nat;
     };
 
     public type BeginGame = {

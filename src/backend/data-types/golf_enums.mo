@@ -37,8 +37,7 @@ module GolfEnums {
         #OTHER;
     };
 
-    public type ShotIntention = 
-    {
+    public type ShotIntention = {
         #DRAW;
         #FADE;
         #SLICE;
@@ -62,8 +61,7 @@ module GolfEnums {
         #BREAKINGPUTT;
     };
 
-    public type ShotPosition = 
-    {
+    public type ShotPosition = {
         #TEE;
         #FAIRWAY;
         #ROUGH;
@@ -73,8 +71,7 @@ module GolfEnums {
         #OTHER;
     };
 
-    public type ShotResult = 
-    {
+    public type ShotResult = {
         #ASINTENDED;
         #SHANK;
         #TOP;
@@ -94,15 +91,13 @@ module GolfEnums {
         #OTHER;
     };
 
-    public type SwingLength = 
-    {
+    public type SwingLength = {
         #FULL;
         #THREEQUARTER;
         #HALF;
     };
 
-    public type WeatherType = 
-    {
+    public type WeatherType = {
         #SUNNY;
         #CLOUDY;
         #RAINY;
@@ -114,8 +109,7 @@ module GolfEnums {
         #OTHER;
     };
 
-    public type Facility = 
-    {
+    public type Facility = {
         #DRIVING_RANGE;
         #CHIPPING_AREA;
         #PUTTING_GREEN;
@@ -124,29 +118,25 @@ module GolfEnums {
         #BAR;
     };
 
-    public type PricingType = 
-    {
+    public type PricingType = {
         #GENERAL;
         #MEMBERSHIP;
     };
 
-    public type CourseStatus = 
-    {
+    public type CourseStatus = {
         #OPEN;
         #CLOSED;
         #COURSE_ONLY;
         #FACILITIES_ONLY;
     };
 
-    public type FriendRequestStatus = 
-    {
+    public type FriendRequestStatus = {
         #SENT;
         #ACCEPTED;
         #REJECTED;
     };
 
-    public type GameType = 
-    {
+    public type GameType = {
         #MULLIGANS;
         #BANDS;
         #NEXT_UP;
@@ -156,8 +146,7 @@ module GolfEnums {
         #BULLSEYE;
     };
 
-    public type GameStatus = 
-    {
+    public type GameStatus = {
         #NEW;
         #READY;
         #ACTIVE;

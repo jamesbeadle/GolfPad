@@ -4,9 +4,6 @@
     import Layout from "../../../routes/Layout.svelte";
     import Dropdown from "../shared/dropdown.svelte";
     import { gameStore } from "$lib/stores/game-store";
-    import { courseStore } from "$lib/stores/course-store";
-    import { playerStore } from "$lib/stores/player-store";
-    import type { CreateGameDTO, GolfCourseDTO, GameType, PaginationFilters, GolfersDTO, TeeGroup } from "../../../../../declarations/backend/backend.did";
     import { convertDateTimeInputToUnixNano } from "$lib/utils/helpers";
     
     export let gameTitle: string;
@@ -96,7 +93,6 @@
         
         const dto: CreateGameDTO = {
             createdById: "Kelly-Howlett",
-            courseType: {Official: null},
             courseId: BigInt(selectedCourse.courseId),
             gameType: gameType,
             inviteIds: ["James-Beadle"],

@@ -7,7 +7,6 @@ import Iter "mo:base/Iter";
 import Buffer "mo:base/Buffer";
 import Principal "mo:base/Principal";
 import T "../data-types/types";
-import DTOs "../dtos/DTOs";
 import Utilities "../utilities/Utilities";
 import Management "../utilities/Management";
 import GolfCoursesCanister "../canister-definitions/golf-courses-canister";
@@ -34,7 +33,7 @@ module {
       return Option.isSome(course);
     };
 
-    public func listCourses(dto: GolfCourseQueries.ListCourses) : async Result.Result<DTOs.CoursesDTO, T.Error> {
+    public func getGolfCourses(dto: GolfCourseQueries.GetGolfCourses) : async Result.Result<GolfCourseQueries.GolfCourses, T.Error> {
       let searchTerm = dto.searchTerm;
       let filteredEntries = List.filter<(T.GolfCourseId, Text)>(
         Iter.toList<(T.GolfCourseId, Text)>(golfCourseNames.entries()),
@@ -46,7 +45,7 @@ module {
       let droppedEntries = List.drop<(T.GolfCourseId, Text)>(filteredEntries, dto.offset); 
       let paginatedEntries = List.take<(T.GolfCourseId, Text)>(droppedEntries, dto.limit);
 
-      let coursesBuffer = Buffer.fromArray<DTOs.GolfCourseDTO>([]);
+      let coursesBuffer = Buffer.fromArray<GolfCourseQueries.GolfCourse>([]);
 
       for (entry in Iter.fromList(paginatedEntries)){
         let course = await getGolfCourse({ golfCourseId = entry.0 });
@@ -63,17 +62,17 @@ module {
       });
     };
 
-    public func getCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<DTOs.GolfCourseDTO, T.Error> {
-      return await getGolfCourse(dto);
+    public func getGolfCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<GolfCourseQueries.GolfCourse, T.Error> {
+      return await getCourse(dto);
     };
 
-    private func getGolfCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<DTOs.GolfCourseDTO, T.Error> {
+    private func getCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<GolfCourseQueries.GolfCourse, T.Error> {
       let existingGolfCourseCanisterId = golfCourseCanisterIndex.get(dto.golfCourseId);
       switch(existingGolfCourseCanisterId){
         case (?foundCanisterId){
 
           let golfCourse_canister = actor (foundCanisterId) : actor {
-            getGolfCourse : (dto: GolfCourseQueries.GetGolfCourse) -> async Result.Result<DTOs.GolfCourseDTO, T.Error>;
+            getGolfCourse : (dto: GolfCourseQueries.GetGolfCourse) -> async Result.Result<GolfCourseQueries.GolfCourse, T.Error>;
           };
 
           return await golfCourse_canister.getGolfCourse({ golfCourseId = dto.golfCourseId });

@@ -3,16 +3,13 @@ import Buffer "mo:base/Buffer";
 import Iter "mo:base/Iter";
 import Nat8 "mo:base/Nat8";
 import Option "mo:base/Option";
-import Order "mo:base/Order";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Time "mo:base/Time";
 import List "mo:base/List";
 
-import DTOs "../dtos/DTOs";
 import Environment "../utilities/Environment";
 import T "../data-types/types";
-import Utilities "../utilities/Utilities";
 import Debug "mo:base/Debug";
 import GolferCommands "../commands/golfer_commands";
 import GolferQueries "../queries/golfer_queries";
@@ -40,7 +37,7 @@ actor class _GolferCanister() {
  
   //Public endpoints
 
-  public shared ({caller}) func getGolfer(dto: GolferQueries.GetGolfer) : async Result.Result<DTOs.GolferDTO, T.Error>{
+  public shared ({caller}) func getGolfer(dto: GolferQueries.GetGolfer) : async Result.Result<GolferQueries.Golfer, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -57,7 +54,7 @@ actor class _GolferCanister() {
         let golfer = findGolfer(foundGroupIndex, dto.principalId);
         switch(golfer){
           case (?foundGolfer){
-            let dto: DTOs.GolferDTO = {
+            let dto: GolferQueries.Golfer = {
               principalId = foundGolfer.principalId;
               username = foundGolfer.username;
               golferPicture = foundGolfer.profilePicture;
@@ -404,7 +401,7 @@ actor class _GolferCanister() {
     return (totalGolfers >= MAX_GOLFERS_PER_CANISTER);
   };
 
-  public shared ({caller}) func getMyGolfer(dto: GolferQueries.GetMyGolfer) : async Result.Result<DTOs.MyGolferDTO, T.Error>{
+  public shared ({caller}) func getProfile(dto: GolferQueries.GetProfile) : async Result.Result<GolferQueries.Profile, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -421,7 +418,7 @@ actor class _GolferCanister() {
         let golfer = findGolfer(foundGroupIndex, dto.principalId);
         switch(golfer){
           case (?foundGolfer){
-            let dto: DTOs.MyGolferDTO = {
+            let dto: GolferQueries.Profile = {
               principalId = foundGolfer.principalId;
               username = foundGolfer.username;
               golferPicture = foundGolfer.profilePicture;
@@ -527,7 +524,7 @@ actor class _GolferCanister() {
     };
   }; 
   
-  public shared ({caller}) func listFriendRequests(dto: GolferQueries.ListFriendRequests) : async Result.Result<DTOs.FriendRequestsDTO, T.Error>{
+  public shared ({caller}) func listFriendRequests(dto: GolferQueries.ListFriendRequests) : async Result.Result<GolferQueries.FriendRequests, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -550,8 +547,8 @@ actor class _GolferCanister() {
             let droppedEntries = List.drop<T.FriendRequest>(List.fromArray(foundGolfer.friendRequests), dto.offset);
             let paginatedEntries = List.take<T.FriendRequest>(droppedEntries, dto.limit);
 
-            let friendRequests: DTOs.FriendRequestsDTO = {
-              friendRequests = Array.map<T.FriendRequest, DTOs.FriendRequestDTO>(List.toArray(paginatedEntries), 
+            let friendRequests: GolferQueries.FriendRequests = {
+              friendRequests = Array.map<T.FriendRequest, GolferQueries.FriendRequest>(List.toArray(paginatedEntries), 
                 func(friendRequest: T.FriendRequest){
                   return {
                     principalId = friendRequest.requestedBy;

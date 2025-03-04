@@ -6,7 +6,6 @@ import Array "mo:base/Array";
 import TrieMap "mo:base/TrieMap";
 import Principal "mo:base/Principal";
 import T "../data-types/types";
-import DTOs "../dtos/DTOs";
 import Management "../utilities/Management";
 import GameCanister "../canister-definitions/game-canister";
 import Utilities "../utilities/Utilities";
@@ -27,7 +26,7 @@ module {
     private var uniqueGameCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGames : Nat = 0;
 
-    public func createGame(dto: GameCommands.CreateGame, courseSnapshot: DTOs.GolfCourseSnaphotDTO) : async Result.Result<T.GameId, T.Error> {
+    public func createGame(dto: GameCommands.CreateGame) : async Result.Result<T.GameId, T.Error> {
       
       assert Option.isNull(Array.find<T.GolferId>(dto.inviteIds, func(playerId: T.GolferId){ playerId == dto.createdById  }));
       
@@ -49,7 +48,7 @@ module {
       };
       Debug.print("Past Switch");
       var game_canister = actor (activeCanisterId) : actor {
-        createGame : (dto: GameCommands.CreateGame, courseSnapshot: DTOs.GolfCourseSnaphotDTO) -> async Result.Result<T.GameId, T.Error>;
+        createGame : (dto: GameCommands.CreateGame) -> async Result.Result<T.GameId, T.Error>;
         getLatestId : () -> async T.GameId;
         isCanisterFull : () -> async Bool;
       };
@@ -58,7 +57,7 @@ module {
         case "" {
           await createNewCanister(1);
           game_canister := actor (activeCanisterId) : actor {
-            createGame : (dto: GameCommands.CreateGame, courseSnapshot: DTOs.GolfCourseSnaphotDTO) -> async Result.Result<T.GameId, T.Error>;
+            createGame : (dto: GameCommands.CreateGame) -> async Result.Result<T.GameId, T.Error>;
             getLatestId : () -> async T.GameId;
             isCanisterFull : () -> async Bool;
           };
@@ -70,7 +69,7 @@ module {
             let nextId: T.GameId = latestId + 1;
             await createNewCanister(nextId);
             game_canister := actor (activeCanisterId) : actor {
-              createGame : (dto: GameCommands.CreateGame, courseSnapshot: DTOs.GolfCourseSnaphotDTO) -> async Result.Result<T.GameId, T.Error>;
+              createGame : (dto: GameCommands.CreateGame) -> async Result.Result<T.GameId, T.Error>;
               getLatestId : () -> async T.GameId;
               isCanisterFull : () -> async Bool;
             };
@@ -78,15 +77,15 @@ module {
         }
       };
       Debug.print("Going to game canister");
-      return await game_canister.createGame(dto, courseSnapshot);
+      return await game_canister.createGame(dto);
     };
 
-    public func getGame(dto: GameQueries.GetGame) : async Result.Result<DTOs.GameDTO, T.Error> {
+    public func getGame(dto: GameQueries.GetGame) : async Result.Result<GameQueries.Game, T.Error> {
       let gameCanisterId = gameCanisterIndex.get(dto.gameId);
       switch(gameCanisterId){
         case (?foundCanisterId){
           let game_canister = actor (foundCanisterId) : actor {
-            getGame : (dto: GameQueries.GetGame) -> async Result.Result<DTOs.GameDTO, T.Error>;
+            getGame : (dto: GameQueries.GetGame) -> async Result.Result<GameQueries.Game, T.Error>;
           };
           return await game_canister.getGame(dto);
         };

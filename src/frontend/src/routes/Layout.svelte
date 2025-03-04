@@ -4,18 +4,17 @@
   import { browser } from "$app/environment";
 
   import { userStore } from "$lib/stores/user-store";
-  import { authStore, type AuthSignInParams, type AuthStoreData } from "$lib/stores/auth-store";
+  import { authStore, type AuthStoreData } from "$lib/stores/auth-store";
   import "../app.css";
   
   import FullScreenSpinner from "$lib/components/shared/full-screen-spinner.svelte";
   import { appStore } from "$lib/stores/app-store";
-    import { writable } from "svelte/store";
-    import { initAuthWorker } from "$lib/services/worker-auth.service";
-    import Toasts from "$lib/components/toasts/toasts.svelte";
-    import Navigation from "$lib/components/shared/navigation.svelte";
-    import Landing from "$lib/components/landing/landing.svelte";
-    import Header from "$lib/components/shared/header.svelte";
-    import NewUser from "$lib/components/profile/new-user.svelte";
+  import { initAuthWorker } from "$lib/services/worker-auth.service";
+  import Toasts from "$lib/components/toasts/toasts.svelte";
+  import Navigation from "$lib/components/shared/navigation.svelte";
+  import Landing from "$lib/components/landing/landing.svelte";
+  import Header from "$lib/components/shared/header.svelte";
+  import NewUser from "$lib/components/profile/new-user.svelte";
 
   let worker: { syncAuthIdle: (auth: AuthStoreData) => void } | undefined;
 
@@ -25,7 +24,7 @@
   let expanded = false;
   let hasProfile = false;
 
-  $: isHomepage = browser && window.location.pathname === "/";
+  $: isWhitepaper = browser && window.location.pathname === "/whitepaper";
 
   const init = async () => {
     await Promise.all([syncAuthStore()]);
@@ -55,9 +54,8 @@
         }
       });
     } catch {
-
+      
     } finally {
-
       expanded = false;
       isLoading = false;
     }
@@ -90,7 +88,7 @@
     {:else}
       <Header {toggleNav} />
       {#if isLoggedIn}
-        {#if hasProfile}
+        {#if hasProfile || isWhitepaper}
           <div class="bg-white text-black flex-1 flex">
             <slot />
           </div>

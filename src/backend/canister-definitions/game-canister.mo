@@ -7,11 +7,11 @@ import Nat8 "mo:base/Nat8";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 
-import DTOs "../dtos/DTOs";
 import Environment "../utilities/Environment";
 import T "../data-types/types";
 import GameCommands "../commands/game_commands";
 import GameQueries "../queries/game_queries";
+import GolfCourseQueries "../queries/golf_course_queries";
 
 actor class _GameCanister() {
 
@@ -84,7 +84,7 @@ actor class _GameCanister() {
     nextGameId := nextId;
   };
 
-  public shared ({ caller }) func createGame(dto: GameCommands.CreateGame, courseSnapshot: DTOs.GolfCourseSnaphotDTO) : async Result.Result<T.GameId, T.Error>{
+  public shared ({ caller }) func createGame(dto: GameCommands.CreateGame) : async Result.Result<T.GameId, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -106,9 +106,9 @@ actor class _GameCanister() {
       predictions = [];
       events = [];
       courseSnapshot = {
-        courseId = courseSnapshot.id;
-        teeGroup = courseSnapshot.teeGroup;
-        courseVersion = courseSnapshot.courseVersion;
+        courseId = dto.courseId;
+        teeGroup = dto.teeGroup;
+        courseVersion = dto.courseVersion;
       };
       teeOffTime = dto.teeOffTime;
       playerIds = [dto.createdById];
@@ -390,7 +390,7 @@ actor class _GameCanister() {
     return (totalGames >= MAX_GAMES_PER_CANISTER);
   };
 
-  public shared ({ caller }) func getGame(dto: GameQueries.GetGame) : async Result.Result<DTOs.GameDTO, T.Error>{
+  public shared ({ caller }) func getGame(dto: GameQueries.GetGame) : async Result.Result<GameQueries.Game, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;

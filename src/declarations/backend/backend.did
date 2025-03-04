@@ -1,20 +1,30 @@
-type UpdateGolferPictureDTO = 
+type UpdateUsername = 
  record {
-   golferPicture: blob;
-   golferPictureExtension: text;
- };
-type UpdateGolferDTO = 
- record {
-   handicap: opt Handicap;
+   principalId: GolferId;
    username: text;
  };
-type UpdateGolfCourseDTO = 
+type UpdateProfilePicture = 
+ record {
+   principalId: GolferId;
+   profilePicture: opt blob;
+   profilePictureExtension: text;
+ };
+type UpdateHomeCourse = 
+ record {
+   homeCourseId: opt GolfCourseId;
+   principalId: GolferId;
+ };
+type UpdateHandicap = 
+ record {
+   handicap: opt Handicap;
+   principalId: GolferId;
+ };
+type UpdateGolfCourse = 
  record {
    courseId: GolfCourseId;
    name: text;
    updatedTeeGroup: opt TeeGroup;
  };
-type UpcomingGamesDTO = record {};
 type TeeInfo = 
  record {
    colour: text;
@@ -31,111 +41,49 @@ type TeeGroup =
    name: text;
    strokeIndex: nat8;
  };
-type SendFriendRequestDTO = record {requestedFriend: GolferId;};
+type SendFriendRequest = 
+ record {
+   principalId: GolferId;
+   requestedFriend: GolferId;
+ };
 type RustResult = 
  variant {
    Err: text;
    Ok: text;
  };
-type Result_9 = 
- variant {
-   err: Error;
-   ok: GameDTO;
- };
-type Result_8 = 
- variant {
-   err: Error;
-   ok: GolferDTO;
- };
-type Result_7 = 
- variant {
-   err: Error;
-   ok: GolferBuzzDTO;
- };
-type Result_6 = 
- variant {
-   err: Error;
-   ok: GolferGameSummariesDTO;
- };
-type Result_5 = 
- variant {
-   err: Error;
-   ok: MyGolferDTO;
- };
-type Result_4 = 
- variant {
-   err: Error;
-   ok: UpcomingGamesDTO;
- };
 type Result_3 = 
- variant {
-   err: Error;
-   ok: CoursesDTO;
- };
-type Result_2 = 
- variant {
-   err: Error;
-   ok: FriendRequestsDTO;
- };
-type Result_10 = 
  variant {
    err: Error;
    ok: AppStatusDTO;
  };
+type Result_2 = 
+ variant {
+   err: Error;
+   ok: GolfCourses;
+ };
 type Result_1 = 
  variant {
    err: Error;
-   ok: GolfersDTO;
+   ok: FriendRequestsDTO;
  };
 type Result = 
  variant {
    err: Error;
    ok;
  };
-type RejectFriendRequestDTO = record {requestedBy: GolferId;};
-type PaginationFilters = 
+type RejectFriendRequest = 
+ record {
+   principalId: GolferId;
+   requestedBy: GolferId;
+ };
+type ListFriendRequests = 
  record {
    limit: nat;
    offset: nat;
- };
-type MyGolferDTO = 
- record {
-   golferPicture: opt blob;
-   golferPictureExtension: text;
-   handicap: opt Handicap;
    principalId: GolferId;
-   username: text;
- };
-type MulligansScores = 
- record {
-   golfer1HolesWonCount: nat8;
-   golfer2HolesWonCount: nat8;
-   results: vec MulligansHoleResult;
-   winner: GolferId;
- };
-type MulligansScoreDTO = 
- record {
-   golfer1MulliganUsed: bool;
-   golfer2MulliganUsed: bool;
-   holeNumber: HoleNumber;
-   winner: GolferId;
- };
-type MulligansPrediction = record {};
-type MulligansHoleResult = 
- record {
-   golfer1MulliganUsed: bool;
-   golfer2MulliganUsed: bool;
-   holeNumber: HoleNumber;
-   winner: GolferId;
- };
-type ListGolfersDTO = record {searchTerm: text;};
-type InviteGolfersDTO = 
- record {
-   gameId: GameId;
-   invitedGolferIds: vec GolferId;
+   totalEntries: nat;
  };
 type ImageId = nat;
-type HoleNumber = nat8;
 type Hole = 
  record {
    images: vec record {
@@ -147,128 +95,14 @@ type Hole =
    tees: vec TeeInfo;
  };
 type Handicap = int16;
-type GolfersDTO = record {golfers: vec GolferSummaryDTO;};
-type GolferSummaryDTO = 
- record {
-   golferName: text;
-   golferPicture: opt blob;
-   golferPictureExtension: text;
-   golferPrincipalId: GolferId;
-   handicap: opt Handicap;
- };
 type GolferId = text;
-type GolferGameSummariesDTO = 
+type GolfCourses = record {};
+type GolfCourseId = nat;
+type GetGolfCourses = 
  record {
-   entries: vec GameSummary;
    limit: nat;
    offset: nat;
-   totalEntries: nat;
- };
-type GolferEvent = 
- record {
-   event: GolfEvent;
-   golferId: GolferId;
-   hole: HoleNumber;
- };
-type GolferDTO = 
- record {
-   activeGames: vec GameId;
-   completedGames: vec GameId;
-   gameInvites: vec GameInvite;
-   golferPicture: opt blob;
-   golferPictureExtension: text;
-   handicap: opt Handicap;
-   principalId: GolferId;
-   upcomingGames: vec GameId;
-   username: text;
- };
-type GolferBuzzDTO = record {};
-type GolfEvent = 
- variant {
-   Albatross;
-   BallNotLost;
-   Birdie;
-   Bogey;
-   DoubleBogey;
-   Eagle;
-   HitBunker;
-   HitFairway;
-   HitGreen;
-   HitTree;
-   HitWater;
-   LongestDrive;
-   OnePuttGreen;
-   Par;
-   Scrub;
-   TakeMulligan;
- };
-type GolfCourseVersion = nat8;
-type GolfCourseSnapshot = 
- record {
-   courseId: GolfCourseId;
-   courseVersion: GolfCourseVersion;
-   teeGroup: TeeGroup;
- };
-type GolfCourseId = nat;
-type GolfCourseDTO = 
- record {
-   activeVersion: GolfCourseVersion;
-   courseId: GolfCourseId;
-   name: text;
-   tees: vec TeeGroup;
- };
-type GetGolferDTO = record {golferPrincipalId: GolferId;};
-type GetGameDTO = record {gameId: GameId;};
-type GameType = 
- variant {
-   Bands;
-   BuildIt;
-   Mulligans;
-   NextUp;
-   Prophet;
- };
-type GameSummary = 
- record {
-   date: int;
-   gameType: GameType;
-   players: vec GolferId;
-   status: GameStatus;
- };
-type GameStatus = 
- variant {
-   Active;
-   Complete;
-   Unplayed;
- };
-type GameScoreSubmissionDTO = variant {MulligansScores: MulligansScoreDTO;};
-type GameScoreDetail = variant {MulligansScores: MulligansScores;};
-type GamePrediction = 
- variant {
-   Bands: BandsPrediction;
-   BuildIt: record {};
-   Mulligans: MulligansPrediction;
-   NextUp: record {};
- };
-type GameInvite = 
- record {
-   gameId: GameId;
-   inviteFrom: GolferId;
- };
-type GameId = nat;
-type GameDTO = 
- record {
-   courseId: GolfCourseId;
-   courseSnapshot: GolfCourseSnapshot;
-   events: vec GolferEvent;
-   gameType: GameType;
-   id: GameId;
-   invites: vec GolferId;
-   playerIds: vec GolferId;
-   predictions: vec GamePrediction;
-   scoreDetail: opt GameScoreDetail;
-   status: GameStatus;
-   teeOffTime: int;
-   winner: GolferId;
+   searchTerm: text;
  };
 type FriendRequestsDTO = record {friendRequests: vec FriendRequestDTO;};
 type FriendRequestDTO = 
@@ -292,92 +126,45 @@ type Error =
    TooLong;
    TooShort;
  };
-type DeleteGolfCourseDTO = record {courseId: GolfCourseId;};
-type CreateGolferDTO = 
+type CreateGolfer = 
  record {
    handicap: opt Handicap;
+   principalId: GolferId;
+   profilePicture: opt blob;
+   profilePictureExtension: opt text;
    username: text;
  };
-type CreateGolfCourseDTO = 
+type CreateGolfCourse = 
  record {
    holes: vec Hole;
    initialTeeGroup: TeeGroup;
    name: text;
  };
-type CreateGameDTO = 
- record {
-   courseId: GolfCourseId;
-   courseType: CourseType;
-   createdById: GolferId;
-   gameType: GameType;
-   inviteIds: vec GolferId;
-   teeGroup: text;
-   teeOffTime: int;
- };
-type CoursesDTO = record {courses: vec GolfCourseDTO;};
-type CourseType = 
- variant {
-   Custom;
-   Official;
- };
 type CanisterId = text;
-type BeginGameDTO = record {gameId: GameId;};
-type BandsPrediction = 
- record {
-   golferId: GolferId;
-   hit2Of3FairwaysStartHole: HoleNumber;
-   hit2Of3GreensStartHole: HoleNumber;
-   parOrUnderStartHole: HoleNumber;
-   singlePutt2Of3GreensStartHole: HoleNumber;
-   underParStartHole: HoleNumber;
-   wontBogeyStartHole: HoleNumber;
-   wontDoubleBogeyStartHole: HoleNumber;
-   wontHitTreeOrBunkerStartHole: HoleNumber;
-   wontLoseBallStartHole: HoleNumber;
- };
 type AppStatusDTO = 
  record {
    onHold: bool;
    version: text;
  };
-type AddGameScoreDTO = 
+type AcceptFriendRequest = 
  record {
-   detail: GameScoreSubmissionDTO;
-   gameId: GameId;
+   principalId: GolferId;
+   requestedBy: GolferId;
  };
-type AcceptGameInviteDTO = 
- record {
-   acceptedById: GolferId;
-   gameId: GameId;
- };
-type AcceptFriendRequestDTO = record {requestedBy: GolferId;};
 service : {
-  acceptFriendRequest: (AcceptFriendRequestDTO) -> (Result);
-  acceptGameInvite: (AcceptGameInviteDTO) -> (Result);
-  addGameScore: (AddGameScoreDTO) -> (Result);
-  beginGame: (BeginGameDTO) -> (Result);
-  createGame: (CreateGameDTO) -> (Result);
-  createGolfCourse: (CreateGolfCourseDTO) -> (Result);
-  createGolfer: (CreateGolferDTO) -> (Result);
-  deleteGolfCourse: (DeleteGolfCourseDTO) -> (Result);
-  executeAddGolfCourse: (CreateGolfCourseDTO) -> ();
-  executeUpdateGolfCourse: (UpdateGolfCourseDTO) -> ();
-  getAppStatus: () -> (Result_10) query;
-  getGame: (GetGameDTO) -> (Result_9);
-  getGolfer: (GetGolferDTO) -> (Result_8);
-  getGolferBuzz: (PaginationFilters) -> (Result_7);
-  getGolferGameHistory: (PaginationFilters) -> (Result_6);
-  getMyGolfer: () -> (Result_5);
-  getUpcomingGames: (PaginationFilters) -> (Result_4);
-  listCourses: (PaginationFilters) -> (Result_3);
-  listFriendRequests: (PaginationFilters) -> (Result_2);
-  listGolfers: (ListGolfersDTO) -> (Result_1);
-  rejectFriendRequest: (RejectFriendRequestDTO) -> (Result);
-  saveGolferPicture: (UpdateGolferPictureDTO) -> (Result);
-  sendFriendRequest: (SendFriendRequestDTO) -> (Result);
-  sendGameInvites: (InviteGolfersDTO) -> (Result);
-  updateGolfCourse: (UpdateGolfCourseDTO) -> (Result);
-  updateGolfer: (UpdateGolferDTO) -> (Result);
-  validateAddGolfCourse: (CreateGolfCourseDTO) -> (RustResult) query;
-  validateUpdateGolfCourse: (UpdateGolfCourseDTO) -> (RustResult) query;
+  acceptFriendRequest: (AcceptFriendRequest) -> (Result);
+  createGolfer: (CreateGolfer) -> (Result);
+  executeAddGolfCourse: (CreateGolfCourse) -> ();
+  executeUpdateGolfCourse: (UpdateGolfCourse) -> ();
+  getAppStatus: () -> (Result_3) query;
+  getGolfCourses: (GetGolfCourses) -> (Result_2);
+  listFriendRequests: (ListFriendRequests) -> (Result_1);
+  rejectFriendRequest: (RejectFriendRequest) -> (Result);
+  sendFriendRequest: (SendFriendRequest) -> (Result);
+  updateHandicap: (UpdateHandicap) -> (Result);
+  updateHomeCourse: (UpdateHomeCourse) -> (Result);
+  updateProfilePicture: (UpdateProfilePicture) -> (Result);
+  updateUsername: (UpdateUsername) -> (Result);
+  validateAddGolfCourse: (CreateGolfCourse) -> (RustResult) query;
+  validateUpdateGolfCourse: (UpdateGolfCourse) -> (RustResult) query;
 }

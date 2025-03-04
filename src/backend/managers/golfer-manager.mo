@@ -8,7 +8,6 @@ import Bool "mo:base/Bool";
 import Principal "mo:base/Principal";
 import Buffer "mo:base/Buffer";
 import T "../data-types/types";
-import DTOs "../dtos/DTOs";
 import Management "../utilities/Management";
 import GolferCanister "../canister-definitions/golfer-canister";
 import Utilities "../utilities/Utilities";
@@ -31,19 +30,161 @@ module {
     private var uniqueGolferCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGolfers : Nat = 0;
 
-    public func isUsernameTaken(username : Text, principalId : Text) : Bool {
-      for (managerUsername in usernames.entries()) {
+    //Getters
 
-        let lowerCaseUsername = Utilities.toLowercase(username);
-        let existingUsername = Utilities.toLowercase(managerUsername.1);
+    public func isUsernameAvailable(dto: GolferQueries.IsUsernameAvailable) : GolferQueries.UsernameAvailable{
+      return not isUsernameTaken(dto.username, dto.principalId)
+    };
 
-        if (lowerCaseUsername == existingUsername and managerUsername.0 != principalId) {
-          return true;
+    public func getProfile(dto: GolferQueries.GetProfile) : async Result.Result<GolferQueries.Profile, T.Error> {
+      
+      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
+      switch(existingGolferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            getMyGolfer : (dto: GolferQueries.GetProfile) -> async Result.Result<GolferQueries.Profile, T.Error>;
+          };
+
+          let golfer = await golfer_canister.getMyGolfer(dto);
+          return golfer;
         };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
+    };
+
+    public func getBuzz(dto: GolferQueries.GetBuzz) : async Result.Result<GolferQueries.Buzz, T.Error> {
+      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
+      switch(existingGolferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            getBuzz : (dto: GolferQueries.GetBuzz) -> async Result.Result<GolferQueries.Buzz, T.Error>;
+          };
+
+          return await golfer_canister.getBuzz(dto);
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
+    };
+
+    public func getUpcomingGames(dto: GolferQueries.GetUpcomingGames) : async Result.Result<GolferQueries.UpcomingGames, T.Error> {
+      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
+      switch(existingGolferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            getUpcomingGames : (dto: GolferQueries.GetUpcomingGames) -> async Result.Result<GolferQueries.UpcomingGames, T.Error>;
+          };
+
+          return await golfer_canister.getUpcomingGames(dto);
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
+    };
+
+    public func getGolfer(dto: GolferQueries.GetGolfer) : async Result.Result<GolferQueries.Golfer, T.Error> {
+      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
+      switch(existingGolferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            getGolfer : (dto: GolferQueries.GetGolfer) -> async Result.Result<GolferQueries.Golfer, T.Error>;
+          };
+
+          let golfer = await golfer_canister.getGolfer(dto);
+          return golfer;
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
+    };
+
+    public func listGolfers(dto: GolferQueries.ListGolfers) : async Result.Result<GolferQueries.Golfers, T.Error> {
+      if(Text.size(dto.searchTerm) < 3){
+        return #err(#TooShort);
       };
 
-      return false;
+      let lowerCaseSearchTerm = Utilities.toLowercase(dto.searchTerm);
+      let searchTermLength = Text.size(lowerCaseSearchTerm);
+      let leftTrimmedUsernameText = Utilities.trimStartToLength(lowerCaseSearchTerm, searchTermLength);
+
+      let golferBuffer = Buffer.fromArray<GolferQueries.GolferSummary>([]);
+
+      label userNameLoop for (managerUsernameEntry in usernames.entries()) {
+
+        let trimmedLowerUsername = Utilities.toLowercase(Utilities.trimStartToLength(managerUsernameEntry.1, searchTermLength));
+        if(trimmedLowerUsername == leftTrimmedUsernameText){
+          let existingGolferCanisterId = golferCanisterIndex.get(managerUsernameEntry.0);
+          switch(existingGolferCanisterId){
+            case (?foundCanisterId){
+              let golfer_canister = actor (foundCanisterId) : actor {
+                getGolfer : (dto: GolferQueries.GetGolfer) -> async Result.Result<GolferQueries.Golfer, T.Error>;
+              };
+              let result = await golfer_canister.getGolfer({ principalId = managerUsernameEntry.0 });
+              switch(result){
+                case (#ok foundGolfer){
+
+                  golferBuffer.add({
+                    golferName = foundGolfer.username;
+                    golferPicture = foundGolfer.golferPicture;
+                    golferPictureExtension = foundGolfer.golferPictureExtension;
+                    golferPrincipalId = foundGolfer.principalId;
+                    handicap = foundGolfer.handicap;
+                  });
+
+                };
+                case _ {
+                  return #err(#NotFound);
+                }
+              }
+            };
+            case (null){}
+          };
+        };
+        
+        if(golferBuffer.size() > 3){
+          break userNameLoop;
+        }
+
+      };
+
+      let golfersDTO: GolferQueries.Golfers = {
+        golfers = Buffer.toArray(golferBuffer);
+      };
+      
+      return #ok(golfersDTO);
     };
+
+    public func listFriendRequests(dto: GolferQueries.ListFriendRequests) : async Result.Result<GolferQueries.FriendRequests, T.Error> {
+      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
+      switch(existingGolferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            listFriendRequests : (dto: GolferQueries.ListFriendRequests) -> async Result.Result<GolferQueries.FriendRequests, T.Error>;
+          };
+
+          return await golfer_canister.listFriendRequests(dto);
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
+    };
+
+
+
+
+
+    //Update functions
     
     public func createGolfer(dto: GolferCommands.CreateGolfer) : async Result.Result<(), T.Error> {
       
@@ -242,126 +383,6 @@ module {
       return #err(#NotFound);
     };
 
-    private func isProfilePictureValid(profilePicture : ?Blob) : Bool {
-      switch(profilePicture){
-        case (?foundProfilePicture){
-          let sizeInKB = Array.size(Blob.toArray(foundProfilePicture)) / 1024;
-          return (sizeInKB > 0 or sizeInKB <= 500);
-        };
-        case (null) { return true; }
-      }
-    };
-
-    public func getMyGolfer(principalId: T.GolferId) : async Result.Result<DTOs.MyGolferDTO, T.Error> {
-      
-      let existingGolferCanisterId = golferCanisterIndex.get(principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
-
-          let golfer_canister = actor (foundCanisterId) : actor {
-            getMyGolfer : (principalId: T.GolferId) -> async Result.Result<DTOs.MyGolferDTO, T.Error>;
-          };
-
-          let golfer = await golfer_canister.getMyGolfer(principalId);
-          return golfer;
-        };
-        case (null){
-          return #err(#NotFound);
-        }
-      };
-    };
-
-    public func getGolfer(dto: GolferQueries.GetGolfer) : async Result.Result<DTOs.GolferDTO, T.Error> {
-      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
-
-          let golfer_canister = actor (foundCanisterId) : actor {
-            getGolfer : (principalId: T.GolferId) -> async Result.Result<DTOs.GolferDTO, T.Error>;
-          };
-
-          let golfer = await golfer_canister.getGolfer(dto.principalId);
-          return golfer;
-        };
-        case (null){
-          return #err(#NotFound);
-        }
-      };
-    };
-
-    public func listGolfers(dto: GolferQueries.ListGolfers) : async Result.Result<DTOs.GolfersDTO, T.Error> {
-      if(Text.size(dto.searchTerm) < 3){
-        return #err(#TooShort);
-      };
-
-      let lowerCaseSearchTerm = Utilities.toLowercase(dto.searchTerm);
-      let searchTermLength = Text.size(lowerCaseSearchTerm);
-      let leftTrimmedUsernameText = Utilities.trimStartToLength(lowerCaseSearchTerm, searchTermLength);
-
-      let golferBuffer = Buffer.fromArray<DTOs.GolferSummaryDTO>([]);
-
-      label userNameLoop for (managerUsernameEntry in usernames.entries()) {
-
-        let trimmedLowerUsername = Utilities.toLowercase(Utilities.trimStartToLength(managerUsernameEntry.1, searchTermLength));
-        if(trimmedLowerUsername == leftTrimmedUsernameText){
-          let existingGolferCanisterId = golferCanisterIndex.get(managerUsernameEntry.0);
-          switch(existingGolferCanisterId){
-            case (?foundCanisterId){
-              let golfer_canister = actor (foundCanisterId) : actor {
-                getGolfer : query (principal: T.GolferId) -> async Result.Result<DTOs.GolferDTO, T.Error>
-              };
-              let result = await golfer_canister.getGolfer(managerUsernameEntry.0);
-              switch(result){
-                case (#ok foundGolfer){
-
-                  golferBuffer.add({
-                    golferName = foundGolfer.username;
-                    golferPicture = foundGolfer.golferPicture;
-                    golferPictureExtension = foundGolfer.golferPictureExtension;
-                    golferPrincipalId = foundGolfer.principalId;
-                    handicap = foundGolfer.handicap;
-                  });
-
-                };
-                case _ {
-                  return #err(#NotFound);
-                }
-              }
-            };
-            case (null){}
-          };
-        };
-        
-        if(golferBuffer.size() > 3){
-          break userNameLoop;
-        }
-
-      };
-
-      let golfersDTO: DTOs.GolfersDTO = {
-        golfers = Buffer.toArray(golferBuffer);
-      };
-      
-      return #ok(golfersDTO);
-    };
-
-    public func listFriendRequests(dto: GolferQueries.ListFriendRequests) : async Result.Result<DTOs.FriendRequestsDTO, T.Error> {
-      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
-
-          let golfer_canister = actor (foundCanisterId) : actor {
-            listFriendRequests : (dto: GolferQueries.ListFriendRequests) -> async Result.Result<DTOs.FriendRequestsDTO, T.Error>;
-          };
-
-          return await golfer_canister.listFriendRequests(dto);
-        };
-        case (null){
-          return #err(#NotFound);
-        }
-      };
-    };
-
     public func acceptFriendRequest(dto: GolferCommands.AcceptFriendRequest) : async Result.Result<(), T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
       switch(existingGolferCanisterId){
@@ -414,45 +435,40 @@ module {
       };
     };
 
-    public func getGolferGameSummaries(dto: GolferQueries.GetGameSummaries) : async Result.Result<DTOs.GolferGameSummariesDTO, T.Error> {
-      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+    public func addGame(dto: GolferCommands.AddGame) : async Result.Result<(), T.Error>{
+      for(principalId in Iter.fromArray(dto.inviteIds)){
+        let golferCanisterId = golferCanisterIndex.get(principalId);
 
-          let golfer_canister = actor (foundCanisterId) : actor {
-            getGolferGameSummaries : (dto: GolferQueries.GetGameSummaries) -> async Result.Result<DTOs.GolferGameSummariesDTO, T.Error>;
+        switch(golferCanisterId){
+          case (?foundCanisterId){
+
+            let golfer_canister = actor (foundCanisterId) : actor {
+              addGameInvite : (dto: GolferCommands.AddGame) -> async Result.Result<(), T.Error>
+            };
+          
+            return await golfer_canister.addGameInvite(dto);
           };
-
-          return await golfer_canister.getGolferGameSummaries(dto);
-        };   
-        case (null){
-          return #ok({
-            entries = [];
-            limit = 0;
-            offset = 0;
-            totalEntries = 0;
-          });
-        }
-      };
-    };
-
-    public func hasFriends(golferPrincipalId: T.GolferId, inviteIds: [T.GolferId]) : async Bool {
-      
-       let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
-
-       switch(golferCanisterId){
-        case (?foundCanisterId){
-          let golfer_canister = actor (foundCanisterId) : actor {
-            hasFriends : (golferPrincipalId: T.GolferId, inviteIds: [T.GolferId]) -> async Bool;
-          };
-
-          return await golfer_canister.hasFriends(golferPrincipalId, inviteIds);
+          case _ {
+            return #err(#NotFound);
+          }
         };
-        case (null){
-          return false;
-        }
-       };
+      };
+      return #ok();
     };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public func friendRequestExists(golferPrincipalId: T.GolferId, requestedById: T.GolferId) : async Bool {
       
@@ -471,8 +487,33 @@ module {
         }
        };
     };
-    
 
+    //private functions
+
+    private func isUsernameTaken(username : Text, principalId : T.GolferId) : Bool {
+      for (managerUsername in usernames.entries()) {
+
+        let lowerCaseUsername = Utilities.toLowercase(username);
+        let existingUsername = Utilities.toLowercase(managerUsername.1);
+
+        if (lowerCaseUsername == existingUsername and managerUsername.0 != principalId) {
+          return true;
+        };
+      };
+
+      return false;
+    };
+
+    private func isProfilePictureValid(profilePicture : ?Blob) : Bool {
+      switch(profilePicture){
+        case (?foundProfilePicture){
+          let sizeInKB = Array.size(Blob.toArray(foundProfilePicture)) / 1024;
+          return (sizeInKB > 0 or sizeInKB <= 500);
+        };
+        case (null) { return true; }
+      }
+    };
+    
     private func createNewCanister() : async (){
       Cycles.add<system>(10_000_000_000_000);
       Debug.print("Got Cycles");
@@ -502,27 +543,6 @@ module {
       activeCanisterId := canisterId;
       Debug.print("Set Active Canister ID");
       return;
-    };
-
-    public func addGame(invitedByPrincipalId: T.GolferId, gameId: T.GameId, inviteIds: [T.GolferId]) : async Result.Result<(), T.Error>{
-      for(principalId in Iter.fromArray(inviteIds)){
-        let golferCanisterId = golferCanisterIndex.get(principalId);
-
-        switch(golferCanisterId){
-          case (?foundCanisterId){
-
-            let golfer_canister = actor (foundCanisterId) : actor {
-              addGameInvite : (invitedByPrincipalId: T.GolferId, invitedPrincipalId: T.GolferId, gameId: T.GameId) -> async Result.Result<(), T.Error>
-            };
-          
-            return await golfer_canister.addGameInvite(invitedByPrincipalId, principalId, gameId);
-          };
-          case _ {
-            return #err(#NotFound);
-          }
-        };
-      };
-      return #ok();
     };
 
     //stable storage getters and setters

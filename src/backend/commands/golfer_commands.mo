@@ -60,6 +60,12 @@ module GolferCommands {
         principalId: T.GolferId;
         requestedFriend: T.GolferId;
     };
+    
+    public type AddGame = {
+        invitedByPrincipalId: T.GolferId;
+        gameId: T.GameId;
+        inviteIds: [T.GolferId];
+    }
 }
 
   

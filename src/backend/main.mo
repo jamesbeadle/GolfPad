@@ -1,21 +1,23 @@
-import Result "mo:base/Result";
-import Base "mo:waterway-mops/BaseTypes";
 import Principal "mo:base/Principal";
-import Time "mo:base/Time";
-import Option "mo:base/Option";
-import Array "mo:base/Array";
-import Iter "mo:base/Iter";
-import DTOs "dtos/DTOs";
+import Result "mo:base/Result";
+
+import Base "mo:waterway-mops/BaseTypes";
+import BaseCommands "commands/base_commands";
 import T "data-types/types";
+
 import GolferManager "managers/golfer-manager";
 import GolfCourseManager "managers/golf-course-manager";
 import GameManager "managers/game-manager";
+
 import Environment "utilities/Environment";
-import Debug "mo:base/Debug";
-import BaseCommands "commands/base_commands";
-import GolferCommands "commands/golfer_commands";
-import GolferQueries "queries/golfer_queries";
+
+import GameCommands "commands/game_commands";
 import GolfCourseCommands "commands/golf_course_commands";
+import GolferCommands "commands/golfer_commands";
+
+import GameQueries "queries/game_queries";
+import GolfCourseQueries "queries/golf_course_queries";
+import GolferQueries "queries/golfer_queries";
 
 actor Self {
 
@@ -60,20 +62,21 @@ actor Self {
     return await courseManager.executeUpdateGolfCourse(dto);
   };
 
-  //validate new golf club
+  public shared ({ caller }) func getGolfCourses(dto: GolfCourseQueries.GetGolfCourses) : async Result.Result<GolfCourseQueries.GolfCourses, T.Error>{
+    assert not Principal.isAnonymous(caller);
+    return await courseManager.getGolfCourses(dto);
+  };
 
-  //validate new golf channel
+  public shared ({ caller }) func getGolfCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<GolfCourseQueries.GolfCourse, T.Error>{
+    assert not Principal.isAnonymous(caller);
+    return await courseManager.getGolfCourse(dto); 
+  };
 
-
-  
-  
-  //profile functions
-
-  //check username available
+  //golfer commands
 
   public shared ({ caller }) func createGolfer(dto: GolferCommands.CreateGolfer) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
+    assert dto.principalId == Principal.toText(caller);
     return await golferManager.createGolfer(dto);
   };
 
@@ -120,15 +123,25 @@ actor Self {
     return await golferManager.sendFriendRequest(dto);
   };
 
+  //golfer queries
+    
+  public shared query ({ caller }) func isUsernameAvailable(dto: GolferQueries.IsUsernameAvailable) : async Result.Result<GolferQueries.UsernameAvailable, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+    return #ok(golferManager.isUsernameAvailable(dto));
+  };
+
 
   //get profile
 
 
-  public shared ({ caller }) func listFriendRequests(dto: GolferQueries.ListFriendRequests) : async Result.Result<DTOs.FriendRequestsDTO, T.Error> {
+  public shared ({ caller }) func listFriendRequests(dto: GolferQueries.ListFriendRequests) : async Result.Result<GolferQueries.FriendRequests, T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.listFriendRequests(dto);
   };
+
+  //listFiends
 
 
 

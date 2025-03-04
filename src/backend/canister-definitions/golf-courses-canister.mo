@@ -6,7 +6,6 @@ import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Time "mo:base/Time";
 
-import DTOs "../dtos/DTOs";
 import Environment "../utilities/Environment";
 import T "../data-types/types";
 import GolfCourseQueries "../queries/golf_course_queries";
@@ -14,13 +13,14 @@ import GolfCourseCommands "../commands/golf_course_commands";
 
 actor class _GolfCoursesCanister() {
 
+  private stable var MAX_GOLF_COURSES_PER_GROUP: Nat = 50;
+  private stable var MAX_GOLF_COURSES_PER_CANISTER: Nat = 5000;
+
   private stable var stable_golf_course_group_indexes: [(T.GolfCourseId, Nat8)] = [];
   
   private stable var activeGroupIndex: Nat8 = 0;
   private stable var nextCourseId: T.GolfCourseId = 1;
   private stable var totalGolfCourses = 0;
-  private stable var MAX_GOLF_COURSES_PER_GROUP: Nat = 50;
-  private stable var MAX_GOLF_COURSES_PER_CANISTER: Nat = 5000;
 
   private stable var golfCourseGroup1: [T.GolfCourse] = [];
   private stable var golfCourseGroup2: [T.GolfCourse] = [];
@@ -123,10 +123,9 @@ actor class _GolfCoursesCanister() {
   private stable var golfCourseGroup99: [T.GolfCourse] = [];
   private stable var golfCourseGroup100: [T.GolfCourse] = [];
 
-
   //Public endpoints:
 
-  public shared ({caller}) func getGolfCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<DTOs.GolfCourseDTO, T.Error>{
+  public shared ({caller}) func getGolfCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<GolfCourseQueries.GolfCourse, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;

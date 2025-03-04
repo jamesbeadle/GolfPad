@@ -125,11 +125,6 @@ module Types {
     requestedOn: Int;
   };
 
-  public type CourseType = {
-    #Custom;
-    #Official;
-  };
-
   public type GolfCourse = {
     id: Nat;
     name: Text;
