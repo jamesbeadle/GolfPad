@@ -15,62 +15,47 @@
   import Header from "$lib/components/shared/header.svelte";
   import NewUser from "$lib/components/profile/new-user.svelte";
     import { page } from "$app/state";
+    import type { Profile } from "../../../declarations/backend/backend.did";
 
   let worker: { syncAuthIdle: (auth: AuthStoreData) => void } | undefined;
   let isLoading = true;
   let isLoggedIn = false;
   let selectedRoute: 'home' | 'governance' | 'whitepaper' = 'home';
   let expanded = false;
-  let principalId: string | undefined;
-  let user: any | undefined = undefined;
+  let user: Profile | null = null;
 
   $: isWhitepaper = browser && page.url.pathname === "/whitepaper";
 
-  // Initialize the app
   const init = async () => {
     await Promise.all([syncAuthStore()]);
     worker = await initAuthWorker();
+    await Promise.all([syncUser()]);
   };
 
-  // Sync the auth store
+  async function syncUser(){
+    let principalId = $authStore.identity?.getPrincipal().toString();
+    if(principalId){
+      user = await userStore.getProfile(principalId);
+    }
+  }
+
   async function syncAuthStore() {
     if (!browser) return;
     try {
       await authStore.sync();
+      isLoggedIn = $authStore.identity !== null && $authStore.identity !== undefined;
     } catch (err: unknown) {
       console.error(err);
     }
   }
-  onMount(() => {
-
-    let unsubscribe: () => void;
-
-    (async () => {
-      try {
-        await appStore.checkServerVersion();
-        await authStore.sync();
-
-        unsubscribe = authStore.subscribe((store) => {
-          isLoggedIn = store.identity !== null && store.identity !== undefined;
-          if (isLoggedIn) {
-            principalId = store.identity?.getPrincipal().toString();
-            if (principalId) {
-              user = userStore.getProfile(principalId);
-              isLoading = false;
-            }
-          }
-        });
-      } catch (error) {
-        console.error('Error syncing auth store:', error);
-      } finally {
-      }
-    })();
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
+  onMount(async () => {
+    try{
+      await appStore.checkServerVersion();
+    } catch {
+      console.error("error syncing version");
+    } finally {
+      isLoading = false;
+    }
   });
 
   $: worker, $authStore, (() => worker?.syncAuthIdle($authStore))();
