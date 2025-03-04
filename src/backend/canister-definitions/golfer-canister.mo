@@ -524,6 +524,46 @@ actor class _GolferCanister() {
     };
   }; 
   
+  public shared ({caller}) func listFriends(dto: GolferQueries.ListFriends) : async Result.Result<GolferQueries.Friends, T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let backendPrincipalId = Principal.toText(caller);
+    assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+
+    var groupIndex: ?Nat8 = null;
+    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
+      if(golferGroupIndex.0 == dto.principalId){
+        groupIndex := ?golferGroupIndex.1;
+      }
+    };
+    switch(groupIndex){
+      case (null){ return #err(#NotFound); };
+      case (?foundGroupIndex){
+        let golfer = findGolfer(foundGroupIndex, dto.principalId);
+
+        switch(golfer){
+          case (null) { #err(#NotFound); };
+          case (?foundGolfer){
+
+            let droppedEntries = List.drop<T.FriendRequest>(List.fromArray(foundGolfer.friendRequests), dto.offset);
+            let paginatedEntries = List.take<T.FriendRequest>(droppedEntries, dto.limit);
+
+            let friendRequests: GolferQueries.FriendRequests = {
+              friendRequests = Array.map<T.FriendRequest, GolferQueries.FriendRequest>(List.toArray(paginatedEntries), 
+                func(friendRequest: T.FriendRequest){
+                  return {
+                    principalId = friendRequest.requestedBy;
+                    requestTime = friendRequest.requestedOn;
+                  }
+                }
+              );
+            };
+            return #ok(friendRequests);
+          }
+        };
+      };
+    };
+  };
+  
   public shared ({caller}) func listFriendRequests(dto: GolferQueries.ListFriendRequests) : async Result.Result<GolferQueries.FriendRequests, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);

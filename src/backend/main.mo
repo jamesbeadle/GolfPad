@@ -1,15 +1,14 @@
+import Base "mo:waterway-mops/BaseTypes";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 
-import Base "mo:waterway-mops/BaseTypes";
 import BaseCommands "commands/base_commands";
 import T "data-types/types";
+import Environment "utilities/Environment";
 
 import GolferManager "managers/golfer-manager";
 import GolfCourseManager "managers/golf-course-manager";
 import GameManager "managers/game-manager";
-
-import Environment "utilities/Environment";
 
 import GameCommands "commands/game_commands";
 import GolfCourseCommands "commands/golf_course_commands";
@@ -34,7 +33,7 @@ actor Self {
     return #ok(appStatus);
   };
 
-  //SNS Functions
+  //SNS Validation and Callback function:
 
   public shared query ({ caller }) func validateAddGolfCourse(dto : GolfCourseCommands.CreateGolfCourse) : async T.RustResult {
     assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
@@ -72,7 +71,7 @@ actor Self {
     return await courseManager.getGolfCourse(dto); 
   };
 
-  //golfer commands
+  //Golfer Profile Commands:
 
   public shared ({ caller }) func createGolfer(dto: GolferCommands.CreateGolfer) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
@@ -103,6 +102,8 @@ actor Self {
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.updateHomeCourse(dto);
   };
+
+  //Golfer Friend Request Commands:
     
   public shared ({ caller }) func acceptFriendRequest(dto: GolferCommands.AcceptFriendRequest) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
@@ -123,17 +124,22 @@ actor Self {
     return await golferManager.sendFriendRequest(dto);
   };
 
-  //golfer queries
+  //Golfer Game Commands:
+    //TODO
+
+  //Golfer Queries:
     
   public shared query ({ caller }) func isUsernameAvailable(dto: GolferQueries.IsUsernameAvailable) : async Result.Result<GolferQueries.UsernameAvailable, T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
     return #ok(golferManager.isUsernameAvailable(dto));
   };
-
-
-  //get profile
-
+    
+  public shared ({ caller }) func getProfile(dto: GolferQueries.GetProfile) : async Result.Result<GolferQueries.Profile, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+    return await golferManager.getProfile(dto);
+  };
 
   public shared ({ caller }) func listFriendRequests(dto: GolferQueries.ListFriendRequests) : async Result.Result<GolferQueries.FriendRequests, T.Error> {
     assert not Principal.isAnonymous(caller);
@@ -141,31 +147,23 @@ actor Self {
     return await golferManager.listFriendRequests(dto);
   };
 
-  //listFiends
+  public shared ({ caller }) func listFriends(dto: GolferQueries.ListFriends) : async Result.Result<GolferQueries.Friends, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+    return await golferManager.listFriends(dto);
+  };
 
+  //Golfer Shot Managermant Functions:
+    //add shot
+    //predict shot
+    //create a golf channel
 
-
-
-
-
-  //add shot
-
-  //predict shot
-
-  //create a golf channel
-
-  //update golf channel
-
-  //delete golf channel
-
-  //subscribe to golf channel
-
-  //unsubscribe from golf channel
-
-  //add golf channel video
-
-
-
+    //Golfer Channel Management Functions:
+    //update golf channel
+    //delete golf channel
+    //subscribe to golf channel
+    //unsubscribe from golf channel
+    //add golf channel video
 
   private stable var stable_golfer_canister_index: [(T.GolferId, Base.CanisterId)] = [];
   private stable var stable_golf_course_canister_index: [(T.GolfCourseId, Base.CanisterId)] = [];

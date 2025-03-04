@@ -68,6 +68,21 @@ module GolferQueries {
         principalId: T.GolferId;
         requestTime: Int;
     };
+    
+    public type ListFriends = {
+        principalId: T.GolferId;
+        totalEntries: Nat;
+        limit: Nat;
+        offset: Nat;
+    };
+
+    public type Friends = {
+        friendRequests: [Friend];
+    };
+
+    public type Friend = {
+        principalId: T.GolferId;
+    };
 
     public type GetGolfer = {
         principalId: T.GolferId;
