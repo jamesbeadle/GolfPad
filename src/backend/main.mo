@@ -165,6 +165,11 @@ actor Self {
     return await golferManager.listFriends(dto);
   };
 
+  public shared ({ caller }) func listGolfers(dto: GolferQueries.ListGolfers) : async Result.Result<GolferQueries.Golfers, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    return await golferManager.listGolfers(dto);
+  };
+
   //Golfer Game Queries
 
   //Golfer Shot Managermant Functions:

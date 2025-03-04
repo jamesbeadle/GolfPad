@@ -20,7 +20,7 @@ module GolfCourseQueries {
     };
 
     public type GolfCourses = {
-
+        entries: [GolfCourse];
     };
     
 }

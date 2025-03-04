@@ -62,40 +62,45 @@ type RustResult =
    Err: text;
    Ok: text;
  };
-type Result_7 = 
+type Result_8 = 
  variant {
    err: Error;
    ok: AppStatusDTO;
  };
-type Result_6 = 
+type Result_7 = 
  variant {
    err: Error;
    ok: GolfCourse;
  };
-type Result_5 = 
+type Result_6 = 
  variant {
    err: Error;
    ok: GolfCourses;
  };
-type Result_4 = 
+type Result_5 = 
  variant {
    err: Error;
    ok: Profile;
  };
-type Result_3 = 
+type Result_4 = 
  variant {
    err: Error;
    ok: UsernameAvailable;
  };
-type Result_2 = 
+type Result_3 = 
  variant {
    err: Error;
    ok: FriendRequests;
  };
-type Result_1 = 
+type Result_2 = 
  variant {
    err: Error;
    ok: Friends;
+ };
+type Result_1 = 
+ variant {
+   err: Error;
+   ok: Golfers;
  };
 type Result = 
  variant {
@@ -114,6 +119,13 @@ type Profile =
    handicap: opt Handicap;
    principalId: GolferId;
    username: text;
+ };
+type ListGolfers = 
+ record {
+   limit: nat;
+   offset: nat;
+   searchTerm: text;
+   totalEntries: nat;
  };
 type ListFriends = 
  record {
@@ -146,8 +158,17 @@ type Hole =
    tees: vec TeeInfo;
  };
 type Handicap = int16;
+type Golfers = record {golfers: vec GolferSummary;};
+type GolferSummary = 
+ record {
+   golferName: text;
+   golferPicture: opt blob;
+   golferPictureExtension: text;
+   golferPrincipalId: GolferId;
+   handicap: opt Handicap;
+ };
 type GolferId = text;
-type GolfCourses = record {};
+type GolfCourses = record {entries: vec GolfCourse;};
 type GolfCourseVersion = nat8;
 type GolfCourseId = nat;
 type GolfCourse = 
@@ -218,13 +239,14 @@ service : {
   createUser: (CreateUser) -> (Result);
   executeAddGolfCourse: (CreateGolfCourse) -> ();
   executeUpdateGolfCourse: (UpdateGolfCourse) -> ();
-  getAppStatus: () -> (Result_7) query;
-  getGolfCourse: (GetGolfCourse) -> (Result_6);
-  getGolfCourses: (GetGolfCourses) -> (Result_5);
-  getProfile: (GetProfile) -> (Result_4);
-  isUsernameAvailable: (IsUsernameAvailable) -> (Result_3) query;
-  listFriendRequests: (ListFriendRequests) -> (Result_2);
-  listFriends: (ListFriends) -> (Result_1);
+  getAppStatus: () -> (Result_8) query;
+  getGolfCourse: (GetGolfCourse) -> (Result_7);
+  getGolfCourses: (GetGolfCourses) -> (Result_6);
+  getProfile: (GetProfile) -> (Result_5);
+  isUsernameAvailable: (IsUsernameAvailable) -> (Result_4) query;
+  listFriendRequests: (ListFriendRequests) -> (Result_3);
+  listFriends: (ListFriends) -> (Result_2);
+  listGolfers: (ListGolfers) -> (Result_1);
   rejectFriendRequest: (RejectFriendRequest) -> (Result);
   sendFriendRequest: (SendFriendRequest) -> (Result);
   updateFirstName: (UpdateFirstName) -> (Result);

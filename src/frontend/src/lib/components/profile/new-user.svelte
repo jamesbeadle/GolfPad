@@ -19,14 +19,16 @@
 
       try {
         creatingProfile = true;
-
+        console.log('create profile')
         let createHandicap : [number] | [] = [];
+        console.log(handicap)
         if(handicap != undefined){
           createHandicap = [handicap]
         } else {
           createHandicap = []
         }
 
+        console.log(createHandicap)
         let dto: CreateUser = {
           username,
           profilePictureExtension: [''],
@@ -34,6 +36,7 @@
           handicap: createHandicap
         };
 
+        console.log(dto)
         await userStore.createUser(dto);
         toasts.addToast({type: 'success', message: 'Profile created.'})
 
@@ -73,7 +76,7 @@
 
         <div class="flex items-center">
           <input type="checkbox" bind:checked={agreedToTerms} class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
-          <label class="ml-2 block text-sm text-gray-900">
+          <label class="ml-2 block text-sm text-white">
             I agree to the <button type="button" on:click={toggleTerms} class="text-indigo-600 hover:text-indigo-500">terms and conditions</button>
           </label>
         </div>
@@ -82,7 +85,7 @@
             <TermsAndConditions />
           </div>
         {/if}
-        <button on:click={createProfile} disabled={!agreedToTerms} class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400">
+        <button on:click={createProfile} disabled={!agreedToTerms} class="brand-button">
           Create Profile
         </button>
       </div>

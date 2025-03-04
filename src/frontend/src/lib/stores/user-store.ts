@@ -5,6 +5,7 @@ import { ActorFactory } from "$lib/utils/ActorFactory";
 import { UserService } from "$lib/services/user-service";
 import type {
   CreateUser,
+  GetProfile,
   UpdateFirstName,
   UpdateHandicap,
   UpdateHomeCourse,
@@ -17,15 +18,15 @@ function createUserStore() {
   const { subscribe, set } = writable<any>(null);
 
   async function sync() {
+    console.log("syncing user storage");
     let localStorageString = localStorage.getItem("user_profile_data");
     if (localStorageString) {
       const localProfile = JSON.parse(localStorageString);
       set(localProfile);
-      return false;
+      return;
     }
     try {
       await cacheProfile();
-      return true;
     } catch (error) {
       console.error("Error fetching user profile:", error);
       throw error;
@@ -130,15 +131,26 @@ function createUserStore() {
       process.env.BACKEND_CANISTER_ID ?? "",
     );
 
-    let getProfileResponse = await identityActor.getMyGolfer();
-    console.log("getProfileResponse: ", getProfileResponse);
-    let error = isError(getProfileResponse);
-    if (error) {
-      console.error("Error fetching user profile");
-      return;
-    }
-    let profileData = getProfileResponse.ok;
-    set(profileData);
+    authStore.subscribe(async (user) => {
+      let principalId = user.identity?.getPrincipal().toString();
+      if (!principalId) {
+        return;
+      }
+
+      let dto: GetProfile = {
+        principalId,
+      };
+
+      let getProfileResponse = await identityActor.getProfile(dto);
+      console.log("getProfileResponse: ", getProfileResponse);
+      let error = isError(getProfileResponse);
+      if (error) {
+        console.error("Error fetching user profile");
+        return;
+      }
+      let profileData = getProfileResponse.ok;
+      set(profileData);
+    });
   }
 
   return {

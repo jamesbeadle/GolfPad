@@ -1,12 +1,11 @@
+<!-- Parent.svelte -->
 <script lang="ts">
-  import { onMount } from "svelte"; 
+  import { onMount, setContext } from "svelte";
   import { fade } from "svelte/transition";
   import { browser } from "$app/environment";
-
   import { userStore } from "$lib/stores/user-store";
   import { authStore, type AuthStoreData } from "$lib/stores/auth-store";
   import "../app.css";
-  
   import FullScreenSpinner from "$lib/components/shared/full-screen-spinner.svelte";
   import { appStore } from "$lib/stores/app-store";
   import { initAuthWorker } from "$lib/services/worker-auth.service";
@@ -15,50 +14,71 @@
   import Landing from "$lib/components/landing/landing.svelte";
   import Header from "$lib/components/shared/header.svelte";
   import NewUser from "$lib/components/profile/new-user.svelte";
+    import { page } from "$app/state";
 
   let worker: { syncAuthIdle: (auth: AuthStoreData) => void } | undefined;
-
   let isLoading = true;
   let isLoggedIn = false;
   let selectedRoute: 'home' | 'governance' | 'whitepaper' = 'home';
   let expanded = false;
-  let hasProfile = false;
+  let principalId: string | undefined;
 
-  $: isWhitepaper = browser && window.location.pathname === "/whitepaper";
+  $: isWhitepaper = browser && page.url.pathname === "/whitepaper";
 
+  // Initialize the app
   const init = async () => {
     await Promise.all([syncAuthStore()]);
     worker = await initAuthWorker();
   };
 
+  // Sync the auth store
   async function syncAuthStore() {
     if (!browser) return;
     try {
       await authStore.sync();
     } catch (err: unknown) {
       console.error(err);
-    } finally {
     }
   }
+  onMount(() => {
+    console.log('On mount');
 
-  onMount(async () => {
-    try{
-      authStore.subscribe((store) => {
+    let unsubscribe: () => void;
+
+    // Perform async operations
+    (async () => {
+      try {
+        await appStore.checkServerVersion();
+        await authStore.sync();
+        console.log('Auth store synced');
+
+        // Subscribe to auth store
+        unsubscribe = authStore.subscribe((store) => {
           isLoggedIn = store.identity !== null && store.identity !== undefined;
-      });
-      await appStore.checkServerVersion();
-      userStore.sync();
-      userStore.subscribe((user) => {
-        if(user){
-          hasProfile = true;
-        }
-      });
-    } catch {
-      
-    } finally {
-      expanded = false;
-      isLoading = false;
+          console.log(isLoggedIn);
+          if (isLoggedIn) {
+            principalId = store.identity?.getPrincipal().toString();
+            userStore.sync();
+          }
+        });
+      } catch (error) {
+        console.error('Error syncing auth store:', error);
+      } finally {
+        isLoading = false;
+      }
+    })();
+
+
+    if (principalId) {
+      setContext('principalId', principalId);
     }
+
+    return () => {
+      console.log('Cleanup on unmount');
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   });
 
   $: worker, $authStore, (() => worker?.syncAuthIdle($authStore))();
@@ -69,10 +89,10 @@
     spinner?.remove();
   })();
 
-  async function toggleNav() {
+  // Toggle navigation
+  function toggleNav() {
     expanded = !expanded;
   }
-
 </script>
 
 <svelte:window on:storage={syncAuthStore} />
@@ -87,16 +107,22 @@
       <FullScreenSpinner />
     {:else}
       <Header {toggleNav} />
-      {#if isLoggedIn}
-        {#if hasProfile || isWhitepaper}
-          <div class="bg-white text-black flex-1 flex">
-            <slot />
-          </div>
-        {:else}
-          <NewUser />
-        {/if}
+      {#if isWhitepaper}
+        <div class="bg-white text-black flex-1 flex">
+          <slot />
+        </div>
       {:else}
-        <Landing />
+        {#if isLoggedIn}
+          {#if $userStore}
+            <div class="bg-white text-black flex-1 flex">
+              <slot />
+            </div>
+          {:else}
+            <NewUser />
+          {/if}
+        {:else}
+          <Landing />
+        {/if}
       {/if}
       <Navigation {expanded} {selectedRoute} {toggleNav}/>
       <Toasts />

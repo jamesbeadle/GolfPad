@@ -1,44 +1,29 @@
 import { writable } from "svelte/store";
-import { CourseServices } from "$lib/services/course-service";
+import { GolfCoursesService } from "$lib/services/golf-course-service";
 import type {
-  GolfCourseDTO,
-  PaginationFilters,
-  CreateGolfCourseDTO,
-  UpdateGolfCourseDTO,
+  CreateGolfCourse,
+  GetGolfCourse,
+  GetGolfCourses,
+  GolfCourse,
+  GolfCourses,
 } from "../../../../declarations/backend/backend.did";
+import type UpdateGolfCourse from "$lib/components/goverance/golf-course/update-golf-course.svelte";
 
 function createCourseStore() {
-  const { subscribe, set } = writable<GolfCourseDTO[]>([]);
+  const { subscribe, set } = writable<GolfCourse[]>([]);
 
-  async function getCourse(courseId: number): Promise<GolfCourseDTO[]> {
-    return await new CourseServices().getCourse(courseId);
+  async function getGolfCourse(dto: GetGolfCourse): Promise<GolfCourse> {
+    return await new GolfCoursesService().getGolfCourse(dto);
   }
-  async function getCourses(
-    filters: PaginationFilters,
-  ): Promise<GolfCourseDTO[]> {
-    const courses = await new CourseServices().getCourses(filters);
-    return courses.courses;
-  }
-
-  async function createCourse(
-    createGolfCourseDTO: CreateGolfCourseDTO,
-  ): Promise<void> {
-    return await new CourseServices().createCourse(createGolfCourseDTO);
-  }
-
-  async function updateCourse(
-    updateGolfCourseDTO: UpdateGolfCourseDTO,
-  ): Promise<void> {
-    return await new CourseServices().updateCourse(updateGolfCourseDTO);
+  async function getGolfCourses(dto: GetGolfCourses): Promise<GolfCourses> {
+    return await new GolfCoursesService().getGolfCourses(dto);
   }
 
   return {
     subscribe,
-    setCourse: (course: GolfCourseDTO[]) => set(course),
-    getCourse,
-    getCourses,
-    createCourse,
-    updateCourse,
+    setCourse: (course: GolfCourse[]) => set(course),
+    getGolfCourse,
+    getGolfCourses,
   };
 }
 export const courseStore = createCourseStore();

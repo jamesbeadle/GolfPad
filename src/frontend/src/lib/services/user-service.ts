@@ -18,11 +18,16 @@ export class UserService {
 
   async createUser(dto: CreateUser): Promise<any> {
     try {
+      console.log("creating user");
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
         process.env.BACKEND_CANISTER_ID ?? "",
       );
+      console.log("creating user 2");
       const result = await identityActor.createUser(dto);
+      console.log("res");
+
+      console.log(result);
       return result;
     } catch (error) {
       console.error("Error creating user:", error);

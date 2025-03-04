@@ -68,8 +68,20 @@ export interface GolfCourse {
 }
 export type GolfCourseId = bigint;
 export type GolfCourseVersion = number;
-export type GolfCourses = {};
+export interface GolfCourses {
+  entries: Array<GolfCourse>;
+}
 export type GolferId = string;
+export interface GolferSummary {
+  golferPrincipalId: GolferId;
+  golferPicture: [] | [Uint8Array | number[]];
+  golferName: string;
+  handicap: [] | [Handicap];
+  golferPictureExtension: string;
+}
+export interface Golfers {
+  golfers: Array<GolferSummary>;
+}
 export type Handicap = number;
 export interface Hole {
   name: string;
@@ -94,6 +106,12 @@ export interface ListFriends {
   limit: bigint;
   principalId: GolferId;
 }
+export interface ListGolfers {
+  totalEntries: bigint;
+  offset: bigint;
+  limit: bigint;
+  searchTerm: string;
+}
 export interface Profile {
   username: string;
   golferPicture: [] | [Uint8Array | number[]];
@@ -106,13 +124,14 @@ export interface RejectFriendRequest {
   requestedBy: GolferId;
 }
 export type Result = { ok: null } | { err: Error };
-export type Result_1 = { ok: Friends } | { err: Error };
-export type Result_2 = { ok: FriendRequests } | { err: Error };
-export type Result_3 = { ok: UsernameAvailable } | { err: Error };
-export type Result_4 = { ok: Profile } | { err: Error };
-export type Result_5 = { ok: GolfCourses } | { err: Error };
-export type Result_6 = { ok: GolfCourse } | { err: Error };
-export type Result_7 = { ok: AppStatusDTO } | { err: Error };
+export type Result_1 = { ok: Golfers } | { err: Error };
+export type Result_2 = { ok: Friends } | { err: Error };
+export type Result_3 = { ok: FriendRequests } | { err: Error };
+export type Result_4 = { ok: UsernameAvailable } | { err: Error };
+export type Result_5 = { ok: Profile } | { err: Error };
+export type Result_6 = { ok: GolfCourses } | { err: Error };
+export type Result_7 = { ok: GolfCourse } | { err: Error };
+export type Result_8 = { ok: AppStatusDTO } | { err: Error };
 export type RustResult = { Ok: string } | { Err: string };
 export interface SendFriendRequest {
   requestedFriend: GolferId;
@@ -168,13 +187,14 @@ export interface _SERVICE {
   createUser: ActorMethod<[CreateUser], Result>;
   executeAddGolfCourse: ActorMethod<[CreateGolfCourse], undefined>;
   executeUpdateGolfCourse: ActorMethod<[UpdateGolfCourse], undefined>;
-  getAppStatus: ActorMethod<[], Result_7>;
-  getGolfCourse: ActorMethod<[GetGolfCourse], Result_6>;
-  getGolfCourses: ActorMethod<[GetGolfCourses], Result_5>;
-  getProfile: ActorMethod<[GetProfile], Result_4>;
-  isUsernameAvailable: ActorMethod<[IsUsernameAvailable], Result_3>;
-  listFriendRequests: ActorMethod<[ListFriendRequests], Result_2>;
-  listFriends: ActorMethod<[ListFriends], Result_1>;
+  getAppStatus: ActorMethod<[], Result_8>;
+  getGolfCourse: ActorMethod<[GetGolfCourse], Result_7>;
+  getGolfCourses: ActorMethod<[GetGolfCourses], Result_6>;
+  getProfile: ActorMethod<[GetProfile], Result_5>;
+  isUsernameAvailable: ActorMethod<[IsUsernameAvailable], Result_4>;
+  listFriendRequests: ActorMethod<[ListFriendRequests], Result_3>;
+  listFriends: ActorMethod<[ListFriends], Result_2>;
+  listGolfers: ActorMethod<[ListGolfers], Result_1>;
   rejectFriendRequest: ActorMethod<[RejectFriendRequest], Result>;
   sendFriendRequest: ActorMethod<[SendFriendRequest], Result>;
   updateFirstName: ActorMethod<[UpdateFirstName], Result>;

@@ -11,11 +11,11 @@
       </p>
 
       <p class="relative">
-          But <span class="condensed">MERVE</span> doesn’t stop there. By recording where your ball ends up off the tee, <span class="condensed">MERVE</span>helps you play percentage golf—ensuring you’re making the smartest decisions on every shot. With the ability to gather and analyse data from multiple sources, <span class="condensed">MERVE</span> delivers advanced insights and tooling that take your game to the next level.
+          But <span class="condensed">MERVE</span> doesn’t stop there. By recording where your ball ends up off the tee, <span class="condensed">MERVE</span> helps you play percentage golf—ensuring you’re making the smartest decisions on every shot. With the ability to gather and analyse data from multiple sources, <span class="condensed">MERVE</span> delivers advanced insights and tooling that take your game to the next level.
       </p>
 
       <p>
-          With a friendly chat interface and voice input, <span class="condensed">MERVE</span>is easy to talk to in any weather. Beyond your game, <span class="condensed">MERVE</span> has been trained on the rules of golf to settle any on-course dispute. Just share the details of any situation, and <span class="condensed">MERVE</span> will reply with helpful, easy-to-understand guidance for all golfers involved, including the steps to follow.
+          With a friendly chat interface and voice input, <span class="condensed">MERVE</span> is easy to talk to in any weather. Beyond your game, <span class="condensed">MERVE</span> has been trained on the rules of golf to settle any on-course dispute. Just share the details of any situation, and <span class="condensed">MERVE</span> will reply with helpful, easy-to-understand guidance for all golfers involved, including the steps to follow.
       </p>
 
       <p>

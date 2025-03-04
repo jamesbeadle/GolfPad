@@ -58,7 +58,7 @@ module {
       };
       
       return #ok({
-        courses = Buffer.toArray(coursesBuffer);
+        entries = Buffer.toArray(coursesBuffer);
       });
     };
 

@@ -1,165 +1,98 @@
 <script lang="ts">
     import Layout from "../Layout.svelte";
-    import { onMount } from 'svelte';
-    import { playerStore } from "$lib/stores/player-store";
+    import { getContext, onMount } from 'svelte';
     import { courseStore } from "$lib/stores/course-store";
     import { userStore } from "$lib/stores/user-store";
-    import type { GolfCourseDTO, CreateGolferDTO, PaginationFilters, FriendRequestDTO, GolferSummaryDTO } from "../../../../declarations/backend/backend.did";
     import EditIcon from "$lib/icons/edit-icon.svelte";
     import AddImage from "$lib/components/profile/add-image.svelte";
     import AddHomeCourse from "$lib/components/profile/add-home-course.svelte";
+    import type { Friend, FriendRequest, GetGolfCourses, GolfCourse, GolferSummary, Profile } from "../../../../declarations/backend/backend.did";
+    import { authStore } from "$lib/stores/auth-store";
 
+    let friends: Friend[] = [];
 
-    let existingFriends = [
-        { principalId: "LEE, M.W._4857357", displayName: "LEE, M.W.", handicap: [2] },
-        { principalId: "WOLF_238475", displayName: "WOLF", handicap: [12] },
-        { principalId: "MCELROY_238475", displayName: "MCELROY", handicap: [4] },
-        { principalId: "HATTON_238475", displayName: "HATTON", handicap: [22] }
-    ];
+    let friendRequests: FriendRequest[] = [];
 
-    let friendRequests: FriendRequestDTO[] = [
-        { principalId: "DECHU_475", requestTime: BigInt(Date.now()) },
-        { principalId: "SMITH_238475", requestTime: BigInt(Date.now()) }
-    ];
+    let searchResults: GolferSummary[] = [];
 
-    let searchResults: GolferSummaryDTO[] = [
-        { golferPrincipalId: "SAVAGE3_238475", golferName: "SAVAGE3", golferPicture: [], golferPictureExtension: "jpg", handicap: [8] },
-        { golferPrincipalId: "SAVAGE63_238475", golferName: "SAVAGE63", golferPicture: [], golferPictureExtension: "jpg", handicap: [22] }
-    ];
-
-    let golfer: CreateGolferDTO = {
-        username: "",
-        handicap: [0],
-    };
+    let golfer: Profile;
 
     let golferPicture: string | null = null;
     let golferPictureFile: File | null = null;
 
-    let courses: GolfCourseDTO[] = [];
-    let selectedCourse: GolfCourseDTO | null = null;
+    let courses: GolfCourse[] = [];
+    let selectedCourse: GolfCourse | null = null;
 
     let activeTab: 'DETAILS' | 'SOCIAL' = 'DETAILS';
-    let isNewUser: boolean = true;
-
-    let principalId: string | undefined;
 
     let isImageModalOpen: boolean = false;
     let isHomeCourseModalOpen: boolean = false;
     
-    let isCreating = false;
-    let error = '';
-
     let searchQuery: string = "";
     let isAcceptFriendModalOpen = false;
     let isDeclineFriendModalOpen = false;
-    let selectedFriendRequest: FriendRequestDTO | null = null;
+    let selectedFriendRequest: FriendRequest | null = null;
 
-    let selectedPlayer: GolferSummaryDTO | null = null;
+    let selectedPlayer: FriendRequest | null = null;
+    const principalId = getContext('principalId');
 
     onMount(async () => {
         try {
-            isNewUser = await userStore.sync(); 
-            console.log("sync complete");
-            
-            const filters: PaginationFilters = {
+            if (!principalId) {
+                console.error('PrincipalId is not available');
+                return;
+            }
+            const dto: GetGolfCourses = {
                 limit: BigInt(10),
                 offset: BigInt(0),
+                searchTerm: ''
             };
-            courses = await courseStore.getCourses(filters);
+            let coursesResult = await courseStore.getGolfCourses(dto);
+            courses = coursesResult.entries;            
+            
+            userStore.subscribe((user) => {
+                if(!user){ return }
+                console.log("user")
+                console.log(user)
+                golfer = user;
+            });
+
             
         } catch (err) {
             console.error('Creating Golfer Error:', err);
         }
     });
 
-    async function createUser() {
-        if (isNewUser) {
-            if (!golfer.username) {
-                error = "Username is required";
-                return;
-            }
+    async function handleFileSelect(event: CustomEvent) {
+        const { file, preview } = event.detail;
+        golferPictureFile = file;
+        golferPicture = preview;
+        isImageModalOpen = false;
 
-            isCreating = true;
-            error = '';
-
-            try {
-                const handicapValue = Number(golfer.handicap[0]);
-                if (isNaN(handicapValue)) {
-                    throw new Error("Invalid handicap value");
-                }
-                
-                const handicapArray: [number] = [handicapValue];
-                
-                await userStore.createUser(
-                    golfer.username,
-                    handicapArray,
-                );
-
-                isNewUser = false;
-                await userStore.cacheProfile();
-                await userStore.sync();
-                
-            } catch (err) {
-                error = "Failed to create user. Please try again.";
-                console.error("Error creating user:", err);
-            } finally {
-                isCreating = false;
-                console.log("createUser complete");
-            }
-        }
-    }
-
-    async function saveGolferDetails() {
-        if (!golfer.username) {
-            console.error("Username is required");
-            return;
-        }
         try {
-            const createGolferDTO: CreateGolferDTO = {
-                username: golfer.username,
-                handicap: golfer.handicap,
-            };
-
-            console.log("Saving golfer details:", createGolferDTO);
-            await playerStore.createPlayer(createGolferDTO);
-            console.log("Golfer details saved successfully");
-        } catch (err) {
-            console.error("Failed to save golfer details:", err);
+        await userStore.updateProfilePicture(file);
+        await userStore.cacheProfile();
+        await userStore.sync();
+        console.log("Profile picture updated successfully");
+        } catch (error) {
+        console.error("Error updating profile picture:", error);
         }
-  }
-
-  async function handleFileSelect(event: CustomEvent) {
-    const { file, preview } = event.detail;
-    golferPictureFile = file;
-    golferPicture = preview;
-    isImageModalOpen = false;
-
-    try {
-      await userStore.updateProfilePicture(file);
-      await userStore.cacheProfile();
-      await userStore.sync();
-      console.log("Profile picture updated successfully");
-    } catch (error) {
-      console.error("Error updating profile picture:", error);
     }
-  }
 
-  async function handleAcceptFriend(request: FriendRequestDTO) {
-    selectedFriendRequest = request;
-    isAcceptFriendModalOpen = true;
-  }
-
-  async function handleDeclineFriend(request: FriendRequestDTO) {
-    selectedFriendRequest = request;
-    isDeclineFriendModalOpen = true;
-  }
-
-  function handleAddFriend() {
-    if (selectedPlayer) {
-        // TODO: Implement friend request logic
-        console.log('Sending friend request to:', selectedPlayer.golferName);
+    async function handleAcceptFriend(request: FriendRequest) {
+        selectedFriendRequest = request;
+        isAcceptFriendModalOpen = true;
     }
-  }
+
+    async function handleDeclineFriend(request: FriendRequest) {
+        selectedFriendRequest = request;
+        isDeclineFriendModalOpen = true;
+    }
+
+    function handleAddFriend() {
+        if (selectedPlayer) {
+        }
+    }
 </script>
 
 <Layout>
@@ -218,6 +151,7 @@
                     </div>
                     <div class="w-full px-0 mb-6 lg:w-1/3 lg:px-4 lg:mb-0">
                         <h3 class="hidden mb-4 text-xl text-black lg:block condensed">DETAILS</h3>
+                        {#if golfer}
 
                         <label for="username" class="block pt-8 pb-3 text-sm text-BrandDarkGray">USERNAME</label>
                         <input 
@@ -238,23 +172,6 @@
                         min="0"
                         max="54"
                         />
-
-                        {#if isNewUser}
-                            {#if error}
-                                <p class="mb-2 text-red-500">{error}</p>
-                            {/if}
-                            <button 
-                                class="px-2 py-2 mb-4 text-sm rounded lg:px-3 lg:py-1 text-BrandYellow bg-BrandForest hover:bg-green-700 disabled:opacity-50"
-                                on:click={createUser}
-                                disabled={!golfer.username || isCreating}
-                            >
-                                {#if isCreating}
-                                    Creating...
-                                {:else}
-                                    CREATE USER
-                                {/if}
-                            </button>
-                        {/if}
 
                         <div class="flex items-center mt-auto text-black">
                         <img src="/golfCourse.png" alt="Course" class="w-20 h-20 mr-4 rounded-lg"/>
@@ -292,6 +209,7 @@
                             {/if}
                         </div>
                         </div>
+                        {/if}
                     </div>
                 </div>
             </div>
@@ -344,38 +262,6 @@
                                     </div>
                                 </div>
                             {/each}
-                            {#each existingFriends as friend}
-                                <div class="grid items-center grid-cols-12 p-4 bg-white rounded-lg">
-                                    <div class="flex items-center justify-between col-span-12 mb-2 lg:col-span-5 lg:mb-0">
-                                        <div class="flex items-center">
-                                            <img 
-                                                src="default-profile-picture.jpg" 
-                                                alt="Profile" 
-                                                class="mr-4 rounded-full w-14 h-14"
-                                            />
-                                            <div>
-                                                <span class="text-xxs text-BrandDarkGray">{friend.principalId}</span>
-                                                <h4 class="text-2xl text-black md:text-3xl condensed">{friend.displayName}</h4>
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col items-end lg:hidden">
-                                            <span class="text-xxs text-BrandDarkGray">HANDICAP</span>
-                                            <span class="text-2xl text-black md:text-3xl condensed">{friend.handicap[0]}</span>
-                                        </div>
-                                    </div>
-                                    <div class="items-center hidden col-span-2 lg:flex lg:flex-col">
-                                        <span class="text-xxs text-BrandDarkGray">HANDICAP</span>
-                                        <span class="text-3xl text-black condensed">{friend.handicap[0]}</span>
-                                    </div>
-                                    <div class="flex justify-center col-span-12 lg:justify-end lg:col-span-5">
-                                        <button 
-                                            class="w-full px-5 py-1 text-sm rounded lg:w-auto text-BrandYellow bg-BrandForest"
-                                        >
-                                            VIEW
-                                        </button>
-                                    </div>
-                                </div>
-                            {/each}
                         </div>
                     </div>
                     <div class="w-full rounded lg:w-2/5 lg:pl-4">
@@ -393,41 +279,6 @@
                                 bind:value={searchQuery}
                             />
 
-                            <div class="pt-4 space-y-4">
-                                {#each searchResults as player}
-                                    <button 
-                                        type="button"
-                                        class="grid items-center w-full grid-cols-12 p-4 text-left bg-white rounded cursor-pointer hover:bg-gray-50"
-                                        class:bg-gray-50={selectedPlayer === player}
-                                        on:click={() => selectedPlayer = player}
-                                        on:keydown={(e) => {
-                                            if (e.key === 'Enter' || e.key === ' ') {
-                                                selectedPlayer = player;
-                                            }
-                                        }}
-                                        role="option"
-                                        aria-selected={selectedPlayer === player}
-                                    >
-                                        <div class="flex items-center justify-between col-span-12">
-                                            <div class="flex items-center">
-                                                <img 
-                                                    src="default-profile-picture.jpg" 
-                                                    alt="Profile" 
-                                                    class="w-10 h-10 mr-4 rounded-full"
-                                                />
-                                                <div class="flex flex-col">
-                                                    <span class="text-xs text-BrandDarkGray">{player.golferPrincipalId}</span>
-                                                    <span class="text-xl text-black condensed">{player.golferName}</span>
-                                                </div>
-                                            </div>
-                                            <div class="flex flex-col items-end">
-                                                <span class="text-xs text-BrandDarkGray">HANDICAP</span>
-                                                <span class="text-xl text-black condensed">{player.handicap[0]}</span>
-                                            </div>
-                                        </div>
-                                    </button>
-                                {/each}
-                            </div>
                             <button 
                                 class="w-full p-3 mt-4 text-center transition-colors duration-200 rounded-lg"
                                 class:bg-BrandYellow={selectedPlayer}
