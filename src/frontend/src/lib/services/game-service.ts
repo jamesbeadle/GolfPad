@@ -1,21 +1,11 @@
 import { isError } from "$lib/utils/helpers";
 import { idlFactory } from "../../../../declarations/backend";
-import type {
-  GameDTO,
-  GetGameDTO,
-  CreateGameDTO,
-} from "../../../../declarations/backend/backend.did";
 import { ActorFactory } from "$lib/utils/actor.factory";
 import { authStore } from "$lib/stores/auth-store";
 
 export class GameService {
-  private actor: any;
-
+  
   constructor() {
-    this.actor = ActorFactory.createActor(
-      idlFactory,
-      process.env.BACKEND_CANISTER_ID,
-    );
   }
 
   async getGame(gameId: number): Promise<GameDTO> {

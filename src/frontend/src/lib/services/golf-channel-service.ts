@@ -1,26 +1,140 @@
 import { isError } from "$lib/utils/helpers";
-import { idlFactory } from "../../../../declarations/backend";
 import { ActorFactory } from "$lib/utils/actor.factory";
+import type { CreateGolfChannel, DeleteGolfChannel, GetGolfChannel, GetGolfChannelVideo, GetGolfChannelVideos, GolfChannel, GolfChannelVideos, RemoveGolfChannelVideo, SubscribeToGolfChannel, UnsubscribeFromGolfChannel, UpdateGolfChannel, UploadGolfChannelVideo } from "../../../../declarations/backend/backend.did";
+import { authStore } from "$lib/stores/auth-store";
 
 export class GolfChannelService {
-  private actor: any;
-
+  
   constructor() {
-    this.actor = ActorFactory.createActor(
-      idlFactory,
-      process.env.BACKEND_CANISTER_ID,
-    );
+    
   }
-  //getGolfChannel
-  //getGolfChannelVideos
-  //getGolfChannelVideo
-  //createGolfChannel
-  //updateGolfChannel
-  //deleteGolfChannel
-  //subscribeToGolfChannel
-  //unsubscribeFromGolfChannel
-  //uploadGolfChannelVideo
-  //updateGolfChannelVideo
-  //removeGolfChannelVideo
+
+  async getGolfChannel(dto: GetGolfChannel): Promise<GolfChannel> {
+    const identityActor: any = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result = await identityActor.getGolfCourse(dto);
+    if (isError(result)) throw new Error("Failed to get golf course");
+    return result.ok;
+  }
+
+  async createGolfChannel(dto: CreateGolfChannel): Promise<any> {
+    try {
+      const identityActor: any = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.createGolfChannel(dto);
+      return result.ok;
+    } catch (error) {
+      console.error("Error creating golf channel:", error);
+      throw error;
+    }
+  }
+
+  async getGolfChannelVideos(dto: GetGolfChannelVideos): Promise<GolfChannelVideos> {
+    const identityActor: any = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result = await identityActor.getGolfChannelVideos(dto);
+    if (isError(result)) throw new Error("Failed to get golf channel videos");
+    return result.ok;
+  }
+
+  async getGolfChannelVideo(dto: GetGolfChannelVideo): Promise<GolfChannelVideos> {
+    const identityActor: any = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result = await identityActor.getGolfChannelVideo(dto);
+    if (isError(result)) throw new Error("Failed to get golf channel video");
+    return result.ok;
+  }
+
+  async updateGolfChannel(dto: UpdateGolfChannel): Promise<any> {
+    try {
+      const identityActor: any = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.updateGolfChannel(dto);
+      return result.ok;
+    } catch (error) {
+      console.error("Error updating golf channel:", error);
+      throw error;
+    }
+  }
+
+  async deleteGolfChannel(dto: DeleteGolfChannel): Promise<any> {
+    try {
+      const identityActor: any = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.deleteGolfChannel(dto);
+      return result.ok;
+    } catch (error) {
+      console.error("Error deleting golf channel:", error);
+      throw error;
+    }
+  }
+
+  async subscribeToGolfChannel(dto: SubscribeToGolfChannel): Promise<any> {
+    try {
+      const identityActor: any = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.subscribeToGolfChannel(dto);
+      return result.ok;
+    } catch (error) {
+      console.error("Error subscribing to golf channel:", error);
+      throw error;
+    }
+  }
+
+  async unsubscribeFromGolfChannel(dto: UnsubscribeFromGolfChannel): Promise<any> {
+    try {
+      const identityActor: any = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.unsubscribeFromGolfChannel(dto);
+      return result.ok;
+    } catch (error) {
+      console.error("Error unsubscribing from golf channel:", error);
+      throw error;
+    }
+  }
+
+  async uploadGolfChannelVideo(dto: UploadGolfChannelVideo): Promise<any> {
+    try {
+      const identityActor: any = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.uploadGolfChannelVideo(dto);
+      return result.ok;
+    } catch (error) {
+      console.error("Error uploading golf channel video:", error);
+      throw error;
+    }
+  }
+
+  async removeGolfChannelVideo(dto: RemoveGolfChannelVideo): Promise<any> {
+    try {
+      const identityActor: any = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.removeGolfChannelVideo(dto);
+      return result.ok;
+    } catch (error) {
+      console.error("Error removing golf channel video:", error);
+      throw error;
+    }
+  }
   
 }
