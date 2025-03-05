@@ -69,8 +69,8 @@ module {
       switch(existingChannel){
         case (#ok foundChannel){
 
-          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
-          switch(gameCanisterId){
+          let golfChannelCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(golfChannelCanisterId){
             case (?foundCanisterId){
               let golf_channel_canister = actor (foundCanisterId) : actor {
                 updateGolfChannel : (dto: GolfChannelQueries.GetGolfChannelVideos) -> async Result.Result<GolfChannelQueries.GolfChannelVideos, T.Error>;
@@ -103,20 +103,76 @@ module {
     };
 
     public func getGolfChannelVideo(dto : GolfChannelQueries.GetGolfChannelVideo) : async Result.Result<GolfChannelQueries.GolfChannelVideo, T.Error> {
-      return #err(#NotFound);//TODO
+      let existingGolfChannelCanisterId = golfChannelCanisterIndex.get(dto.channelId);
+      switch(existingGolfChannelCanisterId){
+        case (?foundCanisterId){
+
+          let golfChannel_canister = actor (foundCanisterId) : actor {
+            getGolfChannelVideo : (dto: GolfChannelQueries.GetGolfChannelVideo) -> async Result.Result<GolfChannelQueries.GolfChannelVideo, T.Error>;
+          };
+
+          return await golfChannel_canister.getGolfChannelVideo({ channelId = dto.channelId });
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
     };
 
-    public func isSubscribed(dto: GolfChannelQueries.GetGolfChannelVideo) : async Bool {
-      return false;//TODO
+    public func isSubscribed(dto: GolfChannelQueries.IsSubscribed) : async Bool {
+      let existingGolfChannelCanisterId = golfChannelCanisterIndex.get(dto.channelId);
+      switch(existingGolfChannelCanisterId){
+        case (?foundCanisterId){
+
+          let golfChannel_canister = actor (foundCanisterId) : actor {
+            isSubscribed : (dto: GolfChannelQueries.IsSubscribed) -> async Bool;
+          };
+
+          return await golfChannel_canister.isSubscribed({ channelId = dto.channelId; principalId = dto.principalId });
+        };
+        case (null){
+        }
+      };
+      return false;
     };
 
-    public func createGolfChannel(dto : GolfChannelCommands.CreateGolfChannel) : async Result.Result<(), T.Error> {
+    public func createGolfChannel(dto : GolfChannelCommands.CreateGolfChannel) : async Result.Result<T.GolfChannelId, T.Error> {
       
       if(Text.size(dto.name) > 100){
         return #err(#TooLong);
       };
 
-      return #ok;
+       
+      var golf_channel_canister = actor (activeCanisterId) : actor {
+        createGolfChannel : (dto: GolfChannelCommands.CreateGolfChannel) -> async Result.Result<T.GolfChannelId, T.Error>;
+        getLatestId : () -> async T.GolfChannelId;
+        isCanisterFull : () -> async Bool;
+      };
+
+      switch(activeCanisterId){
+        case "" {
+          await createNewCanister(totalGolfChannels + 1);
+          golf_channel_canister := actor (activeCanisterId) : actor {
+            createGolfChannel : (dto: GolfChannelCommands.CreateGolfChannel) -> async Result.Result<T.GolfChannelId, T.Error>;
+            getLatestId : () -> async T.GolfChannelId;
+            isCanisterFull : () -> async Bool;
+          };
+        };
+        case _ {
+          let isCanisterFull = await golf_channel_canister.isCanisterFull(); 
+          if(isCanisterFull){
+            let latestId = await golf_channel_canister.getLatestId();
+            let nextId: T.GolfChannelId = latestId + 1;
+            await createNewCanister(nextId);
+            golf_channel_canister := actor (activeCanisterId) : actor {
+              createGolfChannel : (dto: GolfChannelCommands.CreateGolfChannel) -> async Result.Result<T.GolfChannelId, T.Error>;
+              getLatestId : () -> async T.GolfChannelId;
+              isCanisterFull : () -> async Bool;
+            };
+          };
+        }
+      };
+      return await golf_channel_canister.createGolfChannel(dto);
     };
 
     public func updateGolfChannel(dto : GolfChannelCommands.UpdateGolfChannel) : async Result.Result<(), T.Error> {
@@ -125,8 +181,8 @@ module {
       switch(existingChannel){
         case (#ok foundChannel){
 
-          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
-          switch(gameCanisterId){
+          let golfChannelCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(golfChannelCanisterId){
             case (?foundCanisterId){
               let golf_channel_canister = actor (foundCanisterId) : actor {
                 updateGolfChannel : (dto: GolfChannelCommands.UpdateGolfChannel) -> async Result.Result<(), T.Error>;
@@ -147,8 +203,8 @@ module {
       switch(existingChannel){
         case (#ok foundChannel){
 
-          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
-          switch(gameCanisterId){
+          let golfChannelCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(golfChannelCanisterId){
             case (?foundCanisterId){
               let golf_channel_canister = actor (foundCanisterId) : actor {
                 deleteGolfChannel : (dto: GolfChannelCommands.DeleteGolfChannel) -> async Result.Result<(), T.Error>;
@@ -169,8 +225,8 @@ module {
       switch(existingChannel){
         case (#ok foundChannel){
 
-          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
-          switch(gameCanisterId){
+          let golfChannelCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(golfChannelCanisterId){
             case (?foundCanisterId){
               let golf_channel_canister = actor (foundCanisterId) : actor {
                 subscribeToGolfChannel : (dto: GolfChannelCommands.SubscribeToGolfChannel) -> async Result.Result<(), T.Error>;
@@ -191,8 +247,8 @@ module {
       switch(existingChannel){
         case (#ok foundChannel){
 
-          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
-          switch(gameCanisterId){
+          let golfChannelCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(golfChannelCanisterId){
             case (?foundCanisterId){
               let golf_channel_canister = actor (foundCanisterId) : actor {
                 unsubscribeFromGolfChannel : (dto: GolfChannelCommands.UnsubscribeFromGolfChannel) -> async Result.Result<(), T.Error>;
@@ -213,8 +269,8 @@ module {
       switch(existingChannel){
         case (#ok foundChannel){
 
-          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
-          switch(gameCanisterId){
+          let golfChannelCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(golfChannelCanisterId){
             case (?foundCanisterId){
               let golf_channel_canister = actor (foundCanisterId) : actor {
                 uploadGolfChannelVideo : (dto: GolfChannelCommands.UploadGolfChannelVideo) -> async Result.Result<(), T.Error>;
@@ -235,8 +291,8 @@ module {
       switch(existingChannel){
         case (#ok foundChannel){
 
-          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
-          switch(gameCanisterId){
+          let golfChannelCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(golfChannelCanisterId){
             case (?foundCanisterId){
               let golf_channel_canister = actor (foundCanisterId) : actor {
                 updateGolfChannelVideo : (dto: GolfChannelCommands.UpdateGolfChannelVideo) -> async Result.Result<(), T.Error>;
@@ -257,8 +313,8 @@ module {
       switch(existingChannel){
         case (#ok foundChannel){
 
-          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
-          switch(gameCanisterId){
+          let golfChannelCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(golfChannelCanisterId){
             case (?foundCanisterId){
               let golf_channel_canister = actor (foundCanisterId) : actor {
                 removeGolfChannelVideo : (dto: GolfChannelCommands.RemoveGolfChannelVideo) -> async Result.Result<(), T.Error>;
@@ -279,8 +335,8 @@ module {
       switch(existingChannel){
         case (#ok foundChannel){
 
-          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
-          switch(gameCanisterId){
+          let golfChannelCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(golfChannelCanisterId){
             case (?foundCanisterId){
               let golf_channel_canister = actor (foundCanisterId) : actor {
                 isChannelOwner : (dto: GolfChannelQueries.IsChannelOwner) -> async Bool;
@@ -353,6 +409,7 @@ module {
     };
 
 
+  //TODO WHEN?!
 
   private func createNewCanister(nextId: T.GolfChannelId) : async (){
     Cycles.add<system>(10_000_000_000_000);
@@ -369,7 +426,7 @@ module {
     };
 
     var new_canister = actor (canisterId) : actor {
-      updateNextId : (nextId: T.GameId) -> async ();
+      updateNextId : (nextId: T.GolfChannelId) -> async ();
     };
 
     await new_canister.updateNextId(nextId);

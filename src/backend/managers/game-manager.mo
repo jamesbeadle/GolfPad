@@ -56,7 +56,7 @@ module {
 
       switch(activeCanisterId){
         case "" {
-          await createNewCanister(1);
+          await createNewCanister(totalGames + 1);
           game_canister := actor (activeCanisterId) : actor {
             createGame : (dto: GameCommands.CreateGame) -> async Result.Result<T.GameId, T.Error>;
             getLatestId : () -> async T.GameId;

@@ -278,7 +278,7 @@ actor Self {
 
   //Golf Channel Commands:
 
-  public shared ({ caller }) func createGolfChannel(dto: GolfChannelCommands.CreateGolfChannel) : async Result.Result<(), T.Error>{
+  public shared ({ caller }) func createGolfChannel(dto: GolfChannelCommands.CreateGolfChannel) : async Result.Result<T.GolfChannelId, T.Error>{
     assert not Principal.isAnonymous(caller);
     assert dto.createdById == Principal.toText(caller);
     return await golfChannelManager.createGolfChannel(dto);
@@ -345,7 +345,8 @@ actor Self {
 
   public shared ({ caller }) func getGolfChannelVideo(dto: GolfChannelQueries.GetGolfChannelVideo) : async Result.Result<GolfChannelQueries.GolfChannelVideo, T.Error> {
     assert not Principal.isAnonymous(caller);
-    assert await golfChannelManager.isSubscribed(dto);
+    let principalId = Principal.toText(caller);
+    assert await golfChannelManager.isSubscribed({channelId = dto.channelId; principalId});
     return await golfChannelManager.getGolfChannelVideo(dto); 
   };
 

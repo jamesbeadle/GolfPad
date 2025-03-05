@@ -43,6 +43,11 @@ module GolfChannelQueries {
         principalId: T.GolferId;
         channelId: T.GolfChannelId;
     };
+
+    public type IsSubscribed = {
+        principalId: T.GolferId;
+        channelId: T.GolfChannelId;
+    };
 }
 
   
