@@ -1,7 +1,7 @@
 import type { AppStatusDTO } from "../../../../declarations/backend/backend.did";
 import { isError } from "../utils/helpers";
 import { idlFactory as backend_canister } from "../../../../declarations/backend";
-import { ActorFactory } from "$lib/utils/ActorFactory";
+import { ActorFactory } from "$lib/utils/actor.factory";
 
 export class AppService {
   constructor() {}

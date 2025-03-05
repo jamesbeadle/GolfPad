@@ -6,7 +6,7 @@ import type {
   GolfCourse,
   GolfCourses,
 } from "../../../../declarations/backend/backend.did";
-import { ActorFactory } from "$lib/utils/ActorFactory";
+import { ActorFactory } from "$lib/utils/actor.factory";
 
 export class GolfCoursesService {
   private actor: any;

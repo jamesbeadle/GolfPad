@@ -1,6 +1,5 @@
-import { ActorFactory } from "$lib/utils/ActorFactory";
+import { ActorFactory } from "$lib/utils/actor.factory";
 import { authStore } from "$lib/stores/auth-store";
-import { isError } from "$lib/utils/helpers";
 import type {
   CreateUser,
   UpdateFirstName,
@@ -15,6 +14,11 @@ export class UserService {
   constructor() {
     authStore.sync();
   }
+  async getProfile
+
+
+  //listGolfers
+  //listFriends
 
   async createUser(dto: CreateUser): Promise<any> {
     try {
@@ -35,16 +39,5 @@ export class UserService {
   async updateLastName(dto: UpdateLastName): Promise<void> {}
   async updateHomeCourse(dto: UpdateHomeCourse): Promise<void> {}
   async updateProfilePicture(dto: UpdateProfilePicture): Promise<void> {}
-
-  async isAdmin(): Promise<boolean> {
-    const identityActor = await ActorFactory.createIdentityActor(
-      authStore,
-      process.env.BACKEND_CANISTER_ID ?? "",
-    );
-    const result: any = await identityActor.isAdmin();
-    if (isError(result)) {
-      throw new Error("Failed to check is admin");
-    }
-    return result.ok;
-  }
+  async isUsernameAvailable
 }

@@ -5,10 +5,10 @@ import type {
   GetGameDTO,
   CreateGameDTO,
 } from "../../../../declarations/backend/backend.did";
-import { ActorFactory } from "$lib/utils/ActorFactory";
+import { ActorFactory } from "$lib/utils/actor.factory";
 import { authStore } from "$lib/stores/auth-store";
 
-export class GameServices {
+export class GameService {
   private actor: any;
 
   constructor() {
