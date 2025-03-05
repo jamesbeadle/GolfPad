@@ -1,34 +1,34 @@
-import Result "mo:base/Result";
-import Cycles "mo:base/ExperimentalCycles";
-import List "mo:base/List";
-import Iter "mo:base/Iter";
-import TrieMap "mo:base/TrieMap";
-import Text "mo:base/Text";
-import Bool "mo:base/Bool";
-import Principal "mo:base/Principal";
-import Buffer "mo:base/Buffer";
-import T "../data-types/types";
-import Management "../utilities/Management";
-import GolferCanister "../canister-definitions/golfer-canister";
-import Utilities "../utilities/Utilities";
-import Environment "../utilities/Environment";
 import Array "mo:base/Array";
 import Blob "mo:base/Blob";
-import Debug "mo:base/Debug";
+import Bool "mo:base/Bool";
+import Buffer "mo:base/Buffer";
+import Cycles "mo:base/ExperimentalCycles";
+import Iter "mo:base/Iter";
+import List "mo:base/List";
+import Result "mo:base/Result";
+import Text "mo:base/Text";
+import TrieMap "mo:base/TrieMap";
+import Principal "mo:base/Principal";
 import Base "mo:waterway-mops/BaseTypes";
+
+import T "../data-types/types";
+import Management "../utilities/Management";
+import Utilities "../utilities/Utilities";
+import Environment "../utilities/Environment";
+
+import GolferCanister "../canister-definitions/golfer-canister";
 import GolferCommands "../commands/golfer_commands";
 import GolferQueries "../queries/golfer_queries";
+
 import FriendRequestCommands "../commands/friend_request_commands";
 import GameCommands "../commands/game_commands";
-import ShotManager "shot-manager";
+
 import ShotCommands "../commands/shot_commands";
 import ShotQueries "../queries/shot_queries";
 
 module {
   public class GolferManager() {
 
-    private let shotManager = ShotManager.ShotManager();
-    
     private var golferCanisterIndex: TrieMap.TrieMap<T.GolferId, Base.CanisterId> = TrieMap.TrieMap<T.GolferId, Base.CanisterId>(Text.equal, Text.hash);
     private var activeCanisterId: Base.CanisterId = "";
     private var usernames : TrieMap.TrieMap<T.GolferId, Text> = TrieMap.TrieMap<T.GolferId, Text>(Text.equal, Text.hash);
@@ -42,8 +42,6 @@ module {
     };
 
     public func getProfile(dto: GolferQueries.GetProfile) : async Result.Result<GolferQueries.Profile, T.Error> {
-      Debug.print("getting profile");
-      Debug.print(debug_show dto);
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
@@ -202,32 +200,6 @@ module {
         }
       };
     };
-
-/*
-    public func resetActiveManagerCanister() : async(){
-      golferCanisterIndex := TrieMap.TrieMap<T.GolferId, Base.CanisterId>(Text.equal, Text.hash);
-      activeCanisterId := "";
-      usernames := TrieMap.TrieMap<T.GolferId, Text>(Text.equal, Text.hash);
-      uniqueGolferCanisterIds := List.nil();
-      totalGolfers := 0;
-      activeCanisterId := "";
-      await createNewCanister();
-    };
-*/
-
-    public func getCanisterIds() : [Text]{
-      return List.toArray(uniqueGolferCanisterIds);
-    };
-
-    /*
-
-    public func fixData() : async () {
-
-          golferCanisterIndex.put("mqqpz-m6umk-qbqlb-ivujq-pvfcg-pxaf7-tex5w-vciga-7viba-xq375-mae", "6w5of-uaaaa-aaaal-qsj6a-cai");
-          usernames.put("mqqpz-m6umk-qbqlb-ivujq-pvfcg-pxaf7-tex5w-vciga-7viba-xq375-mae", "beadle");
-    };
-
-    */
 
     //Update functions
     
@@ -509,20 +481,61 @@ module {
     //Shot Functions
       
     public func addShot(dto: ShotCommands.AddShot) : async Result.Result<(), T.Error> {
-      return await shotManager.addShot(dto);
+      
+      let golferCanisterId = golferCanisterIndex.get(dto.principalId);
+
+      switch(golferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            addShot : (dto: ShotCommands.AddShot) -> async Result.Result<(), T.Error>
+          };
+        
+          return await golfer_canister.addShot(dto);
+        };
+        case _ {
+          return #err(#NotFound);
+        }
+      };
     };
 
     //Golfer Shot Management Queries:
 
     public func getShot(dto: ShotQueries.GetShot) : async Result.Result<ShotQueries.Shot, T.Error> {
-      return await shotManager.getShot(dto);
+      let golferCanisterId = golferCanisterIndex.get(dto.principalId);
+
+      switch(golferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            getShot : (dto: ShotQueries.GetShot) -> async Result.Result<ShotQueries.Shot, T.Error>
+          };
+        
+          return await golfer_canister.getShot(dto);
+        };
+        case _ {
+          return #err(#NotFound);
+        }
+      };
     };
 
     public func predictShot(dto: ShotQueries.PredictShot) : async Result.Result<ShotQueries.PredictedShot, T.Error> {
-      return await shotManager.predictShot(dto);
+      let golferCanisterId = golferCanisterIndex.get(dto.principalId);
+
+      switch(golferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            predictShot : (dto: ShotQueries.PredictShot) -> async Result.Result<ShotQueries.PredictedShot, T.Error>
+          };
+        
+          return await golfer_canister.predictShot(dto);
+        };
+        case _ {
+          return #err(#NotFound);
+        }
+      };
     };
-
-
 
     public func friendRequestExists(golferPrincipalId: T.GolferId, requestedById: T.GolferId) : async Bool {
       
@@ -580,15 +593,10 @@ module {
       if (canisterId == "") {
         return;
       };
-      Debug.print("Canister ID is not empty");
       let uniqueCanisterIdBuffer = Buffer.fromArray<Base.CanisterId>(List.toArray(uniqueGolferCanisterIds));
-      Debug.print("Created Unique Canister ID Buffer");
       uniqueCanisterIdBuffer.add(canisterId);
-      Debug.print("Added Canister ID to Buffer");
       uniqueGolferCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
-      Debug.print("Set Unique Canister IDs");
       activeCanisterId := canisterId;
-      Debug.print("Set Active Canister ID");
       return;
     };
 
@@ -649,7 +657,6 @@ module {
       totalGolfers := stable_total_golfers;
     };
 
-    
   };
 };
 

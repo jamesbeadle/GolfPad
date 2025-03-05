@@ -39,22 +39,6 @@ actor class _GolferCanister() {
  
   //Public endpoints
 
-  public shared ({caller}) func getIndexes() : async [(T.GolferId, Nat8)] {
-    stable_golfer_group_indexes
-  };
-
-  public shared ({caller}) func getgg1() : async [T.Golfer] {
-    golferGroup1
-  };
-
-  public shared ({caller}) func getCaller() : async Text{
-    return Principal.toText(caller);
-  };
-
-  public shared ({caller}) func getTotalGolfers() : async Nat{
-    return totalGolfers;
-  };
-
   public shared ({caller}) func getGolfer(dto: GolferQueries.GetGolfer) : async Result.Result<GolferQueries.Golfer, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
@@ -383,33 +367,6 @@ actor class _GolferCanister() {
       };
     };
   };
-
-  public shared ({caller}) func deleteGolfer(golferPrincipalId: T.GolferId, dto: GolferCommands.DeleteGolfer) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let backendPrincipalId = Principal.toText(caller);
-    assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
-
-    var groupIndex: ?Nat8 = null;
-    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
-      if(golferGroupIndex.0 == dto.principalId){
-        groupIndex := ?golferGroupIndex.1;
-      }
-    };
-    switch(groupIndex){
-      case (null){ return #err(#NotFound) };
-      case (?foundGroupIndex){
-        let golfer = findGolfer(foundGroupIndex, dto.principalId);
-        switch(golfer){
-          case (?_){
-            removeGolfer(foundGroupIndex, dto.principalId);
-          };
-          case (null){
-            return #err(#NotFound);
-          }
-        }
-      };
-    };
-  };
   
   public shared ({caller}) func isCanisterFull() : async Bool{
     assert not Principal.isAnonymous(caller);
@@ -676,7 +633,7 @@ actor class _GolferCanister() {
     };
   };
 
-  public shared ({caller}) func rejectFriendRequest(golferPrincipalId: T.GolferId, dto: FriendRequestCommands.RejectFriendRequest) : async Result.Result<(), T.Error>{
+  public shared ({caller}) func rejectFriendRequest(dto: FriendRequestCommands.RejectFriendRequest) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -728,7 +685,7 @@ actor class _GolferCanister() {
     };
   };
 
-  public shared ({caller}) func sendFriendRequest(golferPrincipalId: T.GolferId, dto: FriendRequestCommands.SendFriendRequest) : async Result.Result<(), T.Error>{
+  public shared ({caller}) func sendFriendRequest(dto: FriendRequestCommands.SendFriendRequest) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -750,7 +707,7 @@ actor class _GolferCanister() {
           case (?foundGolfer){
 
             let friendRequestsBuffer = Buffer.fromArray<T.FriendRequest>(foundGolfer.friendRequests);
-            friendRequestsBuffer.add({ requestedBy = golferPrincipalId; requestedOn = Time.now() });
+            friendRequestsBuffer.add({ requestedBy = dto.principalId; requestedOn = Time.now() });
             let updatedGolfer: T.Golfer = {
               principalId = foundGolfer.principalId;
               username = foundGolfer.username;
@@ -815,8 +772,6 @@ actor class _GolferCanister() {
     return false;
   };
   
-  //todo: remove game invite
-
   //Private functions:
 
   private func findGolfer(golferGroupIndex: Nat8, golferPrincipalId: T.GolferId) : ?T.Golfer {
@@ -1082,75 +1037,6 @@ actor class _GolferCanister() {
           } else {
             return golfer;
           };
-        });
-      };
-      case _ {
-        return #err(#NotFound);
-      }
-    };
-    return #ok();
-  };
-
-  private func removeGolfer(golferGroupIndex: Nat8, removeGolferId: T.GolferId) : Result.Result<(), T.Error>{
-     switch(golferGroupIndex){
-      case 0{
-        golferGroup1 := Array.filter<T.Golfer>(golferGroup1, func(golfer: T.Golfer){
-          golfer.principalId != removeGolferId
-        });
-      };
-      case 1{
-        golferGroup2 := Array.filter<T.Golfer>(golferGroup2, func(golfer: T.Golfer){
-          golfer.principalId != removeGolferId
-        });
-      };
-      case 2{
-        golferGroup3 := Array.filter<T.Golfer>(golferGroup3, func(golfer: T.Golfer){
-          golfer.principalId != removeGolferId
-        });
-      };
-      case 3{
-        golferGroup4 := Array.filter<T.Golfer>(golferGroup4, func(golfer: T.Golfer){
-          golfer.principalId != removeGolferId
-        });
-      };
-      case 4{
-        golferGroup5 := Array.filter<T.Golfer>(golferGroup5, func(golfer: T.Golfer){
-          golfer.principalId != removeGolferId
-        });
-      };
-      case 5{
-        golferGroup6 := Array.filter<T.Golfer>(golferGroup6, func(golfer: T.Golfer){
-          golfer.principalId != removeGolferId
-        });
-      };
-      case 6{
-        golferGroup7 := Array.filter<T.Golfer>(golferGroup7, func(golfer: T.Golfer){
-          golfer.principalId != removeGolferId
-        });
-      };
-      case 7{
-        golferGroup8 := Array.filter<T.Golfer>(golferGroup8, func(golfer: T.Golfer){
-          golfer.principalId != removeGolferId
-        });
-      };
-      case 8{
-        golferGroup9 := Array.filter<T.Golfer>(golferGroup9, func(golfer: T.Golfer){
-          golfer.principalId != removeGolferId
-        });
-      };
-      case 9{
-        golferGroup10 := Array.filter<T.Golfer>(golferGroup10, func(golfer: T.Golfer){
-          golfer.principalId != removeGolferId
-        });
-      };
-      case 10{
-        golferGroup11 := Array.filter<T.Golfer>(golferGroup11, func(golfer: T.Golfer){
-          golfer.principalId != removeGolferId
-        });
-      };
-      case 11{
-        golferGroup12 := Array.filter<T.Golfer>(golferGroup12, func(golfer: T.Golfer){
-          golfer.principalId != removeGolferId
         });
       };
       case _ {

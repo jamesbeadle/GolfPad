@@ -14,24 +14,35 @@ module GolfChannelQueries {
     };
 
     public type GetGolfChannel = {
-        golfChannelId: T.GolfChannelId;
+        channelId: T.GolfChannelId;
     };
 
     public type GolfChannel = {
-
+        name: Text;
+        channelId: T.GolfChannelId;
     };
 
     public type GetGolfChannelVideos = {
+        channelId: T.GolfChannelId;
         page: Nat;
     };
 
-    public type GolfChannelVideos = {};
-
-    public type GetGolfChannelVideo = {
-
+    public type GolfChannelVideos = {
+        channelId: T.GolfChannelId;
     };
 
-    public type GolfChannelVideo = {};
+    public type GetGolfChannelVideo = {
+        channelId: T.GolfChannelId;
+    };
+
+    public type GolfChannelVideo = {
+        channelId: T.GolfChannelId;
+    };
+
+    public type IsChannelOwner = {
+        principalId: T.GolferId;
+        channelId: T.GolfChannelId;
+    };
 }
 
   

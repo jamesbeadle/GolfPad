@@ -1,6 +1,6 @@
 import Base "mo:waterway-mops/BaseTypes";
+import Blob "mo:base/Blob";
 import GolfEnums "golf_enums";
-
 
 module Types {
 
@@ -38,13 +38,6 @@ module Types {
   };
 
 
-
-
-
-
-
-
-
   public type Golfer = {
     principalId: GolferId;
     username: Text;
@@ -57,8 +50,6 @@ module Types {
     profilePictureFileExtension: Text;
     favouriteGolfCourseIds: [GolfCourseId];
     shots: [GolfShot];
-
-
     upcomingGames: [GameId];
     activeGames: [GameId];
     completedGames: [GameId];
@@ -170,7 +161,13 @@ module Types {
     number: Nat8;
     tees: [TeeInfo];
     name: Text;
-    images: [(Base.CanisterId, ImageId)];
+    images: [HoleImage];
+  };
+
+  public type HoleImage = {
+    uploaded: Int;
+    owner: GolferId;
+    image: Blob;
   };
 
   public type TeeInfo = {

@@ -1,21 +1,21 @@
-import Result "mo:base/Result";
-import List "mo:base/List";
-import TrieMap "mo:base/TrieMap";
-import Option "mo:base/Option";
-import Text "mo:base/Text";
-import Iter "mo:base/Iter";
+import Array "mo:base/Array";
 import Buffer "mo:base/Buffer";
+import Cycles "mo:base/ExperimentalCycles";
+import Iter "mo:base/Iter";
+import List "mo:base/List";
+import Option "mo:base/Option";
 import Principal "mo:base/Principal";
-import T "../data-types/types";
-import Utilities "../utilities/Utilities";
-import Management "../utilities/Management";
+import Result "mo:base/Result";
+import TrieMap "mo:base/TrieMap";
+import Text "mo:base/Text";
+
+import Base "mo:waterway-mops/BaseTypes";
 import GolfCoursesCanister "../canister-definitions/golf-courses-canister";
 import Environment "../utilities/Environment";
-import Cycles "mo:base/ExperimentalCycles";
-import Array "mo:base/Array";
-import Base "mo:waterway-mops/BaseTypes";
-import GolferCommands "../commands/golfer_commands";
-import GolferQueries "../queries/golfer_queries";
+import Management "../utilities/Management";
+import T "../data-types/types";
+import Utilities "../utilities/Utilities";
+
 import GolfCourseQueries "../queries/golf_course_queries";
 import GolfCourseCommands "../commands/golf_course_commands";
 
@@ -211,34 +211,32 @@ module {
       totalGolfCourses := stable_total_golf_courses;
     };
 
+    private func createNewCanister(nextId: T.GolfCourseId) : async (){
+      Cycles.add<system>(10_000_000_000_000);
+      let canister = await GolfCoursesCanister._GolfCoursesCanister();
+      let IC : Management.Management = actor (Environment.Default);
+      let principal = ?Principal.fromText(Environment.BACKEND_CANISTER_ID);
+      let _ = await Utilities.updateCanister_(canister, principal, IC);
 
+      let canister_principal = Principal.fromActor(canister);
+      let canisterId = Principal.toText(canister_principal);
 
-  private func createNewCanister(nextId: T.GolfCourseId) : async (){
-    Cycles.add<system>(10_000_000_000_000);
-    let canister = await GolfCoursesCanister._GolfCoursesCanister();
-    let IC : Management.Management = actor (Environment.Default);
-    let principal = ?Principal.fromText(Environment.BACKEND_CANISTER_ID);
-    let _ = await Utilities.updateCanister_(canister, principal, IC);
+      if (canisterId == "") {
+        return;
+      };
 
-    let canister_principal = Principal.fromActor(canister);
-    let canisterId = Principal.toText(canister_principal);
+      var new_canister = actor (canisterId) : actor {
+        updateNextId : (nextId: T.GameId) -> async ();
+      };
 
-    if (canisterId == "") {
+      await new_canister.updateNextId(nextId);
+
+      let uniqueCanisterIdBuffer = Buffer.fromArray<Base.CanisterId>(List.toArray(uniqueGolfCourseCanisterIds));
+      uniqueCanisterIdBuffer.add(canisterId);
+      uniqueGolfCourseCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
+      activeCanisterId := canisterId;
       return;
     };
-
-    var new_canister = actor (canisterId) : actor {
-      updateNextId : (nextId: T.GameId) -> async ();
-    };
-
-    await new_canister.updateNextId(nextId);
-
-    let uniqueCanisterIdBuffer = Buffer.fromArray<Base.CanisterId>(List.toArray(uniqueGolfCourseCanisterIds));
-    uniqueCanisterIdBuffer.add(canisterId);
-    uniqueGolfCourseCanisterIds := List.fromArray(Buffer.toArray(uniqueCanisterIdBuffer));
-    activeCanisterId := canisterId;
-    return;
-  };
   };
 };
 

@@ -57,14 +57,14 @@ actor class _GolfChannelsCanister() {
 
     var groupIndex: ?Nat8 = null;
     for (golfChannelGroupIndex in Iter.fromArray(stable_golf_channel_group_indexes)) {
-      if(golfChannelGroupIndex.0 == dto.golfChannelId){
+      if(golfChannelGroupIndex.0 == dto.channelId){
         groupIndex := ?golfChannelGroupIndex.1;
       }
     };
     switch(groupIndex){
       case (null){ return #err(#NotFound); };
       case (?foundGroupIndex){
-        let golfChannel = findGolfChannel(foundGroupIndex, dto.golfChannelId);
+        let golfChannel = findGolfChannel(foundGroupIndex, dto.channelId);
         switch(golfChannel){
           case (?foundGolfChannel){
             return #ok({

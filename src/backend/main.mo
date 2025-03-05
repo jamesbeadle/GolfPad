@@ -223,35 +223,35 @@ actor Self {
   public shared ({ caller }) func beginGame(dto: GameCommands.BeginGame) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert await gameManager.isGameMember(principalId);
+    assert await gameManager.isGameMember(dto.gameId, principalId);
     return await gameManager.beginGame(dto);
   };
 
   public shared ({ caller }) func updateGame(dto: GameCommands.UpdateGame) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert await gameManager.isGameMember(principalId);
+    assert await gameManager.isGameMember(dto.gameId, principalId);
     return await gameManager.updateGame(dto);
   };
 
   public shared ({ caller }) func deleteGame(dto: GameCommands.DeleteGame) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert await gameManager.isGameOwner(principalId);
+    assert await gameManager.isGameOwner(dto.gameId, principalId);
     return await gameManager.deleteGame(dto);
   };
   
   public shared ({ caller }) func addGameScore(dto: GameCommands.AddGameScore) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert await gameManager.isGameMember(principalId);
+    assert await gameManager.isGameMember(dto.gameId, principalId);
     return await gameManager.addGameScore(dto);
   };
   
   public shared ({ caller }) func inviteGolfers(dto: GameCommands.InviteGolfers) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert await gameManager.isGameOwner(principalId);
+    assert await gameManager.isGameOwner(dto.gameId, principalId);
     return await gameManager.inviteGolfers(dto);
   };
   
@@ -272,7 +272,7 @@ actor Self {
   public shared ({ caller }) func getGame(dto: GameQueries.GetGame) : async Result.Result<GameQueries.Game, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert await gameManager.isGameMember(principalId);
+    assert await gameManager.isGameMember(dto.gameId, principalId);
     return await gameManager.getGame(dto);
   };
 
@@ -287,14 +287,14 @@ actor Self {
   public shared ({ caller }) func updateGolfChannel(dto: GolfChannelCommands.UpdateGolfChannel) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert await golfChannelManager.isChannelOwner(principalId);
+    assert await golfChannelManager.isChannelOwner({principalId; channelId = dto.channelId});
     return await golfChannelManager.updateGolfChannel(dto);
   };
 
   public shared ({ caller }) func deleteGolfChannel(dto: GolfChannelCommands.DeleteGolfChannel) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert await golfChannelManager.isChannelOwner(principalId);
+    assert await golfChannelManager.isChannelOwner({ channelId = dto.channelId; principalId; });
     return await golfChannelManager.deleteGolfChannel(dto);
   };
 
@@ -313,21 +313,21 @@ actor Self {
   public shared ({ caller }) func uploadGolfChannelVideo(dto: GolfChannelCommands.UploadGolfChannelVideo) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert await golfChannelManager.isChannelOwner(principalId);
+    assert await golfChannelManager.isChannelOwner({ channelId = dto.channelId; principalId; });
     return await golfChannelManager.uploadGolfChannelVideo(dto);
   };
 
   public shared ({ caller }) func updateGolfChannelVideo(dto: GolfChannelCommands.UpdateGolfChannelVideo) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert await golfChannelManager.isChannelOwner(principalId);
+    assert await golfChannelManager.isChannelOwner({ channelId = dto.channelId; principalId; });
     return await golfChannelManager.updateGolfChannelVideo(dto);
   };
 
   public shared ({ caller }) func removeGolfChannelVideo(dto: GolfChannelCommands.RemoveGolfChannelVideo) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert await golfChannelManager.isChannelOwner(principalId);
+    assert await golfChannelManager.isChannelOwner({ channelId = dto.channelId; principalId; });
     return await golfChannelManager.removeGolfChannelVideo(dto);
   };
 

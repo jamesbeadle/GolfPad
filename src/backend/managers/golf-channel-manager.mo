@@ -11,7 +11,6 @@ import Utilities "../utilities/Utilities";
 import Management "../utilities/Management";
 import Environment "../utilities/Environment";
 import Cycles "mo:base/ExperimentalCycles";
-import Array "mo:base/Array";
 import Base "mo:waterway-mops/BaseTypes";
 import GolfChannelQueries "../queries/golf_channel_queries";
 import GolfChannelCommands "../commands/golf_channel_commands";
@@ -46,7 +45,7 @@ module {
       let channelsBuffer = Buffer.fromArray<GolfChannelQueries.GolfChannel>([]);
 
       for (entry in Iter.fromList(paginatedEntries)){
-        let channel = await getGolfChannel({ golfChannelId = entry.0 });
+        let channel = await getGolfChannel({ channelId = entry.0 });
         switch(channel){
           case (#ok foundChannel){
             channelsBuffer.add(foundChannel);
@@ -65,11 +64,29 @@ module {
     };
 
     public func getGolfChannelVideos(dto : GolfChannelQueries.GetGolfChannelVideos) : async Result.Result<GolfChannelQueries.GolfChannelVideos, T.Error> {
-      return #err(#NotFound);//TODO
+      let existingChannel = await getChannel({ channelId = dto.channelId });
+
+      switch(existingChannel){
+        case (#ok foundChannel){
+
+          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let golf_channel_canister = actor (foundCanisterId) : actor {
+                updateGolfChannel : (dto: GolfChannelQueries.GetGolfChannelVideos) -> async Result.Result<GolfChannelQueries.GolfChannelVideos, T.Error>;
+              };
+              return await golf_channel_canister.updateGolfChannel(dto);
+            };
+            case _ { }
+          };  
+          return #err(#NotFound);
+        };
+        case (#err _) { return #err(#NotFound) };
+      };
     };
 
     private func getChannel(dto: GolfChannelQueries.GetGolfChannel) : async Result.Result<GolfChannelQueries.GolfChannel, T.Error> {
-      let existingGolfChannelCanisterId = golfChannelCanisterIndex.get(dto.golfChannelId);
+      let existingGolfChannelCanisterId = golfChannelCanisterIndex.get(dto.channelId);
       switch(existingGolfChannelCanisterId){
         case (?foundCanisterId){
 
@@ -77,7 +94,7 @@ module {
             getGolfChannel : (dto: GolfChannelQueries.GetGolfChannel) -> async Result.Result<GolfChannelQueries.GolfChannel, T.Error>;
           };
 
-          return await golfChannel_canister.getGolfChannel({ golfChannelId = dto.golfChannelId });
+          return await golfChannel_canister.getGolfChannel({ channelId = dto.channelId });
         };
         case (null){
           return #err(#NotFound);
@@ -103,35 +120,179 @@ module {
     };
 
     public func updateGolfChannel(dto : GolfChannelCommands.UpdateGolfChannel) : async Result.Result<(), T.Error> {
-      return #err(#NotFound);//TODO
+      let existingChannel = await getChannel({ channelId = dto.channelId });
+
+      switch(existingChannel){
+        case (#ok foundChannel){
+
+          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let golf_channel_canister = actor (foundCanisterId) : actor {
+                updateGolfChannel : (dto: GolfChannelCommands.UpdateGolfChannel) -> async Result.Result<(), T.Error>;
+              };
+              return await golf_channel_canister.updateGolfChannel(dto);
+            };
+            case _ { }
+          };  
+          return #err(#NotFound);
+        };
+        case (#err _) { return #err(#NotFound) };
+      };
     };
 
     public func deleteGolfChannel(dto : GolfChannelCommands.DeleteGolfChannel) : async Result.Result<(), T.Error> {
-      return #err(#NotFound);//TODO
+      let existingChannel = await getChannel({ channelId = dto.channelId });
+
+      switch(existingChannel){
+        case (#ok foundChannel){
+
+          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let golf_channel_canister = actor (foundCanisterId) : actor {
+                deleteGolfChannel : (dto: GolfChannelCommands.DeleteGolfChannel) -> async Result.Result<(), T.Error>;
+              };
+              return await golf_channel_canister.deleteGolfChannel(dto);
+            };
+            case _ { }
+          };  
+          return #err(#NotFound);
+        };
+        case (#err _) { return #err(#NotFound) };
+      };
     };
 
     public func subscribeToGolfChannel(dto : GolfChannelCommands.SubscribeToGolfChannel) : async Result.Result<(), T.Error> {
-      return #err(#NotFound);//TODO
+      let existingChannel = await getChannel({ channelId = dto.channelId });
+
+      switch(existingChannel){
+        case (#ok foundChannel){
+
+          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let golf_channel_canister = actor (foundCanisterId) : actor {
+                subscribeToGolfChannel : (dto: GolfChannelCommands.SubscribeToGolfChannel) -> async Result.Result<(), T.Error>;
+              };
+              return await golf_channel_canister.subscribeToGolfChannel(dto);
+            };
+            case _ { }
+          };  
+          return #err(#NotFound);
+        };
+        case (#err _) { return #err(#NotFound) };
+      };
     };
 
     public func unsubscribeFromGolfChannel(dto : GolfChannelCommands.UnsubscribeFromGolfChannel) : async Result.Result<(), T.Error> {
-      return #err(#NotFound);//TODO
+      let existingChannel = await getChannel({ channelId = dto.channelId });
+
+      switch(existingChannel){
+        case (#ok foundChannel){
+
+          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let golf_channel_canister = actor (foundCanisterId) : actor {
+                unsubscribeFromGolfChannel : (dto: GolfChannelCommands.UnsubscribeFromGolfChannel) -> async Result.Result<(), T.Error>;
+              };
+              return await golf_channel_canister.unsubscribeFromGolfChannel(dto);
+            };
+            case _ { }
+          };  
+          return #err(#NotFound);
+        };
+        case (#err _) { return #err(#NotFound) };
+      };
     };
 
     public func uploadGolfChannelVideo(dto : GolfChannelCommands.UploadGolfChannelVideo) : async Result.Result<(), T.Error> {
-      return #err(#NotFound);//TODO
+      let existingChannel = await getChannel({ channelId = dto.channelId });
+
+      switch(existingChannel){
+        case (#ok foundChannel){
+
+          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let golf_channel_canister = actor (foundCanisterId) : actor {
+                uploadGolfChannelVideo : (dto: GolfChannelCommands.UploadGolfChannelVideo) -> async Result.Result<(), T.Error>;
+              };
+              return await golf_channel_canister.uploadGolfChannelVideo(dto);
+            };
+            case _ { }
+          };  
+          return #err(#NotFound);
+        };
+        case (#err _) { return #err(#NotFound) };
+      };
     };
 
     public func updateGolfChannelVideo(dto : GolfChannelCommands.UpdateGolfChannelVideo) : async Result.Result<(), T.Error> {
-      return #err(#NotFound);//TODO
+      let existingChannel = await getChannel({ channelId = dto.channelId });
+
+      switch(existingChannel){
+        case (#ok foundChannel){
+
+          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let golf_channel_canister = actor (foundCanisterId) : actor {
+                updateGolfChannelVideo : (dto: GolfChannelCommands.UpdateGolfChannelVideo) -> async Result.Result<(), T.Error>;
+              };
+              return await golf_channel_canister.updateGolfChannelVideo(dto);
+            };
+            case _ { }
+          };  
+          return #err(#NotFound);
+        };
+        case (#err _) { return #err(#NotFound) };
+      };
     };
 
     public func removeGolfChannelVideo(dto : GolfChannelCommands.RemoveGolfChannelVideo) : async Result.Result<(), T.Error> {
-      return #err(#NotFound);//TODO
+      let existingChannel = await getChannel({ channelId = dto.channelId });
+
+      switch(existingChannel){
+        case (#ok foundChannel){
+
+          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let golf_channel_canister = actor (foundCanisterId) : actor {
+                removeGolfChannelVideo : (dto: GolfChannelCommands.RemoveGolfChannelVideo) -> async Result.Result<(), T.Error>;
+              };
+              return await golf_channel_canister.removeGolfChannelVideo(dto);
+            };
+            case _ { }
+          };  
+          return #err(#NotFound);
+        };
+        case (#err _) { return #err(#NotFound) };
+      };
     };
 
-    public func isChannelOwner(principalId: T.GolferId) : async Bool{
-      return false; //TODO
+    public func isChannelOwner(dto: GolfChannelQueries.IsChannelOwner) : async Bool{
+      let existingChannel = await getChannel({ channelId = dto.channelId });
+
+      switch(existingChannel){
+        case (#ok foundChannel){
+
+          let gameCanisterId = golfChannelCanisterIndex.get(foundChannel.channelId);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let golf_channel_canister = actor (foundCanisterId) : actor {
+                isChannelOwner : (dto: GolfChannelQueries.IsChannelOwner) -> async Bool;
+              };
+              return await golf_channel_canister.isChannelOwner(dto);
+            };
+            case _ { }
+          };  
+        };
+        case (#err _) { };
+      };
+      return false;
     };
 
     //stable storage getters and setters

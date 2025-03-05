@@ -5,13 +5,14 @@ import Iter "mo:base/Iter";
 import Array "mo:base/Array";
 import TrieMap "mo:base/TrieMap";
 import Principal "mo:base/Principal";
+import Cycles "mo:base/ExperimentalCycles";
+import Option "mo:base/Option";
+
 import T "../data-types/types";
 import Management "../utilities/Management";
 import GameCanister "../canister-definitions/game-canister";
 import Utilities "../utilities/Utilities";
 import Environment "../utilities/Environment";
-import Cycles "mo:base/ExperimentalCycles";
-import Option "mo:base/Option";
 
 import Debug "mo:base/Debug";
 import Base "mo:waterway-mops/BaseTypes";
@@ -94,19 +95,32 @@ module {
       return #err(#NotFound);
     };
 
-    public func isGameOwner(principalId: Base.PrincipalId) : async Bool {
-      return false;//TODO
+    public func isGameOwner(gameId: T.GameId, principalId: T.GolferId) : async Bool {
+      let gameCanisterId = gameCanisterIndex.get(gameId);
+      switch(gameCanisterId){
+        case (?foundCanisterId){
+          let game_canister = actor (foundCanisterId) : actor {
+            isGameOwner : (gameId: T.GameId, principalId: T.GolferId) -> async Bool;
+          };
+          return await game_canister.isGameOwner(gameId, principalId);
+        };
+        case _ { }
+      };     
+      return false;
     };
 
-    public func isGameMember(principalId: Base.PrincipalId) : async Bool {
-
-/*
-          if(dto.princpial != foundGame.playerIds[0]){
-            return #err(#NotAllowed);
+    public func isGameMember(gameId: T.GameId, principalId: T.GolferId) : async Bool {
+      let gameCanisterId = gameCanisterIndex.get(gameId);
+      switch(gameCanisterId){
+        case (?foundCanisterId){
+          let game_canister = actor (foundCanisterId) : actor {
+            isGameMember : (gameId: T.GameId, principalId: Base.PrincipalId) -> async Bool;
           };
-          */
-
-      return false;//TODO
+          return await game_canister.isGameMember(gameId, principalId);
+        };
+        case _ { }
+      };     
+      return false;
     };
 
     public func inviteGolfers(dto: GameCommands.InviteGolfers) : async Result.Result<(), T.Error>{
@@ -211,11 +225,55 @@ module {
     };
 
     public func updateGame(dto: GameCommands.UpdateGame) : async Result.Result<(), T.Error> {
-      return #err(#NotFound)//TODO
+      let existingGame = await getGame({ gameId = dto.gameId });
+
+      switch(existingGame){
+        case (#ok foundGame){
+          
+          if(foundGame.status != #Unplayed){
+            return #err(#NotAllowed);
+          };
+
+          let gameCanisterId = gameCanisterIndex.get(foundGame.id);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let game_canister = actor (foundCanisterId) : actor {
+                updateGame : (dto: GameCommands.UpdateGame) -> async Result.Result<(), T.Error>;
+              };
+              return await game_canister.updateGame(dto);
+            };
+            case _ { }
+          };  
+          return #err(#NotFound);
+        };
+        case (#err _) { return #err(#NotFound) };
+      };
     };
 
     public func deleteGame(dto: GameCommands.DeleteGame) : async Result.Result<(), T.Error> {
-      return #err(#NotFound)//TODO
+      let existingGame = await getGame({ gameId = dto.gameId });
+
+      switch(existingGame){
+        case (#ok foundGame){
+          
+          if(foundGame.status != #Unplayed){
+            return #err(#NotAllowed);
+          };
+
+          let gameCanisterId = gameCanisterIndex.get(foundGame.id);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let game_canister = actor (foundCanisterId) : actor {
+                deleteGame : (dto: GameCommands.DeleteGame) -> async Result.Result<(), T.Error>;
+              };
+              return await game_canister.deleteGame(dto);
+            };
+            case _ { }
+          };  
+          return #err(#NotFound);
+        };
+        case (#err _) { return #err(#NotFound) };
+      };
     };
 
     private func createNewCanister(nextId: T.GameId) : async (){
@@ -288,8 +346,6 @@ module {
     public func setStableTotalGames(stable_total_games : Nat) : () {
       totalGames := stable_total_games;
     };
-
-    
 
   };
 };
