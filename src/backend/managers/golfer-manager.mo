@@ -25,6 +25,7 @@ import GameCommands "../commands/game_commands";
 
 import ShotCommands "../commands/shot_commands";
 import ShotQueries "../queries/shot_queries";
+import FriendRequestQueries "../queries/friend_request_queries";
 
 module {
   public class GolferManager() {
@@ -184,13 +185,13 @@ module {
       };
     };
 
-    public func listFriendRequests(dto: GolferQueries.ListFriendRequests) : async Result.Result<GolferQueries.FriendRequests, T.Error> {
+    public func listFriendRequests(dto: FriendRequestQueries.ListFriendRequests) : async Result.Result<FriendRequestQueries.FriendRequests, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            listFriendRequests : (dto: GolferQueries.ListFriendRequests) -> async Result.Result<GolferQueries.FriendRequests, T.Error>;
+            listFriendRequests : (dto: FriendRequestQueries.ListFriendRequests) -> async Result.Result<FriendRequestQueries.FriendRequests, T.Error>;
           };
 
           return await golfer_canister.listFriendRequests(dto);

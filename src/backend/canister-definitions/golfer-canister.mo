@@ -14,6 +14,7 @@ import Debug "mo:base/Debug";
 import GolferCommands "../commands/golfer_commands";
 import GolferQueries "../queries/golfer_queries";
 import FriendRequestCommands "../commands/friend_request_commands";
+import FriendRequestQueries "../queries/friend_request_queries";
 
 actor class _GolferCanister() {
 
@@ -521,8 +522,8 @@ actor class _GolferCanister() {
             let droppedEntries = List.drop<T.FriendRequest>(List.fromArray(foundGolfer.friendRequests), dto.offset);
             let paginatedEntries = List.take<T.FriendRequest>(droppedEntries, dto.limit);
 
-            let friendRequests: GolferQueries.FriendRequests = {
-              friendRequests = Array.map<T.FriendRequest, GolferQueries.FriendRequest>(List.toArray(paginatedEntries), 
+            let friendRequests: FriendRequestQueries.FriendRequests = {
+              friendRequests = Array.map<T.FriendRequest, FriendRequestQueries.FriendRequest>(List.toArray(paginatedEntries), 
                 func(friendRequest: T.FriendRequest){
                   return {
                     principalId = friendRequest.requestedBy;
@@ -538,7 +539,7 @@ actor class _GolferCanister() {
     };
   };
   
-  public shared ({caller}) func listFriendRequests(dto: GolferQueries.ListFriendRequests) : async Result.Result<GolferQueries.FriendRequests, T.Error>{
+  public shared ({caller}) func listFriendRequests(dto: FriendRequestQueries.ListFriendRequests) : async Result.Result<FriendRequestQueries.FriendRequests, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -561,8 +562,8 @@ actor class _GolferCanister() {
             let droppedEntries = List.drop<T.FriendRequest>(List.fromArray(foundGolfer.friendRequests), dto.offset);
             let paginatedEntries = List.take<T.FriendRequest>(droppedEntries, dto.limit);
 
-            let friendRequests: GolferQueries.FriendRequests = {
-              friendRequests = Array.map<T.FriendRequest, GolferQueries.FriendRequest>(List.toArray(paginatedEntries), 
+            let friendRequests: FriendRequestQueries.FriendRequests = {
+              friendRequests = Array.map<T.FriendRequest, FriendRequestQueries.FriendRequest>(List.toArray(paginatedEntries), 
                 func(friendRequest: T.FriendRequest){
                   return {
                     principalId = friendRequest.requestedBy;
@@ -739,7 +740,7 @@ actor class _GolferCanister() {
     };
   };
   
-  public shared ({caller}) func friendRequestExists(dto: GolferQueries.FriendRequestExists) : async Bool{
+  public shared ({caller}) func friendRequestExists(dto: FriendRequestQueries.FriendRequestExists) : async Bool{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -1089,6 +1090,7 @@ actor class _GolferCanister() {
       }
     }
   };
+
   system func postupgrade() {
   };
 

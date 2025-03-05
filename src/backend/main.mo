@@ -34,6 +34,7 @@ import GolferCanister "canister-definitions/golfer-canister";
 import GolfCoursesCanister "canister-definitions/golf-courses-canister";
 import GameCanister "canister-definitions/game-canister";
 import GolfChannelsCanister "canister-definitions/golf-channels-canister";
+import FriendRequestQueries "queries/friend_request_queries";
 
 actor Self {
 
@@ -184,7 +185,7 @@ actor Self {
 
   //Golfer Friend Request Queries:
 
-  public shared ({ caller }) func listFriendRequests(dto: GolferQueries.ListFriendRequests) : async Result.Result<GolferQueries.FriendRequests, T.Error> {
+  public shared ({ caller }) func listFriendRequests(dto: FriendRequestQueries.ListFriendRequests) : async Result.Result<FriendRequestQueries.FriendRequests, T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.listFriendRequests(dto);
@@ -356,9 +357,7 @@ actor Self {
   private stable var stable_golf_course_canister_index: [(T.GolfCourseId, Base.CanisterId)] = [];
   private stable var stable_game_canister_index: [(T.GameId, Base.CanisterId)] = [];
   private stable var stable_golf_channel_canister_index: [(T.GolfChannelId, Base.CanisterId)] = [];
-  
-  //todo add golf channel
-  
+    
   private stable var stable_active_golfer_canister_id: Base.CanisterId = "";
   private stable var stable_active_golf_course_canister_id: Base.CanisterId = "";
   private stable var stable_active_game_canister_id: Base.CanisterId = "";

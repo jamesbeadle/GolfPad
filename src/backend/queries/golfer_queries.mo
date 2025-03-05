@@ -53,22 +53,6 @@ module GolferQueries {
         handicap: ?T.Handicap;
     };
     
-    public type ListFriendRequests = {
-        principalId: T.GolferId;
-        totalEntries: Nat;
-        limit: Nat;
-        offset: Nat;
-    };
-
-    public type FriendRequests = {
-        friendRequests: [FriendRequest];
-    };
-
-    public type FriendRequest = {
-        principalId: T.GolferId;
-        requestTime: Int;
-    };
-    
     public type ListFriends = {
         principalId: T.GolferId;
         totalEntries: Nat;
@@ -98,11 +82,6 @@ module GolferQueries {
         activeGames: [T.GameId];
         completedGames: [T.GameId];
         gameInvites: [T.GameInvite];
-    };
-
-    public type FriendRequestExists = {
-        principalId: T.GolferId;
-        requestedById: T.GolferId;
     };
 
     public type GetGameSummaries = {

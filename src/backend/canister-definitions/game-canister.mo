@@ -11,7 +11,6 @@ import Environment "../utilities/Environment";
 import T "../data-types/types";
 import GameCommands "../commands/game_commands";
 import GameQueries "../queries/game_queries";
-import GolfCourseQueries "../queries/golf_course_queries";
 
 actor class _GameCanister() {
 
