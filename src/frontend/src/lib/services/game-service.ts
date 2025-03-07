@@ -4,9 +4,7 @@ import { ActorFactory } from "$lib/utils/actor.factory";
 import { authStore } from "$lib/stores/auth-store";
 
 export class GameService {
-  
-  constructor() {
-  }
+  constructor() {}
 
   async getGame(gameId: number): Promise<GameDTO> {
     try {

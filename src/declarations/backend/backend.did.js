@@ -59,13 +59,16 @@ export const idlFactory = ({ IDL }) => {
     colour: IDL.Text,
     strokeIndex: IDL.Nat8,
   });
-  const CanisterId = IDL.Text;
-  const ImageId = IDL.Nat;
+  const HoleImage = IDL.Record({
+    owner: GolferId,
+    uploaded: IDL.Int,
+    image: IDL.Vec(IDL.Nat8),
+  });
   const Hole = IDL.Record({
     name: IDL.Text,
     tees: IDL.Vec(TeeInfo),
     number: IDL.Nat8,
-    images: IDL.Vec(IDL.Tuple(CanisterId, ImageId)),
+    images: IDL.Vec(HoleImage),
   });
   const TeeGroup = IDL.Record({
     added: IDL.Int,
@@ -84,11 +87,13 @@ export const idlFactory = ({ IDL }) => {
     courseId: GolfCourseId,
     teeGroup: TeeGroup,
   });
-  const Result_15 = IDL.Variant({ ok: GameId, err: Error });
+  const Result_16 = IDL.Variant({ ok: GameId, err: Error });
   const CreateGolfChannel = IDL.Record({
     name: IDL.Text,
     createdById: GolferId,
   });
+  const GolfChannelId = IDL.Nat;
+  const Result_15 = IDL.Variant({ ok: GolfChannelId, err: Error });
   const Handicap = IDL.Int16;
   const CreateUser = IDL.Record({
     username: IDL.Text,
@@ -97,7 +102,6 @@ export const idlFactory = ({ IDL }) => {
     handicap: IDL.Opt(Handicap),
   });
   const DeleteGame = IDL.Record({ gameId: GameId });
-  const GolfChannelId = IDL.Nat;
   const DeleteGolfChannel = IDL.Record({ channelId: GolfChannelId });
   const CreateGolfCourse = IDL.Record({
     holes: IDL.Vec(Hole),
@@ -195,14 +199,20 @@ export const idlFactory = ({ IDL }) => {
     courseId: GolfCourseId,
   });
   const Result_13 = IDL.Variant({ ok: Game, err: Error });
-  const GetGolfChannel = IDL.Record({ golfChannelId: GolfChannelId });
-  const GolfChannel = IDL.Record({});
+  const GetGolfChannel = IDL.Record({ channelId: GolfChannelId });
+  const GolfChannel = IDL.Record({
+    channelId: GolfChannelId,
+    name: IDL.Text,
+  });
   const Result_12 = IDL.Variant({ ok: GolfChannel, err: Error });
-  const GetGolfChannelVideo = IDL.Record({});
-  const GolfChannelVideo = IDL.Record({});
+  const GetGolfChannelVideo = IDL.Record({ channelId: GolfChannelId });
+  const GolfChannelVideo = IDL.Record({ channelId: GolfChannelId });
   const Result_11 = IDL.Variant({ ok: GolfChannelVideo, err: Error });
-  const GetGolfChannelVideos = IDL.Record({ page: IDL.Nat });
-  const GolfChannelVideos = IDL.Record({});
+  const GetGolfChannelVideos = IDL.Record({
+    channelId: GolfChannelId,
+    page: IDL.Nat,
+  });
+  const GolfChannelVideos = IDL.Record({ channelId: GolfChannelId });
   const Result_10 = IDL.Variant({ ok: GolfChannelVideos, err: Error });
   const GetGolfCourse = IDL.Record({ golfCourseId: GolfCourseId });
   const GolfCourse = IDL.Record({
@@ -346,8 +356,8 @@ export const idlFactory = ({ IDL }) => {
     addGameScore: IDL.Func([AddGameScore], [Result], []),
     addShot: IDL.Func([AddShot], [Result], []),
     beginGame: IDL.Func([BeginGame], [Result], []),
-    createGame: IDL.Func([CreateGame], [Result_15], []),
-    createGolfChannel: IDL.Func([CreateGolfChannel], [Result], []),
+    createGame: IDL.Func([CreateGame], [Result_16], []),
+    createGolfChannel: IDL.Func([CreateGolfChannel], [Result_15], []),
     createUser: IDL.Func([CreateUser], [Result], []),
     deleteGame: IDL.Func([DeleteGame], [Result], []),
     deleteGolfChannel: IDL.Func([DeleteGolfChannel], [Result], []),

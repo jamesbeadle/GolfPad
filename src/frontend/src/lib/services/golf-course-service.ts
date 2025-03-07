@@ -10,9 +10,7 @@ import { ActorFactory } from "$lib/utils/actor.factory";
 import { authStore } from "$lib/stores/auth-store";
 
 export class GolfCoursesService {
-
-  constructor() {
-  }
+  constructor() {}
 
   async getGolfCourse(dto: GetGolfCourse): Promise<GolfCourse> {
     const identityActor: any = await ActorFactory.createIdentityActor(

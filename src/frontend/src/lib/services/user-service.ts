@@ -2,6 +2,7 @@ import { ActorFactory } from "$lib/utils/actor.factory";
 import { authStore } from "$lib/stores/auth-store";
 import type {
   CreateUser,
+  Profile,
   UpdateFirstName,
   UpdateHandicap,
   UpdateHomeCourse,
@@ -14,8 +15,9 @@ export class UserService {
   constructor() {
     authStore.sync();
   }
-  async getProfile
-
+  async getProfile(): Promise<Profile | null> {
+    return null;
+  }
 
   //listGolfers
   //listFriends
@@ -39,5 +41,5 @@ export class UserService {
   async updateLastName(dto: UpdateLastName): Promise<void> {}
   async updateHomeCourse(dto: UpdateHomeCourse): Promise<void> {}
   async updateProfilePicture(dto: UpdateProfilePicture): Promise<void> {}
-  async isUsernameAvailable
+  //async isUsernameAvailable
 }

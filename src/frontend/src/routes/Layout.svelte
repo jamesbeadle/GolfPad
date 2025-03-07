@@ -1,22 +1,24 @@
-<!-- Parent.svelte -->
 <script lang="ts">
-  import { onMount, setContext } from "svelte";
+  import { onMount } from "svelte";
   import { fade } from "svelte/transition";
+  
+  import { page } from "$app/state";
   import { browser } from "$app/environment";
+  import { initAuthWorker } from "$lib/services/worker-auth.service";
+  
   import { userStore } from "$lib/stores/user-store";
   import { authStore, type AuthStoreData } from "$lib/stores/auth-store";
-  import "../app.css";
-  import FullScreenSpinner from "$lib/components/shared/full-screen-spinner.svelte";
   import { appStore } from "$lib/stores/app-store";
-  import { initAuthWorker } from "$lib/services/worker-auth.service";
-  import Toasts from "$lib/components/toasts/toasts.svelte";
+  
+  import type { Profile } from "../../../declarations/backend/backend.did";
   import Navigation from "$lib/components/shared/navigation.svelte";
   import Landing from "$lib/components/landing/landing.svelte";
   import Header from "$lib/components/shared/header.svelte";
   import NewUser from "$lib/components/profile/new-user.svelte";
-    import { page } from "$app/state";
-    import type { Profile } from "../../../declarations/backend/backend.did";
-
+  import FullScreenSpinner from "$lib/components/shared/full-screen-spinner.svelte";
+  import Toasts from "$lib/components/toasts/toasts.svelte";
+  import "../app.css";
+  
   let worker: { syncAuthIdle: (auth: AuthStoreData) => void } | undefined;
   let isLoading = true;
   let isLoggedIn = false;
@@ -48,6 +50,7 @@
       console.error(err);
     }
   }
+  
   onMount(async () => {
     try{
       await appStore.checkServerVersion();
@@ -66,13 +69,19 @@
     spinner?.remove();
   })();
 
-  // Toggle navigation
   function toggleNav() {
     expanded = !expanded;
   }
 </script>
 
 <svelte:window on:storage={syncAuthStore} />
+
+<svelte:head>
+  <link rel="preload" href="/MonaSans-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+  <link rel="preload" href="/MonaSans-SemiBold.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+  <link rel="preload" href="/MonaSansCondensed-ExtraBold.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+  <link rel="preload" href="/MonaSansCondensed-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+</svelte:head>
 
 {#await init()}
   <div in:fade>

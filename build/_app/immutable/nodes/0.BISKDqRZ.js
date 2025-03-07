@@ -1,1 +1,2 @@
-import{L as m}from"../chunks/Pz7IxoWS.js";export{m as component};
+import { L as m } from "../chunks/Pz7IxoWS.js";
+export { m as component };

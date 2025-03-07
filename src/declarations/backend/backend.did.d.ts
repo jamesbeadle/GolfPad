@@ -37,7 +37,6 @@ export interface BandsPrediction {
 export interface BeginGame {
   gameId: GameId;
 }
-export type CanisterId = string;
 export interface CreateGame {
   name: string;
   inviteIds: Array<GolferId>;
@@ -132,10 +131,13 @@ export interface GetGame {
   gameId: GameId;
 }
 export interface GetGolfChannel {
-  golfChannelId: GolfChannelId;
+  channelId: GolfChannelId;
 }
-export type GetGolfChannelVideo = {};
+export interface GetGolfChannelVideo {
+  channelId: GolfChannelId;
+}
 export interface GetGolfChannelVideos {
+  channelId: GolfChannelId;
   page: bigint;
 }
 export interface GetGolfCourse {
@@ -152,10 +154,17 @@ export interface GetProfile {
 export interface GetShot {
   principalId: PrincipalId;
 }
-export type GolfChannel = {};
+export interface GolfChannel {
+  channelId: GolfChannelId;
+  name: string;
+}
 export type GolfChannelId = bigint;
-export type GolfChannelVideo = {};
-export type GolfChannelVideos = {};
+export interface GolfChannelVideo {
+  channelId: GolfChannelId;
+}
+export interface GolfChannelVideos {
+  channelId: GolfChannelId;
+}
 export interface GolfCourse {
   activeVersion: GolfCourseVersion;
   name: string;
@@ -210,10 +219,14 @@ export interface Hole {
   name: string;
   tees: Array<TeeInfo>;
   number: number;
-  images: Array<[CanisterId, ImageId]>;
+  images: Array<HoleImage>;
+}
+export interface HoleImage {
+  owner: GolferId;
+  uploaded: bigint;
+  image: Uint8Array | number[];
 }
 export type HoleNumber = number;
-export type ImageId = bigint;
 export interface InviteGolfers {
   gameId: GameId;
   invitedGolferIds: Array<GolferId>;
@@ -289,7 +302,8 @@ export type Result_11 = { ok: GolfChannelVideo } | { err: Error };
 export type Result_12 = { ok: GolfChannel } | { err: Error };
 export type Result_13 = { ok: Game } | { err: Error };
 export type Result_14 = { ok: AppStatusDTO } | { err: Error };
-export type Result_15 = { ok: GameId } | { err: Error };
+export type Result_15 = { ok: GolfChannelId } | { err: Error };
+export type Result_16 = { ok: GameId } | { err: Error };
 export type Result_2 = { ok: Golfers } | { err: Error };
 export type Result_3 = { ok: Friends } | { err: Error };
 export type Result_4 = { ok: FriendRequests } | { err: Error };
@@ -380,8 +394,8 @@ export interface _SERVICE {
   addGameScore: ActorMethod<[AddGameScore], Result>;
   addShot: ActorMethod<[AddShot], Result>;
   beginGame: ActorMethod<[BeginGame], Result>;
-  createGame: ActorMethod<[CreateGame], Result_15>;
-  createGolfChannel: ActorMethod<[CreateGolfChannel], Result>;
+  createGame: ActorMethod<[CreateGame], Result_16>;
+  createGolfChannel: ActorMethod<[CreateGolfChannel], Result_15>;
   createUser: ActorMethod<[CreateUser], Result>;
   deleteGame: ActorMethod<[DeleteGame], Result>;
   deleteGolfChannel: ActorMethod<[DeleteGolfChannel], Result>;

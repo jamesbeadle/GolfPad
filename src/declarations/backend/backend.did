@@ -125,10 +125,15 @@ type Result_2 =
    err: Error;
    ok: Golfers;
  };
-type Result_15 = 
+type Result_16 = 
  variant {
    err: Error;
    ok: GameId;
+ };
+type Result_15 = 
+ variant {
+   err: Error;
+   ok: GolfChannelId;
  };
 type Result_14 = 
  variant {
@@ -240,14 +245,16 @@ type InviteGolfers =
    gameId: GameId;
    invitedGolferIds: vec GolferId;
  };
-type ImageId = nat;
 type HoleNumber = nat8;
+type HoleImage = 
+ record {
+   image: blob;
+   owner: GolferId;
+   uploaded: int;
+ };
 type Hole = 
  record {
-   images: vec record {
-                 CanisterId;
-                 ImageId;
-               };
+   images: vec HoleImage;
    name: text;
    number: nat8;
    tees: vec TeeInfo;
@@ -304,10 +311,14 @@ type GolfCourse =
    name: text;
    tees: vec TeeGroup;
  };
-type GolfChannelVideos = record {};
-type GolfChannelVideo = record {};
+type GolfChannelVideos = record {channelId: GolfChannelId;};
+type GolfChannelVideo = record {channelId: GolfChannelId;};
 type GolfChannelId = nat;
-type GolfChannel = record {};
+type GolfChannel = 
+ record {
+   channelId: GolfChannelId;
+   name: text;
+ };
 type GetShot = record {principalId: PrincipalId;};
 type GetProfile = record {principalId: GolferId;};
 type GetGolfCourses = 
@@ -317,9 +328,13 @@ type GetGolfCourses =
    searchTerm: text;
  };
 type GetGolfCourse = record {golfCourseId: GolfCourseId;};
-type GetGolfChannelVideos = record {page: nat;};
-type GetGolfChannelVideo = record {};
-type GetGolfChannel = record {golfChannelId: GolfChannelId;};
+type GetGolfChannelVideos = 
+ record {
+   channelId: GolfChannelId;
+   page: nat;
+ };
+type GetGolfChannelVideo = record {channelId: GolfChannelId;};
+type GetGolfChannel = record {channelId: GolfChannelId;};
 type GetGame = record {gameId: GameId;};
 type GameType = 
  variant {
@@ -415,7 +430,6 @@ type CreateGame =
    teeGroup: TeeGroup;
    teeOffTime: int;
  };
-type CanisterId = text;
 type BeginGame = record {gameId: GameId;};
 type BandsPrediction = 
  record {
@@ -458,8 +472,8 @@ service : {
   addGameScore: (AddGameScore) -> (Result);
   addShot: (AddShot) -> (Result);
   beginGame: (BeginGame) -> (Result);
-  createGame: (CreateGame) -> (Result_15);
-  createGolfChannel: (CreateGolfChannel) -> (Result);
+  createGame: (CreateGame) -> (Result_16);
+  createGolfChannel: (CreateGolfChannel) -> (Result_15);
   createUser: (CreateUser) -> (Result);
   deleteGame: (DeleteGame) -> (Result);
   deleteGolfChannel: (DeleteGolfChannel) -> (Result);

@@ -1,13 +1,23 @@
 import { isError } from "$lib/utils/helpers";
 import { ActorFactory } from "$lib/utils/actor.factory";
-import type { CreateGolfChannel, DeleteGolfChannel, GetGolfChannel, GetGolfChannelVideo, GetGolfChannelVideos, GolfChannel, GolfChannelVideos, RemoveGolfChannelVideo, SubscribeToGolfChannel, UnsubscribeFromGolfChannel, UpdateGolfChannel, UploadGolfChannelVideo } from "../../../../declarations/backend/backend.did";
+import type {
+  CreateGolfChannel,
+  DeleteGolfChannel,
+  GetGolfChannel,
+  GetGolfChannelVideo,
+  GetGolfChannelVideos,
+  GolfChannel,
+  GolfChannelVideos,
+  RemoveGolfChannelVideo,
+  SubscribeToGolfChannel,
+  UnsubscribeFromGolfChannel,
+  UpdateGolfChannel,
+  UploadGolfChannelVideo,
+} from "../../../../declarations/backend/backend.did";
 import { authStore } from "$lib/stores/auth-store";
 
 export class GolfChannelService {
-  
-  constructor() {
-    
-  }
+  constructor() {}
 
   async getGolfChannel(dto: GetGolfChannel): Promise<GolfChannel> {
     const identityActor: any = await ActorFactory.createIdentityActor(
@@ -33,7 +43,9 @@ export class GolfChannelService {
     }
   }
 
-  async getGolfChannelVideos(dto: GetGolfChannelVideos): Promise<GolfChannelVideos> {
+  async getGolfChannelVideos(
+    dto: GetGolfChannelVideos,
+  ): Promise<GolfChannelVideos> {
     const identityActor: any = await ActorFactory.createIdentityActor(
       authStore,
       process.env.BACKEND_CANISTER_ID ?? "",
@@ -43,7 +55,9 @@ export class GolfChannelService {
     return result.ok;
   }
 
-  async getGolfChannelVideo(dto: GetGolfChannelVideo): Promise<GolfChannelVideos> {
+  async getGolfChannelVideo(
+    dto: GetGolfChannelVideo,
+  ): Promise<GolfChannelVideos> {
     const identityActor: any = await ActorFactory.createIdentityActor(
       authStore,
       process.env.BACKEND_CANISTER_ID ?? "",
@@ -95,7 +109,9 @@ export class GolfChannelService {
     }
   }
 
-  async unsubscribeFromGolfChannel(dto: UnsubscribeFromGolfChannel): Promise<any> {
+  async unsubscribeFromGolfChannel(
+    dto: UnsubscribeFromGolfChannel,
+  ): Promise<any> {
     try {
       const identityActor: any = await ActorFactory.createIdentityActor(
         authStore,
@@ -136,5 +152,4 @@ export class GolfChannelService {
       throw error;
     }
   }
-  
 }

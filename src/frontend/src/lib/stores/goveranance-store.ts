@@ -1,3 +1,3 @@
 //add golf course
-//udpate golf courses 
+//udpate golf courses
 //all via sns libraries

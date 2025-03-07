@@ -15,5 +15,4 @@ export class FriendRequestService {
   //rejectFriendRequest
   //sendFriendRequest
   //listFriendRequests
-
 }
