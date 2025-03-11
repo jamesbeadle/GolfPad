@@ -1,5 +1,6 @@
 import T "../data-types/types";
 import Base "mo:waterway-mops/BaseTypes";
+import Bool "mo:base/Bool";
 
 module BuzzQueries {
 
@@ -43,6 +44,9 @@ module BuzzQueries {
         players: [PlayerFeedSummary];
         score: Int8;
         holesPlayed: Nat8;  
+        gameOver: Bool;
+        player1Wins: Bool;
+        player2Wins: Bool;
     };
 
     public type BandsResultInfo = {
@@ -69,11 +73,12 @@ module BuzzQueries {
     };
 
     public type TeamFeedSummary = {
-      captain_id: Base.PrincipalId;
-      team_members: [Base.PrincipalId];
-      team_name: Text;
-      team_image: ?Blob;
-      team_image_extension: Text;
+        team_id: T.GolfTeamId;
+        captain_id: Base.PrincipalId;
+        team_members: [Base.PrincipalId];
+        team_name: Text;
+        team_image: ?Blob;
+        team_image_extension: Text;
     };
 }
 

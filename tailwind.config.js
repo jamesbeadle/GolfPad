@@ -44,6 +44,7 @@ export default {
         BrandLightGreen: "#D9FAF1",
         BrandDeclineRed: "#FF403C",
         BrandDarkRed: "#7A3F2D",
+        BrandGray: "#C0C0C0",
         BrandDarkGray: "#8C8C8C",
         BrandLightGray: "#F3F3F3",
         BrandDivider: "#DDDDDD",

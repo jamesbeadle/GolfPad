@@ -1,7 +1,7 @@
 import { userStore } from "$lib/stores/user-store";
 import { uint8ArrayToBase64 } from "$lib/utils/helpers";
 import { derived, type Readable } from "svelte/store";
-import type { GolfCourseDTO } from "../../../../declarations/backend/backend.did";
+import type { GolfCourse } from "../../../../declarations/backend/backend.did";
 export const userGetProfilePicture: Readable<string> = derived(
   userStore,
   ($user) => {
@@ -38,6 +38,6 @@ export const userGetProfilePicture: Readable<string> = derived(
   },
 );
 
-export const getCourseImage = (course: GolfCourseDTO) => {
+export const getCourseImage = (course: GolfCourse) => {
   return "golfCourse.png";
 };

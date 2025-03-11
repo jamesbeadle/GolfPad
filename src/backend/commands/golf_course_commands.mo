@@ -8,6 +8,7 @@ module GolfCourseCommands {
         holes: [T.Hole];
         mainImage: Blob;
         bannerImage: Blob;
+        totalHoles: Nat8;
     };
 
     public type UpdateGolfCourse = {

@@ -148,6 +148,7 @@ actor class _GolfCoursesCanister() {
               tees = foundGolfCourse.teeGroups;
               activeVersion = foundGolfCourse.activeVersion;
               mainImage = foundGolfCourse.mainImage;
+              totalHoles = foundGolfCourse.totalHoles;
             });
           };
           case (null){
@@ -202,6 +203,7 @@ actor class _GolfCoursesCanister() {
       bannerImage = dto.bannerImage;
       courseAlbums = [];
       courseImages =[];
+      totalHoles = dto.totalHoles;
     };
     
     return addGolfCourse(activeGroupIndex, newCourse);
@@ -262,6 +264,7 @@ actor class _GolfCoursesCanister() {
               bannerImage = foundGolfCourse.bannerImage;
               courseAlbums = foundGolfCourse.courseAlbums;
               courseImages = foundGolfCourse.courseImages;
+              totalHoles = foundGolfCourse.totalHoles;
             };
 
             return saveGolfCourse(foundGroupIndex, updatedGolfCourse);

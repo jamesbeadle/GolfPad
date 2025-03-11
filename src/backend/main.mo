@@ -7,6 +7,8 @@ import Iter "mo:base/Iter";
 import Debug "mo:base/Debug";
 import Buffer "mo:base/Buffer";
 import Array "mo:base/Array";
+import Nat8 "mo:base/Nat8";
+import Int8 "mo:base/Int8";
 
 import T "data-types/types";
 import Environment "utilities/Environment";
@@ -144,10 +146,19 @@ actor Self {
           username = player.username;
         })
     };
+
+    let remainingHoles: Int = Nat8.toNat(course.totalHoles) -  Nat8.toNat(summary.holesPlayed);
+
+    let player1Wins = Int8.toInt(summary.score) > remainingHoles;
+    let player2Wins = Int8.toInt(-summary.score) > remainingHoles;
+
     let match_result = #Mulligans({
       players = Buffer.toArray<BuzzQueries.PlayerFeedSummary>(playerSummaryBuffer);
       score = summary.score;
       holesPlayed  = summary.holesPlayed; 
+      gameOver = player1Wins or player2Wins;
+      player1Wins = player1Wins;
+      player2Wins = player2Wins;
     });
 
     return {

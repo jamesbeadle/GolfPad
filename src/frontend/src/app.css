@@ -2,8 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+.condensed {
+  font-family: "Mona Sans Condensed Extra Bold";
+}
+
+.semi-bold {
+  font-family: "Mona Sans Semi Bold";
+}
+
 .title {
   @apply text-black condensed text-3xl md:text-4xl lg:text-5xl;
+}
+
+.tiny-header {
+  @apply text-xxs text-BrandGray;
+}
+
+.strong-text {
+  @apply text-3xl condensed;
+}
+
+.gray-text {
+  @apply text-2xl text-BrandGray;
 }
 
 .modal-backdrop {
@@ -102,14 +122,6 @@ input {
 }
 
 @media (min-width: 1920px) {
-}
-
-.condensed {
-  font-family: "Mona Sans Condensed Extra Bold";
-}
-
-.semi-bold {
-  font-family: "Mona Sans Semi Bold";
 }
 
 .horizontal-divider {

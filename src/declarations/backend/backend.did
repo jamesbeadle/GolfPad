@@ -72,7 +72,9 @@ type TeeGroup =
 type TeamFeedSummary = 
  record {
    captain_id: PrincipalId;
+   team_id: GolfTeamId;
    team_image: opt blob;
+   team_image_extension: text;
    team_members: vec PrincipalId;
    team_name: text;
  };
@@ -235,7 +237,10 @@ type MulligansScore =
  };
 type MulligansResultInfo = 
  record {
+   gameOver: bool;
    holesPlayed: nat8;
+   player1Wins: bool;
+   player2Wins: bool;
    players: vec PlayerFeedSummary;
    score: int8;
  };
@@ -351,6 +356,7 @@ type GolfCourse =
    mainImage: blob;
    name: text;
    tees: vec TeeGroup;
+   totalHoles: nat8;
  };
 type GolfChannelVideos = record {channelId: GolfChannelId;};
 type GolfChannelVideo = record {channelId: GolfChannelId;};
@@ -467,6 +473,7 @@ type CreateGolfCourse =
    initialTeeGroup: TeeGroup;
    mainImage: blob;
    name: text;
+   totalHoles: nat8;
  };
 type CreateGolfChannel = 
  record {

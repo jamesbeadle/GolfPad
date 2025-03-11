@@ -172,6 +172,7 @@ module Types {
   public type GolfCourse = {
     id: Nat;
     name: Text;
+    totalHoles: Nat8;
     teeGroups: [TeeGroup];
     dateAdded: Int;
     status: CourseStatus;

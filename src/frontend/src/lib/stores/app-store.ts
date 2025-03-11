@@ -1,5 +1,5 @@
 import { isError } from "../utils/helpers";
-import type { AppStatusDTO } from "../../../../declarations/backend/backend.did";
+import type { AppStatusDTO, BuzzEntries, GetBuzzEntries } from "../../../../declarations/backend/backend.did";
 import { AppService } from "$lib/services/app-service";
 import { toasts } from "./toasts-store";
 
@@ -25,26 +25,8 @@ function createAppStore() {
       });
     }
   }
-  async function getBuzzEntries() {
-    const res = await new AppService().getBuzzEntries();
-    if (isError(res)) {
-      throw new Error("Error fetching buzz feed entries");
-    }
-
-    let status: Bua = res!;
-
-    let localVersion = localStorage.getItem("version");
-    if (!localVersion) {
-      localStorage.setItem("version", status.version);
-      return;
-    }
-
-    if (status.version !== localStorage.getItem("version")) {
-      toasts.addToast({
-        message: `ICFC V${status.version} is now available. Click here to reload:`,
-        type: "frontend-update",
-      });
-    }
+  async function getBuzzEntries(dto: GetBuzzEntries) : Promise<BuzzEntries> {
+    return await new AppService().getBuzzEntries(dto);
   }
 
   async function updateFrontend() {

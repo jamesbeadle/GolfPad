@@ -76,6 +76,7 @@ export interface CreateGolfChannel {
 }
 export interface CreateGolfCourse {
   holes: Array<Hole>;
+  totalHoles: number;
   name: string;
   initialTeeGroup: TeeGroup;
   bannerImage: Uint8Array | number[];
@@ -200,6 +201,7 @@ export interface GolfChannelVideos {
   channelId: GolfChannelId;
 }
 export interface GolfCourse {
+  totalHoles: number;
   activeVersion: GolfCourseVersion;
   name: string;
   tees: Array<TeeGroup>;
@@ -302,8 +304,11 @@ export interface MulligansHoleResult {
 export type MulligansPrediction = {};
 export interface MulligansResultInfo {
   holesPlayed: number;
+  player2Wins: boolean;
   score: number;
   players: Array<PlayerFeedSummary>;
+  gameOver: boolean;
+  player1Wins: boolean;
 }
 export interface MulligansScore {
   golfer2MulliganUsed: boolean;
@@ -379,6 +384,8 @@ export interface SubscribeToGolfChannel {
   principalId: PrincipalId;
 }
 export interface TeamFeedSummary {
+  team_image_extension: string;
+  team_id: GolfTeamId;
   team_image: [] | [Uint8Array | number[]];
   team_name: string;
   team_members: Array<PrincipalId>;

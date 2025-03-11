@@ -104,6 +104,7 @@ export const idlFactory = ({ IDL }) => {
   const DeleteGolfChannel = IDL.Record({ channelId: GolfChannelId });
   const CreateGolfCourse = IDL.Record({
     holes: IDL.Vec(Hole),
+    totalHoles: IDL.Nat8,
     name: IDL.Text,
     initialTeeGroup: TeeGroup,
     bannerImage: IDL.Vec(IDL.Nat8),
@@ -135,16 +136,21 @@ export const idlFactory = ({ IDL }) => {
   });
   const MulligansResultInfo = IDL.Record({
     holesPlayed: IDL.Nat8,
+    player2Wins: IDL.Bool,
     score: IDL.Int8,
     players: IDL.Vec(PlayerFeedSummary),
+    gameOver: IDL.Bool,
+    player1Wins: IDL.Bool,
   });
+  const GolfTeamId = IDL.Nat;
   const TeamFeedSummary = IDL.Record({
+    team_image_extension: IDL.Text,
+    team_id: GolfTeamId,
     team_image: IDL.Opt(IDL.Vec(IDL.Nat8)),
     team_name: IDL.Text,
     team_members: IDL.Vec(PrincipalId),
     captain_id: PrincipalId,
   });
-  const GolfTeamId = IDL.Nat;
   const BuildItResultInfo = IDL.Record({
     teams: IDL.Vec(TeamFeedSummary),
     scores: IDL.Tuple(GolfTeamId, IDL.Nat),
@@ -278,6 +284,7 @@ export const idlFactory = ({ IDL }) => {
   const Result_10 = IDL.Variant({ ok: GolfChannelVideos, err: Error });
   const GetGolfCourse = IDL.Record({ golfCourseId: GolfCourseId });
   const GolfCourse = IDL.Record({
+    totalHoles: IDL.Nat8,
     activeVersion: GolfCourseVersion,
     name: IDL.Text,
     tees: IDL.Vec(TeeGroup),

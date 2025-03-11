@@ -12,6 +12,7 @@ module GolfCourseQueries {
         tees: [T.TeeGroup];
         activeVersion: T.GolfCourseVersion;
         mainImage: Blob;
+        totalHoles: Nat8;
     };
 
     public type GetGolfCourses = {

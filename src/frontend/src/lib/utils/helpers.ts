@@ -19,8 +19,8 @@ export function formatUnixDateToReadable(unixNano: number) {
   return new Intl.DateTimeFormat("en-UK", options).format(date);
 }
 
-export function formatUnixDateToSmallReadable(unixNano: number) {
-  const date = new Date(unixNano / 1000000);
+export function formatUnixDateToSmallReadable(unixNano: bigint) {
+  const date = new Date(Number(unixNano) / 1000000);
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "short",
