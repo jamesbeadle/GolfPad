@@ -13,8 +13,9 @@ import GolfChannelCommands "../commands/golf_channel_commands";
 
 actor class _GolfChannelsCanister() {
 
-  private stable var MAX_GOLF_CHANNELS_PER_GROUP: Nat = 10;
+  private stable var REVENUE_GRADUATION_TRIGGER: Nat = 10_000;
   private stable var MAX_GOLF_CHANNELS_PER_CANISTER: Nat = 250;
+  private stable var MAX_GOLF_CHANNELS_PER_GROUP: Nat = 10;
 
   private stable var stable_golf_channel_group_indexes: [(T.GolfChannelId, Nat8)] = [];
   
@@ -125,6 +126,13 @@ actor class _GolfChannelsCanister() {
     };
     
     return addGolfChannel(activeGroupIndex, newChannel);
+  };
+
+  public shared ({caller}) func graduateGolfChannel(dto: GolfChannelCommands.GraduateGolfChannel) : async Result.Result<(), T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let backendPrincipalId = Principal.toText(caller);
+    assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+    return #err(#NotFound);
   };
 
   public shared ({caller}) func updateGolfChannel(dto: GolfChannelCommands.UpdateGolfChannel) : async Result.Result<(), T.Error>{

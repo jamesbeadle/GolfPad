@@ -73,6 +73,7 @@ module BuzzQueries {
       team_members: [Base.PrincipalId];
       team_name: Text;
       team_image: ?Blob;
+      team_image_extension: Text;
     };
 }
 

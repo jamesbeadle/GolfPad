@@ -13,6 +13,11 @@ module GolfTeamQueries {
         golfTeamPictureExtension: Text;
     };
 
+    public type GolfTeamImage = {
+        golfTeamPicture: ?Blob;
+        golfTeamPictureExtension: Text;
+    };
+
     public type IsTeamNameAvailable = {
         golfTeamName: Text;
         golfTeamId: T.GolfTeamId;

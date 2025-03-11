@@ -50,6 +50,10 @@ module GolfChannelCommands {
 
     };
 
+    public type GraduateGolfChannel = {
+        channelId: T.GolfChannelId;
+    };
+
 }
 
   

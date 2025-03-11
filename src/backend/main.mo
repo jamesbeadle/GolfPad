@@ -39,6 +39,7 @@ import GolfChannelsCanister "canister-definitions/golf-channels-canister";
 import FriendRequestQueries "queries/friend_request_queries";
 import BuzzQueries "queries/buzz_queries";
 import GolfTeamManager "managers/golf-team-manager";
+import GolfTeamQueries "queries/golf_team_queries";
 
 actor Self {
 
@@ -200,17 +201,28 @@ actor Self {
       game_id = entry.gameId;
       game_type = #BuildIt;
     };
+
+    let teamSummaryBuffer = Buffer.fromArray<BuzzQueries.TeamFeedSummary>([]);
+    for(team in Iter.fromArray(entry.teams)){
+      let pictureResult = await golfTeamManager.getGolfTeamImage(team.team_id);
+      switch(pictureResult){
+        case (#ok picture){
+          teamSummaryBuffer.add( {
+            team_id = team.team_id;
+            team_image = picture.golfTeamPicture;
+            team_image_extension = picture.golfTeamPictureExtension;
+            team_name = team.team_name;
+            captain_id = team.captain_id;
+            team_members = team.team_members;
+          })
+        };
+        case (#err _){}
+      };
+    };
+
     let match_result = #BuildIt({
       scores = entry.scores;
-      teams = Array.map<T.TeamSummary, BuzzQueries.TeamFeedSummary>(entry.teams, func(teamEntry: T.TeamSummary){
-
-        return {
-          captain_id = teamEntry.captain_id;
-          team_image  = getTeamImage(teamEntry.team_id);
-          team_members = teamEntry.team_members;
-          team_name = teamEntry.team_name;
-        }
-      });
+      teams = Buffer.toArray(teamSummaryBuffer)
     }); 
     return {
       course_info;
@@ -250,29 +262,6 @@ actor Self {
       match_result;
     }
   };
-
-  private func getTeamImage(teamId: T.GolfTeamId) : ?Blob {
-    return null; // golfTeamManager.getTeamImage(teamId);
-  };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

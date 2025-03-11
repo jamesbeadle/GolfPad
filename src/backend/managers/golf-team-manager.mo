@@ -72,6 +72,23 @@ module {
       };
     };
 
+    public func getGolfTeamImage(golfTeamId: T.GolfTeamId) : async Result.Result<GolfTeamQueries.GolfTeamImage, T.Error> {
+      let existingGolfTeamCanisterId = golfTeamCanisterIndex.get(golfTeamId);
+      switch(existingGolfTeamCanisterId){
+        case (?foundCanisterId){
+
+          let golf_team_canister = actor (foundCanisterId) : actor {
+            getGolfTeamImage : (teamId: T.GolfTeamId) -> async Result.Result<GolfTeamQueries.GolfTeamImage, T.Error>;
+          };
+
+          return await golf_team_canister.getGolfTeamImage(golfTeamId);
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
+    };
+    
     //Update functions
     
     public func createGolfTeam(owner: Base.PrincipalId, dto: GolfTeamCommands.CreateGolfTeam) : async Result.Result<(), T.Error> {
