@@ -25,6 +25,27 @@ function createAppStore() {
       });
     }
   }
+  async function getBuzzEntries() {
+    const res = await new AppService().getBuzzEntries();
+    if (isError(res)) {
+      throw new Error("Error fetching buzz feed entries");
+    }
+
+    let status: Bua = res!;
+
+    let localVersion = localStorage.getItem("version");
+    if (!localVersion) {
+      localStorage.setItem("version", status.version);
+      return;
+    }
+
+    if (status.version !== localStorage.getItem("version")) {
+      toasts.addToast({
+        message: `ICFC V${status.version} is now available. Click here to reload:`,
+        type: "frontend-update",
+      });
+    }
+  }
 
   async function updateFrontend() {
     const res = await new AppService().getAppStatus();
@@ -40,6 +61,7 @@ function createAppStore() {
   return {
     checkServerVersion,
     updateFrontend,
+    getBuzzEntries,
   };
 }
 

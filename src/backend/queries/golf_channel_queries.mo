@@ -1,5 +1,6 @@
 
 import T "../data-types/types";
+import Base "mo:waterway-mops/BaseTypes";
 
 module GolfChannelQueries {
 
@@ -40,12 +41,12 @@ module GolfChannelQueries {
     };
 
     public type IsChannelOwner = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         channelId: T.GolfChannelId;
     };
 
     public type IsSubscribed = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         channelId: T.GolfChannelId;
     };
 }

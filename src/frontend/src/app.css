@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.title {
+  @apply text-black condensed text-3xl md:text-4xl lg:text-5xl;
+}
+
 .modal-backdrop {
   z-index: 1000;
 }

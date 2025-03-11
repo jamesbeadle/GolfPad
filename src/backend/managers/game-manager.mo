@@ -18,6 +18,7 @@ import Debug "mo:base/Debug";
 import Base "mo:waterway-mops/BaseTypes";
 import GameCommands "../commands/game_commands";
 import GameQueries "../queries/game_queries";
+import BuzzQueries "../queries/buzz_queries";
 
 module {
   public class GameManager() {
@@ -26,10 +27,22 @@ module {
     private var activeCanisterId: Base.CanisterId = "";
     private var uniqueGameCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGames : Nat = 0;
+    private var nextGameId: T.GameId = 1;
+
+    private var gameSummaries: [T.GameSummary] = [];
+
+    public func getGameSummaries(page: Nat) : [T.GameSummary] {
+      
+      //loop through post summaries and get the range of posts
+
+      //get the games 
+
+      return []
+    };
 
     public func createGame(dto: GameCommands.CreateGame) : async Result.Result<T.GameId, T.Error> {
       
-      assert Option.isNull(Array.find<T.GolferId>(dto.inviteIds, func(playerId: T.GolferId){ playerId == dto.createdById  }));
+      assert Option.isNull(Array.find<Base.PrincipalId>(dto.inviteIds, func(playerId: Base.PrincipalId){ playerId == dto.createdById  }));
       
       let totalPlayers = 1 + Array.size(dto.inviteIds); 
 
@@ -95,12 +108,12 @@ module {
       return #err(#NotFound);
     };
 
-    public func isGameOwner(gameId: T.GameId, principalId: T.GolferId) : async Bool {
+    public func isGameOwner(gameId: T.GameId, principalId: Base.PrincipalId) : async Bool {
       let gameCanisterId = gameCanisterIndex.get(gameId);
       switch(gameCanisterId){
         case (?foundCanisterId){
           let game_canister = actor (foundCanisterId) : actor {
-            isGameOwner : (gameId: T.GameId, principalId: T.GolferId) -> async Bool;
+            isGameOwner : (gameId: T.GameId, principalId: Base.PrincipalId) -> async Bool;
           };
           return await game_canister.isGameOwner(gameId, principalId);
         };
@@ -109,7 +122,7 @@ module {
       return false;
     };
 
-    public func isGameMember(gameId: T.GameId, principalId: T.GolferId) : async Bool {
+    public func isGameMember(gameId: T.GameId, principalId: Base.PrincipalId) : async Bool {
       let gameCanisterId = gameCanisterIndex.get(gameId);
       switch(gameCanisterId){
         case (?foundCanisterId){
@@ -172,7 +185,7 @@ module {
       switch(existingGame){
         case (#ok foundGame){
 
-          let playerInGame = Option.isSome(Array.find<T.GolferId>(foundGame.playerIds, func(playerId: T.GolferId){
+          let playerInGame = Option.isSome(Array.find<Base.PrincipalId>(foundGame.playerIds, func(playerId: Base.PrincipalId){
             playerId == dto.submittedById;
           }));
 
@@ -345,6 +358,23 @@ module {
 
     public func setStableTotalGames(stable_total_games : Nat) : () {
       totalGames := stable_total_games;
+    };
+
+    public func getStableGameSummaries() : [T.GameSummary] {
+      return gameSummaries;
+    };
+
+    public func setStableGameSummaries(stable_game_summaries: [T.GameSummary]){
+      gameSummaries := stable_game_summaries;
+    };
+     
+
+    public func getStableNextGameId() : T.GameId {
+      return nextGameId;
+    };
+
+    public func setStableNextGameId(stable_next_game_id : T.GameId) : () {
+      nextGameId := stable_next_game_id;
     };
 
   };

@@ -1,4 +1,5 @@
 import T "../data-types/types";
+import Base "mo:waterway-mops/BaseTypes";
 
 module GameQueries {
 
@@ -17,9 +18,9 @@ module GameQueries {
         events: [T.GolferEvent];
         courseSnapshot: T.GolfCourseSnapshot;
         teeOffTime: Int;
-        playerIds: [T.GolferId];
-        invites: [T.GolferId];
-        winner: T.GolferId;
+        playerIds: [Base.PrincipalId];
+        invites: [Base.PrincipalId];
+        winner: Base.PrincipalId;
     };
     
 }

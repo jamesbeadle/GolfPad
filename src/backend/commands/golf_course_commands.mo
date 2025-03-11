@@ -5,7 +5,9 @@ module GolfCourseCommands {
     public type CreateGolfCourse = {
         name: Text;
         initialTeeGroup: T.TeeGroup;
-        holes: [T.Hole]
+        holes: [T.Hole];
+        mainImage: Blob;
+        bannerImage: Blob;
     };
 
     public type UpdateGolfCourse = {

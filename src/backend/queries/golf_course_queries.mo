@@ -11,6 +11,7 @@ module GolfCourseQueries {
         name: Text;
         tees: [T.TeeGroup];
         activeVersion: T.GolfCourseVersion;
+        mainImage: Blob;
     };
 
     public type GetGolfCourses = {

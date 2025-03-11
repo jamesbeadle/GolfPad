@@ -1,4 +1,5 @@
 import T "../data-types/types";
+import Base "mo:waterway-mops/BaseTypes";
 
 module GolferCommands {
 
@@ -10,38 +11,38 @@ module GolferCommands {
     };
 
     public type UpdateUsername = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         username: Text;
     };
 
     public type UpdateFirstName = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         firstName: Text;
     };
 
     public type UpdateLastName = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         lastName: Text;
     };
 
     public type UpdateProfilePicture = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         profilePicture: ?Blob;
         profilePictureExtension: Text;
     };
     
     public type UpdateHandicap = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         handicap: ?T.Handicap;
     };
     
     public type UpdateHomeCourse = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         homeCourseId: ?T.GolfCourseId;
     };
     
     public type DeleteGolfer = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         confirm: Bool;
     };
 }

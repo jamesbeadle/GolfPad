@@ -15,10 +15,11 @@ import GolferCommands "../commands/golfer_commands";
 import GolferQueries "../queries/golfer_queries";
 import FriendRequestCommands "../commands/friend_request_commands";
 import FriendRequestQueries "../queries/friend_request_queries";
+import Base "mo:waterway-mops/BaseTypes";
 
 actor class _GolferCanister() {
 
-  private stable var stable_golfer_group_indexes: [(T.GolferId, Nat8)] = [];
+  private stable var stable_golfer_group_indexes: [(Base.PrincipalId, Nat8)] = [];
   private stable var golferGroup1: [T.Golfer] = [];
   private stable var golferGroup2: [T.Golfer] = [];
   private stable var golferGroup3: [T.Golfer] = [];
@@ -78,7 +79,7 @@ actor class _GolferCanister() {
     };
   };
 
-  public shared ({caller}) func createUser(golferPrincipalId: T.GolferId, dto: GolferCommands.CreateUser) : async Result.Result<(), T.Error>{
+  public shared ({caller}) func createUser(golferPrincipalId: Base.PrincipalId, dto: GolferCommands.CreateUser) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -599,7 +600,7 @@ actor class _GolferCanister() {
           case (null) { #err(#NotFound); };
           case (?foundGolfer){
 
-            var updatedFriendsBuffer = Buffer.fromArray<T.GolferId>(foundGolfer.friends);
+            var updatedFriendsBuffer = Buffer.fromArray<Base.PrincipalId>(foundGolfer.friends);
             updatedFriendsBuffer.add(dto.requestedBy);
             
             let updatedGolfer: T.Golfer = {
@@ -775,7 +776,7 @@ actor class _GolferCanister() {
   
   //Private functions:
 
-  private func findGolfer(golferGroupIndex: Nat8, golferPrincipalId: T.GolferId) : ?T.Golfer {
+  private func findGolfer(golferGroupIndex: Nat8, golferPrincipalId: Base.PrincipalId) : ?T.Golfer {
     switch(golferGroupIndex){
       case 0{
         let foundGolfer = Array.find<T.Golfer>(golferGroup1, func(golfer: T.Golfer){
@@ -924,7 +925,7 @@ actor class _GolferCanister() {
     };
     totalGolfers += 1;
 
-    let groupIndexBuffer = Buffer.fromArray<(T.GolferId, Nat8)>(stable_golfer_group_indexes);
+    let groupIndexBuffer = Buffer.fromArray<(Base.PrincipalId, Nat8)>(stable_golfer_group_indexes);
     groupIndexBuffer.add((newGolfer.principalId, activeGroupIndex));
     stable_golfer_group_indexes := Buffer.toArray(groupIndexBuffer);
     return #ok();

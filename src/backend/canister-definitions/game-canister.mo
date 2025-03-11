@@ -6,11 +6,13 @@ import Iter "mo:base/Iter";
 import Nat8 "mo:base/Nat8";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
+import Base "mo:waterway-mops/BaseTypes";
 
 import Environment "../utilities/Environment";
 import T "../data-types/types";
 import GameCommands "../commands/game_commands";
 import GameQueries "../queries/game_queries";
+
 
 actor class _GameCanister() {
 
@@ -445,7 +447,7 @@ actor class _GameCanister() {
         let game = await getGame({gameId = dto.gameId});
         switch(game){
           case (#ok foundGame){
-            let updatedInvitesBuffer = Buffer.fromArray<T.GolferId>(foundGame.invites);
+            let updatedInvitesBuffer = Buffer.fromArray<Base.PrincipalId>(foundGame.invites);
             updatedInvitesBuffer.append(Buffer.fromArray(dto.invitedGolferIds));
             
             let updatedGame: T.Game = {
@@ -492,11 +494,11 @@ actor class _GameCanister() {
         switch(game){
           case (#ok foundGame){
             
-            let updatedInvites = Array.filter<T.GolferId>(foundGame.invites, func(invite: T.GolferId){
+            let updatedInvites = Array.filter<Base.PrincipalId>(foundGame.invites, func(invite: Base.PrincipalId){
               invite != dto.acceptedById
             });
 
-            let updatedPlayerIdsBuffer = Buffer.fromArray<T.GolferId>(foundGame.playerIds);
+            let updatedPlayerIdsBuffer = Buffer.fromArray<Base.PrincipalId>(foundGame.playerIds);
             updatedPlayerIdsBuffer.add(dto.acceptedById);
 
             let updatedGame: T.Game = {

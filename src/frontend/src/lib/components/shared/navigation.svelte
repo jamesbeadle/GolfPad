@@ -5,17 +5,20 @@
     import { page } from "$app/stores";
     import { authSignedInStore } from "$lib/derived/auth.derived";
     import { authStore } from "$lib/stores/auth-store";
+    import ProfileIcon from "$lib/icons/profile-icon.svelte";
   
-    type Route = 'home' | 'whitepaper' | 'governance' | 'game-rules' | 'games';
+    type Route = 'home' | 'whitepaper' | 'profile' | 'sign-out' | 'governance' | 'game-rules' | 'games';
   
     export let expanded: boolean = false;
     export let selectedRoute: Route = 'home';
     export let toggleNav: () => void;
   
-    const navItems = writable<{ name: string; route: Route }[]>([
-      { name: 'HOME', route: 'home' },
-      { name: 'WHITEPAPER', route: 'whitepaper' },
-      { name: 'GAME RULES', route: 'game-rules' }
+    const navItems = writable<{ name: string; route: Route, auth: boolean }[]>([
+      { name: 'HOME', route: 'home', auth: false },
+      { name: 'WHITEPAPER', route: 'whitepaper', auth: false },
+      { name: 'GAME RULES', route: 'game-rules', auth: false },
+      { name: 'PROFILE', route: 'profile', auth: false },
+      { name: 'SIGN OUT', route: 'sign-out', auth: false }
     ]);
   
     function selectRoute(route: Route) {
@@ -53,6 +56,9 @@
           break;
         case '/governance':
           selectedRoute = 'governance';
+          break;
+        case '/profile':
+          selectedRoute = 'profile';
           break;
         default:
           selectedRoute = 'home';
@@ -111,44 +117,36 @@
   
       <div class="nav-content flex flex-col items-start pl-10">
         {#each $navItems as item (item.route)}
-          <div class="nav-item expanded">
-            <button
-              on:click={() => selectRoute(item.route)}
-              class="text-3xl lg:text-6xl font-bold condensed {selectedRoute === item.route ? 'text-white' : 'text-black'}">
-              {item.name}
-            </button>
-          </div>
+          {#if (item.auth && $authSignedInStore || !item.auth)}
+            
+            {#if item.route == 'profile'}
+              <button
+                on:click={() => selectRoute('profile')}
+                class="text-3xl lg:text-6xl font-bold condensed {selectedRoute === 'profile' ? 'text-white' : 'text-black'}">
+                  <span class="flex flex-row items-center">
+                    <ProfileIcon className='w-6 lg:w-20 mr-2' fill='black' />
+                    PROFILE
+                  </span> 
+              </button>
+            {:else if item.route == 'sign-out'}
+              <div class="nav-item expanded">
+                <button
+                  on:click={handleLogout}
+                  class="text-3xl lg:text-6xl font-bold condensed text-black">
+                    SIGN OUT
+                </button>
+              </div>
+            {:else}
+              <div class="nav-item expanded">
+                <button
+                  on:click={() => selectRoute(item.route)}
+                  class="text-3xl lg:text-6xl font-bold condensed {selectedRoute === item.route ? 'text-white' : 'text-black'}">
+                  {item.name}
+                </button>
+              </div>
+            {/if}
+          {/if}
         {/each}
-
-       
-
-
-
-    {#if $authSignedInStore}
-      <div class="nav-item expanded">
-
-        <a class="brand-button" href="/profile">Profile</a>
-              
-        <button 
-            class="px-12 py-3 text-lg font-semibold shadow-lg bg-GolfPadForest text-GolfPadYellow"
-            on:click={handleLogout}
-        >
-            SIGN OUT
-        </button>
-        </div>
-    {/if}
-      </div>
-  
-      <div class="flex justify-between items-center p-5 text-xs lg:text-base">
-        <div class="social-links">
-          <a href="https://twitter.com" target="_blank">TWITTER</a>
-          <a href="https://oc.app" target="_blank">OPENCHAT</a>
-          <a href="https://youtube.com" target="_blank">YOUTUBE</a>
-        </div>
-        
-        <div>
-          <img src="placeholder.png" alt="Profile" class="w-12 h-12 rounded-full" />
-        </div>
       </div>
     </div>
 {/if}

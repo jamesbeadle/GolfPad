@@ -14,8 +14,8 @@ module Types {
   public type ClubIndex = Nat16;
   public type CourseHistoryId = Nat16;
   public type GolfCourseVersion = Nat8;
+  public type GolfTeamId = Nat;
 
-  public type GolferId = Base.PrincipalId;
   public type GolfShotId = Nat;
   public type GolfChannelId = Nat;
   
@@ -33,13 +33,14 @@ module Types {
     #NotEnoughFunds;
     #PaymentError;
     #InvalidProfilePicture;
+    #InvalidGolfTeamPicture;
     #CanisterFull;
     #CreateGameError;
   };
 
 
   public type Golfer = {
-    principalId: GolferId;
+    principalId: Base.PrincipalId;
     username: Text;
     firstName: Text;
     lastName: Text;
@@ -63,7 +64,7 @@ module Types {
 
   public type GolfShot = {
     id: GolfShotId;
-    golferId: GolferId;
+    golferId: Base.PrincipalId;
     club: GolfEnums.GolfClub;
     yardage: Nat;
     lie: ?GolfEnums.Lie;
@@ -82,7 +83,7 @@ module Types {
 
 
   public type GameInvite = {
-    inviteFrom: GolferId;
+    inviteFrom: Base.PrincipalId;
     gameId: GameId;
   };
 
@@ -100,20 +101,71 @@ module Types {
         //when a certain bands acheivement happens the best one for your round goes on your friends buzz
   };
 
+  public type PlayerSummary = {
+      principal_id: Base.PrincipalId;
+      username: Text;
+  };
+
+  public type TeamSummary = {
+      team_id: GolfTeamId;
+      captain_id: Base.PrincipalId;
+      team_members: [Base.PrincipalId];
+      team_name: Text;
+  };
+
   public type BuzzFeedItemType = {
     #Game;
     #GameEvent;
   };
 
   public type GameSummary = {
-    gameType: GameType;
-    players: [GolferId];
+    #Mulligans: MulligansGameSummary;
+    #Bands: BandsGameSummary;
+    #NextUp: NextUpGameSummary;
+    #BuildIt: BuildItGameSummary;
+  };
+
+  public type MulligansGameSummary = {
+    gameId: GameId;
+    players: [PlayerSummary];
     status: GameStatus;
     date: Int;
+    courseId: GolfCourseId;
+    score: Int8;
+    holesPlayed: Nat8;
+  };
+
+  public type BandsGameSummary = {
+    gameId: GameId;
+    players: [PlayerSummary];
+    status: GameStatus;
+    date: Int;
+    courseId: GolfCourseId;
+    holesPlayed: Nat8;
+    points: (Base.PrincipalId, Nat);
+  };
+
+  public type NextUpGameSummary = {
+    gameId: GameId;
+    players: [PlayerSummary];
+    status: GameStatus;
+    date: Int;
+    courseId: GolfCourseId;
+    holesPlayed: Nat8;
+    points: (Base.PrincipalId, Nat);
+  };
+
+  public type BuildItGameSummary = {
+    gameId: GameId;
+    teams: [TeamSummary];
+    status: GameStatus;
+    date: Int;
+    courseId: GolfCourseId;
+    scores: (GolfTeamId, Nat);
   };
 
   public type FriendRequest = {
-    requestedBy : GolferId;
+    requestedBy : Base.PrincipalId;
     requestedOn: Int;
   };
 
@@ -125,6 +177,25 @@ module Types {
     status: CourseStatus;
     history: [HistoricalGolfCourse];
     activeVersion: GolfCourseVersion;
+    mainImage: Blob;
+    bannerImage: Blob;
+    courseAlbums: [GolfCourseAlbum];
+    courseImages: [GolfCourseImage];
+  };
+
+  public type GolfCourseImage = {
+    image_id: Nat;
+    album_id: Nat;
+    added: Int;
+    visible: Bool;
+  };
+
+  public type GolfCourseAlbum = {
+    album_title: Text;
+    image_ids: [Nat];
+    created_by: Base.PrincipalId;
+    created_on: Int;
+    visible: Bool;
   };
 
   public type HistoricalGolfCourse = {
@@ -166,7 +237,7 @@ module Types {
 
   public type HoleImage = {
     uploaded: Int;
-    owner: GolferId;
+    owner: Base.PrincipalId;
     image: Blob;
   };
 
@@ -179,7 +250,7 @@ module Types {
   };
 
   public type Round = {
-    playerId: GolferId;
+    playerId: Base.PrincipalId;
     courseId: GolfCourseId;
     holeScores: [HoleScore];
   };
@@ -188,7 +259,7 @@ module Types {
     hole: HoleNumber;
     shots: Nat;
     recorded: Nat;
-    recordedBy: GolferId;
+    recordedBy: Base.PrincipalId;
   };
 
 
@@ -207,9 +278,9 @@ module Types {
     events: [GolferEvent];
     courseSnapshot: GolfCourseSnapshot;
     teeOffTime: Int;
-    playerIds: [GolferId];
-    invites: [GolferId];
-    winner: GolferId;
+    playerIds: [Base.PrincipalId];
+    invites: [Base.PrincipalId];
+    winner: Base.PrincipalId;
   };
 
   public type GameScoreDetail = {
@@ -220,12 +291,12 @@ module Types {
     results: [MulligansHoleResult];
     golfer1HolesWonCount: Nat8;
     golfer2HolesWonCount: Nat8;
-    winner: GolferId;
+    winner: Base.PrincipalId;
   };
 
   public type MulligansHoleResult = {
     holeNumber: HoleNumber;
-    winner: GolferId;
+    winner: Base.PrincipalId;
     golfer1MulliganUsed: Bool;
     golfer2MulliganUsed: Bool;
   };
@@ -238,7 +309,7 @@ module Types {
   };
 
   public type BandsPrediction = {
-    golferId: GolferId;
+    golferId: Base.PrincipalId;
     wontLoseBallStartHole: HoleNumber;
     wontHitTreeOrBunkerStartHole: HoleNumber;
     hit2Of3FairwaysStartHole: HoleNumber;
@@ -255,7 +326,7 @@ module Types {
   };
 
   public type GolferEvent = {
-    golferId: GolferId;
+    golferId: Base.PrincipalId;
     hole: HoleNumber;
     event: GolfEvent;
     //the score each player gets on a hole
@@ -289,7 +360,6 @@ module Types {
     #Mulligans;
     #NextUp;
     #BuildIt;
-    #Prophet;
   };
 
   public type GameStatus = {
@@ -311,12 +381,21 @@ module Types {
   public type GolfChannel = {
     id: GolfChannelId;
     name: Text;
-    createdBy: GolferId;
+    createdBy: Base.PrincipalId;
     createdOn: Int;
     channelImage: ?Blob;
     channelImageExtension: Text;
     channelBanner: ?Blob;
     channelBannerExtension: Text;
+    golfTeamId: ?GolfTeamId;
   };
 
+  public type GolfTeam = {
+    id: GolfTeamId;
+    name: Text;
+    owner: Base.PrincipalId;
+    members: [Base.PrincipalId];
+    teamPicture: ?Blob;
+    teamPictureExtension: Text;
+  };
 };

@@ -5,6 +5,8 @@ import Timer "mo:base/Timer";
 import Int "mo:base/Int";
 import Iter "mo:base/Iter";
 import Debug "mo:base/Debug";
+import Buffer "mo:base/Buffer";
+import Array "mo:base/Array";
 
 import T "data-types/types";
 import Environment "utilities/Environment";
@@ -35,14 +37,17 @@ import GolfCoursesCanister "canister-definitions/golf-courses-canister";
 import GameCanister "canister-definitions/game-canister";
 import GolfChannelsCanister "canister-definitions/golf-channels-canister";
 import FriendRequestQueries "queries/friend_request_queries";
+import BuzzQueries "queries/buzz_queries";
+import GolfTeamManager "managers/golf-team-manager";
 
 actor Self {
 
   private let golferManager = GolferManager.GolferManager();
+  private let golfTeamManager = GolfTeamManager.GolfTeamManager();
   private let courseManager = GolfCourseManager.GolfCourseManager();
   private let gameManager = GameManager.GameManager();
   private let golfChannelManager = GolfChannelManager.GolfChannelManager();
-
+  
   private var appStatus: Base.AppStatus = { 
     onHold = false;
     version = "0.0.1";
@@ -51,6 +56,229 @@ actor Self {
   public shared query func getAppStatus() : async Result.Result<BaseQueries.AppStatusDTO, T.Error> {
     return #ok(appStatus);
   };
+
+  //Buzz Feed Functions
+
+  public shared func getBuzzEntries(dto: BuzzQueries.GetBuzzEntries) : async Result.Result<BuzzQueries.BuzzEntries, T.Error> {
+    
+    let paginatedGameSummaries = gameManager.getGameSummaries(dto.page);
+
+    let buzzEntriesBuffer = Buffer.fromArray<BuzzQueries.BuzzEntry>([]);
+
+    for (entrySummary in Iter.fromArray(paginatedGameSummaries)){
+
+      switch(entrySummary){
+        case (#Mulligans entry){
+          let courseResult = await courseManager.getGolfCourse({ golfCourseId = entry.courseId });
+          switch(courseResult){
+            case (#ok course){              
+              buzzEntriesBuffer.add(await getMulligansBuzzEntry(entry,course));
+            };
+            case (#err error){
+              return #err(error);
+            };
+          };
+        };
+        case (#Bands entry){
+          let courseResult = await courseManager.getGolfCourse({ golfCourseId = entry.courseId });
+          switch(courseResult){
+            case (#ok course){              
+              buzzEntriesBuffer.add(await getBandsBuzzEntry(entry,course));
+            };
+            case (#err error){
+              return #err(error);
+            };
+          };
+        };
+        case (#BuildIt entry){
+          let courseResult = await courseManager.getGolfCourse({ golfCourseId = entry.courseId });
+          switch(courseResult){
+            case (#ok course){              
+              buzzEntriesBuffer.add(await getBuildItBuzzEntry(entry,course));
+            };
+            case (#err error){
+              return #err(error);
+            };
+          };
+        };
+        case (#NextUp entry){
+          let courseResult = await courseManager.getGolfCourse({ golfCourseId = entry.courseId });
+          switch(courseResult){
+            case (#ok course){              
+              buzzEntriesBuffer.add(await getNextUpBuzzEntry(entry,course));
+            };
+            case (#err error){
+              return #err(error);
+            };
+          };
+        };
+      };
+    };  
+
+    return #ok({
+      entries = Buffer.toArray(buzzEntriesBuffer);
+      page = dto.page;
+    });
+  };
+
+  private func getMulligansBuzzEntry(summary: T.MulligansGameSummary, course: GolfCourseQueries.GolfCourse) : async BuzzQueries.BuzzEntry {
+    
+    let course_info = {
+      course_id = course.courseId;
+      course_image = course.mainImage;
+      course_name = course.name;
+    };
+    let game_info = {
+      game_date = summary.date;
+      game_id = summary.gameId;
+      game_type = #Mulligans;
+    };
+
+    let playerSummaryBuffer = Buffer.fromArray<BuzzQueries.PlayerFeedSummary>([]);
+    for(player in Iter.fromArray(summary.players)){
+      let picture = await golferManager.getProfilePicture(player.principal_id);
+      playerSummaryBuffer.add( {
+          principal_id = player.principal_id;
+          profile_picture = picture;
+          username = player.username;
+        })
+    };
+    let match_result = #Mulligans({
+      players = Buffer.toArray<BuzzQueries.PlayerFeedSummary>(playerSummaryBuffer);
+      score = summary.score;
+      holesPlayed  = summary.holesPlayed; 
+    });
+
+    return {
+      course_info;
+      game_info;
+      match_result;
+    }
+  };
+
+  private func getBandsBuzzEntry(summary: T.BandsGameSummary, course: GolfCourseQueries.GolfCourse) : async BuzzQueries.BuzzEntry {
+    let course_info = {
+      course_id = course.courseId;
+      course_image = course.mainImage;
+      course_name = course.name;
+    };
+    
+    let game_info = {
+      game_date = summary.date;
+      game_id = summary.gameId;
+      game_type = #Bands;
+    };
+    let playerSummaryBuffer = Buffer.fromArray<BuzzQueries.PlayerFeedSummary>([]);
+    for(player in Iter.fromArray(summary.players)){
+      let picture = await golferManager.getProfilePicture(player.principal_id);
+      playerSummaryBuffer.add( {
+          principal_id = player.principal_id;
+          profile_picture = picture;
+          username = player.username;
+        })
+    };
+    let match_result = #Bands({
+      players = Buffer.toArray<BuzzQueries.PlayerFeedSummary>(playerSummaryBuffer);
+      points  = summary.points;
+      holesPlayed  = summary.holesPlayed; 
+    });
+    return {
+      course_info;
+      game_info;
+      match_result;
+    }
+  };
+
+  private func getBuildItBuzzEntry(entry: T.BuildItGameSummary, course: GolfCourseQueries.GolfCourse) : async BuzzQueries.BuzzEntry {
+     let course_info = {
+      course_id = course.courseId;
+      course_image = course.mainImage;
+      course_name = course.name;
+    };
+    let game_info = {
+      game_date = entry.date;
+      game_id = entry.gameId;
+      game_type = #BuildIt;
+    };
+    let match_result = #BuildIt({
+      scores = entry.scores;
+      teams = Array.map<T.TeamSummary, BuzzQueries.TeamFeedSummary>(entry.teams, func(teamEntry: T.TeamSummary){
+
+        return {
+          captain_id = teamEntry.captain_id;
+          team_image  = getTeamImage(teamEntry.team_id);
+          team_members = teamEntry.team_members;
+          team_name = teamEntry.team_name;
+        }
+      });
+    }); 
+    return {
+      course_info;
+      game_info;
+      match_result;
+    }
+  };
+
+  private func getNextUpBuzzEntry(summary: T.NextUpGameSummary, course: GolfCourseQueries.GolfCourse) : async BuzzQueries.BuzzEntry {
+     let course_info = {
+      course_id = course.courseId;
+      course_image = course.mainImage;
+      course_name = course.name;
+    };
+    let game_info = {
+      game_date = summary.date;
+      game_id = summary.gameId;
+      game_type = #NextUp;
+    }; 
+    let playerSummaryBuffer = Buffer.fromArray<BuzzQueries.PlayerFeedSummary>([]);
+    for(player in Iter.fromArray(summary.players)){
+      let picture = await golferManager.getProfilePicture(player.principal_id);
+      playerSummaryBuffer.add( {
+          principal_id = player.principal_id;
+          profile_picture = picture;
+          username = player.username;
+        })
+    };
+    let match_result = #Bands({
+      players = Buffer.toArray<BuzzQueries.PlayerFeedSummary>(playerSummaryBuffer);
+      points  = summary.points;
+      holesPlayed  = summary.holesPlayed; 
+    });
+    return {
+      course_info;
+      game_info;
+      match_result;
+    }
+  };
+
+  private func getTeamImage(teamId: T.GolfTeamId) : ?Blob {
+    return null; // golfTeamManager.getTeamImage(teamId);
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   //SNS Validation and Callback function:
 
@@ -353,79 +581,162 @@ actor Self {
 
   //Stable Storage & System Functions:
 
-  private stable var stable_golfer_canister_index: [(T.GolferId, Base.CanisterId)] = [];
-  private stable var stable_golf_course_canister_index: [(T.GolfCourseId, Base.CanisterId)] = [];
-  private stable var stable_game_canister_index: [(T.GameId, Base.CanisterId)] = [];
-  private stable var stable_golf_channel_canister_index: [(T.GolfChannelId, Base.CanisterId)] = [];
-    
+  //Stable Entity Structures
+  private stable var stable_golfer_canister_index: [(Base.PrincipalId, Base.CanisterId)] = [];
   private stable var stable_active_golfer_canister_id: Base.CanisterId = "";
-  private stable var stable_active_golf_course_canister_id: Base.CanisterId = "";
-  private stable var stable_active_game_canister_id: Base.CanisterId = "";
-  private stable var stable_active_golf_channel_canister_id: Base.CanisterId = "";
-
-  private stable var stable_usernames : [(T.GolferId, Text)] = [];
-  private stable var stable_golf_course_names : [(T.GolfCourseId, Text)] = [];
-  private stable var stable_golf_channel_names : [(T.GolfChannelId, Text)] = [];
-  
+  private stable var stable_usernames : [(Base.PrincipalId, Text)] = [];
   private stable var stable_unique_golfer_canister_ids : [Base.CanisterId] = [];
-  private stable var stable_unique_golf_course_canister_ids : [Base.CanisterId] = [];
-  private stable var stable_unique_game_canister_ids : [Base.CanisterId] = [];
-  private stable var stable_unique_golf_channel_canister_ids : [Base.CanisterId] = [];
-
   private stable var stable_total_golfers : Nat = 0;
+  
+  private stable var stable_golf_course_canister_index: [(T.GolfCourseId, Base.CanisterId)] = [];
+  private stable var stable_active_golf_course_canister_id: Base.CanisterId = "";
+  private stable var stable_golf_course_names : [(T.GolfCourseId, Text)] = [];
+  private stable var stable_unique_golf_course_canister_ids : [Base.CanisterId] = [];
   private stable var stable_total_golf_courses : Nat = 0;
-  private stable var stable_total_golf_channels : Nat = 0;
+  private stable var stable_next_golf_course_id : Nat = 0;
+  
+  private stable var stable_game_canister_index: [(T.GameId, Base.CanisterId)] = [];
+  private stable var stable_active_game_canister_id: Base.CanisterId = "";
+  private stable var stable_unique_game_canister_ids : [Base.CanisterId] = [];
   private stable var stable_total_games : Nat = 0;
+  private stable var stable_next_game_id : Nat = 0;
+  
+  private stable var stable_golf_channel_canister_index: [(T.GolfChannelId, Base.CanisterId)] = [];  
+  private stable var stable_active_golf_channel_canister_id: Base.CanisterId = "";
+  private stable var stable_golf_channel_names : [(T.GolfChannelId, Text)] = [];
+  private stable var stable_unique_golf_channel_canister_ids : [Base.CanisterId] = [];
+  private stable var stable_total_golf_channels : Nat = 0;
+  private stable var stable_next_golf_channel_id : Nat = 0;
+
+  private stable var stable_golf_team_canister_index: [(T.GolfTeamId, Base.CanisterId)] = [];  
+  private stable var stable_active_golf_team_canister_id: Base.CanisterId = "";
+  private stable var stable_golf_team_names : [(T.GolfTeamId, Text)] = [];
+  private stable var stable_unique_golf_team_canister_ids : [Base.CanisterId] = [];
+  private stable var stable_next_golf_team_id : Nat = 0;
+
+  //Stable structures for views
+  private stable var stable_game_summaries: [T.GameSummary] = [];
   
   system func preupgrade() {
+
+    backupGolferData();
+    backupGolfCourseData();
+    backupGolfChannelData();
+    backupGameData();
+    backupGolfTeamData();
+    backupViewData();
+
+  };
+
+  private func backupGolferData(){
+
     stable_golfer_canister_index := golferManager.getStableCanisterIndex();
-    stable_golf_course_canister_index := courseManager.getStableCanisterIndex();
-    stable_golf_channel_canister_index := golfChannelManager.getStableCanisterIndex();
-    stable_game_canister_index := gameManager.getStableCanisterIndex();
-    
-    
     stable_active_golfer_canister_id := golferManager.getStableActiveCanisterId();
-    stable_active_golf_course_canister_id := courseManager.getStableActiveCanisterId();
-    stable_active_game_canister_id := gameManager.getStableActiveCanisterId();
-    stable_active_golf_channel_canister_id := golfChannelManager.getStableActiveCanisterId();
-
-    stable_usernames := golferManager.getStableUsernames();
-    stable_golf_course_names := courseManager.getStableGolfCourseNames();
-    stable_golf_channel_names := golfChannelManager.getStableGolfChannelNames();
-    
+    stable_usernames := golferManager.getStableUsernames();    
     stable_unique_golfer_canister_ids := golferManager.getStableUniqueCanisterIds();
-    stable_unique_golf_course_canister_ids := courseManager.getStableUniqueCanisterIds();
-    stable_unique_golf_channel_canister_ids := golfChannelManager.getStableUniqueCanisterIds();
-    stable_unique_game_canister_ids := gameManager.getStableUniqueCanisterIds();
-
     stable_total_golfers := golferManager.getStableTotalGolfers();
+  };
+
+  private func backupGolfCourseData(){
+    stable_golf_course_canister_index := courseManager.getStableCanisterIndex();
+    stable_active_golf_course_canister_id := courseManager.getStableActiveCanisterId();
+    stable_golf_course_names := courseManager.getStableGolfCourseNames();
+    stable_unique_golf_course_canister_ids := courseManager.getStableUniqueCanisterIds();
     stable_total_golf_courses := courseManager.getStableTotalGolfCourses();
+    stable_next_golf_course_id := courseManager.getStableNextGolfCourseId();
+
+  };
+
+  private func backupGolfChannelData(){
+    stable_golf_channel_canister_index := golfChannelManager.getStableCanisterIndex();
+    stable_active_golf_channel_canister_id := golfChannelManager.getStableActiveCanisterId();
+    stable_golf_channel_names := golfChannelManager.getStableGolfChannelNames();
+    stable_unique_golf_channel_canister_ids := golfChannelManager.getStableUniqueCanisterIds();
     stable_total_golf_channels := golfChannelManager.getStableTotalGolfChannels();
+    stable_next_golf_channel_id := golfChannelManager.getStableNextGolfChannelId();
+
+  };
+
+  private func backupGameData(){
+    stable_game_canister_index := gameManager.getStableCanisterIndex();
+    stable_active_game_canister_id := gameManager.getStableActiveCanisterId();
+    stable_unique_game_canister_ids := gameManager.getStableUniqueCanisterIds();
     stable_total_games := gameManager.getStableTotalGames();
+    stable_next_game_id := gameManager.getStableNextGameId();
+
+  };
+
+  private func backupGolfTeamData(){
+    stable_golf_team_canister_index := golfTeamManager.getStableCanisterIndex();
+    stable_active_golf_team_canister_id := golfTeamManager.getStableActiveCanisterId();
+    stable_golf_team_names := golfTeamManager.getStableGolfTeamNames();
+    stable_unique_golf_team_canister_ids := golfTeamManager.getStableUniqueCanisterIds();
+    stable_total_games := golfTeamManager.getStableTotalGolfTeams();
+    stable_next_golf_team_id := golfTeamManager.getStableNextGolfTeamId();
+  };
+
+  private func backupViewData(){
+    stable_game_summaries := gameManager.getStableGameSummaries();
   };
 
   system func postupgrade() {
     
-    golferManager.setStableCanisterIndex(stable_golfer_canister_index);
-    courseManager.setStableCanisterIndex(stable_golf_course_canister_index);
-    gameManager.setStableCanisterIndex(stable_game_canister_index);
-    golfChannelManager.setStableCanisterIndex(stable_golf_channel_canister_index);
     
-    golferManager.setStableActiveCanisterId(stable_active_golfer_canister_id);
-    courseManager.setStableActiveCanisterId(stable_active_golf_course_canister_id);
-    gameManager.setStableActiveCanisterId(stable_active_game_canister_id);
-    golfChannelManager.setStableActiveCanisterId(stable_active_golf_channel_canister_id);
-
-    golferManager.setStableUsernames(stable_usernames);
-    courseManager.setStableGolfCourseNames(stable_golf_course_names);
-    golfChannelManager.setStableGolfChannelNames(stable_golf_channel_names);
-    
-    golferManager.setStableUniqueCanisterIds(stable_unique_golfer_canister_ids);
-    courseManager.setStableUniqueCanisterIds(stable_unique_golf_course_canister_ids);
-    gameManager.setStableUniqueCanisterIds(stable_unique_game_canister_ids);
-    golfChannelManager.setStableUniqueCanisterIds(stable_unique_golf_channel_canister_ids);
+    setGolferData();
+    setGolfCourseData();
+    setGolfChannelData();
+    setGameData();
+    setGolfTeamData();
+    setViewData();
 
    ignore Timer.setTimer<system>(#nanoseconds(Int.abs(1)), postUpgradeCallback); 
+  };
+
+  private func setGolferData(){
+    golferManager.setStableCanisterIndex(stable_golfer_canister_index);
+    golferManager.setStableActiveCanisterId(stable_active_golfer_canister_id);
+    golferManager.setStableUsernames(stable_usernames);    
+    golferManager.setStableUniqueCanisterIds(stable_unique_golfer_canister_ids);
+    golferManager.setStableTotalGolfers(stable_total_golfers);
+  };
+
+  private func setGolfCourseData(){
+    courseManager.setStableCanisterIndex(stable_golf_course_canister_index);
+    courseManager.setStableActiveCanisterId(stable_active_golf_course_canister_id);
+    courseManager.setStableGolfCourseNames(stable_golf_course_names);
+    courseManager.setStableUniqueCanisterIds(stable_unique_golf_course_canister_ids);
+    courseManager.setStableTotalGolfCourses(stable_total_golf_courses);
+    courseManager.setStableNextGolfCourseId(stable_next_golf_course_id);
+  };
+
+  private func setGolfChannelData(){
+    golfChannelManager.setStableCanisterIndex(stable_golf_channel_canister_index);
+    golfChannelManager.setStableActiveCanisterId(stable_active_golf_channel_canister_id);
+    golfChannelManager.setStableGolfChannelNames(stable_golf_channel_names);
+    golfChannelManager.setStableUniqueCanisterIds(stable_unique_golf_channel_canister_ids);
+    golfChannelManager.setStableTotalGolfChannels(stable_total_golf_channels);
+    golfChannelManager.setStableNextGolfChannelId(stable_next_golf_channel_id);
+  };
+
+  private func setGameData(){
+    gameManager.setStableCanisterIndex(stable_game_canister_index);
+    gameManager.setStableActiveCanisterId(stable_active_game_canister_id);
+    gameManager.setStableUniqueCanisterIds(stable_unique_game_canister_ids);
+    gameManager.setStableTotalGames(stable_total_games);
+    gameManager.setStableNextGameId(stable_next_game_id);
+  };
+
+  private func setGolfTeamData(){
+    golfTeamManager.setStableCanisterIndex(stable_golf_team_canister_index);
+    golfTeamManager.setStableActiveCanisterId(stable_active_golf_team_canister_id);
+    golfTeamManager.setStableGolfTeamNames(stable_golf_team_names);
+    golfTeamManager.setStableUniqueCanisterIds(stable_unique_golf_team_canister_ids);
+    golfTeamManager.setStableTotalGolfTeams(stable_total_games);
+    golfTeamManager.setStableNextGolfTeamId(stable_next_golf_team_id);
+  };
+
+  private func setViewData(){
+    gameManager.setStableGameSummaries(stable_game_summaries);
   };
 
   private func postUpgradeCallback() : async (){

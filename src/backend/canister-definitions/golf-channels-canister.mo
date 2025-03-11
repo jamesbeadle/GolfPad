@@ -121,6 +121,7 @@ actor class _GolfChannelsCanister() {
       channelImageExtension = "";
       channelBanner = null;
       channelBannerExtension = "";
+      golfTeamId = null;
     };
     
     return addGolfChannel(activeGroupIndex, newChannel);
@@ -153,6 +154,7 @@ actor class _GolfChannelsCanister() {
               channelImageExtension = dto.channelImageExtension;
               channelBanner = dto.channelBanner;
               channelBannerExtension = dto.channelBannerExtension;
+              golfTeamId = foundGolfChannel.golfTeamId;
             };
 
             return saveGolfChannel(foundGroupIndex, updatedGolfChannel);

@@ -1,13 +1,13 @@
 <script>
   export let className = "";
-  export const fill = "white";
+  export const fill = "";
 </script>
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
   aria-hidden="true"
   class={className}
-  fill="currentColor"
+  fill={fill}
   viewBox="0 0 24 24"
   >
 <path 

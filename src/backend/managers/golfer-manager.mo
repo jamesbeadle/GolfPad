@@ -30,13 +30,31 @@ import FriendRequestQueries "../queries/friend_request_queries";
 module {
   public class GolferManager() {
 
-    private var golferCanisterIndex: TrieMap.TrieMap<T.GolferId, Base.CanisterId> = TrieMap.TrieMap<T.GolferId, Base.CanisterId>(Text.equal, Text.hash);
+    private var golferCanisterIndex: TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId> = TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId>(Text.equal, Text.hash);
     private var activeCanisterId: Base.CanisterId = "";
-    private var usernames : TrieMap.TrieMap<T.GolferId, Text> = TrieMap.TrieMap<T.GolferId, Text>(Text.equal, Text.hash);
+    private var usernames : TrieMap.TrieMap<Base.PrincipalId, Text> = TrieMap.TrieMap<Base.PrincipalId, Text>(Text.equal, Text.hash);
     private var uniqueGolferCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGolfers : Nat = 0;
 
     //Getters
+
+    public func getProfilePicture(principalId: Base.PrincipalId) : async ?Blob {
+      let existingGolferCanisterId = golferCanisterIndex.get(principalId);
+      switch(existingGolferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            getProfilePicture : (principalId: Base.PrincipalId) -> async ?Blob;
+          };
+
+          let golfer = await golfer_canister.getProfilePicture(principalId);
+          return golfer;
+        };
+        case (null){
+          return null;
+        }
+      };
+    };
 
     public func isUsernameAvailable(dto: GolferQueries.IsUsernameAvailable) : GolferQueries.UsernameAvailable{
       return not isUsernameTaken(dto.username, dto.principalId)
@@ -204,7 +222,7 @@ module {
 
     //Update functions
     
-    public func createUser(principalId: T.GolferId, dto: GolferCommands.CreateUser) : async Result.Result<(), T.Error> {
+    public func createUser(principalId: Base.PrincipalId, dto: GolferCommands.CreateUser) : async Result.Result<(), T.Error> {
       
       if(Text.size(dto.username) < 5 or Text.size(dto.username) > 20){
         return #err(#TooLong);
@@ -236,7 +254,7 @@ module {
 
           var golfer_canister = actor (activeCanisterId) : actor {
             isCanisterFull : () -> async Bool;
-            createUser : (principalId: T.GolferId, dto: GolferCommands.CreateUser) -> async Result.Result<(), T.Error>;  
+            createUser : (principalId: Base.PrincipalId, dto: GolferCommands.CreateUser) -> async Result.Result<(), T.Error>;  
           };
 
           let isCanisterFull = await golfer_canister.isCanisterFull(); 
@@ -245,7 +263,7 @@ module {
             await createNewCanister();
             golfer_canister := actor (activeCanisterId) : actor {
               isCanisterFull : () -> async Bool;
-              createUser : (principalId: T.GolferId, dto: GolferCommands.CreateUser) -> async Result.Result<(), T.Error>;  
+              createUser : (principalId: Base.PrincipalId, dto: GolferCommands.CreateUser) -> async Result.Result<(), T.Error>;  
             };
           };
 
@@ -538,14 +556,14 @@ module {
       };
     };
 
-    public func friendRequestExists(golferPrincipalId: T.GolferId, requestedById: T.GolferId) : async Bool {
+    public func friendRequestExists(golferPrincipalId: Base.PrincipalId, requestedById: Base.PrincipalId) : async Bool {
       
        let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
 
        switch(golferCanisterId){
         case (?foundCanisterId){
           let golfer_canister = actor (foundCanisterId) : actor {
-            friendRequestExists : (golferPrincipalId: T.GolferId, requestedById: T.GolferId) -> async Bool;
+            friendRequestExists : (golferPrincipalId: Base.PrincipalId, requestedById: Base.PrincipalId) -> async Bool;
           };
 
           return await golfer_canister.friendRequestExists(golferPrincipalId, requestedById);
@@ -558,7 +576,7 @@ module {
 
     //private functions
 
-    private func isUsernameTaken(username : Text, principalId : T.GolferId) : Bool {
+    private func isUsernameTaken(username : Text, principalId : Base.PrincipalId) : Bool {
       for (managerUsername in usernames.entries()) {
 
         let lowerCaseUsername = Utilities.toLowercase(username);
@@ -603,12 +621,12 @@ module {
 
     //stable storage getters and setters
 
-    public func getStableCanisterIndex() : [(T.GolferId, Base.CanisterId)]{
+    public func getStableCanisterIndex() : [(Base.PrincipalId, Base.CanisterId)]{
       return Iter.toArray(golferCanisterIndex.entries());
     };
 
-    public func setStableCanisterIndex(stable_golfer_canister_index: [(T.GolferId, Base.CanisterId)]){
-      let canisterIds : TrieMap.TrieMap<T.GolferId, Base.CanisterId> = TrieMap.TrieMap<T.GolferId, Base.CanisterId>(Text.equal, Text.hash);
+    public func setStableCanisterIndex(stable_golfer_canister_index: [(Base.PrincipalId, Base.CanisterId)]){
+      let canisterIds : TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId> = TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId>(Text.equal, Text.hash);
 
       for (canisterId in Iter.fromArray(stable_golfer_canister_index)) {
         canisterIds.put(canisterId);
@@ -624,12 +642,12 @@ module {
       activeCanisterId := stable_active_canister_id;
     };  
 
-    public func getStableUsernames() : [(T.GolferId, Text)] {
+    public func getStableUsernames() : [(Base.PrincipalId, Text)] {
       return Iter.toArray(usernames.entries());
     };
 
-    public func setStableUsernames(stable_usernames : [(T.GolferId, Text)]) : () {
-      let usernames_map : TrieMap.TrieMap<T.GolferId, Base.CanisterId> = TrieMap.TrieMap<T.GolferId, Base.CanisterId>(Text.equal, Text.hash);
+    public func setStableUsernames(stable_usernames : [(Base.PrincipalId, Text)]) : () {
+      let usernames_map : TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId> = TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId>(Text.equal, Text.hash);
 
       for (username in Iter.fromArray(stable_usernames)) {
         usernames_map.put(username);

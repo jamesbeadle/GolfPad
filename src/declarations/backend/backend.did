@@ -2,29 +2,29 @@ type UsernameAvailable = bool;
 type UploadGolfChannelVideo = record {channelId: GolfChannelId;};
 type UpdateUsername = 
  record {
-   principalId: GolferId;
+   principalId: PrincipalId;
    username: text;
  };
 type UpdateProfilePicture = 
  record {
-   principalId: GolferId;
+   principalId: PrincipalId;
    profilePicture: opt blob;
    profilePictureExtension: text;
  };
 type UpdateLastName = 
  record {
    lastName: text;
-   principalId: GolferId;
+   principalId: PrincipalId;
  };
 type UpdateHomeCourse = 
  record {
    homeCourseId: opt GolfCourseId;
-   principalId: GolferId;
+   principalId: PrincipalId;
  };
 type UpdateHandicap = 
  record {
    handicap: opt Handicap;
-   principalId: GolferId;
+   principalId: PrincipalId;
  };
 type UpdateGolfCourse = 
  record {
@@ -46,12 +46,12 @@ type UpdateGame = record {gameId: GameId;};
 type UpdateFirstName = 
  record {
    firstName: text;
-   principalId: GolferId;
+   principalId: PrincipalId;
  };
 type UnsubscribeFromGolfChannel = 
  record {
    channelId: GolfChannelId;
-   principalId: GolferId;
+   principalId: PrincipalId;
  };
 type TeeInfo = 
  record {
@@ -69,16 +69,23 @@ type TeeGroup =
    name: text;
    strokeIndex: nat8;
  };
+type TeamFeedSummary = 
+ record {
+   captain_id: PrincipalId;
+   team_image: opt blob;
+   team_members: vec PrincipalId;
+   team_name: text;
+ };
 type SubscribeToGolfChannel = 
  record {
    channelId: GolfChannelId;
-   principalId: GolferId;
+   principalId: PrincipalId;
  };
 type Shot = record {};
 type SendFriendRequest = 
  record {
-   principalId: GolferId;
-   requestedFriend: GolferId;
+   principalId: PrincipalId;
+   requestedFriend: PrincipalId;
  };
 type RustResult = 
  variant {
@@ -125,20 +132,25 @@ type Result_2 =
    err: Error;
    ok: Golfers;
  };
-type Result_16 = 
+type Result_17 = 
  variant {
    err: Error;
    ok: GameId;
  };
-type Result_15 = 
+type Result_16 = 
  variant {
    err: Error;
    ok: GolfChannelId;
  };
-type Result_14 = 
+type Result_15 = 
  variant {
    err: Error;
    ok: AppStatusDTO;
+ };
+type Result_14 = 
+ variant {
+   err: Error;
+   ok: BuzzEntries;
  };
 type Result_13 = 
  variant {
@@ -174,37 +186,58 @@ type RemoveGolfChannelVideo = record {channelId: GolfChannelId;};
 type RejectGameInvite = 
  record {
    gameId: GameId;
-   rejectedById: GolferId;
+   rejectedById: PrincipalId;
  };
 type RejectFriendRequest = 
  record {
-   principalId: GolferId;
-   requestedBy: GolferId;
+   principalId: PrincipalId;
+   requestedBy: PrincipalId;
  };
 type Profile = 
  record {
    golferPicture: opt blob;
    golferPictureExtension: text;
    handicap: opt Handicap;
-   principalId: GolferId;
+   principalId: PrincipalId;
    username: text;
  };
 type PrincipalId = text;
 type PredictedShot = record {};
 type PredictShot = record {principalId: PrincipalId;};
+type PlayerFeedSummary = 
+ record {
+   principal_id: PrincipalId;
+   profile_picture: opt blob;
+   username: text;
+ };
+type NextUpResultInfo = 
+ record {
+   holesPlayed: nat8;
+   players: vec PlayerFeedSummary;
+   points: record {
+             PrincipalId;
+             nat;
+           };
+ };
 type MulligansScores = 
  record {
    golfer1HolesWonCount: nat8;
    golfer2HolesWonCount: nat8;
    results: vec MulligansHoleResult;
-   winner: GolferId;
+   winner: PrincipalId;
  };
 type MulligansScore = 
  record {
    golfer1MulliganUsed: bool;
    golfer2MulliganUsed: bool;
    holeNumber: HoleNumber;
-   winner: GolferId;
+   winner: PrincipalId;
+ };
+type MulligansResultInfo = 
+ record {
+   holesPlayed: nat8;
+   players: vec PlayerFeedSummary;
+   score: int8;
  };
 type MulligansPrediction = record {};
 type MulligansHoleResult = 
@@ -212,7 +245,14 @@ type MulligansHoleResult =
    golfer1MulliganUsed: bool;
    golfer2MulliganUsed: bool;
    holeNumber: HoleNumber;
-   winner: GolferId;
+   winner: PrincipalId;
+ };
+type MatchResultInfo = 
+ variant {
+   Bands: BandsResultInfo;
+   BuildIt: BuildItResultInfo;
+   Mulligans: MulligansResultInfo;
+   NextUp: NextUpResultInfo;
  };
 type ListGolfers = 
  record {
@@ -225,31 +265,31 @@ type ListFriends =
  record {
    limit: nat;
    offset: nat;
-   principalId: GolferId;
+   principalId: PrincipalId;
    totalEntries: nat;
  };
 type ListFriendRequests = 
  record {
    limit: nat;
    offset: nat;
-   principalId: GolferId;
+   principalId: PrincipalId;
    totalEntries: nat;
  };
 type IsUsernameAvailable = 
  record {
-   principalId: GolferId;
+   principalId: PrincipalId;
    username: text;
  };
 type InviteGolfers = 
  record {
    gameId: GameId;
-   invitedGolferIds: vec GolferId;
+   invitedGolferIds: vec PrincipalId;
  };
 type HoleNumber = nat8;
 type HoleImage = 
  record {
    image: blob;
-   owner: GolferId;
+   owner: PrincipalId;
    uploaded: int;
  };
 type Hole = 
@@ -266,16 +306,16 @@ type GolferSummary =
    golferName: text;
    golferPicture: opt blob;
    golferPictureExtension: text;
-   golferPrincipalId: GolferId;
+   golferPrincipalId: PrincipalId;
    handicap: opt Handicap;
  };
-type GolferId = text;
 type GolferEvent = 
  record {
    event: GolfEvent;
-   golferId: GolferId;
+   golferId: PrincipalId;
    hole: HoleNumber;
  };
+type GolfTeamId = nat;
 type GolfEvent = 
  variant {
    Albatross;
@@ -308,6 +348,7 @@ type GolfCourse =
  record {
    activeVersion: GolfCourseVersion;
    courseId: GolfCourseId;
+   mainImage: blob;
    name: text;
    tees: vec TeeGroup;
  };
@@ -320,7 +361,7 @@ type GolfChannel =
    name: text;
  };
 type GetShot = record {principalId: PrincipalId;};
-type GetProfile = record {principalId: GolferId;};
+type GetProfile = record {principalId: PrincipalId;};
 type GetGolfCourses = 
  record {
    limit: nat;
@@ -336,13 +377,17 @@ type GetGolfChannelVideos =
 type GetGolfChannelVideo = record {channelId: GolfChannelId;};
 type GetGolfChannel = record {channelId: GolfChannelId;};
 type GetGame = record {gameId: GameId;};
+type GetBuzzEntries = 
+ record {
+   page: nat;
+   user_id: PrincipalId;
+ };
 type GameType = 
  variant {
    Bands;
    BuildIt;
    Mulligans;
    NextUp;
-   Prophet;
  };
 type GameStatus = 
  variant {
@@ -359,6 +404,12 @@ type GamePrediction =
    Mulligans: MulligansPrediction;
    NextUp: record {};
  };
+type GameInfo = 
+ record {
+   game_date: int;
+   game_id: GameId;
+   game_type: GameType;
+ };
 type GameId = nat;
 type Game = 
  record {
@@ -367,28 +418,29 @@ type Game =
    events: vec GolferEvent;
    gameType: GameType;
    id: GameId;
-   invites: vec GolferId;
-   playerIds: vec GolferId;
+   invites: vec PrincipalId;
+   playerIds: vec PrincipalId;
    predictions: vec GamePrediction;
    scoreDetail: opt GameScoreDetail;
    status: GameStatus;
    teeOffTime: int;
-   winner: GolferId;
+   winner: PrincipalId;
  };
 type Friends = record {friendRequests: vec Friend;};
 type FriendRequests = record {friendRequests: vec FriendRequest;};
 type FriendRequest = 
  record {
-   principalId: GolferId;
+   principalId: PrincipalId;
    requestTime: int;
  };
-type Friend = record {principalId: GolferId;};
+type Friend = record {principalId: PrincipalId;};
 type Error = 
  variant {
    AlreadyExists;
    CanisterFull;
    CreateGameError;
    DecodeError;
+   InvalidGolfTeamPicture;
    InvalidProfilePicture;
    NotAllowed;
    NotAuthorized;
@@ -410,30 +462,66 @@ type CreateUser =
  };
 type CreateGolfCourse = 
  record {
+   bannerImage: blob;
    holes: vec Hole;
    initialTeeGroup: TeeGroup;
+   mainImage: blob;
    name: text;
  };
 type CreateGolfChannel = 
  record {
-   createdById: GolferId;
+   createdById: PrincipalId;
    name: text;
  };
 type CreateGame = 
  record {
    courseId: GolfCourseId;
    courseVersion: GolfCourseVersion;
-   createdById: GolferId;
+   createdById: PrincipalId;
    gameType: GameType;
-   inviteIds: vec GolferId;
+   inviteIds: vec PrincipalId;
    name: text;
    teeGroup: TeeGroup;
    teeOffTime: int;
  };
+type CourseInfo = 
+ record {
+   course_id: GolfCourseId;
+   course_image: blob;
+   course_name: text;
+ };
+type BuzzEntry = 
+ record {
+   course_info: CourseInfo;
+   game_info: GameInfo;
+   match_result: MatchResultInfo;
+ };
+type BuzzEntries = 
+ record {
+   entries: vec BuzzEntry;
+   page: nat;
+ };
+type BuildItResultInfo = 
+ record {
+   scores: record {
+             GolfTeamId;
+             nat;
+           };
+   teams: vec TeamFeedSummary;
+ };
 type BeginGame = record {gameId: GameId;};
+type BandsResultInfo = 
+ record {
+   holesPlayed: nat8;
+   players: vec PlayerFeedSummary;
+   points: record {
+             PrincipalId;
+             nat;
+           };
+ };
 type BandsPrediction = 
  record {
-   golferId: GolferId;
+   golferId: PrincipalId;
    hit2Of3FairwaysStartHole: HoleNumber;
    hit2Of3GreensStartHole: HoleNumber;
    parOrUnderStartHole: HoleNumber;
@@ -454,17 +542,17 @@ type AddGameScore =
  record {
    detail: GameScoreSubmission;
    gameId: GameId;
-   submittedById: GolferId;
+   submittedById: PrincipalId;
  };
 type AcceptGameInvite = 
  record {
-   acceptedById: GolferId;
+   acceptedById: PrincipalId;
    gameId: GameId;
  };
 type AcceptFriendRequest = 
  record {
-   principalId: GolferId;
-   requestedBy: GolferId;
+   principalId: PrincipalId;
+   requestedBy: PrincipalId;
  };
 service : {
   acceptFriendRequest: (AcceptFriendRequest) -> (Result);
@@ -472,14 +560,15 @@ service : {
   addGameScore: (AddGameScore) -> (Result);
   addShot: (AddShot) -> (Result);
   beginGame: (BeginGame) -> (Result);
-  createGame: (CreateGame) -> (Result_16);
-  createGolfChannel: (CreateGolfChannel) -> (Result_15);
+  createGame: (CreateGame) -> (Result_17);
+  createGolfChannel: (CreateGolfChannel) -> (Result_16);
   createUser: (CreateUser) -> (Result);
   deleteGame: (DeleteGame) -> (Result);
   deleteGolfChannel: (DeleteGolfChannel) -> (Result);
   executeAddGolfCourse: (CreateGolfCourse) -> ();
   executeUpdateGolfCourse: (UpdateGolfCourse) -> ();
-  getAppStatus: () -> (Result_14) query;
+  getAppStatus: () -> (Result_15) query;
+  getBuzzEntries: (GetBuzzEntries) -> (Result_14);
   getGame: (GetGame) -> (Result_13);
   getGolfChannel: (GetGolfChannel) -> (Result_12);
   getGolfChannelVideo: (GetGolfChannelVideo) -> (Result_11);

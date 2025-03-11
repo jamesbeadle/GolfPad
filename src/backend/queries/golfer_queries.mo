@@ -1,13 +1,14 @@
 import T "../data-types/types";
+import Base "mo:waterway-mops/BaseTypes";
 
 module GolferQueries {
     
     public type GetProfile = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
     };
 
     public type Profile = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         username: Text;
         golferPicture: ?Blob;
         golferPictureExtension: Text;
@@ -15,22 +16,22 @@ module GolferQueries {
     };
 
     public type GetBuzz = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
 
     };
 
     public type Buzz = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
 
     };
 
     public type GetUpcomingGames = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
 
     };
 
     public type UpcomingGames = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
 
     };
     
@@ -46,7 +47,7 @@ module GolferQueries {
     };
 
     public type GolferSummary = {
-        golferPrincipalId: T.GolferId;
+        golferPrincipalId: Base.PrincipalId;
         golferName: Text;
         golferPicture: ?Blob;
         golferPictureExtension: Text;
@@ -54,7 +55,7 @@ module GolferQueries {
     };
     
     public type ListFriends = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         totalEntries: Nat;
         limit: Nat;
         offset: Nat;
@@ -65,15 +66,15 @@ module GolferQueries {
     };
 
     public type Friend = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
     };
 
     public type GetGolfer = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
     };
 
     public type Golfer = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         username: Text;
         golferPicture: ?Blob;
         golferPictureExtension: Text;
@@ -85,7 +86,7 @@ module GolferQueries {
     };
 
     public type GetGameSummaries = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         entries: [T.GameSummary];
         totalEntries: Nat;
         limit: Nat;
@@ -94,7 +95,7 @@ module GolferQueries {
 
     public type IsUsernameAvailable = {
         username: Text;
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
     };
 
     public type UsernameAvailable = Bool;

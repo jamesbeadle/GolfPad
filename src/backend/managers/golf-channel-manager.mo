@@ -24,6 +24,7 @@ module {
     private var golfChannelNames : TrieMap.TrieMap<T.GolfChannelId, Text> = TrieMap.TrieMap<T.GolfChannelId, Text>(Utilities.eqNat, Utilities.hashNat);
     private var uniqueGolfChannelCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGolfChannels : Nat = 0;
+    private var nextGolfChannelId : T.GolfChannelId = 1;
     
     public func channelExists(channelId: T.GolfChannelId) : Bool {
       let channel = golfChannelCanisterIndex.get(channelId);
@@ -406,6 +407,14 @@ module {
 
     public func setStableTotalGolfChannels(stable_total_golf_channels : Nat) : () {
       totalGolfChannels := stable_total_golf_channels;
+    };
+
+    public func getStableNextGolfChannelId() : T.GolfChannelId {
+      return nextGolfChannelId;
+    };
+
+    public func setStableNextGolfChannelId(stable_next_golf_channel_id : T.GolfChannelId) : () {
+      nextGolfChannelId := stable_next_golf_channel_id;
     };
 
 

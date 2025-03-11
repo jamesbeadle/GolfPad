@@ -1,18 +1,19 @@
 import T "../data-types/types";
+import Base "mo:waterway-mops/BaseTypes";
 
 module GameCommands {
     
     public type AddGame = {
-        invitedByPrincipalId: T.GolferId;
+        invitedByPrincipalId: Base.PrincipalId;
         gameId: T.GameId;
-        inviteIds: [T.GolferId];
+        inviteIds: [Base.PrincipalId];
     };
 
     public type CreateGame = {
-        createdById: T.GolferId;
+        createdById: Base.PrincipalId;
         courseId: T.GolfCourseId;
         gameType: T.GameType;
-        inviteIds: [T.GolferId];
+        inviteIds: [Base.PrincipalId];
         teeOffTime: Int;
         name: Text;
         teeGroup: T.TeeGroup;
@@ -35,7 +36,7 @@ module GameCommands {
     public type AddGameScore = {
         gameId: T.GameId;
         detail: GameScoreSubmission;
-        submittedById: T.GolferId;
+        submittedById: Base.PrincipalId;
     };
 
     public type GameScoreSubmission = {
@@ -44,23 +45,23 @@ module GameCommands {
 
     public type MulligansScore = {
         holeNumber: T.HoleNumber;
-        winner: T.GolferId;
+        winner: Base.PrincipalId;
         golfer1MulliganUsed: Bool;
         golfer2MulliganUsed: Bool;
     };
 
     public type InviteGolfers = {
         gameId: T.GameId;
-        invitedGolferIds: [T.GolferId];
+        invitedGolferIds: [Base.PrincipalId];
     };
 
     public type AcceptGameInvite = {
         gameId: T.GameId;
-        acceptedById: T.GolferId;
+        acceptedById: Base.PrincipalId;
     };
 
     public type RejectGameInvite = {
-        rejectedById: T.GolferId;
+        rejectedById: Base.PrincipalId;
         gameId: T.GameId;
     };
 }

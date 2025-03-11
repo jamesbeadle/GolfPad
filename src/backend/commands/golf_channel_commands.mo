@@ -1,10 +1,11 @@
 
 import T "../data-types/types";
+import Base "mo:waterway-mops/BaseTypes";
 
 module GolfChannelCommands {
 
     public type CreateGolfChannel = {
-        createdById: T.GolferId;
+        createdById: Base.PrincipalId;
         name: Text;
     };
 
@@ -23,13 +24,13 @@ module GolfChannelCommands {
     };
 
     public type SubscribeToGolfChannel = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         channelId: T.GolfChannelId;
 
     };
 
     public type UnsubscribeFromGolfChannel = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         channelId: T.GolfChannelId;
 
     };

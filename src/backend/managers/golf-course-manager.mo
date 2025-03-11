@@ -27,6 +27,7 @@ module {
     private var golfCourseNames : TrieMap.TrieMap<T.GolfCourseId, Text> = TrieMap.TrieMap<T.GolfCourseId, Text>(Utilities.eqNat, Utilities.hashNat);
     private var uniqueGolfCourseCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGolfCourses : Nat = 0;
+    private var nextGolfCourseId : T.GolfCourseId = 1;
     
     public func courseExists(courseId: T.GolfCourseId) : Bool {
       let course = golfCourseCanisterIndex.get(courseId);
@@ -209,6 +210,14 @@ module {
 
     public func setStableTotalGolfCourses(stable_total_golf_courses : Nat) : () {
       totalGolfCourses := stable_total_golf_courses;
+    };
+
+    public func getStableNextGolfCourseId() : T.GolfCourseId {
+      return nextGolfCourseId;
+    };
+
+    public func setStableNextGolfCourseId(stable_next_golf_course_id : T.GolfCourseId) : () {
+      nextGolfCourseId := stable_next_golf_course_id;
     };
 
     private func createNewCanister(nextId: T.GolfCourseId) : async (){

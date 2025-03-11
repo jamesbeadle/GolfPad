@@ -1,20 +1,21 @@
 import T "../data-types/types";
+import Base "mo:waterway-mops/BaseTypes";
 
 module FriendRequestCommands {
     
     public type AcceptFriendRequest = {
-        principalId: T.GolferId;
-        requestedBy: T.GolferId;
+        principalId: Base.PrincipalId;
+        requestedBy: Base.PrincipalId;
     };
     
     public type RejectFriendRequest = {
-        principalId: T.GolferId;
-        requestedBy: T.GolferId;
+        principalId: Base.PrincipalId;
+        requestedBy: Base.PrincipalId;
     };
     
     public type SendFriendRequest = {
-        principalId: T.GolferId;
-        requestedFriend: T.GolferId;
+        principalId: Base.PrincipalId;
+        requestedFriend: Base.PrincipalId;
     };
 }
 

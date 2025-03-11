@@ -3,15 +3,15 @@ import type { ActorMethod } from "@dfinity/agent";
 import type { IDL } from "@dfinity/candid";
 
 export interface AcceptFriendRequest {
-  principalId: GolferId;
-  requestedBy: GolferId;
+  principalId: PrincipalId;
+  requestedBy: PrincipalId;
 }
 export interface AcceptGameInvite {
   gameId: GameId;
-  acceptedById: GolferId;
+  acceptedById: PrincipalId;
 }
 export interface AddGameScore {
-  submittedById: GolferId;
+  submittedById: PrincipalId;
   gameId: GameId;
   detail: GameScoreSubmission;
 }
@@ -25,7 +25,7 @@ export interface AppStatusDTO {
 export interface BandsPrediction {
   wontHitTreeOrBunkerStartHole: HoleNumber;
   underParStartHole: HoleNumber;
-  golferId: GolferId;
+  golferId: PrincipalId;
   wontDoubleBogeyStartHole: HoleNumber;
   singlePutt2Of3GreensStartHole: HoleNumber;
   wontBogeyStartHole: HoleNumber;
@@ -34,13 +34,36 @@ export interface BandsPrediction {
   hit2Of3GreensStartHole: HoleNumber;
   wontLoseBallStartHole: HoleNumber;
 }
+export interface BandsResultInfo {
+  holesPlayed: number;
+  players: Array<PlayerFeedSummary>;
+  points: [PrincipalId, bigint];
+}
 export interface BeginGame {
   gameId: GameId;
 }
+export interface BuildItResultInfo {
+  teams: Array<TeamFeedSummary>;
+  scores: [GolfTeamId, bigint];
+}
+export interface BuzzEntries {
+  page: bigint;
+  entries: Array<BuzzEntry>;
+}
+export interface BuzzEntry {
+  course_info: CourseInfo;
+  match_result: MatchResultInfo;
+  game_info: GameInfo;
+}
+export interface CourseInfo {
+  course_name: string;
+  course_id: GolfCourseId;
+  course_image: Uint8Array | number[];
+}
 export interface CreateGame {
   name: string;
-  inviteIds: Array<GolferId>;
-  createdById: GolferId;
+  inviteIds: Array<PrincipalId>;
+  createdById: PrincipalId;
   teeOffTime: bigint;
   courseVersion: GolfCourseVersion;
   gameType: GameType;
@@ -49,12 +72,14 @@ export interface CreateGame {
 }
 export interface CreateGolfChannel {
   name: string;
-  createdById: GolferId;
+  createdById: PrincipalId;
 }
 export interface CreateGolfCourse {
   holes: Array<Hole>;
   name: string;
   initialTeeGroup: TeeGroup;
+  bannerImage: Uint8Array | number[];
+  mainImage: Uint8Array | number[];
 }
 export interface CreateUser {
   username: string;
@@ -75,6 +100,7 @@ export type Error =
   | { NotAllowed: null }
   | { NotEnoughFunds: null }
   | { TooShort: null }
+  | { InvalidGolfTeamPicture: null }
   | { NotFound: null }
   | { NotAuthorized: null }
   | { AlreadyExists: null }
@@ -83,11 +109,11 @@ export type Error =
   | { PaymentError: null }
   | { CanisterFull: null };
 export interface Friend {
-  principalId: GolferId;
+  principalId: PrincipalId;
 }
 export interface FriendRequest {
   requestTime: bigint;
-  principalId: GolferId;
+  principalId: PrincipalId;
 }
 export interface FriendRequests {
   friendRequests: Array<FriendRequest>;
@@ -97,12 +123,12 @@ export interface Friends {
 }
 export interface Game {
   id: GameId;
-  playerIds: Array<GolferId>;
+  playerIds: Array<PrincipalId>;
   status: GameStatus;
   scoreDetail: [] | [GameScoreDetail];
-  invites: Array<GolferId>;
+  invites: Array<PrincipalId>;
   predictions: Array<GamePrediction>;
-  winner: GolferId;
+  winner: PrincipalId;
   teeOffTime: bigint;
   courseSnapshot: GolfCourseSnapshot;
   events: Array<GolferEvent>;
@@ -110,6 +136,11 @@ export interface Game {
   courseId: GolfCourseId;
 }
 export type GameId = bigint;
+export interface GameInfo {
+  game_id: GameId;
+  game_date: bigint;
+  game_type: GameType;
+}
 export type GamePrediction =
   | { Mulligans: MulligansPrediction }
   | { BuildIt: {} }
@@ -125,8 +156,11 @@ export type GameType =
   | { Mulligans: null }
   | { BuildIt: null }
   | { Bands: null }
-  | { NextUp: null }
-  | { Prophet: null };
+  | { NextUp: null };
+export interface GetBuzzEntries {
+  page: bigint;
+  user_id: PrincipalId;
+}
 export interface GetGame {
   gameId: GameId;
 }
@@ -149,7 +183,7 @@ export interface GetGolfCourses {
   searchTerm: string;
 }
 export interface GetProfile {
-  principalId: GolferId;
+  principalId: PrincipalId;
 }
 export interface GetShot {
   principalId: PrincipalId;
@@ -169,6 +203,7 @@ export interface GolfCourse {
   activeVersion: GolfCourseVersion;
   name: string;
   tees: Array<TeeGroup>;
+  mainImage: Uint8Array | number[];
   courseId: GolfCourseId;
 }
 export type GolfCourseId = bigint;
@@ -198,14 +233,14 @@ export type GolfEvent =
   | { LongestDrive: null }
   | { Eagle: null }
   | { OnePuttGreen: null };
+export type GolfTeamId = bigint;
 export interface GolferEvent {
-  golferId: GolferId;
+  golferId: PrincipalId;
   hole: HoleNumber;
   event: GolfEvent;
 }
-export type GolferId = string;
 export interface GolferSummary {
-  golferPrincipalId: GolferId;
+  golferPrincipalId: PrincipalId;
   golferPicture: [] | [Uint8Array | number[]];
   golferName: string;
   handicap: [] | [Handicap];
@@ -222,30 +257,30 @@ export interface Hole {
   images: Array<HoleImage>;
 }
 export interface HoleImage {
-  owner: GolferId;
+  owner: PrincipalId;
   uploaded: bigint;
   image: Uint8Array | number[];
 }
 export type HoleNumber = number;
 export interface InviteGolfers {
   gameId: GameId;
-  invitedGolferIds: Array<GolferId>;
+  invitedGolferIds: Array<PrincipalId>;
 }
 export interface IsUsernameAvailable {
   username: string;
-  principalId: GolferId;
+  principalId: PrincipalId;
 }
 export interface ListFriendRequests {
   totalEntries: bigint;
   offset: bigint;
   limit: bigint;
-  principalId: GolferId;
+  principalId: PrincipalId;
 }
 export interface ListFriends {
   totalEntries: bigint;
   offset: bigint;
   limit: bigint;
-  principalId: GolferId;
+  principalId: PrincipalId;
 }
 export interface ListGolfers {
   totalEntries: bigint;
@@ -253,24 +288,44 @@ export interface ListGolfers {
   limit: bigint;
   searchTerm: string;
 }
+export type MatchResultInfo =
+  | { Mulligans: MulligansResultInfo }
+  | { BuildIt: BuildItResultInfo }
+  | { Bands: BandsResultInfo }
+  | { NextUp: NextUpResultInfo };
 export interface MulligansHoleResult {
   golfer2MulliganUsed: boolean;
-  winner: GolferId;
+  winner: PrincipalId;
   golfer1MulliganUsed: boolean;
   holeNumber: HoleNumber;
 }
 export type MulligansPrediction = {};
+export interface MulligansResultInfo {
+  holesPlayed: number;
+  score: number;
+  players: Array<PlayerFeedSummary>;
+}
 export interface MulligansScore {
   golfer2MulliganUsed: boolean;
-  winner: GolferId;
+  winner: PrincipalId;
   golfer1MulliganUsed: boolean;
   holeNumber: HoleNumber;
 }
 export interface MulligansScores {
-  winner: GolferId;
+  winner: PrincipalId;
   results: Array<MulligansHoleResult>;
   golfer2HolesWonCount: number;
   golfer1HolesWonCount: number;
+}
+export interface NextUpResultInfo {
+  holesPlayed: number;
+  players: Array<PlayerFeedSummary>;
+  points: [PrincipalId, bigint];
+}
+export interface PlayerFeedSummary {
+  username: string;
+  profile_picture: [] | [Uint8Array | number[]];
+  principal_id: PrincipalId;
 }
 export interface PredictShot {
   principalId: PrincipalId;
@@ -282,14 +337,14 @@ export interface Profile {
   golferPicture: [] | [Uint8Array | number[]];
   handicap: [] | [Handicap];
   golferPictureExtension: string;
-  principalId: GolferId;
+  principalId: PrincipalId;
 }
 export interface RejectFriendRequest {
-  principalId: GolferId;
-  requestedBy: GolferId;
+  principalId: PrincipalId;
+  requestedBy: PrincipalId;
 }
 export interface RejectGameInvite {
-  rejectedById: GolferId;
+  rejectedById: PrincipalId;
   gameId: GameId;
 }
 export interface RemoveGolfChannelVideo {
@@ -301,9 +356,10 @@ export type Result_10 = { ok: GolfChannelVideos } | { err: Error };
 export type Result_11 = { ok: GolfChannelVideo } | { err: Error };
 export type Result_12 = { ok: GolfChannel } | { err: Error };
 export type Result_13 = { ok: Game } | { err: Error };
-export type Result_14 = { ok: AppStatusDTO } | { err: Error };
-export type Result_15 = { ok: GolfChannelId } | { err: Error };
-export type Result_16 = { ok: GameId } | { err: Error };
+export type Result_14 = { ok: BuzzEntries } | { err: Error };
+export type Result_15 = { ok: AppStatusDTO } | { err: Error };
+export type Result_16 = { ok: GolfChannelId } | { err: Error };
+export type Result_17 = { ok: GameId } | { err: Error };
 export type Result_2 = { ok: Golfers } | { err: Error };
 export type Result_3 = { ok: Friends } | { err: Error };
 export type Result_4 = { ok: FriendRequests } | { err: Error };
@@ -314,13 +370,19 @@ export type Result_8 = { ok: GolfCourses } | { err: Error };
 export type Result_9 = { ok: GolfCourse } | { err: Error };
 export type RustResult = { Ok: string } | { Err: string };
 export interface SendFriendRequest {
-  requestedFriend: GolferId;
-  principalId: GolferId;
+  requestedFriend: PrincipalId;
+  principalId: PrincipalId;
 }
 export type Shot = {};
 export interface SubscribeToGolfChannel {
   channelId: GolfChannelId;
-  principalId: GolferId;
+  principalId: PrincipalId;
+}
+export interface TeamFeedSummary {
+  team_image: [] | [Uint8Array | number[]];
+  team_name: string;
+  team_members: Array<PrincipalId>;
+  captain_id: PrincipalId;
 }
 export interface TeeGroup {
   added: bigint;
@@ -338,10 +400,10 @@ export interface TeeInfo {
 }
 export interface UnsubscribeFromGolfChannel {
   channelId: GolfChannelId;
-  principalId: GolferId;
+  principalId: PrincipalId;
 }
 export interface UpdateFirstName {
-  principalId: GolferId;
+  principalId: PrincipalId;
   firstName: string;
 }
 export interface UpdateGame {
@@ -365,24 +427,24 @@ export interface UpdateGolfCourse {
 }
 export interface UpdateHandicap {
   handicap: [] | [Handicap];
-  principalId: GolferId;
+  principalId: PrincipalId;
 }
 export interface UpdateHomeCourse {
   homeCourseId: [] | [GolfCourseId];
-  principalId: GolferId;
+  principalId: PrincipalId;
 }
 export interface UpdateLastName {
   lastName: string;
-  principalId: GolferId;
+  principalId: PrincipalId;
 }
 export interface UpdateProfilePicture {
   profilePictureExtension: string;
   profilePicture: [] | [Uint8Array | number[]];
-  principalId: GolferId;
+  principalId: PrincipalId;
 }
 export interface UpdateUsername {
   username: string;
-  principalId: GolferId;
+  principalId: PrincipalId;
 }
 export interface UploadGolfChannelVideo {
   channelId: GolfChannelId;
@@ -394,14 +456,15 @@ export interface _SERVICE {
   addGameScore: ActorMethod<[AddGameScore], Result>;
   addShot: ActorMethod<[AddShot], Result>;
   beginGame: ActorMethod<[BeginGame], Result>;
-  createGame: ActorMethod<[CreateGame], Result_16>;
-  createGolfChannel: ActorMethod<[CreateGolfChannel], Result_15>;
+  createGame: ActorMethod<[CreateGame], Result_17>;
+  createGolfChannel: ActorMethod<[CreateGolfChannel], Result_16>;
   createUser: ActorMethod<[CreateUser], Result>;
   deleteGame: ActorMethod<[DeleteGame], Result>;
   deleteGolfChannel: ActorMethod<[DeleteGolfChannel], Result>;
   executeAddGolfCourse: ActorMethod<[CreateGolfCourse], undefined>;
   executeUpdateGolfCourse: ActorMethod<[UpdateGolfCourse], undefined>;
-  getAppStatus: ActorMethod<[], Result_14>;
+  getAppStatus: ActorMethod<[], Result_15>;
+  getBuzzEntries: ActorMethod<[GetBuzzEntries], Result_14>;
   getGame: ActorMethod<[GetGame], Result_13>;
   getGolfChannel: ActorMethod<[GetGolfChannel], Result_12>;
   getGolfChannelVideo: ActorMethod<[GetGolfChannelVideo], Result_11>;

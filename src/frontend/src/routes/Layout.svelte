@@ -105,7 +105,8 @@
 {:then _}
 
 
-  <div class="flex flex-col min-h-screen default-text">
+  <div class="flex flex-col min-h-screen default-text bg-white">
+    <!--
     {#if isLoading}
       <FullScreenSpinner />
     {:else}
@@ -117,7 +118,6 @@
       {:else}
 
         {#if isLoggedIn}
-        <p>Logged in</p>
 
         {:else}
         <Landing />
@@ -128,6 +128,8 @@
       <Navigation {expanded} {selectedRoute} {toggleNav}/>
       <Toasts />
     {/if}
+    -->
+    <slot></slot>
   </div>
 
 {/await}

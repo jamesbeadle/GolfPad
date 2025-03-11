@@ -1,9 +1,10 @@
 import T "../data-types/types";
+import Base "mo:waterway-mops/BaseTypes";
 
 module GolferQueries {
     
     public type ListFriendRequests = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         totalEntries: Nat;
         limit: Nat;
         offset: Nat;
@@ -14,20 +15,20 @@ module GolferQueries {
     };
 
     public type FriendRequest = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         requestTime: Int;
     };
     
     public type ListFriends = {
-        principalId: T.GolferId;
+        principalId: Base.PrincipalId;
         totalEntries: Nat;
         limit: Nat;
         offset: Nat;
     };
 
     public type FriendRequestExists = {
-        principalId: T.GolferId;
-        requestedById: T.GolferId;
+        principalId: Base.PrincipalId;
+        requestedById: Base.PrincipalId;
     };
 }
 
