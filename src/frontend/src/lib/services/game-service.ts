@@ -1,17 +1,26 @@
 import { isError } from "$lib/utils/helpers";
-import { idlFactory } from "../../../../declarations/backend";
 import { ActorFactory } from "$lib/utils/actor.factory";
 import { authStore } from "$lib/stores/auth-store";
+import type {
+  CreateGame,
+  Game,
+  GetGame,
+} from "../../../../declarations/backend/backend.did";
 
 export class GameService {
   constructor() {}
 
-  async getGame(gameId: number): Promise<GameDTO> {
+  async getGame(gameId: number): Promise<Game> {
     try {
-      let dto: GetGameDTO = {
+      const identityActor: any = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+
+      let dto: GetGame = {
         gameId: BigInt(gameId),
       };
-      let result = await this.actor.getGame(dto);
+      let result = await identityActor.getGame(dto);
 
       if (isError(result)) {
         console.error("Error Fetching Game", result);
@@ -24,7 +33,7 @@ export class GameService {
     }
   }
 
-  async createGame(dto: CreateGameDTO): Promise<{ ok?: bigint; err?: string }> {
+  async createGame(dto: CreateGame): Promise<{ ok?: bigint; err?: string }> {
     const identityActor = await ActorFactory.createIdentityActor(
       authStore,
       process.env.BACKEND_CANISTER_ID ?? "",

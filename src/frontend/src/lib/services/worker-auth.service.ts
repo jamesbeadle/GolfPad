@@ -1,13 +1,13 @@
-import { idleSignOut } from "$lib/services/auth-service";
-import type { AuthStoreData } from "$lib/stores/auth-store";
-import { authRemainingTimeStore } from "$lib/stores/auth-store";
+import type { AuthStoreData } from "../stores/auth-store";
+import { authRemainingTimeStore, authStore } from "../stores/auth-store";
+import type { PostMessage } from "../types/post-message";
+import type { PostMessageDataResponseAuth } from "../types/post-message.auth";
 
-import type {
-  PostMessage,
-  PostMessageDataResponseAuth,
-} from "$lib/types/post-message";
+export interface AuthWorker {
+  syncAuthIdle: (auth: AuthStoreData) => void;
+}
 
-export const initAuthWorker = async () => {
+export const initAuthWorker = async (): Promise<AuthWorker> => {
   const AuthWorker = await import("$lib/workers/auth.worker?worker");
   const authWorker: Worker = new AuthWorker.default();
 
@@ -17,11 +17,11 @@ export const initAuthWorker = async () => {
     const { msg, data: value } = data;
 
     switch (msg) {
-      case "signOutIdleTimer":
-        await idleSignOut();
+      case "nnsSignOut":
+        await authStore.signOut();
         return;
-      case "delegationRemainingTime":
-        authRemainingTimeStore.set(value?.authRemainingTime);
+      case "nnsDelegationRemainingTime":
+        authRemainingTimeStore.set(value.authRemainingTime);
         return;
     }
   };
@@ -29,12 +29,12 @@ export const initAuthWorker = async () => {
   return {
     syncAuthIdle: (auth: AuthStoreData) => {
       if (!auth.identity) {
-        authWorker.postMessage({ msg: "stopIdleTimer" });
+        authWorker.postMessage({ msg: "nnsStopIdleTimer" });
         return;
       }
 
       authWorker.postMessage({
-        msg: "startIdleTimer",
+        msg: "nnsStartIdleTimer",
       });
     },
   };

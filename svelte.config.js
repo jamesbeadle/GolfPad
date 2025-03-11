@@ -2,8 +2,8 @@ import adapter from "@sveltejs/adapter-static";
 import autoprefixer from "autoprefixer";
 import { readFileSync } from "fs";
 import preprocess from "svelte-preprocess";
-import tailwindcss from "tailwindcss";
 import { fileURLToPath } from "url";
+import tailwindcss from "tailwindcss";
 
 const file = fileURLToPath(new URL("package.json", import.meta.url));
 const json = readFileSync(file, "utf8");
@@ -13,6 +13,8 @@ const filesPath = (path) => `src/frontend/${path}`;
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
+  // Consult https://github.com/sveltejs/svelte-preprocess
+  // for more information about preprocessors
   preprocess: preprocess({
     postcss: {
       plugins: [tailwindcss(), autoprefixer],

@@ -1,5 +1,6 @@
-import { authStore, type AuthSignInParams } from "../stores/auth-store";
-import { replaceHistory } from "../utils/route.utils";
+import { authStore, type AuthSignInParams } from "$lib/stores/auth-store";
+import { toasts } from "$lib/stores/toasts-store";
+import { replaceHistory } from "$lib/utils/route.utils";
 import { isNullish } from "@dfinity/utils";
 
 export const signIn = async (
@@ -7,13 +8,17 @@ export const signIn = async (
 ): Promise<{ success: "ok" | "cancelled" | "error"; err?: unknown }> => {
   try {
     await authStore.signIn(params);
-
     return { success: "ok" };
   } catch (err: unknown) {
     if (err === "UserInterrupt") {
       // We do not display an error if user explicitly cancelled the process of sign-in
       return { success: "cancelled" };
     }
+
+    toasts.addToast({
+      message: `Something went wrong while sign-in.`,
+      type: "error",
+    });
 
     return { success: "error", err };
   } finally {
@@ -25,6 +30,8 @@ export const signOut = (): Promise<void> => logout();
 export const idleSignOut = async () => logout();
 
 const logout = async () => {
+  // To mask not operational UI (a side effect of sometimes slow JS loading after window.reload because of service worker and no cache).
+
   await authStore.signOut();
 
   // Auth: Delegation and identity are cleared from indexedDB by agent-js so, we do not need to clear these

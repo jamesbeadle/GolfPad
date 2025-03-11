@@ -1,22 +1,17 @@
-import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
 import inject from "@rollup/plugin-inject";
 import { sveltekit } from "@sveltejs/kit/vite";
 import { readFileSync } from "fs";
-import { dirname, join, resolve } from "path";
-import { fileURLToPath } from "url";
+import { join } from "path";
 import type { UserConfig } from "vite";
 import { defineConfig, loadEnv } from "vite";
-import type { PluginBuild } from "esbuild";
-
-const file = fileURLToPath(new URL("package.json", import.meta.url));
-const json = readFileSync(file, "utf8");
-const { version } = JSON.parse(json);
 
 // npm run dev = local
 // npm run build = local
 // dfx deploy = local
 // dfx deploy --network ic = ic
 const network = process.env.DFX_NETWORK ?? "local";
+const host = network === "local" ? "http://localhost:8000" : "https://ic0.app";
+
 const readCanisterIds = ({
   prefix,
 }: {
@@ -53,71 +48,15 @@ const readCanisterIds = ({
 
 const config: UserConfig = {
   plugins: [sveltekit()],
-  resolve: {
-    alias: {
-      $declarations: resolve("./src/declarations"),
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `
-        `,
-      },
-    },
-  },
   build: {
     target: "es2020",
     rollupOptions: {
-      output: {
-        manualChunks: (id) => {
-          const folder = dirname(id);
-
-          const lazy = ["@dfinity/nns"];
-
-          if (
-            ["@sveltejs", "svelte", ...lazy].find((lib) =>
-              folder.includes(lib),
-            ) === undefined &&
-            folder.includes("node_modules")
-          ) {
-            return "vendor";
-          }
-
-          if (
-            lazy.find((lib) => folder.includes(lib)) !== undefined &&
-            folder.includes("node_modules")
-          ) {
-            return "lazy";
-          }
-
-          return "index";
-        },
-      },
       // Polyfill Buffer for production build
       plugins: [
         inject({
           modules: { Buffer: ["buffer", "Buffer"] },
         }),
-        {
-          name: "fix-node-globals-polyfill",
-          setup(build: PluginBuild) {
-            build.onResolve(
-              { filter: /_virtual-process-polyfill_\.js/ },
-              ({ path }) => ({ path }),
-            );
-          },
-        } as any, // Type assertion to bypass the type mismatch
       ],
-    },
-  },
-  // proxy /api to port 4943 during development
-  server: {
-    proxy: {
-      "/api": "http://localhost:8080",
-    },
-    watch: {
-      ignored: ["**/.dfx/**", "**/.github/**"],
     },
   },
   optimizeDeps: {
@@ -126,39 +65,22 @@ const config: UserConfig = {
       define: {
         global: "globalThis",
       },
-      // Enable esbuild polyfill plugins
-      plugins: [
-        NodeModulesPolyfillPlugin(),
-        {
-          name: "fix-node-globals-polyfill",
-          setup(build: PluginBuild) {
-            build.onResolve(
-              { filter: /_virtual-process-polyfill_\.js/ },
-              ({ path }) => ({ path }),
-            );
-          },
-        } as any, // Type assertion to bypass the type mismatch
-      ],
     },
-  },
-  worker: {
-    format: "es",
   },
 };
 
-export default defineConfig((): UserConfig => {
+export default defineConfig(({ mode }: UserConfig): UserConfig => {
   // Expand environment - .env files - with canister IDs
   process.env = {
     ...process.env,
-    ...loadEnv(
-      network === "ic"
-        ? "production"
-        : network === "staging"
-          ? "staging"
-          : "development",
-      process.cwd(),
-    ),
+    ...loadEnv(mode ?? "development", process.cwd()),
     ...readCanisterIds({ prefix: "VITE_" }),
+    VITE_DFX_NETWORK: network,
+    VITE_HOST: host,
+    VITE_AUTH_PROVIDER_URL:
+      network === "ic"
+        ? "https://identity.ic0.app"
+        : "http://localhost:8080/?canisterId=qhbym-qaaaa-aaaaa-aaafq-cai",
   };
 
   return {
@@ -169,11 +91,6 @@ export default defineConfig((): UserConfig => {
         ...readCanisterIds({}),
         DFX_NETWORK: network,
       },
-      VITE_APP_VERSION: JSON.stringify(version),
-      VITE_DFX_NETWORK: JSON.stringify(network),
-      "process.env.CANISTER_ID_BACKEND": JSON.stringify(
-        process.env.CANISTER_ID_BACKEND,
-      ),
     },
   };
 });

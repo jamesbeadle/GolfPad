@@ -1,26 +1,26 @@
 import { writable } from "svelte/store";
-import { GameServices } from "$lib/services/game-service";
+import { GameService } from "$lib/services/game-service";
 import type {
-  GameDTO,
-  CreateGameDTO,
+  CreateGame,
+  Game,
 } from "../../../../declarations/backend/backend.did";
 
 function createGameStore() {
-  const { subscribe, set } = writable<GameDTO[]>([]);
+  const { subscribe, set } = writable<Game[]>([]);
 
-  async function getGame(gameId: number): Promise<GameDTO> {
-    return new GameServices().getGame(gameId);
+  async function getGame(gameId: number): Promise<Game> {
+    return new GameService().getGame(gameId);
   }
 
   async function createGame(
-    dto: CreateGameDTO,
+    dto: CreateGame,
   ): Promise<{ ok?: bigint; err?: string }> {
-    return new GameServices().createGame(dto);
+    return new GameService().createGame(dto);
   }
 
   return {
     subscribe,
-    setGame: (game: GameDTO[]) => set(game),
+    setGame: (game: Game[]) => set(game),
     getGame,
     createGame,
   };

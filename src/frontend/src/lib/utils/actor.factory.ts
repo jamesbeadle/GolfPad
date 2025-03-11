@@ -29,7 +29,6 @@ export class ActorFactory {
     } else {
       options.agentOptions.host = hostOptions.host;
     }
-
     const agent = new HttpAgent({ ...options.agentOptions });
 
     if (process.env.DFX_NETWORK !== "ic") {

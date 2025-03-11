@@ -12,19 +12,19 @@
 </script>
 
 {#if showMulligans}
-  <Mulligans closeModal={() => { showMulligans = false; }  } visible={showMulligans} />
+  <Mulligans  />
 {/if}
 
 {#if showBands}
-  <Bands closeModal={() => { showBands = false; }  } visible={showBands} />
+  <Bands />
 {/if}
 
 {#if showBuildIt}
-  <BuildIt closeModal={() => { showBuildIt = false; }  } visible={showBuildIt} />
+  <BuildIt />
 {/if}
 
 {#if showNextUp}
-  <NextUp closeModal={() => { showNextUp = false; }  } visible={showNextUp} />
+  <NextUp />
 {/if}
 
 <div class="md:px-4">

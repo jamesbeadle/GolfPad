@@ -1,27 +1,22 @@
 import { writable } from "svelte/store";
-import { GolferSummariesServices } from "$lib/services/friend-request-service";
 import type {
-  GolferGameSummariesDTO,
-  PaginationFilters,
+  GetGolfChannel,
+  GolfChannel,
 } from "../../../../declarations/backend/backend.did";
+import { GolfChannelService } from "$lib/services/golf-channel-service";
 
-function createGolferSummariesStore() {
-  const { subscribe, set } = writable<GolferGameSummariesDTO | undefined>(
-    undefined,
-  );
+function createGolfChannelStore() {
+  const { subscribe, set } = writable<GolfChannel | undefined>(undefined);
 
-  async function getGolferGameSummaries(
-    dto: PaginationFilters,
-  ): Promise<GolferGameSummariesDTO> {
-    return await new GolferSummariesServices().getGolferGameSummaries(dto);
+  async function getGolfChannel(dto: GetGolfChannel): Promise<GolfChannel> {
+    return await new GolfChannelService().getGolfChannel(dto);
   }
 
   return {
     subscribe,
-    setGolferGameSummaries: (golferGameSummaries: GolferGameSummariesDTO) =>
-      set(golferGameSummaries),
-    getGolferGameSummaries,
+    setGolfChannel: (golfChannel: GolfChannel) => set(golfChannel),
+    getGolfChannel,
   };
 }
 
-export const golferSummariesStore = createGolferSummariesStore();
+export const golfChannelStore = createGolfChannelStore();

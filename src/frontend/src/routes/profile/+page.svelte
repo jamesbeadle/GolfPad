@@ -1,11 +1,9 @@
 <script lang="ts">
     import Layout from "../Layout.svelte";
     import { getContext, onMount } from 'svelte';
-    import { courseStore } from "$lib/stores/course-store";
     import { userStore } from "$lib/stores/user-store";
     import EditIcon from "$lib/icons/edit-icon.svelte";
     import AddImage from "$lib/components/profile/add-image.svelte";
-    import AddHomeCourse from "$lib/components/profile/add-home-course.svelte";
     import type { Friend, FriendRequest, GetGolfCourses, GolfCourse, GolferSummary, Profile } from "../../../../declarations/backend/backend.did";
     import { authStore } from "$lib/stores/auth-store";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
@@ -170,7 +168,6 @@
                                 <label for="homeCourse" class="block pb-3 text-sm text-BrandDarkGray">HOME COURSE</label>
                                 {#if selectedCourse}
                                     <div class="relative">
-                                        <p class="text-xl text-black condensed">{selectedCourse.name}</p>
                                         <button 
                                             type="button"
                                             class="absolute bottom-0 right-0 p-1 transition-all duration-200 rounded-full hover:bg-black/10"
@@ -187,16 +184,6 @@
                                     >
                                         Select home course
                                     </button>
-                                {/if}
-                                {#if isHomeCourseModalOpen}
-                                    <AddHomeCourse 
-                                        isOpen={isHomeCourseModalOpen} 
-                                        on:close={() => isHomeCourseModalOpen = false}
-                                        on:courseSelect={(event) => {
-                                        selectedCourse = event.detail.course;
-                                        isHomeCourseModalOpen = false;
-                                        }}
-                                    />
                                 {/if}
                             </div>
                             </div>
