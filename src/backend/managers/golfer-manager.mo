@@ -26,6 +26,8 @@ import GameCommands "../commands/game_commands";
 import ShotCommands "../commands/shot_commands";
 import ShotQueries "../queries/shot_queries";
 import FriendRequestQueries "../queries/friend_request_queries";
+import BuzzQueries "../queries/buzz_queries";
+import UpcomingGamesQueries "../queries/upcoming_games_queries";
 
 module {
   public class GolferManager() {
@@ -78,13 +80,13 @@ module {
       };
     };
 
-    public func getBuzz(dto: GolferQueries.GetBuzz) : async Result.Result<GolferQueries.Buzz, T.Error> {
-      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
+    public func getBuzz(dto: BuzzQueries.GetBuzz) : async Result.Result<BuzzQueries.Buzz, T.Error> {
+      let existingGolferCanisterId = golferCanisterIndex.get(dto.user_id);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getBuzz : (dto: GolferQueries.GetBuzz) -> async Result.Result<GolferQueries.Buzz, T.Error>;
+            getBuzz : (dto: BuzzQueries.GetBuzz) -> async Result.Result<BuzzQueries.Buzz, T.Error>;
           };
 
           return await golfer_canister.getBuzz(dto);
@@ -95,13 +97,13 @@ module {
       };
     };
 
-    public func getUpcomingGames(dto: GolferQueries.GetUpcomingGames) : async Result.Result<GolferQueries.UpcomingGames, T.Error> {
-      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
+    public func getUpcomingGames(dto: UpcomingGamesQueries.GetUpcomingGames) : async Result.Result<UpcomingGamesQueries.UpcomingGames, T.Error> {
+      let existingGolferCanisterId = golferCanisterIndex.get(dto.user_id);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getUpcomingGames : (dto: GolferQueries.GetUpcomingGames) -> async Result.Result<GolferQueries.UpcomingGames, T.Error>;
+            getUpcomingGames : (dto: UpcomingGamesQueries.GetUpcomingGames) -> async Result.Result<UpcomingGamesQueries.UpcomingGames, T.Error>;
           };
 
           return await golfer_canister.getUpcomingGames(dto);

@@ -14,26 +14,6 @@ module GolferQueries {
         golferPictureExtension: Text;
         handicap: ?T.Handicap;
     };
-
-    public type GetBuzz = {
-        principalId: Base.PrincipalId;
-
-    };
-
-    public type Buzz = {
-        principalId: Base.PrincipalId;
-
-    };
-
-    public type GetUpcomingGames = {
-        principalId: Base.PrincipalId;
-
-    };
-
-    public type UpcomingGames = {
-        principalId: Base.PrincipalId;
-
-    };
     
     public type ListGolfers = {
         searchTerm: Text;

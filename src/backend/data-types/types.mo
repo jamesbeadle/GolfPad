@@ -3,21 +3,19 @@ import Blob "mo:base/Blob";
 import GolfEnums "golf_enums";
 
 module Types {
-
-  public type ImageId = Nat;
-  public type HoleNumber = Nat8;
+  
   public type GolfCourseId = Nat;
   public type GameId = Nat;
-  public type DateTime = Int;
-  public type Handicap = Int16;
-  public type YardageSetId = Nat16;
-  public type ClubIndex = Nat16;
-  public type CourseHistoryId = Nat16;
-  public type GolfCourseVersion = Nat8;
   public type GolfTeamId = Nat;
-
   public type GolfShotId = Nat;
   public type GolfChannelId = Nat;
+  public type CourseHistoryId = Nat16;
+  public type GolfCourseVersion = Nat8;
+  
+  public type Handicap = Int16;
+  public type HoleNumber = Nat8;
+  public type DateTime = Int;
+  public type ClubIndex = Nat16;
   
   public type RustResult = { #Ok : Text; #Err : Text };
 
@@ -76,11 +74,6 @@ module Types {
     swingLength: ?GolfEnums.SwingLength;
     shotTime: Int;
   }; 
-
-
-
-
-
 
   public type GameInvite = {
     inviteFrom: Base.PrincipalId;

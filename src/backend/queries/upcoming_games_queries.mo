@@ -2,23 +2,23 @@ import T "../data-types/types";
 import Base "mo:waterway-mops/BaseTypes";
 import Bool "mo:base/Bool";
 
-module BuzzQueries {
+module UpcomingGamesQueries {
 
-    public type GetBuzz = {
+    public type GetUpcomingGames = {
         user_id: Base.PrincipalId;
         page: Nat;
     };
 
     
-    public type Buzz = {
-        entries: [BuzzEntry];
+    public type UpcomingGames = {
+        entries: [UpcomingGame];
         page: Nat;
     };
 
-    public type BuzzEntry = {
+    public type UpcomingGame = {
         game_info: GameInfo;
+        opponent_info: OpponentInfo;
         course_info: CourseInfo;
-        match_result: MatchResultInfo;
     };
 
     public type GameInfo = {
@@ -33,39 +33,21 @@ module BuzzQueries {
         course_name: Text;
     };
 
-    public type MatchResultInfo = {
-        #Mulligans : MulligansResultInfo;
-        #Bands : BandsResultInfo;
-        #BuildIt : BuildItResultInfo;
-        #NextUp : NextUpResultInfo;
+    public type OpponentInfo = {
+        #Mulligans : PlayerOpponentInfo;
+        #Bands : PlayerOpponentInfo;
+        #BuildIt : TeamOpponentInfo;
+        #NextUp : PlayerOpponentInfo;
     };
 
-    public type MulligansResultInfo = {
+    public type PlayerOpponentInfo = {
         players: [PlayerFeedSummary];
-        score: Int8;
-        holesPlayed: Nat8;  
-        gameOver: Bool;
-        player1Wins: Bool;
-        player2Wins: Bool;
     };
 
-    public type BandsResultInfo = {
-        players: [PlayerFeedSummary];
-        points: (Base.PrincipalId, Nat);
-        holesPlayed: Nat8;  
-    };
-
-    public type NextUpResultInfo = {
-        players: [PlayerFeedSummary];
-        points: (Base.PrincipalId, Nat);
-        holesPlayed: Nat8;  
-    };
-
-    public type BuildItResultInfo = {
+    public type TeamOpponentInfo = {
         teams: [TeamFeedSummary];
-        scores: (T.GolfTeamId, Nat);
     };
-
+    
     public type PlayerFeedSummary = {
       principal_id: Base.PrincipalId;
       username: Text;

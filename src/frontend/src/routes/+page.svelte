@@ -98,7 +98,6 @@
                 </div>
             {/if}
             
-            <!-- Mobile Events Button -->
             <div class="md:hidden mt-4">
                 <button 
                     on:click={toggleEventsModal}
@@ -109,7 +108,6 @@
             </div>
         </div>
 
-        <!-- Events Section (Desktop) -->
         <div class="hidden md:block md:w-1/3">
             <div class="flex flex-col gap-4">
                 <a 
@@ -155,7 +153,6 @@
         </div>
     </div>
 
-    <!-- Events Modal (Mobile) -->
     {#if showEventsModal}
         <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 md:hidden">
             <div class="bg-BrandLightGreen rounded-lg p-6 w-11/12 max-h-[80vh] overflow-y-auto">
@@ -178,7 +175,6 @@
                             </div>
                         {/each}
                     </div>
-                    <!-- Repeat for upcoming and past events -->
                 </div>
             </div>
         </div>
@@ -186,7 +182,6 @@
 </Layout>
 
 <style>
-    /* Add any custom CSS if needed */
     ::-webkit-scrollbar {
         width: 8px;
     }

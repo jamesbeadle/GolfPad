@@ -1,3 +1,13 @@
+<!-- Tabs for Detail and Social -->
+<!-- Details Panel -->
+    <!-- Golfer Details -->    
+    <!-- Golfer Yardages -->
+        <!-- Include link to detail yardages view -->
+     <!-- Seach Home Course Modal -->
+<!-- Social Panel -->
+    <!-- Your friends -->
+     <!-- Friend search -->
+
 <script lang="ts">
     import Layout from "../Layout.svelte";
     import { getContext, onMount } from 'svelte';

@@ -4,44 +4,42 @@ import Result "mo:base/Result";
 import Timer "mo:base/Timer";
 import Int "mo:base/Int";
 import Iter "mo:base/Iter";
-import Debug "mo:base/Debug";
-import Buffer "mo:base/Buffer";
-import Array "mo:base/Array";
-import Nat8 "mo:base/Nat8";
-import Int8 "mo:base/Int8";
 
-import T "data-types/types";
 import Environment "utilities/Environment";
+import Management "utilities/Management";
+import T "data-types/types";
 
 import GolferManager "managers/golfer-manager";
 import GolfCourseManager "managers/golf-course-manager";
 import GameManager "managers/game-manager";
 import GolfChannelManager "managers/golf-channel-manager";
+import GolfTeamManager "managers/golf-team-manager";
 
-import GameCommands "commands/game_commands";
-import GolfCourseCommands "commands/golf_course_commands";
 import GolferCommands "commands/golfer_commands";
 import ShotCommands "commands/shot_commands";
-import GolfChannelCommands "commands/golf_channel_commands";
 import FriendRequestCommands "commands/friend_request_commands";
 
+import GolfCourseCommands "commands/golf_course_commands";
+import GameCommands "commands/game_commands";
+import GolfChannelCommands "commands/golf_channel_commands";
+import GolfTeamCommands "commands/golf_team_commands";
+
 import BaseQueries "queries/base_queries";
-import GameQueries "queries/game_queries";
-import GolfCourseQueries "queries/golf_course_queries";
 import GolferQueries "queries/golfer_queries";
 import ShotQueries "queries/shot_queries";
+import FriendRequestQueries "queries/friend_request_queries";
+import UpcomingGamesQueries "queries/upcoming_games_queries";
+import GolfCourseQueries "queries/golf_course_queries";
+import GameQueries "queries/game_queries";
 import GolfChannelQueries "queries/golf_channel_queries";
-
-import Management "utilities/Management";
+import GolfTeamQueries "queries/golf_team_queries";
+import BuzzQueries "queries/buzz_queries";
 
 import GolferCanister "canister-definitions/golfer-canister";
 import GolfCoursesCanister "canister-definitions/golf-courses-canister";
 import GameCanister "canister-definitions/game-canister";
 import GolfChannelsCanister "canister-definitions/golf-channels-canister";
-import FriendRequestQueries "queries/friend_request_queries";
-import BuzzQueries "queries/buzz_queries";
-import GolfTeamManager "managers/golf-team-manager";
-import GolfTeamQueries "queries/golf_team_queries";
+import GolfTeamCanister "canister-definitions/golf-team-canister";
 
 actor Self {
 
@@ -60,225 +58,15 @@ actor Self {
     return #ok(appStatus);
   };
 
-  //Buzz Feed Functions
+  //Homepage functions
 
-  public shared func getBuzzEntries(dto: BuzzQueries.GetBuzzEntries) : async Result.Result<BuzzQueries.BuzzEntries, T.Error> {
-    
-    let paginatedGameSummaries = gameManager.getGameSummaries(dto.page);
-
-    let buzzEntriesBuffer = Buffer.fromArray<BuzzQueries.BuzzEntry>([]);
-
-    for (entrySummary in Iter.fromArray(paginatedGameSummaries)){
-
-      switch(entrySummary){
-        case (#Mulligans entry){
-          let courseResult = await courseManager.getGolfCourse({ golfCourseId = entry.courseId });
-          switch(courseResult){
-            case (#ok course){              
-              buzzEntriesBuffer.add(await getMulligansBuzzEntry(entry,course));
-            };
-            case (#err error){
-              return #err(error);
-            };
-          };
-        };
-        case (#Bands entry){
-          let courseResult = await courseManager.getGolfCourse({ golfCourseId = entry.courseId });
-          switch(courseResult){
-            case (#ok course){              
-              buzzEntriesBuffer.add(await getBandsBuzzEntry(entry,course));
-            };
-            case (#err error){
-              return #err(error);
-            };
-          };
-        };
-        case (#BuildIt entry){
-          let courseResult = await courseManager.getGolfCourse({ golfCourseId = entry.courseId });
-          switch(courseResult){
-            case (#ok course){              
-              buzzEntriesBuffer.add(await getBuildItBuzzEntry(entry,course));
-            };
-            case (#err error){
-              return #err(error);
-            };
-          };
-        };
-        case (#NextUp entry){
-          let courseResult = await courseManager.getGolfCourse({ golfCourseId = entry.courseId });
-          switch(courseResult){
-            case (#ok course){              
-              buzzEntriesBuffer.add(await getNextUpBuzzEntry(entry,course));
-            };
-            case (#err error){
-              return #err(error);
-            };
-          };
-        };
-      };
-    };  
-
-    return #ok({
-      entries = Buffer.toArray(buzzEntriesBuffer);
-      page = dto.page;
-    });
+  public shared func getBuzz(dto: BuzzQueries.GetBuzz) : async Result.Result<BuzzQueries.Buzz, T.Error> {
+    return await golferManager.getBuzz(dto);
   };
 
-  private func getMulligansBuzzEntry(summary: T.MulligansGameSummary, course: GolfCourseQueries.GolfCourse) : async BuzzQueries.BuzzEntry {
-    
-    let course_info = {
-      course_id = course.courseId;
-      course_image = course.mainImage;
-      course_name = course.name;
-    };
-    let game_info = {
-      game_date = summary.date;
-      game_id = summary.gameId;
-      game_type = #Mulligans;
-    };
-
-    let playerSummaryBuffer = Buffer.fromArray<BuzzQueries.PlayerFeedSummary>([]);
-    for(player in Iter.fromArray(summary.players)){
-      let picture = await golferManager.getProfilePicture(player.principal_id);
-      playerSummaryBuffer.add( {
-          principal_id = player.principal_id;
-          profile_picture = picture;
-          username = player.username;
-        })
-    };
-
-    let remainingHoles: Int = Nat8.toNat(course.totalHoles) -  Nat8.toNat(summary.holesPlayed);
-
-    let player1Wins = Int8.toInt(summary.score) > remainingHoles;
-    let player2Wins = Int8.toInt(-summary.score) > remainingHoles;
-
-    let match_result = #Mulligans({
-      players = Buffer.toArray<BuzzQueries.PlayerFeedSummary>(playerSummaryBuffer);
-      score = summary.score;
-      holesPlayed  = summary.holesPlayed; 
-      gameOver = player1Wins or player2Wins;
-      player1Wins = player1Wins;
-      player2Wins = player2Wins;
-    });
-
-    return {
-      course_info;
-      game_info;
-      match_result;
-    }
+  public shared func getUpcomingGames(dto: UpcomingGamesQueries.GetUpcomingGames) : async Result.Result<UpcomingGamesQueries.UpcomingGames, T.Error> {
+    return await golferManager.getUpcomingGames(dto);
   };
-
-  private func getBandsBuzzEntry(summary: T.BandsGameSummary, course: GolfCourseQueries.GolfCourse) : async BuzzQueries.BuzzEntry {
-    let course_info = {
-      course_id = course.courseId;
-      course_image = course.mainImage;
-      course_name = course.name;
-    };
-    
-    let game_info = {
-      game_date = summary.date;
-      game_id = summary.gameId;
-      game_type = #Bands;
-    };
-    let playerSummaryBuffer = Buffer.fromArray<BuzzQueries.PlayerFeedSummary>([]);
-    for(player in Iter.fromArray(summary.players)){
-      let picture = await golferManager.getProfilePicture(player.principal_id);
-      playerSummaryBuffer.add( {
-          principal_id = player.principal_id;
-          profile_picture = picture;
-          username = player.username;
-        })
-    };
-    let match_result = #Bands({
-      players = Buffer.toArray<BuzzQueries.PlayerFeedSummary>(playerSummaryBuffer);
-      points  = summary.points;
-      holesPlayed  = summary.holesPlayed; 
-    });
-    return {
-      course_info;
-      game_info;
-      match_result;
-    }
-  };
-
-  private func getBuildItBuzzEntry(entry: T.BuildItGameSummary, course: GolfCourseQueries.GolfCourse) : async BuzzQueries.BuzzEntry {
-     let course_info = {
-      course_id = course.courseId;
-      course_image = course.mainImage;
-      course_name = course.name;
-    };
-    let game_info = {
-      game_date = entry.date;
-      game_id = entry.gameId;
-      game_type = #BuildIt;
-    };
-
-    let teamSummaryBuffer = Buffer.fromArray<BuzzQueries.TeamFeedSummary>([]);
-    for(team in Iter.fromArray(entry.teams)){
-      let pictureResult = await golfTeamManager.getGolfTeamImage(team.team_id);
-      switch(pictureResult){
-        case (#ok picture){
-          teamSummaryBuffer.add( {
-            team_id = team.team_id;
-            team_image = picture.golfTeamPicture;
-            team_image_extension = picture.golfTeamPictureExtension;
-            team_name = team.team_name;
-            captain_id = team.captain_id;
-            team_members = team.team_members;
-          })
-        };
-        case (#err _){}
-      };
-    };
-
-    let match_result = #BuildIt({
-      scores = entry.scores;
-      teams = Buffer.toArray(teamSummaryBuffer)
-    }); 
-    return {
-      course_info;
-      game_info;
-      match_result;
-    }
-  };
-
-  private func getNextUpBuzzEntry(summary: T.NextUpGameSummary, course: GolfCourseQueries.GolfCourse) : async BuzzQueries.BuzzEntry {
-     let course_info = {
-      course_id = course.courseId;
-      course_image = course.mainImage;
-      course_name = course.name;
-    };
-    let game_info = {
-      game_date = summary.date;
-      game_id = summary.gameId;
-      game_type = #NextUp;
-    }; 
-    let playerSummaryBuffer = Buffer.fromArray<BuzzQueries.PlayerFeedSummary>([]);
-    for(player in Iter.fromArray(summary.players)){
-      let picture = await golferManager.getProfilePicture(player.principal_id);
-      playerSummaryBuffer.add( {
-          principal_id = player.principal_id;
-          profile_picture = picture;
-          username = player.username;
-        })
-    };
-    let match_result = #Bands({
-      players = Buffer.toArray<BuzzQueries.PlayerFeedSummary>(playerSummaryBuffer);
-      points  = summary.points;
-      holesPlayed  = summary.holesPlayed; 
-    });
-    return {
-      course_info;
-      game_info;
-      match_result;
-    }
-  };
-
-
-
-
-
-
 
   //SNS Validation and Callback function:
 
@@ -579,6 +367,59 @@ actor Self {
     return await golfChannelManager.getGolfChannelVideo(dto); 
   };
 
+  //Golf Team Commands
+
+  /*
+
+  public shared ({ caller }) func createGolfTeam(dto: GolfTeamCommands.CreateGolfTeam) : async Result.Result<T.GolfTeamId, T.Error>{
+    assert not Principal.isAnonymous(caller);
+    assert dto.createdById == Principal.toText(caller);
+    return await golfTeamManager.createGolfTeam(dto);
+  };
+
+  public shared ({ caller }) func updateGolfTeam(dto: GolfTeamCommands.UpdateGolfTeam) : async Result.Result<(), T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert await golfChannelManager.isChannelOwner({principalId; channelId = dto.channelId});
+    return await golfChannelManager.updateGolfChannel(dto);
+  };
+
+  public shared ({ caller }) func deleteGolfTeam(dto: GolfTeamCommands.DeleteGolfTeam) : async Result.Result<(), T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert await golfChannelManager.isChannelOwner({ channelId = dto.channelId; principalId; });
+    return await golfChannelManager.deleteGolfChannel(dto);
+  };
+
+  public shared ({ caller }) func addGolfTeamMember(dto: GolfTeamCommands.AddGolfTeamMember) : async Result.Result<(), T.Error>{
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+    return await golfChannelManager.subscribeToGolfChannel(dto);
+  };
+
+  public shared ({ caller }) func removeGolfTeamMember(dto: GolfTeamCommands.RemoveGolfTeamMember) : async Result.Result<(), T.Error>{
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+    return await golfChannelManager.unsubscribeFromGolfChannel(dto);
+  };
+
+  public shared ({ caller }) func acceptTeamRequest(dto: GolfTeamCommands.AcceptTeamRequest) : async Result.Result<(), T.Error>{
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+    return await golfChannelManager.acceptTeamRequest(dto);
+  };
+
+  public shared ({ caller }) func rejectTeamRequest(dto: GolfTeamCommands.RejectTeamRequest) : async Result.Result<(), T.Error>{
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+    return await golfChannelManager.rejectTeamRequest(dto);
+  };
+  */
+
+  //Golf Team Queries
+
+  
+
   //Stable Storage & System Functions:
 
   //Stable Entity Structures
@@ -744,18 +585,18 @@ actor Self {
     await updateGolfCoursesCanisterWasms();
     await updateGameCanisterWasms();
     await updateGolfChannelsCanisterWasms();
+    await updateGolfTeamCanisterWasms();
   };
 
   //Canister Update Functions
 
   private func updateGolferCanisterWasms() : async (){
     let golferCanisterIds = golferManager.getStableUniqueCanisterIds();
-    Debug.print(debug_show golferCanisterIds);
     let IC : Management.Management = actor (Environment.Default);
     for(canisterId in Iter.fromArray(golferCanisterIds)){
       await IC.stop_canister({ canister_id = Principal.fromText(canisterId); });
-      let oldProfileCanister = actor (canisterId) : actor {};
-      let _ = await (system GolferCanister._GolferCanister)(#upgrade oldProfileCanister)();
+      let oldCanister = actor (canisterId) : actor {};
+      let _ = await (system GolferCanister._GolferCanister)(#upgrade oldCanister)();
       await IC.start_canister({ canister_id = Principal.fromText(canisterId); });
     };
   };
@@ -765,8 +606,8 @@ actor Self {
     let IC : Management.Management = actor (Environment.Default);
     for(canisterId in Iter.fromArray(golfCourseCanisterIds)){
       await IC.stop_canister({ canister_id = Principal.fromText(canisterId); });
-      let oldProfileCanister = actor (canisterId) : actor {};
-      let _ = await (system GolfCoursesCanister._GolfCoursesCanister)(#upgrade oldProfileCanister)();
+      let oldCanister = actor (canisterId) : actor {};
+      let _ = await (system GolfCoursesCanister._GolfCoursesCanister)(#upgrade oldCanister)();
       await IC.start_canister({ canister_id = Principal.fromText(canisterId); });
     };
   };
@@ -776,8 +617,8 @@ actor Self {
     let IC : Management.Management = actor (Environment.Default);
     for(canisterId in Iter.fromArray(gameCanisterIds)){
       await IC.stop_canister({ canister_id = Principal.fromText(canisterId); });
-      let oldProfileCanister = actor (canisterId) : actor {};
-      let _ = await (system GameCanister._GameCanister)(#upgrade oldProfileCanister)();
+      let oldCanister = actor (canisterId) : actor {};
+      let _ = await (system GameCanister._GameCanister)(#upgrade oldCanister)();
       await IC.start_canister({ canister_id = Principal.fromText(canisterId); });
     };
   };
@@ -789,6 +630,17 @@ actor Self {
       await IC.stop_canister({ canister_id = Principal.fromText(canisterId); });
       let oldProfileCanister = actor (canisterId) : actor {};
       let _ = await (system GolfChannelsCanister._GolfChannelsCanister)(#upgrade oldProfileCanister)();
+      await IC.start_canister({ canister_id = Principal.fromText(canisterId); });
+    };
+  };
+
+  private func updateGolfTeamCanisterWasms() : async (){
+    let golfTeamCanisterIds = golfTeamManager.getStableUniqueCanisterIds();
+    let IC : Management.Management = actor (Environment.Default);
+    for(canisterId in Iter.fromArray(golfTeamCanisterIds)){
+      await IC.stop_canister({ canister_id = Principal.fromText(canisterId); });
+      let oldCanister = actor (canisterId) : actor {};
+      let _ = await (system GolfTeamCanister._GolfTeamCanister)(#upgrade oldCanister)();
       await IC.start_canister({ canister_id = Principal.fromText(canisterId); });
     };
   };

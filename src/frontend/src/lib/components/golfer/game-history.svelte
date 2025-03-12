@@ -1,0 +1,1 @@
+<!-- This will show another users game history as a widget when looking at their profile, only shows if you are their friend -->
