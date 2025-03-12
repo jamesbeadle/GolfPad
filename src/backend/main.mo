@@ -156,6 +156,13 @@ actor Self {
   };
 
   //Golfer Profile Queries:
+
+  public shared ({ caller }) func getGolfers(dto: GolferQueries.GetGolfers) : async Result.Result<GolferQueries.Golfers, T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert dto.user_id == principalId;
+    return await golferManager.getGolfers(dto);
+  };
     
   public shared query ({ caller }) func isUsernameAvailable(dto: GolferQueries.IsUsernameAvailable) : async Result.Result<GolferQueries.UsernameAvailable, T.Error> {
     assert not Principal.isAnonymous(caller);
@@ -167,11 +174,6 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.getProfile(dto);
-  };
-
-  public shared ({ caller }) func listGolfers(dto: GolferQueries.ListGolfers) : async Result.Result<GolferQueries.Golfers, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    return await golferManager.listGolfers(dto);
   };
 
   public shared ({ caller }) func listFriends(dto: GolferQueries.ListFriends) : async Result.Result<GolferQueries.Friends, T.Error> {

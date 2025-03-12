@@ -14,16 +14,18 @@ module GolferQueries {
         golferPictureExtension: Text;
         handicap: ?T.Handicap;
     };
-    
-    public type ListGolfers = {
+
+    public type GetGolfers = {
+        user_id: Base.PrincipalId;
+        page: Nat;
         searchTerm: Text;
-        totalEntries: Nat;
-        limit: Nat;
-        offset: Nat;
     };
 
     public type Golfers = {
-        golfers: [GolferSummary];
+        entries: [GolferSummary];
+        page: Nat;
+        total: Nat;
+        pageSize: Nat;
     };
 
     public type GolferSummary = {

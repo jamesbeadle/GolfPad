@@ -9,7 +9,6 @@ import { GolfTeamService } from "$lib/services/golf-team-service";
 function createGolfTeamStore() {
   const { subscribe, set } = writable<GolfTeam | undefined>(undefined);
 
-
   async function getGolfTeams(dto: GetGolfTeams): Promise<GolfTeams> {
     return new GolfTeamService().getGolfTeams(dto);
   }

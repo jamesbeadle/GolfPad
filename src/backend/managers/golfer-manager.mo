@@ -150,7 +150,7 @@ module {
       };
     };
 
-    public func listGolfers(dto: GolferQueries.ListGolfers) : async Result.Result<GolferQueries.Golfers, T.Error> {
+    public func getGolfers(dto: GolferQueries.GetGolfers) : async Result.Result<GolferQueries.Golfers, T.Error> {
       if(Text.size(dto.searchTerm) < 3){
         return #err(#TooShort);
       };
@@ -200,7 +200,10 @@ module {
       };
 
       let golfersDTO: GolferQueries.Golfers = {
-        golfers = Buffer.toArray(golferBuffer);
+        entries = Buffer.toArray(golferBuffer);
+        total = 0; //TODO
+        page = dto.page;
+        pageSize = 10; //TODO Make env variable
       };
       
       return #ok(golfersDTO);

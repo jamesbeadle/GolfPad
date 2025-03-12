@@ -224,6 +224,11 @@ export interface GetGolfTeams {
   user_id: PrincipalId;
   searchTerm: string;
 }
+export interface GetGolfers {
+  page: bigint;
+  user_id: PrincipalId;
+  searchTerm: string;
+}
 export interface GetProfile {
   principalId: PrincipalId;
 }
@@ -315,7 +320,10 @@ export interface GolferSummary {
   golferPictureExtension: string;
 }
 export interface Golfers {
-  golfers: Array<GolferSummary>;
+  total: bigint;
+  page: bigint;
+  pageSize: bigint;
+  entries: Array<GolferSummary>;
 }
 export type Handicap = number;
 export interface Hole {
@@ -349,12 +357,6 @@ export interface ListFriends {
   offset: bigint;
   limit: bigint;
   principalId: PrincipalId;
-}
-export interface ListGolfers {
-  totalEntries: bigint;
-  offset: bigint;
-  limit: bigint;
-  searchTerm: string;
 }
 export type MatchResultInfo =
   | { Mulligans: MulligansResultInfo }
@@ -446,15 +448,15 @@ export type Result_16 = { ok: GameSummaries } | { err: Error };
 export type Result_17 = { ok: Game } | { err: Error };
 export type Result_18 = { ok: Buzz } | { err: Error };
 export type Result_19 = { ok: AppStatusDTO } | { err: Error };
-export type Result_2 = { ok: Golfers } | { err: Error };
+export type Result_2 = { ok: Friends } | { err: Error };
 export type Result_20 = { ok: GolfChannelId } | { err: Error };
 export type Result_21 = { ok: GameId } | { err: Error };
-export type Result_3 = { ok: Friends } | { err: Error };
-export type Result_4 = { ok: FriendRequests } | { err: Error };
-export type Result_5 = { ok: UsernameAvailable } | { err: Error };
-export type Result_6 = { ok: UpcomingGames } | { err: Error };
-export type Result_7 = { ok: Shot } | { err: Error };
-export type Result_8 = { ok: Profile } | { err: Error };
+export type Result_3 = { ok: FriendRequests } | { err: Error };
+export type Result_4 = { ok: UsernameAvailable } | { err: Error };
+export type Result_5 = { ok: UpcomingGames } | { err: Error };
+export type Result_6 = { ok: Shot } | { err: Error };
+export type Result_7 = { ok: Profile } | { err: Error };
+export type Result_8 = { ok: Golfers } | { err: Error };
 export type Result_9 = { ok: GolfTeams } | { err: Error };
 export type RustResult = { Ok: string } | { Err: string };
 export interface SendFriendRequest {
@@ -589,14 +591,14 @@ export interface _SERVICE {
   getGolfCourse: ActorMethod<[GetGolfCourse], Result_11>;
   getGolfCourses: ActorMethod<[GetGolfCourses], Result_10>;
   getGolfTeams: ActorMethod<[GetGolfTeams], Result_9>;
-  getProfile: ActorMethod<[GetProfile], Result_8>;
-  getShot: ActorMethod<[GetShot], Result_7>;
-  getUpcomingGames: ActorMethod<[GetUpcomingGames], Result_6>;
+  getGolfers: ActorMethod<[GetGolfers], Result_8>;
+  getProfile: ActorMethod<[GetProfile], Result_7>;
+  getShot: ActorMethod<[GetShot], Result_6>;
+  getUpcomingGames: ActorMethod<[GetUpcomingGames], Result_5>;
   inviteGolfers: ActorMethod<[InviteGolfers], Result>;
-  isUsernameAvailable: ActorMethod<[IsUsernameAvailable], Result_5>;
-  listFriendRequests: ActorMethod<[ListFriendRequests], Result_4>;
-  listFriends: ActorMethod<[ListFriends], Result_3>;
-  listGolfers: ActorMethod<[ListGolfers], Result_2>;
+  isUsernameAvailable: ActorMethod<[IsUsernameAvailable], Result_4>;
+  listFriendRequests: ActorMethod<[ListFriendRequests], Result_3>;
+  listFriends: ActorMethod<[ListFriends], Result_2>;
   predictShot: ActorMethod<[PredictShot], Result_1>;
   rejectFriendRequest: ActorMethod<[RejectFriendRequest], Result>;
   rejectGameInvite: ActorMethod<[RejectGameInvite], Result>;

@@ -128,32 +128,32 @@ type Result_9 =
 type Result_8 = 
  variant {
    err: Error;
-   ok: Profile;
+   ok: Golfers;
  };
 type Result_7 = 
  variant {
    err: Error;
-   ok: Shot;
+   ok: Profile;
  };
 type Result_6 = 
  variant {
    err: Error;
-   ok: UpcomingGames;
+   ok: Shot;
  };
 type Result_5 = 
  variant {
    err: Error;
-   ok: UsernameAvailable;
+   ok: UpcomingGames;
  };
 type Result_4 = 
  variant {
    err: Error;
-   ok: FriendRequests;
+   ok: UsernameAvailable;
  };
 type Result_3 = 
  variant {
    err: Error;
-   ok: Friends;
+   ok: FriendRequests;
  };
 type Result_21 = 
  variant {
@@ -168,7 +168,7 @@ type Result_20 =
 type Result_2 = 
  variant {
    err: Error;
-   ok: Golfers;
+   ok: Friends;
  };
 type Result_19 = 
  variant {
@@ -319,13 +319,6 @@ type MatchResultInfo =
    Mulligans: MulligansResultInfo;
    NextUp: NextUpResultInfo;
  };
-type ListGolfers = 
- record {
-   limit: nat;
-   offset: nat;
-   searchTerm: text;
-   totalEntries: nat;
- };
 type ListFriends = 
  record {
    limit: nat;
@@ -365,7 +358,13 @@ type Hole =
    tees: vec TeeInfo;
  };
 type Handicap = int16;
-type Golfers = record {golfers: vec GolferSummary;};
+type Golfers = 
+ record {
+   entries: vec GolferSummary;
+   page: nat;
+   pageSize: nat;
+   total: nat;
+ };
 type GolferSummary = 
  record {
    golferName: text;
@@ -460,6 +459,12 @@ type GetUpcomingGames =
  };
 type GetShot = record {principalId: PrincipalId;};
 type GetProfile = record {principalId: PrincipalId;};
+type GetGolfers = 
+ record {
+   page: nat;
+   searchTerm: text;
+   user_id: PrincipalId;
+ };
 type GetGolfTeams = 
  record {
    page: nat;
@@ -724,14 +729,14 @@ service : {
   getGolfCourse: (GetGolfCourse) -> (Result_11);
   getGolfCourses: (GetGolfCourses) -> (Result_10);
   getGolfTeams: (GetGolfTeams) -> (Result_9);
-  getProfile: (GetProfile) -> (Result_8);
-  getShot: (GetShot) -> (Result_7);
-  getUpcomingGames: (GetUpcomingGames) -> (Result_6);
+  getGolfers: (GetGolfers) -> (Result_8);
+  getProfile: (GetProfile) -> (Result_7);
+  getShot: (GetShot) -> (Result_6);
+  getUpcomingGames: (GetUpcomingGames) -> (Result_5);
   inviteGolfers: (InviteGolfers) -> (Result);
-  isUsernameAvailable: (IsUsernameAvailable) -> (Result_5) query;
-  listFriendRequests: (ListFriendRequests) -> (Result_4);
-  listFriends: (ListFriends) -> (Result_3);
-  listGolfers: (ListGolfers) -> (Result_2);
+  isUsernameAvailable: (IsUsernameAvailable) -> (Result_4) query;
+  listFriendRequests: (ListFriendRequests) -> (Result_3);
+  listFriends: (ListFriends) -> (Result_2);
   predictShot: (PredictShot) -> (Result_1);
   rejectFriendRequest: (RejectFriendRequest) -> (Result);
   rejectGameInvite: (RejectGameInvite) -> (Result);
