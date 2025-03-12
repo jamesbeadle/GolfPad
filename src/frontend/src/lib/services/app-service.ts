@@ -1,8 +1,4 @@
-import type {
-  AppStatusDTO,
-  BuzzEntries,
-  GetBuzzEntries,
-} from "../../../../declarations/backend/backend.did";
+import type { AppStatusDTO } from "../../../../declarations/backend/backend.did";
 import { isError } from "../utils/helpers";
 import { idlFactory as backend_canister } from "../../../../declarations/backend";
 import { ActorFactory } from "$lib/utils/actor.factory";
@@ -18,17 +14,6 @@ export class AppService {
 
     const result = await identityActor.getAppStatus();
     if (isError(result)) throw new Error("Failed to get app status");
-    return result.ok;
-  }
-
-  async getBuzzEntries(dto: GetBuzzEntries): Promise<BuzzEntries> {
-    const identityActor: any = await ActorFactory.createActor(
-      backend_canister,
-      process.env.BACKEND_CANISTER_ID,
-    );
-
-    const result = await identityActor.getBuzzEntries(dto);
-    if (isError(result)) throw new Error("Failed to get buzz entries");
     return result.ok;
   }
 }

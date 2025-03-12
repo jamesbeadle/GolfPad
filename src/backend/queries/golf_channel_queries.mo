@@ -5,7 +5,7 @@ import Base "mo:waterway-mops/BaseTypes";
 module GolfChannelQueries {
 
     public type GetGolfChannels = {
-        user_id: Base.PrincipalId;
+        principalId: Base.PrincipalId;
         page: Nat;
         searchTerm: Text;
     };

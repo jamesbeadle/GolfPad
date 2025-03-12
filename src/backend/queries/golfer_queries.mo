@@ -16,7 +16,7 @@ module GolferQueries {
     };
 
     public type GetGolfers = {
-        user_id: Base.PrincipalId;
+        principalId: Base.PrincipalId;
         page: Nat;
         searchTerm: Text;
     };

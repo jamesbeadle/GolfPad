@@ -5,7 +5,7 @@ import Bool "mo:base/Bool";
 module BuzzQueries {
 
     public type GetBuzz = {
-        user_id: Base.PrincipalId;
+        principalId: Base.PrincipalId;
         page: Nat;
     };
 

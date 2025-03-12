@@ -82,7 +82,7 @@ module {
     };
 
     public func getBuzz(dto: BuzzQueries.GetBuzz) : async Result.Result<BuzzQueries.Buzz, T.Error> {
-      let existingGolferCanisterId = golferCanisterIndex.get(dto.user_id);
+      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
@@ -99,7 +99,7 @@ module {
     };
 
     public func getUpcomingGames(dto: UpcomingGamesQueries.GetUpcomingGames) : async Result.Result<UpcomingGamesQueries.UpcomingGames, T.Error> {
-      let existingGolferCanisterId = golferCanisterIndex.get(dto.user_id);
+      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
@@ -116,7 +116,7 @@ module {
     };
 
   public func getGameSummaries(dto: GameQueries.GetGameSummaries) : async Result.Result<GameQueries.GameSummaries, T.Error> {
-    let existingGolferCanisterId = golferCanisterIndex.get(dto.user_id);
+    let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 

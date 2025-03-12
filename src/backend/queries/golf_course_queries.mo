@@ -17,7 +17,7 @@ module GolfCourseQueries {
     };
 
     public type GetGolfCourses = {
-        user_id: Base.PrincipalId;
+        principalId: Base.PrincipalId;
         page: Nat;
         searchTerm: Text;
     };

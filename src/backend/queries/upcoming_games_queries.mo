@@ -1,11 +1,10 @@
 import T "../data-types/types";
 import Base "mo:waterway-mops/BaseTypes";
-import Bool "mo:base/Bool";
 
 module UpcomingGamesQueries {
 
     public type GetUpcomingGames = {
-        user_id: Base.PrincipalId;
+        principalId: Base.PrincipalId;
         page: Nat;
     };
 

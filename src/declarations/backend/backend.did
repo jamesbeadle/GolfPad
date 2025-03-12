@@ -123,7 +123,7 @@ type RustResult =
 type Result_9 = 
  variant {
    err: Error;
-   ok: GolfTeams;
+   ok: Golfer;
  };
 type Result_8 = 
  variant {
@@ -155,15 +155,20 @@ type Result_3 =
    err: Error;
    ok: FriendRequests;
  };
-type Result_21 = 
+type Result_22 = 
  variant {
    err: Error;
    ok: GameId;
  };
-type Result_20 = 
+type Result_21 = 
  variant {
    err: Error;
    ok: GolfChannelId;
+ };
+type Result_20 = 
+ variant {
+   err: Error;
+   ok: AppStatusDTO;
  };
 type Result_2 = 
  variant {
@@ -173,52 +178,52 @@ type Result_2 =
 type Result_19 = 
  variant {
    err: Error;
-   ok: AppStatusDTO;
+   ok: Buzz;
  };
 type Result_18 = 
  variant {
    err: Error;
-   ok: Buzz;
+   ok: Game;
  };
 type Result_17 = 
  variant {
    err: Error;
-   ok: Game;
+   ok: GameSummaries;
  };
 type Result_16 = 
  variant {
    err: Error;
-   ok: GameSummaries;
+   ok: GolfChannel;
  };
 type Result_15 = 
  variant {
    err: Error;
-   ok: GolfChannel;
+   ok: GolfChannelVideo;
  };
 type Result_14 = 
  variant {
    err: Error;
-   ok: GolfChannelVideo;
+   ok: GolfChannelVideos;
  };
 type Result_13 = 
  variant {
    err: Error;
-   ok: GolfChannelVideos;
+   ok: GolfChannels;
  };
 type Result_12 = 
  variant {
    err: Error;
-   ok: GolfChannels;
+   ok: GolfCourse;
  };
 type Result_11 = 
  variant {
    err: Error;
-   ok: GolfCourse;
+   ok: GolfCourses;
  };
 type Result_10 = 
  variant {
    err: Error;
-   ok: GolfCourses;
+   ok: GolfTeams;
  };
 type Result_1 = 
  variant {
@@ -379,6 +384,18 @@ type GolferEvent =
    golferId: PrincipalId;
    hole: HoleNumber;
  };
+type Golfer = 
+ record {
+   activeGames: vec GameId;
+   completedGames: vec GameId;
+   gameInvites: vec GameInvite;
+   golferPicture: opt blob;
+   golferPictureExtension: text;
+   handicap: opt Handicap;
+   principalId: PrincipalId;
+   upcomingGames: vec GameId;
+   username: text;
+ };
 type GolfTeams = 
  record {
    entries: vec GolfTeam;
@@ -455,34 +472,35 @@ type GolfChannel =
 type GetUpcomingGames = 
  record {
    page: nat;
-   user_id: PrincipalId;
+   principalId: PrincipalId;
  };
 type GetShot = record {principalId: PrincipalId;};
 type GetProfile = record {principalId: PrincipalId;};
 type GetGolfers = 
  record {
    page: nat;
+   principalId: PrincipalId;
    searchTerm: text;
-   user_id: PrincipalId;
  };
+type GetGolfer = record {principalId: PrincipalId;};
 type GetGolfTeams = 
  record {
    page: nat;
+   principalId: PrincipalId;
    searchTerm: text;
-   user_id: PrincipalId;
  };
 type GetGolfCourses = 
  record {
    page: nat;
+   principalId: PrincipalId;
    searchTerm: text;
-   user_id: PrincipalId;
  };
 type GetGolfCourse = record {golfCourseId: GolfCourseId;};
 type GetGolfChannels = 
  record {
    page: nat;
+   principalId: PrincipalId;
    searchTerm: text;
-   user_id: PrincipalId;
  };
 type GetGolfChannelVideos = 
  record {
@@ -494,13 +512,13 @@ type GetGolfChannel = record {channelId: GolfChannelId;};
 type GetGameSummaries = 
  record {
    page: nat;
-   user_id: PrincipalId;
+   principalId: PrincipalId;
  };
 type GetGame = record {gameId: GameId;};
 type GetBuzz = 
  record {
    page: nat;
-   user_id: PrincipalId;
+   principalId: PrincipalId;
  };
 type GameType = 
  variant {
@@ -531,6 +549,11 @@ type GamePrediction =
    BuildIt: record {};
    Mulligans: MulligansPrediction;
    NextUp: record {};
+ };
+type GameInvite = 
+ record {
+   gameId: GameId;
+   inviteFrom: PrincipalId;
  };
 type GameInfo__1 = 
  record {
@@ -710,25 +733,26 @@ service : {
   addGameScore: (AddGameScore) -> (Result);
   addShot: (AddShot) -> (Result);
   beginGame: (BeginGame) -> (Result);
-  createGame: (CreateGame) -> (Result_21);
-  createGolfChannel: (CreateGolfChannel) -> (Result_20);
+  createGame: (CreateGame) -> (Result_22);
+  createGolfChannel: (CreateGolfChannel) -> (Result_21);
   createGolfTeam: (CreateGolfTeam) -> (Result);
   createUser: (CreateUser) -> (Result);
   deleteGame: (DeleteGame) -> (Result);
   deleteGolfChannel: (DeleteGolfChannel) -> (Result);
   executeAddGolfCourse: (CreateGolfCourse) -> ();
   executeUpdateGolfCourse: (UpdateGolfCourse) -> ();
-  getAppStatus: () -> (Result_19) query;
-  getBuzz: (GetBuzz) -> (Result_18);
-  getGame: (GetGame) -> (Result_17);
-  getGameSummaries: (GetGameSummaries) -> (Result_16);
-  getGolfChannel: (GetGolfChannel) -> (Result_15);
-  getGolfChannelVideo: (GetGolfChannelVideo) -> (Result_14);
-  getGolfChannelVideos: (GetGolfChannelVideos) -> (Result_13);
-  getGolfChannels: (GetGolfChannels) -> (Result_12);
-  getGolfCourse: (GetGolfCourse) -> (Result_11);
-  getGolfCourses: (GetGolfCourses) -> (Result_10);
-  getGolfTeams: (GetGolfTeams) -> (Result_9);
+  getAppStatus: () -> (Result_20) query;
+  getBuzz: (GetBuzz) -> (Result_19);
+  getGame: (GetGame) -> (Result_18);
+  getGameSummaries: (GetGameSummaries) -> (Result_17);
+  getGolfChannel: (GetGolfChannel) -> (Result_16);
+  getGolfChannelVideo: (GetGolfChannelVideo) -> (Result_15);
+  getGolfChannelVideos: (GetGolfChannelVideos) -> (Result_14);
+  getGolfChannels: (GetGolfChannels) -> (Result_13);
+  getGolfCourse: (GetGolfCourse) -> (Result_12);
+  getGolfCourses: (GetGolfCourses) -> (Result_11);
+  getGolfTeams: (GetGolfTeams) -> (Result_10);
+  getGolfer: (GetGolfer) -> (Result_9);
   getGolfers: (GetGolfers) -> (Result_8);
   getProfile: (GetProfile) -> (Result_7);
   getShot: (GetShot) -> (Result_6);

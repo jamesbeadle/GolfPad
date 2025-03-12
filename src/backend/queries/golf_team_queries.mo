@@ -4,7 +4,7 @@ import Base "mo:waterway-mops/BaseTypes";
 module GolfTeamQueries {
 
     public type GetGolfTeams = {
-        user_id: Base.PrincipalId;
+        principalId: Base.PrincipalId;
         page: Nat;
         searchTerm: Text;
     };

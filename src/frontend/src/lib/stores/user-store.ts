@@ -4,7 +4,9 @@ import { writable } from "svelte/store";
 import { ActorFactory } from "$lib/utils/actor.factory";
 import { UserService } from "$lib/services/user-service";
 import type {
+  Buzz,
   CreateUser,
+  GetBuzz,
   GetProfile,
   Profile,
   UpdateFirstName,
@@ -33,8 +35,8 @@ function createUserStore() {
     }
   }
 
-  async function isAdmin(): Promise<boolean> {
-    return new UserService().isAdmin();
+  async function getBuzz(dto: GetBuzz): Promise<Buzz> {
+    return new UserService().getBuzz(dto);
   }
 
   async function createUser(dto: CreateUser): Promise<any> {
@@ -184,7 +186,7 @@ function createUserStore() {
     cacheProfile,
     updateProfilePicture,
     isUsernameAvailable,
-    isAdmin,
+    getBuzz,
   };
 }
 

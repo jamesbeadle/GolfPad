@@ -160,8 +160,15 @@ actor Self {
   public shared ({ caller }) func getGolfers(dto: GolferQueries.GetGolfers) : async Result.Result<GolferQueries.Golfers, T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert dto.user_id == principalId;
+    assert dto.principalId == principalId;
     return await golferManager.getGolfers(dto);
+  };
+
+  public shared ({ caller }) func getGolfer(dto: GolferQueries.GetGolfer) : async Result.Result<GolferQueries.Golfer, T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert dto.principalId == principalId;
+    return await golferManager.getGolfer(dto);
   };
     
   public shared query ({ caller }) func isUsernameAvailable(dto: GolferQueries.IsUsernameAvailable) : async Result.Result<GolferQueries.UsernameAvailable, T.Error> {
@@ -293,7 +300,7 @@ actor Self {
   public shared ({ caller }) func getGameSummaries(dto: GameQueries.GetGameSummaries) : async Result.Result<GameQueries.GameSummaries, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert dto.user_id == principalId;
+    assert dto.principalId == principalId;
     return await golferManager.getGameSummaries(dto);
   };
 
@@ -309,7 +316,7 @@ actor Self {
   public shared ({ caller }) func getGolfChannels(dto: GolfChannelQueries.GetGolfChannels) : async Result.Result<GolfChannelQueries.GolfChannels, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert dto.user_id == principalId;
+    assert dto.principalId == principalId;
     return await golfChannelManager.getGolfChannels(dto);
   };
 
@@ -390,7 +397,7 @@ actor Self {
   public shared ({ caller }) func getGolfTeams(dto: GolfTeamQueries.GetGolfTeams) : async Result.Result<GolfTeamQueries.GolfTeams, T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert dto.user_id == principalId;
+    assert dto.principalId == principalId;
      
        
     return await golfTeamManager.getGolfTeams(dto);

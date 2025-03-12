@@ -24,7 +24,7 @@ module GameQueries {
     };
 
     public type GetGameSummaries = {
-        user_id: Base.PrincipalId;
+        principalId: Base.PrincipalId;
         page: Nat;
     };
 
