@@ -155,20 +155,25 @@ type Result_3 =
    err: Error;
    ok: UsernameAvailable;
  };
-type Result_22 = 
+type Result_23 = 
  variant {
    err: Error;
    ok: GameId;
  };
-type Result_21 = 
+type Result_22 = 
  variant {
    err: Error;
    ok: GolfChannelId;
  };
-type Result_20 = 
+type Result_21 = 
  variant {
    err: Error;
    ok: AppStatusDTO;
+ };
+type Result_20 = 
+ variant {
+   err: Error;
+   ok: Buzz;
  };
 type Result_2 = 
  variant {
@@ -178,17 +183,17 @@ type Result_2 =
 type Result_19 = 
  variant {
    err: Error;
-   ok: Buzz;
+   ok: FriendRequests;
  };
 type Result_18 = 
  variant {
    err: Error;
-   ok: FriendRequests;
+   ok: Game;
  };
 type Result_17 = 
  variant {
    err: Error;
-   ok: Game;
+   ok: GameInvites;
  };
 type Result_16 = 
  variant {
@@ -508,6 +513,7 @@ type GetGameSummaries =
    page: nat;
    principalId: PrincipalId;
  };
+type GetGameInvites = record {principalId: PrincipalId;};
 type GetGame = record {gameId: GameId;};
 type GetFriendRequests = 
  record {
@@ -550,6 +556,20 @@ type GamePrediction =
    BuildIt: record {};
    Mulligans: MulligansPrediction;
    NextUp: record {};
+ };
+type GameInvites = 
+ record {
+   entries: vec GameInvite__1;
+   page: nat;
+   pageSize: nat;
+   total: nat;
+ };
+type GameInvite__1 = 
+ record {
+   gameId: GameId;
+   invited: PrincipalId;
+   sentBy: PrincipalId;
+   sentOn: int;
  };
 type GameInvite = 
  record {
@@ -734,18 +754,19 @@ service : {
   addGameScore: (AddGameScore) -> (Result);
   addShot: (AddShot) -> (Result);
   beginGame: (BeginGame) -> (Result);
-  createGame: (CreateGame) -> (Result_22);
-  createGolfChannel: (CreateGolfChannel) -> (Result_21);
+  createGame: (CreateGame) -> (Result_23);
+  createGolfChannel: (CreateGolfChannel) -> (Result_22);
   createGolfTeam: (CreateGolfTeam) -> (Result);
   createUser: (CreateUser) -> (Result);
   deleteGame: (DeleteGame) -> (Result);
   deleteGolfChannel: (DeleteGolfChannel) -> (Result);
   executeAddGolfCourse: (CreateGolfCourse) -> ();
   executeUpdateGolfCourse: (UpdateGolfCourse) -> ();
-  getAppStatus: () -> (Result_20) query;
-  getBuzz: (GetBuzz) -> (Result_19);
-  getFriendRequests: (GetFriendRequests) -> (Result_18);
-  getGame: (GetGame) -> (Result_17);
+  getAppStatus: () -> (Result_21) query;
+  getBuzz: (GetBuzz) -> (Result_20);
+  getFriendRequests: (GetFriendRequests) -> (Result_19);
+  getGame: (GetGame) -> (Result_18);
+  getGameInvites: (GetGameInvites) -> (Result_17);
   getGameSummaries: (GetGameSummaries) -> (Result_16);
   getGolfChannel: (GetGolfChannel) -> (Result_15);
   getGolfChannelVideo: (GetGolfChannelVideo) -> (Result_14);

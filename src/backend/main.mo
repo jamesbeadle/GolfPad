@@ -317,6 +317,12 @@ actor Self {
     assert await gameManager.isGameMember(dto.gameId, principalId);
     return await gameManager.getGame(dto);
   };
+  
+  public shared ({ caller }) func getGameInvites(dto: GameQueries.GetGameInvites) : async Result.Result<GameQueries.GameInvites, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return await golferManager.getGameInvites(dto);
+  };
 
   //Golf Channel Commands:
 

@@ -86,13 +86,13 @@ export const idlFactory = ({ IDL }) => {
     courseId: GolfCourseId,
     teeGroup: TeeGroup,
   });
-  const Result_22 = IDL.Variant({ ok: GameId, err: Error });
+  const Result_23 = IDL.Variant({ ok: GameId, err: Error });
   const CreateGolfChannel = IDL.Record({
     name: IDL.Text,
     createdById: PrincipalId,
   });
   const GolfChannelId = IDL.Nat;
-  const Result_21 = IDL.Variant({ ok: GolfChannelId, err: Error });
+  const Result_22 = IDL.Variant({ ok: GolfChannelId, err: Error });
   const CreateGolfTeam = IDL.Record({
     createdById: PrincipalId,
     golfTeamName: IDL.Text,
@@ -125,7 +125,7 @@ export const idlFactory = ({ IDL }) => {
     version: IDL.Text,
     onHold: IDL.Bool,
   });
-  const Result_20 = IDL.Variant({ ok: AppStatusDTO, err: Error });
+  const Result_21 = IDL.Variant({ ok: AppStatusDTO, err: Error });
   const GetBuzz = IDL.Record({ page: IDL.Nat, principalId: PrincipalId });
   const CourseInfo__1 = IDL.Record({
     course_name: IDL.Text,
@@ -190,7 +190,7 @@ export const idlFactory = ({ IDL }) => {
     pageSize: IDL.Nat,
     entries: IDL.Vec(BuzzEntry),
   });
-  const Result_19 = IDL.Variant({ ok: Buzz, err: Error });
+  const Result_20 = IDL.Variant({ ok: Buzz, err: Error });
   const GetFriendRequests = IDL.Record({
     totalEntries: IDL.Nat,
     offset: IDL.Nat,
@@ -204,7 +204,7 @@ export const idlFactory = ({ IDL }) => {
   const FriendRequests = IDL.Record({
     friendRequests: IDL.Vec(FriendRequest),
   });
-  const Result_18 = IDL.Variant({ ok: FriendRequests, err: Error });
+  const Result_19 = IDL.Variant({ ok: FriendRequests, err: Error });
   const GetGame = IDL.Record({ gameId: GameId });
   const GameStatus = IDL.Variant({
     Unplayed: IDL.Null,
@@ -285,7 +285,21 @@ export const idlFactory = ({ IDL }) => {
     gameType: GameType,
     courseId: GolfCourseId,
   });
-  const Result_17 = IDL.Variant({ ok: Game, err: Error });
+  const Result_18 = IDL.Variant({ ok: Game, err: Error });
+  const GetGameInvites = IDL.Record({ principalId: PrincipalId });
+  const GameInvite__1 = IDL.Record({
+    invited: PrincipalId,
+    gameId: GameId,
+    sentBy: PrincipalId,
+    sentOn: IDL.Int,
+  });
+  const GameInvites = IDL.Record({
+    total: IDL.Nat,
+    page: IDL.Nat,
+    pageSize: IDL.Nat,
+    entries: IDL.Vec(GameInvite__1),
+  });
+  const Result_17 = IDL.Variant({ ok: GameInvites, err: Error });
   const GetGameSummaries = IDL.Record({
     page: IDL.Nat,
     principalId: PrincipalId,
@@ -551,18 +565,19 @@ export const idlFactory = ({ IDL }) => {
     addGameScore: IDL.Func([AddGameScore], [Result], []),
     addShot: IDL.Func([AddShot], [Result], []),
     beginGame: IDL.Func([BeginGame], [Result], []),
-    createGame: IDL.Func([CreateGame], [Result_22], []),
-    createGolfChannel: IDL.Func([CreateGolfChannel], [Result_21], []),
+    createGame: IDL.Func([CreateGame], [Result_23], []),
+    createGolfChannel: IDL.Func([CreateGolfChannel], [Result_22], []),
     createGolfTeam: IDL.Func([CreateGolfTeam], [Result], []),
     createUser: IDL.Func([CreateUser], [Result], []),
     deleteGame: IDL.Func([DeleteGame], [Result], []),
     deleteGolfChannel: IDL.Func([DeleteGolfChannel], [Result], []),
     executeAddGolfCourse: IDL.Func([CreateGolfCourse], [], []),
     executeUpdateGolfCourse: IDL.Func([UpdateGolfCourse], [], []),
-    getAppStatus: IDL.Func([], [Result_20], ["query"]),
-    getBuzz: IDL.Func([GetBuzz], [Result_19], []),
-    getFriendRequests: IDL.Func([GetFriendRequests], [Result_18], []),
-    getGame: IDL.Func([GetGame], [Result_17], []),
+    getAppStatus: IDL.Func([], [Result_21], ["query"]),
+    getBuzz: IDL.Func([GetBuzz], [Result_20], []),
+    getFriendRequests: IDL.Func([GetFriendRequests], [Result_19], []),
+    getGame: IDL.Func([GetGame], [Result_18], []),
+    getGameInvites: IDL.Func([GetGameInvites], [Result_17], []),
     getGameSummaries: IDL.Func([GetGameSummaries], [Result_16], []),
     getGolfChannel: IDL.Func([GetGolfChannel], [Result_15], []),
     getGolfChannelVideo: IDL.Func([GetGolfChannelVideo], [Result_14], []),

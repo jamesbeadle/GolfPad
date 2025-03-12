@@ -2,14 +2,20 @@ import { isError } from "$lib/utils/helpers";
 import { ActorFactory } from "$lib/utils/actor.factory";
 import { authStore } from "$lib/stores/auth-store";
 import type {
+  AcceptGameInvite,
   AddGameScore,
   BeginGame,
   CreateGame,
+  DeleteGame,
   Game,
+  GameInvites,
   GameSummaries,
   GetGame,
+  GetGameInvites,
   GetGameSummaries,
+  InviteGolfers,
   PredictGame,
+  RejectGameInvite,
 } from "../../../../declarations/backend/backend.did";
 
 export class GameService {
@@ -102,6 +108,66 @@ export class GameService {
     const result: any = await identityActor.addGameScore(dto);
     if (isError(result)) {
       throw new Error("Error Adding Game Score");
+    }
+    return result.ok;
+  }
+
+  async deleteGame(dto: DeleteGame): Promise<any> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.deleteGame(dto);
+    if (isError(result)) {
+      throw new Error("Error Deleting Game");
+    }
+    return result.ok;
+  }
+
+  async inviteGolfers(dto: InviteGolfers): Promise<any> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.inviteGolfers(dto);
+    if (isError(result)) {
+      throw new Error("Error Inviting Golfers To Game");
+    }
+    return result.ok;
+  }
+
+  async acceptGameInvite(dto: AcceptGameInvite): Promise<any> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.acceptGameInvite(dto);
+    if (isError(result)) {
+      throw new Error("Error Accepting Game Invite");
+    }
+    return result.ok;
+  }
+
+  async rejectGameInvite(dto: RejectGameInvite): Promise<any> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.rejectGameInvite(dto);
+    if (isError(result)) {
+      throw new Error("Error Rejecting Game Invite");
+    }
+    return result.ok;
+  }
+
+  async getGameInvites(dto: GetGameInvites): Promise<GameInvites> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.getGameInvites(dto);
+    if (isError(result)) {
+      throw new Error("Error Getting Game Invites");
     }
     return result.ok;
   }

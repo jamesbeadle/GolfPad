@@ -78,4 +78,7 @@ export class UserService {
     if (isError(result)) throw new Error("Failed to get shot averages");
     return result.ok;
   }
+
+  //friend stuff
+  //get friend requests
 }

@@ -23,6 +23,24 @@ module GameQueries {
         winner: Base.PrincipalId;
     };
 
+    public type GetGameInvites = {
+        principalId: Base.PrincipalId;
+    };
+
+    public type GameInvites = {
+        entries: [GameInvite];
+        page: Nat;
+        total: Nat;
+        pageSize: Nat;
+    };
+
+    public type GameInvite = {
+        sentBy: Base.PrincipalId;
+        invited: Base.PrincipalId;
+        sentOn: Int;
+        gameId: T.GameId;
+    };
+
     public type GetGameSummaries = {
         principalId: Base.PrincipalId;
         page: Nat;

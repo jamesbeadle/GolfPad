@@ -58,6 +58,7 @@ module Types {
     friends: [Base.PrincipalId];
     buzzFeed: [BuzzFeedItem];
     gameInvites: [GameInvite];
+    totalFriends: Nat;
   };
 
   public type GolfShot = {

@@ -50,6 +50,4 @@ export class GolferService {
       throw error;
     }
   }
-
-  //friend stuff
 }

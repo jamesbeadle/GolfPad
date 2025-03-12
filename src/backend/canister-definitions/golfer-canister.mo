@@ -119,6 +119,7 @@ actor class _GolferCanister() {
       firstName = "";
       lastName = "";
       termsAgreed = false;
+      totalFriends = 0;
     };
     Debug.print("Adding golfer to group");
     addGolfer(newGolfer);
@@ -163,6 +164,7 @@ actor class _GolferCanister() {
               firstName = foundGolfer.firstName;
               lastName = foundGolfer.lastName;
               termsAgreed = foundGolfer.termsAgreed;
+              totalFriends = foundGolfer.totalFriends;
             };
             saveGolfer(foundGroupIndex, updatedGolfer);
           };
@@ -212,6 +214,7 @@ actor class _GolferCanister() {
               firstName = dto.firstName;
               lastName = foundGolfer.lastName;
               termsAgreed = foundGolfer.termsAgreed;
+              totalFriends = foundGolfer.totalFriends;
             };
             saveGolfer(foundGroupIndex, updatedGolfer);
           };
@@ -261,6 +264,7 @@ actor class _GolferCanister() {
               firstName = foundGolfer.firstName;
               lastName = dto.lastName;
               termsAgreed = foundGolfer.termsAgreed;
+              totalFriends = foundGolfer.totalFriends;
             };
             saveGolfer(foundGroupIndex, updatedGolfer);
           };
@@ -310,6 +314,7 @@ actor class _GolferCanister() {
               firstName = foundGolfer.firstName;
               lastName = foundGolfer.lastName;
               termsAgreed = foundGolfer.termsAgreed;
+              totalFriends = foundGolfer.totalFriends;
             };
             saveGolfer(foundGroupIndex, updatedGolfer);
           };
@@ -359,6 +364,7 @@ actor class _GolferCanister() {
               firstName = foundGolfer.firstName;
               lastName = foundGolfer.lastName;
               termsAgreed = foundGolfer.termsAgreed;
+              totalFriends = foundGolfer.totalFriends;
             };
             saveGolfer(foundGroupIndex, updatedGolfer);
           };
@@ -459,6 +465,7 @@ actor class _GolferCanister() {
           firstName = "";
           lastName = "";
           termsAgreed = false;
+          totalFriends = 0;
         };
 
         addGolfer(newGolfer);
@@ -488,6 +495,7 @@ actor class _GolferCanister() {
               firstName = foundGolfer.firstName;
               lastName = foundGolfer.lastName;
               termsAgreed = foundGolfer.termsAgreed;
+              totalFriends = foundGolfer.totalFriends;
             };
             saveGolfer(foundGroupIndex, updatedGolfer);
           };
@@ -626,6 +634,7 @@ actor class _GolferCanister() {
               firstName = foundGolfer.firstName;
               lastName = foundGolfer.lastName;
               termsAgreed = foundGolfer.termsAgreed;
+              totalFriends = foundGolfer.totalFriends;
             };
 
             saveGolfer(foundGroupIndex, updatedGolfer);
@@ -678,6 +687,7 @@ actor class _GolferCanister() {
               firstName = foundGolfer.firstName;
               lastName = foundGolfer.lastName;
               termsAgreed = foundGolfer.termsAgreed;
+              totalFriends = foundGolfer.totalFriends;
             };
 
             saveGolfer(foundGroupIndex, updatedGolfer);
@@ -731,6 +741,7 @@ actor class _GolferCanister() {
               firstName = foundGolfer.firstName;
               lastName = foundGolfer.lastName;
               termsAgreed = foundGolfer.termsAgreed;
+              totalFriends = foundGolfer.totalFriends;
             };
 
             saveGolfer(foundGroupIndex, updatedGolfer);

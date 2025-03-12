@@ -622,6 +622,10 @@ module {
         case (null) { return true; }
       }
     };
+  
+    public func getGameInvites(dto: GameQueries.GetGameInvites) : async Result.Result<GameQueries.GameInvites, T.Error> {
+      return #err(#NotFound); //TODO
+    };
     
     private func createNewCanister() : async (){
       Cycles.add<system>(10_000_000_000_000);
