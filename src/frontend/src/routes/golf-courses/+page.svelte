@@ -1,3 +1,11 @@
+<script lang="ts">
+    import BrandPanel from "$lib/components/shared/brand-panel.svelte";
+
+</script>
+
+<BrandPanel title="GOLF COURSES" subTitle="YOUR FAVOURITE COURSES">
+
+
 
 <!-- 
     Courses Page
@@ -10,3 +18,4 @@
 
 
 -->
+</BrandPanel>
