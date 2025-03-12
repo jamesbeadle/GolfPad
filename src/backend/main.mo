@@ -302,6 +302,13 @@ actor Self {
 
   //Golf Channel Commands:
 
+  public shared ({ caller }) func getGolfChannels(dto: GolfChannelQueries.GetGolfChannels) : async Result.Result<GolfChannelQueries.GolfChannels, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert dto.user_id == principalId;
+    return await golfChannelManager.getGolfChannels(dto);
+  };
+
   public shared ({ caller }) func createGolfChannel(dto: GolfChannelCommands.CreateGolfChannel) : async Result.Result<T.GolfChannelId, T.Error>{
     assert not Principal.isAnonymous(caller);
     assert dto.createdById == Principal.toText(caller);

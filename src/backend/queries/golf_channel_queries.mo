@@ -5,13 +5,16 @@ import Base "mo:waterway-mops/BaseTypes";
 module GolfChannelQueries {
 
     public type GetGolfChannels = {
-        limit : Nat;
-        offset : Nat;
+        user_id: Base.PrincipalId;
+        page: Nat;
         searchTerm: Text;
     };
 
     public type GolfChannels = {
-
+        entries: [GolfChannel];
+        page: Nat;
+        total: Nat;
+        pageSize: Nat;
     };
 
     public type GetGolfChannel = {

@@ -200,6 +200,11 @@ export interface GetGolfChannelVideos {
   channelId: GolfChannelId;
   page: bigint;
 }
+export interface GetGolfChannels {
+  page: bigint;
+  user_id: PrincipalId;
+  searchTerm: string;
+}
 export interface GetGolfCourse {
   golfCourseId: GolfCourseId;
 }
@@ -228,6 +233,12 @@ export interface GolfChannelVideo {
 }
 export interface GolfChannelVideos {
   channelId: GolfChannelId;
+}
+export interface GolfChannels {
+  total: bigint;
+  page: bigint;
+  pageSize: bigint;
+  entries: Array<GolfChannel>;
 }
 export interface GolfCourse {
   totalHoles: number;
@@ -403,16 +414,17 @@ export interface RemoveGolfChannelVideo {
 export type Result = { ok: null } | { err: Error };
 export type Result_1 = { ok: PredictedShot } | { err: Error };
 export type Result_10 = { ok: GolfCourse } | { err: Error };
-export type Result_11 = { ok: GolfChannelVideos } | { err: Error };
-export type Result_12 = { ok: GolfChannelVideo } | { err: Error };
-export type Result_13 = { ok: GolfChannel } | { err: Error };
-export type Result_14 = { ok: GameSummaries } | { err: Error };
-export type Result_15 = { ok: Game } | { err: Error };
-export type Result_16 = { ok: Buzz } | { err: Error };
-export type Result_17 = { ok: AppStatusDTO } | { err: Error };
-export type Result_18 = { ok: GolfChannelId } | { err: Error };
-export type Result_19 = { ok: GameId } | { err: Error };
+export type Result_11 = { ok: GolfChannels } | { err: Error };
+export type Result_12 = { ok: GolfChannelVideos } | { err: Error };
+export type Result_13 = { ok: GolfChannelVideo } | { err: Error };
+export type Result_14 = { ok: GolfChannel } | { err: Error };
+export type Result_15 = { ok: GameSummaries } | { err: Error };
+export type Result_16 = { ok: Game } | { err: Error };
+export type Result_17 = { ok: Buzz } | { err: Error };
+export type Result_18 = { ok: AppStatusDTO } | { err: Error };
+export type Result_19 = { ok: GolfChannelId } | { err: Error };
 export type Result_2 = { ok: Golfers } | { err: Error };
+export type Result_20 = { ok: GameId } | { err: Error };
 export type Result_3 = { ok: Friends } | { err: Error };
 export type Result_4 = { ok: FriendRequests } | { err: Error };
 export type Result_5 = { ok: UsernameAvailable } | { err: Error };
@@ -530,20 +542,21 @@ export interface _SERVICE {
   addGameScore: ActorMethod<[AddGameScore], Result>;
   addShot: ActorMethod<[AddShot], Result>;
   beginGame: ActorMethod<[BeginGame], Result>;
-  createGame: ActorMethod<[CreateGame], Result_19>;
-  createGolfChannel: ActorMethod<[CreateGolfChannel], Result_18>;
+  createGame: ActorMethod<[CreateGame], Result_20>;
+  createGolfChannel: ActorMethod<[CreateGolfChannel], Result_19>;
   createUser: ActorMethod<[CreateUser], Result>;
   deleteGame: ActorMethod<[DeleteGame], Result>;
   deleteGolfChannel: ActorMethod<[DeleteGolfChannel], Result>;
   executeAddGolfCourse: ActorMethod<[CreateGolfCourse], undefined>;
   executeUpdateGolfCourse: ActorMethod<[UpdateGolfCourse], undefined>;
-  getAppStatus: ActorMethod<[], Result_17>;
-  getBuzz: ActorMethod<[GetBuzz], Result_16>;
-  getGame: ActorMethod<[GetGame], Result_15>;
-  getGameSummaries: ActorMethod<[GetGameSummaries], Result_14>;
-  getGolfChannel: ActorMethod<[GetGolfChannel], Result_13>;
-  getGolfChannelVideo: ActorMethod<[GetGolfChannelVideo], Result_12>;
-  getGolfChannelVideos: ActorMethod<[GetGolfChannelVideos], Result_11>;
+  getAppStatus: ActorMethod<[], Result_18>;
+  getBuzz: ActorMethod<[GetBuzz], Result_17>;
+  getGame: ActorMethod<[GetGame], Result_16>;
+  getGameSummaries: ActorMethod<[GetGameSummaries], Result_15>;
+  getGolfChannel: ActorMethod<[GetGolfChannel], Result_14>;
+  getGolfChannelVideo: ActorMethod<[GetGolfChannelVideo], Result_13>;
+  getGolfChannelVideos: ActorMethod<[GetGolfChannelVideos], Result_12>;
+  getGolfChannels: ActorMethod<[GetGolfChannels], Result_11>;
   getGolfCourse: ActorMethod<[GetGolfCourse], Result_10>;
   getGolfCourses: ActorMethod<[GetGolfCourses], Result_9>;
   getProfile: ActorMethod<[GetProfile], Result_8>;

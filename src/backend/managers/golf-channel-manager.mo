@@ -40,8 +40,8 @@ module {
         },
       );
       
-      let droppedEntries = List.drop<(T.GolfChannelId, Text)>(filteredEntries, dto.offset); 
-      let paginatedEntries = List.take<(T.GolfChannelId, Text)>(droppedEntries, dto.limit);
+      let droppedEntries = List.drop<(T.GolfChannelId, Text)>(filteredEntries, 0); //TODO USE PAGE 
+      let paginatedEntries = List.take<(T.GolfChannelId, Text)>(droppedEntries, 10);
 
       let channelsBuffer = Buffer.fromArray<GolfChannelQueries.GolfChannel>([]);
 
@@ -57,6 +57,9 @@ module {
       
       return #ok({
         entries = Buffer.toArray(channelsBuffer);
+        total = 0; //TODO
+        pageSize = 10;
+        page = dto.page;
       });
     };
 

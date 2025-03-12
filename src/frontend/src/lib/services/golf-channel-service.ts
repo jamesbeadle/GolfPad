@@ -4,9 +4,11 @@ import type {
   CreateGolfChannel,
   DeleteGolfChannel,
   GetGolfChannel,
+  GetGolfChannels,
   GetGolfChannelVideo,
   GetGolfChannelVideos,
   GolfChannel,
+  GolfChannels,
   GolfChannelVideos,
   RemoveGolfChannelVideo,
   SubscribeToGolfChannel,
@@ -18,6 +20,26 @@ import { authStore } from "$lib/stores/auth-store";
 
 export class GolfChannelService {
   constructor() {}
+
+  async getGolfChannels(dto: GetGolfChannels): Promise<GolfChannels> {
+    try {
+      const identityActor: any = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+
+      let result = await identityActor.getGolfChannels(dto);
+
+      if (isError(result)) {
+        console.error("Error Fetching Golf Channels", result);
+      }
+
+      return result.ok;
+    } catch (error) {
+      console.error("Error Fetching Golf Channels", error);
+      throw error;
+    }
+  }
 
   async getGolfChannel(dto: GetGolfChannel): Promise<GolfChannel> {
     const identityActor: any = await ActorFactory.createIdentityActor(

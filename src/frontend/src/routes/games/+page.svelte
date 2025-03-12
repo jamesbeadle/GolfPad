@@ -80,7 +80,7 @@
 
                 <PaginationRow {changePage} currentPage={Number(page)} {totalPages} />
             {:else}
-                <p>Error loading game summaries</p>
+                <p>Error loading game summaries.</p>
             {/if}
         </ListViewPanel>
     {/if}
