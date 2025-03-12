@@ -1,9 +1,8 @@
-import T "../data-types/types";
 import Base "mo:waterway-mops/BaseTypes";
 
 module GolferQueries {
     
-    public type ListFriendRequests = {
+    public type GetFriendRequests = {
         principalId: Base.PrincipalId;
         totalEntries: Nat;
         limit: Nat;

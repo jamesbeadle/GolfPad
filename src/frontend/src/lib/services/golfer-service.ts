@@ -1,7 +1,9 @@
 import { isError } from "$lib/utils/helpers";
 import { ActorFactory } from "$lib/utils/actor.factory";
 import type {
+  GetGolfer,
   GetGolfers,
+  Golfer,
   Golfers,
 } from "../../../../declarations/backend/backend.did";
 import { authStore } from "$lib/stores/auth-store";

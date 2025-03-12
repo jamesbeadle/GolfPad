@@ -123,37 +123,37 @@ type RustResult =
 type Result_9 = 
  variant {
    err: Error;
-   ok: Golfer;
+   ok: GolfTeams;
  };
 type Result_8 = 
  variant {
    err: Error;
-   ok: Golfers;
+   ok: Golfer;
  };
 type Result_7 = 
  variant {
    err: Error;
-   ok: Profile;
+   ok: Golfers;
  };
 type Result_6 = 
  variant {
    err: Error;
-   ok: Shot;
+   ok: Profile;
  };
 type Result_5 = 
  variant {
    err: Error;
-   ok: UpcomingGames;
+   ok: Shot;
  };
 type Result_4 = 
  variant {
    err: Error;
-   ok: UsernameAvailable;
+   ok: UpcomingGames;
  };
 type Result_3 = 
  variant {
    err: Error;
-   ok: FriendRequests;
+   ok: UsernameAvailable;
  };
 type Result_22 = 
  variant {
@@ -183,47 +183,47 @@ type Result_19 =
 type Result_18 = 
  variant {
    err: Error;
-   ok: Game;
+   ok: FriendRequests;
  };
 type Result_17 = 
  variant {
    err: Error;
-   ok: GameSummaries;
+   ok: Game;
  };
 type Result_16 = 
  variant {
    err: Error;
-   ok: GolfChannel;
+   ok: GameSummaries;
  };
 type Result_15 = 
  variant {
    err: Error;
-   ok: GolfChannelVideo;
+   ok: GolfChannel;
  };
 type Result_14 = 
  variant {
    err: Error;
-   ok: GolfChannelVideos;
+   ok: GolfChannelVideo;
  };
 type Result_13 = 
  variant {
    err: Error;
-   ok: GolfChannels;
+   ok: GolfChannelVideos;
  };
 type Result_12 = 
  variant {
    err: Error;
-   ok: GolfCourse;
+   ok: GolfChannels;
  };
 type Result_11 = 
  variant {
    err: Error;
-   ok: GolfCourses;
+   ok: GolfCourse;
  };
 type Result_10 = 
  variant {
    err: Error;
-   ok: GolfTeams;
+   ok: GolfCourses;
  };
 type Result_1 = 
  variant {
@@ -325,13 +325,6 @@ type MatchResultInfo =
    NextUp: NextUpResultInfo;
  };
 type ListFriends = 
- record {
-   limit: nat;
-   offset: nat;
-   principalId: PrincipalId;
-   totalEntries: nat;
- };
-type ListFriendRequests = 
  record {
    limit: nat;
    offset: nat;
@@ -515,6 +508,13 @@ type GetGameSummaries =
    principalId: PrincipalId;
  };
 type GetGame = record {gameId: GameId;};
+type GetFriendRequests = 
+ record {
+   limit: nat;
+   offset: nat;
+   principalId: PrincipalId;
+   totalEntries: nat;
+ };
 type GetBuzz = 
  record {
    page: nat;
@@ -743,23 +743,23 @@ service : {
   executeUpdateGolfCourse: (UpdateGolfCourse) -> ();
   getAppStatus: () -> (Result_20) query;
   getBuzz: (GetBuzz) -> (Result_19);
-  getGame: (GetGame) -> (Result_18);
-  getGameSummaries: (GetGameSummaries) -> (Result_17);
-  getGolfChannel: (GetGolfChannel) -> (Result_16);
-  getGolfChannelVideo: (GetGolfChannelVideo) -> (Result_15);
-  getGolfChannelVideos: (GetGolfChannelVideos) -> (Result_14);
-  getGolfChannels: (GetGolfChannels) -> (Result_13);
-  getGolfCourse: (GetGolfCourse) -> (Result_12);
-  getGolfCourses: (GetGolfCourses) -> (Result_11);
-  getGolfTeams: (GetGolfTeams) -> (Result_10);
-  getGolfer: (GetGolfer) -> (Result_9);
-  getGolfers: (GetGolfers) -> (Result_8);
-  getProfile: (GetProfile) -> (Result_7);
-  getShot: (GetShot) -> (Result_6);
-  getUpcomingGames: (GetUpcomingGames) -> (Result_5);
+  getFriendRequests: (GetFriendRequests) -> (Result_18);
+  getGame: (GetGame) -> (Result_17);
+  getGameSummaries: (GetGameSummaries) -> (Result_16);
+  getGolfChannel: (GetGolfChannel) -> (Result_15);
+  getGolfChannelVideo: (GetGolfChannelVideo) -> (Result_14);
+  getGolfChannelVideos: (GetGolfChannelVideos) -> (Result_13);
+  getGolfChannels: (GetGolfChannels) -> (Result_12);
+  getGolfCourse: (GetGolfCourse) -> (Result_11);
+  getGolfCourses: (GetGolfCourses) -> (Result_10);
+  getGolfTeams: (GetGolfTeams) -> (Result_9);
+  getGolfer: (GetGolfer) -> (Result_8);
+  getGolfers: (GetGolfers) -> (Result_7);
+  getProfile: (GetProfile) -> (Result_6);
+  getShot: (GetShot) -> (Result_5);
+  getUpcomingGames: (GetUpcomingGames) -> (Result_4);
   inviteGolfers: (InviteGolfers) -> (Result);
-  isUsernameAvailable: (IsUsernameAvailable) -> (Result_4) query;
-  listFriendRequests: (ListFriendRequests) -> (Result_3);
+  isUsernameAvailable: (IsUsernameAvailable) -> (Result_3) query;
   listFriends: (ListFriends) -> (Result_2);
   predictShot: (PredictShot) -> (Result_1);
   rejectFriendRequest: (RejectFriendRequest) -> (Result);

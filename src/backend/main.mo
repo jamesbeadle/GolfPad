@@ -212,10 +212,10 @@ actor Self {
 
   //Golfer Friend Request Queries:
 
-  public shared ({ caller }) func listFriendRequests(dto: FriendRequestQueries.ListFriendRequests) : async Result.Result<FriendRequestQueries.FriendRequests, T.Error> {
+  public shared ({ caller }) func getFriendRequests(dto: FriendRequestQueries.GetFriendRequests) : async Result.Result<FriendRequestQueries.FriendRequests, T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
-    return await golferManager.listFriendRequests(dto);
+    return await golferManager.getFriendRequests(dto);
   };
 
   //Golfer Shot Management Commands:

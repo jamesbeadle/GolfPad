@@ -59,12 +59,4 @@ export class UserService {
   //get upcoming games
 
   //get shot averages
-
-  //send friend request
-
-  //get friend requests
-
-  //accept friend request
-
-  //reject friend request
 }

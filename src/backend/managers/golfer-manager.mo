@@ -226,16 +226,16 @@ module {
       };
     };
 
-    public func listFriendRequests(dto: FriendRequestQueries.ListFriendRequests) : async Result.Result<FriendRequestQueries.FriendRequests, T.Error> {
+    public func getFriendRequests(dto: FriendRequestQueries.GetFriendRequests) : async Result.Result<FriendRequestQueries.FriendRequests, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            listFriendRequests : (dto: FriendRequestQueries.ListFriendRequests) -> async Result.Result<FriendRequestQueries.FriendRequests, T.Error>;
+            getFriendRequests : (dto: FriendRequestQueries.GetFriendRequests) -> async Result.Result<FriendRequestQueries.FriendRequests, T.Error>;
           };
 
-          return await golfer_canister.listFriendRequests(dto);
+          return await golfer_canister.getFriendRequests(dto);
         };
         case (null){
           return #err(#NotFound);
