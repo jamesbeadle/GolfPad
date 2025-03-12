@@ -1,1 +1,0 @@
-import"../chunks/BMmDdByd.js";import"../chunks/YJLFel-1.js";import{L as i}from"../chunks/BSgAB85Y.js";import{L as r}from"../chunks/CmPZXeWN.js";function m(t){function o(){}r(t,{children:(e,a)=>{i(e,{title:"GOLF TEAMS",buttonTitle:"NEW GOLF TEAM",buttonCallback:o})},$$slots:{default:!0}})}export{m as component};

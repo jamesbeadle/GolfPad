@@ -1,1 +1,15 @@
-.pagination.svelte-1ehpt8k{display:flex;align-items:center;gap:1rem;padding:1rem;justify-content:center}button.svelte-1ehpt8k{padding:.5rem 1rem;cursor:pointer}button.disabled.svelte-1ehpt8k{cursor:not-allowed;opacity:.5}
+.pagination.svelte-1ehpt8k {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  justify-content: center;
+}
+button.svelte-1ehpt8k {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+button.disabled.svelte-1ehpt8k {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

@@ -1,4 +1,5 @@
 import T "../data-types/types";
+import Base "mo:waterway-mops/BaseTypes";
 
 module GolfCourseQueries {
     
@@ -16,8 +17,8 @@ module GolfCourseQueries {
     };
 
     public type GetGolfCourses = {
-        limit : Nat;
-        offset : Nat;
+        user_id: Base.PrincipalId;
+        page: Nat;
         searchTerm: Text;
     };
 

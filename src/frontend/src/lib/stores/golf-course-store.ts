@@ -9,7 +9,7 @@ import type {
 } from "../../../../declarations/backend/backend.did";
 import type UpdateGolfCourse from "$lib/components/goverance/golf-course/update-golf-course.svelte";
 
-function createCourseStore() {
+function createGolfCourseStore() {
   const { subscribe, set } = writable<GolfCourse[]>([]);
 
   async function getGolfCourse(dto: GetGolfCourse): Promise<GolfCourse> {
@@ -26,4 +26,4 @@ function createCourseStore() {
     getGolfCourses,
   };
 }
-export const courseStore = createCourseStore();
+export const golfCourseStore = createGolfCourseStore();

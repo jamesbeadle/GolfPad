@@ -32,6 +32,25 @@ module {
 
     //Getters
 
+    public func getGolfTeams(dto: GolfTeamQueries.GetGolfTeams) : async Result.Result<GolfTeamQueries.GolfTeams, T.Error> {
+      return #err(#NotFound); //TODO
+    };
+
+    public func isTeamCreator(principalId: Base.PrincipalId, teamId: T.GolfTeamId) : async Bool {
+      return false; //TODO
+    };
+
+
+
+
+
+
+
+
+
+
+
+
     public func getTeamImage(teamId: T.GolfTeamId) : async ?Blob {
       let existingGolfTeamCanisterId = golfTeamCanisterIndex.get(teamId);
       switch(existingGolfTeamCanisterId){
@@ -91,7 +110,7 @@ module {
     
     //Update functions
     
-    public func createGolfTeam(owner: Base.PrincipalId, dto: GolfTeamCommands.CreateGolfTeam) : async Result.Result<(), T.Error> {
+    public func createGolfTeam(dto: GolfTeamCommands.CreateGolfTeam) : async Result.Result<(), T.Error> {
       
       if(Text.size(dto.golfTeamName) < 5 or Text.size(dto.golfTeamName) > 20){
         return #err(#TooLong);
@@ -121,7 +140,7 @@ module {
         };
       };
 
-      let createResult = await golf_team_canister.createGolfTeam(owner, dto, nextGolfTeamId);
+      let createResult = await golf_team_canister.createGolfTeam(dto.createdById, dto, nextGolfTeamId);
 
       switch(createResult){
         case (#ok _){

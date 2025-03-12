@@ -10,13 +10,6 @@ module GolfTeamCommands {
         createdById: Base.PrincipalId;
     };
 
-    public type UpdateGolfTeam = {
-        golfTeamId: T.GolfTeamId;
-        golfTeamName: Text;
-        golfTeamPicture: ?Blob;
-        golfTeamPictureExtension: Text;
-    };
-
     public type UpdateGolfTeamName = {
         golfTeamId: T.GolfTeamId;
         golfTeamName: Text;

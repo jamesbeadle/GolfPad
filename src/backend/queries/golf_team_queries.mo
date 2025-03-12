@@ -1,6 +1,20 @@
 import T "../data-types/types";
+import Base "mo:waterway-mops/BaseTypes";
 
 module GolfTeamQueries {
+
+    public type GetGolfTeams = {
+        user_id: Base.PrincipalId;
+        page: Nat;
+        searchTerm: Text;
+    };
+
+    public type GolfTeams = {
+        entries: [GolfTeam];
+        page: Nat;
+        total: Nat;
+        pageSize: Nat;
+    };
     
     public type GetGolfTeam = {
         golfTeamId: T.GolfTeamId;

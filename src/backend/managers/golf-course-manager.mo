@@ -43,8 +43,8 @@ module {
         },
       );
       
-      let droppedEntries = List.drop<(T.GolfCourseId, Text)>(filteredEntries, dto.offset); 
-      let paginatedEntries = List.take<(T.GolfCourseId, Text)>(droppedEntries, dto.limit);
+      let droppedEntries = List.drop<(T.GolfCourseId, Text)>(filteredEntries, 0); //TODO 
+      let paginatedEntries = List.take<(T.GolfCourseId, Text)>(droppedEntries, 10);
 
       let coursesBuffer = Buffer.fromArray<GolfCourseQueries.GolfCourse>([]);
 
