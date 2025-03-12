@@ -1,16 +1,14 @@
 <script lang="ts">
     import ListViewPanel from "$lib/components/shared/list-view-panel.svelte";
-
-    function createNew(){
-        
-    }
+    import Layout from "../Layout.svelte";
 
 </script>
+<Layout>
+    <ListViewPanel title="GAMES" buttonTitle="NEW GAME" buttonCallback={createNew}>
 
-<ListViewPanel title="GAMES" buttonTitle="NEW GAME" buttonCallback={createNew}>
-
-<!--
-    List of games
-    New Game
--->
-</ListViewPanel>
+    <!--
+        List of games
+        New Game
+    -->
+    </ListViewPanel>
+</Layout>
