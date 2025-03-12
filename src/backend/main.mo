@@ -228,10 +228,10 @@ actor Self {
 
   //Golfer Shot Management Queries:
 
-  public shared ({ caller }) func getShot(dto: ShotQueries.GetShot) : async Result.Result<ShotQueries.Shot, T.Error> {
+  public shared ({ caller }) func getShotAverages(dto: ShotQueries.GetShotAverages) : async Result.Result<ShotQueries.ShotAverages, T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
-    return await golferManager.getShot(dto);
+    return await golferManager.getShotAverages(dto);
   };
 
   public shared ({ caller }) func predictShot(dto: ShotQueries.PredictShot) : async Result.Result<ShotQueries.PredictedShot, T.Error> {
@@ -253,6 +253,13 @@ actor Self {
     let principalId = Principal.toText(caller);
     assert await gameManager.isGameMember(dto.gameId, principalId);
     return await gameManager.beginGame(dto);
+  };
+
+  public shared ({ caller }) func predictGame(dto: GameCommands.PredictGame) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert await gameManager.isGameMember(dto.gameId, principalId);
+    return await gameManager.predictGame(dto);
   };
 
   public shared ({ caller }) func updateGame(dto: GameCommands.UpdateGame) : async Result.Result<(), T.Error> {

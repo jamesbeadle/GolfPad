@@ -245,7 +245,7 @@ export interface GetGolfers {
 export interface GetProfile {
   principalId: PrincipalId;
 }
-export interface GetShot {
+export interface GetShotAverages {
   principalId: PrincipalId;
 }
 export interface GetUpcomingGames {
@@ -431,6 +431,9 @@ export interface PlayerFeedSummary__1 {
 export interface PlayerOpponentInfo {
   players: Array<PlayerFeedSummary>;
 }
+export interface PredictGame {
+  gameId: GameId;
+}
 export interface PredictShot {
   principalId: PrincipalId;
 }
@@ -472,7 +475,7 @@ export type Result_21 = { ok: GolfChannelId } | { err: Error };
 export type Result_22 = { ok: GameId } | { err: Error };
 export type Result_3 = { ok: UsernameAvailable } | { err: Error };
 export type Result_4 = { ok: UpcomingGames } | { err: Error };
-export type Result_5 = { ok: Shot } | { err: Error };
+export type Result_5 = { ok: ShotAverages } | { err: Error };
 export type Result_6 = { ok: Profile } | { err: Error };
 export type Result_7 = { ok: Golfers } | { err: Error };
 export type Result_8 = { ok: Golfer } | { err: Error };
@@ -482,7 +485,7 @@ export interface SendFriendRequest {
   requestedFriend: PrincipalId;
   principalId: PrincipalId;
 }
-export type Shot = {};
+export type ShotAverages = {};
 export interface SubscribeToGolfChannel {
   channelId: GolfChannelId;
   principalId: PrincipalId;
@@ -614,11 +617,12 @@ export interface _SERVICE {
   getGolfer: ActorMethod<[GetGolfer], Result_8>;
   getGolfers: ActorMethod<[GetGolfers], Result_7>;
   getProfile: ActorMethod<[GetProfile], Result_6>;
-  getShot: ActorMethod<[GetShot], Result_5>;
+  getShotAverages: ActorMethod<[GetShotAverages], Result_5>;
   getUpcomingGames: ActorMethod<[GetUpcomingGames], Result_4>;
   inviteGolfers: ActorMethod<[InviteGolfers], Result>;
   isUsernameAvailable: ActorMethod<[IsUsernameAvailable], Result_3>;
   listFriends: ActorMethod<[ListFriends], Result_2>;
+  predictGame: ActorMethod<[PredictGame], Result>;
   predictShot: ActorMethod<[PredictShot], Result_1>;
   rejectFriendRequest: ActorMethod<[RejectFriendRequest], Result>;
   rejectGameInvite: ActorMethod<[RejectGameInvite], Result>;

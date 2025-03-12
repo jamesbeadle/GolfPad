@@ -237,6 +237,32 @@ module {
       };
     };
 
+    public func predictGame(dto: GameCommands.PredictGame) : async Result.Result<(), T.Error> {
+      let existingGame = await getGame({ gameId = dto.gameId });
+
+      switch(existingGame){
+        case (#ok foundGame){
+          
+          if(foundGame.status != #Unplayed){
+            return #err(#NotAllowed);
+          };
+
+          let gameCanisterId = gameCanisterIndex.get(foundGame.id);
+          switch(gameCanisterId){
+            case (?foundCanisterId){
+              let game_canister = actor (foundCanisterId) : actor {
+                predictGame : (dto: GameCommands.PredictGame) -> async Result.Result<(), T.Error>;
+              };
+              return await game_canister.predictGame(dto);
+            };
+            case _ { }
+          };  
+          return #err(#NotFound);
+        };
+        case (#err _) { return #err(#NotFound) };
+      };
+    };
+
     public func updateGame(dto: GameCommands.UpdateGame) : async Result.Result<(), T.Error> {
       let existingGame = await getGame({ gameId = dto.gameId });
 

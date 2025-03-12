@@ -2,11 +2,14 @@ import { isError } from "$lib/utils/helpers";
 import { ActorFactory } from "$lib/utils/actor.factory";
 import { authStore } from "$lib/stores/auth-store";
 import type {
+  AddGameScore,
+  BeginGame,
   CreateGame,
   Game,
   GameSummaries,
   GetGame,
   GetGameSummaries,
+  PredictGame,
 } from "../../../../declarations/backend/backend.did";
 
 export class GameService {
@@ -55,7 +58,7 @@ export class GameService {
     }
   }
 
-  async createGame(dto: CreateGame): Promise<{ ok?: bigint; err?: string }> {
+  async createGame(dto: CreateGame): Promise<any> {
     const identityActor = await ActorFactory.createIdentityActor(
       authStore,
       process.env.BACKEND_CANISTER_ID ?? "",
@@ -64,26 +67,42 @@ export class GameService {
     if (isError(result)) {
       throw new Error("Error Creating Game");
     }
-    return { ok: result.ok };
+    return result.ok;
   }
 
-  //setup game
-    //mulligans
-    //bands
-    //next up
-    //build it
+  async beginGame(dto: BeginGame): Promise<any> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.beginGame(dto);
+    if (isError(result)) {
+      throw new Error("Error Setting Up Game");
+    }
+    return result.ok;
+  }
 
-  //add game score
-    //mulligans
-    //bands
-    //next up
-    //build it
+  async predictGame(dto: PredictGame): Promise<any> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.predictGame(dto);
+    if (isError(result)) {
+      throw new Error("Error Making Game Prediction");
+    }
+    return result.ok;
+  }
 
-  //get game results
-    //mulligans
-    //bands
-    //next up
-    //build it
- 
-
+  async addGameScore(dto: AddGameScore): Promise<any> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.addGameScore(dto);
+    if (isError(result)) {
+      throw new Error("Error Adding Game Score");
+    }
+    return result.ok;
+  }
 }

@@ -109,7 +109,7 @@ type SubscribeToGolfChannel =
    channelId: GolfChannelId;
    principalId: PrincipalId;
  };
-type Shot = record {};
+type ShotAverages = record {};
 type SendFriendRequest = 
  record {
    principalId: PrincipalId;
@@ -143,7 +143,7 @@ type Result_6 =
 type Result_5 = 
  variant {
    err: Error;
-   ok: Shot;
+   ok: ShotAverages;
  };
 type Result_4 = 
  variant {
@@ -257,6 +257,7 @@ type Profile =
 type PrincipalId = text;
 type PredictedShot = record {};
 type PredictShot = record {principalId: PrincipalId;};
+type PredictGame = record {gameId: GameId;};
 type PlayerOpponentInfo = record {players: vec PlayerFeedSummary;};
 type PlayerFeedSummary__1 = 
  record {
@@ -467,7 +468,7 @@ type GetUpcomingGames =
    page: nat;
    principalId: PrincipalId;
  };
-type GetShot = record {principalId: PrincipalId;};
+type GetShotAverages = record {principalId: PrincipalId;};
 type GetProfile = record {principalId: PrincipalId;};
 type GetGolfers = 
  record {
@@ -756,11 +757,12 @@ service : {
   getGolfer: (GetGolfer) -> (Result_8);
   getGolfers: (GetGolfers) -> (Result_7);
   getProfile: (GetProfile) -> (Result_6);
-  getShot: (GetShot) -> (Result_5);
+  getShotAverages: (GetShotAverages) -> (Result_5);
   getUpcomingGames: (GetUpcomingGames) -> (Result_4);
   inviteGolfers: (InviteGolfers) -> (Result);
   isUsernameAvailable: (IsUsernameAvailable) -> (Result_3) query;
   listFriends: (ListFriends) -> (Result_2);
+  predictGame: (PredictGame) -> (Result);
   predictShot: (PredictShot) -> (Result_1);
   rejectFriendRequest: (RejectFriendRequest) -> (Result);
   rejectGameInvite: (RejectGameInvite) -> (Result);

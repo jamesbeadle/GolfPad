@@ -543,17 +543,17 @@ module {
 
     //Golfer Shot Management Queries:
 
-    public func getShot(dto: ShotQueries.GetShot) : async Result.Result<ShotQueries.Shot, T.Error> {
+    public func getShotAverages(dto: ShotQueries.GetShotAverages) : async Result.Result<ShotQueries.ShotAverages, T.Error> {
       let golferCanisterId = golferCanisterIndex.get(dto.principalId);
 
       switch(golferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getShot : (dto: ShotQueries.GetShot) -> async Result.Result<ShotQueries.Shot, T.Error>
+            getShotAverages : (dto: ShotQueries.GetShotAverages) -> async Result.Result<ShotQueries.ShotAverages, T.Error>
           };
         
-          return await golfer_canister.getShot(dto);
+          return await golfer_canister.getShotAverages(dto);
         };
         case _ {
           return #err(#NotFound);

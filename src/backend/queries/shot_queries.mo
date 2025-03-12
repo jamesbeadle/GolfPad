@@ -4,11 +4,11 @@ import Base "mo:waterway-mops/BaseTypes";
 
 module ShotQueries {
 
-    public type GetShot = {
+    public type GetShotAverages = {
         principalId: Base.PrincipalId;
     };
 
-    public type Shot = {
+    public type ShotAverages = {
 
     };
 
