@@ -1,11 +1,15 @@
 <script lang="ts">
-    import BrandPanel from "$lib/components/shared/brand-panel.svelte";
+    import ListViewPanel from "$lib/components/shared/list-view-panel.svelte";
+
+    function createNew(){
+        
+    }
 
 </script>
 
-<BrandPanel title="TEAMS" subTitle="YOUR GOLF TEAMS">
+<ListViewPanel title="GOLF TEAMS" buttonTitle="NEW GOLF TEAM" buttonCallback={createNew}>
 
 <!--
     List of your golf teams
 -->
-</BrandPanel>
+</ListViewPanel>

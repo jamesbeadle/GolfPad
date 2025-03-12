@@ -1,10 +1,13 @@
 <script lang="ts">
-    import BrandPanel from "$lib/components/shared/brand-panel.svelte";
+    import ListViewPanel from "$lib/components/shared/list-view-panel.svelte";
+
+    function createNew(){
+        
+    }
 
 </script>
 
-<BrandPanel title="GOLF COURSES" subTitle="YOUR FAVOURITE COURSES">
-
+<ListViewPanel title="GOLF COURSES" buttonTitle="ADD GOLF COURSE" buttonCallback={createNew}>
 
 
 <!-- 
@@ -18,4 +21,4 @@
 
 
 -->
-</BrandPanel>
+</ListViewPanel>

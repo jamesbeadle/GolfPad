@@ -1,9 +1,13 @@
 <script lang="ts">
-    import BrandPanel from "$lib/components/shared/brand-panel.svelte";
+    import ListViewPanel from "$lib/components/shared/list-view-panel.svelte";
+
+    function createNew(){
+
+    }
 
 </script>
 
-<BrandPanel title="GOLF CHANNELS" subTitle="THE LATEST CHANNELS">
+<ListViewPanel title="GOLF CHANNELS" buttonTitle="CREATE CHANNEL" buttonCallback={createNew}>
 
 
 <!-- 
@@ -11,4 +15,4 @@
     Button to create new golf channel
     Click through to golf channel
 -->
-</BrandPanel>
+</ListViewPanel>
