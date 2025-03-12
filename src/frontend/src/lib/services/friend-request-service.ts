@@ -4,6 +4,7 @@ import { ActorFactory } from "$lib/utils/actor.factory";
 import type {
   AcceptFriendRequest,
   FriendRequests,
+  GetFriendRequests,
   RejectFriendRequest,
   SendFriendRequest,
 } from "../../../../declarations/backend/backend.did";

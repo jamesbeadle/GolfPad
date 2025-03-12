@@ -66,4 +66,24 @@ export class GameService {
     }
     return { ok: result.ok };
   }
+
+  //setup game
+    //mulligans
+    //bands
+    //next up
+    //build it
+
+  //add game score
+    //mulligans
+    //bands
+    //next up
+    //build it
+
+  //get game results
+    //mulligans
+    //bands
+    //next up
+    //build it
+ 
+
 }
