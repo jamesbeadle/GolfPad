@@ -5,5 +5,5 @@
 </script>
 
 <Layout>
-    
+    <!-- Editing the information of a games based on the status -->
 </Layout>

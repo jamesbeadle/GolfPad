@@ -60,6 +60,9 @@ module {
       
       return #ok({
         entries = Buffer.toArray(coursesBuffer);
+        page = 0; //TODO
+        total = 0; //TODO
+        pageSize = 0; //TODO
       });
     };
 

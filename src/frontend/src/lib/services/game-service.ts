@@ -4,11 +4,33 @@ import { authStore } from "$lib/stores/auth-store";
 import type {
   CreateGame,
   Game,
+  GameSummaries,
   GetGame,
+  GetGameSummaries,
 } from "../../../../declarations/backend/backend.did";
 
 export class GameService {
   constructor() {}
+
+  async getGameSummaries(dto: GetGameSummaries): Promise<GameSummaries> {
+    try {
+      const identityActor: any = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+
+      let result = await identityActor.getGameSummaries(dto);
+
+      if (isError(result)) {
+        console.error("Error Fetching Game Summaries", result);
+      }
+
+      return result.ok;
+    } catch (error) {
+      console.error("Error Fetching Game Summaries", error);
+      throw error;
+    }
+  }
 
   async getGame(gameId: number): Promise<Game> {
     try {

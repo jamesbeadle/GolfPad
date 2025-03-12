@@ -1,5 +1,9 @@
 import { isError } from "../utils/helpers";
-import type { AppStatusDTO, BuzzEntries, GetBuzzEntries } from "../../../../declarations/backend/backend.did";
+import type {
+  AppStatusDTO,
+  BuzzEntries,
+  GetBuzzEntries,
+} from "../../../../declarations/backend/backend.did";
 import { AppService } from "$lib/services/app-service";
 import { toasts } from "./toasts-store";
 
@@ -25,7 +29,7 @@ function createAppStore() {
       });
     }
   }
-  async function getBuzzEntries(dto: GetBuzzEntries) : Promise<BuzzEntries> {
+  async function getBuzzEntries(dto: GetBuzzEntries): Promise<BuzzEntries> {
     return await new AppService().getBuzzEntries(dto);
   }
 

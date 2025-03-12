@@ -65,14 +65,6 @@ module GolferQueries {
         gameInvites: [T.GameInvite];
     };
 
-    public type GetGameSummaries = {
-        principalId: Base.PrincipalId;
-        entries: [T.GameSummary];
-        totalEntries: Nat;
-        limit: Nat;
-        offset: Nat;
-    };
-
     public type IsUsernameAvailable = {
         username: Text;
         principalId: Base.PrincipalId;

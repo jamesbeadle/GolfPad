@@ -23,6 +23,9 @@ module GolfCourseQueries {
 
     public type GolfCourses = {
         entries: [GolfCourse];
+        page: Nat;
+        total: Nat;
+        pageSize: Nat;
     };
 
     public type GolfCourseSnaphot = {

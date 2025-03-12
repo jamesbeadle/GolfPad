@@ -1,4 +1,8 @@
-import type { AppStatusDTO, BuzzEntries, GetBuzzEntries } from "../../../../declarations/backend/backend.did";
+import type {
+  AppStatusDTO,
+  BuzzEntries,
+  GetBuzzEntries,
+} from "../../../../declarations/backend/backend.did";
 import { isError } from "../utils/helpers";
 import { idlFactory as backend_canister } from "../../../../declarations/backend";
 import { ActorFactory } from "$lib/utils/actor.factory";

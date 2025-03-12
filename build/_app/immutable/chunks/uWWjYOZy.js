@@ -1,0 +1,128 @@
+import {
+  a0 as b,
+  u as y,
+  aB as E,
+  at as k,
+  as as q,
+  ao as p,
+  aa as z,
+  G as A,
+} from "./CxN_vpku.js";
+function g(e) {
+  throw new Error("https://svelte.dev/e/lifecycle_outside_component");
+}
+function v(e, n, t) {
+  if (e == null) return n(void 0), t && t(void 0), b;
+  const s = y(() => e.subscribe(n, t));
+  return s.unsubscribe ? () => s.unsubscribe() : s;
+}
+const l = [];
+function B(e, n) {
+  return { subscribe: D(e, n).subscribe };
+}
+function D(e, n = b) {
+  let t = null;
+  const s = new Set();
+  function u(o) {
+    if (E(e, o) && ((e = o), t)) {
+      const i = !l.length;
+      for (const r of s) r[1](), l.push(r, e);
+      if (i) {
+        for (let r = 0; r < l.length; r += 2) l[r][0](l[r + 1]);
+        l.length = 0;
+      }
+    }
+  }
+  function a(o) {
+    u(o(e));
+  }
+  function c(o, i = b) {
+    const r = [o, i];
+    return (
+      s.add(r),
+      s.size === 1 && (t = n(u, a) || b),
+      o(e),
+      () => {
+        s.delete(r), s.size === 0 && t && (t(), (t = null));
+      }
+    );
+  }
+  return { set: u, update: a, subscribe: c };
+}
+function P(e, n, t) {
+  const s = !Array.isArray(e),
+    u = s ? [e] : e;
+  if (!u.every(Boolean))
+    throw new Error("derived() expects stores as input, got a falsy value");
+  const a = n.length < 2;
+  return B(t, (c, o) => {
+    let i = !1;
+    const r = [];
+    let _ = 0,
+      d = b;
+    const h = () => {
+        if (_) return;
+        d();
+        const f = n(s ? r[0] : r, c, o);
+        a ? c(f) : (d = typeof f == "function" ? f : b);
+      },
+      w = u.map((f, m) =>
+        v(
+          f,
+          (x) => {
+            (r[m] = x), (_ &= ~(1 << m)), i && h();
+          },
+          () => {
+            _ |= 1 << m;
+          },
+        ),
+      );
+    return (
+      (i = !0),
+      h(),
+      function () {
+        k(w), d(), (i = !1);
+      }
+    );
+  });
+}
+function S(e) {
+  let n;
+  return v(e, (t) => (n = t))(), n;
+}
+function $(e) {
+  p === null && g(),
+    z && p.l !== null
+      ? G(p).m.push(e)
+      : q(() => {
+          const n = y(e);
+          if (typeof n == "function") return n;
+        });
+}
+function j(e) {
+  p === null && g(), $(() => () => y(e));
+}
+function C(e, n, { bubbles: t = !1, cancelable: s = !1 } = {}) {
+  return new CustomEvent(e, { detail: n, bubbles: t, cancelable: s });
+}
+function F() {
+  const e = p;
+  return (
+    e === null && g(),
+    (n, t, s) => {
+      const u = e.s.$$events?.[n];
+      if (u) {
+        const a = A(u) ? u.slice() : [u],
+          c = C(n, t, s);
+        for (const o of a) o.call(e.x, c);
+        return !c.defaultPrevented;
+      }
+      return !0;
+    }
+  );
+}
+function G(e) {
+  var n = e.l;
+  return n.u ?? (n.u = { a: [], b: [], m: [] });
+}
+export { j as a, F as c, P as d, S as g, $ as o, v as s, D as w };

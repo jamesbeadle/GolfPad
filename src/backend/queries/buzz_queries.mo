@@ -13,6 +13,8 @@ module BuzzQueries {
     public type Buzz = {
         entries: [BuzzEntry];
         page: Nat;
+        total: Nat;
+        pageSize: Nat;
     };
 
     public type BuzzEntry = {

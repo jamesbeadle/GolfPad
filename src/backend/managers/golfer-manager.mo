@@ -28,6 +28,7 @@ import ShotQueries "../queries/shot_queries";
 import FriendRequestQueries "../queries/friend_request_queries";
 import BuzzQueries "../queries/buzz_queries";
 import UpcomingGamesQueries "../queries/upcoming_games_queries";
+import GameQueries "../queries/game_queries";
 
 module {
   public class GolferManager() {
@@ -113,6 +114,23 @@ module {
         }
       };
     };
+
+  public func getGameSummaries(dto: GameQueries.GetGameSummaries) : async Result.Result<GameQueries.GameSummaries, T.Error> {
+    let existingGolferCanisterId = golferCanisterIndex.get(dto.user_id);
+      switch(existingGolferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            getGameSummaries : (dto: GameQueries.GetGameSummaries) -> async Result.Result<GameQueries.GameSummaries, T.Error>;
+          };
+
+          return await golfer_canister.getGameSummaries(dto);
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
+  };
 
     public func getGolfer(dto: GolferQueries.GetGolfer) : async Result.Result<GolferQueries.Golfer, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);

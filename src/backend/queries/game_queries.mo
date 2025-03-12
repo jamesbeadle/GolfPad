@@ -22,6 +22,22 @@ module GameQueries {
         invites: [Base.PrincipalId];
         winner: Base.PrincipalId;
     };
+
+    public type GetGameSummaries = {
+        user_id: Base.PrincipalId;
+        page: Nat;
+    };
+
+    public type GameSummaries = {
+        entries: [GameSummary];
+        page: Nat;
+        total: Nat;
+        pageSize: Nat;
+    };
+
+    public type GameSummary = {
+        id: T.GameId;
+    };
     
 }
 
