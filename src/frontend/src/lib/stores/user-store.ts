@@ -138,7 +138,7 @@ function createUserStore() {
     return new UserService().updateHomeCourse(dto);
   }
 
-  async function updateProfilePicture(picture: File): Promise<any> {
+  async function updateProfilePicture(principalId: string, picture: File): Promise<any> {
     try {
       const maxPictureSize = 1000;
       const extension = getFileExtensionFromFile(picture);
@@ -158,7 +158,7 @@ function createUserStore() {
           );
 
           let dto: UpdateProfilePicture = {
-            principalId: "",
+            principalId: principalId,
             profilePicture: [uint8Array],
             profilePictureExtension: extension,
           };

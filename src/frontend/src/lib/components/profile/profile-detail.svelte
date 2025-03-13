@@ -38,7 +38,7 @@
                 isLoading = false;
             });
         } catch (err) {
-            console.error('Creating Golfer Error:', err);
+            console.error('Creating loading golfer detail:', err);
         }
     });
 
