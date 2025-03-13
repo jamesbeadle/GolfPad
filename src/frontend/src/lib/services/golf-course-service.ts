@@ -14,7 +14,10 @@ import { IDL } from "@dfinity/candid";
 import { createAgent } from "@dfinity/utils";
 import { SnsGovernanceCanister } from "@dfinity/sns";
 import { Principal } from "@dfinity/principal";
-import type { Command, ExecuteGenericNervousSystemFunction } from "@dfinity/sns/dist/candid/sns_governance";
+import type {
+  Command,
+  ExecuteGenericNervousSystemFunction,
+} from "@dfinity/sns/dist/candid/sns_governance";
 import type UpdateGolfCourse from "$lib/components/goverance/golf-course/update-golf-course.svelte";
 
 const AddGolfCourse_Idl = IDL.Record({
@@ -28,8 +31,6 @@ const AddGolfCourse_Idl = IDL.Record({
 
 export class GolfCoursesService {
   constructor() {}
-
-  
 
   //Queries
 
@@ -53,7 +54,7 @@ export class GolfCoursesService {
     return result.ok;
   }
 
-  async addGolfCourse(dto: CreateGolfCourse){
+  async addGolfCourse(dto: CreateGolfCourse) {
     let userIdentity: OptionIdentity;
     authStore.subscribe((auth) => (userIdentity = auth.identity));
     if (!userIdentity) return;
@@ -62,10 +63,16 @@ export class GolfCoursesService {
 
     const title = `Add ${dto.name} as Golf Course`;
     const summary = `Add ${dto.name} as Golf Course`;
-    await this.createProposal({identity: userIdentity, functionId: 1_000n, payload: new Uint8Array(encoded), title, summary});
+    await this.createProposal({
+      identity: userIdentity,
+      functionId: 1_000n,
+      payload: new Uint8Array(encoded),
+      title,
+      summary,
+    });
   }
 
-  async updateGolfCourse(dto: UpdateGolfCourse){
+  async updateGolfCourse(dto: UpdateGolfCourse) {
     let userIdentity: OptionIdentity;
     authStore.subscribe((auth) => (userIdentity = auth.identity));
     if (!userIdentity) return;
@@ -74,10 +81,15 @@ export class GolfCoursesService {
 
     const title = `Update ${dto.name} Golf Course Information`;
     const summary = `Update ${dto.name} Golf Course Information`;
-    await this.createProposal({identity: userIdentity, functionId: 2_000n, payload: new Uint8Array(encoded), title, summary});
+    await this.createProposal({
+      identity: userIdentity,
+      functionId: 2_000n,
+      payload: new Uint8Array(encoded),
+      title,
+      summary,
+    });
   }
 
-    
   async createProposal({
     identity,
     functionId,
@@ -136,5 +148,4 @@ export class GolfCoursesService {
       command: [command],
     });
   }
-
 }

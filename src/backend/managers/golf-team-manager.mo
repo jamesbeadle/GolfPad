@@ -40,6 +40,10 @@ module {
       return false; //TODO
     };
 
+    public func getGolfTeamRequests(dto: GolfTeamQueries.GetGolfTeamRequests) : async Result.Result<GolfTeamQueries.GolfTeamRequests, T.Error>{
+      return #err(#NotFound); //TODO
+    };
+
 
 
 
@@ -220,6 +224,26 @@ module {
       };    
 
       return #err(#NotFound);
+    };
+
+    public func deleteGolfTeam(dto: GolfTeamCommands.DeleteGolfTeam) : async Result.Result<(), T.Error>{
+      return #err(#NotFound);//TODO
+    };
+    
+    public func addGolfTeamMember(dto: GolfTeamCommands.AddGolfTeamMember) : async Result.Result<(), T.Error>{
+return #err(#NotFound);//TODO
+    };
+    
+    public func removeGolfTeamMember(dto: GolfTeamCommands.RemoveGolfTeamMember) : async Result.Result<(), T.Error>{
+return #err(#NotFound);//TODO
+    };
+    
+    public func acceptTeamRequest(dto: GolfTeamCommands.AcceptTeamRequest) : async Result.Result<(), T.Error>{
+return #err(#NotFound);//TODO
+    };
+    
+    public func rejectTeamRequest(dto: GolfTeamCommands.RejectTeamRequest) : async Result.Result<(), T.Error>{
+return #err(#NotFound);//TODO
     };
 
     //private functions

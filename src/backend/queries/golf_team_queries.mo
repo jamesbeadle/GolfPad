@@ -39,6 +39,13 @@ module GolfTeamQueries {
 
     public type TeamNameAvailable = Bool;
 
+    public type GetGolfTeamRequests = {
+        principalId: Base.PrincipalId;
+    };
+
+    public type GolfTeamRequests = {
+        principalId: Base.PrincipalId;
+    };
     
 }
 

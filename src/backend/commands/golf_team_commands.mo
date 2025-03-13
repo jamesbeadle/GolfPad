@@ -37,11 +37,13 @@ module GolfTeamCommands {
     };
 
     public type AcceptTeamRequest = {
-
+        golfTeamId: T.GolfTeamId;
+        acceptingPrincipalId: Base.PrincipalId;
     };
 
     public type RejectTeamRequest = {
-
+        golfTeamId: T.GolfTeamId;
+        rejectingPrincipalId: Base.PrincipalId;
     };
 }
 

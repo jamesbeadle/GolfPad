@@ -329,8 +329,6 @@ actor Self {
   /* Golf Team CQRS */
 
   //Golf Team Queries
-  
-  //Golf Team Commands
 
   public shared ({ caller }) func getGolfTeams(dto: GolfTeamQueries.GetGolfTeams) : async Result.Result<GolfTeamQueries.GolfTeams, T.Error>{
     assert not Principal.isAnonymous(caller);
@@ -340,6 +338,17 @@ actor Self {
        
     return await golfTeamManager.getGolfTeams(dto);
   };
+
+  public shared ({ caller }) func getGolfTeamRequests(dto: GolfTeamQueries.GetGolfTeamRequests) : async Result.Result<GolfTeamQueries.GolfTeamRequests, T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert dto.principalId == principalId;
+     
+       
+    return await golfTeamManager.getGolfTeamRequests(dto);
+  };
+  
+  //Golf Team Commands
 
   public shared ({ caller }) func createGolfTeam(dto: GolfTeamCommands.CreateGolfTeam) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
@@ -354,7 +363,12 @@ actor Self {
     return await golfTeamManager.updateGolfTeamName(dto);
   };
 
-  /*
+  public shared ({ caller }) func updateGolfTeamPicture(dto: GolfTeamCommands.UpdateGolfTeamPicture) : async Result.Result<(), T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert await golfTeamManager.isTeamCreator(principalId, dto.golfTeamId);
+    return await golfTeamManager.updateGolfTeamPicture(dto);
+  };
 
   public shared ({ caller }) func deleteGolfTeam(dto: GolfTeamCommands.DeleteGolfTeam) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
@@ -365,31 +379,29 @@ actor Self {
 
   public shared ({ caller }) func addGolfTeamMember(dto: GolfTeamCommands.AddGolfTeamMember) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
-    assert dto.principalId == Principal.toText(caller);
+    let principalId = Principal.toText(caller);
     assert await golfTeamManager.isTeamCreator(principalId, dto.golfTeamId);
     return await golfTeamManager.addGolfTeamMember(dto);
   };
 
   public shared ({ caller }) func removeGolfTeamMember(dto: GolfTeamCommands.RemoveGolfTeamMember) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
-    assert dto.principalId == Principal.toText(caller);
+    let principalId = Principal.toText(caller);
     assert await golfTeamManager.isTeamCreator(principalId, dto.golfTeamId);
     return await golfTeamManager.removeGolfTeamMember(dto);
   };
 
   public shared ({ caller }) func acceptTeamRequest(dto: GolfTeamCommands.AcceptTeamRequest) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
-    assert dto.principalId == Principal.toText(caller);
+    assert dto.acceptingPrincipalId == Principal.toText(caller);
     return await golfTeamManager.acceptTeamRequest(dto);
   };
 
   public shared ({ caller }) func rejectTeamRequest(dto: GolfTeamCommands.RejectTeamRequest) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
-    assert dto.principalId == Principal.toText(caller);
+    assert dto.rejectingPrincipalId == Principal.toText(caller);
     return await golfTeamManager.rejectTeamRequest(dto);
   };
-
-  */
 
 
   /* Golfer CQRS */

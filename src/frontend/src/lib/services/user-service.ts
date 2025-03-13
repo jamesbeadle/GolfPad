@@ -78,17 +78,6 @@ export class UserService {
     return result.ok;
   }
 
-  async getFriends(dto: GetFriends): Promise<Friends> {
-    const identityActor = await ActorFactory.createIdentityActor(
-      authStore,
-      process.env.BACKEND_CANISTER_ID ?? "",
-    );
-
-    const result: any = await identityActor.getFriends(dto);
-    if (isError(result)) throw new Error("Failed to get friends");
-    return result.ok;
-  }
-
   //Golfer Profile Commands:
 
   async createUser(dto: CreateUser): Promise<any> {
