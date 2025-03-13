@@ -41,7 +41,7 @@
         <div class="flex items-center justify-between p-4 sm:p-5">
           <h2 class="text-2xl text-black sm:text-3xl condensed">UPLOAD IMAGE</h2>
           <button 
-            class="cancel-button"
+            class="brand-cancel-button"
             on:click={() => showModal = false}
             type="button"
             aria-label="Close"
@@ -52,7 +52,7 @@
         <div class="p-4 sm:p-8">
           <button 
             type="button"
-            class="brand-button"
+            class="brand-brand-button"
             on:click={triggerFileInput}
             on:keydown={(e) => e.key === 'Enter' && triggerFileInput()}
           >
@@ -78,7 +78,7 @@
         <div class="flex justify-end gap-3 p-4 sm:gap-4 sm:p-6">
           <button
             type="button"
-            class="cancel-button"
+            class="brand-cancel-button"
             on:click={() => showModal = false}
           >
             Cancel

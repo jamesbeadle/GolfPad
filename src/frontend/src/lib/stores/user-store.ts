@@ -25,7 +25,7 @@ import type {
 } from "../../../../declarations/backend/backend.did";
 
 function createUserStore() {
-  const { subscribe, set } = writable<any>(null);
+  const { subscribe, set } = writable<Profile | null>(null);
 
   //Syncing and caching of store data
 

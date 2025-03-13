@@ -26,6 +26,34 @@
   @apply text-2xl text-BrandGray;
 }
 
+.input-title{
+  @apply block pt-8 pb-3 text-sm text-BrandDarkGray;
+}
+
+.text-input{
+  @apply w-full p-2 mb-4 text-4xl text-black bg-transparent border-b rounded lg:text-2xl condensed border-BrandDivider focus:outline-none focus:ring-2 focus:ring-BrandForest
+}
+
+.brand-button-disabled{
+  @apply bg-BrandGray text-white;
+}
+
+.brand-button {
+  @apply px-6 py-3 rounded bg-BrandForest text-BrandYellow text-xl hover:bg-BrandYellow hover:text-BrandForest;
+}
+
+.brand-cancel-button {
+  @apply px-6 py-3 rounded text-BrandForest bg-BrandYellow text-xl hover:bg-BrandForest hover:text-BrandYellow focus:outline-none;
+}
+
+
+
+
+
+
+
+
+
 .modal-backdrop {
   z-index: 1000;
 }
@@ -131,12 +159,4 @@ input {
 .horizontal-divider-dark {
   min-height: 2px;
   @apply self-stretch flex-shrink-0 h-px bg-BrandDarkGreen;
-}
-
-.brand-button {
-  @apply px-6 py-3 rounded bg-BrandForest text-BrandYellow text-xl hover:bg-BrandYellow hover:text-BrandForest;
-}
-
-.cancel-button {
-  @apply px-6 py-3 rounded text-BrandForest bg-BrandYellow text-xl hover:bg-BrandForest hover:text-BrandYellow focus:outline-none;
 }

@@ -29,7 +29,7 @@
             <div class="sticky top-0 z-10 flex items-center justify-between p-3 bg-white border-b md:p-4">
                 <h2 class="text-2xl text-black md:text-3xl condensed">EDIT HOME COURSE</h2>
                 <button 
-                    class="cancel-button"
+                    class="brand-cancel-button"
                     on:click={handleClose}
                     type="button"
                     aria-label="Close"
@@ -78,7 +78,7 @@
             </div>
             <div class="sticky bottom-0 flex justify-end gap-2 p-3 bg-white border-t md:p-4">
                 <button
-                    class="cancel-button"
+                    class="brand-cancel-button"
                     on:click={handleClose}
                 >
                     CANCEL
