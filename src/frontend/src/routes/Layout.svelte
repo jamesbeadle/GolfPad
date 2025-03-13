@@ -1,30 +1,28 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { page } from "$app/state";
   import { browser } from "$app/environment";
   
-  import {
-    initAuthWorker,
-    type AuthWorker,
-  } from "../lib/services/worker-auth.service";
-  import { authStore, type AuthStoreData } from "../lib/stores/auth-store";
+  import type { Profile } from "../../../declarations/backend/backend.did";
+  import { initAuthWorker, type AuthWorker } from "$lib/services/worker-auth.service";
+  import { authStore, type AuthStoreData } from "$lib/stores/auth-store";
+  import { userStore } from "$lib/stores/user-store";
+  import { toasts } from "$lib/stores/toasts-store";
 
-
-  import Navigation from "../lib/components/shared/navigation.svelte";
-  import Landing from "../lib/components/landing/landing.svelte";
-  import Header from "../lib/components/shared/header.svelte";
-  import NewUser from "../lib/components/profile/new-user.svelte";
+  import Navigation from "$lib/components/shared/navigation.svelte";
+  import Landing from "$lib/components/landing/landing.svelte";
+  import Header from "$lib/components/shared/header.svelte";
   import FullScreenSpinner from "../lib/components/shared/full-screen-spinner.svelte";
-  import Toasts from "../lib/components/toasts/toasts.svelte";
+  import Toasts from "$lib/components/toasts/toasts.svelte";
+  import NewUser from "$lib/components/profile/new-user.svelte";
   import "../app.css";
-  import { onMount } from "svelte";
-    import { toasts } from "$lib/stores/toasts-store";
-
-
-  let isLoggedIn = false;
+  
   let worker: AuthWorker | undefined;
   let expanded = false;
   let selectedRoute: 'home' | 'governance' | 'whitepaper' = 'home';
   let isLoading = true;
+  let isLoggedIn = false;
+  let user: Profile | null = null
 
   const init = async () => {
     await Promise.all([syncAuthStore()]);
@@ -33,7 +31,6 @@
 
   const syncAuthStore = async () => {
     if (!browser) { return; }
-
     try {
       await authStore.sync();
     } catch (err: unknown) {
@@ -50,8 +47,6 @@
       return;
     }
 
-    // syncAuth is triggered each time the auth changes but also when the worker is initialized to avoid race condition.
-    // As the function can be called twice with a valid identity, we use a flag to only init the data once.
     if (isLoggedIn) {
       return;
     }
@@ -62,18 +57,25 @@
   onMount(async () => {
     worker = await initAuthWorker();
     await syncAuth($authStore);
+    let principalId = $authStore.identity?.getPrincipal();
+    if(!principalId){
+      isLoading = false;
+      return;
+    }
+    let profileResult = await userStore.getProfile(principalId.toString());
+    if(profileResult){
+      user = profileResult;
+    }
     isLoading = false;
   });
 
   $: syncAuth($authStore);
-
 
   $: isWhitepaper = browser && page.url.pathname === "/whitepaper";
 
   function toggleNav() {
     expanded = !expanded;
   }
-
 
   $: (() => {
     if (!browser) {
@@ -88,7 +90,6 @@
     spinner?.remove();
   })();
 
-  
 </script>
 
 <svelte:head>
@@ -103,10 +104,7 @@
 {#await init()}
   <FullScreenSpinner />
 {:then _}
-
-
   <div class="flex flex-col min-h-screen default-text bg-white">
-    <!--
     {#if isLoading}
       <FullScreenSpinner />
     {:else}
@@ -116,20 +114,18 @@
           <slot />
         </div>
       {:else}
-
         {#if isLoggedIn}
-
+          {#if user}
+            <slot></slot>
+          {:else}
+            <NewUser />
+          {/if}
         {:else}
-        <Landing />
-
+          <Landing />
         {/if}
-        
       {/if}
       <Navigation {expanded} {selectedRoute} {toggleNav}/>
       <Toasts />
     {/if}
-    -->
-    <slot></slot>
   </div>
-
 {/await}
