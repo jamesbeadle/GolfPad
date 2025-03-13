@@ -1,5 +1,4 @@
 import { isError } from "$lib/utils/helpers";
-import { idlFactory } from "../../../../declarations/backend";
 import type {
   CreateGolfCourse,
   GetGolfCourse,

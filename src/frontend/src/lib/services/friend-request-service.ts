@@ -1,5 +1,4 @@
 import { isError } from "$lib/utils/helpers";
-import { idlFactory } from "../../../../declarations/backend";
 import { ActorFactory } from "$lib/utils/actor.factory";
 import type {
   AcceptFriendRequest,
@@ -11,7 +10,8 @@ import type {
 import { authStore } from "$lib/stores/auth-store";
 
 export class FriendRequestService {
-  constructor() {}
+
+  //Queries
 
   async getFriendRequests(dto: GetFriendRequests): Promise<FriendRequests> {
     const identityActor = await ActorFactory.createIdentityActor(
@@ -24,6 +24,8 @@ export class FriendRequestService {
     }
     return result.ok;
   }
+
+  //Commands
 
   async acceptFriendRequest(dto: AcceptFriendRequest): Promise<any> {
     const identityActor = await ActorFactory.createIdentityActor(

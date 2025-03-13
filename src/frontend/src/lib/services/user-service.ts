@@ -91,17 +91,103 @@ export class UserService {
       throw error;
     }
   }
-  async updateUsername(dto: UpdateUsername): Promise<void> {}
 
-  async updateHandicap(dto: UpdateHandicap): Promise<void> {}
+  async updateUsername(dto: UpdateUsername): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.updateUsername(dto);
+      return result;
+    } catch (error) {
+      console.error("Error updating username:", error);
+      throw error;
+    }
+  }
 
-  async updateFirstName(dto: UpdateFirstName): Promise<void> {}
+  async updateHandicap(dto: UpdateHandicap): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.updateHandicap(dto);
+      return result;
+    } catch (error) {
+      console.error("Error updating handicap:", error);
+      throw error;
+    }
+  }
 
-  async updateLastName(dto: UpdateLastName): Promise<void> {}
+  async updateFirstName(dto: UpdateFirstName): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.updateFirstName(dto);
+      return result;
+    } catch (error) {
+      console.error("Error updating first name:", error);
+      throw error;
+    }
+  }
 
-  async updateHomeCourse(dto: UpdateHomeCourse): Promise<void> {}
+  async updateLastName(dto: UpdateLastName): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.updateLastName(dto);
+      return result;
+    } catch (error) {
+      console.error("Error updating last name:", error);
+      throw error;
+    }
+  }
 
-  async updateProfilePicture(dto: UpdateProfilePicture): Promise<void> {}
+  async updateHomeCourse(dto: UpdateHomeCourse): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.updateHomeCourse(dto);
+      return result;
+    } catch (error) {
+      console.error("Error updating home course:", error);
+      throw error;
+    }
+  }
 
-  async addShot(dto: AddShot): Promise<void> {}
+  async updateProfilePicture(dto: UpdateProfilePicture): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.updateProfilePicture(dto);
+      return result;
+    } catch (error) {
+      console.error("Error updating profile picture:", error);
+      throw error;
+    }
+  }
+
+  async addShot(dto: AddShot): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.addShot(dto);
+      return result;
+    } catch (error) {
+      console.error("Error adding golf shot:", error);
+      throw error;
+    }
+  }
+  
 }
