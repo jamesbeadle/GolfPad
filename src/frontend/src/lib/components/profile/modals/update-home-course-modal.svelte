@@ -4,12 +4,12 @@
     import { authStore } from "$lib/stores/auth-store";
     import { toasts } from "$lib/stores/toasts-store";
     import { golfCourseStore } from "$lib/stores/golf-course-store";
+    import { getImageURL } from "$lib/utils/helpers";
+    import type { GetGolfCourses, GolfCourseId, GolfCourses, UpdateHomeCourse } from "../../../../../../declarations/backend/backend.did";
     import Modal from "$lib/components/shared/modal.svelte";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import PictureIcon from "$lib/icons/picture-icon.svelte";
-    import type { GetGolfCourses, GolfCourseId, GolfCourses, UpdateHomeCourse } from "../../../../../../declarations/backend/backend.did";
-    import { getImageURL } from "$lib/utils/helpers";
-
+    
     let showModal = false;
     let isLoading = true;
     let searchTerm = "";
