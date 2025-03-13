@@ -19,6 +19,8 @@ import { authStore } from "$lib/stores/auth-store";
 export class GolfTeamService {
   constructor() {}
 
+  //Queries
+
   async getGolfTeams(dto: GetGolfTeams): Promise<GolfTeams> {
     try {
       const identityActor: any = await ActorFactory.createIdentityActor(
@@ -60,6 +62,8 @@ export class GolfTeamService {
       throw error;
     }
   }
+
+  //Commands
 
   async createGolfTeam(dto: CreateGolfTeam): Promise<any> {
     try {

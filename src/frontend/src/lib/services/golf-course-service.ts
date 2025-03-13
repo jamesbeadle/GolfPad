@@ -54,6 +54,8 @@ export class GolfCoursesService {
     return result.ok;
   }
 
+  //Commands
+
   async addGolfCourse(dto: CreateGolfCourse) {
     let userIdentity: OptionIdentity;
     authStore.subscribe((auth) => (userIdentity = auth.identity));

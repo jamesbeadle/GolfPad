@@ -136,9 +136,7 @@ export class GolfChannelService {
     }
   }
 
-  async unsubscribeFromGolfChannel(
-    dto: UnsubscribeFromGolfChannel,
-  ): Promise<any> {
+  async unsubscribeFromGolfChannel(dto: UnsubscribeFromGolfChannel): Promise<any> {
     try {
       const identityActor: any = await ActorFactory.createIdentityActor(
         authStore,

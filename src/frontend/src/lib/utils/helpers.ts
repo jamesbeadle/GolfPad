@@ -691,3 +691,13 @@ export function createDeferred<T>(): Deferred<T> {
   });
   return { promise, resolve: resolve!, reject: reject! };
 }
+
+
+
+export function getFileExtensionFromFile(file: File): string {
+  const filename = file.name;
+
+  const lastIndex = filename.lastIndexOf(".");
+
+  return lastIndex !== -1 ? filename.substring(lastIndex + 1) : "";
+}

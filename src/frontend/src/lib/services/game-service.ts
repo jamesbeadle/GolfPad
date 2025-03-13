@@ -43,16 +43,13 @@ export class GameService {
     }
   }
 
-  async getGame(gameId: number): Promise<Game> {
+  async getGame(dto: GetGame): Promise<Game> {
     try {
       const identityActor: any = await ActorFactory.createIdentityActor(
         authStore,
         process.env.BACKEND_CANISTER_ID ?? "",
       );
-
-      let dto: GetGame = {
-        gameId: BigInt(gameId),
-      };
+      
       let result = await identityActor.getGame(dto);
 
       if (isError(result)) {

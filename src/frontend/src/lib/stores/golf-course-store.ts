@@ -1,4 +1,3 @@
-import { writable } from "svelte/store";
 import { GolfCoursesService } from "$lib/services/golf-course-service";
 import type {
   CreateGolfCourse,
@@ -10,20 +9,28 @@ import type {
 import type UpdateGolfCourse from "$lib/components/goverance/golf-course/update-golf-course.svelte";
 
 function createGolfCourseStore() {
-  const { subscribe, set } = writable<GolfCourse[]>([]);
-
-  async function getGolfCourse(dto: GetGolfCourse): Promise<GolfCourse> {
-    return await new GolfCoursesService().getGolfCourse(dto);
-  }
+  
   async function getGolfCourses(dto: GetGolfCourses): Promise<GolfCourses> {
     return await new GolfCoursesService().getGolfCourses(dto);
   }
 
+  async function getGolfCourse(dto: GetGolfCourse): Promise<GolfCourse> {
+    return await new GolfCoursesService().getGolfCourse(dto);
+  }
+  
+  async function addGolfCourse(dto: CreateGolfCourse): Promise<void> {
+    return await new GolfCoursesService().addGolfCourse(dto);
+  }
+  
+  async function updateGolfCourse(dto: UpdateGolfCourse): Promise<void> {
+    return await new GolfCoursesService().updateGolfCourse(dto);
+  }
+
   return {
-    subscribe,
-    setCourse: (course: GolfCourse[]) => set(course),
     getGolfCourse,
     getGolfCourses,
+    addGolfCourse,
+    updateGolfCourse
   };
 }
 export const golfCourseStore = createGolfCourseStore();

@@ -4,10 +4,7 @@ import type {
   AddShot,
   Buzz,
   CreateUser,
-  FriendRequests,
-  Friends,
   GetBuzz,
-  GetFriendRequests,
   GetProfile,
   GetShotAverages,
   GetUpcomingGames,
@@ -26,7 +23,8 @@ import type {
 import { isError } from "$lib/utils/helpers";
 
 export class UserService {
-  //Golfer Query Functions:
+
+  //User Query Functions:
 
   async getProfile(dto: GetProfile): Promise<Profile> {
     const identityActor = await ActorFactory.createIdentityActor(
