@@ -21,6 +21,8 @@ import type {
 export class GameService {
   constructor() {}
 
+  //Queries
+
   async getGameSummaries(dto: GetGameSummaries): Promise<GameSummaries> {
     try {
       const identityActor: any = await ActorFactory.createIdentityActor(
@@ -63,6 +65,20 @@ export class GameService {
       throw error;
     }
   }
+
+  async getGameInvites(dto: GetGameInvites): Promise<GameInvites> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.getGameInvites(dto);
+    if (isError(result)) {
+      throw new Error("Error Getting Game Invites");
+    }
+    return result.ok;
+  }
+
+  //Commands
 
   async createGame(dto: CreateGame): Promise<any> {
     const identityActor = await ActorFactory.createIdentityActor(
@@ -156,18 +172,6 @@ export class GameService {
     const result: any = await identityActor.rejectGameInvite(dto);
     if (isError(result)) {
       throw new Error("Error Rejecting Game Invite");
-    }
-    return result.ok;
-  }
-
-  async getGameInvites(dto: GetGameInvites): Promise<GameInvites> {
-    const identityActor = await ActorFactory.createIdentityActor(
-      authStore,
-      process.env.BACKEND_CANISTER_ID ?? "",
-    );
-    const result: any = await identityActor.getGameInvites(dto);
-    if (isError(result)) {
-      throw new Error("Error Getting Game Invites");
     }
     return result.ok;
   }

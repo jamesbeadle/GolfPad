@@ -1,6 +1,6 @@
 import Base "mo:waterway-mops/BaseTypes";
 
-module GolferQueries {
+module FriendRequestQueries {
     
     public type GetFriendRequests = {
         principalId: Base.PrincipalId;
@@ -16,13 +16,6 @@ module GolferQueries {
     public type FriendRequest = {
         principalId: Base.PrincipalId;
         requestTime: Int;
-    };
-    
-    public type ListFriends = {
-        principalId: Base.PrincipalId;
-        totalEntries: Nat;
-        limit: Nat;
-        offset: Nat;
     };
 
     public type FriendRequestExists = {

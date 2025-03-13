@@ -4,11 +4,17 @@ import type {
   AddShot,
   Buzz,
   CreateUser,
+  FriendRequests,
+  Friends,
   GetBuzz,
+  GetFriendRequests,
+  GetProfile,
   GetShotAverages,
+  GetUpcomingGames,
   IsUsernameAvailable,
   Profile,
   ShotAverages,
+  UpcomingGames,
   UpdateFirstName,
   UpdateHandicap,
   UpdateHomeCourse,
@@ -20,14 +26,19 @@ import type {
 import { isError } from "$lib/utils/helpers";
 
 export class UserService {
-  constructor() {
-    authStore.sync();
-  }
-  async getProfile(): Promise<Profile | null> {
-    return null;
-  }
 
-  //get upcoming games
+  //Golfer Query Functions:
+  
+  async getProfile(dto: GetProfile): Promise<Profile> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+
+    const result: any = await identityActor.getProfile(dto);
+    if (isError(result)) throw new Error("Failed to get profile");
+    return result.ok;
+  }
 
   async getBuzz(dto: GetBuzz): Promise<Buzz> {
     const identityActor = await ActorFactory.createIdentityActor(
@@ -39,6 +50,47 @@ export class UserService {
     if (isError(result)) throw new Error("Failed to get buzz entries");
     return result.ok;
   }
+
+  async getUpcomingGames(dto: GetUpcomingGames): Promise<UpcomingGames> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+
+    const result: any = await identityActor.getUpcomingGames(dto);
+    if (isError(result)) throw new Error("Failed to get upcoming games");
+    return result.ok;
+  }
+
+  async isUsernameAvailable(
+    dto: IsUsernameAvailable,
+  ): Promise<UsernameAvailable> {
+    return false; //TODO
+  }
+
+  async getShotAverages(dto: GetShotAverages): Promise<ShotAverages> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+
+    const result: any = await identityActor.getShotAverages(dto);
+    if (isError(result)) throw new Error("Failed to get shot averages");
+    return result.ok;
+  }
+
+  async getFriends(dto: GetFriends): Promise<Friends> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+
+    const result: any = await identityActor.getFriends(dto);
+    if (isError(result)) throw new Error("Failed to get friends");
+    return result.ok;
+  }
+
+  //Golfer Profile Commands:
 
   async createUser(dto: CreateUser): Promise<any> {
     try {
@@ -53,32 +105,31 @@ export class UserService {
       throw error;
     }
   }
-  async updateUsername(dto: UpdateUsername): Promise<void> {}
-  async updateHandicap(dto: UpdateHandicap): Promise<void> {}
-  async updateFirstName(dto: UpdateFirstName): Promise<void> {}
-  async updateLastName(dto: UpdateLastName): Promise<void> {}
-  async updateHomeCourse(dto: UpdateHomeCourse): Promise<void> {}
-  async updateProfilePicture(dto: UpdateProfilePicture): Promise<void> {}
+  async updateUsername(dto: UpdateUsername): Promise<void> {
 
-  async isUsernameAvailable(
-    dto: IsUsernameAvailable,
-  ): Promise<UsernameAvailable> {
-    return false; //TODO
+  }
+  
+  async updateHandicap(dto: UpdateHandicap): Promise<void> {
+
+  }
+  
+  async updateFirstName(dto: UpdateFirstName): Promise<void> {
+
+  }
+  
+  async updateLastName(dto: UpdateLastName): Promise<void> {
+
+  }
+  
+  async updateHomeCourse(dto: UpdateHomeCourse): Promise<void> {
+
+  }
+  
+  async updateProfilePicture(dto: UpdateProfilePicture): Promise<void> {
+    
   }
 
-  async addShot(dto: AddShot): Promise<void> {}
+  async addShot(dto: AddShot): Promise<void> {
 
-  async getShotAverages(dto: GetShotAverages): Promise<ShotAverages> {
-    const identityActor = await ActorFactory.createIdentityActor(
-      authStore,
-      process.env.BACKEND_CANISTER_ID ?? "",
-    );
-
-    const result: any = await identityActor.getShotAverages(dto);
-    if (isError(result)) throw new Error("Failed to get shot averages");
-    return result.ok;
   }
-
-  //friend stuff
-  //get friend requests
 }

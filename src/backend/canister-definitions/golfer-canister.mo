@@ -16,6 +16,7 @@ import GolferQueries "../queries/golfer_queries";
 import FriendRequestCommands "../commands/friend_request_commands";
 import FriendRequestQueries "../queries/friend_request_queries";
 import Base "mo:waterway-mops/BaseTypes";
+import FriendQueries "../queries/friend_queries";
 
 actor class _GolferCanister() {
 
@@ -508,7 +509,7 @@ actor class _GolferCanister() {
     };
   }; 
   
-  public shared ({caller}) func listFriends(dto: GolferQueries.ListFriends) : async Result.Result<GolferQueries.Friends, T.Error>{
+  public shared ({caller}) func getFriends(dto: FriendQueries.GetFriends) : async Result.Result<FriendQueries.Friends, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;

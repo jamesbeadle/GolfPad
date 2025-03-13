@@ -178,39 +178,6 @@ module {
       return #err(#NotFound);
     };
 
-    public func addGameScore(dto: GameCommands.AddGameScore) :async  Result.Result<(), T.Error> {
-      
-      let existingGame = await getGame({ gameId = dto.gameId });
-
-      switch(existingGame){
-        case (#ok foundGame){
-
-          let playerInGame = Option.isSome(Array.find<Base.PrincipalId>(foundGame.playerIds, func(playerId: Base.PrincipalId){
-            playerId == dto.submittedById;
-          }));
-
-          if(not playerInGame){
-            return #err(#NotAllowed);
-          };
-
-          let gameCanisterId = gameCanisterIndex.get(foundGame.id);
-          switch(gameCanisterId){
-            case (?foundCanisterId){
-              let game_canister = actor (foundCanisterId) : actor {
-                addGameScore : (dto: GameCommands.AddGameScore) -> async Result.Result<(), T.Error>;
-              };
-              return await game_canister.addGameScore(dto);
-            };
-            case _ { }
-          };  
-          return #err(#NotFound);
-        };
-        case (#err _) { return #err(#NotFound) };
-      };
-      
-      
-    };
-
     public func beginGame(dto: GameCommands.BeginGame) : async Result.Result<(), T.Error> {
       let existingGame = await getGame({ gameId = dto.gameId });
 
@@ -263,13 +230,18 @@ module {
       };
     };
 
-    public func updateGame(dto: GameCommands.UpdateGame) : async Result.Result<(), T.Error> {
+    public func addGameScore(dto: GameCommands.AddGameScore) :async  Result.Result<(), T.Error> {
+      
       let existingGame = await getGame({ gameId = dto.gameId });
 
       switch(existingGame){
         case (#ok foundGame){
-          
-          if(foundGame.status != #Unplayed){
+
+          let playerInGame = Option.isSome(Array.find<Base.PrincipalId>(foundGame.playerIds, func(playerId: Base.PrincipalId){
+            playerId == dto.submittedById;
+          }));
+
+          if(not playerInGame){
             return #err(#NotAllowed);
           };
 
@@ -277,9 +249,9 @@ module {
           switch(gameCanisterId){
             case (?foundCanisterId){
               let game_canister = actor (foundCanisterId) : actor {
-                updateGame : (dto: GameCommands.UpdateGame) -> async Result.Result<(), T.Error>;
+                addGameScore : (dto: GameCommands.AddGameScore) -> async Result.Result<(), T.Error>;
               };
-              return await game_canister.updateGame(dto);
+              return await game_canister.addGameScore(dto);
             };
             case _ { }
           };  
@@ -287,6 +259,8 @@ module {
         };
         case (#err _) { return #err(#NotFound) };
       };
+      
+      
     };
 
     public func deleteGame(dto: GameCommands.DeleteGame) : async Result.Result<(), T.Error> {

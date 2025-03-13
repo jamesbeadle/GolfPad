@@ -29,6 +29,8 @@ import FriendRequestQueries "../queries/friend_request_queries";
 import BuzzQueries "../queries/buzz_queries";
 import UpcomingGamesQueries "../queries/upcoming_games_queries";
 import GameQueries "../queries/game_queries";
+import FriendCommands "../commands/friend_commands";
+import FriendQueries "../queries/friend_queries";
 
 module {
   public class GolferManager() {
@@ -209,16 +211,16 @@ module {
       return #ok(golfersDTO);
     };
 
-    public func listFriends(dto: GolferQueries.ListFriends) : async Result.Result<GolferQueries.Friends, T.Error> {
+    public func getFriends(dto: FriendQueries.GetFriends) : async Result.Result<FriendQueries.Friends, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
       switch(existingGolferCanisterId){
         case (?foundCanisterId){
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            listFriends : (dto: GolferQueries.ListFriends) -> async Result.Result<GolferQueries.Friends, T.Error>;
+            getFriends : (dto: FriendQueries.GetFriends) -> async Result.Result<FriendQueries.Friends, T.Error>;
           };
 
-          return await golfer_canister.listFriends(dto);
+          return await golfer_canister.getFriends(dto);
         };
         case (null){
           return #err(#NotFound);
@@ -520,6 +522,27 @@ module {
       return #ok();
     };
 
+    public func removeFriend(dto: FriendCommands.RemoveFriend) : async Result.Result<(), T.Error>{
+      //TOOD
+      let golferCanisterId = golferCanisterIndex.get(dto.requestedBy);
+      let friendCanisterId = golferCanisterIndex.get(dto.principalId);
+
+      switch(golferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            removeFriend : (dto: FriendCommands.RemoveFriend) -> async Result.Result<(), T.Error>
+          };
+        
+          return await golfer_canister.removeFriend(dto);
+        };
+        case _ {
+          return #err(#NotFound);
+        }
+      };
+      return #ok();
+    };
+
     //Shot Functions
       
     public func addShot(dto: ShotCommands.AddShot) : async Result.Result<(), T.Error> {
@@ -554,24 +577,6 @@ module {
           };
         
           return await golfer_canister.getShotAverages(dto);
-        };
-        case _ {
-          return #err(#NotFound);
-        }
-      };
-    };
-
-    public func predictShot(dto: ShotQueries.PredictShot) : async Result.Result<ShotQueries.PredictedShot, T.Error> {
-      let golferCanisterId = golferCanisterIndex.get(dto.principalId);
-
-      switch(golferCanisterId){
-        case (?foundCanisterId){
-
-          let golfer_canister = actor (foundCanisterId) : actor {
-            predictShot : (dto: ShotQueries.PredictShot) -> async Result.Result<ShotQueries.PredictedShot, T.Error>
-          };
-        
-          return await golfer_canister.predictShot(dto);
         };
         case _ {
           return #err(#NotFound);

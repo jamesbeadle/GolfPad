@@ -35,21 +35,6 @@ module GolferQueries {
         golferPictureExtension: Text;
         handicap: ?T.Handicap;
     };
-    
-    public type ListFriends = {
-        principalId: Base.PrincipalId;
-        totalEntries: Nat;
-        limit: Nat;
-        offset: Nat;
-    };
-
-    public type Friends = {
-        friendRequests: [Friend];
-    };
-
-    public type Friend = {
-        principalId: Base.PrincipalId;
-    };
 
     public type GetGolfer = {
         principalId: Base.PrincipalId;

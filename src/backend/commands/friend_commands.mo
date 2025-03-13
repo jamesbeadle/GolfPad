@@ -1,17 +1,12 @@
-
 import T "../data-types/types";
 import Base "mo:waterway-mops/BaseTypes";
 
-module ShotQueries {
-
-    public type GetShotAverages = {
+module FriendCommands {
+    
+    public type RemoveFriend = {
         principalId: Base.PrincipalId;
+        requestedBy: Base.PrincipalId;
     };
-
-    public type ShotAverages = {
-
-    };
-
 }
 
   

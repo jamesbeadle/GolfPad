@@ -13,6 +13,18 @@ import { authStore } from "$lib/stores/auth-store";
 export class FriendRequestService {
   constructor() {}
 
+  async getFriendRequests(dto: GetFriendRequests): Promise<FriendRequests> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.getFriendRequests(dto);
+    if (isError(result)) {
+      throw new Error("Error Getting Friend Requests");
+    }
+    return result.ok;
+  }
+
   async acceptFriendRequest(dto: AcceptFriendRequest): Promise<any> {
     const identityActor = await ActorFactory.createIdentityActor(
       authStore,
@@ -45,18 +57,6 @@ export class FriendRequestService {
     const result: any = await identityActor.sendFriendRequest(dto);
     if (isError(result)) {
       throw new Error("Error Sending Friend Request");
-    }
-    return result.ok;
-  }
-
-  async getFriendRequests(dto: GetFriendRequests): Promise<FriendRequests> {
-    const identityActor = await ActorFactory.createIdentityActor(
-      authStore,
-      process.env.BACKEND_CANISTER_ID ?? "",
-    );
-    const result: any = await identityActor.getFriendRequests(dto);
-    if (isError(result)) {
-      throw new Error("Error Getting Friend Requests");
     }
     return result.ok;
   }

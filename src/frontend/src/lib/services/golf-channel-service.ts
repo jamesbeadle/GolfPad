@@ -14,12 +14,15 @@ import type {
   SubscribeToGolfChannel,
   UnsubscribeFromGolfChannel,
   UpdateGolfChannel,
+  UpdateGolfChannelVideo,
   UploadGolfChannelVideo,
 } from "../../../../declarations/backend/backend.did";
 import { authStore } from "$lib/stores/auth-store";
 
 export class GolfChannelService {
   constructor() {}
+
+  //Golf Channel Queries:
 
   async getGolfChannels(dto: GetGolfChannels): Promise<GolfChannels> {
     try {
@@ -51,20 +54,6 @@ export class GolfChannelService {
     return result.ok;
   }
 
-  async createGolfChannel(dto: CreateGolfChannel): Promise<any> {
-    try {
-      const identityActor: any = await ActorFactory.createIdentityActor(
-        authStore,
-        process.env.BACKEND_CANISTER_ID ?? "",
-      );
-      const result = await identityActor.createGolfChannel(dto);
-      return result.ok;
-    } catch (error) {
-      console.error("Error creating golf channel:", error);
-      throw error;
-    }
-  }
-
   async getGolfChannelVideos(
     dto: GetGolfChannelVideos,
   ): Promise<GolfChannelVideos> {
@@ -87,6 +76,22 @@ export class GolfChannelService {
     const result = await identityActor.getGolfChannelVideo(dto);
     if (isError(result)) throw new Error("Failed to get golf channel video");
     return result.ok;
+  }
+
+  //Golf Channel Commands:
+
+  async createGolfChannel(dto: CreateGolfChannel): Promise<any> {
+    try {
+      const identityActor: any = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.createGolfChannel(dto);
+      return result.ok;
+    } catch (error) {
+      console.error("Error creating golf channel:", error);
+      throw error;
+    }
   }
 
   async updateGolfChannel(dto: UpdateGolfChannel): Promise<any> {
@@ -157,6 +162,20 @@ export class GolfChannelService {
       return result.ok;
     } catch (error) {
       console.error("Error uploading golf channel video:", error);
+      throw error;
+    }
+  }
+
+  async updateGolfChannelVideo(dto: UpdateGolfChannelVideo): Promise<any> {
+    try {
+      const identityActor: any = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.updateGolfChannelVideo(dto);
+      return result.ok;
+    } catch (error) {
+      console.error("Error updating golf channel video:", error);
       throw error;
     }
   }

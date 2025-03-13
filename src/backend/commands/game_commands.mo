@@ -28,10 +28,6 @@ module GameCommands {
         gameId: T.GameId;
     };
 
-    public type UpdateGame = {
-        gameId: T.GameId;
-    };
-
     public type DeleteGame = {
         gameId: T.GameId;
 
