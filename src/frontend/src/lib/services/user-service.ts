@@ -26,9 +26,8 @@ import type {
 import { isError } from "$lib/utils/helpers";
 
 export class UserService {
-
   //Golfer Query Functions:
-  
+
   async getProfile(dto: GetProfile): Promise<Profile> {
     const identityActor = await ActorFactory.createIdentityActor(
       authStore,
@@ -105,31 +104,17 @@ export class UserService {
       throw error;
     }
   }
-  async updateUsername(dto: UpdateUsername): Promise<void> {
+  async updateUsername(dto: UpdateUsername): Promise<void> {}
 
-  }
-  
-  async updateHandicap(dto: UpdateHandicap): Promise<void> {
+  async updateHandicap(dto: UpdateHandicap): Promise<void> {}
 
-  }
-  
-  async updateFirstName(dto: UpdateFirstName): Promise<void> {
+  async updateFirstName(dto: UpdateFirstName): Promise<void> {}
 
-  }
-  
-  async updateLastName(dto: UpdateLastName): Promise<void> {
+  async updateLastName(dto: UpdateLastName): Promise<void> {}
 
-  }
-  
-  async updateHomeCourse(dto: UpdateHomeCourse): Promise<void> {
+  async updateHomeCourse(dto: UpdateHomeCourse): Promise<void> {}
 
-  }
-  
-  async updateProfilePicture(dto: UpdateProfilePicture): Promise<void> {
-    
-  }
+  async updateProfilePicture(dto: UpdateProfilePicture): Promise<void> {}
 
-  async addShot(dto: AddShot): Promise<void> {
-
-  }
+  async addShot(dto: AddShot): Promise<void> {}
 }

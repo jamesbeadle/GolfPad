@@ -1,7 +1,7 @@
 import { isError } from "$lib/utils/helpers";
-import { idlFactory } from "../../../../declarations/backend";
 import { ActorFactory } from "$lib/utils/actor.factory";
 import { authStore } from "$lib/stores/auth-store";
+import type { Friends, GetFriends, RemoveFriend } from "../../../../declarations/backend/backend.did";
 
 export class FriendService {
   constructor() {}
