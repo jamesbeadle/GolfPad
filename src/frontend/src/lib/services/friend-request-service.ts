@@ -10,7 +10,6 @@ import type {
 import { authStore } from "$lib/stores/auth-store";
 
 export class FriendRequestService {
-
   //Queries
 
   async getFriendRequests(dto: GetFriendRequests): Promise<FriendRequests> {

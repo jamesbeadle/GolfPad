@@ -1,18 +1,17 @@
 <script lang="ts">
     import { onMount } from "svelte";
-
-
+    import type { Buzz, GetBuzz } from "../../../../../declarations/backend/backend.did";
+    import { hasMorePages } from "$lib/utils/helpers";
+    import { authStore } from "$lib/stores/auth-store";
+    import { userStore } from "$lib/stores/user-store";
     import BrandPanel from "../shared/brand-panel.svelte";
     import LocalSpinner from "../shared/local-spinner.svelte";
     import BuzzRow from "./buzz-row.svelte";
-    import { appStore } from "$lib/stores/app-store";
-    import type { BuzzEntries, GetBuzzEntries } from "../../../../../declarations/backend/backend.did";
-    import { authStore } from "$lib/stores/auth-store";
 
+    export let buzz: Buzz | null = null;
     let isLoading = true;
     let isLoadingMore = false;
     let currentPage = 1n;
-    let buzzEntries: BuzzEntries = { entries: [], page: currentPage }; 
     let hasMore = true;
 
     onMount(async () => {
@@ -24,19 +23,14 @@
             authStore.subscribe(async (store) => {
                 let principalId = store.identity?.getPrincipal();
                 
-                const dto: GetBuzzEntries = {
+                const dto: GetBuzz = {
                     page: page,
-                    user_id: principalId ? principalId.toString() : ''
+                    principalId: principalId ? principalId.toString() : ''
                 };
 
-                const newEntries = await appStore.getBuzzEntries(dto);
+                buzz = await userStore.getBuzz(dto);
                 
-                buzzEntries = {
-                    entries: [...buzzEntries.entries, ...newEntries.entries],
-                    page: currentPage
-                };
-                
-                hasMore = newEntries.entries.length > 0;
+                hasMore = hasMorePages(buzz.page, buzz.pageSize, buzz.total);
             });
         } catch (error) {
             console.error('Error loading buzz entries:', error);
@@ -54,28 +48,31 @@
         await loadBuzzEntries(currentPage);
     }
 
-
 </script>
 <BrandPanel title="The Buzz" subTitle="The latest Matches">
     {#if isLoading}
         <LocalSpinner />
     {:else}
-        {#each buzzEntries.entries as buzzItem}
-            <BuzzRow {buzzItem} />
-        {/each}
+        {#if buzz}
+            {#each buzz.entries as buzzItem}
+                <BuzzRow {buzzItem} />
+            {/each}
 
-        {#if buzzEntries.entries.length > 0}
-            <div class="load-more-container">
-                {#if isLoadingMore}
-                    <LocalSpinner />
-                {:else if hasMore}
-                    <button on:click={loadMore} class="more-button">
-                        More
-                    </button>
-                {:else}
-                    <p>No more entries to load</p>
-                {/if}
-            </div>
+            {#if buzz.entries.length > 0}
+                <div class="load-more-container">
+                    {#if isLoadingMore}
+                        <LocalSpinner />
+                    {:else if hasMore}
+                        <button on:click={loadMore} class="more-button">
+                            More
+                        </button>
+                    {:else}
+                        <p>No more entries to load</p>
+                    {/if}
+                </div>
+            {/if}
+        {:else}
+            <p>Feed not found</p>
         {/if}
     {/if}
 </BrandPanel>

@@ -7,7 +7,6 @@ import type {
 import { GolferService } from "$lib/services/golfer-service";
 
 function createGolferStore() {
-
   async function getGolfers(dto: GetGolfers): Promise<Golfers> {
     return new GolferService().getGolfers(dto);
   }
@@ -18,7 +17,7 @@ function createGolferStore() {
 
   return {
     getGolfers,
-    getGolfer
+    getGolfer,
   };
 }
 

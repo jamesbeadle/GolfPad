@@ -17,11 +17,12 @@ import type {
 } from "../../../../declarations/backend/backend.did";
 
 function createGameStore() {
-
-  async function getGameSummaries(dto: GetGameSummaries): Promise<GameSummaries> {
+  async function getGameSummaries(
+    dto: GetGameSummaries,
+  ): Promise<GameSummaries> {
     return new GameService().getGameSummaries(dto);
   }
-  
+
   async function getGame(dto: GetGame): Promise<Game> {
     return new GameService().getGame(dto);
   }
@@ -73,7 +74,7 @@ function createGameStore() {
     deleteGame,
     inviteGolfers,
     acceptGameInvite,
-    rejectGameInvite
+    rejectGameInvite,
   };
 }
 export const gameStore = createGameStore();

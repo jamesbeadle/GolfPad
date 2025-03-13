@@ -49,7 +49,7 @@ export class GameService {
         authStore,
         process.env.BACKEND_CANISTER_ID ?? "",
       );
-      
+
       let result = await identityActor.getGame(dto);
 
       if (isError(result)) {

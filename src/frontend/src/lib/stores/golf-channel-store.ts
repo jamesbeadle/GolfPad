@@ -19,7 +19,6 @@ import type {
 import { GolfChannelService } from "$lib/services/golf-channel-service";
 
 function createGolfChannelStore() {
- 
   async function getGolfChannel(dto: GetGolfChannel): Promise<GolfChannel> {
     return await new GolfChannelService().getGolfChannel(dto);
   }
@@ -28,43 +27,57 @@ function createGolfChannelStore() {
     return new GolfChannelService().getGolfChannels(dto);
   }
 
-  async function getGolfChannelVideos(dto: GetGolfChannelVideos) : Promise<GolfChannelVideos>{
+  async function getGolfChannelVideos(
+    dto: GetGolfChannelVideos,
+  ): Promise<GolfChannelVideos> {
     return new GolfChannelService().getGolfChannelVideos(dto);
   }
 
-  async function getGolfChannelVideo(dto: GetGolfChannelVideo) : Promise<GolfChannelVideo>{
+  async function getGolfChannelVideo(
+    dto: GetGolfChannelVideo,
+  ): Promise<GolfChannelVideo> {
     return new GolfChannelService().getGolfChannelVideo(dto);
   }
 
-  async function createGolfChannel(dto: CreateGolfChannel) : Promise<void>{
+  async function createGolfChannel(dto: CreateGolfChannel): Promise<void> {
     return new GolfChannelService().createGolfChannel(dto);
   }
 
-  async function updateGolfChannel(dto: UpdateGolfChannel) : Promise<void>{
+  async function updateGolfChannel(dto: UpdateGolfChannel): Promise<void> {
     return new GolfChannelService().updateGolfChannel(dto);
   }
 
-  async function deleteGolfChannel(dto: DeleteGolfChannel) : Promise<void>{
+  async function deleteGolfChannel(dto: DeleteGolfChannel): Promise<void> {
     return new GolfChannelService().deleteGolfChannel(dto);
   }
 
-  async function subscribeToGolfChannel(dto: SubscribeToGolfChannel) : Promise<void>{
+  async function subscribeToGolfChannel(
+    dto: SubscribeToGolfChannel,
+  ): Promise<void> {
     return new GolfChannelService().subscribeToGolfChannel(dto);
   }
 
-  async function unsubscribeFromGolfChannel(dto: UnsubscribeFromGolfChannel) : Promise<void>{
+  async function unsubscribeFromGolfChannel(
+    dto: UnsubscribeFromGolfChannel,
+  ): Promise<void> {
     return new GolfChannelService().unsubscribeFromGolfChannel(dto);
   }
 
-  async function uploadGolfChannelVideo(dto: UploadGolfChannelVideo) : Promise<void>{
+  async function uploadGolfChannelVideo(
+    dto: UploadGolfChannelVideo,
+  ): Promise<void> {
     return new GolfChannelService().uploadGolfChannelVideo(dto);
   }
 
-  async function updateGolfChannelVideo(dto: UpdateGolfChannelVideo) : Promise<void>{
+  async function updateGolfChannelVideo(
+    dto: UpdateGolfChannelVideo,
+  ): Promise<void> {
     return new GolfChannelService().updateGolfChannelVideo(dto);
   }
 
-  async function removeGolfChannelVideo(dto: RemoveGolfChannelVideo) : Promise<void>{
+  async function removeGolfChannelVideo(
+    dto: RemoveGolfChannelVideo,
+  ): Promise<void> {
     return new GolfChannelService().removeGolfChannelVideo(dto);
   }
 
@@ -80,7 +93,7 @@ function createGolfChannelStore() {
     unsubscribeFromGolfChannel,
     uploadGolfChannelVideo,
     updateGolfChannelVideo,
-    removeGolfChannelVideo
+    removeGolfChannelVideo,
   };
 }
 

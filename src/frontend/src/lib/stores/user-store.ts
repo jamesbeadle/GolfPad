@@ -96,11 +96,15 @@ function createUserStore() {
     return new UserService().getBuzz(dto);
   }
 
-  async function getUpcomingGames(dto: GetUpcomingGames): Promise<UpcomingGames> {
+  async function getUpcomingGames(
+    dto: GetUpcomingGames,
+  ): Promise<UpcomingGames> {
     return new UserService().getUpcomingGames(dto);
   }
 
-  async function isUsernameAvailable(dto: IsUsernameAvailable): Promise<UsernameAvailable> {
+  async function isUsernameAvailable(
+    dto: IsUsernameAvailable,
+  ): Promise<UsernameAvailable> {
     return new UserService().isUsernameAvailable(dto);
   }
 
@@ -180,7 +184,6 @@ function createUserStore() {
     return new UserService().addShot(dto);
   }
 
-
   return {
     subscribe,
     sync,
@@ -198,7 +201,7 @@ function createUserStore() {
     updateLastName,
     updateHomeCourse,
     updateProfilePicture,
-    addShot
+    addShot,
   };
 }
 

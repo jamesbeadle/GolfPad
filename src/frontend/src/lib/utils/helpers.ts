@@ -1,4 +1,5 @@
 import * as FlagIcons from "svelte-flag-icons";
+import type { Buzz } from "../../../../declarations/backend/backend.did";
 
 export function uint8ArrayToBase64(bytes: Uint8Array): string {
   const binary = Array.from(bytes)
@@ -692,12 +693,20 @@ export function createDeferred<T>(): Deferred<T> {
   return { promise, resolve: resolve!, reject: reject! };
 }
 
-
-
 export function getFileExtensionFromFile(file: File): string {
   const filename = file.name;
 
   const lastIndex = filename.lastIndexOf(".");
 
   return lastIndex !== -1 ? filename.substring(lastIndex + 1) : "";
+}
+
+export function hasMorePages(
+  page: bigint,
+  pageSize: bigint,
+  total: bigint,
+): boolean {
+  const currentPageBigInt = BigInt(page);
+  const endIndex = currentPageBigInt * pageSize;
+  return endIndex < total;
 }

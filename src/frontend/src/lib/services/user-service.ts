@@ -23,7 +23,6 @@ import type {
 import { isError } from "$lib/utils/helpers";
 
 export class UserService {
-
   //User Query Functions:
 
   async getProfile(dto: GetProfile): Promise<Profile> {
@@ -189,5 +188,4 @@ export class UserService {
       throw error;
     }
   }
-  
 }

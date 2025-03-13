@@ -1,20 +1,15 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
+    import Modal from "$lib/components/shared/modal.svelte";
     import PictureIcon from '$lib/icons/picture-icon.svelte';
     
-    export let isOpen = false;
-  
-    const dispatch = createEventDispatcher();
+    export let showModal = false;
+
     let hasFile = false;
     let selectedFile: File | null = null;
     let previewUrl: string | null = null;
     
     let fileInputRef: HTMLInputElement;
 
-    function handleClose() {
-      dispatch('close');
-    }
-  
     function handleFileChange(event: Event) {
       const input = event.target as HTMLInputElement;
       if (input.files && input.files[0]) {
@@ -26,28 +21,28 @@
 
     function handleSave() {
       if (selectedFile) {
-        dispatch('fileSelect', {
-          file: selectedFile,
-          preview: previewUrl
-        });
-        handleClose();
+        //TODO
+
+        
+        showModal = false;
       }
     }
 
     function triggerFileInput() {
       fileInputRef?.click();
     }
+
+
   </script>
-  
-  {#if isOpen}
-    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0">
-      
-      <div class="relative z-10 w-full sm:w-[90vw] md:w-[60vw] lg:w-[40vw] bg-white rounded-lg shadow-xl">
+
+  <Modal {showModal} onClose={() => { showModal = false; }}>
+
+    <div class="relative z-10 w-full sm:w-[90vw] md:w-[60vw] lg:w-[40vw] bg-white rounded-lg shadow-xl">
         <div class="flex items-center justify-between p-4 sm:p-5">
           <h2 class="text-2xl text-black sm:text-3xl condensed">UPLOAD IMAGE</h2>
           <button 
             class="cancel-button"
-            on:click={handleClose}
+            on:click={() => showModal = false}
             type="button"
             aria-label="Close"
           >
@@ -84,7 +79,7 @@
           <button
             type="button"
             class="cancel-button"
-            on:click={handleClose}
+            on:click={() => showModal = false}
           >
             Cancel
           </button>
@@ -101,5 +96,4 @@
           </button>
         </div>
       </div>
-    </div>
-  {/if}
+  </Modal>

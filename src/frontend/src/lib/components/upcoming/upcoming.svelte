@@ -3,13 +3,14 @@
     import BrandPanelInset from "../shared/brand-panel-inset.svelte";
     import LocalSpinner from "../shared/local-spinner.svelte";
     import { authStore } from "$lib/stores/auth-store";
-    import { gameStore } from "$lib/stores/game-store";
+    import { userStore } from "$lib/stores/user-store";
+    import type { GetUpcomingGames, UpcomingGames } from "../../../../../declarations/backend/backend.did";
+    import UpcomingRow from "./upcoming-row.svelte";
 
     let isLoading = true;
     let isLoadingMore = false;
     let currentPage = 1n;
-    let upcomingGames: UpcomingGames = { games: [], page: currentPage }; 
-    let hasMore = true;
+    let upcomingGames: UpcomingGames | null = null;
 
     onMount(async () => {
         await loadUpcomingGames(currentPage);
@@ -26,55 +27,31 @@
                 
                 const dto: GetUpcomingGames = {
                     page: page,
-                    user_id: principalId ? principalId.toString()
+                    principalId: principalId ? principalId.toString() : ''
                 };
 
-                const newGames = await gameStore.getUpcomingGames(dto);
-                
-                upcomingGames = {
-                    entries: [...upcomingGames.entries, ...newGames.entries],
-                    page: currentPage
-                };
-                
-                hasMore = upcomingGames.entries.length > 0;
+                upcomingGames = await userStore.getUpcomingGames(dto);
             });
         } catch (error) {
-            console.error('Error loading buzz entries:', error);
+            console.error('Error loading upcoming games:', error);
         } finally {
             isLoading = false;
             isLoadingMore = false;
         }
     }
-
-    async function loadMore() {
-        if (!hasMore || isLoadingMore) return;
-        
-        isLoadingMore = true;
-        currentPage += 1n;
-        await loadBuzzEntries(currentPage);
-    }
+    
 
 </script>
+
 <BrandPanelInset title="UPCOMING" subTitle="YOUR SCHEDULED MATCHES">
     {#if isLoading}
         <LocalSpinner />
     {:else}
-        {#each upcomingEntries.entries as buzzItem}
-            <UpcomingGameRow {buzzItem} />
-        {/each}
-
-        {#if upcomingEntries.entries.length > 0}
-            <div class="load-more-container">
-                {#if isLoadingMore}
-                    <LocalSpinner />
-                {:else if hasMore}
-                    <button on:click={loadMore} class="more-button">
-                        More
-                    </button>
-                {:else}
-                    <p>No more entries to load</p>
-                {/if}
-            </div>
+        {#if upcomingGames}
+            {#each upcomingGames.entries as upcomingGame}
+                <UpcomingRow {upcomingGame} />
+            {/each}
         {/if}
     {/if}
 </BrandPanelInset> 
+

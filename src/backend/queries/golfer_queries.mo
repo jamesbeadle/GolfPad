@@ -10,9 +10,12 @@ module GolferQueries {
     public type Profile = {
         principalId: Base.PrincipalId;
         username: Text;
+        firstName: Text;
+        lastName: Text;
         golferPicture: ?Blob;
         golferPictureExtension: Text;
         handicap: ?T.Handicap;
+        homeCourseId: ?T.GolfCourseId;
     };
 
     public type GetGolfers = {

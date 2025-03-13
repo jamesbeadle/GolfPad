@@ -442,10 +442,13 @@ export const idlFactory = ({ IDL }) => {
   const GetProfile = IDL.Record({ principalId: PrincipalId });
   const Profile = IDL.Record({
     username: IDL.Text,
+    homeCourseId: IDL.Opt(GolfCourseId),
     golferPicture: IDL.Opt(IDL.Vec(IDL.Nat8)),
     handicap: IDL.Opt(Handicap),
+    lastName: IDL.Text,
     golferPictureExtension: IDL.Text,
     principalId: PrincipalId,
+    firstName: IDL.Text,
   });
   const Result_4 = IDL.Variant({ ok: Profile, err: Error });
   const GetShotAverages = IDL.Record({ principalId: PrincipalId });

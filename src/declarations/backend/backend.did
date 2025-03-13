@@ -273,9 +273,12 @@ type RejectFriendRequest =
  };
 type Profile = 
  record {
+   firstName: text;
    golferPicture: opt blob;
    golferPictureExtension: text;
    handicap: opt Handicap;
+   homeCourseId: opt GolfCourseId;
+   lastName: text;
    principalId: PrincipalId;
    username: text;
  };

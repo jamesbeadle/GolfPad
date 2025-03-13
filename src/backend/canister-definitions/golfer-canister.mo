@@ -407,6 +407,9 @@ actor class _GolferCanister() {
               golferPicture = foundGolfer.profilePicture;
               golferPictureExtension = foundGolfer.profilePictureFileExtension;
               handicap = foundGolfer.handicap;
+              firstName = foundGolfer.firstName;
+              lastName = foundGolfer.lastName;
+              homeCourseId = foundGolfer.homeCourseId;
             };
             return #ok(dto);
           };

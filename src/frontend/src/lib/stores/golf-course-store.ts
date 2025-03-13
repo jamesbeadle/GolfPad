@@ -9,7 +9,6 @@ import type {
 import type UpdateGolfCourse from "$lib/components/goverance/golf-course/update-golf-course.svelte";
 
 function createGolfCourseStore() {
-  
   async function getGolfCourses(dto: GetGolfCourses): Promise<GolfCourses> {
     return await new GolfCoursesService().getGolfCourses(dto);
   }
@@ -17,11 +16,11 @@ function createGolfCourseStore() {
   async function getGolfCourse(dto: GetGolfCourse): Promise<GolfCourse> {
     return await new GolfCoursesService().getGolfCourse(dto);
   }
-  
+
   async function addGolfCourse(dto: CreateGolfCourse): Promise<void> {
     return await new GolfCoursesService().addGolfCourse(dto);
   }
-  
+
   async function updateGolfCourse(dto: UpdateGolfCourse): Promise<void> {
     return await new GolfCoursesService().updateGolfCourse(dto);
   }
@@ -30,7 +29,7 @@ function createGolfCourseStore() {
     getGolfCourse,
     getGolfCourses,
     addGolfCourse,
-    updateGolfCourse
+    updateGolfCourse,
   };
 }
 export const golfCourseStore = createGolfCourseStore();

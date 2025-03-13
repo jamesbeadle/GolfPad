@@ -470,10 +470,13 @@ export interface PredictGame {
 export type PrincipalId = string;
 export interface Profile {
   username: string;
+  homeCourseId: [] | [GolfCourseId];
   golferPicture: [] | [Uint8Array | number[]];
   handicap: [] | [Handicap];
+  lastName: string;
   golferPictureExtension: string;
   principalId: PrincipalId;
+  firstName: string;
 }
 export interface RejectFriendRequest {
   principalId: PrincipalId;
