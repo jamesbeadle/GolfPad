@@ -32,11 +32,12 @@ module GolferQueries {
     };
 
     public type GolferSummary = {
-        golferPrincipalId: Base.PrincipalId;
-        golferName: Text;
-        golferPicture: ?Blob;
-        golferPictureExtension: Text;
+        principalId: Base.PrincipalId;
+        name: Text;
+        profilePicture: ?Blob;
+        profilePictureExtension: Text;
         handicap: ?T.Handicap;
+        joinedOn: Int;
     };
 
     public type GetGolfer = {
@@ -45,6 +46,7 @@ module GolferQueries {
 
     public type Golfer = {
         principalId: Base.PrincipalId;
+        joinedOn: Int;
         username: Text;
         golferPicture: ?Blob;
         golferPictureExtension: Text;

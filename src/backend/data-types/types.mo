@@ -36,9 +36,9 @@ module Types {
     #CreateGameError;
   };
 
-
   public type Golfer = {
     principalId: Base.PrincipalId;
+    joinedOn: Int;
     username: Text;
     firstName: Text;
     lastName: Text;

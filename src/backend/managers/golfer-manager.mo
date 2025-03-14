@@ -178,11 +178,12 @@ module {
                 case (#ok foundGolfer){
 
                   golferBuffer.add({
-                    golferName = foundGolfer.username;
-                    golferPicture = foundGolfer.golferPicture;
-                    golferPictureExtension = foundGolfer.golferPictureExtension;
-                    golferPrincipalId = foundGolfer.principalId;
+                    name = foundGolfer.username;
+                    profilePicture = foundGolfer.golferPicture;
+                    profilePictureExtension = foundGolfer.golferPictureExtension;
+                    principalId = foundGolfer.principalId;
                     handicap = foundGolfer.handicap;
+                    joinedOn = foundGolfer.joinedOn;
                   });
 
                 };

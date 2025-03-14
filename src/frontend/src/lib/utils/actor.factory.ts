@@ -87,8 +87,6 @@ export class ActorFactory {
     });
   }
 
-
-
   static getGovernanceAgent(
     identity: OptionIdentity = null,
     options: any = null,

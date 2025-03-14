@@ -69,6 +69,7 @@ actor class _GolferCanister() {
               completedGames = foundGolfer.completedGames;
               upcomingGames = foundGolfer.upcomingGames;
               gameInvites = foundGolfer.gameInvites;
+              joinedOn = foundGolfer.joinedOn;
             };
             return #ok(dto);
           };
@@ -100,6 +101,7 @@ actor class _GolferCanister() {
     Debug.print("Canister is not full");
 
     let newGolfer: T.Golfer = {
+      joinedOn = Time.now();
       activeGames = [];
       completedGames = [];
       handicap = dto.handicap;
@@ -145,6 +147,7 @@ actor class _GolferCanister() {
         switch(golfer){
           case (?foundGolfer){
             let updatedGolfer: T.Golfer = {
+              joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
               handicap = foundGolfer.handicap;
@@ -195,6 +198,7 @@ actor class _GolferCanister() {
         switch(golfer){
           case (?foundGolfer){
             let updatedGolfer: T.Golfer = {
+              joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
               handicap = foundGolfer.handicap;
@@ -245,6 +249,7 @@ actor class _GolferCanister() {
         switch(golfer){
           case (?foundGolfer){
             let updatedGolfer: T.Golfer = {
+              joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
               handicap = foundGolfer.handicap;
@@ -295,6 +300,7 @@ actor class _GolferCanister() {
         switch(golfer){
           case (?foundGolfer){
             let updatedGolfer: T.Golfer = {
+              joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
               handicap = foundGolfer.handicap;
@@ -345,6 +351,7 @@ actor class _GolferCanister() {
         switch(golfer){
           case (?foundGolfer){
             let updatedGolfer: T.Golfer = {
+              joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
               handicap = foundGolfer.handicap;
@@ -434,51 +441,14 @@ actor class _GolferCanister() {
     };
     switch(groupIndex){
       case (null){
-
-        if(totalGolfers >= MAX_GOLFERS_PER_CANISTER){
-          return #err(#CanisterFull);
-        };
-
-        if(getGolferCountInGroup(activeGroupIndex) >= MAX_GOLFERS_PER_GROUP){
-          activeGroupIndex += 1;
-        };
-
-        if(activeGroupIndex > 11){
-          canisterFull := true;
-          return #err(#CanisterFull);
-        };
-
-        let newGolfer: T.Golfer = {
-          activeGames = [];
-          completedGames = [];
-          handicap = null;
-          homeCourseId = null;
-          principalId = dto.principalId;
-          profilePicture = dto.profilePicture;
-          profilePictureFileExtension = dto.profilePictureExtension;
-          upcomingGames = [];
-          username = "";
-          shots = [];
-          friendRequests = [];
-          friends = [];
-          gameSummaries = [];
-          buzzFeed = [];
-          scheduledGames = [];
-          gameInvites = [];
-          favouriteGolfCourseIds = [];
-          firstName = "";
-          lastName = "";
-          termsAgreed = false;
-          totalFriends = 0;
-        };
-
-        addGolfer(newGolfer);
+        return #err(#NotFound);
       };
       case (?foundGroupIndex){
         let golfer = findGolfer(foundGroupIndex, dto.principalId);
         switch(golfer){
           case (?foundGolfer){
             let updatedGolfer: T.Golfer = {
+              joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
               handicap = foundGolfer.handicap;
@@ -616,6 +586,7 @@ actor class _GolferCanister() {
             updatedFriendsBuffer.add(dto.requestedBy);
             
             let updatedGolfer: T.Golfer = {
+              joinedOn = foundGolfer.joinedOn;
               principalId = foundGolfer.principalId;
               username = foundGolfer.username;
               profilePicture = foundGolfer.profilePicture;
@@ -669,6 +640,7 @@ actor class _GolferCanister() {
           case (?foundGolfer){
             
             let updatedGolfer: T.Golfer = {
+              joinedOn = foundGolfer.joinedOn;
               principalId = foundGolfer.principalId;
               username = foundGolfer.username;
               profilePicture = foundGolfer.profilePicture;
@@ -725,6 +697,7 @@ actor class _GolferCanister() {
             let friendRequestsBuffer = Buffer.fromArray<T.FriendRequest>(foundGolfer.friendRequests);
             friendRequestsBuffer.add({ requestedBy = dto.principalId; requestedOn = Time.now() });
             let updatedGolfer: T.Golfer = {
+              joinedOn = foundGolfer.joinedOn;
               principalId = foundGolfer.principalId;
               username = foundGolfer.username;
               profilePicture = foundGolfer.profilePicture;

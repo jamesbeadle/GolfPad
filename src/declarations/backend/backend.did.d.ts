@@ -10,18 +10,10 @@ export interface AcceptGameInvite {
   gameId: GameId;
   acceptedById: PrincipalId;
 }
-export interface AcceptTeamRequest {
-  acceptingPrincipalId: PrincipalId;
-  golfTeamId: GolfTeamId;
-}
 export interface AddGameScore {
   submittedById: PrincipalId;
   gameId: GameId;
   detail: GameScoreSubmission;
-}
-export interface AddGolfTeamMember {
-  addTeamMember: PrincipalId;
-  golfTeamId: GolfTeamId;
 }
 export interface AddShot {
   club: GolfClub;
@@ -99,10 +91,6 @@ export interface CreateGame {
   courseId: GolfCourseId;
   teeGroup: TeeGroup;
 }
-export interface CreateGolfChannel {
-  name: string;
-  createdById: PrincipalId;
-}
 export interface CreateGolfCourse {
   holes: Array<Hole>;
   totalHoles: number;
@@ -110,12 +98,6 @@ export interface CreateGolfCourse {
   initialTeeGroup: TeeGroup;
   bannerImage: Uint8Array | number[];
   mainImage: Uint8Array | number[];
-}
-export interface CreateGolfTeam {
-  createdById: PrincipalId;
-  golfTeamName: string;
-  golfTeamPicture: [] | [Uint8Array | number[]];
-  golfTeamPictureExtension: string;
 }
 export interface CreateUser {
   username: string;
@@ -125,13 +107,6 @@ export interface CreateUser {
 }
 export interface DeleteGame {
   gameId: GameId;
-}
-export interface DeleteGolfChannel {
-  channelId: GolfChannelId;
-}
-export interface DeleteGolfTeam {
-  confirm: boolean;
-  golfTeamId: GolfTeamId;
 }
 export interface DeleteShot {
   golfShotId: GolfShotId;
@@ -262,33 +237,10 @@ export interface GetGameSummaries {
   page: bigint;
   principalId: PrincipalId;
 }
-export interface GetGolfChannel {
-  channelId: GolfChannelId;
-}
-export interface GetGolfChannelVideo {
-  channelId: GolfChannelId;
-}
-export interface GetGolfChannelVideos {
-  channelId: GolfChannelId;
-  page: bigint;
-}
-export interface GetGolfChannels {
-  page: bigint;
-  searchTerm: string;
-  principalId: PrincipalId;
-}
 export interface GetGolfCourse {
   golfCourseId: GolfCourseId;
 }
 export interface GetGolfCourses {
-  page: bigint;
-  searchTerm: string;
-  principalId: PrincipalId;
-}
-export interface GetGolfTeamRequests {
-  principalId: PrincipalId;
-}
-export interface GetGolfTeams {
   page: bigint;
   searchTerm: string;
   principalId: PrincipalId;
@@ -310,23 +262,6 @@ export interface GetShotAverages {
 export interface GetUpcomingGames {
   page: bigint;
   principalId: PrincipalId;
-}
-export interface GolfChannel {
-  channelId: GolfChannelId;
-  name: string;
-}
-export type GolfChannelId = bigint;
-export interface GolfChannelVideo {
-  channelId: GolfChannelId;
-}
-export interface GolfChannelVideos {
-  channelId: GolfChannelId;
-}
-export interface GolfChannels {
-  total: bigint;
-  page: bigint;
-  pageSize: bigint;
-  entries: Array<GolfChannel>;
 }
 export type GolfClub =
   | { AW: null }
@@ -396,25 +331,11 @@ export interface GolfShot {
   yardage: bigint;
 }
 export type GolfShotId = bigint;
-export interface GolfTeam {
-  golfTeamName: string;
-  golfTeamId: GolfTeamId;
-  golfTeamPicture: [] | [Uint8Array | number[]];
-  golfTeamPictureExtension: string;
-}
 export type GolfTeamId = bigint;
-export interface GolfTeamRequests {
-  principalId: PrincipalId;
-}
-export interface GolfTeams {
-  total: bigint;
-  page: bigint;
-  pageSize: bigint;
-  entries: Array<GolfTeam>;
-}
 export interface Golfer {
   username: string;
   gameInvites: Array<GameInvite>;
+  joinedOn: bigint;
   upcomingGames: Array<GameId>;
   golferPicture: [] | [Uint8Array | number[]];
   completedGames: Array<GameId>;
@@ -429,11 +350,12 @@ export interface GolferEvent {
   event: GolfEvent;
 }
 export interface GolferSummary {
-  golferPrincipalId: PrincipalId;
-  golferPicture: [] | [Uint8Array | number[]];
-  golferName: string;
+  name: string;
+  joinedOn: bigint;
+  profilePictureExtension: string;
+  profilePicture: [] | [Uint8Array | number[]];
   handicap: [] | [Handicap];
-  golferPictureExtension: string;
+  principalId: PrincipalId;
 }
 export interface Golfers {
   total: bigint;
@@ -539,46 +461,28 @@ export interface RejectGameInvite {
   rejectedById: PrincipalId;
   gameId: GameId;
 }
-export interface RejectTeamRequest {
-  rejectingPrincipalId: PrincipalId;
-  golfTeamId: GolfTeamId;
-}
 export interface RemoveFriend {
   principalId: PrincipalId;
   requestedBy: PrincipalId;
 }
-export interface RemoveGolfChannelVideo {
-  channelId: GolfChannelId;
-}
-export interface RemoveGolfTeamMember {
-  addTeamMember: PrincipalId;
-  golfTeamId: GolfTeamId;
-}
 export type Result = { ok: null } | { err: Error };
 export type Result_1 = { ok: UsernameAvailable } | { err: Error };
-export type Result_10 = { ok: GolfCourse } | { err: Error };
-export type Result_11 = { ok: GolfChannels } | { err: Error };
-export type Result_12 = { ok: GolfChannelVideos } | { err: Error };
-export type Result_13 = { ok: GolfChannelVideo } | { err: Error };
-export type Result_14 = { ok: GolfChannel } | { err: Error };
-export type Result_15 = { ok: GameSummaries } | { err: Error };
-export type Result_16 = { ok: GameInvites } | { err: Error };
-export type Result_17 = { ok: Game } | { err: Error };
-export type Result_18 = { ok: Friends } | { err: Error };
-export type Result_19 = { ok: FriendRequests } | { err: Error };
+export type Result_10 = { ok: GameInvites } | { err: Error };
+export type Result_11 = { ok: Game } | { err: Error };
+export type Result_12 = { ok: Friends } | { err: Error };
+export type Result_13 = { ok: FriendRequests } | { err: Error };
+export type Result_14 = { ok: ClubShots } | { err: Error };
+export type Result_15 = { ok: Buzz } | { err: Error };
+export type Result_16 = { ok: AppStatusDTO } | { err: Error };
+export type Result_17 = { ok: GameId } | { err: Error };
 export type Result_2 = { ok: UpcomingGames } | { err: Error };
-export type Result_20 = { ok: ClubShots } | { err: Error };
-export type Result_21 = { ok: Buzz } | { err: Error };
-export type Result_22 = { ok: AppStatusDTO } | { err: Error };
-export type Result_23 = { ok: GolfChannelId } | { err: Error };
-export type Result_24 = { ok: GameId } | { err: Error };
 export type Result_3 = { ok: ShotAverages } | { err: Error };
 export type Result_4 = { ok: Profile } | { err: Error };
 export type Result_5 = { ok: Golfers } | { err: Error };
 export type Result_6 = { ok: Golfer } | { err: Error };
-export type Result_7 = { ok: GolfTeams } | { err: Error };
-export type Result_8 = { ok: GolfTeamRequests } | { err: Error };
-export type Result_9 = { ok: GolfCourses } | { err: Error };
+export type Result_7 = { ok: GolfCourses } | { err: Error };
+export type Result_8 = { ok: GolfCourse } | { err: Error };
+export type Result_9 = { ok: GameSummaries } | { err: Error };
 export type RustResult = { Ok: string } | { Err: string };
 export interface SendFriendRequest {
   requestedFriend: PrincipalId;
@@ -586,10 +490,6 @@ export interface SendFriendRequest {
 }
 export interface ShotAverages {
   shots: Array<AverageShot>;
-}
-export interface SubscribeToGolfChannel {
-  channelId: GolfChannelId;
-  principalId: PrincipalId;
 }
 export interface TeamFeedSummary {
   team_image_extension: string;
@@ -624,10 +524,6 @@ export interface TeeInfo {
   colour: string;
   strokeIndex: number;
 }
-export interface UnsubscribeFromGolfChannel {
-  channelId: GolfChannelId;
-  principalId: PrincipalId;
-}
 export interface UpcomingGame {
   course_info: CourseInfo;
   opponent_info: OpponentInfo;
@@ -641,30 +537,10 @@ export interface UpdateFirstName {
   principalId: PrincipalId;
   firstName: string;
 }
-export interface UpdateGolfChannel {
-  channelId: GolfChannelId;
-  name: string;
-  channelBanner: [] | [Uint8Array | number[]];
-  channelBannerExtension: string;
-  channelImageExtension: string;
-  channelImage: [] | [Uint8Array | number[]];
-}
-export interface UpdateGolfChannelVideo {
-  channelId: GolfChannelId;
-}
 export interface UpdateGolfCourse {
   name: string;
   updatedTeeGroup: [] | [TeeGroup];
   courseId: GolfCourseId;
-}
-export interface UpdateGolfTeamName {
-  golfTeamName: string;
-  golfTeamId: GolfTeamId;
-}
-export interface UpdateGolfTeamPicture {
-  golfTeamId: GolfTeamId;
-  golfTeamPicture: [] | [Uint8Array | number[]];
-  golfTeamPictureExtension: string;
 }
 export interface UpdateHandicap {
   handicap: [] | [Handicap];
@@ -693,44 +569,29 @@ export interface UpdateUsername {
   username: string;
   principalId: PrincipalId;
 }
-export interface UploadGolfChannelVideo {
-  channelId: GolfChannelId;
-}
 export type UsernameAvailable = boolean;
 export interface _SERVICE {
   acceptFriendRequest: ActorMethod<[AcceptFriendRequest], Result>;
   acceptGameInvite: ActorMethod<[AcceptGameInvite], Result>;
-  acceptTeamRequest: ActorMethod<[AcceptTeamRequest], Result>;
   addGameScore: ActorMethod<[AddGameScore], Result>;
-  addGolfTeamMember: ActorMethod<[AddGolfTeamMember], Result>;
   addShot: ActorMethod<[AddShot], Result>;
   beginGame: ActorMethod<[BeginGame], Result>;
-  createGame: ActorMethod<[CreateGame], Result_24>;
-  createGolfChannel: ActorMethod<[CreateGolfChannel], Result_23>;
-  createGolfTeam: ActorMethod<[CreateGolfTeam], Result>;
+  createGame: ActorMethod<[CreateGame], Result_17>;
   createUser: ActorMethod<[CreateUser], Result>;
   deleteGame: ActorMethod<[DeleteGame], Result>;
-  deleteGolfChannel: ActorMethod<[DeleteGolfChannel], Result>;
-  deleteGolfTeam: ActorMethod<[DeleteGolfTeam], Result>;
   deleteShot: ActorMethod<[DeleteShot], Result>;
   executeAddGolfCourse: ActorMethod<[CreateGolfCourse], undefined>;
   executeUpdateGolfCourse: ActorMethod<[UpdateGolfCourse], undefined>;
-  getAppStatus: ActorMethod<[], Result_22>;
-  getBuzz: ActorMethod<[GetBuzz], Result_21>;
-  getClubShots: ActorMethod<[GetClubShots], Result_20>;
-  getFriendRequests: ActorMethod<[GetFriendRequests], Result_19>;
-  getFriends: ActorMethod<[GetFriends], Result_18>;
-  getGame: ActorMethod<[GetGame], Result_17>;
-  getGameInvites: ActorMethod<[GetGameInvites], Result_16>;
-  getGameSummaries: ActorMethod<[GetGameSummaries], Result_15>;
-  getGolfChannel: ActorMethod<[GetGolfChannel], Result_14>;
-  getGolfChannelVideo: ActorMethod<[GetGolfChannelVideo], Result_13>;
-  getGolfChannelVideos: ActorMethod<[GetGolfChannelVideos], Result_12>;
-  getGolfChannels: ActorMethod<[GetGolfChannels], Result_11>;
-  getGolfCourse: ActorMethod<[GetGolfCourse], Result_10>;
-  getGolfCourses: ActorMethod<[GetGolfCourses], Result_9>;
-  getGolfTeamRequests: ActorMethod<[GetGolfTeamRequests], Result_8>;
-  getGolfTeams: ActorMethod<[GetGolfTeams], Result_7>;
+  getAppStatus: ActorMethod<[], Result_16>;
+  getBuzz: ActorMethod<[GetBuzz], Result_15>;
+  getClubShots: ActorMethod<[GetClubShots], Result_14>;
+  getFriendRequests: ActorMethod<[GetFriendRequests], Result_13>;
+  getFriends: ActorMethod<[GetFriends], Result_12>;
+  getGame: ActorMethod<[GetGame], Result_11>;
+  getGameInvites: ActorMethod<[GetGameInvites], Result_10>;
+  getGameSummaries: ActorMethod<[GetGameSummaries], Result_9>;
+  getGolfCourse: ActorMethod<[GetGolfCourse], Result_8>;
+  getGolfCourses: ActorMethod<[GetGolfCourses], Result_7>;
   getGolfer: ActorMethod<[GetGolfer], Result_6>;
   getGolfers: ActorMethod<[GetGolfers], Result_5>;
   getProfile: ActorMethod<[GetProfile], Result_4>;
@@ -741,25 +602,15 @@ export interface _SERVICE {
   predictGame: ActorMethod<[PredictGame], Result>;
   rejectFriendRequest: ActorMethod<[RejectFriendRequest], Result>;
   rejectGameInvite: ActorMethod<[RejectGameInvite], Result>;
-  rejectTeamRequest: ActorMethod<[RejectTeamRequest], Result>;
   removeFriend: ActorMethod<[RemoveFriend], Result>;
-  removeGolfChannelVideo: ActorMethod<[RemoveGolfChannelVideo], Result>;
-  removeGolfTeamMember: ActorMethod<[RemoveGolfTeamMember], Result>;
   sendFriendRequest: ActorMethod<[SendFriendRequest], Result>;
-  subscribeToGolfChannel: ActorMethod<[SubscribeToGolfChannel], Result>;
-  unsubscribeFromGolfChannel: ActorMethod<[UnsubscribeFromGolfChannel], Result>;
   updateFirstName: ActorMethod<[UpdateFirstName], Result>;
-  updateGolfChannel: ActorMethod<[UpdateGolfChannel], Result>;
-  updateGolfChannelVideo: ActorMethod<[UpdateGolfChannelVideo], Result>;
-  updateGolfTeamName: ActorMethod<[UpdateGolfTeamName], Result>;
-  updateGolfTeamPicture: ActorMethod<[UpdateGolfTeamPicture], Result>;
   updateHandicap: ActorMethod<[UpdateHandicap], Result>;
   updateHomeCourse: ActorMethod<[UpdateHomeCourse], Result>;
   updateLastName: ActorMethod<[UpdateLastName], Result>;
   updateProfilePicture: ActorMethod<[UpdateProfilePicture], Result>;
   updateShot: ActorMethod<[UpdateShot], Result>;
   updateUsername: ActorMethod<[UpdateUsername], Result>;
-  uploadGolfChannelVideo: ActorMethod<[UploadGolfChannelVideo], Result>;
   validateAddGolfCourse: ActorMethod<[CreateGolfCourse], RustResult>;
   validateUpdateGolfCourse: ActorMethod<[UpdateGolfCourse], RustResult>;
 }

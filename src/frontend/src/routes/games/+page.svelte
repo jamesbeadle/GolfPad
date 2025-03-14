@@ -25,8 +25,8 @@
         goto('/games/create')
     }
 
-    async function changePage(delta: number) {
-        const newPage = Number(page) + delta;
+    async function changePage(delta: bigint) {
+        const newPage = page + delta;
         if (newPage >= 1 && newPage <= Number(totalPages)) {
             page = BigInt(newPage);
             await loadGameSummaries();
@@ -46,7 +46,7 @@
 
             let dto: GetGameSummaries = {
                 page: page,
-                user_id: principalId.toString()
+                principalId: principalId.toString()
             };
 
             gameSummaries = await gameStore.getGameSummaries(dto);
@@ -78,7 +78,7 @@
                     <p>You have no games.</p>
                 {/if}                
 
-                <PaginationRow {changePage} currentPage={Number(page)} {totalPages} />
+                <PaginationRow {changePage} {page} total={gameSummaries.total} pageSize={gameSummaries.pageSize} typeName='game summary' />
             {:else}
                 <p>Error loading game summaries.</p>
             {/if}

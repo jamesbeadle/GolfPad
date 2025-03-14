@@ -8,8 +8,8 @@ export function uint8ArrayToBase64(bytes: Uint8Array): string {
   return btoa(binary);
 }
 
-export function formatUnixDateToReadable(unixNano: number) {
-  const date = new Date(unixNano / 1000000);
+export function formatUnixDateToReadable(unixNano: bigint) {
+  const date = new Date(Number(unixNano) / 1000000);
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
     year: "numeric",
