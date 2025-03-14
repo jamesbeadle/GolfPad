@@ -164,14 +164,16 @@ module Types {
   public type GolfCourse = {
     id: Nat;
     name: Text;
+    founded: Int;
     totalHoles: Nat8;
     teeGroups: [TeeGroup];
     dateAdded: Int;
     status: CourseStatus;
     history: [HistoricalGolfCourse];
     activeVersion: GolfCourseVersion;
-    mainImage: Blob;
-    bannerImage: Blob;
+    mainImage: ?Blob;
+    mainImageExtension: Text;
+    bannerImage: ?Blob;
     courseAlbums: [GolfCourseAlbum];
     courseImages: [GolfCourseImage];
   };

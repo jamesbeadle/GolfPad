@@ -4,16 +4,18 @@ import Base "mo:waterway-mops/BaseTypes";
 module GolfCourseQueries {
     
     public type GetGolfCourse = {
-        golfCourseId: T.GolfCourseId;
+        id: T.GolfCourseId;
     };
 
     public type GolfCourse = {
-        courseId: T.GolfCourseId;
+        id: T.GolfCourseId;
         name: Text;
         tees: [T.TeeGroup];
         activeVersion: T.GolfCourseVersion;
-        mainImage: Blob;
+        mainImage: ?Blob;
+        mainImageExtension: Text;
         totalHoles: Nat8;
+        founded: Int;
     };
 
     public type GetGolfCourses = {
@@ -23,14 +25,18 @@ module GolfCourseQueries {
     };
 
     public type GolfCourses = {
-        entries: [GolfCourse];
+        entries: [GolfCourseSummary];
         page: Nat;
         total: Nat;
         pageSize: Nat;
     };
 
-    public type GolfCourseSnaphot = {
+    public type GolfCourseSummary = {
         id: Nat;
+        name: Text;
+        mainImage: ?Blob;
+        mainImageExtension: Text;
+        founded: Int;
     };
     
 }

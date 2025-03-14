@@ -95,9 +95,11 @@ export interface CreateGolfCourse {
   holes: Array<Hole>;
   totalHoles: number;
   name: string;
+  mainImageExtension: string;
   initialTeeGroup: TeeGroup;
-  bannerImage: Uint8Array | number[];
-  mainImage: Uint8Array | number[];
+  founded: bigint;
+  bannerImage: [] | [Uint8Array | number[]];
+  mainImage: [] | [Uint8Array | number[]];
 }
 export interface CreateUser {
   username: string;
@@ -238,7 +240,7 @@ export interface GetGameSummaries {
   principalId: PrincipalId;
 }
 export interface GetGolfCourse {
-  golfCourseId: GolfCourseId;
+  id: GolfCourseId;
 }
 export interface GetGolfCourses {
   page: bigint;
@@ -287,12 +289,14 @@ export type GolfClub =
   | { FOUR_IRON: null }
   | { FIVE_HYBRID: null };
 export interface GolfCourse {
+  id: GolfCourseId;
   totalHoles: number;
   activeVersion: GolfCourseVersion;
   name: string;
   tees: Array<TeeGroup>;
-  mainImage: Uint8Array | number[];
-  courseId: GolfCourseId;
+  mainImageExtension: string;
+  founded: bigint;
+  mainImage: [] | [Uint8Array | number[]];
 }
 export type GolfCourseId = bigint;
 export interface GolfCourseSnapshot {
@@ -300,12 +304,19 @@ export interface GolfCourseSnapshot {
   courseId: GolfCourseId;
   teeGroup: TeeGroup;
 }
+export interface GolfCourseSummary {
+  id: bigint;
+  name: string;
+  mainImageExtension: string;
+  founded: bigint;
+  mainImage: [] | [Uint8Array | number[]];
+}
 export type GolfCourseVersion = number;
 export interface GolfCourses {
   total: bigint;
   page: bigint;
   pageSize: bigint;
-  entries: Array<GolfCourse>;
+  entries: Array<GolfCourseSummary>;
 }
 export type GolfEvent =
   | { Par: null }

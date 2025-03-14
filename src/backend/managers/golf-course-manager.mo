@@ -46,13 +46,19 @@ module {
       let droppedEntries = List.drop<(T.GolfCourseId, Text)>(filteredEntries, 0); //TODO 
       let paginatedEntries = List.take<(T.GolfCourseId, Text)>(droppedEntries, 10);
 
-      let coursesBuffer = Buffer.fromArray<GolfCourseQueries.GolfCourse>([]);
+      let coursesBuffer = Buffer.fromArray<GolfCourseQueries.GolfCourseSummary>([]);
 
       for (entry in Iter.fromList(paginatedEntries)){
-        let course = await getGolfCourse({ golfCourseId = entry.0 });
+        let course = await getGolfCourse({ id = entry.0 });
         switch(course){
           case (#ok foundCourse){
-            coursesBuffer.add(foundCourse);
+            coursesBuffer.add({
+              founded = foundCourse.founded;
+              id = foundCourse.id;
+              name = foundCourse.name;
+              mainImage = foundCourse.mainImage;
+              mainImageExtension = foundCourse.mainImageExtension
+            });
           };
           case _{}
         }
@@ -60,9 +66,9 @@ module {
       
       return #ok({
         entries = Buffer.toArray(coursesBuffer);
-        page = 0; //TODO
+        page = dto.page;
         total = 0; //TODO
-        pageSize = 0; //TODO
+        pageSize = Environment.DEFAULT_PAGE_SIZE;
       });
     };
 
@@ -71,7 +77,7 @@ module {
     };
 
     private func getCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<GolfCourseQueries.GolfCourse, T.Error> {
-      let existingGolfCourseCanisterId = golfCourseCanisterIndex.get(dto.golfCourseId);
+      let existingGolfCourseCanisterId = golfCourseCanisterIndex.get(dto.id);
       switch(existingGolfCourseCanisterId){
         case (?foundCanisterId){
 
@@ -79,7 +85,7 @@ module {
             getGolfCourse : (dto: GolfCourseQueries.GetGolfCourse) -> async Result.Result<GolfCourseQueries.GolfCourse, T.Error>;
           };
 
-          return await golfCourse_canister.getGolfCourse({ golfCourseId = dto.golfCourseId });
+          return await golfCourse_canister.getGolfCourse({ id = dto.id });
         };
         case (null){
           return #err(#NotFound);

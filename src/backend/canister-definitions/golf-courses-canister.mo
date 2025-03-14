@@ -132,23 +132,25 @@ actor class _GolfCoursesCanister() {
 
     var groupIndex: ?Nat8 = null;
     for (golfCourseGroupIndex in Iter.fromArray(stable_golf_course_group_indexes)) {
-      if(golfCourseGroupIndex.0 == dto.golfCourseId){
+      if(golfCourseGroupIndex.0 == dto.id){
         groupIndex := ?golfCourseGroupIndex.1;
       }
     };
     switch(groupIndex){
       case (null){ return #err(#NotFound); };
       case (?foundGroupIndex){
-        let golfCourse = findGolfCourse(foundGroupIndex, dto.golfCourseId);
+        let golfCourse = findGolfCourse(foundGroupIndex, dto.id);
         switch(golfCourse){
           case (?foundGolfCourse){
             return #ok({
-              courseId = foundGolfCourse.id;
+              id = foundGolfCourse.id;
               name = foundGolfCourse.name;
               tees = foundGolfCourse.teeGroups;
               activeVersion = foundGolfCourse.activeVersion;
               mainImage = foundGolfCourse.mainImage;
+              mainImageExtension = foundGolfCourse.mainImageExtension;
               totalHoles = foundGolfCourse.totalHoles;
+              founded = foundGolfCourse.founded;
             });
           };
           case (null){
@@ -200,10 +202,12 @@ actor class _GolfCoursesCanister() {
       history = [];
       activeVersion = 1;
       mainImage = dto.mainImage;
+      mainImageExtension = dto.mainImageExtension;
       bannerImage = dto.bannerImage;
       courseAlbums = [];
       courseImages =[];
       totalHoles = dto.totalHoles;
+      founded = dto.founded;
     };
     
     return addGolfCourse(activeGroupIndex, newCourse);
@@ -261,10 +265,12 @@ actor class _GolfCoursesCanister() {
               status = foundGolfCourse.status;
               teeGroups = updatedTeeGroups;
               mainImage = foundGolfCourse.mainImage;
+              mainImageExtension = foundGolfCourse.mainImageExtension;
               bannerImage = foundGolfCourse.bannerImage;
               courseAlbums = foundGolfCourse.courseAlbums;
               courseImages = foundGolfCourse.courseImages;
               totalHoles = foundGolfCourse.totalHoles;
+              founded = foundGolfCourse.founded;
             };
 
             return saveGolfCourse(foundGroupIndex, updatedGolfCourse);

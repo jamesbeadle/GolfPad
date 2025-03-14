@@ -6,9 +6,11 @@ module GolfCourseCommands {
         name: Text;
         initialTeeGroup: T.TeeGroup;
         holes: [T.Hole];
-        mainImage: Blob;
-        bannerImage: Blob;
+        mainImage: ?Blob;
+        mainImageExtension: Text;
+        bannerImage: ?Blob;
         totalHoles: Nat8;
+        founded: Int;
     };
 
     public type UpdateGolfCourse = {

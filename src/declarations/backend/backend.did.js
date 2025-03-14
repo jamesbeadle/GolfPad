@@ -132,9 +132,11 @@ export const idlFactory = ({ IDL }) => {
     holes: IDL.Vec(Hole),
     totalHoles: IDL.Nat8,
     name: IDL.Text,
+    mainImageExtension: IDL.Text,
     initialTeeGroup: TeeGroup,
-    bannerImage: IDL.Vec(IDL.Nat8),
-    mainImage: IDL.Vec(IDL.Nat8),
+    founded: IDL.Int,
+    bannerImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
+    mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
   });
   const UpdateGolfCourse = IDL.Record({
     name: IDL.Text,
@@ -360,14 +362,16 @@ export const idlFactory = ({ IDL }) => {
     entries: IDL.Vec(GameSummary),
   });
   const Result_9 = IDL.Variant({ ok: GameSummaries, err: Error });
-  const GetGolfCourse = IDL.Record({ golfCourseId: GolfCourseId });
+  const GetGolfCourse = IDL.Record({ id: GolfCourseId });
   const GolfCourse = IDL.Record({
+    id: GolfCourseId,
     totalHoles: IDL.Nat8,
     activeVersion: GolfCourseVersion,
     name: IDL.Text,
     tees: IDL.Vec(TeeGroup),
-    mainImage: IDL.Vec(IDL.Nat8),
-    courseId: GolfCourseId,
+    mainImageExtension: IDL.Text,
+    founded: IDL.Int,
+    mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
   });
   const Result_8 = IDL.Variant({ ok: GolfCourse, err: Error });
   const GetGolfCourses = IDL.Record({
@@ -375,11 +379,18 @@ export const idlFactory = ({ IDL }) => {
     searchTerm: IDL.Text,
     principalId: PrincipalId,
   });
+  const GolfCourseSummary = IDL.Record({
+    id: IDL.Nat,
+    name: IDL.Text,
+    mainImageExtension: IDL.Text,
+    founded: IDL.Int,
+    mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
+  });
   const GolfCourses = IDL.Record({
     total: IDL.Nat,
     page: IDL.Nat,
     pageSize: IDL.Nat,
-    entries: IDL.Vec(GolfCourse),
+    entries: IDL.Vec(GolfCourseSummary),
   });
   const Result_7 = IDL.Variant({ ok: GolfCourses, err: Error });
   const GetGolfer = IDL.Record({ principalId: PrincipalId });

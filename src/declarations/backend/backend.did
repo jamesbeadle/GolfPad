@@ -375,12 +375,20 @@ type GolfEvent =
  };
 type GolfCourses = 
  record {
-   entries: vec GolfCourse;
+   entries: vec GolfCourseSummary;
    page: nat;
    pageSize: nat;
    total: nat;
  };
 type GolfCourseVersion = nat8;
+type GolfCourseSummary = 
+ record {
+   founded: int;
+   id: nat;
+   mainImage: opt blob;
+   mainImageExtension: text;
+   name: text;
+ };
 type GolfCourseSnapshot = 
  record {
    courseId: GolfCourseId;
@@ -391,8 +399,10 @@ type GolfCourseId = nat;
 type GolfCourse = 
  record {
    activeVersion: GolfCourseVersion;
-   courseId: GolfCourseId;
-   mainImage: blob;
+   founded: int;
+   id: GolfCourseId;
+   mainImage: opt blob;
+   mainImageExtension: text;
    name: text;
    tees: vec TeeGroup;
    totalHoles: nat8;
@@ -442,7 +452,7 @@ type GetGolfCourses =
    principalId: PrincipalId;
    searchTerm: text;
  };
-type GetGolfCourse = record {golfCourseId: GolfCourseId;};
+type GetGolfCourse = record {id: GolfCourseId;};
 type GetGameSummaries = 
  record {
    page: nat;
@@ -592,10 +602,12 @@ type CreateUser =
  };
 type CreateGolfCourse = 
  record {
-   bannerImage: blob;
+   bannerImage: opt blob;
+   founded: int;
    holes: vec Hole;
    initialTeeGroup: TeeGroup;
-   mainImage: blob;
+   mainImage: opt blob;
+   mainImageExtension: text;
    name: text;
    totalHoles: nat8;
  };
