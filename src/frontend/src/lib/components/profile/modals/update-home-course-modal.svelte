@@ -112,7 +112,7 @@
                 {#each courses?.entries! as course}
                     <div class="flex flex-col w-full">
                         <div class="w-1/4">
-                            {course.courseId}
+                            {course.id}
                         </div>
                         <div class="w-1/4">
                             {#if course.mainImage}
@@ -135,7 +135,7 @@
                         <div class="w-1/4">
                             <button
                                 class="brand-button"
-                                on:click={() => updateHomeCourse(course.courseId)}
+                                on:click={() => updateHomeCourse(course.id)}
                             >
                                 Select
                             </button>

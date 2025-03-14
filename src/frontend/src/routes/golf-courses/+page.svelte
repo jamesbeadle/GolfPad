@@ -14,8 +14,8 @@
 
     let isLoading = true;
     let golfCourses: GolfCourses | null = null;
-    let page = 1n;
-    let totalPages = 1n; 
+    let page = 1n; 
+    let pageSize = 10n; 
 
     onMount( async () => {
         loadGolfCourses();
@@ -25,12 +25,15 @@
         goto('/golf-courses/create')
     }
 
-    async function changePage(delta: number) {
-        const newPage = Number(page) + delta;
-        if (newPage >= 1 && newPage <= Number(totalPages)) {
-            page = BigInt(newPage);
-            await loadGolfCourses();
+    async function changePage(newPage: bigint) {
+        if (!golfCourses) return;
+
+        const totalPages = golfCourses.total / pageSize + (golfCourses.total % pageSize > 0n ? 1n : 0n);
+        if (newPage < 1n || newPage > totalPages) {
+            return;
         }
+        page = newPage;
+        await loadGolfCourses();
     }
 
     async function loadGolfCourses() {
@@ -51,10 +54,6 @@
             };
 
             golfCourses = await golfCourseStore.getGolfCourses(dto);
-            
-            if (golfCourses?.total && golfCourses?.pageSize) {
-                totalPages = BigInt(Math.ceil(Number(golfCourses.total) / Number(golfCourses.pageSize)));
-            }
         } catch {
             toasts.addToast({type: 'error', message: 'Error loading golf courses.'});
             golfCourses = null;
@@ -82,7 +81,7 @@
                     <p>No golf courses found.</p>
                 {/if}                
 
-                <PaginationRow {changePage} currentPage={Number(page)} {totalPages} />
+                <PaginationRow {changePage} {page} {pageSize} typeName="courses" total={golfCourses.total} />
             {:else}
                 <p>Error loading golf courses.</p>
             {/if}
