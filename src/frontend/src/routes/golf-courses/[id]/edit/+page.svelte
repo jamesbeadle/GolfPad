@@ -5,5 +5,5 @@
 </script>
 
 <Layout>
-    
+    <!-- Edit the course and raise an update proposal -->
 </Layout>

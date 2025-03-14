@@ -89,8 +89,6 @@ module Types {
     feedItemType: BuzzFeedItemType;
     //TOOD: Need a property to show score based on game types
       //mulligans is a score of up to 2 people, 1 up so both players and score like 1 up
-      //build it
-      //next up
       //bands
         //when a certain bands acheivement happens the best one for your round goes on your friends buzz
   };

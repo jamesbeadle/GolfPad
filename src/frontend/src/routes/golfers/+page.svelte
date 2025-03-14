@@ -16,13 +16,20 @@
     let golfers: Golfers | null = null;
     let page = 1n;
     let totalPages = 1n; 
+    let searchTerm = "";
 
     onMount( async () => {
         loadGolfers();
     });
 
-    async function changePage(delta: number) {
-        const newPage = Number(page) + delta;
+
+    async function handleSearch() {
+        page = 1n;
+        await loadGolfers();
+    }
+
+    async function changePage(delta: bigint) {
+        const newPage = page + delta;
         if (newPage >= 1 && newPage <= Number(totalPages)) {
             page = BigInt(newPage);
             await loadGolfers();
@@ -41,9 +48,9 @@
             }
 
             let dto: GetGolfers = {
-                page: page,
-                user_id: principalId.toString(),
-                searchTerm: '' //TODO implement search
+                page,
+                principalId: principalId.toString(),
+                searchTerm
             };
 
             golfers = await golferStore.getGolfers(dto);
@@ -64,18 +71,27 @@
     {#if isLoading}
         <LocalSpinner />
     {:else}
-        <BrandPanel title="GOLFERS" subTitle="ALL GOLFPAD PLAYERS">
+        <BrandPanel title="GOLFERS" subTitle="FIND PLAYERS">
+            <div class="flex flex-col">
+                <label for="search" class="input-title">SEARCH FOR GOLFER</label>
+                <input
+                    id="search"
+                    placeholder="Search for a golfer..."
+                    type="text"
+                    class="text-input"
+                    bind:value={searchTerm}
+                    on:input={handleSearch}
+                />
+            </div>
             {#if golfers}
-
                 {#if golfers.entries.length > 0}
                     {#each golfers?.entries! as golfer}
                         <GolfersSummaryRow {golfer} />
                     {/each}
+                    <PaginationRow {changePage} {page} total={golfers.total} typeName='golfers' pageSize={golfers.pageSize} />
                 {:else}
                     <p>No golfers found.</p>
                 {/if}                
-
-                <PaginationRow {changePage} currentPage={Number(page)} {totalPages} />
             {:else}
                 <p>Error loading golfers.</p>
             {/if}

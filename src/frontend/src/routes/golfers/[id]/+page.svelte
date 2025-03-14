@@ -1,19 +1,11 @@
-<!-- Golfer detail -->
-
-<!-- Game History -->
-
-<!-- Button to send friend request that changes to unsend friend request after sent -->
-
-<!-- Friend Request Confirmation Modal -->
-
-<!-- Cancellation of sending friend request confirmation modal -->
-
 <script lang="ts">
     import Layout from "../../Layout.svelte";
-
-
 </script>
 
 <Layout>
-    
+    <p>Golfer Image</p>
+    <p>Golfer Username</p>
+    <p>Golfer Name</p>
+    <p>Golfer Handicap</p>
+    <p>Home Course</p>
 </Layout>

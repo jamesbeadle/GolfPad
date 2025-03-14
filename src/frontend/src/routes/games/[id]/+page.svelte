@@ -6,4 +6,5 @@
 
 <Layout>
     <!-- The detailed view of a game at it's current status -->
+        <!-- Viewing either bands or mulligans -->
 </Layout>
