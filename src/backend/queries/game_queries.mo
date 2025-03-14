@@ -55,6 +55,10 @@ module GameQueries {
 
     public type GameSummary = {
         id: T.GameId;
+        gameType: T.GameType;
+        date: Int;
+        players: [Base.PrincipalId];
+        status: T.GameStatus;
     };
     
 }

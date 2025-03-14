@@ -203,6 +203,10 @@ export interface GameSummaries {
 }
 export interface GameSummary {
   id: GameId;
+  status: GameStatus;
+  date: bigint;
+  players: Array<PrincipalId>;
+  gameType: GameType;
 }
 export type GameType =
   | { Mulligans: null }

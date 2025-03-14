@@ -46,7 +46,7 @@
 
             let dto: GetGolfCourses = {
                 page: page,
-                user_id: principalId.toString(),
+                principalId: principalId.toString(),
                 searchTerm: '' //TODO implement search
             };
 

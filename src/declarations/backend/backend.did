@@ -504,7 +504,14 @@ type GameType =
    Mulligans;
    NextUp;
  };
-type GameSummary = record {id: GameId;};
+type GameSummary = 
+ record {
+   date: int;
+   gameType: GameType;
+   id: GameId;
+   players: vec PrincipalId;
+   status: GameStatus;
+ };
 type GameSummaries = 
  record {
    entries: vec GameSummary;

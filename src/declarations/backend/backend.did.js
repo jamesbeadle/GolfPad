@@ -354,7 +354,13 @@ export const idlFactory = ({ IDL }) => {
     page: IDL.Nat,
     principalId: PrincipalId,
   });
-  const GameSummary = IDL.Record({ id: GameId });
+  const GameSummary = IDL.Record({
+    id: GameId,
+    status: GameStatus,
+    date: IDL.Int,
+    players: IDL.Vec(PrincipalId),
+    gameType: GameType,
+  });
   const GameSummaries = IDL.Record({
     total: IDL.Nat,
     page: IDL.Nat,

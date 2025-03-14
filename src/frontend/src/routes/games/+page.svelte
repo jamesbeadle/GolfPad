@@ -71,8 +71,8 @@
             {#if gameSummaries}
                 
                 {#if gameSummaries.entries.length > 0}
-                    {#each gameSummaries?.entries! as game}
-                        <GameSummaryRow {game} />
+                    {#each gameSummaries?.entries! as gameSummary}
+                        <GameSummaryRow {gameSummary} />
                     {/each}
                 {:else}
                     <p>You have no games.</p>
