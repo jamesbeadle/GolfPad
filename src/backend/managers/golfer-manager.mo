@@ -31,6 +31,7 @@ import UpcomingGamesQueries "../queries/upcoming_games_queries";
 import GameQueries "../queries/game_queries";
 import FriendCommands "../commands/friend_commands";
 import FriendQueries "../queries/friend_queries";
+import GolfCourseQueries "../queries/golf_course_queries";
 
 module {
   public class GolferManager() {
@@ -170,8 +171,9 @@ module {
           let existingGolferCanisterId = golferCanisterIndex.get(managerUsernameEntry.0);
           switch(existingGolferCanisterId){
             case (?foundCanisterId){
+
               let golfer_canister = actor (foundCanisterId) : actor {
-                getGolfer : (dto: GolferQueries.GetGolfer) -> async Result.Result<GolferQueries.Golfer, T.Error>;
+                   getGolfer : (dto: GolferQueries.GetGolfer) -> async Result.Result<GolferQueries.Golfer, T.Error>;
               };
               let result = await golfer_canister.getGolfer({ principalId = managerUsernameEntry.0 });
               switch(result){
@@ -683,6 +685,10 @@ module {
         };
         case (null) { return true; }
       }
+    };
+
+    public func isGolferCanisterId(principalId: Base.PrincipalId) : Bool {
+      return false; //TODO
     };
   
     public func getGameInvites(dto: GameQueries.GetGameInvites) : async Result.Result<GameQueries.GameInvites, T.Error> {

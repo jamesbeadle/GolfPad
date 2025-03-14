@@ -202,6 +202,14 @@ actor Self {
     return await courseManager.getGolfCourse(dto); 
   };
 
+  public shared ({ caller }) func  getGolfCourseCanisterId(dto: GolfCourseQueries.GetGolfCourseCanisterId) : async Result.Result<GolfCourseQueries.GolfCourseCanisterId, T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert golferManager.isGolferCanisterId(principalId);
+    return await courseManager.getGolfCourseCanisterId(dto);
+  };
+               
+
   //Golf Course Commands - SNS Validation and Callback functions:
 
   public shared query ({ caller }) func validateAddGolfCourse(dto : GolfCourseCommands.CreateGolfCourse) : async T.RustResult {

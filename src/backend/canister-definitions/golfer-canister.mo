@@ -17,6 +17,7 @@ import FriendRequestCommands "../commands/friend_request_commands";
 import FriendRequestQueries "../queries/friend_request_queries";
 import Base "mo:waterway-mops/BaseTypes";
 import FriendQueries "../queries/friend_queries";
+import GolfCourseQueries "../queries/golf_course_queries";
 
 actor class _GolferCanister() {
 
@@ -59,9 +60,55 @@ actor class _GolferCanister() {
         let golfer = findGolfer(foundGroupIndex, dto.principalId);
         switch(golfer){
           case (?foundGolfer){
+
+            var homeCourse: Text = "";
+
+            var homeCourseId: ?T.GolfCourseId = foundGolfer.homeCourseId;
+            var homeCourseImage: ?Blob = null;
+            var homeCourseImageExtension = "";
+
+            switch(foundGolfer.homeCourseId){
+              case(?foundHomeCourseId){
+
+                let main_canister = actor (Environment.BACKEND_CANISTER_ID) : actor {
+                  getGolfCourseCanisterId : (dto: GolfCourseQueries.GetGolfCourseCanisterId) -> async Result.Result<GolfCourseQueries.GolfCourseCanisterId, T.Error>;
+                };
+
+                let golfCourseCanisterId = await main_canister.getGolfCourseCanisterId({ id = foundHomeCourseId });
+                switch(golfCourseCanisterId){
+                  case (#ok foundGolfCourseCanisterId){
+
+                    let golf_course_canister = actor (foundGolfCourseCanisterId.canisterId) : actor {
+                      getGolfCourse : (dto: GolfCourseQueries.GetGolfCourse) -> async Result.Result<GolfCourseQueries.GolfCourse, T.Error>;
+                    };
+
+                    let golfCourseResult = await golf_course_canister.getGolfCourse({ id = foundHomeCourseId});
+                    switch(golfCourseResult){
+                      case (#ok golfCourse){
+                        
+                        homeCourse := golfCourse.name;
+                        homeCourseId := ?golfCourse.id;
+                        homeCourseImage := golfCourse.mainImage;
+                        homeCourseImageExtension := golfCourse.mainImageExtension;
+                      };
+                      case (#err _){}
+                    }
+
+                  };
+                  case (#err _){}
+                };
+              };
+              case (null){
+
+              };
+            };
+
+
             let dto: GolferQueries.Golfer = {
               principalId = foundGolfer.principalId;
               username = foundGolfer.username;
+              firstName = foundGolfer.firstName;
+              lastName = foundGolfer.lastName;
               golferPicture = foundGolfer.profilePicture;
               golferPictureExtension = foundGolfer.profilePictureFileExtension;
               handicap = foundGolfer.handicap;
@@ -70,6 +117,10 @@ actor class _GolferCanister() {
               upcomingGames = foundGolfer.upcomingGames;
               gameInvites = foundGolfer.gameInvites;
               joinedOn = foundGolfer.joinedOn;
+              homeCourse;
+              homeCourseId;
+              homeCourseImage;
+              homeCourseImageExtension;
             };
             return #ok(dto);
           };

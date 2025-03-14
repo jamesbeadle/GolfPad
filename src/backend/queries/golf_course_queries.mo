@@ -32,12 +32,20 @@ module GolfCourseQueries {
     };
 
     public type GolfCourseSummary = {
-        id: Nat;
+        id: T.GolfCourseId;
         name: Text;
         mainImage: ?Blob;
         mainImageExtension: Text;
         founded: Int;
     };
+
+    public type GetGolfCourseCanisterId = {
+        id: T.GolfCourseId;
+    };
+
+    public type GolfCourseCanisterId = {
+        canisterId: Base.CanisterId;
+    }
     
 }
 

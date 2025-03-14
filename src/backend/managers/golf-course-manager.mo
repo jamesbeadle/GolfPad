@@ -76,6 +76,10 @@ module {
       return await getCourse(dto);
     };
 
+    public func  getGolfCourseCanisterId(dto: GolfCourseQueries.GetGolfCourseCanisterId) : async Result.Result<GolfCourseQueries.GolfCourseCanisterId, T.Error>{
+     return #err(#NotFound); //TODO
+    };
+
     private func getCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<GolfCourseQueries.GolfCourse, T.Error> {
       let existingGolfCourseCanisterId = golfCourseCanisterIndex.get(dto.id);
       switch(existingGolfCourseCanisterId){

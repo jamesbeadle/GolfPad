@@ -48,6 +48,8 @@ module GolferQueries {
         principalId: Base.PrincipalId;
         joinedOn: Int;
         username: Text;
+        firstName: Text;
+        lastName: Text;
         golferPicture: ?Blob;
         golferPictureExtension: Text;
         handicap: ?T.Handicap;
@@ -55,6 +57,9 @@ module GolferQueries {
         activeGames: [T.GameId];
         completedGames: [T.GameId];
         gameInvites: [T.GameInvite];
+        homeCourse: Text;
+        homeCourseId: ?T.GolfCourseId;
+        homeCourseImage: ?Blob;
     };
 
     public type IsUsernameAvailable = {
