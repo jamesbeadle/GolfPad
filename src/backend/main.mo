@@ -10,46 +10,36 @@ import Management "utilities/Management";
 import T "data-types/types";
 
 import GameManager "managers/game-manager";
-import GolfChannelManager "managers/golf-channel-manager";
 import GolfCourseManager "managers/golf-course-manager";
 import GolferManager "managers/golfer-manager";
-import GolfTeamManager "managers/golf-team-manager";
 
 import GameCommands "commands/game_commands";
-import GolfChannelCommands "commands/golf_channel_commands";
 import GolfCourseCommands "commands/golf_course_commands";
 import GolferCommands "commands/golfer_commands";
 import ShotCommands "commands/shot_commands";
 import FriendRequestCommands "commands/friend_request_commands";
 import FriendCommands "commands/friend_commands";
-import GolfTeamCommands "commands/golf_team_commands";
 
 import BaseQueries "queries/base_queries";
 
 import BuzzQueries "queries/buzz_queries";
 import GameQueries "queries/game_queries";
-import GolfChannelQueries "queries/golf_channel_queries";
 import GolfCourseQueries "queries/golf_course_queries";
 import GolferQueries "queries/golfer_queries";
 import ShotQueries "queries/shot_queries";
 import FriendQueries "queries/friend_queries";
 import FriendRequestQueries "queries/friend_request_queries";
 import UpcomingGamesQueries "queries/upcoming_games_queries";
-import GolfTeamQueries "queries/golf_team_queries";
 
 import GolferCanister "canister-definitions/golfer-canister";
 import GolfCoursesCanister "canister-definitions/golf-courses-canister";
 import GameCanister "canister-definitions/game-canister";
-import GolfChannelsCanister "canister-definitions/golf-channels-canister";
-import GolfTeamCanister "canister-definitions/golf-team-canister";
 
 actor Self {
 
   private let golferManager = GolferManager.GolferManager();
-  private let golfTeamManager = GolfTeamManager.GolfTeamManager();
   private let courseManager = GolfCourseManager.GolfCourseManager();
   private let gameManager = GameManager.GameManager();
-  private let golfChannelManager = GolfChannelManager.GolfChannelManager();
   
   private var appStatus: Base.AppStatus = { 
     onHold = false;
@@ -196,91 +186,6 @@ actor Self {
     return await gameManager.rejectGameInvite(dto);
   };
 
-
-  /* Golf Channel CQRS */
-
-  //Golf Channel Queries:
-
-  public shared ({ caller }) func getGolfChannels(dto: GolfChannelQueries.GetGolfChannels) : async Result.Result<GolfChannelQueries.GolfChannels, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert dto.principalId == principalId;
-    return await golfChannelManager.getGolfChannels(dto);
-  };
-
-  public shared ({ caller }) func getGolfChannel(dto: GolfChannelQueries.GetGolfChannel) : async Result.Result<GolfChannelQueries.GolfChannel, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    return await golfChannelManager.getGolfChannel(dto); 
-  };
-
-  public shared ({ caller }) func getGolfChannelVideos(dto: GolfChannelQueries.GetGolfChannelVideos) : async Result.Result<GolfChannelQueries.GolfChannelVideos, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    return await golfChannelManager.getGolfChannelVideos(dto); 
-  };
-
-  public shared ({ caller }) func getGolfChannelVideo(dto: GolfChannelQueries.GetGolfChannelVideo) : async Result.Result<GolfChannelQueries.GolfChannelVideo, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert await golfChannelManager.isSubscribed({channelId = dto.channelId; principalId});
-    return await golfChannelManager.getGolfChannelVideo(dto); 
-  };
-
-  //Golf Channel Commands:
-
-  public shared ({ caller }) func createGolfChannel(dto: GolfChannelCommands.CreateGolfChannel) : async Result.Result<T.GolfChannelId, T.Error>{
-    assert not Principal.isAnonymous(caller);
-    assert dto.createdById == Principal.toText(caller);
-    return await golfChannelManager.createGolfChannel(dto);
-  };
-
-  public shared ({ caller }) func updateGolfChannel(dto: GolfChannelCommands.UpdateGolfChannel) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert await golfChannelManager.isChannelOwner({principalId; channelId = dto.channelId});
-    return await golfChannelManager.updateGolfChannel(dto);
-  };
-
-  public shared ({ caller }) func deleteGolfChannel(dto: GolfChannelCommands.DeleteGolfChannel) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert await golfChannelManager.isChannelOwner({ channelId = dto.channelId; principalId; });
-    return await golfChannelManager.deleteGolfChannel(dto);
-  };
-
-  public shared ({ caller }) func subscribeToGolfChannel(dto: GolfChannelCommands.SubscribeToGolfChannel) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    assert dto.principalId == Principal.toText(caller);
-    return await golfChannelManager.subscribeToGolfChannel(dto);
-  };
-
-  public shared ({ caller }) func unsubscribeFromGolfChannel(dto: GolfChannelCommands.UnsubscribeFromGolfChannel) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    assert dto.principalId == Principal.toText(caller);
-    return await golfChannelManager.unsubscribeFromGolfChannel(dto);
-  };
-
-  public shared ({ caller }) func uploadGolfChannelVideo(dto: GolfChannelCommands.UploadGolfChannelVideo) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert await golfChannelManager.isChannelOwner({ channelId = dto.channelId; principalId; });
-    return await golfChannelManager.uploadGolfChannelVideo(dto);
-  };
-
-  public shared ({ caller }) func updateGolfChannelVideo(dto: GolfChannelCommands.UpdateGolfChannelVideo) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert await golfChannelManager.isChannelOwner({ channelId = dto.channelId; principalId; });
-    return await golfChannelManager.updateGolfChannelVideo(dto);
-  };
-
-  public shared ({ caller }) func removeGolfChannelVideo(dto: GolfChannelCommands.RemoveGolfChannelVideo) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert await golfChannelManager.isChannelOwner({ channelId = dto.channelId; principalId; });
-    return await golfChannelManager.removeGolfChannelVideo(dto);
-  };
-
-
   /* Golf Course CQRS */
 
   //Golf Course Queries:
@@ -324,85 +229,6 @@ actor Self {
     assert Principal.toText(caller) == Environment.SNS_GOVERNANCE_CANISTER_ID;
     return await courseManager.executeUpdateGolfCourse(dto);
   };
-
-
-  /* Golf Team CQRS */
-
-  //Golf Team Queries
-
-  public shared ({ caller }) func getGolfTeams(dto: GolfTeamQueries.GetGolfTeams) : async Result.Result<GolfTeamQueries.GolfTeams, T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert dto.principalId == principalId;
-     
-       
-    return await golfTeamManager.getGolfTeams(dto);
-  };
-
-  public shared ({ caller }) func getGolfTeamRequests(dto: GolfTeamQueries.GetGolfTeamRequests) : async Result.Result<GolfTeamQueries.GolfTeamRequests, T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert dto.principalId == principalId;
-     
-       
-    return await golfTeamManager.getGolfTeamRequests(dto);
-  };
-  
-  //Golf Team Commands
-
-  public shared ({ caller }) func createGolfTeam(dto: GolfTeamCommands.CreateGolfTeam) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    assert dto.createdById == Principal.toText(caller);
-    return await golfTeamManager.createGolfTeam(dto);
-  };
-
-  public shared ({ caller }) func updateGolfTeamName(dto: GolfTeamCommands.UpdateGolfTeamName) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert await golfTeamManager.isTeamCreator(principalId, dto.golfTeamId);
-    return await golfTeamManager.updateGolfTeamName(dto);
-  };
-
-  public shared ({ caller }) func updateGolfTeamPicture(dto: GolfTeamCommands.UpdateGolfTeamPicture) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert await golfTeamManager.isTeamCreator(principalId, dto.golfTeamId);
-    return await golfTeamManager.updateGolfTeamPicture(dto);
-  };
-
-  public shared ({ caller }) func deleteGolfTeam(dto: GolfTeamCommands.DeleteGolfTeam) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert await golfTeamManager.isTeamCreator(principalId, dto.golfTeamId);
-    return await golfTeamManager.deleteGolfTeam(dto);
-  };
-
-  public shared ({ caller }) func addGolfTeamMember(dto: GolfTeamCommands.AddGolfTeamMember) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert await golfTeamManager.isTeamCreator(principalId, dto.golfTeamId);
-    return await golfTeamManager.addGolfTeamMember(dto);
-  };
-
-  public shared ({ caller }) func removeGolfTeamMember(dto: GolfTeamCommands.RemoveGolfTeamMember) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert await golfTeamManager.isTeamCreator(principalId, dto.golfTeamId);
-    return await golfTeamManager.removeGolfTeamMember(dto);
-  };
-
-  public shared ({ caller }) func acceptTeamRequest(dto: GolfTeamCommands.AcceptTeamRequest) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    assert dto.acceptingPrincipalId == Principal.toText(caller);
-    return await golfTeamManager.acceptTeamRequest(dto);
-  };
-
-  public shared ({ caller }) func rejectTeamRequest(dto: GolfTeamCommands.RejectTeamRequest) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    assert dto.rejectingPrincipalId == Principal.toText(caller);
-    return await golfTeamManager.rejectTeamRequest(dto);
-  };
-
 
   /* Golfer CQRS */
 
@@ -543,20 +369,6 @@ actor Self {
   private stable var stable_unique_game_canister_ids : [Base.CanisterId] = [];
   private stable var stable_total_games : Nat = 0;
   private stable var stable_next_game_id : Nat = 0;
-  
-  private stable var stable_golf_channel_canister_index: [(T.GolfChannelId, Base.CanisterId)] = [];  
-  private stable var stable_active_golf_channel_canister_id: Base.CanisterId = "";
-  private stable var stable_golf_channel_names : [(T.GolfChannelId, Text)] = [];
-  private stable var stable_unique_golf_channel_canister_ids : [Base.CanisterId] = [];
-  private stable var stable_total_golf_channels : Nat = 0;
-  private stable var stable_next_golf_channel_id : Nat = 0;
-
-  private stable var stable_golf_team_canister_index: [(T.GolfTeamId, Base.CanisterId)] = [];  
-  private stable var stable_active_golf_team_canister_id: Base.CanisterId = "";
-  private stable var stable_golf_team_names : [(T.GolfTeamId, Text)] = [];
-  private stable var stable_unique_golf_team_canister_ids : [Base.CanisterId] = [];
-  private stable var stable_next_golf_team_id : Nat = 0;
-
   //Stable structures for views
   private stable var stable_game_summaries: [T.GameSummary] = [];
   
@@ -567,9 +379,7 @@ actor Self {
 
     backupGolferData();
     backupGolfCourseData();
-    backupGolfChannelData();
     backupGameData();
-    backupGolfTeamData();
     backupViewData();
 
   };
@@ -593,16 +403,6 @@ actor Self {
 
   };
 
-  private func backupGolfChannelData(){
-    stable_golf_channel_canister_index := golfChannelManager.getStableCanisterIndex();
-    stable_active_golf_channel_canister_id := golfChannelManager.getStableActiveCanisterId();
-    stable_golf_channel_names := golfChannelManager.getStableGolfChannelNames();
-    stable_unique_golf_channel_canister_ids := golfChannelManager.getStableUniqueCanisterIds();
-    stable_total_golf_channels := golfChannelManager.getStableTotalGolfChannels();
-    stable_next_golf_channel_id := golfChannelManager.getStableNextGolfChannelId();
-
-  };
-
   private func backupGameData(){
     stable_game_canister_index := gameManager.getStableCanisterIndex();
     stable_active_game_canister_id := gameManager.getStableActiveCanisterId();
@@ -612,27 +412,14 @@ actor Self {
 
   };
 
-  private func backupGolfTeamData(){
-    stable_golf_team_canister_index := golfTeamManager.getStableCanisterIndex();
-    stable_active_golf_team_canister_id := golfTeamManager.getStableActiveCanisterId();
-    stable_golf_team_names := golfTeamManager.getStableGolfTeamNames();
-    stable_unique_golf_team_canister_ids := golfTeamManager.getStableUniqueCanisterIds();
-    stable_total_games := golfTeamManager.getStableTotalGolfTeams();
-    stable_next_golf_team_id := golfTeamManager.getStableNextGolfTeamId();
-  };
-
   private func backupViewData(){
     stable_game_summaries := gameManager.getStableGameSummaries();
   };
 
   system func postupgrade() {
-    
-    
     setGolferData();
     setGolfCourseData();
-    setGolfChannelData();
     setGameData();
-    setGolfTeamData();
     setViewData();
 
    ignore Timer.setTimer<system>(#nanoseconds(Int.abs(1)), postUpgradeCallback); 
@@ -655,30 +442,12 @@ actor Self {
     courseManager.setStableNextGolfCourseId(stable_next_golf_course_id);
   };
 
-  private func setGolfChannelData(){
-    golfChannelManager.setStableCanisterIndex(stable_golf_channel_canister_index);
-    golfChannelManager.setStableActiveCanisterId(stable_active_golf_channel_canister_id);
-    golfChannelManager.setStableGolfChannelNames(stable_golf_channel_names);
-    golfChannelManager.setStableUniqueCanisterIds(stable_unique_golf_channel_canister_ids);
-    golfChannelManager.setStableTotalGolfChannels(stable_total_golf_channels);
-    golfChannelManager.setStableNextGolfChannelId(stable_next_golf_channel_id);
-  };
-
   private func setGameData(){
     gameManager.setStableCanisterIndex(stable_game_canister_index);
     gameManager.setStableActiveCanisterId(stable_active_game_canister_id);
     gameManager.setStableUniqueCanisterIds(stable_unique_game_canister_ids);
     gameManager.setStableTotalGames(stable_total_games);
     gameManager.setStableNextGameId(stable_next_game_id);
-  };
-
-  private func setGolfTeamData(){
-    golfTeamManager.setStableCanisterIndex(stable_golf_team_canister_index);
-    golfTeamManager.setStableActiveCanisterId(stable_active_golf_team_canister_id);
-    golfTeamManager.setStableGolfTeamNames(stable_golf_team_names);
-    golfTeamManager.setStableUniqueCanisterIds(stable_unique_golf_team_canister_ids);
-    golfTeamManager.setStableTotalGolfTeams(stable_total_games);
-    golfTeamManager.setStableNextGolfTeamId(stable_next_golf_team_id);
   };
 
   private func setViewData(){
@@ -689,8 +458,6 @@ actor Self {
     await updateGolferCanisterWasms();
     await updateGolfCoursesCanisterWasms();
     await updateGameCanisterWasms();
-    await updateGolfChannelsCanisterWasms();
-    await updateGolfTeamCanisterWasms();
   };
 
   //Canister Update Functions
@@ -724,28 +491,6 @@ actor Self {
       await IC.stop_canister({ canister_id = Principal.fromText(canisterId); });
       let oldCanister = actor (canisterId) : actor {};
       let _ = await (system GameCanister._GameCanister)(#upgrade oldCanister)();
-      await IC.start_canister({ canister_id = Principal.fromText(canisterId); });
-    };
-  };
-
-  private func updateGolfChannelsCanisterWasms() : async (){
-    let golfChannelCanisterIds = golfChannelManager.getStableUniqueCanisterIds();
-    let IC : Management.Management = actor (Environment.Default);
-    for(canisterId in Iter.fromArray(golfChannelCanisterIds)){
-      await IC.stop_canister({ canister_id = Principal.fromText(canisterId); });
-      let oldProfileCanister = actor (canisterId) : actor {};
-      let _ = await (system GolfChannelsCanister._GolfChannelsCanister)(#upgrade oldProfileCanister)();
-      await IC.start_canister({ canister_id = Principal.fromText(canisterId); });
-    };
-  };
-
-  private func updateGolfTeamCanisterWasms() : async (){
-    let golfTeamCanisterIds = golfTeamManager.getStableUniqueCanisterIds();
-    let IC : Management.Management = actor (Environment.Default);
-    for(canisterId in Iter.fromArray(golfTeamCanisterIds)){
-      await IC.stop_canister({ canister_id = Principal.fromText(canisterId); });
-      let oldCanister = actor (canisterId) : actor {};
-      let _ = await (system GolfTeamCanister._GolfTeamCanister)(#upgrade oldCanister)();
       await IC.start_canister({ canister_id = Principal.fromText(canisterId); });
     };
   };
