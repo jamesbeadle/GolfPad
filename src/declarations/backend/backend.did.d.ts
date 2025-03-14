@@ -24,11 +24,18 @@ export interface AddGolfTeamMember {
   golfTeamId: GolfTeamId;
 }
 export interface AddShot {
+  club: GolfClub;
+  yardage: bigint;
   principalId: PrincipalId;
 }
 export interface AppStatusDTO {
   version: string;
   onHold: boolean;
+}
+export interface AverageShot {
+  club: GolfClub;
+  yardage: bigint;
+  index: number;
 }
 export interface BandsPrediction {
   wontHitTreeOrBunkerStartHole: HoleNumber;
@@ -64,6 +71,13 @@ export interface BuzzEntry {
   course_info: CourseInfo__1;
   match_result: MatchResultInfo;
   game_info: GameInfo__1;
+}
+export interface ClubShots {
+  total: bigint;
+  club: GolfClub;
+  page: bigint;
+  pageSize: bigint;
+  entries: Array<GolfShot>;
 }
 export interface CourseInfo {
   course_name: string;
@@ -118,6 +132,10 @@ export interface DeleteGolfChannel {
 export interface DeleteGolfTeam {
   confirm: boolean;
   golfTeamId: GolfTeamId;
+}
+export interface DeleteShot {
+  golfShotId: GolfShotId;
+  principalId: PrincipalId;
 }
 export type Error =
   | { InvalidProfilePicture: null }
@@ -217,6 +235,11 @@ export interface GetBuzz {
   page: bigint;
   principalId: PrincipalId;
 }
+export interface GetClubShots {
+  club: GolfClub;
+  page: bigint;
+  principalId: PrincipalId;
+}
 export interface GetFriendRequests {
   totalEntries: bigint;
   offset: bigint;
@@ -305,6 +328,29 @@ export interface GolfChannels {
   pageSize: bigint;
   entries: Array<GolfChannel>;
 }
+export type GolfClub =
+  | { AW: null }
+  | { GW: null }
+  | { LW: null }
+  | { PW: null }
+  | { SW: null }
+  | { EIGHT_IRON: null }
+  | { TWO_HYBRID: null }
+  | { THREE_HYBRID: null }
+  | { TWO_IRON: null }
+  | { THREE_IRON: null }
+  | { FIVE_IRON: null }
+  | { THREE_WOOD: null }
+  | { FIVE_WOOD: null }
+  | { SIX_IRON: null }
+  | { FOUR_HYBRID: null }
+  | { DRIVER: null }
+  | { SEVEN_IRON: null }
+  | { NINE_IRON: null }
+  | { SEVEN_WOOD: null }
+  | { NINE_WOOD: null }
+  | { FOUR_IRON: null }
+  | { FIVE_HYBRID: null };
 export interface GolfCourse {
   totalHoles: number;
   activeVersion: GolfCourseVersion;
@@ -343,6 +389,13 @@ export type GolfEvent =
   | { LongestDrive: null }
   | { Eagle: null }
   | { OnePuttGreen: null };
+export interface GolfShot {
+  id: GolfShotId;
+  hitOn: bigint;
+  club: GolfClub;
+  yardage: bigint;
+}
+export type GolfShotId = bigint;
 export interface GolfTeam {
   golfTeamName: string;
   golfTeamId: GolfTeamId;
@@ -514,10 +567,11 @@ export type Result_17 = { ok: Game } | { err: Error };
 export type Result_18 = { ok: Friends } | { err: Error };
 export type Result_19 = { ok: FriendRequests } | { err: Error };
 export type Result_2 = { ok: UpcomingGames } | { err: Error };
-export type Result_20 = { ok: Buzz } | { err: Error };
-export type Result_21 = { ok: AppStatusDTO } | { err: Error };
-export type Result_22 = { ok: GolfChannelId } | { err: Error };
-export type Result_23 = { ok: GameId } | { err: Error };
+export type Result_20 = { ok: ClubShots } | { err: Error };
+export type Result_21 = { ok: Buzz } | { err: Error };
+export type Result_22 = { ok: AppStatusDTO } | { err: Error };
+export type Result_23 = { ok: GolfChannelId } | { err: Error };
+export type Result_24 = { ok: GameId } | { err: Error };
 export type Result_3 = { ok: ShotAverages } | { err: Error };
 export type Result_4 = { ok: Profile } | { err: Error };
 export type Result_5 = { ok: Golfers } | { err: Error };
@@ -530,7 +584,9 @@ export interface SendFriendRequest {
   requestedFriend: PrincipalId;
   principalId: PrincipalId;
 }
-export type ShotAverages = {};
+export interface ShotAverages {
+  shots: Array<AverageShot>;
+}
 export interface SubscribeToGolfChannel {
   channelId: GolfChannelId;
   principalId: PrincipalId;
@@ -627,6 +683,12 @@ export interface UpdateProfilePicture {
   profilePicture: [] | [Uint8Array | number[]];
   principalId: PrincipalId;
 }
+export interface UpdateShot {
+  club: GolfClub;
+  yardage: bigint;
+  golfShotId: GolfShotId;
+  principalId: PrincipalId;
+}
 export interface UpdateUsername {
   username: string;
   principalId: PrincipalId;
@@ -643,17 +705,19 @@ export interface _SERVICE {
   addGolfTeamMember: ActorMethod<[AddGolfTeamMember], Result>;
   addShot: ActorMethod<[AddShot], Result>;
   beginGame: ActorMethod<[BeginGame], Result>;
-  createGame: ActorMethod<[CreateGame], Result_23>;
-  createGolfChannel: ActorMethod<[CreateGolfChannel], Result_22>;
+  createGame: ActorMethod<[CreateGame], Result_24>;
+  createGolfChannel: ActorMethod<[CreateGolfChannel], Result_23>;
   createGolfTeam: ActorMethod<[CreateGolfTeam], Result>;
   createUser: ActorMethod<[CreateUser], Result>;
   deleteGame: ActorMethod<[DeleteGame], Result>;
   deleteGolfChannel: ActorMethod<[DeleteGolfChannel], Result>;
   deleteGolfTeam: ActorMethod<[DeleteGolfTeam], Result>;
+  deleteShot: ActorMethod<[DeleteShot], Result>;
   executeAddGolfCourse: ActorMethod<[CreateGolfCourse], undefined>;
   executeUpdateGolfCourse: ActorMethod<[UpdateGolfCourse], undefined>;
-  getAppStatus: ActorMethod<[], Result_21>;
-  getBuzz: ActorMethod<[GetBuzz], Result_20>;
+  getAppStatus: ActorMethod<[], Result_22>;
+  getBuzz: ActorMethod<[GetBuzz], Result_21>;
+  getClubShots: ActorMethod<[GetClubShots], Result_20>;
   getFriendRequests: ActorMethod<[GetFriendRequests], Result_19>;
   getFriends: ActorMethod<[GetFriends], Result_18>;
   getGame: ActorMethod<[GetGame], Result_17>;
@@ -693,6 +757,7 @@ export interface _SERVICE {
   updateHomeCourse: ActorMethod<[UpdateHomeCourse], Result>;
   updateLastName: ActorMethod<[UpdateLastName], Result>;
   updateProfilePicture: ActorMethod<[UpdateProfilePicture], Result>;
+  updateShot: ActorMethod<[UpdateShot], Result>;
   updateUsername: ActorMethod<[UpdateUsername], Result>;
   uploadGolfChannelVideo: ActorMethod<[UploadGolfChannelVideo], Result>;
   validateAddGolfCourse: ActorMethod<[CreateGolfCourse], RustResult>;

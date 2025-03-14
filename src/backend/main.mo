@@ -452,6 +452,12 @@ actor Self {
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.getShotAverages(dto);
   };
+    
+  public shared ({ caller }) func getClubShots(dto: ShotQueries.GetClubShots) : async Result.Result<ShotQueries.ClubShots, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+    return await golferManager.getClubShots(dto);
+  };
 
   //User Commands:
 
@@ -501,6 +507,18 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.addShot(dto);
+  };
+    
+  public shared ({ caller }) func updateShot(dto: ShotCommands.UpdateShot) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+    return await golferManager.updateShot(dto);
+  };
+    
+  public shared ({ caller }) func deleteShot(dto: ShotCommands.DeleteShot) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+    return await golferManager.deleteShot(dto);
   };
 
 

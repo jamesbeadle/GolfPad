@@ -3,8 +3,11 @@ import { authStore } from "$lib/stores/auth-store";
 import type {
   AddShot,
   Buzz,
+  ClubShots,
   CreateUser,
+  DeleteShot,
   GetBuzz,
+  GetClubShots,
   GetProfile,
   GetShotAverages,
   GetUpcomingGames,
@@ -17,6 +20,7 @@ import type {
   UpdateHomeCourse,
   UpdateLastName,
   UpdateProfilePicture,
+  UpdateShot,
   UpdateUsername,
   UsernameAvailable,
 } from "../../../../declarations/backend/backend.did";
@@ -72,6 +76,17 @@ export class UserService {
 
     const result: any = await identityActor.getShotAverages(dto);
     if (isError(result)) throw new Error("Failed to get shot averages");
+    return result.ok;
+  }
+
+  async getClubShots(dto: GetClubShots): Promise<ClubShots> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+
+    const result: any = await identityActor.getClubShots(dto);
+    if (isError(result)) throw new Error("Failed to get club shots");
     return result.ok;
   }
 
@@ -185,6 +200,34 @@ export class UserService {
       return result;
     } catch (error) {
       console.error("Error adding golf shot:", error);
+      throw error;
+    }
+  }
+
+  async updateShot(dto: UpdateShot): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.updateShot(dto);
+      return result;
+    } catch (error) {
+      console.error("Error updating golf shot:", error);
+      throw error;
+    }
+  }
+
+  async deleteShot(dto: DeleteShot): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.deleteShot(dto);
+      return result;
+    } catch (error) {
+      console.error("Error deleting golf shot:", error);
       throw error;
     }
   }

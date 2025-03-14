@@ -6,8 +6,11 @@ import { UserService } from "$lib/services/user-service";
 import type {
   AddShot,
   Buzz,
+  ClubShots,
   CreateUser,
+  DeleteShot,
   GetBuzz,
+  GetClubShots,
   GetProfile,
   GetShotAverages,
   GetUpcomingGames,
@@ -20,6 +23,7 @@ import type {
   UpdateHomeCourse,
   UpdateLastName,
   UpdateProfilePicture,
+  UpdateShot,
   UpdateUsername,
   UsernameAvailable,
 } from "../../../../declarations/backend/backend.did";
@@ -108,6 +112,10 @@ function createUserStore() {
     return new UserService().isUsernameAvailable(dto);
   }
 
+  async function getClubShots(dto: GetClubShots): Promise<ClubShots> {
+    return new UserService().getClubShots(dto);
+  }
+
   async function getShotAverages(dto: GetShotAverages): Promise<ShotAverages> {
     return new UserService().getShotAverages(dto);
   }
@@ -138,7 +146,10 @@ function createUserStore() {
     return new UserService().updateHomeCourse(dto);
   }
 
-  async function updateProfilePicture(principalId: string, picture: File): Promise<any> {
+  async function updateProfilePicture(
+    principalId: string,
+    picture: File,
+  ): Promise<any> {
     try {
       const maxPictureSize = 1000;
       const extension = getFileExtensionFromFile(picture);
@@ -184,6 +195,14 @@ function createUserStore() {
     return new UserService().addShot(dto);
   }
 
+  async function updateShot(dto: UpdateShot): Promise<void> {
+    return new UserService().updateShot(dto);
+  }
+
+  async function deleteShot(dto: DeleteShot): Promise<void> {
+    return new UserService().deleteShot(dto);
+  }
+
   return {
     subscribe,
     sync,
@@ -193,7 +212,7 @@ function createUserStore() {
     getUpcomingGames,
     isUsernameAvailable,
     getShotAverages,
-
+    getClubShots,
     createUser,
     updateUsername,
     updateHandicap,
@@ -202,6 +221,8 @@ function createUserStore() {
     updateHomeCourse,
     updateProfilePicture,
     addShot,
+    updateShot,
+    deleteShot,
   };
 }
 

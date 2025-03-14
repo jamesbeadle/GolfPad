@@ -117,22 +117,22 @@ module {
       };
     };
 
-  public func getGameSummaries(dto: GameQueries.GetGameSummaries) : async Result.Result<GameQueries.GameSummaries, T.Error> {
-    let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+    public func getGameSummaries(dto: GameQueries.GetGameSummaries) : async Result.Result<GameQueries.GameSummaries, T.Error> {
+      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
+        switch(existingGolferCanisterId){
+          case (?foundCanisterId){
 
-          let golfer_canister = actor (foundCanisterId) : actor {
-            getGameSummaries : (dto: GameQueries.GetGameSummaries) -> async Result.Result<GameQueries.GameSummaries, T.Error>;
+            let golfer_canister = actor (foundCanisterId) : actor {
+              getGameSummaries : (dto: GameQueries.GetGameSummaries) -> async Result.Result<GameQueries.GameSummaries, T.Error>;
+            };
+
+            return await golfer_canister.getGameSummaries(dto);
           };
-
-          return await golfer_canister.getGameSummaries(dto);
+          case (null){
+            return #err(#NotFound);
+          }
         };
-        case (null){
-          return #err(#NotFound);
-        }
-      };
-  };
+    };
 
     public func getGolfer(dto: GolferQueries.GetGolfer) : async Result.Result<GolferQueries.Golfer, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
@@ -563,6 +563,44 @@ module {
         }
       };
     };
+      
+    public func updateShot(dto: ShotCommands.UpdateShot) : async Result.Result<(), T.Error> {
+      
+      let golferCanisterId = golferCanisterIndex.get(dto.principalId);
+
+      switch(golferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            updateShot : (dto: ShotCommands.UpdateShot) -> async Result.Result<(), T.Error>
+          };
+        
+          return await golfer_canister.updateShot(dto);
+        };
+        case _ {
+          return #err(#NotFound);
+        }
+      };
+    };
+      
+    public func deleteShot(dto: ShotCommands.DeleteShot) : async Result.Result<(), T.Error> {
+      
+      let golferCanisterId = golferCanisterIndex.get(dto.principalId);
+
+      switch(golferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            deleteShot : (dto: ShotCommands.DeleteShot) -> async Result.Result<(), T.Error>
+          };
+        
+          return await golfer_canister.deleteShot(dto);
+        };
+        case _ {
+          return #err(#NotFound);
+        }
+      };
+    };
 
     //Golfer Shot Management Queries:
 
@@ -577,6 +615,24 @@ module {
           };
         
           return await golfer_canister.getShotAverages(dto);
+        };
+        case _ {
+          return #err(#NotFound);
+        }
+      };
+    };
+
+    public func getClubShots(dto: ShotQueries.GetClubShots) : async Result.Result<ShotQueries.ClubShots, T.Error> {
+      let golferCanisterId = golferCanisterIndex.get(dto.principalId);
+
+      switch(golferCanisterId){
+        case (?foundCanisterId){
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            getClubShots : (dto: ShotQueries.GetClubShots) -> async Result.Result<ShotQueries.ClubShots, T.Error>
+          };
+        
+          return await golfer_canister.getClubShots(dto);
         };
         case _ {
           return #err(#NotFound);
