@@ -1,0 +1,9 @@
+<script lang="ts">
+    import type { Writable } from "svelte/store";
+
+    export let totalCategories: number;
+    export let currentCategory: Writable<number>;
+</script>
+<div>
+    <!-- show pips wide yellow when active and gray circle when not -->
+</div>

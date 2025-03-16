@@ -31,6 +31,10 @@ module GolfCourseQueries {
         pageSize: Nat;
     };
 
+    public type GetGolfCourseSummary = {
+        id: T.GolfCourseId;
+    };
+
     public type GolfCourseSummary = {
         id: T.GolfCourseId;
         name: Text;

@@ -153,7 +153,7 @@ module {
       };
     };
 
-    public func getGolfers(dto: GolferQueries.GetGolfers) : async Result.Result<GolferQueries.Golfers, T.Error> {
+    public func getGolfers(dto: GolferQueries.GetGolfers, getGolfCourseSummary: shared (GolfCourseQueries.GetGolfCourse) -> async Result.Result<GolfCourseQueries.GolfCourseSummary, T.Error>) : async Result.Result<GolferQueries.Golfers, T.Error> {
       if(Text.size(dto.searchTerm) < 3){
         return #err(#TooShort);
       };
@@ -179,6 +179,26 @@ module {
               switch(result){
                 case (#ok foundGolfer){
 
+                  var homeCourse: ?GolfCourseQueries.GolfCourseSummary = null;
+
+                  switch(foundGolfer.homeCourseId){
+                    case (?foundHomeCourseId){
+                      let getGolfCourseDTO: GolfCourseQueries.GetGolfCourse = {
+                        id = foundHomeCourseId;
+                      };
+                      let homeCourseSummaryResult = await getGolfCourseSummary(getGolfCourseDTO);
+                      switch(homeCourseSummaryResult){
+                        case (#ok course){
+                          homeCourse := ?course;
+                        };
+                        case (#err _) {}
+                      }
+                    };
+                    case (null){
+
+                    };
+                  };
+
                   golferBuffer.add({
                     name = foundGolfer.username;
                     profilePicture = foundGolfer.golferPicture;
@@ -186,6 +206,7 @@ module {
                     principalId = foundGolfer.principalId;
                     handicap = foundGolfer.handicap;
                     joinedOn = foundGolfer.joinedOn;
+                    homeCourse;
                   });
 
                 };
@@ -246,6 +267,10 @@ module {
           return #err(#NotFound);
         }
       };
+    };
+
+    public func getUserFavouriteCourses(dto: GolfCourseQueries.GetUserFavouriteCourses) : async Result.Result<GolfCourseQueries.UserFavouriteCourses, T.Error> {
+      return #err(#NotFound);
     };
 
     //Update functions

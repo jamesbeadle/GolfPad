@@ -129,6 +129,12 @@ export type Error =
   | { OutOfRange: null }
   | { PaymentError: null }
   | { CanisterFull: null };
+export interface FavouriteCourse {
+  id: GolfCourseId;
+  name: string;
+  mainImageExtension: string;
+  mainImage: [] | [Uint8Array | number[]];
+}
 export interface Friend {
   principalId: PrincipalId;
 }
@@ -249,6 +255,9 @@ export interface GetGolfCourse {
 export interface GetGolfCourseCanisterId {
   id: GolfCourseId;
 }
+export interface GetGolfCourseSummary {
+  id: GolfCourseId;
+}
 export interface GetGolfCourses {
   page: bigint;
   searchTerm: string;
@@ -270,6 +279,10 @@ export interface GetShotAverages {
 }
 export interface GetUpcomingGames {
   page: bigint;
+  principalId: PrincipalId;
+}
+export interface GetUserFavouriteCourses {
+  searchTerm: string;
   principalId: PrincipalId;
 }
 export type GolfClub =
@@ -378,6 +391,7 @@ export interface GolferEvent {
 export interface GolferSummary {
   name: string;
   joinedOn: bigint;
+  homeCourse: [] | [GolfCourseSummary];
   profilePictureExtension: string;
   profilePicture: [] | [Uint8Array | number[]];
   handicap: [] | [Handicap];
@@ -493,23 +507,25 @@ export interface RemoveFriend {
 }
 export type Result = { ok: null } | { err: Error };
 export type Result_1 = { ok: UsernameAvailable } | { err: Error };
-export type Result_10 = { ok: GameSummaries } | { err: Error };
-export type Result_11 = { ok: GameInvites } | { err: Error };
-export type Result_12 = { ok: Game } | { err: Error };
-export type Result_13 = { ok: Friends } | { err: Error };
-export type Result_14 = { ok: FriendRequests } | { err: Error };
-export type Result_15 = { ok: ClubShots } | { err: Error };
-export type Result_16 = { ok: Buzz } | { err: Error };
-export type Result_17 = { ok: AppStatusDTO } | { err: Error };
-export type Result_18 = { ok: GameId } | { err: Error };
-export type Result_2 = { ok: UpcomingGames } | { err: Error };
-export type Result_3 = { ok: ShotAverages } | { err: Error };
-export type Result_4 = { ok: Profile } | { err: Error };
-export type Result_5 = { ok: Golfers } | { err: Error };
-export type Result_6 = { ok: Golfer } | { err: Error };
-export type Result_7 = { ok: GolfCourses } | { err: Error };
-export type Result_8 = { ok: GolfCourseCanisterId } | { err: Error };
-export type Result_9 = { ok: GolfCourse } | { err: Error };
+export type Result_10 = { ok: GolfCourseCanisterId } | { err: Error };
+export type Result_11 = { ok: GolfCourse } | { err: Error };
+export type Result_12 = { ok: GameSummaries } | { err: Error };
+export type Result_13 = { ok: GameInvites } | { err: Error };
+export type Result_14 = { ok: Game } | { err: Error };
+export type Result_15 = { ok: Friends } | { err: Error };
+export type Result_16 = { ok: FriendRequests } | { err: Error };
+export type Result_17 = { ok: ClubShots } | { err: Error };
+export type Result_18 = { ok: Buzz } | { err: Error };
+export type Result_19 = { ok: AppStatusDTO } | { err: Error };
+export type Result_2 = { ok: UserFavouriteCourses } | { err: Error };
+export type Result_20 = { ok: GameId } | { err: Error };
+export type Result_3 = { ok: UpcomingGames } | { err: Error };
+export type Result_4 = { ok: ShotAverages } | { err: Error };
+export type Result_5 = { ok: Profile } | { err: Error };
+export type Result_6 = { ok: Golfers } | { err: Error };
+export type Result_7 = { ok: Golfer } | { err: Error };
+export type Result_8 = { ok: GolfCourses } | { err: Error };
+export type Result_9 = { ok: GolfCourseSummary } | { err: Error };
 export type RustResult = { Ok: string } | { Err: string };
 export interface SendFriendRequest {
   requestedFriend: PrincipalId;
@@ -598,6 +614,12 @@ export interface UpdateUsername {
   username: string;
   principalId: PrincipalId;
 }
+export interface UserFavouriteCourses {
+  total: bigint;
+  page: bigint;
+  pageSize: bigint;
+  entries: Array<FavouriteCourse>;
+}
 export type UsernameAvailable = boolean;
 export interface _SERVICE {
   acceptFriendRequest: ActorMethod<[AcceptFriendRequest], Result>;
@@ -605,28 +627,30 @@ export interface _SERVICE {
   addGameScore: ActorMethod<[AddGameScore], Result>;
   addShot: ActorMethod<[AddShot], Result>;
   beginGame: ActorMethod<[BeginGame], Result>;
-  createGame: ActorMethod<[CreateGame], Result_18>;
+  createGame: ActorMethod<[CreateGame], Result_20>;
   createUser: ActorMethod<[CreateUser], Result>;
   deleteGame: ActorMethod<[DeleteGame], Result>;
   deleteShot: ActorMethod<[DeleteShot], Result>;
   executeAddGolfCourse: ActorMethod<[CreateGolfCourse], undefined>;
   executeUpdateGolfCourse: ActorMethod<[UpdateGolfCourse], undefined>;
-  getAppStatus: ActorMethod<[], Result_17>;
-  getBuzz: ActorMethod<[GetBuzz], Result_16>;
-  getClubShots: ActorMethod<[GetClubShots], Result_15>;
-  getFriendRequests: ActorMethod<[GetFriendRequests], Result_14>;
-  getFriends: ActorMethod<[GetFriends], Result_13>;
-  getGame: ActorMethod<[GetGame], Result_12>;
-  getGameInvites: ActorMethod<[GetGameInvites], Result_11>;
-  getGameSummaries: ActorMethod<[GetGameSummaries], Result_10>;
-  getGolfCourse: ActorMethod<[GetGolfCourse], Result_9>;
-  getGolfCourseCanisterId: ActorMethod<[GetGolfCourseCanisterId], Result_8>;
-  getGolfCourses: ActorMethod<[GetGolfCourses], Result_7>;
-  getGolfer: ActorMethod<[GetGolfer], Result_6>;
-  getGolfers: ActorMethod<[GetGolfers], Result_5>;
-  getProfile: ActorMethod<[GetProfile], Result_4>;
-  getShotAverages: ActorMethod<[GetShotAverages], Result_3>;
-  getUpcomingGames: ActorMethod<[GetUpcomingGames], Result_2>;
+  getAppStatus: ActorMethod<[], Result_19>;
+  getBuzz: ActorMethod<[GetBuzz], Result_18>;
+  getClubShots: ActorMethod<[GetClubShots], Result_17>;
+  getFriendRequests: ActorMethod<[GetFriendRequests], Result_16>;
+  getFriends: ActorMethod<[GetFriends], Result_15>;
+  getGame: ActorMethod<[GetGame], Result_14>;
+  getGameInvites: ActorMethod<[GetGameInvites], Result_13>;
+  getGameSummaries: ActorMethod<[GetGameSummaries], Result_12>;
+  getGolfCourse: ActorMethod<[GetGolfCourse], Result_11>;
+  getGolfCourseCanisterId: ActorMethod<[GetGolfCourseCanisterId], Result_10>;
+  getGolfCourseSummary: ActorMethod<[GetGolfCourseSummary], Result_9>;
+  getGolfCourses: ActorMethod<[GetGolfCourses], Result_8>;
+  getGolfer: ActorMethod<[GetGolfer], Result_7>;
+  getGolfers: ActorMethod<[GetGolfers], Result_6>;
+  getProfile: ActorMethod<[GetProfile], Result_5>;
+  getShotAverages: ActorMethod<[GetShotAverages], Result_4>;
+  getUpcomingGames: ActorMethod<[GetUpcomingGames], Result_3>;
+  getUserFavouriteCourses: ActorMethod<[GetUserFavouriteCourses], Result_2>;
   inviteGolfers: ActorMethod<[InviteGolfers], Result>;
   isUsernameAvailable: ActorMethod<[IsUsernameAvailable], Result_1>;
   predictGame: ActorMethod<[PredictGame], Result>;

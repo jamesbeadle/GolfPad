@@ -4,6 +4,7 @@ import Iter "mo:base/Iter";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Timer "mo:base/Timer";
+import Buffer "mo:base/Buffer";
 
 import Environment "utilities/Environment";
 import Management "utilities/Management";
@@ -197,6 +198,11 @@ actor Self {
     return await courseManager.getGolfCourses(dto);
   };
 
+  public shared ({ caller }) func getGolfCourseSummary(dto: GolfCourseQueries.GetGolfCourseSummary) : async Result.Result<GolfCourseQueries.GolfCourseSummary, T.Error>{
+    assert not Principal.isAnonymous(caller);
+    return await courseManager.getGolfCourseSummary(dto); 
+  };
+
   public shared ({ caller }) func getGolfCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<GolfCourseQueries.GolfCourse, T.Error>{
     assert not Principal.isAnonymous(caller);
     return await courseManager.getGolfCourse(dto); 
@@ -245,7 +251,7 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert dto.principalId == principalId;
-    return await golferManager.getGolfers(dto);
+    return await golferManager.getGolfers(dto, getGolfCourse);
   };
 
   public shared ({ caller }) func getGolfer(dto: GolferQueries.GetGolfer) : async Result.Result<GolferQueries.Golfer, T.Error>{
@@ -296,30 +302,8 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
 
-    let userFavouriteCourseIds = await userManager.getUserFavouriteCourses(dto);
-
-    let favouriteCourseBuffer = Buffer.fromArray<CourseQueries.FavouriteCourse>([]);
-
-    for(courseId in Iter.fromArray(userFavouiteCourseIds)){
-      let course: CourseQueries.FavouriteCourse = await courseManager.getCourseSummary();
-      switch(course){
-        case (?foundCourseSummary){
-          favouriteCourseBuffer.add({
-
-          });
-        };
-        case (null){
-          return #err(#NotFound);
-        }
-      }
-    };
-    return {
-      entries = Buffer.toArray(favouriteCourseBuffer);
-      page;
-      total;
-    };
+    return await golferManager.getUserFavouriteCourses(dto);
   };
-
   
 
   //User Commands:

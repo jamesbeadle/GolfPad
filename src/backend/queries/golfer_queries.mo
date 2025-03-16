@@ -1,5 +1,6 @@
 import T "../data-types/types";
 import Base "mo:waterway-mops/BaseTypes";
+import GolfCourseQueries "golf_course_queries";
 
 module GolferQueries {
     
@@ -38,6 +39,7 @@ module GolferQueries {
         profilePictureExtension: Text;
         handicap: ?T.Handicap;
         joinedOn: Int;
+        homeCourse: ?GolfCourseQueries.GolfCourseSummary;
     };
 
     public type GetGolfer = {

@@ -1,4 +1,12 @@
 <script lang="ts">
+    import CategoryIndicator from "$lib/components/shared/category-indicator.svelte";
+    import { writable } from "svelte/store";
+    import BandHoleSelect from "./band-hole-select.svelte";
+
+    let currentPrediction = writable(1);
+    let predictionTitle = writable('');
+    let totalCategories = 9;
+
     function predict(){
         
     }
@@ -9,9 +17,9 @@
         <p>Categories</p>
     </div>
     <div class="w-3/5">
-        <CategoryIndicator {currentCategory} />
+        <CategoryIndicator currentCategory={currentPrediction} {totalCategories} />
     </div>
 </div>
 <div class="flex flex-row">
-    <HoleCalendarSelect {predictionNumber} {predictionTitle} {predict} />
+    <BandHoleSelect predictionNumber={currentPrediction} {predictionTitle} {predict} />
 </div>

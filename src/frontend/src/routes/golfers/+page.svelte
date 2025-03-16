@@ -22,7 +22,6 @@
         loadGolfers();
     });
 
-
     async function handleSearch() {
         page = 1n;
         await loadGolfers();
