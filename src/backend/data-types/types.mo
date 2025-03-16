@@ -5,6 +5,7 @@ import GolfEnums "golf_enums";
 module Types {
   
   public type GolfCourseId = Nat;
+  public type TeeGroupIndex = Nat8;
   public type GameId = Nat;
   public type GolfTeamId = Nat;
   public type GolfShotId = Nat;
@@ -210,6 +211,7 @@ module Types {
   };
 
   public type TeeGroup = {
+    id: TeeGroupIndex;
     name: Text;
     colour: Text;
     added: Int;
@@ -220,7 +222,7 @@ module Types {
   public type GolfCourseSnapshot = {
     courseId: GolfCourseId;
     courseVersion: GolfCourseVersion;
-    teeGroup: TeeGroup;
+    teeGroupIndex: TeeGroupIndex;
   };
 
   public type Hole = {

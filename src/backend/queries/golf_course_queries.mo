@@ -45,7 +45,26 @@ module GolfCourseQueries {
 
     public type GolfCourseCanisterId = {
         canisterId: Base.CanisterId;
-    }
+    };
+
+    public type GetUserFavouriteCourses = {
+        principalId: Base.PrincipalId;
+        searchTerm: Text;
+    };
+
+    public type UserFavouriteCourses = {
+        page: Nat;
+        total: Nat;
+        pageSize: Nat;
+        entries: [FavouriteCourse];
+    };
+
+    public type FavouriteCourse = {
+        id: T.GolfCourseId;
+        name: Text;
+        mainImage: ?Blob;
+        mainImageExtension: Text;
+    };
     
 }
 

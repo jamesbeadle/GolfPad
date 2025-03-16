@@ -120,6 +120,10 @@ function createUserStore() {
     return new UserService().getShotAverages(dto);
   }
 
+  async function getUserFavouriteCourses(
+    dto: GetUserFavouriteCourses,
+  ): Promise<UserFavouriteCourses> {}
+
   //User Commands Functions
 
   async function createUser(dto: CreateUser): Promise<any> {

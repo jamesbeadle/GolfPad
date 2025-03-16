@@ -83,14 +83,13 @@ export interface CourseInfo__1 {
   course_image: Uint8Array | number[];
 }
 export interface CreateGame {
-  name: string;
   inviteIds: Array<PrincipalId>;
   createdById: PrincipalId;
   teeOffTime: bigint;
+  teeGroupIndex: TeeGroupIndex;
   courseVersion: GolfCourseVersion;
   gameType: GameType;
   courseId: GolfCourseId;
-  teeGroup: TeeGroup;
 }
 export interface CreateGolfCourse {
   holes: Array<Hole>;
@@ -311,9 +310,9 @@ export interface GolfCourseCanisterId {
 }
 export type GolfCourseId = bigint;
 export interface GolfCourseSnapshot {
+  teeGroupIndex: TeeGroupIndex;
   courseVersion: GolfCourseVersion;
   courseId: GolfCourseId;
-  teeGroup: TeeGroup;
 }
 export interface GolfCourseSummary {
   id: GolfCourseId;
@@ -539,12 +538,14 @@ export interface TeamOpponentInfo {
   teams: Array<TeamFeedSummary>;
 }
 export interface TeeGroup {
+  id: TeeGroupIndex;
   added: bigint;
   holes: Array<Hole>;
   name: string;
   colour: string;
   strokeIndex: number;
 }
+export type TeeGroupIndex = number;
 export interface TeeInfo {
   par: number;
   name: string;

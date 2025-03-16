@@ -108,7 +108,7 @@ actor class _GameCanister() {
       events = [];
       courseSnapshot = {
         courseId = dto.courseId;
-        teeGroup = dto.teeGroup;
+        teeGroupIndex = dto.teeGroupIndex;
         courseVersion = dto.courseVersion;
       };
       teeOffTime = dto.teeOffTime;

@@ -71,6 +71,7 @@ export const idlFactory = ({ IDL }) => {
     principalId: PrincipalId,
   });
   const BeginGame = IDL.Record({ gameId: GameId });
+  const TeeGroupIndex = IDL.Nat8;
   const GolfCourseVersion = IDL.Nat8;
   const GameType = IDL.Variant({
     Mulligans: IDL.Null,
@@ -79,6 +80,29 @@ export const idlFactory = ({ IDL }) => {
     NextUp: IDL.Null,
   });
   const GolfCourseId = IDL.Nat;
+  const CreateGame = IDL.Record({
+    inviteIds: IDL.Vec(PrincipalId),
+    createdById: PrincipalId,
+    teeOffTime: IDL.Int,
+    teeGroupIndex: TeeGroupIndex,
+    courseVersion: GolfCourseVersion,
+    gameType: GameType,
+    courseId: GolfCourseId,
+  });
+  const Result_18 = IDL.Variant({ ok: GameId, err: Error });
+  const Handicap = IDL.Int16;
+  const CreateUser = IDL.Record({
+    username: IDL.Text,
+    profilePictureExtension: IDL.Opt(IDL.Text),
+    profilePicture: IDL.Opt(IDL.Vec(IDL.Nat8)),
+    handicap: IDL.Opt(Handicap),
+  });
+  const DeleteGame = IDL.Record({ gameId: GameId });
+  const GolfShotId = IDL.Nat;
+  const DeleteShot = IDL.Record({
+    golfShotId: GolfShotId,
+    principalId: PrincipalId,
+  });
   const TeeInfo = IDL.Record({
     par: IDL.Nat8,
     name: IDL.Text,
@@ -98,35 +122,12 @@ export const idlFactory = ({ IDL }) => {
     images: IDL.Vec(HoleImage),
   });
   const TeeGroup = IDL.Record({
+    id: TeeGroupIndex,
     added: IDL.Int,
     holes: IDL.Vec(Hole),
     name: IDL.Text,
     colour: IDL.Text,
     strokeIndex: IDL.Nat8,
-  });
-  const CreateGame = IDL.Record({
-    name: IDL.Text,
-    inviteIds: IDL.Vec(PrincipalId),
-    createdById: PrincipalId,
-    teeOffTime: IDL.Int,
-    courseVersion: GolfCourseVersion,
-    gameType: GameType,
-    courseId: GolfCourseId,
-    teeGroup: TeeGroup,
-  });
-  const Result_18 = IDL.Variant({ ok: GameId, err: Error });
-  const Handicap = IDL.Int16;
-  const CreateUser = IDL.Record({
-    username: IDL.Text,
-    profilePictureExtension: IDL.Opt(IDL.Text),
-    profilePicture: IDL.Opt(IDL.Vec(IDL.Nat8)),
-    handicap: IDL.Opt(Handicap),
-  });
-  const DeleteGame = IDL.Record({ gameId: GameId });
-  const GolfShotId = IDL.Nat;
-  const DeleteShot = IDL.Record({
-    golfShotId: GolfShotId,
-    principalId: PrincipalId,
   });
   const CreateGolfCourse = IDL.Record({
     holes: IDL.Vec(Hole),
@@ -294,9 +295,9 @@ export const idlFactory = ({ IDL }) => {
     NextUp: IDL.Record({}),
   });
   const GolfCourseSnapshot = IDL.Record({
+    teeGroupIndex: TeeGroupIndex,
     courseVersion: GolfCourseVersion,
     courseId: GolfCourseId,
-    teeGroup: TeeGroup,
   });
   const GolfEvent = IDL.Variant({
     Par: IDL.Null,

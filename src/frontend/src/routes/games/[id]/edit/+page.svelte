@@ -5,8 +5,16 @@
 </script>
 
 <Layout>
-    <!-- Editing the information of a games based on the status 
-        If not started can add / remove peeople
-        If a shot has been entered can't add someone 
+    {#if Object.keys(game.status)[0] != "Unplayed"}
+        <p>Game cannot be edited after it has begun.</p>
+    {:else}
+        <EditGame />
+
+    <!-- 
+        -- add or remove players
+        -- change date
+        -- change course 
+        -- change tee
     -->
+    {/if}
 </Layout>

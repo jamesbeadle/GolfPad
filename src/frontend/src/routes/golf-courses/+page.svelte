@@ -11,6 +11,7 @@
     import ListViewPanel from "$lib/components/shared/list-view-panel.svelte";
     import PaginationRow from "$lib/components/shared/pagination-row.svelte";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
+    import GolfCourseSearchFilters from "$lib/components/golf-course/golf-course-search-filters.svelte";
 
     let isLoading = true;
     let golfCourses: GolfCourses | null = null;
@@ -67,9 +68,7 @@
     {#if isLoading}
         <LocalSpinner />
     {:else}
-    <!-- - Search for a new course
-        - Add it to my favourite courses -->
-       
+        <GolfCourseSearchFilters />
         <ListViewPanel title="GOLF COURSES" buttonTitle="ADD GOLF COURSE" buttonCallback={createNew}>
             {#if golfCourses}
 

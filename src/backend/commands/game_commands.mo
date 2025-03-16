@@ -15,8 +15,7 @@ module GameCommands {
         gameType: T.GameType;
         inviteIds: [Base.PrincipalId];
         teeOffTime: Int;
-        name: Text;
-        teeGroup: T.TeeGroup;
+        teeGroupIndex: T.TeeGroupIndex;
         courseVersion: T.GolfCourseVersion;
     };
 

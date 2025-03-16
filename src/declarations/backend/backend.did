@@ -62,11 +62,13 @@ type TeeInfo =
    strokeIndex: nat8;
    yardage: nat;
  };
+type TeeGroupIndex = nat8;
 type TeeGroup = 
  record {
    added: int;
    colour: text;
    holes: vec Hole;
+   id: TeeGroupIndex;
    name: text;
    strokeIndex: nat8;
  };
@@ -403,7 +405,7 @@ type GolfCourseSnapshot =
  record {
    courseId: GolfCourseId;
    courseVersion: GolfCourseVersion;
-   teeGroup: TeeGroup;
+   teeGroupIndex: TeeGroupIndex;
  };
 type GolfCourseId = nat;
 type GolfCourseCanisterId = record {canisterId: CanisterId;};
@@ -637,8 +639,7 @@ type CreateGame =
    createdById: PrincipalId;
    gameType: GameType;
    inviteIds: vec PrincipalId;
-   name: text;
-   teeGroup: TeeGroup;
+   teeGroupIndex: TeeGroupIndex;
    teeOffTime: int;
  };
 type CourseInfo__1 = 

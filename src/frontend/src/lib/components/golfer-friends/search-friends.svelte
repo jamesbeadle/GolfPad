@@ -1,3 +1,8 @@
+<script lang="ts">
+    import FriendRequestSentModal from "./friend-request-sent-modal.svelte";
+
+    let showFriendRequestSent = false;
+</script>
 
 
 
@@ -11,3 +16,6 @@
 
 rows with add confirm button
 
+{#if showFriendRequestSent}
+    <FriendRequestSentModal {showFriendRequestSent} />
+{/if}

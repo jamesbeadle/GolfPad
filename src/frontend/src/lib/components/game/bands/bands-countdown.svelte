@@ -5,7 +5,7 @@
     import { golfCourseStore } from "$lib/stores/golf-course-store";
     import { toasts } from "$lib/stores/toasts-store";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
-    import MulligansPlayerSummary from "./mulligans-player-summary.svelte";
+    import BandsPlayerSummary from "./bands-player-summary.svelte";
 
     export let game: Game;
 
@@ -73,7 +73,7 @@
 {:else}
     <div class="flex flex-col w-full">
         <GameCourseInfoSummary golfCourse={golfCourse!} />
-        <MulligansPlayerSummary {game} />
+        <BandsPlayerSummary {game} />
         <p>{countdown}</p>
     </div>
 {/if}

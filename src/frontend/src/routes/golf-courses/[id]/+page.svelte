@@ -5,6 +5,7 @@
 </script>
 
 <Layout>
+    
     <!-- Golf Course Details 
         - Details
         - Tee Viewer Widget

@@ -4,5 +4,12 @@
 
     export let game: Game;
 </script>
-countdown to when the game starting
-Bands will show your predict screen if not predicted but if you have it will just show summary information about when it starts
+
+
+<div class="flex flex-col">
+    <p>PLAYER SETUP</p>
+    <ActivePlayerPanel />
+    <p>PLAYER</p>
+    <p>{activePlayer.name}<span class="name-handicap">{activePlayer.handicap}</span></p>
+    <BandsCategoryBrowser />
+</div>

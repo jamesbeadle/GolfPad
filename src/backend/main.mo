@@ -207,8 +207,7 @@ actor Self {
     let principalId = Principal.toText(caller);
     assert golferManager.isGolferCanisterId(principalId);
     return await courseManager.getGolfCourseCanisterId(dto);
-  };
-               
+  };             
 
   //Golf Course Commands - SNS Validation and Callback functions:
 
@@ -292,6 +291,36 @@ actor Self {
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.getClubShots(dto);
   };
+    
+  public shared ({ caller }) func getUserFavouriteCourses(dto: GolfCourseQueries.GetUserFavouriteCourses) : async Result.Result<GolfCourseQueries.UserFavouriteCourses, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+
+    let userFavouriteCourseIds = await userManager.getUserFavouriteCourses(dto);
+
+    let favouriteCourseBuffer = Buffer.fromArray<CourseQueries.FavouriteCourse>([]);
+
+    for(courseId in Iter.fromArray(userFavouiteCourseIds)){
+      let course: CourseQueries.FavouriteCourse = await courseManager.getCourseSummary();
+      switch(course){
+        case (?foundCourseSummary){
+          favouriteCourseBuffer.add({
+
+          });
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      }
+    };
+    return {
+      entries = Buffer.toArray(favouriteCourseBuffer);
+      page;
+      total;
+    };
+  };
+
+  
 
   //User Commands:
 

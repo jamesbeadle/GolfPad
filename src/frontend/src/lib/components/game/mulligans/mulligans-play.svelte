@@ -1,22 +1,24 @@
 <script lang="ts">
     import type { Game } from "../../../../../../declarations/backend/backend.did";
+    import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
+    import GameCourseInfoSummary from "../game-course-info-summary.svelte";
+    import MulligansGameDetail from "./mulligans-game-detail.svelte";
+    import MulligansPlayersScores from "./mulligans-players-scores.svelte";
 
     export let game: Game;
+
+    let isLoading = true;
+
+
 </script>
-countdown to when the game starting
 
-player scores
-    1 up or 1 down for either of the 2 players
-
-
-scorecard
-    hole - par yards si row
-    header row
-    player mulligans use row
-
-select winner section
-
-show complete game button if all holes filled out
-
-prior and next hole navigation
+{#if isLoading}
+    <LocalSpinner />
+{:else}
+    <div class="flex flex-col w-full">
+        <GameCourseInfoSummary golfCourse={golfCourse!} />
+        <MulligansPlayersScores {game} />
+        <MulligansGameDetail />
+    </div>
+{/if}
 
