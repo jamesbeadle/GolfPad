@@ -155,13 +155,10 @@ actor class _GolfCoursesCanister() {
                       return {
                         name = holeEntry.name; 
                         number = holeEntry.number; 
-                        teeInfo = {
-                          name = holeEntry.name;
-                          colour = entry.colour;
-                          yardage = holeEntry.yardage;
-                          par = holeEntry.par;
-                          strokeIndex = holeEntry.strokeIndex;
-                        };
+                        colour = entry.colour;
+                        yardage = holeEntry.yardage;
+                        par = holeEntry.par;
+                        strokeIndex = holeEntry.strokeIndex;
                       }
                     });
                     golfCourseId = foundGolfCourse.id;

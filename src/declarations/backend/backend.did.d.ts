@@ -366,7 +366,7 @@ export interface GolfCourse {
   totalHoles: number;
   activeVersion: GolfCourseVersion;
   name: string;
-  tees: Array<TeeGroup>;
+  tees: Array<GolfCourseTeeGroup>;
   countryId: CountryId;
   mainImageExtension: string;
   founded: bigint;
@@ -391,13 +391,12 @@ export interface GolfCourseSummary {
   mainImage: [] | [Uint8Array | number[]];
 }
 export interface GolfCourseTeeGroup {
-  id: GolfCourseId;
   added: bigint;
   holes: Array<HoleSummary>;
+  golfCourseId: GolfCourseId;
   name: string;
   index: TeeGroupIndex;
   colour: string;
-  strokeIndex: number;
 }
 export interface GolfCourseTees {
   id: GolfCourseId;
@@ -474,9 +473,12 @@ export interface Golfers {
 }
 export type Handicap = number;
 export interface Hole {
+  par: number;
   name: string;
-  tees: Array<TeeInfo>;
+  yardage: bigint;
   number: number;
+  colour: string;
+  strokeIndex: number;
   images: Array<HoleImage>;
 }
 export interface HoleImage {
@@ -486,9 +488,12 @@ export interface HoleImage {
 }
 export type HoleNumber = number;
 export interface HoleSummary {
+  par: number;
   name: string;
-  teeInfo: TeeInfo;
+  yardage: bigint;
   number: number;
+  colour: string;
+  strokeIndex: number;
 }
 export interface InviteGolfers {
   gameId: GameId;
@@ -653,16 +658,8 @@ export interface TeeGroup {
   name: string;
   index: TeeGroupIndex;
   colour: string;
-  strokeIndex: number;
 }
 export type TeeGroupIndex = number;
-export interface TeeInfo {
-  par: number;
-  name: string;
-  yardage: bigint;
-  colour: string;
-  strokeIndex: number;
-}
 export interface UpcomingGame {
   course_info: CourseInfo;
   opponent_info: OpponentInfo;
