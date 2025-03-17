@@ -155,7 +155,7 @@ module {
       };
     };
 
-    public func getGolfers(dto : GolferQueries.GetGolfers, getGolfCourseSummary : shared (GolfCourseQueries.GetGolfCourse) -> async Result.Result<GolfCourseQueries.GolfCourseSummary, T.Error>) : async Result.Result<GolferQueries.Golfers, T.Error> {
+    public func getGolfers(dto : GolferQueries.GetGolfers, homeCourse: ?GolfCourseQueries.GolfCourseSummary) : async Result.Result<GolferQueries.Golfers, T.Error> {
       if (Text.size(dto.searchTerm) < 3) {
         return #err(#TooShort);
       };
@@ -182,27 +182,6 @@ module {
               });
               switch (result) {
                 case (#ok foundGolfer) {
-
-                  var homeCourse : ?GolfCourseQueries.GolfCourseSummary = null;
-
-                  switch (foundGolfer.homeCourseId) {
-                    case (?foundHomeCourseId) {
-                      let getGolfCourseDTO : GolfCourseQueries.GetGolfCourse = {
-                        id = foundHomeCourseId;
-                      };
-                      let homeCourseSummaryResult = await getGolfCourseSummary(getGolfCourseDTO);
-                      switch (homeCourseSummaryResult) {
-                        case (#ok course) {
-                          homeCourse := ?course;
-                        };
-                        case (#err _) {};
-                      };
-                    };
-                    case (null) {
-
-                    };
-                  };
-
                   golferBuffer.add({
                     name = foundGolfer.username;
                     profilePicture = foundGolfer.golferPicture;
@@ -240,7 +219,7 @@ module {
     };
 
 
-    public shared ({ caller }) func getGameGolferSummaries(dto: GolferQueries.GetGameGolferSummaries) : async Result.Result<GolferQueries.GameGolferSummaries, T.Error>{
+    public func getGameGolferSummaries(dto: GolferQueries.GetGameGolferSummaries) : async Result.Result<GolferQueries.GameGolferSummaries, T.Error>{
       return #err(#NotFound); //TODO
     };
 

@@ -135,25 +135,35 @@ type Result_3 =
    err: Error;
    ok: UpcomingGames;
  };
-type Result_23 = 
+type Result_25 = 
+ variant {
+   err: Error;
+   ok: MembershipClaim;
+ };
+type Result_24 = 
  variant {
    err: Error;
    ok: GameId;
  };
-type Result_22 = 
+type Result_23 = 
  variant {
    err: Error;
    ok: AppStatusDTO;
  };
-type Result_21 = 
+type Result_22 = 
  variant {
    err: Error;
    ok: Buzz;
  };
-type Result_20 = 
+type Result_21 = 
  variant {
    err: Error;
    ok: ClubShots;
+ };
+type Result_20 = 
+ variant {
+   err: Error;
+   ok: FriendRequests;
  };
 type Result_2 = 
  variant {
@@ -163,17 +173,17 @@ type Result_2 =
 type Result_19 = 
  variant {
    err: Error;
-   ok: FriendRequests;
+   ok: Friends;
  };
 type Result_18 = 
  variant {
    err: Error;
-   ok: Friends;
+   ok: Game;
  };
 type Result_17 = 
  variant {
    err: Error;
-   ok: Game;
+   ok: GameGolferSummaries;
  };
 type Result_16 = 
  variant {
@@ -324,6 +334,20 @@ type MulligansHoleResult =
    golfer2MulliganUsed: bool;
    holeNumber: HoleNumber;
    winner: PrincipalId;
+ };
+type MembershipType = 
+ variant {
+   Expired;
+   Lifetime;
+   Monthly;
+   NotClaimed;
+   Seasonal;
+ };
+type MembershipClaim = 
+ record {
+   claimedOn: int;
+   expiresOn: opt int;
+   membershipType: MembershipType;
  };
 type MatchResultInfo = 
  variant {
@@ -560,6 +584,7 @@ type GetGameSummaries =
    principalId: PrincipalId;
  };
 type GetGameInvites = record {principalId: PrincipalId;};
+type GetGameGolferSummaries = record {gameId: GameId;};
 type GetGame = record {gameId: GameId;};
 type GetFriends = 
  record {
@@ -661,6 +686,7 @@ type GameInfo =
    game_type: GameType;
  };
 type GameId = nat;
+type GameGolferSummaries = record {entries: vec GolferSummary;};
 type Game = 
  record {
    courseId: GolfCourseId;
@@ -710,6 +736,7 @@ type Error =
    CanisterFull;
    CreateGameError;
    DecodeError;
+   InEligible;
    InvalidGolfTeamPicture;
    InvalidProfilePicture;
    NotAllowed;
@@ -893,18 +920,20 @@ service : {
   addGameScore: (AddGameScore) -> (Result);
   addShot: (AddShot) -> (Result);
   beginGame: (BeginGame) -> (Result);
-  createGame: (CreateGame) -> (Result_23);
+  claimMembership: () -> (Result_25);
+  createGame: (CreateGame) -> (Result_24);
   createUser: (CreateUser) -> (Result);
   deleteGame: (DeleteGame) -> (Result);
   deleteShot: (DeleteShot) -> (Result);
   executeAddGolfCourse: (CreateGolfCourse) -> ();
   executeUpdateGolfCourse: (UpdateGolfCourse) -> ();
-  getAppStatus: () -> (Result_22) query;
-  getBuzz: (GetBuzz) -> (Result_21);
-  getClubShots: (GetClubShots) -> (Result_20);
-  getFriendRequests: (GetFriendRequests) -> (Result_19);
-  getFriends: (GetFriends) -> (Result_18);
-  getGame: (GetGame) -> (Result_17);
+  getAppStatus: () -> (Result_23) query;
+  getBuzz: (GetBuzz) -> (Result_22);
+  getClubShots: (GetClubShots) -> (Result_21);
+  getFriendRequests: (GetFriendRequests) -> (Result_20);
+  getFriends: (GetFriends) -> (Result_19);
+  getGame: (GetGame) -> (Result_18);
+  getGameGolferSummaries: (GetGameGolferSummaries) -> (Result_17);
   getGameInvites: (GetGameInvites) -> (Result_16);
   getGameSummaries: (GetGameSummaries) -> (Result_15);
   getGolfCourse: (GetGolfCourse) -> (Result_14);

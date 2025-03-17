@@ -31,7 +31,7 @@ module {
 
     private var gameSummaries: [T.GameSummary] = [];
 
-    public func getGameSummaries(2: Nat) : [T.GameSummary] {
+    public func getGameSummaries() : [T.GameSummary] {
       
       //loop through post summaries and get the range of posts
 

@@ -261,7 +261,8 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert dto.principalId == principalId;
-    return await golferManager.getGolfers(dto, getGolfCourseSummary);
+
+    return await golferManager.getGolfers(dto, null);
   };
 
   public shared ({ caller }) func getGameGolferSummaries(dto: GolferQueries.GetGameGolferSummaries) : async Result.Result<GolferQueries.GameGolferSummaries, T.Error>{
