@@ -297,15 +297,19 @@ type NextUpResultInfo =
 type MulligansScores = 
  record {
    golfer1HolesWonCount: nat8;
+   golfer1MulligansAvailable: nat8;
+   golfer1MulligansUsed: nat8;
    golfer2HolesWonCount: nat8;
+   golfer2MulligansAvailable: nat8;
+   golfer2MulligansUsed: nat8;
    results: vec MulligansHoleResult;
+   score: int;
    winner: PrincipalId;
  };
 type MulligansScore = 
  record {
    golfer1MulliganUsed: bool;
    golfer2MulliganUsed: bool;
-   holeNumber: HoleNumber;
    winner: PrincipalId;
  };
 type MulligansResultInfo = 
@@ -586,7 +590,11 @@ type GameStatus =
    Complete;
    Unplayed;
  };
-type GameScoreSubmission = variant {MulligansScores: MulligansScore;};
+type GameScoreSubmission = 
+ variant {
+   BandsScores: BandsScore;
+   MulligansScores: MulligansScore;
+ };
 type GameScoreDetail = 
  variant {
    BandsScores: BandsScores;
@@ -770,11 +778,8 @@ type BuildItResultInfo =
    teams: vec TeamFeedSummary__1;
  };
 type BeginGame = record {gameId: GameId;};
-type BandsScores = 
- record {
-   points: nat8;
-   results: vec BandsResult;
- };
+type BandsScores = record {players: vec BandsPlayerResult;};
+type BandsScore = record {predictions: vec BandsCategoryResult__1;};
 type BandsResultInfo = 
  record {
    holesPlayed: nat8;
@@ -783,13 +788,6 @@ type BandsResultInfo =
              PrincipalId;
              nat;
            };
- };
-type BandsResult = 
- record {
-   bandsCategory: BandsCategory;
-   completed: bool;
-   points: nat8;
-   principalId: PrincipalId;
  };
 type BandsPrediction = 
  record {
@@ -803,6 +801,23 @@ type BandsPrediction =
    wontDoubleBogeyStartHole: HoleNumber;
    wontHitTreeOrBunkerStartHole: HoleNumber;
    wontLoseBallStartHole: HoleNumber;
+ };
+type BandsPlayerResult = 
+ record {
+   categories: vec BandsCategoryResult;
+   points: nat8;
+   principalId: PrincipalId;
+ };
+type BandsCategoryResult__1 = 
+ record {
+   category: BandsCategory;
+   completed: bool;
+   golferId: PrincipalId;
+ };
+type BandsCategoryResult = 
+ record {
+   bandsCategory: BandsCategory;
+   completed: bool;
  };
 type BandsCategory = 
  variant {
@@ -837,6 +852,7 @@ type AddGameScore =
  record {
    detail: GameScoreSubmission;
    gameId: GameId;
+   holeNumber: HoleNumber;
    submittedById: PrincipalId;
  };
 type AcceptGameInvite = 

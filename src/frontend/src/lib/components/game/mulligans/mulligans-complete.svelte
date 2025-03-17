@@ -4,8 +4,10 @@
 
     export let game: Game;
 
-    let players: GolferSummary[] = []; //TODO
     
+
+    let players: GolferSummary[] = []; //TODO
+
 </script>
 
 

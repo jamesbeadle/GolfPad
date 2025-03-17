@@ -14,6 +14,7 @@ export interface AddGameScore {
   submittedById: PrincipalId;
   gameId: GameId;
   detail: GameScoreSubmission;
+  holeNumber: HoleNumber;
 }
 export interface AddShot {
   club: GolfClub;
@@ -39,6 +40,20 @@ export type BandsCategory =
   | { NoTreeOrBunker: null }
   | { Hit2Of3Fairways: null }
   | { Hit2Of3Greens: null };
+export interface BandsCategoryResult {
+  completed: boolean;
+  bandsCategory: BandsCategory;
+}
+export interface BandsCategoryResult__1 {
+  golferId: PrincipalId;
+  completed: boolean;
+  category: BandsCategory;
+}
+export interface BandsPlayerResult {
+  categories: Array<BandsCategoryResult>;
+  principalId: PrincipalId;
+  points: number;
+}
 export interface BandsPrediction {
   wontHitTreeOrBunkerStartHole: HoleNumber;
   underParStartHole: HoleNumber;
@@ -51,20 +66,16 @@ export interface BandsPrediction {
   hit2Of3GreensStartHole: HoleNumber;
   wontLoseBallStartHole: HoleNumber;
 }
-export interface BandsResult {
-  completed: boolean;
-  bandsCategory: BandsCategory;
-  principalId: PrincipalId;
-  points: number;
-}
 export interface BandsResultInfo {
   holesPlayed: number;
   players: Array<PlayerFeedSummary__1>;
   points: [PrincipalId, bigint];
 }
+export interface BandsScore {
+  predictions: Array<BandsCategoryResult__1>;
+}
 export interface BandsScores {
-  results: Array<BandsResult>;
-  points: number;
+  players: Array<BandsPlayerResult>;
 }
 export interface BeginGame {
   gameId: GameId;
@@ -226,7 +237,9 @@ export type GamePrediction =
 export type GameScoreDetail =
   | { BandsScores: BandsScores }
   | { MulligansScores: MulligansScores };
-export type GameScoreSubmission = { MulligansScores: MulligansScore };
+export type GameScoreSubmission =
+  | { BandsScores: BandsScore }
+  | { MulligansScores: MulligansScore };
 export type GameStatus =
   | { Unplayed: null }
   | { Active: null }
@@ -491,12 +504,16 @@ export interface MulligansScore {
   golfer2MulliganUsed: boolean;
   winner: PrincipalId;
   golfer1MulliganUsed: boolean;
-  holeNumber: HoleNumber;
 }
 export interface MulligansScores {
   winner: PrincipalId;
   results: Array<MulligansHoleResult>;
+  score: bigint;
+  golfer2MulligansUsed: number;
   golfer2HolesWonCount: number;
+  golfer1MulligansAvailable: number;
+  golfer2MulligansAvailable: number;
+  golfer1MulligansUsed: number;
   golfer1HolesWonCount: number;
 }
 export interface NextUpResultInfo {

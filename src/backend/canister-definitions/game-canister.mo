@@ -1551,6 +1551,8 @@ actor class _GameCanister() {
             var winner = "";
             var golfer1HolesWon = scores.golfer1HolesWonCount;
             var golfer2HolesWon = scores.golfer2HolesWonCount;
+            var golfer1MulligansAvailable = scores.golfer1MulligansAvailable;
+            var golfer2MulligansAvailable = scores.golfer2MulligansAvailable;
             var gameWinner = "";
             var gameStatus: T.GameStatus = game.status;
 
@@ -1568,9 +1570,16 @@ actor class _GameCanister() {
             };
             
             var mulliganHoleResultBuffer = Buffer.fromArray<T.MulligansHoleResult>(scores.results);
-                
+            
+            var golfer1MulligansUsed: Nat8 = 0;
+            var golfer2MulligansUsed: Nat8 = 0;
+
             switch(dto.detail){
               case (#MulligansScores data){
+
+                if(data.golfer1MulliganUsed){ golfer1MulligansUsed := 1; };
+                if(data.golfer2MulliganUsed){ golfer2MulligansUsed := 1; };
+
                 mulliganHoleResultBuffer.add({
                   holeNumber = dto.holeNumber;
                   winner = winner;
@@ -1603,6 +1612,11 @@ actor class _GameCanister() {
               golfer1HolesWonCount = golfer1HolesWon;
               golfer2HolesWonCount = golfer2HolesWon;
               winner = gameWinner;
+              golfer1MulligansAvailable = golfer1MulligansAvailable;
+              golfer1MulligansUsed = golfer1MulligansUsed;
+              golfer2MulligansAvailable = golfer2MulligansAvailable;
+              golfer2MulligansUsed = golfer2MulligansUsed;
+              score = difference;
             });
 
             let updatedGame: T.Game = {
@@ -1627,8 +1641,6 @@ actor class _GameCanister() {
         };
       };
       case (null){
-
-           
         switch(dto.detail){
           case (#MulligansScores data){
             
@@ -1636,6 +1648,8 @@ actor class _GameCanister() {
             let golfer2Wins = data.winner == game.playerIds[1];
             var golfer1HolesWon: Nat8 = 0;
             var golfer2HolesWon: Nat8 = 0;
+            var golfer1MulligansAvailable: Nat8 = 1;
+            var golfer2MulligansAvailable: Nat8 = 1;
             var gameStatus: T.GameStatus = #Active;
             var winner = "";
             var difference: Int = 0;
@@ -1654,6 +1668,8 @@ actor class _GameCanister() {
             };
 
             var mulliganHoleResultBuffer = Buffer.fromArray<T.MulligansHoleResult>([]);
+
+            
             mulliganHoleResultBuffer.add({
               holeNumber = dto.holeNumber;
               winner = winner;
@@ -1665,11 +1681,22 @@ actor class _GameCanister() {
               difference := -difference;
             };
 
-             updatedScores := ?(#MulligansScores{
+            var golfer1MulligansUsed: Nat8 = 0;
+            var golfer2MulligansUsed: Nat8 = 0;
+
+            if(data.golfer1MulliganUsed){ golfer1MulligansUsed := 1; };
+            if(data.golfer2MulliganUsed){ golfer2MulligansUsed := 1; };
+
+            updatedScores := ?(#MulligansScores{
               results = Buffer.toArray(mulliganHoleResultBuffer);
               golfer1HolesWonCount = golfer1HolesWon;
               golfer2HolesWonCount = golfer2HolesWon;
               winner = "";
+              golfer1MulligansAvailable = golfer1MulligansAvailable;
+              golfer1MulligansUsed = golfer1MulligansUsed;
+              golfer2MulligansAvailable = golfer2MulligansAvailable;
+              golfer2MulligansUsed = golfer2MulligansUsed;
+              score = difference;
             });
 
 
@@ -1690,7 +1717,7 @@ actor class _GameCanister() {
             return updatedGame;
 
           };
-          case (#BandsScores data){ return game; }
+          case (#BandsScores _){ return game; }
         };
       };
     };

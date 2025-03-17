@@ -296,7 +296,12 @@ module Types {
   public type MulligansScores = {
     results: [MulligansHoleResult];
     golfer1HolesWonCount: Nat8;
+    golfer1MulligansAvailable: Nat8;
+    golfer1MulligansUsed: Nat8;
     golfer2HolesWonCount: Nat8;
+    golfer2MulligansAvailable: Nat8;
+    golfer2MulligansUsed: Nat8;
+    score: Int;
     winner: Base.PrincipalId;
   };
 
