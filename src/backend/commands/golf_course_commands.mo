@@ -11,6 +11,7 @@ module GolfCourseCommands {
         bannerImage: ?Blob;
         totalHoles: Nat8;
         founded: Int;
+        countryId: T.CountryId;
     };
 
     public type UpdateGolfCourse = {

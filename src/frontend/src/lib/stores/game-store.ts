@@ -11,7 +11,9 @@ import type {
   GetGame,
   GetGameInvites,
   GetGameSummaries,
+  GetPlayerBandsResults,
   InviteGolfers,
+  PlayerBandsResults,
   PredictGame,
   RejectGameInvite,
 } from "../../../../declarations/backend/backend.did";
@@ -29,6 +31,12 @@ function createGameStore() {
 
   async function getGameInvites(dto: GetGameInvites): Promise<GameInvites> {
     return new GameService().getGameInvites(dto);
+  }
+
+  async function getPlayerBandsResults(
+    dto: GetPlayerBandsResults,
+  ): Promise<PlayerBandsResults> {
+    return new GameService().getPlayerBandsResults(dto);
   }
 
   async function createGame(dto: CreateGame): Promise<any> {
@@ -67,6 +75,7 @@ function createGameStore() {
     getGameSummaries,
     getGame,
     getGameInvites,
+    getPlayerBandsResults,
     createGame,
     beginGame,
     predictGame,

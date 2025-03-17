@@ -151,6 +151,37 @@ actor class _GolfCoursesCanister() {
               mainImageExtension = foundGolfCourse.mainImageExtension;
               totalHoles = foundGolfCourse.totalHoles;
               founded = foundGolfCourse.founded;
+              countryId = foundGolfCourse.countryId;
+            });
+          };
+          case (null){
+            return #err(#NotFound);
+          }
+        }
+      };
+    };
+  };
+
+  public shared ({caller}) func getGolfCourseTees(dto: GolfCourseQueries.GetGolfCourseTees) : async Result.Result<GolfCourseQueries.GolfCourseTees, T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let backendPrincipalId = Principal.toText(caller);
+    assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+
+    var groupIndex: ?Nat8 = null;
+    for (golfCourseGroupIndex in Iter.fromArray(stable_golf_course_group_indexes)) {
+      if(golfCourseGroupIndex.0 == dto.golfCourseId){
+        groupIndex := ?golfCourseGroupIndex.1;
+      }
+    };
+    switch(groupIndex){
+      case (null){ return #err(#NotFound); };
+      case (?foundGroupIndex){
+        let golfCourse = findGolfCourse(foundGroupIndex, dto.golfCourseId);
+        switch(golfCourse){
+          case (?foundGolfCourse){
+            return #ok({
+              id = foundGolfCourse.id;
+              tees = foundGolfCourse.teeGroups;
             });
           };
           case (null){
@@ -208,6 +239,7 @@ actor class _GolfCoursesCanister() {
       courseImages =[];
       totalHoles = dto.totalHoles;
       founded = dto.founded;
+      countryId = dto.countryId;
     };
     
     return addGolfCourse(activeGroupIndex, newCourse);
@@ -271,6 +303,7 @@ actor class _GolfCoursesCanister() {
               courseImages = foundGolfCourse.courseImages;
               totalHoles = foundGolfCourse.totalHoles;
               founded = foundGolfCourse.founded;
+              countryId = foundGolfCourse.countryId;
             };
 
             return saveGolfCourse(foundGroupIndex, updatedGolfCourse);

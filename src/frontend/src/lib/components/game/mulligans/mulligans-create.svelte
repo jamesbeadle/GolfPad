@@ -1,133 +1,159 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { CreateGame, Game, GolfCourseSummary } from "../../../../../../declarations/backend/backend.did";
-    import { userStore } from "$lib/stores/user-store";
-    import { authStore } from "$lib/stores/auth-store";
-    import GolfCourseSelectModal from "../golf-course-select-modal.svelte";
+    import type { CreateGame, Friend, GolfCourseId, GolfCourseVersion, Golfer, TeeGroupIndex } from "../../../../../../declarations/backend/backend.did";
+    import SelectGolfCourseModal from "$lib/components/golf-course/select-golf-course-modal.svelte";
+    import TeeSelectModal from "$lib/components/golf-course/tee-select-modal.svelte";
     import OpponentSelectModal from "../opponent-select-modal.svelte";
     import { gameStore } from "$lib/stores/game-store";
-    import SelectBox from "$lib/components/shared/select-box.svelte";
+    import { toasts } from "$lib/stores/toasts-store";
+    import { goto } from "$app/navigation";
+    import { authStore } from "$lib/stores/auth-store";
+    import { convertDateTimeInputToUnixNano } from "$lib/utils/helpers";
 
-    export let game: Game;
-    
-    let courses: GolfCourseSummary[] = [];
-    let teeSelectList = ["Tee 1", "Tee 2", "Tee 3"];
-    let opponentSelectList = ["Player 1", "Player 2", "Player 3"];
-    
+    let isLoading = true;
     let showGolfCourseModal = false;
     let showTeeModal = false;
     let showOpponentModal = false;
-    
-    let selectedCourseIndex = 0;
-    let selectedTeeIndex = 0;
-    let selectedOpponentIndex = 0;
+
+    let selectedCourseId: GolfCourseId | null = null;
+    let selectedTeeGroupIndex: TeeGroupIndex | null = null;
+    let selectedDateTime: string = '';
+    let opponent: (Friend | null) = null;
+    let selectedOpponentIndex: number | null = null;
+    let selectedCourseVersion: GolfCourseVersion | null = null;
+
+    $: isTeeEnabled = !!selectedCourseId;
 
     onMount(async () => {
-        let principalId = $authStore.identity?.getPrincipal().toString() ?? '';
-        let userFavouriteCourses = await userStore.getUserFavouriteCourses(principalId);
-        courses = userFavouriteCourses.courses;
+        isLoading = false;
     });
 
-    function selectCourse() {
-        showGolfCourseModal = true;
+    function handleCourseSelect(courseId: GolfCourseId, courseVersion: GolfCourseVersion) {
+        selectedCourseId = courseId;
+        selectedCourseVersion = courseVersion;
+        showGolfCourseModal = false;
+        selectedTeeGroupIndex = null;
     }
 
-    function selectTee() {
-        showTeeModal = true;
+    function handleTeeSelect(teeIndex: TeeGroupIndex) {
+        selectedTeeGroupIndex = teeIndex;
+        showTeeModal = false;
     }
 
-    function selectOpponent() {
-        showOpponentModal = true;
+    async function handleOpponentSelect(friend: Friend) {
+        opponent = friend;
+        selectedOpponentIndex = null;
+        showOpponentModal = false;
     }
 
     async function createGame() {
-        let dto: CreateGame = {
-            inviteIds: [], 
-            createdById: '', 
-            teeOffTime: 0n, 
-            courseVersion: 0, 
-            gameType: { Mulligans: null }, 
-            courseId: 1n, 
-            teeGroupIndex: 0
-        };
-        await gameStore.createGame(dto);
+        if (selectedCourseId && selectedTeeGroupIndex && selectedCourseVersion && selectedDateTime && opponent) {
+            try{
+                let dto: CreateGame = {
+                    createdById: $authStore.identity?.getPrincipal().toString() ?? "",
+                    courseId: selectedCourseId,
+                    gameType: { Mulligans: null },
+                    inviteIds: [opponent.principalId],
+                    teeOffTime: convertDateTimeInputToUnixNano(selectedDateTime),
+                    teeGroupIndex: selectedTeeGroupIndex,
+                    courseVersion: selectedCourseVersion
+                };
+                await gameStore.createGame(dto);
+            } catch {
+                toasts.addToast({type:'error', message: 'Error creating game.'})
+            } finally {
+                selectedCourseId = null;
+                selectedTeeGroupIndex = null;
+                selectedCourseVersion = null;
+                selectedDateTime = '';
+                opponent = null;
+                goto('/games');
+            }
+         
+        } else {
+            toasts.addToast({type:'error', message: 'Please complete all fields before submitting.'});
+        }
     }
-
-    function selectTee(){
-
-    }
-
 </script>
 
 <div class="space-y-4">
-    <p>GAME DETAILS</p>
+    <p class="text-lg font-bold">GAME DETAILS</p>
 
     <div>
         <p>Course</p>
-        <SelectBox 
-            items={courses}
-            selectedIndex={selectedCourseIndex}
-            onSelect={selectCourse}
-            placeholder="Select a course"
+        <button
+            on:click={() => showGolfCourseModal = true}
+            class="w-full p-2 bg-white border rounded"
+            disabled={isLoading}
         >
-            <svelte:fragment slot="selected" let:selectedItem>
-                {selectedItem.name}
-            </svelte:fragment>
-        </SelectBox>
+            {selectedCourseId ? "Course Selected" : "Select a Course"}
+        </button>
     </div>
 
     <div>
         <p>Tee</p>
-        <SelectBox 
-            items={teeSelectList}
-            selectedIndex={selectedTeeIndex}
-            onSelect={selectTee}
-            disabled={!selectedCourseIndex}
-            placeholder="Select a tee"
-        />
+        <button
+            on:click={() => showTeeModal = true}
+            class="w-full p-2 bg-white border rounded"
+            disabled={!isTeeEnabled || isLoading}
+        >
+            {selectedTeeGroupIndex ? "Tee Selected" : "Select a Tee"}
+        </button>
     </div>
 
     <div>
         <p>DATE</p>
-        <DateSelect 
-            onSelect={selectDate}
-            placeholder="Select game date."
+        <input
+            bind:value={selectedDateTime}
+            type="datetime-local"
+            class="w-full p-2 bg-white border rounded"
+            disabled={isLoading}
+            required
         />
     </div>
 
     <div>
-        <p>Opponent</p>
-        <SelectBox 
-            items={opponentSelectList}
-            selectedIndex={selectedOpponentIndex}
-            onSelect={selectOpponent}
-            placeholder="Select an opponent"
-        />
+        <p>OPPONENT</p>
+        <button
+            on:click={() => showOpponentModal = true}
+            class="w-full p-2 bg-white border rounded"
+            disabled={isLoading}
+            data-index="0"
+        >
+            {opponent ? opponent.username : "Select Friend"}
+        </button>
     </div>
 
-    <button class="brand-button" on:click={createGame}>CREATE GAME</button>
+    <button
+        class="w-full p-2 bg-yellow-400 text-black font-bold rounded"
+        on:click={createGame}
+        disabled={isLoading || !selectedCourseId || !selectedTeeGroupIndex || !selectedCourseVersion || !selectedDateTime || !opponent}
+    >
+        CREATE GAME
+    </button>
 
     {#if showGolfCourseModal}
-        <GolfCourseSelectModal 
-            on:close={() => showGolfCourseModal = false}
-            on:select={(e) => {
-                selectedCourseIndex = e.detail.index;
-                showGolfCourseModal = false;
-            }}
+        <SelectGolfCourseModal
+            onClose={() => showGolfCourseModal = false}
+            showModal={showGolfCourseModal}
+            selectCourse={handleCourseSelect}
         />
     {/if}
 
-    {#if showTeeModal}
-        <TeeSelectModal {selectTee} />
+    {#if selectedCourseId && showTeeModal}
+        <TeeSelectModal
+            onClose={() => showTeeModal = false}
+            showModal={showTeeModal}
+            golfCourseId={selectedCourseId}
+            selectTee={handleTeeSelect}
+        />
     {/if}
 
     {#if showOpponentModal}
-        <OpponentSelectModal 
-            on:close={() => showOpponentModal = false}
-            on:select={(e) => {
-                selectedOpponentIndex = e.detail.index;
-                showOpponentModal = false;
-            }}
+        <OpponentSelectModal
+        onClose={() => showOpponentModal = false}
+        showModal={showOpponentModal}
+        selectOpponent={handleOpponentSelect}
         />
     {/if}
 </div>

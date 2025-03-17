@@ -12,11 +12,13 @@
     import PaginationRow from "$lib/components/shared/pagination-row.svelte";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import GolfCourseSearchFilters from "$lib/components/golf-course/golf-course-search-filters.svelte";
+    import { writable } from "svelte/store";
 
     let isLoading = true;
     let golfCourses: GolfCourses | null = null;
     let page = 1n; 
     let pageSize = 10n; 
+    let searchTerm = writable('');
 
     onMount( async () => {
         loadGolfCourses();
@@ -51,7 +53,7 @@
             let dto: GetGolfCourses = {
                 page: page,
                 principalId: principalId.toString(),
-                searchTerm: '' //TODO implement search
+                searchTerm: $searchTerm
             };
 
             golfCourses = await golfCourseStore.getGolfCourses(dto);
@@ -74,7 +76,7 @@
 
                 {#if golfCourses.entries.length > 0}
                     {#each golfCourses?.entries! as golfCourse}
-                        <GolfCourseSummaryRow {golfCourse} />
+                        <GolfCourseSummaryRow {golfCourse} {searchTerm} />
                     {/each}
                 {:else}
                     <p>No golf courses found.</p>

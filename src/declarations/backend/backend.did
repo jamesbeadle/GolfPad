@@ -75,7 +75,7 @@ type TeeGroup =
    added: int;
    colour: text;
    holes: vec Hole;
-   id: TeeGroupIndex;
+   index: TeeGroupIndex;
    name: text;
    strokeIndex: nat8;
  };
@@ -112,22 +112,22 @@ type RustResult =
 type Result_9 = 
  variant {
    err: Error;
-   ok: GolfCourseSummary;
+   ok: GolfCourses;
  };
 type Result_8 = 
  variant {
    err: Error;
-   ok: GolfCourses;
+   ok: Golfer;
  };
 type Result_7 = 
  variant {
    err: Error;
-   ok: Golfer;
+   ok: Golfers;
  };
 type Result_6 = 
  variant {
    err: Error;
-   ok: Golfers;
+   ok: PlayerBandsResults;
  };
 type Result_5 = 
  variant {
@@ -144,10 +144,20 @@ type Result_3 =
    err: Error;
    ok: UpcomingGames;
  };
-type Result_20 = 
+type Result_22 = 
  variant {
    err: Error;
    ok: GameId;
+ };
+type Result_21 = 
+ variant {
+   err: Error;
+   ok: AppStatusDTO;
+ };
+type Result_20 = 
+ variant {
+   err: Error;
+   ok: Buzz;
  };
 type Result_2 = 
  variant {
@@ -157,52 +167,52 @@ type Result_2 =
 type Result_19 = 
  variant {
    err: Error;
-   ok: AppStatusDTO;
+   ok: ClubShots;
  };
 type Result_18 = 
  variant {
    err: Error;
-   ok: Buzz;
+   ok: FriendRequests;
  };
 type Result_17 = 
  variant {
    err: Error;
-   ok: ClubShots;
+   ok: Friends;
  };
 type Result_16 = 
  variant {
    err: Error;
-   ok: FriendRequests;
+   ok: Game;
  };
 type Result_15 = 
  variant {
    err: Error;
-   ok: Friends;
+   ok: GameInvites;
  };
 type Result_14 = 
  variant {
    err: Error;
-   ok: Game;
+   ok: GameSummaries;
  };
 type Result_13 = 
  variant {
    err: Error;
-   ok: GameInvites;
+   ok: GolfCourse;
  };
 type Result_12 = 
  variant {
    err: Error;
-   ok: GameSummaries;
+   ok: GolfCourseCanisterId;
  };
 type Result_11 = 
  variant {
    err: Error;
-   ok: GolfCourse;
+   ok: GolfCourseSummary;
  };
 type Result_10 = 
  variant {
    err: Error;
-   ok: GolfCourseCanisterId;
+   ok: GolfCourseTees;
  };
 type Result_1 = 
  variant {
@@ -213,6 +223,11 @@ type Result =
  variant {
    err: Error;
    ok;
+ };
+type RemoveUserGolfCourse = 
+ record {
+   golfCourseId: GolfCourseId;
+   principalId: PrincipalId;
  };
 type RemoveFriend = 
  record {
@@ -254,6 +269,14 @@ type PlayerFeedSummary =
    principal_id: PrincipalId;
    profile_picture: opt blob;
    username: text;
+ };
+type PlayerBandsResults = record {results: vec PlayerBandsResult;};
+type PlayerBandsResult = 
+ record {
+   category: BandsCategory;
+   completed: bool;
+   points: nat8;
+   principalId: PrincipalId;
  };
 type OpponentInfo = 
  variant {
@@ -411,13 +434,20 @@ type GolfCourses =
    total: nat;
  };
 type GolfCourseVersion = nat8;
+type GolfCourseTees = 
+ record {
+   id: GolfCourseId;
+   tees: vec TeeGroup;
+ };
 type GolfCourseSummary = 
  record {
+   countryId: CountryId;
    founded: int;
    id: GolfCourseId;
    mainImage: opt blob;
    mainImageExtension: text;
    name: text;
+   version: GolfCourseVersion;
  };
 type GolfCourseSnapshot = 
  record {
@@ -430,6 +460,7 @@ type GolfCourseCanisterId = record {canisterId: CanisterId;};
 type GolfCourse = 
  record {
    activeVersion: GolfCourseVersion;
+   countryId: CountryId;
    founded: int;
    id: GolfCourseId;
    mainImage: opt blob;
@@ -475,6 +506,11 @@ type GetUpcomingGames =
  };
 type GetShotAverages = record {principalId: PrincipalId;};
 type GetProfile = record {principalId: PrincipalId;};
+type GetPlayerBandsResults = 
+ record {
+   id: GameId;
+   principalId: PrincipalId;
+ };
 type GetGolfers = 
  record {
    page: nat;
@@ -488,6 +524,7 @@ type GetGolfCourses =
    principalId: PrincipalId;
    searchTerm: text;
  };
+type GetGolfCourseTees = record {golfCourseId: GolfCourseId;};
 type GetGolfCourseSummary = record {id: GolfCourseId;};
 type GetGolfCourseCanisterId = record {id: GolfCourseId;};
 type GetGolfCourse = record {id: GolfCourseId;};
@@ -500,10 +537,8 @@ type GetGameInvites = record {principalId: PrincipalId;};
 type GetGame = record {gameId: GameId;};
 type GetFriends = 
  record {
-   limit: nat;
-   offset: nat;
+   page: nat;
    principalId: PrincipalId;
-   totalEntries: nat;
  };
 type GetFriendRequests = 
  record {
@@ -552,7 +587,11 @@ type GameStatus =
    Unplayed;
  };
 type GameScoreSubmission = variant {MulligansScores: MulligansScore;};
-type GameScoreDetail = variant {MulligansScores: MulligansScores;};
+type GameScoreDetail = 
+ variant {
+   BandsScores: BandsScores;
+   MulligansScores: MulligansScores;
+ };
 type GamePrediction = 
  variant {
    Bands: BandsPrediction;
@@ -607,14 +646,27 @@ type Game =
    teeOffTime: int;
    winner: PrincipalId;
  };
-type Friends = record {friendRequests: vec Friend;};
+type Friends = 
+ record {
+   friends: vec Friend;
+   page: nat;
+   pageSize: nat;
+   total: nat;
+ };
 type FriendRequests = record {friendRequests: vec FriendRequest;};
 type FriendRequest = 
  record {
    principalId: PrincipalId;
    requestTime: int;
  };
-type Friend = record {principalId: PrincipalId;};
+type Friend = 
+ record {
+   firstName: text;
+   lastName: text;
+   principalId: PrincipalId;
+   profilePicture: opt blob;
+   username: text;
+ };
 type FavouriteCourse = 
  record {
    id: GolfCourseId;
@@ -655,6 +707,7 @@ type CreateUser =
 type CreateGolfCourse = 
  record {
    bannerImage: opt blob;
+   countryId: CountryId;
    founded: int;
    holes: vec Hole;
    initialTeeGroup: TeeGroup;
@@ -685,6 +738,7 @@ type CourseInfo =
    course_image: blob;
    course_name: text;
  };
+type CountryId = nat8;
 type ClubShots = 
  record {
    club: GolfClub;
@@ -716,6 +770,11 @@ type BuildItResultInfo =
    teams: vec TeamFeedSummary__1;
  };
 type BeginGame = record {gameId: GameId;};
+type BandsScores = 
+ record {
+   points: nat8;
+   results: vec BandsResult;
+ };
 type BandsResultInfo = 
  record {
    holesPlayed: nat8;
@@ -724,6 +783,13 @@ type BandsResultInfo =
              PrincipalId;
              nat;
            };
+ };
+type BandsResult = 
+ record {
+   bandsCategory: BandsCategory;
+   completed: bool;
+   points: nat8;
+   principalId: PrincipalId;
  };
 type BandsPrediction = 
  record {
@@ -737,6 +803,18 @@ type BandsPrediction =
    wontDoubleBogeyStartHole: HoleNumber;
    wontHitTreeOrBunkerStartHole: HoleNumber;
    wontLoseBallStartHole: HoleNumber;
+ };
+type BandsCategory = 
+ variant {
+   Hit2Of3Fairways;
+   Hit2Of3Greens;
+   NoBogeyOrWorse;
+   NoDoubleBogeyOrWorse;
+   NoLostBall;
+   NoTreeOrBunker;
+   OnePutt2Of3Greens;
+   ParOrBetter;
+   UnderPar;
  };
 type AverageShot = 
  record {
@@ -777,26 +855,28 @@ service : {
   addGameScore: (AddGameScore) -> (Result);
   addShot: (AddShot) -> (Result);
   beginGame: (BeginGame) -> (Result);
-  createGame: (CreateGame) -> (Result_20);
+  createGame: (CreateGame) -> (Result_22);
   createUser: (CreateUser) -> (Result);
   deleteGame: (DeleteGame) -> (Result);
   deleteShot: (DeleteShot) -> (Result);
   executeAddGolfCourse: (CreateGolfCourse) -> ();
   executeUpdateGolfCourse: (UpdateGolfCourse) -> ();
-  getAppStatus: () -> (Result_19) query;
-  getBuzz: (GetBuzz) -> (Result_18);
-  getClubShots: (GetClubShots) -> (Result_17);
-  getFriendRequests: (GetFriendRequests) -> (Result_16);
-  getFriends: (GetFriends) -> (Result_15);
-  getGame: (GetGame) -> (Result_14);
-  getGameInvites: (GetGameInvites) -> (Result_13);
-  getGameSummaries: (GetGameSummaries) -> (Result_12);
-  getGolfCourse: (GetGolfCourse) -> (Result_11);
-  getGolfCourseCanisterId: (GetGolfCourseCanisterId) -> (Result_10);
-  getGolfCourseSummary: (GetGolfCourseSummary) -> (Result_9);
-  getGolfCourses: (GetGolfCourses) -> (Result_8);
-  getGolfer: (GetGolfer) -> (Result_7);
-  getGolfers: (GetGolfers) -> (Result_6);
+  getAppStatus: () -> (Result_21) query;
+  getBuzz: (GetBuzz) -> (Result_20);
+  getClubShots: (GetClubShots) -> (Result_19);
+  getFriendRequests: (GetFriendRequests) -> (Result_18);
+  getFriends: (GetFriends) -> (Result_17);
+  getGame: (GetGame) -> (Result_16);
+  getGameInvites: (GetGameInvites) -> (Result_15);
+  getGameSummaries: (GetGameSummaries) -> (Result_14);
+  getGolfCourse: (GetGolfCourse) -> (Result_13);
+  getGolfCourseCanisterId: (GetGolfCourseCanisterId) -> (Result_12);
+  getGolfCourseSummary: (GetGolfCourseSummary) -> (Result_11);
+  getGolfCourseTees: (GetGolfCourseTees) -> (Result_10);
+  getGolfCourses: (GetGolfCourses) -> (Result_9);
+  getGolfer: (GetGolfer) -> (Result_8);
+  getGolfers: (GetGolfers) -> (Result_7);
+  getPlayerBandsResults: (GetPlayerBandsResults) -> (Result_6);
   getProfile: (GetProfile) -> (Result_5);
   getShotAverages: (GetShotAverages) -> (Result_4);
   getUpcomingGames: (GetUpcomingGames) -> (Result_3);
@@ -807,6 +887,7 @@ service : {
   rejectFriendRequest: (RejectFriendRequest) -> (Result);
   rejectGameInvite: (RejectGameInvite) -> (Result);
   removeFriend: (RemoveFriend) -> (Result);
+  removeUserGolfCourse: (RemoveUserGolfCourse) -> (Result);
   sendFriendRequest: (SendFriendRequest) -> (Result);
   updateFirstName: (UpdateFirstName) -> (Result);
   updateHandicap: (UpdateHandicap) -> (Result);

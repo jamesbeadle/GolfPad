@@ -132,6 +132,10 @@ actor Self {
     return await golferManager.getGameInvites(dto);
   };
 
+  public shared ({ caller }) func getPlayerBandsResults(dto: GameQueries.GetPlayerBandsResults) : async Result.Result<GameQueries.PlayerBandsResults, T.Error> {
+    return #err(#NotFound); //TODO
+  };
+
   //Game Commands:
 
   public shared ({ caller }) func createGame(dto: GameCommands.CreateGame) : async Result.Result<T.GameId, T.Error> {
@@ -213,7 +217,12 @@ actor Self {
     let principalId = Principal.toText(caller);
     assert golferManager.isGolferCanisterId(principalId);
     return await courseManager.getGolfCourseCanisterId(dto);
-  };             
+  };     
+
+  public shared ({ caller }) func getGolfCourseTees(dto: GolfCourseQueries.GetGolfCourseTees) : async Result.Result<GolfCourseQueries.GolfCourseTees, T.Error>{
+    assert not Principal.isAnonymous(caller);
+    return await courseManager.getGolfCourseTees(dto); 
+  };        
 
   //Golf Course Commands - SNS Validation and Callback functions:
 
@@ -251,7 +260,7 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert dto.principalId == principalId;
-    return await golferManager.getGolfers(dto, getGolfCourse);
+    return await golferManager.getGolfers(dto, getGolfCourseSummary);
   };
 
   public shared ({ caller }) func getGolfer(dto: GolferQueries.GetGolfer) : async Result.Result<GolferQueries.Golfer, T.Error>{
@@ -366,6 +375,12 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.deleteShot(dto);
+  };
+    
+  public shared ({ caller }) func removeUserGolfCourse(dto: GolferCommands.RemoveUserGolfCourse) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    assert dto.principalId == Principal.toText(caller);
+    return await golferManager.removeUserGolfCourse(dto);
   };
 
 

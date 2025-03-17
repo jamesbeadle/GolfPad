@@ -1,15 +1,12 @@
 <script lang="ts">
     import CategoryIndicator from "$lib/components/shared/category-indicator.svelte";
-    import { writable } from "svelte/store";
+    import { writable, type Writable } from "svelte/store";
     import BandHoleSelect from "./band-hole-select.svelte";
 
-    let currentPrediction = writable(1);
+    export let predict : () => void;
+    export let currentPrediction: Writable<number>;
     let predictionTitle = writable('');
     let totalCategories = 9;
-
-    function predict(){
-        
-    }
 </script>
 
 <div class="flex flex-row">

@@ -57,7 +57,9 @@ module {
               id = foundCourse.id;
               name = foundCourse.name;
               mainImage = foundCourse.mainImage;
-              mainImageExtension = foundCourse.mainImageExtension
+              mainImageExtension = foundCourse.mainImageExtension;
+              countryId = foundCourse.countryId;
+              version = foundCourse.activeVersion;
             });
           };
           case _{}
@@ -81,6 +83,10 @@ module {
     };
 
     public func  getGolfCourseCanisterId(dto: GolfCourseQueries.GetGolfCourseCanisterId) : async Result.Result<GolfCourseQueries.GolfCourseCanisterId, T.Error>{
+     return #err(#NotFound); //TODO
+    };
+
+    public func getGolfCourseTees(dto: GolfCourseQueries.GetGolfCourseTees) : async Result.Result<GolfCourseQueries.GolfCourseTees, T.Error> {
      return #err(#NotFound); //TODO
     };
 

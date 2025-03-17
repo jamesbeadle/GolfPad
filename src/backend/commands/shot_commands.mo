@@ -21,7 +21,6 @@ module ShotCommands {
     public type DeleteShot = {
         principalId: Base.PrincipalId;
         golfShotId: T.GolfShotId;
-
     };
 
 }

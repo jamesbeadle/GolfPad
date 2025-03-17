@@ -537,7 +537,10 @@ actor class _GolferCanister() {
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+    return #err(#NotFound);
 
+    //TODO
+    /*
     var groupIndex: ?Nat8 = null;
     for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
       if(golferGroupIndex.0 == dto.principalId){
@@ -553,12 +556,12 @@ actor class _GolferCanister() {
           case (null) { #err(#NotFound); };
           case (?foundGolfer){
 
-            let droppedEntries = List.drop<T.FriendRequest>(List.fromArray(foundGolfer.friendRequests), dto.offset);
-            let paginatedEntries = List.take<T.FriendRequest>(droppedEntries, dto.limit);
+            let droppedEntries = List.drop<(T.Friend)>(List.fromArray(foundGolfer.friends), 0); //TODO 
+            let paginatedEntries = List.take<T.Friend>(droppedEntries, 10);
 
-            let friendRequests: FriendRequestQueries.FriendRequests = {
-              friendRequests = Array.map<T.FriendRequest, FriendRequestQueries.FriendRequest>(List.toArray(paginatedEntries), 
-                func(friendRequest: T.FriendRequest){
+            let friends: FriendQueries.Friend = {
+              friends = Array.map<T.Friend, FriendQueries.Friend>(List.toArray(paginatedEntries), 
+                func(friend: T.Friend){
                   return {
                     principalId = friendRequest.requestedBy;
                     requestTime = friendRequest.requestedOn;
@@ -566,11 +569,17 @@ actor class _GolferCanister() {
                 }
               );
             };
-            return #ok(friendRequests);
+            return #ok({
+              friends;
+              page = 1;
+              total = 0;
+              pageSize = 10; //todo
+            });
           }
         };
       };
     };
+    */
   };
   
   public shared ({caller}) func getFriendRequests(dto: FriendRequestQueries.GetFriendRequests) : async Result.Result<FriendRequestQueries.FriendRequests, T.Error>{
@@ -633,8 +642,8 @@ actor class _GolferCanister() {
           case (null) { #err(#NotFound); };
           case (?foundGolfer){
 
-            var updatedFriendsBuffer = Buffer.fromArray<Base.PrincipalId>(foundGolfer.friends);
-            updatedFriendsBuffer.add(dto.requestedBy);
+            var updatedFriendsBuffer = Buffer.fromArray<T.Friend>(foundGolfer.friends);
+            updatedFriendsBuffer.add({principalId = dto.principalId; addedOn = Time.now()});
             
             let updatedGolfer: T.Golfer = {
               joinedOn = foundGolfer.joinedOn;

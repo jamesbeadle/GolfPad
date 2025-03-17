@@ -3,8 +3,11 @@ import type {
   CreateGolfCourse,
   GetGolfCourse,
   GetGolfCourses,
+  GetGolfCourseTees,
   GolfCourse,
   GolfCourses,
+  GolfCourseTees,
+  UpdateGolfCourse,
 } from "../../../../declarations/backend/backend.did";
 import { ActorFactory } from "$lib/utils/actor.factory";
 import { authStore } from "$lib/stores/auth-store";
@@ -17,7 +20,6 @@ import type {
   Command,
   ExecuteGenericNervousSystemFunction,
 } from "@dfinity/sns/dist/candid/sns_governance";
-import type UpdateGolfCourse from "$lib/components/goverance/golf-course/update-golf-course.svelte";
 
 const AddGolfCourse_Idl = IDL.Record({
   name: IDL.Text,
@@ -50,6 +52,16 @@ export class GolfCoursesService {
     );
     const result = await identityActor.getGolfCourse(dto);
     if (isError(result)) throw new Error("Failed to get golf course");
+    return result.ok;
+  }
+
+  async getGolfCourseTees(dto: GetGolfCourseTees): Promise<GolfCourseTees> {
+    const identityActor: any = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result = await identityActor.getGolfCourseTees(dto);
+    if (isError(result)) throw new Error("Failed to get golf course tees");
     return result.ok;
   }
 

@@ -45,6 +45,11 @@ module GolferCommands {
         principalId: Base.PrincipalId;
         confirm: Bool;
     };
+
+    public type RemoveUserGolfCourse = {
+        principalId: Base.PrincipalId;
+        golfCourseId: T.GolfCourseId;
+    };
 }
 
   

@@ -16,6 +16,7 @@ module GolfCourseQueries {
         mainImageExtension: Text;
         totalHoles: Nat8;
         founded: Int;
+        countryId: T.CountryId;
     };
 
     public type GetGolfCourses = {
@@ -41,6 +42,8 @@ module GolfCourseQueries {
         mainImage: ?Blob;
         mainImageExtension: Text;
         founded: Int;
+        countryId: T.CountryId;
+        version: T.GolfCourseVersion;
     };
 
     public type GetGolfCourseCanisterId = {
@@ -68,6 +71,15 @@ module GolfCourseQueries {
         name: Text;
         mainImage: ?Blob;
         mainImageExtension: Text;
+    };
+    
+    public type GetGolfCourseTees = {
+        golfCourseId: T.GolfCourseId;
+    };
+
+    public type GolfCourseTees = {
+        id: T.GolfCourseId;
+        tees: [T.TeeGroup];
     };
     
 }

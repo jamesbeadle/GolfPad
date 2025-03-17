@@ -17,6 +17,8 @@ module Types {
   public type HoleNumber = Nat8;
   public type DateTime = Int;
   public type ClubIndex = Nat16;
+
+  public type CountryId = Nat8;
   
   public type RustResult = { #Ok : Text; #Err : Text };
 
@@ -56,7 +58,7 @@ module Types {
     gameSummaries: [GameSummary];
     scheduledGames: [GameSummary];
     friendRequests: [FriendRequest];
-    friends: [Base.PrincipalId];
+    friends: [Friend];
     buzzFeed: [BuzzFeedItem];
     gameInvites: [GameInvite];
     totalFriends: Nat;
@@ -162,6 +164,11 @@ module Types {
     requestedOn: Int;
   };
 
+  public type Friend = {
+    principalId: Base.PrincipalId;
+    addedOn: Int;
+  };
+
   public type GolfCourse = {
     id: Nat;
     name: Text;
@@ -177,6 +184,7 @@ module Types {
     bannerImage: ?Blob;
     courseAlbums: [GolfCourseAlbum];
     courseImages: [GolfCourseImage];
+    countryId: CountryId;
   };
 
   public type GolfCourseImage = {
@@ -211,7 +219,7 @@ module Types {
   };
 
   public type TeeGroup = {
-    id: TeeGroupIndex;
+    index: TeeGroupIndex;
     name: Text;
     colour: Text;
     added: Int;
@@ -282,6 +290,7 @@ module Types {
 
   public type GameScoreDetail = {
       #MulligansScores: MulligansScores;
+      #BandsScores : BandsScores;
   };
 
   public type MulligansScores = {
@@ -296,6 +305,18 @@ module Types {
     winner: Base.PrincipalId;
     golfer1MulliganUsed: Bool;
     golfer2MulliganUsed: Bool;
+  };
+
+  public type BandsScores = {
+    results: [BandsResult];
+    points: Nat8;
+  };
+
+  public type BandsResult = {
+      principalId: Base.PrincipalId;
+      bandsCategory: BandsCategory;
+      completed: Bool;
+      points: Nat8;
   };
 
   public type GamePrediction = {
@@ -394,5 +415,17 @@ module Types {
     members: [Base.PrincipalId];
     teamPicture: ?Blob;
     teamPictureExtension: Text;
+  };
+
+  public type BandsCategory = {
+    #NoTreeOrBunker;
+    #NoLostBall;
+    #Hit2Of3Fairways;
+    #Hit2Of3Greens;
+    #OnePutt2Of3Greens;
+    #NoDoubleBogeyOrWorse;
+    #NoBogeyOrWorse;
+    #ParOrBetter;
+    #UnderPar;
   };
 };

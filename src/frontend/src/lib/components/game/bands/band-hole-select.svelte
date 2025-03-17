@@ -45,6 +45,6 @@
             <div class="col-1/5"></div>
             <div class="col-1/5"></div>
         </div>
-        <button>ADD PREDICTION</button>
+        <button class="brand-button-yellow" on:click={predict}>ADD PREDICTION</button>
     </div>
 </div>

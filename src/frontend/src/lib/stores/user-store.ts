@@ -11,11 +11,14 @@ import type {
   DeleteShot,
   GetBuzz,
   GetClubShots,
+  GetFriends,
   GetProfile,
   GetShotAverages,
   GetUpcomingGames,
+  GetUserFavouriteCourses,
   IsUsernameAvailable,
   Profile,
+  RemoveUserGolfCourse,
   ShotAverages,
   UpcomingGames,
   UpdateFirstName,
@@ -25,6 +28,7 @@ import type {
   UpdateProfilePicture,
   UpdateShot,
   UpdateUsername,
+  UserFavouriteCourses,
   UsernameAvailable,
 } from "../../../../declarations/backend/backend.did";
 
@@ -106,6 +110,10 @@ function createUserStore() {
     return new UserService().getUpcomingGames(dto);
   }
 
+  async function getFriends(dto: GetFriends) {
+    return new UserService().getFriends(dto);
+  }
+
   async function isUsernameAvailable(
     dto: IsUsernameAvailable,
   ): Promise<UsernameAvailable> {
@@ -122,7 +130,9 @@ function createUserStore() {
 
   async function getUserFavouriteCourses(
     dto: GetUserFavouriteCourses,
-  ): Promise<UserFavouriteCourses> {}
+  ): Promise<UserFavouriteCourses> {
+    return new UserService().getUserFavouriteCourses(dto);
+  }
 
   //User Commands Functions
 
@@ -207,6 +217,12 @@ function createUserStore() {
     return new UserService().deleteShot(dto);
   }
 
+  async function removeUserGolfCourse(
+    dto: RemoveUserGolfCourse,
+  ): Promise<void> {
+    return new UserService().removeUserGolfCourse(dto);
+  }
+
   return {
     subscribe,
     sync,
@@ -214,8 +230,10 @@ function createUserStore() {
     getProfile,
     getBuzz,
     getUpcomingGames,
+    getFriends,
     isUsernameAvailable,
     getShotAverages,
+    getUserFavouriteCourses,
     getClubShots,
     createUser,
     updateUsername,
@@ -227,6 +245,7 @@ function createUserStore() {
     addShot,
     updateShot,
     deleteShot,
+    removeUserGolfCourse,
   };
 }
 

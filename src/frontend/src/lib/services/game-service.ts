@@ -13,7 +13,9 @@ import type {
   GetGame,
   GetGameInvites,
   GetGameSummaries,
+  GetPlayerBandsResults,
   InviteGolfers,
+  PlayerBandsResults,
   PredictGame,
   RejectGameInvite,
 } from "../../../../declarations/backend/backend.did";
@@ -71,6 +73,20 @@ export class GameService {
     const result: any = await identityActor.getGameInvites(dto);
     if (isError(result)) {
       throw new Error("Error Getting Game Invites");
+    }
+    return result.ok;
+  }
+
+  async getPlayerBandsResults(
+    dto: GetPlayerBandsResults,
+  ): Promise<PlayerBandsResults> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.getPlayerBandsResults(dto);
+    if (isError(result)) {
+      throw new Error("Error Getting Bands Game Result");
     }
     return result.ok;
   }

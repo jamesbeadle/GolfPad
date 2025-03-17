@@ -60,6 +60,22 @@ module GameQueries {
         players: [Base.PrincipalId];
         status: T.GameStatus;
     };
+
+    public type GetPlayerBandsResults = {
+        id: T.GameId;
+        principalId: Base.PrincipalId;
+    };
+
+    public type PlayerBandsResults = {
+        results: [PlayerBandsResult];
+    };
+
+    public type PlayerBandsResult = {
+        principalId: Base.PrincipalId;
+        category: T.BandsCategory;
+        completed: Bool;
+        points: Nat8;
+    };
     
 }
 

@@ -528,6 +528,10 @@ module {
         }
       };
     };
+    
+    public func removeUserGolfCourse(dto: GolferCommands.RemoveUserGolfCourse) : async Result.Result<(), T.Error> {
+      return #err(#NotFound); //TODO
+    };
 
     public func addGame(dto: GameCommands.AddGame) : async Result.Result<(), T.Error>{
       for(principalId in Iter.fromArray(dto.inviteIds)){

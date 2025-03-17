@@ -23,6 +23,11 @@ import type {
   UpdateShot,
   UpdateUsername,
   UsernameAvailable,
+  RemoveUserGolfCourse,
+  GetUserFavouriteCourses,
+  UserFavouriteCourses,
+  GetFriends,
+  Friends,
 } from "../../../../declarations/backend/backend.did";
 import { isError } from "$lib/utils/helpers";
 
@@ -79,6 +84,20 @@ export class UserService {
     return result.ok;
   }
 
+  async getUserFavouriteCourses(
+    dto: GetUserFavouriteCourses,
+  ): Promise<UserFavouriteCourses> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+
+    const result: any = await identityActor.getUserFavouriteCourses(dto);
+    if (isError(result))
+      throw new Error("Failed to get user favourite courses.");
+    return result.ok;
+  }
+
   async getClubShots(dto: GetClubShots): Promise<ClubShots> {
     const identityActor = await ActorFactory.createIdentityActor(
       authStore,
@@ -87,6 +106,17 @@ export class UserService {
 
     const result: any = await identityActor.getClubShots(dto);
     if (isError(result)) throw new Error("Failed to get club shots");
+    return result.ok;
+  }
+
+  async getFriends(dto: GetFriends): Promise<Friends> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+
+    const result: any = await identityActor.getFriends(dto);
+    if (isError(result)) throw new Error("Failed to get friends");
     return result.ok;
   }
 
@@ -228,6 +258,20 @@ export class UserService {
       return result;
     } catch (error) {
       console.error("Error deleting golf shot:", error);
+      throw error;
+    }
+  }
+
+  async removeUserGolfCourse(dto: RemoveUserGolfCourse): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.removeUserGolfCourse(dto);
+      return result;
+    } catch (error) {
+      console.error("Error removing user golf course:", error);
       throw error;
     }
   }

@@ -4,17 +4,22 @@ module FriendQueries {
     
     public type GetFriends = {
         principalId: Base.PrincipalId;
-        totalEntries: Nat;
-        limit: Nat;
-        offset: Nat;
+        page: Nat;
     };
 
     public type Friends = {
-        friendRequests: [Friend];
+        friends: [Friend];
+        page: Nat;
+        total: Nat;
+        pageSize: Nat;
     };
 
     public type Friend = {
         principalId: Base.PrincipalId;
+        username: Text;
+        firstName: Text;
+        lastName: Text;
+        profilePicture: ?Blob;
     };
 }
 
