@@ -31,9 +31,8 @@ module {
         private func listNeurons() : async [SNSGovernance.Neuron] {
 
             if (Environment.SNS_GOVERNANCE_CANISTER_ID == "") {
-                // return []; TODO: Implement to buuld static array to temporarily allow whitelisted principal ids to gain access
+                return [];
             };
-
 
             var governance = actor (Environment.SNS_GOVERNANCE_CANISTER_ID) : actor {
                 list_neurons : shared query SNSGovernance.ListNeurons -> async SNSGovernance.ListNeuronsResponse;
