@@ -99,6 +99,10 @@ module GolfCourseQueries {
     public type HoleSummary = {
         number: Nat8;
         name: Text;
+        colour: Text;
+        yardage: Nat;
+        par: Nat8;
+        strokeIndex: Nat8;
     };
     
 }

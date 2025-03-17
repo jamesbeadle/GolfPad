@@ -15,9 +15,14 @@ function createGolferStore() {
     return new GolferService().getGolfer(dto);
   }
 
+  async function getGameGolferSummaries(dto: GetGameGolferSummaries) : Promise<GameGolferSummaries> {
+    
+  }
+
   return {
     getGolfers,
     getGolfer,
+    getGameGolferSummaries
   };
 }
 
