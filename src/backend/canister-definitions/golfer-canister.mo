@@ -11,6 +11,8 @@ import List "mo:base/List";
 import Environment "../utilities/Environment";
 import T "../data-types/types";
 import Debug "mo:base/Debug";
+import Int "mo:base/Int";
+import Timer "mo:base/Timer";
 import GolferCommands "../commands/golfer_commands";
 import GolferQueries "../queries/golfer_queries";
 import FriendRequestCommands "../commands/friend_request_commands";
@@ -544,80 +546,227 @@ actor class _GolferCanister() {
     for (index in Iter.range(0, 11)) {
       switch (index) {
         case 0 {
-          for (profile in Iter.fromArray(profileGroup1)) {
-            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+          for (golfer in Iter.fromArray(golferGroup1)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((golfer.membershipExpiryTime) - Time.now())));
             ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
           };
         };
         case 1 {
-          for (profile in Iter.fromArray(profileGroup2)) {
-            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+          for (golfer in Iter.fromArray(golferGroup2)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((golfer.membershipExpiryTime) - Time.now())));
             ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
           };
         };
         case 2 {
-          for (profile in Iter.fromArray(profileGroup3)) {
-            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+          for (golfer in Iter.fromArray(golferGroup3)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((golfer.membershipExpiryTime) - Time.now())));
             ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
           };
         };
         case 3 {
-          for (profile in Iter.fromArray(profileGroup4)) {
-            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+          for (golfer in Iter.fromArray(golferGroup4)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((golfer.membershipExpiryTime) - Time.now())));
             ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
           };
         };
         case 4 {
-          for (profile in Iter.fromArray(profileGroup5)) {
-            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+          for (golfer in Iter.fromArray(golferGroup5)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((golfer.membershipExpiryTime) - Time.now())));
             ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
           };
         };
         case 5 {
-          for (profile in Iter.fromArray(profileGroup6)) {
-            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+          for (golfer in Iter.fromArray(golferGroup6)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((golfer.membershipExpiryTime) - Time.now())));
             ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
           };
         };
         case 6 {
-          for (profile in Iter.fromArray(profileGroup7)) {
-            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+          for (golfer in Iter.fromArray(golferGroup7)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((golfer.membershipExpiryTime) - Time.now())));
             ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
           };
         };
         case 7 {
-          for (profile in Iter.fromArray(profileGroup8)) {
-            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+          for (golfer in Iter.fromArray(golferGroup8)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((golfer.membershipExpiryTime) - Time.now())));
             ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
           };
         };
         case 8 {
-          for (profile in Iter.fromArray(profileGroup9)) {
-            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+          for (golfer in Iter.fromArray(golferGroup9)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((golfer.membershipExpiryTime) - Time.now())));
             ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
           };
         };
         case 9 {
-          for (profile in Iter.fromArray(profileGroup10)) {
-            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+          for (golfer in Iter.fromArray(golferGroup10)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((golfer.membershipExpiryTime) - Time.now())));
             ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
           };
         };
         case 10 {
-          for (profile in Iter.fromArray(profileGroup11)) {
-            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+          for (golfer in Iter.fromArray(golferGroup11)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((golfer.membershipExpiryTime) - Time.now())));
             ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
           };
         };
         case 11 {
-          for (profile in Iter.fromArray(profileGroup12)) {
-            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+          for (golfer in Iter.fromArray(golferGroup12)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((golfer.membershipExpiryTime) - Time.now())));
             ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
           };
         };
         case _ {};
       };
     };
+  };
+  private func membershipExpired() : async () {
+
+    for (index in Iter.range(0, 11)) {
+      switch (index) {
+        case 0 {
+          for (golfer in Iter.fromArray(golferGroup1)) {
+            if (golfer.membershipExpiryTime < Time.now()) {
+              expireMembership(golfer.principalId);
+            };
+          };
+        };
+        case 1 {
+          for (golfer in Iter.fromArray(golferGroup2)) {
+            if (golfer.membershipExpiryTime < Time.now()) {
+              expireMembership(golfer.principalId);
+            };
+          };
+        };
+        case 2 {
+          for (golfer in Iter.fromArray(golferGroup3)) {
+            if (golfer.membershipExpiryTime < Time.now()) {
+              expireMembership(golfer.principalId);
+            };
+          };
+        };
+        case 3 {
+          for (golfer in Iter.fromArray(golferGroup4)) {
+            if (golfer.membershipExpiryTime < Time.now()) {
+              expireMembership(golfer.principalId);
+            };
+          };
+        };
+        case 4 {
+          for (golfer in Iter.fromArray(golferGroup5)) {
+            if (golfer.membershipExpiryTime < Time.now()) {
+              expireMembership(golfer.principalId);
+            };
+          };
+        };
+        case 5 {
+          for (golfer in Iter.fromArray(golferGroup6)) {
+            if (golfer.membershipExpiryTime < Time.now()) {
+              expireMembership(golfer.principalId);
+            };
+          };
+        };
+        case 6 {
+          for (golfer in Iter.fromArray(golferGroup7)) {
+            if (golfer.membershipExpiryTime < Time.now()) {
+              expireMembership(golfer.principalId);
+            };
+          };
+        };
+        case 7 {
+          for (golfer in Iter.fromArray(golferGroup8)) {
+            if (golfer.membershipExpiryTime < Time.now()) {
+              expireMembership(golfer.principalId);
+            };
+          };
+        };
+        case 8 {
+          for (golfer in Iter.fromArray(golferGroup9)) {
+            if (golfer.membershipExpiryTime < Time.now()) {
+              expireMembership(golfer.principalId);
+            };
+          };
+        };
+        case 9 {
+          for (golfer in Iter.fromArray(golferGroup10)) {
+            if (golfer.membershipExpiryTime < Time.now()) {
+              expireMembership(golfer.principalId);
+            };
+          };
+        };
+        case 10 {
+          for (golfer in Iter.fromArray(golferGroup11)) {
+            if (golfer.membershipExpiryTime < Time.now()) {
+              expireMembership(golfer.principalId);
+            };
+          };
+        };
+        case 11 {
+          for (golfer in Iter.fromArray(golferGroup12)) {
+            if (golfer.membershipExpiryTime < Time.now()) {
+              expireMembership(golfer.principalId);
+            };
+          };
+        };
+        case _ {};
+      };
+    };
+  };
+
+  private func expireMembership(principalId : Base.PrincipalId) {
+    // expire the membership
+
+    var groupIndex : ?Nat8 = null;
+    for (golferGroupIndex in Iter.fromArray(stable_golfer_group_indexes)) {
+      if (golferGroupIndex.0 == principalId) {
+        groupIndex := ?golferGroupIndex.1;
+      };
+    };
+
+    switch (groupIndex) {
+      case (null) {};
+      case (?foundGroupIndex) {
+        let golfer = findGolfer(foundGroupIndex, principalId);
+        switch (golfer) {
+          case (?foundGolfer) {
+
+            let updatedGolfer : T.Golfer = {
+              joinedOn = foundGolfer.joinedOn;
+              activeGames = foundGolfer.activeGames;
+              completedGames = foundGolfer.completedGames;
+              handicap = foundGolfer.handicap;
+              homeCourseId = foundGolfer.homeCourseId;
+              principalId = foundGolfer.principalId;
+              profilePicture = foundGolfer.profilePicture;
+              profilePictureFileExtension = foundGolfer.profilePictureFileExtension;
+              upcomingGames = foundGolfer.upcomingGames;
+              username = foundGolfer.username;
+              shots = foundGolfer.shots;
+              friendRequests = foundGolfer.friendRequests;
+              friends = foundGolfer.friends;
+              gameSummaries = foundGolfer.gameSummaries;
+              buzzFeed = foundGolfer.buzzFeed;
+              scheduledGames = foundGolfer.scheduledGames;
+              gameInvites = foundGolfer.gameInvites;
+              favouriteGolfCourseIds = foundGolfer.favouriteGolfCourseIds;
+              firstName = foundGolfer.firstName;
+              lastName = foundGolfer.lastName;
+              termsAgreed = foundGolfer.termsAgreed;
+              totalFriends = foundGolfer.totalFriends;
+              membershipType = #Expired;
+              membershipClaims = foundGolfer.membershipClaims;
+              membershipExpiryTime = 0;
+            };
+
+            let _ = saveGolfer(foundGroupIndex, updatedGolfer);
+
+          };
+          case (null) {};
+        };
+      };
+    };
+
   };
 
   public shared ({ caller }) func isCanisterFull() : async Bool {
