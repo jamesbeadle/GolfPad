@@ -1,14 +1,14 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { Game, GameGolferSummaries, GetGameGolferSummaries, GetGolfCourseTeeGroup, GolfCourse, GolferSummary, MulligansScores } from "../../../../../../declarations/backend/backend.did";
+    import type { Game, GolfCourse, GolferSummary, MulligansScores } from "../../../../../../declarations/backend/backend.did";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import UserProfileHorizontal from "$lib/components/shared/user-profile-horizontal.svelte";
     import UserSelectCell from "$lib/components/shared/user-select-cell.svelte";
     import { golfCourseStore } from "$lib/stores/golf-course-store";
-    import { golferStore } from "$lib/stores/golfer-store";
 
     export let game: Game;
     export let golfCourse: GolfCourse;
+    export let players: GolferSummary[];
 
     let isLoading = true;
     let scores: MulligansScores | null = null;
@@ -16,7 +16,6 @@
     let currentPar: number = 0;
     let currentSI: number = 0;
     let currentYardage: bigint = 0n;
-    let golferSummaries: GameGolferSummaries | null = null;
 
     let player1MulligansAvailable = 0;
     let player2MulligansAvailable = 0;
@@ -24,7 +23,6 @@
     onMount(async () => {
         try {
             await setGolfCourseInfo();
-            await setGolferSummaries();
             setGameInfo();
         } catch (error) {
             console.error("Error processing game data:", error);
@@ -69,11 +67,6 @@
                 default:
                     break;
             }
-    }
-
-    async function setGolferSummaries() {
-        let dto: GetGameGolferSummaries = { gameId: game.id};
-        golferSummaries = await golferStore.getGameGolferSummaries(dto);
     }
 
     async function setGolfCourseInfo() {
@@ -129,11 +122,7 @@
     
     <div class="flex flex-row">
         <div class="w-1/2">
-            {#if golferSummaries}
-                <UserProfileHorizontal {golferSummaries} />
-            {:else}
-                <LocalSpinner />
-            {/if}
+            <UserProfileHorizontal {players} />
         </div>
         <div class="w-1/4">
             <p>{ player1MulligansAvailable }</p>
@@ -145,11 +134,7 @@
 
     <div class="flex flex-row">
         <div class="w-1/2">
-            {#if golferSummaries}
-                <UserProfileHorizontal {golferSummaries} />
-            {:else}
-                <LocalSpinner />
-            {/if}
+            <UserProfileHorizontal {players} />
         </div>
         <div class="w-1/4">
             <p>{ player2MulligansAvailable }</p>
@@ -159,8 +144,6 @@
         </div>
     </div>
     
-    
-
     <div class="flex flex-row">
         <div class="w-1/2">
             <p>WINNER</p>
@@ -172,18 +155,10 @@
 
     <div class="flex flex-row">
         <div class="w-1/2">
-            {#if golferSummaries}
-                <UserSelectCell golferSummary={golferSummaries.entries[0]} />
-            {:else}
-                <LocalSpinner />
-            {/if}
+            <UserSelectCell {players} />
         </div>
         <div class="w-1/2">
-            {#if golferSummaries}
-                <UserSelectCell golferSummary={golferSummaries.entries[1]} />
-            {:else}
-                <LocalSpinner />
-            {/if}
+            <UserSelectCell {players} />
         </div>
     </div>
 

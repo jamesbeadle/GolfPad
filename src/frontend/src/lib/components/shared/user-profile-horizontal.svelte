@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { GameGolferSummaries } from "../../../../../declarations/backend/backend.did";
+    import type { GolferSummary } from "../../../../../declarations/backend/backend.did";
 
-    export let golferSummaries: GameGolferSummaries;
+    export let players: GolferSummary[];
 </script>

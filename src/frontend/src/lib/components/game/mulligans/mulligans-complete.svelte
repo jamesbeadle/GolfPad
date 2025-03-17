@@ -3,10 +3,7 @@
     import type { Game, GolferSummary } from "../../../../../../declarations/backend/backend.did";
 
     export let game: Game;
-
-    
-
-    let players: GolferSummary[] = []; //TODO
+    export let players: GolferSummary[];
 
 </script>
 

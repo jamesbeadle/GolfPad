@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Game, GetGolfCourse, GolfCourse } from "../../../../../../declarations/backend/backend.did";
+    import type { Game, GetGolfCourse, GolfCourse, GolferSummary } from "../../../../../../declarations/backend/backend.did";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import GameCourseInfoSummary from "../game-course-info-summary.svelte";
     import MulligansGameDetail from "./mulligans-game-detail.svelte";
@@ -8,6 +8,7 @@
     import { toasts } from "$lib/stores/toasts-store";
 
     export let game: Game;
+    export let players: GolferSummary[];
 
     let isLoading = true;
     let golfCourse: GolfCourse | null = null;
@@ -32,8 +33,8 @@
 {:else}
     <div class="flex flex-col w-full">
         <GameCourseInfoSummary golfCourse={golfCourse!} />
-        <MulligansPlayersScores {game} />
-        <MulligansGameDetail {game} />
+        <MulligansPlayersScores {game} {players} />
+        <MulligansGameDetail {game} {players} golfCourse={golfCourse!} />
     </div>
 {/if}
 

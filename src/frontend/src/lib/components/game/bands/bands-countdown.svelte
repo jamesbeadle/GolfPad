@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { Game, GetGolfCourse, GolfCourse } from "../../../../../../declarations/backend/backend.did";
+    import type { Game, GetGolfCourse, GolfCourse, GolferSummary } from "../../../../../../declarations/backend/backend.did";
     import GameCourseInfoSummary from "../game-course-info-summary.svelte";
     import { golfCourseStore } from "$lib/stores/golf-course-store";
     import { toasts } from "$lib/stores/toasts-store";
@@ -8,6 +8,7 @@
     import BandsPlayerSummary from "./bands-player-summary.svelte";
 
     export let game: Game;
+    let players: GolferSummary[] = [];
 
     let isLoading = true;
     let golfCourse: GolfCourse | null = null;
@@ -73,7 +74,7 @@
 {:else}
     <div class="flex flex-col w-full">
         <GameCourseInfoSummary golfCourse={golfCourse!} />
-        <BandsPlayerSummary {game} />
+        <BandsPlayerSummary {players} />
         <p>{countdown}</p>
     </div>
 {/if}
