@@ -75,6 +75,7 @@ export interface BandsScore {
   predictions: Array<BandsCategoryResult__1>;
 }
 export interface BandsScores {
+  currentHole: number;
   players: Array<BandsPlayerResult>;
 }
 export interface BeginGame {
@@ -552,6 +553,7 @@ export interface MulligansScores {
   winner: PrincipalId;
   results: Array<MulligansHoleResult>;
   score: bigint;
+  currentHole: number;
   golfer2MulligansUsed: number;
   golfer2HolesWonCount: number;
   golfer1MulligansAvailable: number;

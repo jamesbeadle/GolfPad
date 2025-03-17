@@ -310,6 +310,7 @@ module Types {
     golfer2MulligansUsed : Nat8;
     score : Int;
     winner : Base.PrincipalId;
+    currentHole: Nat8;
   };
 
   public type MulligansHoleResult = {
@@ -321,6 +322,7 @@ module Types {
 
   public type BandsScores = {
     players : [BandsPlayerResult];
+    currentHole: Nat8;
   };
 
   public type BandsPlayerResult = {

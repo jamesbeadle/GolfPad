@@ -2,7 +2,7 @@
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
 import SelectedUserProfile from "$lib/components/shared/selected-user-profile.svelte";
     import { onMount } from "svelte";
-    import type { Game, GetPlayerBandsResults, GolferSummary, PlayerBandsResults, PrincipalId } from "../../../../../../declarations/backend/backend.did";
+    import type { Game, GetPlayerBandsResults, GolfCourseTeeGroup, GolferSummary, PlayerBandsResults, PrincipalId } from "../../../../../../declarations/backend/backend.did";
     import { gameStore } from "$lib/stores/game-store";
     import { authStore } from "$lib/stores/auth-store";
     import { toasts } from "$lib/stores/toasts-store";
@@ -11,6 +11,7 @@ import SelectedUserProfile from "$lib/components/shared/selected-user-profile.sv
 
     export let game: Game;
     export let players: GolferSummary[];
+    export let golfCourse: GolfCourseTeeGroup;
     export let bandsResults: PlayerBandsResults | null = null;
     let selectedPlayer: GolferSummary | null = null;
     let selectedPlayerId: PrincipalId = ''; 

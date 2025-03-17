@@ -1542,6 +1542,11 @@ actor class _GameCanister() {
   private func addMulligansScore(dto: GameCommands.AddGameScore, game: T.Game) : T.Game {
 
 
+    var nextHole = dto.holeNumber + 1;
+    if(nextHole > 18){
+      nextHole := 18;
+    };
+
     var updatedScores: ?T.GameScoreDetail = null;
     switch(game.scoreDetail){
       case (?foundScoreDetail){
@@ -1617,6 +1622,7 @@ actor class _GameCanister() {
               golfer2MulligansAvailable = golfer2MulligansAvailable;
               golfer2MulligansUsed = golfer2MulligansUsed;
               score = difference;
+              currentHole = nextHole;
             });
 
             let updatedGame: T.Game = {
@@ -1697,6 +1703,7 @@ actor class _GameCanister() {
               golfer2MulligansAvailable = golfer2MulligansAvailable;
               golfer2MulligansUsed = golfer2MulligansUsed;
               score = difference;
+              currentHole = nextHole;
             });
 
 

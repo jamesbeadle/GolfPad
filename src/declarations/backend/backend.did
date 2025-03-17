@@ -302,6 +302,7 @@ type NextUpResultInfo =
  };
 type MulligansScores = 
  record {
+   currentHole: nat8;
    golfer1HolesWonCount: nat8;
    golfer1MulligansAvailable: nat8;
    golfer1MulligansUsed: nat8;
@@ -829,7 +830,11 @@ type BuildItResultInfo =
    teams: vec TeamFeedSummary__1;
  };
 type BeginGame = record {gameId: GameId;};
-type BandsScores = record {players: vec BandsPlayerResult;};
+type BandsScores = 
+ record {
+   currentHole: nat8;
+   players: vec BandsPlayerResult;
+ };
 type BandsScore = record {predictions: vec BandsCategoryResult__1;};
 type BandsResultInfo = 
  record {

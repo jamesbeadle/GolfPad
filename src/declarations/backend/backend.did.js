@@ -311,7 +311,10 @@ export const idlFactory = ({ IDL }) => {
     principalId: PrincipalId,
     points: IDL.Nat8,
   });
-  const BandsScores = IDL.Record({ players: IDL.Vec(BandsPlayerResult) });
+  const BandsScores = IDL.Record({
+    currentHole: IDL.Nat8,
+    players: IDL.Vec(BandsPlayerResult),
+  });
   const MulligansHoleResult = IDL.Record({
     golfer2MulliganUsed: IDL.Bool,
     winner: PrincipalId,
@@ -322,6 +325,7 @@ export const idlFactory = ({ IDL }) => {
     winner: PrincipalId,
     results: IDL.Vec(MulligansHoleResult),
     score: IDL.Int,
+    currentHole: IDL.Nat8,
     golfer2MulligansUsed: IDL.Nat8,
     golfer2HolesWonCount: IDL.Nat8,
     golfer1MulligansAvailable: IDL.Nat8,
