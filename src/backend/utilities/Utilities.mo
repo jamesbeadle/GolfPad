@@ -395,11 +395,11 @@ module {
       };
     };
 
-    if (total_staked >= hundredK_ICFC_e8s) {
+    if (total_staked + 5 >= hundredK_ICFC_e8s) {
       return ?#Lifetime;
-    } else if (total_staked >= tenK_ICFC_e8s) {
+    } else if (total_staked + 5 >= tenK_ICFC_e8s) {
       return ?#Seasonal;
-    } else if (total_staked >= oneK_ICFC_e8s) {
+    } else if (total_staked + 5 >= oneK_ICFC_e8s) {
       return ?#Monthly;
     } else {
       return null;
