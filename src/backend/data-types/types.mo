@@ -308,15 +308,18 @@ module Types {
   };
 
   public type BandsScores = {
-    results: [BandsResult];
-    points: Nat8;
+    players: [BandsPlayerResult];
   };
 
-  public type BandsResult = {
+  public type BandsPlayerResult = {
       principalId: Base.PrincipalId;
+      points: Nat8;
+      categories: [BandsCategoryResult]
+  };
+
+  public type BandsCategoryResult = {
       bandsCategory: BandsCategory;
       completed: Bool;
-      points: Nat8;
   };
 
   public type GamePrediction = {

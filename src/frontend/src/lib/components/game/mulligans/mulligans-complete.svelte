@@ -1,7 +1,11 @@
 <script lang="ts">
-    import type { Game } from "../../../../../../declarations/backend/backend.did";
+    import UserProfileBanner from "$lib/components/shared/user-profile-banner.svelte";
+    import type { Game, GolferSummary } from "../../../../../../declarations/backend/backend.did";
 
     export let game: Game;
+
+    let players: GolferSummary[] = []; //TODO
+    
 </script>
 
 
@@ -10,9 +14,7 @@
 </div>
 
 
-{#each players as player}
-    <UserProfileWidget {player} />
-{/each}
+<UserProfileBanner {players} />
 
 <div class="flex flex-row">
     <div class="w-1/3 flex flex-col">

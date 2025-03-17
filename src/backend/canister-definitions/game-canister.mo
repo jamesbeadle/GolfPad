@@ -547,90 +547,25 @@ actor class _GameCanister() {
             if(foundGame.status != #Active){
               return #err(#NotAllowed);
             };
-
-            var updatedScoreInfo: ?T.GameScoreDetail = null;
-            switch(dto.detail){
-              case (#MulligansScores updatedScore){
-                
-                switch(foundGame.scoreDetail){
-                  case (?(#MulligansScores currentScore)){
-                    var golfer1HolesWon = currentScore.golfer1HolesWonCount;
-                    var golfer2HolesWon = currentScore.golfer2HolesWonCount;
-                    
-                    if(updatedScore.winner == foundGame.playerIds[0]){
-                      golfer1HolesWon += 1;
-                    };
-                    
-                    if(updatedScore.winner == foundGame.playerIds[1]){
-                      golfer2HolesWon += 1;
-                    };
-
-                    var mulliganHoleResultBuffer = Buffer.fromArray<T.MulligansHoleResult>(currentScore.results);
-                    mulliganHoleResultBuffer.add({
-                      holeNumber = updatedScore.holeNumber;
-                      winner = updatedScore.winner;
-                      golfer1MulliganUsed = updatedScore.golfer1MulliganUsed;
-                      golfer2MulliganUsed = updatedScore.golfer2MulliganUsed;
-                    });
-
-                    var difference: Int = Int8.toInt(Int8.fromNat8(golfer1HolesWon)) - Int8.toInt(Int8.fromNat8(golfer2HolesWon));
-                    if(difference < 0){
-                      difference := -difference;
-                    };
-                    
-                    let remainingHoles: Int = 18 - Int8.toInt(Int8.fromNat8(updatedScore.holeNumber)); 
-
-                    var gameWinner = "";
-                    var gameStatus: T.GameStatus = foundGame.status;
-                    if(difference > remainingHoles or updatedScore.holeNumber == 18){
-                      if(golfer1HolesWon > golfer2HolesWon){
-                        gameWinner := foundGame.playerIds[0];
-                      };
-                      if(golfer2HolesWon > golfer1HolesWon){
-                        gameWinner := foundGame.playerIds[1];
-                      };
-                      gameStatus := #Complete;
-                    };
-
-                    updatedScoreInfo := ?(#MulligansScores {
-                      results = Buffer.toArray(mulliganHoleResultBuffer);
-                      golfer1HolesWonCount = golfer1HolesWon;
-                      golfer2HolesWonCount = golfer2HolesWon;
-                      winner = gameWinner;
-                    });
             
-                    let updatedGame: T.Game = {
-                      courseId = foundGame.courseId;
-                      courseSnapshot = foundGame.courseSnapshot;
-                      events = foundGame.events;
-                      gameType = foundGame.gameType;
-                      id = foundGame.id;
-                      invites = foundGame.invites;
-                      playerIds = foundGame.playerIds;
-                      predictions = foundGame.predictions;
-                      scoreDetail = updatedScoreInfo;
-                      status = gameStatus;
-                      teeOffTime = foundGame.teeOffTime;
-                      winner = gameWinner;
-                    };
-                    saveGame(foundGroupIndex, updatedGame);
-                  };
-                  case (null){ return #err(#NotFound); }
-                };
+            switch(foundGame.gameType){
+              case (#Mulligans _){
+                let updatedGame: T.Game = addBandsScore(dto, foundGame);
+                return saveGame(foundGroupIndex, updatedGame);
               };
-            };
-
-
+              case (#Bands _){
+                let updatedGame: T.Game = addMulligansScore(dto, foundGame);
+                return saveGame(foundGroupIndex, updatedGame);
+              };
+              case (_){}
+            };  
           };
-          case (#err _){
-            return #err(#NotFound);
-          }
+          case (#err _){}
         };
       };
-      case (null){
-        return #err(#NotFound);
-      }
+      case (null){}
     };
+    return #err(#NotFound);
   };
 
   public shared ({ caller }) func beginGame(dto: GameCommands.BeginGame) : async Result.Result<(), T.Error>{
@@ -1602,6 +1537,80 @@ actor class _GameCanister() {
         return 0;
       }
     }
+  };
+
+  private func addMulligansScore(dto: GameCommands.AddGameScore, game: T.Game) : T.Game {
+
+    
+
+    /*
+    var golfer1HolesWon = currentScore.golfer1HolesWonCount;
+    var golfer2HolesWon = currentScore.golfer2HolesWonCount;
+    
+    if(currentScore.winner == foundGame.playerIds[0]){
+      golfer1HolesWon += 1;
+    };
+    
+    if(currentScore.winner == foundGame.playerIds[1]){
+      golfer2HolesWon += 1;
+    };
+
+    var mulliganHoleResultBuffer = Buffer.fromArray<T.MulligansHoleResult>(currentScore.results);
+    mulliganHoleResultBuffer.add({
+      holeNumber = updatedScore.holeNumber;
+      winner = updatedScore.winner;
+      golfer1MulliganUsed = updatedScore.golfer1MulliganUsed;
+      golfer2MulliganUsed = updatedScore.golfer2MulliganUsed;
+    });
+
+    var difference: Int = Int8.toInt(Int8.fromNat8(golfer1HolesWon)) - Int8.toInt(Int8.fromNat8(golfer2HolesWon));
+    if(difference < 0){
+      difference := -difference;
+    };
+    
+    let remainingHoles: Int = 18 - Int8.toInt(Int8.fromNat8(updatedScore.holeNumber)); 
+
+    var gameWinner = "";
+    var gameStatus: T.GameStatus = foundGame.status;
+    if(difference > remainingHoles or updatedScore.holeNumber == 18){
+      if(golfer1HolesWon > golfer2HolesWon){
+        gameWinner := foundGame.playerIds[0];
+      };
+      if(golfer2HolesWon > golfer1HolesWon){
+        gameWinner := foundGame.playerIds[1];
+      };
+      gameStatus := #Complete;
+    };
+
+    updatedScoreInfo := ?(#MulligansScores {
+      results = Buffer.toArray(mulliganHoleResultBuffer);
+      golfer1HolesWonCount = golfer1HolesWon;
+      golfer2HolesWonCount = golfer2HolesWon;
+      winner = gameWinner;
+    });
+
+    saveGame(foundGroupIndex, updatedGame);
+    */
+
+    let updatedGame: T.Game = {
+      courseId = game.courseId;
+      courseSnapshot = game.courseSnapshot;
+      events = game.events;
+      gameType = game.gameType;
+      id = game.id;
+      invites = game.invites;
+      playerIds = game.playerIds;
+      predictions = game.predictions;
+      scoreDetail = updatedScoreInfo;
+      status = game;
+      teeOffTime = game.teeOffTime;
+      winner = gameWinner;
+    };
+    return updatedGame;
+  };
+
+  private func addBandsScore(dto: GameCommands.AddGameScore, game: T.Game) : T.Game {
+    return game; //TODO
   };
   
 };

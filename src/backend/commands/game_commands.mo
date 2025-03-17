@@ -40,6 +40,7 @@ module GameCommands {
 
     public type GameScoreSubmission = {
       #MulligansScores: MulligansScore;
+      #BandsScores: BandsScore;
     };
 
     public type MulligansScore = {
@@ -48,6 +49,17 @@ module GameCommands {
         golfer1MulliganUsed: Bool;
         golfer2MulliganUsed: Bool;
     };
+
+    public type BandsScore = {
+        holeNumber: T.HoleNumber;
+        predictions: [BandsCategoryResult];
+    };
+
+    public type BandsCategoryResult = {
+        golferId: Base.PrincipalId;
+        category: T.BandsCategory;
+        completed: Bool;
+    };  
 
     public type InviteGolfers = {
         gameId: T.GameId;
