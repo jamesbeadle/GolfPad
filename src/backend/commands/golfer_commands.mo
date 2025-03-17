@@ -4,52 +4,60 @@ import Base "mo:waterway-mops/BaseTypes";
 module GolferCommands {
 
     public type CreateUser = {
-        username: Text;
-        handicap: ?T.Handicap;
-        profilePicture: ?Blob;
-        profilePictureExtension: ?Text;
+        username : Text;
+        handicap : ?T.Handicap;
+        profilePicture : ?Blob;
+        profilePictureExtension : ?Text;
     };
 
     public type UpdateUsername = {
-        principalId: Base.PrincipalId;
-        username: Text;
+        principalId : Base.PrincipalId;
+        username : Text;
     };
 
     public type UpdateFirstName = {
-        principalId: Base.PrincipalId;
-        firstName: Text;
+        principalId : Base.PrincipalId;
+        firstName : Text;
     };
 
     public type UpdateLastName = {
-        principalId: Base.PrincipalId;
-        lastName: Text;
+        principalId : Base.PrincipalId;
+        lastName : Text;
     };
 
     public type UpdateProfilePicture = {
-        principalId: Base.PrincipalId;
-        profilePicture: ?Blob;
-        profilePictureExtension: Text;
+        principalId : Base.PrincipalId;
+        profilePicture : ?Blob;
+        profilePictureExtension : Text;
     };
-    
+
     public type UpdateHandicap = {
-        principalId: Base.PrincipalId;
-        handicap: ?T.Handicap;
+        principalId : Base.PrincipalId;
+        handicap : ?T.Handicap;
     };
-    
+
     public type UpdateHomeCourse = {
-        principalId: Base.PrincipalId;
-        homeCourseId: ?T.GolfCourseId;
+        principalId : Base.PrincipalId;
+        homeCourseId : ?T.GolfCourseId;
     };
-    
+
     public type DeleteGolfer = {
-        principalId: Base.PrincipalId;
-        confirm: Bool;
+        principalId : Base.PrincipalId;
+        confirm : Bool;
     };
 
     public type RemoveUserGolfCourse = {
-        principalId: Base.PrincipalId;
-        golfCourseId: T.GolfCourseId;
+        principalId : Base.PrincipalId;
+        golfCourseId : T.GolfCourseId;
     };
-}
 
-  
+    public type ClaimMembership = {
+        principalId : Base.PrincipalId;
+    };
+
+    public type UpdateMembership = {
+        principalId : Base.PrincipalId;
+        membershipType : T.MembershipType;
+    };
+
+};

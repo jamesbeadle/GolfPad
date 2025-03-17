@@ -14,6 +14,8 @@ import Int "mo:base/Int";
 import Management "Management";
 import Cycles "mo:base/ExperimentalCycles";
 import Char "mo:base/Char";
+import T "../data-types/types";
+import SNSGovernance "../sns-wrappers/governance";
 
 module {
 
@@ -24,7 +26,7 @@ module {
   };
 
   public let hashNat8 = func(key : Nat8) : Hash.Hash {
-    Nat32.fromNat(Nat8.toNat(key) % (2 ** 32 -1));
+    Nat32.fromNat(Nat8.toNat(key) % (2 ** 32 - 1));
   };
 
   public let eqNat16 = func(a : Nat16, b : Nat16) : Bool {
@@ -32,7 +34,7 @@ module {
   };
 
   public let hashNat16 = func(key : Nat16) : Hash.Hash {
-    Nat32.fromNat(Nat16.toNat(key) % (2 ** 32 -1));
+    Nat32.fromNat(Nat16.toNat(key) % (2 ** 32 - 1));
   };
 
   public let eqNat32 = func(a : Nat32, b : Nat32) : Bool {
@@ -40,7 +42,7 @@ module {
   };
 
   public let hashNat32 = func(key : Nat32) : Hash.Hash {
-    Nat32.fromNat(Nat32.toNat(key) % (2 ** 32 -1));
+    Nat32.fromNat(Nat32.toNat(key) % (2 ** 32 - 1));
   };
 
   public let eqNat = func(a : Nat, b : Nat) : Bool {
@@ -48,9 +50,8 @@ module {
   };
 
   public let hashNat = func(key : Nat) : Hash.Hash {
-    Nat32.fromNat(key % (2 ** 32 -1));
+    Nat32.fromNat(key % (2 ** 32 - 1));
   };
-
 
   public func unixTimeToMonth(unixTime : Int) : Nat8 {
 
@@ -247,16 +248,16 @@ module {
               compute_allocation = null;
               memory_allocation = null;
               freezing_threshold = ?31_540_000;
-              reserved_cycles_limit = null
+              reserved_cycles_limit = null;
             };
-            sender_canister_version = null
-          }),
+            sender_canister_version = null;
+          })
         );
       };
     };
   };
-  
-  public func topup_canister_(a : actor {}, backendCanisterController : ?Principal, IC : Management.Management, cycles: Nat) : async () {
+
+  public func topup_canister_(a : actor {}, backendCanisterController : ?Principal, IC : Management.Management, cycles : Nat) : async () {
     let cid = { canister_id = Principal.fromActor(a) };
     switch (backendCanisterController) {
       case (null) {};
@@ -265,12 +266,12 @@ module {
         await (
           IC.deposit_cycles({
             canister_id = cid.canister_id;
-          }),
+          })
         );
       };
     };
   };
-  
+
   public func delete_canister_(a : actor {}, backendCanisterController : ?Principal, IC : Management.Management) : async () {
     let cid = { canister_id = Principal.fromActor(a) };
     switch (backendCanisterController) {
@@ -279,74 +280,130 @@ module {
         await (
           IC.delete_canister({
             canister_id = cid.canister_id;
-          }),
+          })
         );
       };
     };
   };
 
   public func getReadableDate(date : Int) : Text {
-      let secondsInADay : Int = 86_400;
-      let days = date / (1_000_000_000 * secondsInADay);
+    let secondsInADay : Int = 86_400;
+    let days = date / (1_000_000_000 * secondsInADay);
 
-      let year = getYear(days);
-      let dayOfYear = getDayOfYear(days, year);
+    let year = getYear(days);
+    let dayOfYear = getDayOfYear(days, year);
 
-      let isLeapYear = if (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)) {
-        true
-      } else {
-        false
-      };
+    let isLeapYear = if (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)) {
+      true;
+    } else {
+      false;
+    };
 
-      let monthEnds = if (isLeapYear) {
-        [31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366];
-      } else {
-        [31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365];
-      };
+    let monthEnds = if (isLeapYear) {
+      [31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366];
+    } else {
+      [31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365];
+    };
 
-      var month = 0;
-      var day = dayOfYear;
+    var month = 0;
+    var day = dayOfYear;
 
-      label monthLoop for (m in Iter.range(0, 11)) {
-        if (day <= monthEnds[m]) {
-          month := m + 1;
-          if (m > 0) {
-            day := day - monthEnds[m-1];
-          };
-          break monthLoop;
+    label monthLoop for (m in Iter.range(0, 11)) {
+      if (day <= monthEnds[m]) {
+        month := m + 1;
+        if (m > 0) {
+          day := day - monthEnds[m - 1];
         };
+        break monthLoop;
       };
+    };
 
-      let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      return Text.concat(Text.concat(Text.concat(Int.toText(day), " "), monthNames[month - 1]), Text.concat(" ", Int.toText(year)));
+    let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    return Text.concat(Text.concat(Text.concat(Int.toText(day), " "), monthNames[month - 1]), Text.concat(" ", Int.toText(year)));
   };
 
-  public func toLowercase(t: Text.Text): Text.Text {
-    func charToLower(c: Char): Char {
+  public func toLowercase(t : Text.Text) : Text.Text {
+    func charToLower(c : Char) : Char {
       if (Char.isUppercase(c)) {
-        Char.fromNat32(Char.toNat32(c) + 32)
+        Char.fromNat32(Char.toNat32(c) + 32);
       } else {
-        c
-      }
+        c;
+      };
     };
-    Text.map(t, charToLower)
+    Text.map(t, charToLower);
   };
 
   public func trimStartToLength(t : Text, length : Nat) : Text {
-    let cs = Text.toIter(t); 
+    let cs = Text.toIter(t);
     var result = "";
     var count = 0;
 
     label charLoop for (c in cs) {
-        if (count < length) {
-            result #= Text.fromChar(c);
-            count += 1;
-        } else {
-            break charLoop;
-        }
+      if (count < length) {
+        result #= Text.fromChar(c);
+        count += 1;
+      } else {
+        break charLoop;
+      };
     };
 
     return result;
+  };
+  public func getMembershipExpirationDate(membershipType : T.MembershipType) : Int {
+    let now = Time.now();
+    switch (membershipType) {
+      case (#Monthly) { now + (30 * 24 * 60 * 60 * 1_000_000_000) };
+      case (#Seasonal) { now + (365 * 24 * 60 * 60 * 1_000_000_000) };
+      case (#Lifetime) {
+        now + (100 * 365 * 24 * 60 * 60 * 1_000_000_000);
+      };
+      case (#NotClaimed) { now };
+      case (#Expired) { now };
+    };
+  };
+  public func convertSecondsToYears(seconds : Int) : Float {
+    let secondsInAYear = 31_536_000;
+    Float.fromInt(seconds) / Float.fromInt(secondsInAYear);
+  };
+
+  public func getMembershipType(neurons : [SNSGovernance.Neuron]) : ?T.MembershipType {
+    let oneK_ICFC_e8s : Nat64 = 1_000 * 100_000_000;
+    let tenK_ICFC_e8s : Nat64 = 10_000 * 100_000_000;
+    let hundredK_ICFC_e8s : Nat64 = 100_000 * 100_000_000;
+
+    var total_staked : Nat64 = 0;
+
+    for (neuron in neurons.vals()) {
+      total_staked += neuron.cached_neuron_stake_e8s;
+      switch (neuron.dissolve_state) {
+        case (?dissolve_state) {
+          switch (dissolve_state) {
+            case (#DissolveDelaySeconds(dissolve_delay)) {
+              if (convertSecondsToYears(Int64.toInt(Int64.fromNat64(dissolve_delay))) > 2.0) {
+                total_staked += neuron.cached_neuron_stake_e8s;
+              };
+            };
+            case (#WhenDissolvedTimestampSeconds(_)) {
+
+            };
+          };
+        };
+
+        case (null) {
+
+        };
+      };
+    };
+
+    if (total_staked >= hundredK_ICFC_e8s) {
+      return ?#Lifetime;
+    } else if (total_staked >= tenK_ICFC_e8s) {
+      return ?#Seasonal;
+    } else if (total_staked >= oneK_ICFC_e8s) {
+      return ?#Monthly;
+    } else {
+      return null;
+    };
   };
 
 };

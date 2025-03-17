@@ -317,6 +317,13 @@ actor Self {
 
   //User Commands:
 
+
+  public shared ({caller}) func claimMembership() : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let dto : GolferCommands.ClaimMembership = { principalId = Principal.toText(caller) };
+    return await golferManager.claimMembership(dto);
+  };
+
   public shared ({ caller }) func createUser(dto: GolferCommands.CreateUser) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
