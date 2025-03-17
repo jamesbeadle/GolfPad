@@ -1,21 +1,21 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { Game, GolfCourse, GolferSummary, MulligansScores } from "../../../../../../declarations/backend/backend.did";
+    import type { Game, GetGolfCourseTeeGroup, GolfCourse, GolferSummary, MulligansScores } from "../../../../../../declarations/backend/backend.did";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import UserProfileHorizontal from "$lib/components/shared/user-profile-horizontal.svelte";
     import UserSelectCell from "$lib/components/shared/user-select-cell.svelte";
     import { golfCourseStore } from "$lib/stores/golf-course-store";
+    import { golferStore } from "$lib/stores/golfer-store";
 
     export let game: Game;
     export let golfCourse: GolfCourse;
-    export let golfCourseTeeGroup: GolfCourseTeeGroup;
 
     let isLoading = true;
     let scores: MulligansScores | null = null;
     let currentHole: number = 1;
     let currentPar: number = 0;
     let currentSI: number = 0;
-    let currentYardage: number = 0;
+    let currentYardage: bigint = 0n;
     let golferSummaries: GolferSummary[] = [];
 
     let player1MulligansAvailable = 0;
@@ -59,9 +59,9 @@
                             if(courseTees){
                                 var currentTeeHole = courseTees.holes.find(x => x.number == currentHole);
                                 if(!currentTeeHole){ return; }
-                                currentPar = currentTeeHole..par;
+                                currentPar = currentTeeHole.par;
                                 currentSI = currentTeeHole.strokeIndex;
-                                currentYardage = currentTeeHole.
+                                currentYardage = currentTeeHole.yardage;
                             }
                         }
                     }
@@ -73,6 +73,7 @@
 
     async function setGolferSummaries() {
         //For each golfer fetch their summary and store
+        golferSummaries = await golferStore.getGameGolferSummaries();
 
     }
 

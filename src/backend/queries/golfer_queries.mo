@@ -71,6 +71,14 @@ module GolferQueries {
 
     public type UsernameAvailable = Bool;
 
+    public type GetGameGolferSummaries = {
+        gameId: T.GameId;
+    };
+
+
+    public type GameGolferSummaries = {
+        entries: [GolferSummary];
+    };
     
 }
 

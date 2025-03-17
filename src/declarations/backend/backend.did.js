@@ -123,22 +123,18 @@ export const idlFactory = ({ IDL }) => {
     golfShotId: GolfShotId,
     principalId: PrincipalId,
   });
-  const TeeInfo = IDL.Record({
-    par: IDL.Nat8,
-    name: IDL.Text,
-    yardage: IDL.Nat,
-    colour: IDL.Text,
-    strokeIndex: IDL.Nat8,
-  });
   const HoleImage = IDL.Record({
     owner: PrincipalId,
     uploaded: IDL.Int,
     image: IDL.Vec(IDL.Nat8),
   });
   const Hole = IDL.Record({
+    par: IDL.Nat8,
     name: IDL.Text,
-    tees: IDL.Vec(TeeInfo),
+    yardage: IDL.Nat,
     number: IDL.Nat8,
+    colour: IDL.Text,
+    strokeIndex: IDL.Nat8,
     images: IDL.Vec(HoleImage),
   });
   const CountryId = IDL.Nat8;
@@ -148,7 +144,6 @@ export const idlFactory = ({ IDL }) => {
     name: IDL.Text,
     index: TeeGroupIndex,
     colour: IDL.Text,
-    strokeIndex: IDL.Nat8,
   });
   const CreateGolfCourse = IDL.Record({
     holes: IDL.Vec(Hole),
@@ -419,12 +414,28 @@ export const idlFactory = ({ IDL }) => {
   });
   const Result_15 = IDL.Variant({ ok: GameSummaries, err: Error });
   const GetGolfCourse = IDL.Record({ id: GolfCourseId });
+  const HoleSummary = IDL.Record({
+    par: IDL.Nat8,
+    name: IDL.Text,
+    yardage: IDL.Nat,
+    number: IDL.Nat8,
+    colour: IDL.Text,
+    strokeIndex: IDL.Nat8,
+  });
+  const GolfCourseTeeGroup = IDL.Record({
+    added: IDL.Int,
+    holes: IDL.Vec(HoleSummary),
+    golfCourseId: GolfCourseId,
+    name: IDL.Text,
+    index: TeeGroupIndex,
+    colour: IDL.Text,
+  });
   const GolfCourse = IDL.Record({
     id: GolfCourseId,
     totalHoles: IDL.Nat8,
     activeVersion: GolfCourseVersion,
     name: IDL.Text,
-    tees: IDL.Vec(TeeGroup),
+    tees: IDL.Vec(GolfCourseTeeGroup),
     countryId: CountryId,
     mainImageExtension: IDL.Text,
     founded: IDL.Int,
@@ -449,20 +460,6 @@ export const idlFactory = ({ IDL }) => {
   const GetGolfCourseTeeGroup = IDL.Record({
     id: GolfCourseId,
     index: TeeGroupIndex,
-  });
-  const HoleSummary = IDL.Record({
-    name: IDL.Text,
-    teeInfo: TeeInfo,
-    number: IDL.Nat8,
-  });
-  const GolfCourseTeeGroup = IDL.Record({
-    id: GolfCourseId,
-    added: IDL.Int,
-    holes: IDL.Vec(HoleSummary),
-    name: IDL.Text,
-    index: TeeGroupIndex,
-    colour: IDL.Text,
-    strokeIndex: IDL.Nat8,
   });
   const Result_11 = IDL.Variant({ ok: GolfCourseTeeGroup, err: Error });
   const GetGolfCourseTees = IDL.Record({ golfCourseId: GolfCourseId });

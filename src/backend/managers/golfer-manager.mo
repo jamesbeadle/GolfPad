@@ -239,7 +239,12 @@ module {
       return #ok(golfersDTO);
     };
 
-    public func getFriends(dto : FriendQueries.GetFriends) : async Result.Result<FriendQueries.Friends, T.Error> {
+
+    public shared ({ caller }) func getGameGolferSummaries(dto: GolferQueries.GetGameGolferSummaries) : async Result.Result<GolferQueries.GameGolferSummaries, T.Error>{
+      return #err(#NotFound); //TODO
+    };
+
+    public func getFriends(dto: FriendQueries.GetFriends) : async Result.Result<FriendQueries.Friends, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
       switch (existingGolferCanisterId) {
         case (?foundCanisterId) {
