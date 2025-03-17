@@ -331,7 +331,7 @@ module {
       };
     };
 
-    public func claimMembership(dto : GolferCommands.ClaimMembership) : async Result.Result<(), T.Error> {
+    public func claimMembership(dto : GolferCommands.ClaimMembership) : async Result.Result<(T.MembershipClaim), T.Error> {
       let existingProfileCanisterId = golferCanisterIndex.get(dto.principalId);
       switch (existingProfileCanisterId) {
         case (?_) {
@@ -362,12 +362,12 @@ module {
       };
     };
 
-    public func updateMembership(dto : GolferCommands.UpdateMembership) : async Result.Result<(), T.Error> {
+    public func updateMembership(dto : GolferCommands.UpdateMembership) : async Result.Result<(T.MembershipClaim), T.Error> {
       let existingProfileCanisterId = golferCanisterIndex.get(dto.principalId);
       switch (existingProfileCanisterId) {
         case (?foundCanisterId) {
           let profile_canister = actor (foundCanisterId) : actor {
-            updateMembership : (dto : GolferCommands.UpdateMembership) -> async Result.Result<(), T.Error>;
+            updateMembership : (dto : GolferCommands.UpdateMembership) -> async Result.Result<(T.MembershipClaim), T.Error>;
           };
           return await profile_canister.updateMembership(dto);
         };

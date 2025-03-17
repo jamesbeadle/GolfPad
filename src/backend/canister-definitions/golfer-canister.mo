@@ -349,7 +349,7 @@ actor class _GolferCanister() {
     };
   };
 
-  public shared ({ caller }) func updateMembership(dto : GolferCommands.UpdateMembership) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateMembership(dto : GolferCommands.UpdateMembership) : async Result.Result<(T.MembershipClaim), T.Error> {
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -411,8 +411,15 @@ actor class _GolferCanister() {
               };
             };
 
-            saveGolfer(foundGroupIndex, updatedProfile);
-
+            let res = saveGolfer(foundGroupIndex, updatedProfile);
+            switch (res) {
+              case (#err(error)) {
+                return #err(error);
+              };
+              case (#ok) {
+                return #ok(newClaim);
+              };
+            };
           };
           case (null) {
             return #err(#NotFound);
@@ -526,6 +533,89 @@ actor class _GolferCanister() {
             return #err(#NotFound);
           };
         };
+      };
+    };
+  };
+  public shared ({ caller }) func createMembershipExpiredTimers() : async () {
+    assert not Principal.isAnonymous(caller);
+    let backendPrincipalId = Principal.toText(caller);
+    assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+
+    for (index in Iter.range(0, 11)) {
+      switch (index) {
+        case 0 {
+          for (profile in Iter.fromArray(profileGroup1)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+            ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
+          };
+        };
+        case 1 {
+          for (profile in Iter.fromArray(profileGroup2)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+            ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
+          };
+        };
+        case 2 {
+          for (profile in Iter.fromArray(profileGroup3)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+            ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
+          };
+        };
+        case 3 {
+          for (profile in Iter.fromArray(profileGroup4)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+            ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
+          };
+        };
+        case 4 {
+          for (profile in Iter.fromArray(profileGroup5)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+            ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
+          };
+        };
+        case 5 {
+          for (profile in Iter.fromArray(profileGroup6)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+            ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
+          };
+        };
+        case 6 {
+          for (profile in Iter.fromArray(profileGroup7)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+            ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
+          };
+        };
+        case 7 {
+          for (profile in Iter.fromArray(profileGroup8)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+            ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
+          };
+        };
+        case 8 {
+          for (profile in Iter.fromArray(profileGroup9)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+            ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
+          };
+        };
+        case 9 {
+          for (profile in Iter.fromArray(profileGroup10)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+            ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
+          };
+        };
+        case 10 {
+          for (profile in Iter.fromArray(profileGroup11)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+            ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
+          };
+        };
+        case 11 {
+          for (profile in Iter.fromArray(profileGroup12)) {
+            let durationUntilExpiry = #nanoseconds(Int.abs(((profile.membershipExpiryTime) - Time.now())));
+            ignore Timer.setTimer<system>(durationUntilExpiry, membershipExpired);
+          };
+        };
+        case _ {};
       };
     };
   };
