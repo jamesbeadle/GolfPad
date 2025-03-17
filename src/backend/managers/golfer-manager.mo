@@ -32,129 +32,131 @@ import GameQueries "../queries/game_queries";
 import FriendCommands "../commands/friend_commands";
 import FriendQueries "../queries/friend_queries";
 import GolfCourseQueries "../queries/golf_course_queries";
+import SNSGovernance "../sns-wrappers/governance";
+import SNSManager "../managers/sns-manager";
 
 module {
   public class GolferManager() {
 
-    private var golferCanisterIndex: TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId> = TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId>(Text.equal, Text.hash);
-    private var activeCanisterId: Base.CanisterId = "";
+    private var golferCanisterIndex : TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId> = TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId>(Text.equal, Text.hash);
+    private var activeCanisterId : Base.CanisterId = "";
     private var usernames : TrieMap.TrieMap<Base.PrincipalId, Text> = TrieMap.TrieMap<Base.PrincipalId, Text>(Text.equal, Text.hash);
     private var uniqueGolferCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGolfers : Nat = 0;
 
     //Getters
 
-    public func getProfilePicture(principalId: Base.PrincipalId) : async ?Blob {
+    public func getProfilePicture(principalId : Base.PrincipalId) : async ?Blob {
       let existingGolferCanisterId = golferCanisterIndex.get(principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getProfilePicture : (principalId: Base.PrincipalId) -> async ?Blob;
+            getProfilePicture : (principalId : Base.PrincipalId) -> async ?Blob;
           };
 
           let golfer = await golfer_canister.getProfilePicture(principalId);
           return golfer;
         };
-        case (null){
+        case (null) {
           return null;
-        }
+        };
       };
     };
 
-    public func isUsernameAvailable(dto: GolferQueries.IsUsernameAvailable) : GolferQueries.UsernameAvailable{
-      return not isUsernameTaken(dto.username, dto.principalId)
+    public func isUsernameAvailable(dto : GolferQueries.IsUsernameAvailable) : GolferQueries.UsernameAvailable {
+      return not isUsernameTaken(dto.username, dto.principalId);
     };
 
-    public func getProfile(dto: GolferQueries.GetProfile) : async Result.Result<GolferQueries.Profile, T.Error> {
+    public func getProfile(dto : GolferQueries.GetProfile) : async Result.Result<GolferQueries.Profile, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getProfile : (dto: GolferQueries.GetProfile) -> async Result.Result<GolferQueries.Profile, T.Error>;
+            getProfile : (dto : GolferQueries.GetProfile) -> async Result.Result<GolferQueries.Profile, T.Error>;
           };
 
           let golfer = await golfer_canister.getProfile(dto);
           return golfer;
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
+        };
       };
     };
 
-    public func getBuzz(dto: BuzzQueries.GetBuzz) : async Result.Result<BuzzQueries.Buzz, T.Error> {
+    public func getBuzz(dto : BuzzQueries.GetBuzz) : async Result.Result<BuzzQueries.Buzz, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getBuzz : (dto: BuzzQueries.GetBuzz) -> async Result.Result<BuzzQueries.Buzz, T.Error>;
+            getBuzz : (dto : BuzzQueries.GetBuzz) -> async Result.Result<BuzzQueries.Buzz, T.Error>;
           };
 
           return await golfer_canister.getBuzz(dto);
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
+        };
       };
     };
 
-    public func getUpcomingGames(dto: UpcomingGamesQueries.GetUpcomingGames) : async Result.Result<UpcomingGamesQueries.UpcomingGames, T.Error> {
+    public func getUpcomingGames(dto : UpcomingGamesQueries.GetUpcomingGames) : async Result.Result<UpcomingGamesQueries.UpcomingGames, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getUpcomingGames : (dto: UpcomingGamesQueries.GetUpcomingGames) -> async Result.Result<UpcomingGamesQueries.UpcomingGames, T.Error>;
+            getUpcomingGames : (dto : UpcomingGamesQueries.GetUpcomingGames) -> async Result.Result<UpcomingGamesQueries.UpcomingGames, T.Error>;
           };
 
           return await golfer_canister.getUpcomingGames(dto);
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
+        };
       };
     };
 
-    public func getGameSummaries(dto: GameQueries.GetGameSummaries) : async Result.Result<GameQueries.GameSummaries, T.Error> {
+    public func getGameSummaries(dto : GameQueries.GetGameSummaries) : async Result.Result<GameQueries.GameSummaries, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-        switch(existingGolferCanisterId){
-          case (?foundCanisterId){
-
-            let golfer_canister = actor (foundCanisterId) : actor {
-              getGameSummaries : (dto: GameQueries.GetGameSummaries) -> async Result.Result<GameQueries.GameSummaries, T.Error>;
-            };
-
-            return await golfer_canister.getGameSummaries(dto);
-          };
-          case (null){
-            return #err(#NotFound);
-          }
-        };
-    };
-
-    public func getGolfer(dto: GolferQueries.GetGolfer) : async Result.Result<GolferQueries.Golfer, T.Error> {
-      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getGolfer : (dto: GolferQueries.GetGolfer) -> async Result.Result<GolferQueries.Golfer, T.Error>;
+            getGameSummaries : (dto : GameQueries.GetGameSummaries) -> async Result.Result<GameQueries.GameSummaries, T.Error>;
+          };
+
+          return await golfer_canister.getGameSummaries(dto);
+        };
+        case (null) {
+          return #err(#NotFound);
+        };
+      };
+    };
+
+    public func getGolfer(dto : GolferQueries.GetGolfer) : async Result.Result<GolferQueries.Golfer, T.Error> {
+      let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
+
+          let golfer_canister = actor (foundCanisterId) : actor {
+            getGolfer : (dto : GolferQueries.GetGolfer) -> async Result.Result<GolferQueries.Golfer, T.Error>;
           };
 
           let golfer = await golfer_canister.getGolfer(dto);
           return golfer;
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
+        };
       };
     };
 
-    public func getGolfers(dto: GolferQueries.GetGolfers, getGolfCourseSummary: shared (GolfCourseQueries.GetGolfCourse) -> async Result.Result<GolfCourseQueries.GolfCourseSummary, T.Error>) : async Result.Result<GolferQueries.Golfers, T.Error> {
-      if(Text.size(dto.searchTerm) < 3){
+    public func getGolfers(dto : GolferQueries.GetGolfers, getGolfCourseSummary : shared (GolfCourseQueries.GetGolfCourse) -> async Result.Result<GolfCourseQueries.GolfCourseSummary, T.Error>) : async Result.Result<GolferQueries.Golfers, T.Error> {
+      if (Text.size(dto.searchTerm) < 3) {
         return #err(#TooShort);
       };
 
@@ -167,34 +169,36 @@ module {
       label userNameLoop for (managerUsernameEntry in usernames.entries()) {
 
         let trimmedLowerUsername = Utilities.toLowercase(Utilities.trimStartToLength(managerUsernameEntry.1, searchTermLength));
-        if(trimmedLowerUsername == leftTrimmedUsernameText){
+        if (trimmedLowerUsername == leftTrimmedUsernameText) {
           let existingGolferCanisterId = golferCanisterIndex.get(managerUsernameEntry.0);
-          switch(existingGolferCanisterId){
-            case (?foundCanisterId){
+          switch (existingGolferCanisterId) {
+            case (?foundCanisterId) {
 
               let golfer_canister = actor (foundCanisterId) : actor {
-                   getGolfer : (dto: GolferQueries.GetGolfer) -> async Result.Result<GolferQueries.Golfer, T.Error>;
+                getGolfer : (dto : GolferQueries.GetGolfer) -> async Result.Result<GolferQueries.Golfer, T.Error>;
               };
-              let result = await golfer_canister.getGolfer({ principalId = managerUsernameEntry.0 });
-              switch(result){
-                case (#ok foundGolfer){
+              let result = await golfer_canister.getGolfer({
+                principalId = managerUsernameEntry.0;
+              });
+              switch (result) {
+                case (#ok foundGolfer) {
 
-                  var homeCourse: ?GolfCourseQueries.GolfCourseSummary = null;
+                  var homeCourse : ?GolfCourseQueries.GolfCourseSummary = null;
 
-                  switch(foundGolfer.homeCourseId){
-                    case (?foundHomeCourseId){
-                      let getGolfCourseDTO: GolfCourseQueries.GetGolfCourse = {
+                  switch (foundGolfer.homeCourseId) {
+                    case (?foundHomeCourseId) {
+                      let getGolfCourseDTO : GolfCourseQueries.GetGolfCourse = {
                         id = foundHomeCourseId;
                       };
                       let homeCourseSummaryResult = await getGolfCourseSummary(getGolfCourseDTO);
-                      switch(homeCourseSummaryResult){
-                        case (#ok course){
+                      switch (homeCourseSummaryResult) {
+                        case (#ok course) {
                           homeCourse := ?course;
                         };
-                        case (#err _) {}
-                      }
+                        case (#err _) {};
+                      };
                     };
-                    case (null){
+                    case (null) {
 
                     };
                   };
@@ -212,26 +216,26 @@ module {
                 };
                 case _ {
                   return #err(#NotFound);
-                }
-              }
+                };
+              };
             };
-            case (null){}
+            case (null) {};
           };
         };
-        
-        if(golferBuffer.size() > 3){
+
+        if (golferBuffer.size() > 3) {
           break userNameLoop;
         }
 
       };
 
-      let golfersDTO: GolferQueries.Golfers = {
+      let golfersDTO : GolferQueries.Golfers = {
         entries = Buffer.toArray(golferBuffer);
         total = 0; //TODO
         page = dto.page;
         pageSize = 10; //TODO Make env variable
       };
-      
+
       return #ok(golfersDTO);
     };
 
@@ -242,457 +246,501 @@ module {
 
     public func getFriends(dto: FriendQueries.GetFriends) : async Result.Result<FriendQueries.Friends, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getFriends : (dto: FriendQueries.GetFriends) -> async Result.Result<FriendQueries.Friends, T.Error>;
+            getFriends : (dto : FriendQueries.GetFriends) -> async Result.Result<FriendQueries.Friends, T.Error>;
           };
 
           return await golfer_canister.getFriends(dto);
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
+        };
       };
     };
 
-    public func getFriendRequests(dto: FriendRequestQueries.GetFriendRequests) : async Result.Result<FriendRequestQueries.FriendRequests, T.Error> {
+    public func getFriendRequests(dto : FriendRequestQueries.GetFriendRequests) : async Result.Result<FriendRequestQueries.FriendRequests, T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getFriendRequests : (dto: FriendRequestQueries.GetFriendRequests) -> async Result.Result<FriendRequestQueries.FriendRequests, T.Error>;
+            getFriendRequests : (dto : FriendRequestQueries.GetFriendRequests) -> async Result.Result<FriendRequestQueries.FriendRequests, T.Error>;
           };
 
           return await golfer_canister.getFriendRequests(dto);
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
+        };
       };
     };
 
-    public func getUserFavouriteCourses(dto: GolfCourseQueries.GetUserFavouriteCourses) : async Result.Result<GolfCourseQueries.UserFavouriteCourses, T.Error> {
+    public func getUserFavouriteCourses(dto : GolfCourseQueries.GetUserFavouriteCourses) : async Result.Result<GolfCourseQueries.UserFavouriteCourses, T.Error> {
       return #err(#NotFound);
     };
 
     //Update functions
-    
-    public func createUser(principalId: Base.PrincipalId, dto: GolferCommands.CreateUser) : async Result.Result<(), T.Error> {
-      
-      if(Text.size(dto.username) < 5 or Text.size(dto.username) > 20){
+
+    public func createUser(principalId : Base.PrincipalId, dto : GolferCommands.CreateUser) : async Result.Result<(), T.Error> {
+
+      if (Text.size(dto.username) < 5 or Text.size(dto.username) > 20) {
         return #err(#TooLong);
       };
 
-      switch(dto.handicap){
-        case (null){};
-        case (?foundHandicap){
-          if(foundHandicap < -540 or foundHandicap > 540){
+      switch (dto.handicap) {
+        case (null) {};
+        case (?foundHandicap) {
+          if (foundHandicap < -540 or foundHandicap > 540) {
             return #err(#OutOfRange);
           };
-        }
+        };
       };
 
       let invalidUsername = isUsernameTaken(dto.username, principalId);
-      if(invalidUsername){
+      if (invalidUsername) {
         return #err(#AlreadyExists);
       };
-      
+
       let existingGolferCanisterId = golferCanisterIndex.get(principalId);
-      switch(existingGolferCanisterId){
-        case (?_){
+      switch (existingGolferCanisterId) {
+        case (?_) {
           return #err(#AlreadyExists);
         };
-        case (null){
-          if(activeCanisterId == ""){
+        case (null) {
+          if (activeCanisterId == "") {
             await createNewCanister();
           };
 
           var golfer_canister = actor (activeCanisterId) : actor {
             isCanisterFull : () -> async Bool;
-            createUser : (principalId: Base.PrincipalId, dto: GolferCommands.CreateUser) -> async Result.Result<(), T.Error>;  
+            createUser : (principalId : Base.PrincipalId, dto : GolferCommands.CreateUser) -> async Result.Result<(), T.Error>;
           };
 
-          let isCanisterFull = await golfer_canister.isCanisterFull(); 
-        
-          if(isCanisterFull){              
+          let isCanisterFull = await golfer_canister.isCanisterFull();
+
+          if (isCanisterFull) {
             await createNewCanister();
             golfer_canister := actor (activeCanisterId) : actor {
               isCanisterFull : () -> async Bool;
-              createUser : (principalId: Base.PrincipalId, dto: GolferCommands.CreateUser) -> async Result.Result<(), T.Error>;  
+              createUser : (principalId : Base.PrincipalId, dto : GolferCommands.CreateUser) -> async Result.Result<(), T.Error>;
             };
           };
-
 
           golferCanisterIndex.put((principalId, activeCanisterId));
           usernames.put(principalId, activeCanisterId);
           return await golfer_canister.createUser(principalId, dto);
-        }
-      };    
+        };
+      };
     };
-      
-    public func updateUsername(dto: GolferCommands.UpdateUsername) : async Result.Result<(), T.Error> {
-      
-      if(Text.size(dto.username) < 5 or Text.size(dto.username) > 20){
+
+    public func claimMembership(dto : GolferCommands.ClaimMembership) : async Result.Result<(T.MembershipClaim), T.Error> {
+      let existingProfileCanisterId = golferCanisterIndex.get(dto.principalId);
+      switch (existingProfileCanisterId) {
+        case (?_) {
+          let snsManager = SNSManager.SNSManager();
+          let userNeurons : [SNSGovernance.Neuron] = await snsManager.getUsersNeurons(Principal.fromText(dto.principalId));
+
+          let eligibleMembershipType : ?T.MembershipType = Utilities.getMembershipType(userNeurons);
+
+          // TODO: Add temporary logic to allow whitelisted principal ids to gain access
+
+          switch (eligibleMembershipType) {
+            case (?membershipType) {
+              let updateMembershipCommand : GolferCommands.UpdateMembership = {
+                principalId = dto.principalId;
+                membershipType = membershipType;
+              };
+              return await updateMembership(updateMembershipCommand);
+            };
+            case (null) {
+              return #err(#InEligible);
+            };
+          };
+        };
+        case (null) {
+          return #err(#NotFound);
+        };
+
+      };
+    };
+
+    public func updateMembership(dto : GolferCommands.UpdateMembership) : async Result.Result<(T.MembershipClaim), T.Error> {
+      let existingProfileCanisterId = golferCanisterIndex.get(dto.principalId);
+      switch (existingProfileCanisterId) {
+        case (?foundCanisterId) {
+          let profile_canister = actor (foundCanisterId) : actor {
+            updateMembership : (dto : GolferCommands.UpdateMembership) -> async Result.Result<(T.MembershipClaim), T.Error>;
+          };
+          return await profile_canister.updateMembership(dto);
+        };
+        case (null) {
+          return #err(#NotFound);
+        };
+      };
+    };
+
+    public func updateUsername(dto : GolferCommands.UpdateUsername) : async Result.Result<(), T.Error> {
+
+      if (Text.size(dto.username) < 5 or Text.size(dto.username) > 20) {
         return #err(#TooLong);
       };
 
       let invalidUsername = isUsernameTaken(dto.username, dto.principalId);
-      if(invalidUsername){
+      if (invalidUsername) {
         return #err(#AlreadyExists);
       };
 
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
           let golfer_canister = actor (foundCanisterId) : actor {
-            updateUsername : (dto: GolferCommands.UpdateUsername) -> async Result.Result<(), T.Error>
+            updateUsername : (dto : GolferCommands.UpdateUsername) -> async Result.Result<(), T.Error>;
           };
           usernames.put(dto.principalId, activeCanisterId);
           return await golfer_canister.updateUsername(dto);
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
-      };    
+        };
+      };
     };
-      
-    public func updateHandicap(dto: GolferCommands.UpdateHandicap) : async Result.Result<(), T.Error> {
-      
 
-      switch(dto.handicap){
-        case (null){};
-        case (?foundHandicap){
-          if(foundHandicap < -540 or foundHandicap > 540){
+    public func updateHandicap(dto : GolferCommands.UpdateHandicap) : async Result.Result<(), T.Error> {
+
+      switch (dto.handicap) {
+        case (null) {};
+        case (?foundHandicap) {
+          if (foundHandicap < -540 or foundHandicap > 540) {
             return #err(#OutOfRange);
           };
-        }
+        };
       };
 
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
           let golfer_canister = actor (foundCanisterId) : actor {
-            updateHandicap : (dto: GolferCommands.UpdateHandicap) -> async Result.Result<(), T.Error>
+            updateHandicap : (dto : GolferCommands.UpdateHandicap) -> async Result.Result<(), T.Error>;
           };
           return await golfer_canister.updateHandicap(dto);
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
-      };    
+        };
+      };
     };
-      
-    public func updateFirstName(dto: GolferCommands.UpdateFirstName) : async Result.Result<(), T.Error> {
-      
-      if(Text.size(dto.firstName) < 1 or Text.size(dto.firstName) > 20){
+
+    public func updateFirstName(dto : GolferCommands.UpdateFirstName) : async Result.Result<(), T.Error> {
+
+      if (Text.size(dto.firstName) < 1 or Text.size(dto.firstName) > 20) {
         return #err(#TooLong);
       };
 
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
           let golfer_canister = actor (foundCanisterId) : actor {
-            updateFirstName : (dto: GolferCommands.UpdateFirstName) -> async Result.Result<(), T.Error>
+            updateFirstName : (dto : GolferCommands.UpdateFirstName) -> async Result.Result<(), T.Error>;
           };
           return await golfer_canister.updateFirstName(dto);
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
-      };    
+        };
+      };
     };
-      
-    public func updateLastName(dto: GolferCommands.UpdateLastName) : async Result.Result<(), T.Error> {
-      
-      if(Text.size(dto.lastName) < 1 or Text.size(dto.lastName) > 50){
+
+    public func updateLastName(dto : GolferCommands.UpdateLastName) : async Result.Result<(), T.Error> {
+
+      if (Text.size(dto.lastName) < 1 or Text.size(dto.lastName) > 50) {
         return #err(#TooLong);
       };
 
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
           let golfer_canister = actor (foundCanisterId) : actor {
-            updateFirstName : (dto: GolferCommands.UpdateLastName) -> async Result.Result<(), T.Error>
+            updateFirstName : (dto : GolferCommands.UpdateLastName) -> async Result.Result<(), T.Error>;
           };
           return await golfer_canister.updateFirstName(dto);
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
-      };    
+        };
+      };
     };
-      
-    public func updateHomeCourse(dto: GolferCommands.UpdateHomeCourse) : async Result.Result<(), T.Error> {
-      
+
+    public func updateHomeCourse(dto : GolferCommands.UpdateHomeCourse) : async Result.Result<(), T.Error> {
+
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
           let golfer_canister = actor (foundCanisterId) : actor {
-            updateHomeCourse : (dto: GolferCommands.UpdateHomeCourse) -> async Result.Result<(), T.Error>
+            updateHomeCourse : (dto : GolferCommands.UpdateHomeCourse) -> async Result.Result<(), T.Error>;
           };
           return await golfer_canister.updateHomeCourse(dto);
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
-      };    
+        };
+      };
     };
 
-    public func updateProfilePicture(dto: GolferCommands.UpdateProfilePicture) : async Result.Result<(), T.Error> {
+    public func updateProfilePicture(dto : GolferCommands.UpdateProfilePicture) : async Result.Result<(), T.Error> {
       let validProfilePicture = isProfilePictureValid(dto.profilePicture);
-      if(not validProfilePicture){
+      if (not validProfilePicture) {
         return #err(#InvalidProfilePicture);
       };
 
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
           let golfer_canister = actor (foundCanisterId) : actor {
-            updateProfilePicture : (dto: GolferCommands.UpdateProfilePicture) -> async Result.Result<(), T.Error>
+            updateProfilePicture : (dto : GolferCommands.UpdateProfilePicture) -> async Result.Result<(), T.Error>;
           };
           return await golfer_canister.updateProfilePicture(dto);
         };
-        case (null){
-          if(activeCanisterId == ""){
+        case (null) {
+          if (activeCanisterId == "") {
             await createNewCanister();
           };
 
           var golfer_canister = actor (activeCanisterId) : actor {
             isCanisterFull : () -> async Bool;
-            updateProfilePicture : (dto: GolferCommands.UpdateProfilePicture) -> async Result.Result<(), T.Error>;  
+            updateProfilePicture : (dto : GolferCommands.UpdateProfilePicture) -> async Result.Result<(), T.Error>;
           };
 
           let isCanisterFull = await golfer_canister.isCanisterFull();
-          if(isCanisterFull){
+          if (isCanisterFull) {
             await createNewCanister();
-            
+
             golfer_canister := actor (activeCanisterId) : actor {
-              updateProfilePicture : (dto: GolferCommands.UpdateProfilePicture) -> async Result.Result<(), T.Error>;  
+              updateProfilePicture : (dto : GolferCommands.UpdateProfilePicture) -> async Result.Result<(), T.Error>;
               isCanisterFull : () -> async Bool;
             };
           };
 
           return await golfer_canister.updateProfilePicture(dto);
-        }
-      };    
+        };
+      };
 
       return #err(#NotFound);
     };
 
-    public func acceptFriendRequest(dto: FriendRequestCommands.AcceptFriendRequest) : async Result.Result<(), T.Error> {
+    public func acceptFriendRequest(dto : FriendRequestCommands.AcceptFriendRequest) : async Result.Result<(), T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            acceptFriendRequest : (dto: FriendRequestCommands.AcceptFriendRequest) -> async Result.Result<(), T.Error>;
+            acceptFriendRequest : (dto : FriendRequestCommands.AcceptFriendRequest) -> async Result.Result<(), T.Error>;
           };
 
-          let _  = await golfer_canister.acceptFriendRequest(dto);
+          let _ = await golfer_canister.acceptFriendRequest(dto);
           return await golfer_canister.acceptFriendRequest(dto);
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
+        };
       };
     };
 
-    public func rejectFriendRequest(dto: FriendRequestCommands.RejectFriendRequest) : async Result.Result<(), T.Error> {
+    public func rejectFriendRequest(dto : FriendRequestCommands.RejectFriendRequest) : async Result.Result<(), T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            rejectFriendRequest : (dto: FriendRequestCommands.RejectFriendRequest) -> async Result.Result<(), T.Error>;
+            rejectFriendRequest : (dto : FriendRequestCommands.RejectFriendRequest) -> async Result.Result<(), T.Error>;
           };
 
           return await golfer_canister.rejectFriendRequest(dto);
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
+        };
       };
     };
 
-    public func sendFriendRequest(dto: FriendRequestCommands.SendFriendRequest) : async Result.Result<(), T.Error> {
+    public func sendFriendRequest(dto : FriendRequestCommands.SendFriendRequest) : async Result.Result<(), T.Error> {
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch(existingGolferCanisterId){
-        case (?foundCanisterId){
+      switch (existingGolferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            sendFriendRequest : (dto: FriendRequestCommands.SendFriendRequest) -> async Result.Result<(), T.Error>;
+            sendFriendRequest : (dto : FriendRequestCommands.SendFriendRequest) -> async Result.Result<(), T.Error>;
           };
 
           return await golfer_canister.sendFriendRequest(dto);
         };
-        case (null){
+        case (null) {
           return #err(#NotFound);
-        }
+        };
       };
     };
-    
-    public func removeUserGolfCourse(dto: GolferCommands.RemoveUserGolfCourse) : async Result.Result<(), T.Error> {
+
+    public func removeUserGolfCourse(dto : GolferCommands.RemoveUserGolfCourse) : async Result.Result<(), T.Error> {
       return #err(#NotFound); //TODO
     };
 
-    public func addGame(dto: GameCommands.AddGame) : async Result.Result<(), T.Error>{
-      for(principalId in Iter.fromArray(dto.inviteIds)){
+    public func addGame(dto : GameCommands.AddGame) : async Result.Result<(), T.Error> {
+      for (principalId in Iter.fromArray(dto.inviteIds)) {
         let golferCanisterId = golferCanisterIndex.get(principalId);
 
-        switch(golferCanisterId){
-          case (?foundCanisterId){
+        switch (golferCanisterId) {
+          case (?foundCanisterId) {
 
             let golfer_canister = actor (foundCanisterId) : actor {
-              addGameInvite : (dto: GameCommands.AddGame) -> async Result.Result<(), T.Error>
+              addGameInvite : (dto : GameCommands.AddGame) -> async Result.Result<(), T.Error>;
             };
-          
+
             return await golfer_canister.addGameInvite(dto);
           };
           case _ {
             return #err(#NotFound);
-          }
+          };
         };
       };
       return #ok();
     };
 
-    public func removeFriend(dto: FriendCommands.RemoveFriend) : async Result.Result<(), T.Error>{
+    public func removeFriend(dto : FriendCommands.RemoveFriend) : async Result.Result<(), T.Error> {
       //TOOD
       let golferCanisterId = golferCanisterIndex.get(dto.requestedBy);
       let friendCanisterId = golferCanisterIndex.get(dto.principalId);
 
-      switch(golferCanisterId){
-        case (?foundCanisterId){
+      switch (golferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            removeFriend : (dto: FriendCommands.RemoveFriend) -> async Result.Result<(), T.Error>
+            removeFriend : (dto : FriendCommands.RemoveFriend) -> async Result.Result<(), T.Error>;
           };
-        
+
           return await golfer_canister.removeFriend(dto);
         };
         case _ {
           return #err(#NotFound);
-        }
+        };
       };
       return #ok();
     };
 
     //Shot Functions
-      
-    public func addShot(dto: ShotCommands.AddShot) : async Result.Result<(), T.Error> {
-      
+
+    public func addShot(dto : ShotCommands.AddShot) : async Result.Result<(), T.Error> {
+
       let golferCanisterId = golferCanisterIndex.get(dto.principalId);
 
-      switch(golferCanisterId){
-        case (?foundCanisterId){
+      switch (golferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            addShot : (dto: ShotCommands.AddShot) -> async Result.Result<(), T.Error>
+            addShot : (dto : ShotCommands.AddShot) -> async Result.Result<(), T.Error>;
           };
-        
+
           return await golfer_canister.addShot(dto);
         };
         case _ {
           return #err(#NotFound);
-        }
+        };
       };
     };
-      
-    public func updateShot(dto: ShotCommands.UpdateShot) : async Result.Result<(), T.Error> {
-      
+
+    public func updateShot(dto : ShotCommands.UpdateShot) : async Result.Result<(), T.Error> {
+
       let golferCanisterId = golferCanisterIndex.get(dto.principalId);
 
-      switch(golferCanisterId){
-        case (?foundCanisterId){
+      switch (golferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            updateShot : (dto: ShotCommands.UpdateShot) -> async Result.Result<(), T.Error>
+            updateShot : (dto : ShotCommands.UpdateShot) -> async Result.Result<(), T.Error>;
           };
-        
+
           return await golfer_canister.updateShot(dto);
         };
         case _ {
           return #err(#NotFound);
-        }
+        };
       };
     };
-      
-    public func deleteShot(dto: ShotCommands.DeleteShot) : async Result.Result<(), T.Error> {
-      
+
+    public func deleteShot(dto : ShotCommands.DeleteShot) : async Result.Result<(), T.Error> {
+
       let golferCanisterId = golferCanisterIndex.get(dto.principalId);
 
-      switch(golferCanisterId){
-        case (?foundCanisterId){
+      switch (golferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            deleteShot : (dto: ShotCommands.DeleteShot) -> async Result.Result<(), T.Error>
+            deleteShot : (dto : ShotCommands.DeleteShot) -> async Result.Result<(), T.Error>;
           };
-        
+
           return await golfer_canister.deleteShot(dto);
         };
         case _ {
           return #err(#NotFound);
-        }
+        };
       };
     };
 
     //Golfer Shot Management Queries:
 
-    public func getShotAverages(dto: ShotQueries.GetShotAverages) : async Result.Result<ShotQueries.ShotAverages, T.Error> {
+    public func getShotAverages(dto : ShotQueries.GetShotAverages) : async Result.Result<ShotQueries.ShotAverages, T.Error> {
       let golferCanisterId = golferCanisterIndex.get(dto.principalId);
 
-      switch(golferCanisterId){
-        case (?foundCanisterId){
+      switch (golferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getShotAverages : (dto: ShotQueries.GetShotAverages) -> async Result.Result<ShotQueries.ShotAverages, T.Error>
+            getShotAverages : (dto : ShotQueries.GetShotAverages) -> async Result.Result<ShotQueries.ShotAverages, T.Error>;
           };
-        
+
           return await golfer_canister.getShotAverages(dto);
         };
         case _ {
           return #err(#NotFound);
-        }
+        };
       };
     };
 
-    public func getClubShots(dto: ShotQueries.GetClubShots) : async Result.Result<ShotQueries.ClubShots, T.Error> {
+    public func getClubShots(dto : ShotQueries.GetClubShots) : async Result.Result<ShotQueries.ClubShots, T.Error> {
       let golferCanisterId = golferCanisterIndex.get(dto.principalId);
 
-      switch(golferCanisterId){
-        case (?foundCanisterId){
+      switch (golferCanisterId) {
+        case (?foundCanisterId) {
 
           let golfer_canister = actor (foundCanisterId) : actor {
-            getClubShots : (dto: ShotQueries.GetClubShots) -> async Result.Result<ShotQueries.ClubShots, T.Error>
+            getClubShots : (dto : ShotQueries.GetClubShots) -> async Result.Result<ShotQueries.ClubShots, T.Error>;
           };
-        
+
           return await golfer_canister.getClubShots(dto);
         };
         case _ {
           return #err(#NotFound);
-        }
+        };
       };
     };
 
-    public func friendRequestExists(golferPrincipalId: Base.PrincipalId, requestedById: Base.PrincipalId) : async Bool {
-      
-       let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
+    public func friendRequestExists(golferPrincipalId : Base.PrincipalId, requestedById : Base.PrincipalId) : async Bool {
 
-       switch(golferCanisterId){
-        case (?foundCanisterId){
+      let golferCanisterId = golferCanisterIndex.get(golferPrincipalId);
+
+      switch (golferCanisterId) {
+        case (?foundCanisterId) {
           let golfer_canister = actor (foundCanisterId) : actor {
-            friendRequestExists : (golferPrincipalId: Base.PrincipalId, requestedById: Base.PrincipalId) -> async Bool;
+            friendRequestExists : (golferPrincipalId : Base.PrincipalId, requestedById : Base.PrincipalId) -> async Bool;
           };
 
           return await golfer_canister.friendRequestExists(golferPrincipalId, requestedById);
         };
-        case (null){
+        case (null) {
           return false;
-        }
-       };
+        };
+      };
     };
 
     //private functions
@@ -712,24 +760,24 @@ module {
     };
 
     private func isProfilePictureValid(profilePicture : ?Blob) : Bool {
-      switch(profilePicture){
-        case (?foundProfilePicture){
+      switch (profilePicture) {
+        case (?foundProfilePicture) {
           let sizeInKB = Array.size(Blob.toArray(foundProfilePicture)) / 1024;
           return (sizeInKB > 0 or sizeInKB <= 500);
         };
-        case (null) { return true; }
-      }
+        case (null) { return true };
+      };
     };
 
-    public func isGolferCanisterId(principalId: Base.PrincipalId) : Bool {
+    public func isGolferCanisterId(principalId : Base.PrincipalId) : Bool {
       return false; //TODO
     };
-  
-    public func getGameInvites(dto: GameQueries.GetGameInvites) : async Result.Result<GameQueries.GameInvites, T.Error> {
+
+    public func getGameInvites(dto : GameQueries.GetGameInvites) : async Result.Result<GameQueries.GameInvites, T.Error> {
       return #err(#NotFound); //TODO
     };
-    
-    private func createNewCanister() : async (){
+
+    private func createNewCanister() : async () {
       Cycles.add<system>(10_000_000_000_000);
       let canister = await GolferCanister._GolferCanister();
       let IC : Management.Management = actor (Environment.Default);
@@ -750,11 +798,11 @@ module {
 
     //stable storage getters and setters
 
-    public func getStableCanisterIndex() : [(Base.PrincipalId, Base.CanisterId)]{
+    public func getStableCanisterIndex() : [(Base.PrincipalId, Base.CanisterId)] {
       return Iter.toArray(golferCanisterIndex.entries());
     };
 
-    public func setStableCanisterIndex(stable_golfer_canister_index: [(Base.PrincipalId, Base.CanisterId)]){
+    public func setStableCanisterIndex(stable_golfer_canister_index : [(Base.PrincipalId, Base.CanisterId)]) {
       let canisterIds : TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId> = TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId>(Text.equal, Text.hash);
 
       for (canisterId in Iter.fromArray(stable_golfer_canister_index)) {
@@ -767,9 +815,9 @@ module {
       return activeCanisterId;
     };
 
-    public func setStableActiveCanisterId(stable_active_canister_id: Base.CanisterId){
+    public func setStableActiveCanisterId(stable_active_canister_id : Base.CanisterId) {
       activeCanisterId := stable_active_canister_id;
-    };  
+    };
 
     public func getStableUsernames() : [(Base.PrincipalId, Text)] {
       return Iter.toArray(usernames.entries());
@@ -807,6 +855,3 @@ module {
 
   };
 };
-
-
-    
