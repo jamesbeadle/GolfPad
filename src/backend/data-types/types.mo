@@ -223,7 +223,6 @@ module Types {
     name: Text;
     colour: Text;
     added: Int;
-    strokeIndex: Nat8;
     holes: [Hole];
   };
 
@@ -235,8 +234,11 @@ module Types {
 
   public type Hole = {
     number: Nat8;
-    tees: [TeeInfo];
     name: Text;
+    colour: Text;
+    yardage: Nat;
+    par: Nat8;
+    strokeIndex: Nat8;
     images: [HoleImage];
   };
 
@@ -244,14 +246,6 @@ module Types {
     uploaded: Int;
     owner: Base.PrincipalId;
     image: Blob;
-  };
-
-  public type TeeInfo = {
-    name: Text;
-    colour: Text;
-    yardage: Nat;
-    par: Nat8;
-    strokeIndex: Nat8;
   };
 
   public type Round = {

@@ -1,21 +1,40 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { Game, GolfCourse, MulligansScores } from "../../../../../../declarations/backend/backend.did";
+    import type { Game, GolfCourse, GolferSummary, MulligansScores } from "../../../../../../declarations/backend/backend.did";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
+    import UserProfileHorizontal from "$lib/components/shared/user-profile-horizontal.svelte";
+    import UserSelectCell from "$lib/components/shared/user-select-cell.svelte";
+    import { golfCourseStore } from "$lib/stores/golf-course-store";
 
     export let game: Game;
     export let golfCourse: GolfCourse;
+    export let golfCourseTeeGroup: GolfCourseTeeGroup;
 
     let isLoading = true;
     let scores: MulligansScores | null = null;
     let currentHole: number = 1;
-    let currentPar: number = 4;
-    let currentSI: number = 1;
-    let currentYardage: number = 350;
+    let currentPar: number = 0;
+    let currentSI: number = 0;
+    let currentYardage: number = 0;
+    let golferSummaries: GolferSummary[] = [];
 
-    onMount(() => {
+    let player1MulligansAvailable = 0;
+    let player2MulligansAvailable = 0;
+
+    onMount(async () => {
         try {
-            const gameType = Object.keys(game.gameType)[0] as keyof typeof game.gameType;
+            await setGolfCourseInfo();
+            await setGolferSummaries();
+            setGameInfo();
+        } catch (error) {
+            console.error("Error processing game data:", error);
+        } finally {
+            isLoading = false;
+        }
+    });
+
+    function setGameInfo(){
+        const gameType = Object.keys(game.gameType)[0] as keyof typeof game.gameType;
             switch (gameType) {
                 case "Mulligans":
                     if (game.scoreDetail && game.scoreDetail.length > 0) {
@@ -24,6 +43,8 @@
                         if ("MulligansScores" in scoreDetail) {
                             scores = scoreDetail.MulligansScores as MulligansScores;
                             let mulligansResults = scores.results;
+                            player1MulligansAvailable = scores.golfer1MulligansAvailable;
+                            player2MulligansAvailable = scores.golfer2MulligansAvailable;
 
                             if (mulligansResults.length > 0) {
                                 const highestHole = mulligansResults
@@ -33,18 +54,31 @@
                             } else {
                                 currentHole = 1;
                             }
+
+                            let courseTees = golfCourse.tees.find(x => x.index == game.courseSnapshot.teeGroupIndex);
+                            if(courseTees){
+                                var currentTeeHole = courseTees.holes.find(x => x.number == currentHole);
+                                if(!currentTeeHole){ return; }
+                                currentPar = currentTeeHole..par;
+                                currentSI = currentTeeHole.strokeIndex;
+                                currentYardage = currentTeeHole.
+                            }
                         }
                     }
                     break;
                 default:
                     break;
             }
-        } catch (error) {
-            console.error("Error processing game data:", error);
-        } finally {
-            isLoading = false;
-        }
-    });
+    }
+
+    async function setGolferSummaries() {
+        //For each golfer fetch their summary and store
+
+    }
+
+    async function setGolfCourseInfo() {
+        golfCourse = await golfCourseStore.getGolfCourse({ id: golfCourse.id});
+    }
 
     
 </script>
@@ -93,17 +127,31 @@
         </div>
     </div>
 
-    {#each game.playerIds as player}
+    <div class="flex flex-row">
         <div class="w-1/2">
-            <UserProfileScoreWidget />
+            <UserProfileHorizontal golfer={golferSummaries[0]} />
         </div>
         <div class="w-1/4">
-            <p>{ if(scores.) player.availableMulligans}</p>
+            <p>{ player1MulligansAvailable }</p>
         </div>
         <div class="w-1/4">
             <button class="brand-button">USE</button>
         </div>
-    {/each}
+    </div>
+
+    <div class="flex flex-row">
+        <div class="w-1/2">
+            <UserProfileHorizontal golfer={golferSummaries[1]} />
+        </div>
+        <div class="w-1/4">
+            <p>{ player2MulligansAvailable }</p>
+        </div>
+        <div class="w-1/4">
+            <button class="brand-button">USE</button>
+        </div>
+    </div>
+    
+    
 
     <div class="flex flex-row">
         <div class="w-1/2">
@@ -115,12 +163,11 @@
     </div>
 
     <div class="flex flex-row">
-
-        {#each players as player}
-            <div class="w-1/2">
-                <UserSelectWidget />
-            </div>
-        {/each}
+        <div class="w-1/2">
+            <UserSelectCell golfer={golferSummaries[0]} />
+        </div><div class="w-1/2">
+            <UserSelectCell golfer={golferSummaries[1]} />
+        </div>
     </div>
 
     <div class="flex flex-row">

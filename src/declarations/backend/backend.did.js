@@ -109,7 +109,7 @@ export const idlFactory = ({ IDL }) => {
     gameType: GameType,
     courseId: GolfCourseId,
   });
-  const Result_22 = IDL.Variant({ ok: GameId, err: Error });
+  const Result_23 = IDL.Variant({ ok: GameId, err: Error });
   const Handicap = IDL.Int16;
   const CreateUser = IDL.Record({
     username: IDL.Text,
@@ -170,7 +170,7 @@ export const idlFactory = ({ IDL }) => {
     version: IDL.Text,
     onHold: IDL.Bool,
   });
-  const Result_21 = IDL.Variant({ ok: AppStatusDTO, err: Error });
+  const Result_22 = IDL.Variant({ ok: AppStatusDTO, err: Error });
   const GetBuzz = IDL.Record({ page: IDL.Nat, principalId: PrincipalId });
   const CourseInfo__1 = IDL.Record({
     course_name: IDL.Text,
@@ -235,7 +235,7 @@ export const idlFactory = ({ IDL }) => {
     pageSize: IDL.Nat,
     entries: IDL.Vec(BuzzEntry),
   });
-  const Result_20 = IDL.Variant({ ok: Buzz, err: Error });
+  const Result_21 = IDL.Variant({ ok: Buzz, err: Error });
   const GetClubShots = IDL.Record({
     club: GolfClub,
     page: IDL.Nat,
@@ -254,7 +254,7 @@ export const idlFactory = ({ IDL }) => {
     pageSize: IDL.Nat,
     entries: IDL.Vec(GolfShot),
   });
-  const Result_19 = IDL.Variant({ ok: ClubShots, err: Error });
+  const Result_20 = IDL.Variant({ ok: ClubShots, err: Error });
   const GetFriendRequests = IDL.Record({
     totalEntries: IDL.Nat,
     offset: IDL.Nat,
@@ -268,7 +268,7 @@ export const idlFactory = ({ IDL }) => {
   const FriendRequests = IDL.Record({
     friendRequests: IDL.Vec(FriendRequest),
   });
-  const Result_18 = IDL.Variant({ ok: FriendRequests, err: Error });
+  const Result_19 = IDL.Variant({ ok: FriendRequests, err: Error });
   const GetFriends = IDL.Record({
     page: IDL.Nat,
     principalId: PrincipalId,
@@ -286,7 +286,7 @@ export const idlFactory = ({ IDL }) => {
     pageSize: IDL.Nat,
     friends: IDL.Vec(Friend),
   });
-  const Result_17 = IDL.Variant({ ok: Friends, err: Error });
+  const Result_18 = IDL.Variant({ ok: Friends, err: Error });
   const GetGame = IDL.Record({ gameId: GameId });
   const GameStatus = IDL.Variant({
     Unplayed: IDL.Null,
@@ -385,7 +385,7 @@ export const idlFactory = ({ IDL }) => {
     gameType: GameType,
     courseId: GolfCourseId,
   });
-  const Result_16 = IDL.Variant({ ok: Game, err: Error });
+  const Result_17 = IDL.Variant({ ok: Game, err: Error });
   const GetGameInvites = IDL.Record({ principalId: PrincipalId });
   const GameInvite__1 = IDL.Record({
     invited: PrincipalId,
@@ -399,7 +399,7 @@ export const idlFactory = ({ IDL }) => {
     pageSize: IDL.Nat,
     entries: IDL.Vec(GameInvite__1),
   });
-  const Result_15 = IDL.Variant({ ok: GameInvites, err: Error });
+  const Result_16 = IDL.Variant({ ok: GameInvites, err: Error });
   const GetGameSummaries = IDL.Record({
     page: IDL.Nat,
     principalId: PrincipalId,
@@ -417,7 +417,7 @@ export const idlFactory = ({ IDL }) => {
     pageSize: IDL.Nat,
     entries: IDL.Vec(GameSummary),
   });
-  const Result_14 = IDL.Variant({ ok: GameSummaries, err: Error });
+  const Result_15 = IDL.Variant({ ok: GameSummaries, err: Error });
   const GetGolfCourse = IDL.Record({ id: GolfCourseId });
   const GolfCourse = IDL.Record({
     id: GolfCourseId,
@@ -430,11 +430,11 @@ export const idlFactory = ({ IDL }) => {
     founded: IDL.Int,
     mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
   });
-  const Result_13 = IDL.Variant({ ok: GolfCourse, err: Error });
+  const Result_14 = IDL.Variant({ ok: GolfCourse, err: Error });
   const GetGolfCourseCanisterId = IDL.Record({ id: GolfCourseId });
   const CanisterId = IDL.Text;
   const GolfCourseCanisterId = IDL.Record({ canisterId: CanisterId });
-  const Result_12 = IDL.Variant({ ok: GolfCourseCanisterId, err: Error });
+  const Result_13 = IDL.Variant({ ok: GolfCourseCanisterId, err: Error });
   const GetGolfCourseSummary = IDL.Record({ id: GolfCourseId });
   const GolfCourseSummary = IDL.Record({
     id: GolfCourseId,
@@ -445,7 +445,26 @@ export const idlFactory = ({ IDL }) => {
     founded: IDL.Int,
     mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
   });
-  const Result_11 = IDL.Variant({ ok: GolfCourseSummary, err: Error });
+  const Result_12 = IDL.Variant({ ok: GolfCourseSummary, err: Error });
+  const GetGolfCourseTeeGroup = IDL.Record({
+    id: GolfCourseId,
+    index: TeeGroupIndex,
+  });
+  const HoleSummary = IDL.Record({
+    name: IDL.Text,
+    teeInfo: TeeInfo,
+    number: IDL.Nat8,
+  });
+  const GolfCourseTeeGroup = IDL.Record({
+    id: GolfCourseId,
+    added: IDL.Int,
+    holes: IDL.Vec(HoleSummary),
+    name: IDL.Text,
+    index: TeeGroupIndex,
+    colour: IDL.Text,
+    strokeIndex: IDL.Nat8,
+  });
+  const Result_11 = IDL.Variant({ ok: GolfCourseTeeGroup, err: Error });
   const GetGolfCourseTees = IDL.Record({ golfCourseId: GolfCourseId });
   const GolfCourseTees = IDL.Record({
     id: GolfCourseId,
@@ -675,27 +694,28 @@ export const idlFactory = ({ IDL }) => {
     addGameScore: IDL.Func([AddGameScore], [Result], []),
     addShot: IDL.Func([AddShot], [Result], []),
     beginGame: IDL.Func([BeginGame], [Result], []),
-    createGame: IDL.Func([CreateGame], [Result_22], []),
+    createGame: IDL.Func([CreateGame], [Result_23], []),
     createUser: IDL.Func([CreateUser], [Result], []),
     deleteGame: IDL.Func([DeleteGame], [Result], []),
     deleteShot: IDL.Func([DeleteShot], [Result], []),
     executeAddGolfCourse: IDL.Func([CreateGolfCourse], [], []),
     executeUpdateGolfCourse: IDL.Func([UpdateGolfCourse], [], []),
-    getAppStatus: IDL.Func([], [Result_21], ["query"]),
-    getBuzz: IDL.Func([GetBuzz], [Result_20], []),
-    getClubShots: IDL.Func([GetClubShots], [Result_19], []),
-    getFriendRequests: IDL.Func([GetFriendRequests], [Result_18], []),
-    getFriends: IDL.Func([GetFriends], [Result_17], []),
-    getGame: IDL.Func([GetGame], [Result_16], []),
-    getGameInvites: IDL.Func([GetGameInvites], [Result_15], []),
-    getGameSummaries: IDL.Func([GetGameSummaries], [Result_14], []),
-    getGolfCourse: IDL.Func([GetGolfCourse], [Result_13], []),
+    getAppStatus: IDL.Func([], [Result_22], ["query"]),
+    getBuzz: IDL.Func([GetBuzz], [Result_21], []),
+    getClubShots: IDL.Func([GetClubShots], [Result_20], []),
+    getFriendRequests: IDL.Func([GetFriendRequests], [Result_19], []),
+    getFriends: IDL.Func([GetFriends], [Result_18], []),
+    getGame: IDL.Func([GetGame], [Result_17], []),
+    getGameInvites: IDL.Func([GetGameInvites], [Result_16], []),
+    getGameSummaries: IDL.Func([GetGameSummaries], [Result_15], []),
+    getGolfCourse: IDL.Func([GetGolfCourse], [Result_14], []),
     getGolfCourseCanisterId: IDL.Func(
       [GetGolfCourseCanisterId],
-      [Result_12],
+      [Result_13],
       [],
     ),
-    getGolfCourseSummary: IDL.Func([GetGolfCourseSummary], [Result_11], []),
+    getGolfCourseSummary: IDL.Func([GetGolfCourseSummary], [Result_12], []),
+    getGolfCourseTeeGroup: IDL.Func([GetGolfCourseTeeGroup], [Result_11], []),
     getGolfCourseTees: IDL.Func([GetGolfCourseTees], [Result_10], []),
     getGolfCourses: IDL.Func([GetGolfCourses], [Result_9], []),
     getGolfer: IDL.Func([GetGolfer], [Result_8], []),

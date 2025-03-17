@@ -212,6 +212,11 @@ actor Self {
     return await courseManager.getGolfCourse(dto); 
   };
 
+  public shared ({ caller }) func getGolfCourseTeeGroup(dto: GolfCourseQueries.GetGolfCourseTeeGroup) : async Result.Result<GolfCourseQueries.GolfCourseTeeGroup, T.Error>{
+    assert not Principal.isAnonymous(caller);
+    return await courseManager.getGolfCourseTeeGroup(dto); 
+  };
+
   public shared ({ caller }) func  getGolfCourseCanisterId(dto: GolfCourseQueries.GetGolfCourseCanisterId) : async Result.Result<GolfCourseQueries.GolfCourseCanisterId, T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);

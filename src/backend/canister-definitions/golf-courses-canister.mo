@@ -145,7 +145,31 @@ actor class _GolfCoursesCanister() {
             return #ok({
               id = foundGolfCourse.id;
               name = foundGolfCourse.name;
-              tees = foundGolfCourse.teeGroups;
+              tees = Array.map<T.TeeGroup, GolfCourseQueries.GolfCourseTeeGroup>(
+                foundGolfCourse.teeGroups, func(entry: T.TeeGroup){
+                  return {
+                    added = entry.added;
+                    colour = entry.colour;
+                    holes = Array.map<T.Hole, GolfCourseQueries.HoleSummary>(entry.holes, func(holeEntry: T.Hole){
+
+                      return {
+                        name = holeEntry.name; 
+                        number = holeEntry.number; 
+                        teeInfo = {
+                          name = holeEntry.name;
+                          colour = entry.colour;
+                          yardage = holeEntry.yardage;
+                          par = holeEntry.par;
+                          strokeIndex = holeEntry.strokeIndex;
+                        };
+                      }
+                    });
+                    golfCourseId = foundGolfCourse.id;
+                    index = entry.index;
+                    name = entry.name;
+                    strokeIndex = entry.index;
+                  }
+                });
               activeVersion = foundGolfCourse.activeVersion;
               mainImage = foundGolfCourse.mainImage;
               mainImageExtension = foundGolfCourse.mainImageExtension;
@@ -190,6 +214,13 @@ actor class _GolfCoursesCanister() {
         }
       };
     };
+  };
+
+  public shared ({caller}) func getGolfCourseTeeGroup(dto: GolfCourseQueries.GetGolfCourseTeeGroup) : async Result.Result<GolfCourseQueries.GolfCourseTeeGroup, T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let backendPrincipalId = Principal.toText(caller);
+    assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
+    return #err(#NotFound); //TODO;
   };
 
   public shared ({ caller }) func getLatestId() : async T.GolfCourseId{

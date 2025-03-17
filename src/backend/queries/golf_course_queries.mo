@@ -10,7 +10,7 @@ module GolfCourseQueries {
     public type GolfCourse = {
         id: T.GolfCourseId;
         name: Text;
-        tees: [T.TeeGroup];
+        tees: [GolfCourseTeeGroup];
         activeVersion: T.GolfCourseVersion;
         mainImage: ?Blob;
         mainImageExtension: Text;
@@ -80,6 +80,25 @@ module GolfCourseQueries {
     public type GolfCourseTees = {
         id: T.GolfCourseId;
         tees: [T.TeeGroup];
+    };
+
+    public type GetGolfCourseTeeGroup = {
+        id: T.GolfCourseId;
+        index: T.TeeGroupIndex;
+    };
+
+    public type GolfCourseTeeGroup = {
+        golfCourseId: T.GolfCourseId;
+        index: T.TeeGroupIndex;
+        name: Text;
+        colour: Text;
+        added: Int;
+        holes: [HoleSummary];
+    };
+
+    public type HoleSummary = {
+        number: Nat8;
+        name: Text;
     };
     
 }

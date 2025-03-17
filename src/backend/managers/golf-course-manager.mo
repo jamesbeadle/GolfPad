@@ -78,6 +78,10 @@ module {
       return await getCourse(dto);
     };
 
+    public func getGolfCourseTeeGroup(dto: GolfCourseQueries.GetGolfCourseTeeGroup) : async Result.Result<GolfCourseQueries.GolfCourseTeeGroup, T.Error> {
+      return #err(#NotFound); //TODO
+    };
+
     public func getGolfCourseSummary(dto: GolfCourseQueries.GetGolfCourseSummary) : async Result.Result<GolfCourseQueries.GolfCourseSummary, T.Error> {
       return #err(#NotFound); //TODO
     };
