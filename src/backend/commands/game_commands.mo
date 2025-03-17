@@ -36,6 +36,7 @@ module GameCommands {
         gameId: T.GameId;
         detail: GameScoreSubmission;
         submittedById: Base.PrincipalId;
+        holeNumber: T.HoleNumber;
     };
 
     public type GameScoreSubmission = {
@@ -44,14 +45,12 @@ module GameCommands {
     };
 
     public type MulligansScore = {
-        holeNumber: T.HoleNumber;
         winner: Base.PrincipalId;
         golfer1MulliganUsed: Bool;
         golfer2MulliganUsed: Bool;
     };
 
     public type BandsScore = {
-        holeNumber: T.HoleNumber;
         predictions: [BandsCategoryResult];
     };
 

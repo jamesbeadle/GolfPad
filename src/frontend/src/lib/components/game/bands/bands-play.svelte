@@ -2,6 +2,7 @@
     import type { Game } from "../../../../../../declarations/backend/backend.did";
 
     export let game: Game;
+    
 </script>
 
 {#if isLoading}

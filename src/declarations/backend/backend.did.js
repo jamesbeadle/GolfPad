@@ -26,20 +26,40 @@ export const idlFactory = ({ IDL }) => {
     gameId: GameId,
     acceptedById: PrincipalId,
   });
-  const HoleNumber = IDL.Nat8;
+  const BandsCategory = IDL.Variant({
+    NoLostBall: IDL.Null,
+    NoDoubleBogeyOrWorse: IDL.Null,
+    ParOrBetter: IDL.Null,
+    UnderPar: IDL.Null,
+    OnePutt2Of3Greens: IDL.Null,
+    NoBogeyOrWorse: IDL.Null,
+    NoTreeOrBunker: IDL.Null,
+    Hit2Of3Fairways: IDL.Null,
+    Hit2Of3Greens: IDL.Null,
+  });
+  const BandsCategoryResult__1 = IDL.Record({
+    golferId: PrincipalId,
+    completed: IDL.Bool,
+    category: BandsCategory,
+  });
+  const BandsScore = IDL.Record({
+    predictions: IDL.Vec(BandsCategoryResult__1),
+  });
   const MulligansScore = IDL.Record({
     golfer2MulliganUsed: IDL.Bool,
     winner: PrincipalId,
     golfer1MulliganUsed: IDL.Bool,
-    holeNumber: HoleNumber,
   });
   const GameScoreSubmission = IDL.Variant({
+    BandsScores: BandsScore,
     MulligansScores: MulligansScore,
   });
+  const HoleNumber = IDL.Nat8;
   const AddGameScore = IDL.Record({
     submittedById: PrincipalId,
     gameId: GameId,
     detail: GameScoreSubmission,
+    holeNumber: HoleNumber,
   });
   const GolfClub = IDL.Variant({
     AW: IDL.Null,
@@ -273,27 +293,16 @@ export const idlFactory = ({ IDL }) => {
     Active: IDL.Null,
     Complete: IDL.Null,
   });
-  const BandsCategory = IDL.Variant({
-    NoLostBall: IDL.Null,
-    NoDoubleBogeyOrWorse: IDL.Null,
-    ParOrBetter: IDL.Null,
-    UnderPar: IDL.Null,
-    OnePutt2Of3Greens: IDL.Null,
-    NoBogeyOrWorse: IDL.Null,
-    NoTreeOrBunker: IDL.Null,
-    Hit2Of3Fairways: IDL.Null,
-    Hit2Of3Greens: IDL.Null,
-  });
-  const BandsResult = IDL.Record({
+  const BandsCategoryResult = IDL.Record({
     completed: IDL.Bool,
     bandsCategory: BandsCategory,
+  });
+  const BandsPlayerResult = IDL.Record({
+    categories: IDL.Vec(BandsCategoryResult),
     principalId: PrincipalId,
     points: IDL.Nat8,
   });
-  const BandsScores = IDL.Record({
-    results: IDL.Vec(BandsResult),
-    points: IDL.Nat8,
-  });
+  const BandsScores = IDL.Record({ players: IDL.Vec(BandsPlayerResult) });
   const MulligansHoleResult = IDL.Record({
     golfer2MulliganUsed: IDL.Bool,
     winner: PrincipalId,
@@ -303,7 +312,12 @@ export const idlFactory = ({ IDL }) => {
   const MulligansScores = IDL.Record({
     winner: PrincipalId,
     results: IDL.Vec(MulligansHoleResult),
+    score: IDL.Int,
+    golfer2MulligansUsed: IDL.Nat8,
     golfer2HolesWonCount: IDL.Nat8,
+    golfer1MulligansAvailable: IDL.Nat8,
+    golfer2MulligansAvailable: IDL.Nat8,
+    golfer1MulligansUsed: IDL.Nat8,
     golfer1HolesWonCount: IDL.Nat8,
   });
   const GameScoreDetail = IDL.Variant({
