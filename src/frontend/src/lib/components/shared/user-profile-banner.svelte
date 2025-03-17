@@ -3,5 +3,6 @@
 
     
     export let players: GolferSummary[];
+    export let selectPlayer: (playerId: string) => void;
 
 </script>

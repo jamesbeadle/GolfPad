@@ -17,7 +17,9 @@ function createGolferStore() {
     return new GolferService().getGolfer(dto);
   }
 
-  async function getGameGolferSummaries(dto: GetGameGolferSummaries): Promise<GameGolferSummaries> {
+  async function getGameGolferSummaries(
+    dto: GetGameGolferSummaries,
+  ): Promise<GameGolferSummaries> {
     return new GolferService().getGameGolferSummaries(dto);
   }
 

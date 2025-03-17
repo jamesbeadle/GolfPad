@@ -165,6 +165,8 @@ actor class _GolfCoursesCanister() {
                     index = entry.index;
                     name = entry.name;
                     strokeIndex = entry.index;
+                    mainImage = foundGolfCourse.mainImage;
+                    totalHoles = foundGolfCourse.totalHoles;
                   }
                 });
               activeVersion = foundGolfCourse.activeVersion;

@@ -55,7 +55,9 @@ export class GolferService {
     }
   }
 
-  async getGameGolferSummaries(dto: GetGameGolferSummaries): Promise<GameGolferSummaries> {
+  async getGameGolferSummaries(
+    dto: GetGameGolferSummaries,
+  ): Promise<GameGolferSummaries> {
     try {
       const identityActor: any = await ActorFactory.createIdentityActor(
         authStore,

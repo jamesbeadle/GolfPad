@@ -462,10 +462,12 @@ export const idlFactory = ({ IDL }) => {
   const GolfCourseTeeGroup = IDL.Record({
     added: IDL.Int,
     holes: IDL.Vec(HoleSummary),
+    totalHoles: IDL.Nat8,
     golfCourseId: GolfCourseId,
     name: IDL.Text,
     index: TeeGroupIndex,
     colour: IDL.Text,
+    mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
   });
   const GolfCourse = IDL.Record({
     id: GolfCourseId,

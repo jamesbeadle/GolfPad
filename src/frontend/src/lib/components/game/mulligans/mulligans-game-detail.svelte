@@ -1,13 +1,12 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { Game, GolfCourse, GolferSummary, MulligansScores } from "../../../../../../declarations/backend/backend.did";
+    import type { Game, GolfCourseTeeGroup, GolferSummary, MulligansScores } from "../../../../../../declarations/backend/backend.did";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import UserProfileHorizontal from "$lib/components/shared/user-profile-horizontal.svelte";
     import UserSelectCell from "$lib/components/shared/user-select-cell.svelte";
-    import { golfCourseStore } from "$lib/stores/golf-course-store";
 
     export let game: Game;
-    export let golfCourse: GolfCourse;
+    export let golfCourse: GolfCourseTeeGroup;
     export let players: GolferSummary[];
 
     let isLoading = true;
@@ -22,7 +21,6 @@
 
     onMount(async () => {
         try {
-            await setGolfCourseInfo();
             setGameInfo();
         } catch (error) {
             console.error("Error processing game data:", error);
@@ -52,14 +50,11 @@
                             } else {
                                 currentHole = 1;
                             }
-
-                            let courseTees = golfCourse.tees.find(x => x.index == game.courseSnapshot.teeGroupIndex);
-                            if(courseTees){
-                                var currentTeeHole = courseTees.holes.find(x => x.number == currentHole);
-                                if(!currentTeeHole){ return; }
-                                currentPar = currentTeeHole.par;
-                                currentSI = currentTeeHole.strokeIndex;
-                                currentYardage = currentTeeHole.yardage;
+                            let currentHoleDetail = golfCourse.holes.find(x => x.number == currentHole);
+                            if(currentHoleDetail){
+                                currentPar = currentHoleDetail.par;
+                                currentSI = currentHoleDetail.strokeIndex;
+                                currentYardage = currentHoleDetail.yardage;
                             }
                         }
                     }
@@ -68,11 +63,6 @@
                     break;
             }
     }
-
-    async function setGolfCourseInfo() {
-        golfCourse = await golfCourseStore.getGolfCourse({ id: golfCourse.id});
-    }
-
     
 </script>
 

@@ -482,7 +482,9 @@ type GolfCourseTeeGroup =
    golfCourseId: GolfCourseId;
    holes: vec HoleSummary;
    index: TeeGroupIndex;
+   mainImage: opt blob;
    name: text;
+   totalHoles: nat8;
  };
 type GolfCourseSummary = 
  record {

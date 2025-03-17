@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import { page } from "$app/state";
     import { gameStore } from "$lib/stores/game-store";
-    import type { Game, GetGame, GolferSummary } from "../../../../../declarations/backend/backend.did";
+    import type { Game, GetGame, GolfCourseTeeGroup, GolferSummary } from "../../../../../declarations/backend/backend.did";
     import Layout from "../../Layout.svelte";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import BandsGame from "$lib/components/game/bands/bands-game.svelte";
@@ -12,6 +12,7 @@
     let gameId: bigint;
     let game: Game | null = null;
     let players: GolferSummary[] = [];
+    let golfCourse: GolfCourseTeeGroup | null = null;
 
     onMount(async () => {
         gameId = BigInt(page.params.id);
@@ -26,12 +27,12 @@
     {#if isLoading}
         <LocalSpinner />
     {:else}
-        {#if game}
+        {#if game && golfCourse}
             {#if Object.keys(game?.gameType)[0] == 'Bands'}
-                <BandsGame {game} {players}/>
+                <BandsGame {game} {players} {golfCourse}/>
             {/if}
             {#if Object.keys(game?.gameType)[0] == 'Mulligans'}
-                <MulligansGame {game} {players}/>
+                <MulligansGame {game} {players} {golfCourse} />
             {/if}
         {:else}
             <p>Could not load game.</p>

@@ -1,8 +1,8 @@
 <script lang="ts">
     import { getImageURL } from "$lib/utils/helpers";
-    import type { GolfCourse } from "../../../../../declarations/backend/backend.did";
+    import type { GolfCourseTeeGroup } from "../../../../../declarations/backend/backend.did";
 
-    export let golfCourse: GolfCourse;
+    export let golfCourse: GolfCourseTeeGroup;
 
 </script>
 <div class="flex flex-row">

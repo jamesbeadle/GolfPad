@@ -94,6 +94,8 @@ module GolfCourseQueries {
         colour: Text;
         added: Int;
         holes: [HoleSummary];
+        mainImage: ?Blob;
+        totalHoles: Nat8;
     };
 
     public type HoleSummary = {

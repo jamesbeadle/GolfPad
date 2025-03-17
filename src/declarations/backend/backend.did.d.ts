@@ -400,10 +400,12 @@ export interface GolfCourseSummary {
 export interface GolfCourseTeeGroup {
   added: bigint;
   holes: Array<HoleSummary>;
+  totalHoles: number;
   golfCourseId: GolfCourseId;
   name: string;
   index: TeeGroupIndex;
   colour: string;
+  mainImage: [] | [Uint8Array | number[]];
 }
 export interface GolfCourseTees {
   id: GolfCourseId;
