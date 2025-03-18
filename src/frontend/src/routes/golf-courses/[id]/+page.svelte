@@ -3,8 +3,8 @@
     import type { GolfCourse, GolfCourseTeeGroup } from "../../../../../declarations/backend/backend.did";
     import { onMount } from "svelte";
     import { golfCourseStore } from "$lib/stores/golf-course-store";
-    import { page } from "$app/stores";
     import { getImageURL } from "$lib/utils/helpers";
+    import { page } from "$app/state";
     
     let golfCourse: GolfCourse | null = null;
     let loading = true;
@@ -12,7 +12,7 @@
 
     onMount(async () => {
         try {
-            golfCourse = await golfCourseStore.getGolfCourse({ id: BigInt($page.params.id) });
+            golfCourse = await golfCourseStore.getGolfCourse({ id: BigInt(page.params.id) });
         } catch (err) {
             error = err instanceof Error ? err.message : 'An unexpected error occurred';
         } finally {
