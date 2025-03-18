@@ -2,6 +2,7 @@ import { GameService } from "$lib/services/game-service";
 import type {
   AcceptGameInvite,
   AddGameScore,
+  PredictGameScore,
   BeginGame,
   CreateGame,
   DeleteGame,
@@ -14,7 +15,6 @@ import type {
   GetPlayerBandsResults,
   InviteGolfers,
   PlayerBandsResults,
-  PredictGame,
   RejectGameInvite,
 } from "../../../../declarations/backend/backend.did";
 
@@ -47,12 +47,12 @@ function createGameStore() {
     return new GameService().beginGame(dto);
   }
 
-  async function predictGame(dto: PredictGame): Promise<any> {
-    return new GameService().beginGame(dto);
-  }
-
   async function addGameScore(dto: AddGameScore): Promise<any> {
     return new GameService().addGameScore(dto);
+  }
+
+  async function predictGameScore(dto: PredictGameScore): Promise<any> {
+    return new GameService().predictGameScore(dto);
   }
 
   async function deleteGame(dto: DeleteGame): Promise<any> {
@@ -78,7 +78,7 @@ function createGameStore() {
     getPlayerBandsResults,
     createGame,
     beginGame,
-    predictGame,
+    predictGameScore,
     addGameScore,
     deleteGame,
     inviteGolfers,

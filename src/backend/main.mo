@@ -4,11 +4,12 @@ import Iter "mo:base/Iter";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Timer "mo:base/Timer";
-import Buffer "mo:base/Buffer";
 
 import Environment "utilities/Environment";
 import Management "utilities/Management";
-import T "data-types/types";
+import T "data-types/app_types";
+import Game "data-types/game_types";
+import ID "data-types/id_types";
 
 import GameManager "managers/game-manager";
 import GolfCourseManager "managers/golf-course-manager";
@@ -134,7 +135,7 @@ actor Self {
 
   //Game Commands:
 
-  public shared ({ caller }) func createGame(dto : GameCommands.CreateGame) : async Result.Result<T.GameId, T.Error> {
+  public shared ({ caller }) func createGame(dto : GameCommands.CreateGame) : async Result.Result<ID.GameId, T.Error> {
     assert not Principal.isAnonymous(caller);
     assert dto.createdById == Principal.toText(caller);
     return await gameManager.createGame(dto);
@@ -147,11 +148,11 @@ actor Self {
     return await gameManager.beginGame(dto);
   };
 
-  public shared ({ caller }) func predictGame(dto : GameCommands.PredictGame) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func predictGameScore(dto : GameCommands.PredictGameScore) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert await gameManager.isGameMember(dto.gameId, principalId);
-    return await gameManager.predictGame(dto);
+    return await gameManager.predictGameScore(dto);
   };
 
   public shared ({ caller }) func addGameScore(dto : GameCommands.AddGameScore) : async Result.Result<(), T.Error> {
@@ -406,20 +407,20 @@ actor Self {
   private stable var stable_unique_golfer_canister_ids : [Base.CanisterId] = [];
   private stable var stable_total_golfers : Nat = 0;
 
-  private stable var stable_golf_course_canister_index : [(T.GolfCourseId, Base.CanisterId)] = [];
+  private stable var stable_golf_course_canister_index : [(ID.GolfCourseId, Base.CanisterId)] = [];
   private stable var stable_active_golf_course_canister_id : Base.CanisterId = "";
-  private stable var stable_golf_course_names : [(T.GolfCourseId, Text)] = [];
+  private stable var stable_golf_course_names : [(ID.GolfCourseId, Text)] = [];
   private stable var stable_unique_golf_course_canister_ids : [Base.CanisterId] = [];
   private stable var stable_total_golf_courses : Nat = 0;
   private stable var stable_next_golf_course_id : Nat = 0;
 
-  private stable var stable_game_canister_index : [(T.GameId, Base.CanisterId)] = [];
+  private stable var stable_game_canister_index : [(ID.GameId, Base.CanisterId)] = [];
   private stable var stable_active_game_canister_id : Base.CanisterId = "";
   private stable var stable_unique_game_canister_ids : [Base.CanisterId] = [];
   private stable var stable_total_games : Nat = 0;
   private stable var stable_next_game_id : Nat = 0;
   //Stable structures for views
-  private stable var stable_game_summaries : [T.GameSummary] = [];
+  private stable var stable_game_summaries : [Game.GameSummary] = [];
 
   //System Backup and Upgrade Functions:
 

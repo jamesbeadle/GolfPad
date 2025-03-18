@@ -11,7 +11,6 @@ import SelectedUserProfile from "$lib/components/shared/selected-user-profile.sv
 
     export let game: Game;
     export let players: GolferSummary[];
-    export let golfCourse: GolfCourseTeeGroup;
     export let bandsResults: PlayerBandsResults | null = null;
     let selectedPlayer: GolferSummary | null = null;
     let selectedPlayerId: PrincipalId = ''; 
@@ -51,12 +50,12 @@ import SelectedUserProfile from "$lib/components/shared/selected-user-profile.sv
     <LocalSpinner />
 {:else}
 
-<div class="flex flex-col w-full">
-    <p>Player Details</p>
-</div>
+    <div class="flex flex-col w-full">
+        <p>Player Details</p>
+    </div>
 
 
-<SelectedUserProfile {selectUser} {players} {selectedPlayerId} />
+    <SelectedUserProfile {selectUser} {players} {selectedPlayerId} />
 
     {#if bandsResults && selectedPlayer}
 

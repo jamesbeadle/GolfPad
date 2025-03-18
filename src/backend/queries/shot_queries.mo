@@ -1,5 +1,5 @@
 
-import T "../data-types/types";
+import ID "../data-types/id_types";
 import Base "mo:waterway-mops/BaseTypes";
 import GolfEnums "../data-types/golf_enums";
 
@@ -34,7 +34,7 @@ module ShotQueries {
     };
 
     public type GolfShot = {
-        id: T.GolfShotId;
+        id: ID.GolfShotId;
         club: GolfEnums.GolfClub;
         yardage: Nat;
         hitOn: Int;

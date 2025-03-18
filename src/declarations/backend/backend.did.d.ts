@@ -48,6 +48,8 @@ export interface BandsCategoryResult__1 {
   golferId: PrincipalId;
   completed: boolean;
   category: BandsCategory;
+  failed: boolean;
+  startHole: HoleNumber;
 }
 export interface BandsPlayerResult {
   categories: Array<BandsCategoryResult>;
@@ -55,6 +57,18 @@ export interface BandsPlayerResult {
   points: number;
 }
 export interface BandsPrediction {
+  wontHitTreeOrBunkerStartHole: HoleNumber;
+  underParStartHole: HoleNumber;
+  golferId: PrincipalId;
+  wontDoubleBogeyStartHole: HoleNumber;
+  singlePutt2Of3GreensStartHole: HoleNumber;
+  wontBogeyStartHole: HoleNumber;
+  parOrUnderStartHole: HoleNumber;
+  hit2Of3FairwaysStartHole: HoleNumber;
+  hit2Of3GreensStartHole: HoleNumber;
+  wontLoseBallStartHole: HoleNumber;
+}
+export interface BandsPrediction__1 {
   wontHitTreeOrBunkerStartHole: HoleNumber;
   underParStartHole: HoleNumber;
   golferId: PrincipalId;
@@ -196,7 +210,7 @@ export interface Game {
   status: GameStatus;
   scoreDetail: [] | [GameScoreDetail];
   invites: Array<PrincipalId>;
-  predictions: Array<GamePrediction>;
+  predictions: Array<GamePrediction__1>;
   winner: PrincipalId;
   teeOffTime: bigint;
   courseSnapshot: GolfCourseSnapshot;
@@ -235,9 +249,14 @@ export interface GameInvites {
   entries: Array<GameInvite__1>;
 }
 export type GamePrediction =
-  | { Mulligans: MulligansPrediction }
+  | { Mulligans: {} }
   | { BuildIt: {} }
   | { Bands: BandsPrediction }
+  | { NextUp: {} };
+export type GamePrediction__1 =
+  | { Mulligans: {} }
+  | { BuildIt: {} }
+  | { Bands: BandsPrediction__1 }
   | { NextUp: {} };
 export type GameScoreDetail =
   | { BandsScores: BandsScores }
@@ -535,7 +554,6 @@ export interface MulligansHoleResult {
   golfer1MulliganUsed: boolean;
   holeNumber: HoleNumber;
 }
-export type MulligansPrediction = {};
 export interface MulligansResultInfo {
   holesPlayed: number;
   player2Wins: boolean;
@@ -593,8 +611,10 @@ export interface PlayerFeedSummary__1 {
 export interface PlayerOpponentInfo {
   players: Array<PlayerFeedSummary>;
 }
-export interface PredictGame {
+export interface PredictGameScore {
+  submittedById: PrincipalId;
   gameId: GameId;
+  detail: GamePrediction;
 }
 export type PrincipalId = string;
 export interface Profile {
@@ -773,7 +793,7 @@ export interface _SERVICE {
   getUserFavouriteCourses: ActorMethod<[GetUserFavouriteCourses], Result_2>;
   inviteGolfers: ActorMethod<[InviteGolfers], Result>;
   isUsernameAvailable: ActorMethod<[IsUsernameAvailable], Result_1>;
-  predictGame: ActorMethod<[PredictGame], Result>;
+  predictGameScore: ActorMethod<[PredictGameScore], Result>;
   rejectFriendRequest: ActorMethod<[RejectFriendRequest], Result>;
   rejectGameInvite: ActorMethod<[RejectGameInvite], Result>;
   removeFriend: ActorMethod<[RemoveFriend], Result>;

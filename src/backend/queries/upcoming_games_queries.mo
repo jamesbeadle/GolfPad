@@ -1,4 +1,5 @@
-import T "../data-types/types";
+import ID "../data-types/id_types";
+import Game "../data-types/game_types";
 import Base "mo:waterway-mops/BaseTypes";
 
 module UpcomingGamesQueries {
@@ -21,13 +22,13 @@ module UpcomingGamesQueries {
     };
 
     public type GameInfo = {
-        game_id: T.GameId;
-        game_type: T.GameType;
+        game_id: ID.GameId;
+        game_type: Game.GameType;
         game_date: Int;
     };
 
     public type CourseInfo = {
-        course_id: T.GolfCourseId;
+        course_id: ID.GolfCourseId;
         course_image: Blob;
         course_name: Text;
     };
@@ -54,7 +55,7 @@ module UpcomingGamesQueries {
     };
 
     public type TeamFeedSummary = {
-        team_id: T.GolfTeamId;
+        team_id: ID.GolfTeamId;
         captain_id: Base.PrincipalId;
         team_members: [Base.PrincipalId];
         team_name: Text;

@@ -1,4 +1,5 @@
-import T "../data-types/types";
+import T "../data-types/app_types";
+import ID "../data-types/id_types";
 import Base "mo:waterway-mops/BaseTypes";
 
 module GolferCommands {
@@ -38,7 +39,7 @@ module GolferCommands {
 
     public type UpdateHomeCourse = {
         principalId : Base.PrincipalId;
-        homeCourseId : ?T.GolfCourseId;
+        homeCourseId : ?ID.GolfCourseId;
     };
 
     public type DeleteGolfer = {
@@ -48,7 +49,7 @@ module GolferCommands {
 
     public type RemoveUserGolfCourse = {
         principalId : Base.PrincipalId;
-        golfCourseId : T.GolfCourseId;
+        golfCourseId : ID.GolfCourseId;
     };
 
     public type ClaimMembership = {

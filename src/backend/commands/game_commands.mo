@@ -1,39 +1,66 @@
-import T "../data-types/types";
+import T "../data-types/app_types";
+import ID "../data-types/id_types";
+import Game "../data-types/game_types";
+import GolfCourse "../data-types/golf_course_types";
 import Base "mo:waterway-mops/BaseTypes";
 
 module GameCommands {
     
     public type AddGame = {
         invitedByPrincipalId: Base.PrincipalId;
-        gameId: T.GameId;
+        gameId: ID.GameId;
         inviteIds: [Base.PrincipalId];
     };
 
     public type CreateGame = {
         createdById: Base.PrincipalId;
-        courseId: T.GolfCourseId;
-        gameType: T.GameType;
+        courseId: ID.GolfCourseId;
+        gameType: Game.GameType;
         inviteIds: [Base.PrincipalId];
         teeOffTime: Int;
-        teeGroupIndex: T.TeeGroupIndex;
-        courseVersion: T.GolfCourseVersion;
+        teeGroupIndex: GolfCourse.TeeGroupIndex;
+        courseVersion: GolfCourse.GolfCourseVersion;
     };
 
     public type BeginGame = {
-        gameId: T.GameId;
+        gameId: ID.GameId;
     };
 
-    public type PredictGame = {
-        gameId: T.GameId;
+    public type PredictGameScore = {
+        gameId: ID.GameId;
+        submittedById: Base.PrincipalId;
+        detail: GamePrediction
+    };
+
+
+
+    public type GamePrediction = {
+        #Bands : BandsPrediction;
+        #Mulligans : {};
+        #NextUp : {};
+        #BuildIt : {};
+    };
+
+    public type BandsPrediction = {
+        golferId : Base.PrincipalId;
+        wontLoseBallStartHole : T.HoleNumber;
+        wontHitTreeOrBunkerStartHole : T.HoleNumber;
+        hit2Of3FairwaysStartHole : T.HoleNumber;
+        hit2Of3GreensStartHole : T.HoleNumber;
+        singlePutt2Of3GreensStartHole : T.HoleNumber;
+        wontDoubleBogeyStartHole : T.HoleNumber;
+        wontBogeyStartHole : T.HoleNumber;
+        parOrUnderStartHole : T.HoleNumber;
+        underParStartHole : T.HoleNumber;
     };
 
     public type DeleteGame = {
-        gameId: T.GameId;
+        gameId: ID.GameId;
 
     };
 
     public type AddGameScore = {
-        gameId: T.GameId;
+        gameId: ID.GameId;
         detail: GameScoreSubmission;
         submittedById: Base.PrincipalId;
         holeNumber: T.HoleNumber;
@@ -56,23 +83,25 @@ module GameCommands {
 
     public type BandsCategoryResult = {
         golferId: Base.PrincipalId;
-        category: T.BandsCategory;
+        category: Game.BandsCategory;
         completed: Bool;
+        startHole: T.HoleNumber;
+        failed: Bool;
     };  
 
     public type InviteGolfers = {
-        gameId: T.GameId;
+        gameId: ID.GameId;
         invitedGolferIds: [Base.PrincipalId];
     };
 
     public type AcceptGameInvite = {
-        gameId: T.GameId;
+        gameId: ID.GameId;
         acceptedById: Base.PrincipalId;
     };
 
     public type RejectGameInvite = {
         rejectedById: Base.PrincipalId;
-        gameId: T.GameId;
+        gameId: ID.GameId;
     };
 }
 

@@ -14,7 +14,7 @@ import Int "mo:base/Int";
 import Management "Management";
 import Cycles "mo:base/ExperimentalCycles";
 import Char "mo:base/Char";
-import T "../data-types/types";
+import T "../data-types/app_types";
 import SNSGovernance "../sns-wrappers/governance";
 
 module {

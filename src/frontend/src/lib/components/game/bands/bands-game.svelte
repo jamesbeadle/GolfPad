@@ -9,7 +9,7 @@
     export let golfCourse: GolfCourseTeeGroup;
 </script>
 {#if Object.keys(game.status)[0] == 'Unplayed'}
-    <BandsPredict {game} {players} {golfCourse} />
+    <BandsPredict {game} {players} />
 {/if}
 
 {#if Object.keys(game.status)[0] == 'Active'}
@@ -17,5 +17,5 @@
 {/if}
 
 {#if Object.keys(game.status)[0] == 'Complete'}
-    <BandsComplete {game} {players} {golfCourse} />
+    <BandsComplete {game} {players} />
 {/if}

@@ -1,27 +1,28 @@
-import T "../data-types/types";
+import ID "../data-types/id_types";
+import GolfCourse "../data-types/golf_course_types";
 
 module GolfCourseCommands {
 
     public type CreateGolfCourse = {
         name: Text;
-        initialTeeGroup: T.TeeGroup;
-        holes: [T.Hole];
+        initialTeeGroup: GolfCourse.TeeGroup;
+        holes: [GolfCourse.Hole];
         mainImage: ?Blob;
         mainImageExtension: Text;
         bannerImage: ?Blob;
         totalHoles: Nat8;
         founded: Int;
-        countryId: T.CountryId;
+        countryId: ID.CountryId;
     };
 
     public type UpdateGolfCourse = {
-        courseId: T.GolfCourseId;
+        courseId: ID.GolfCourseId;
         name: Text;
-        updatedTeeGroup: ?T.TeeGroup;
+        updatedTeeGroup: ?GolfCourse.TeeGroup;
     };
 
     public type DeleteGolfCourse = {
-        courseId: T.GolfCourseId;
+        courseId: ID.GolfCourseId;
 
     };
 }

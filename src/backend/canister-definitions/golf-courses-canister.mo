@@ -7,7 +7,9 @@ import Result "mo:base/Result";
 import Time "mo:base/Time";
 
 import Environment "../utilities/Environment";
-import T "../data-types/types";
+import T "../data-types/app_types";
+import ID "../data-types/id_types";
+import GolfCourse "../data-types/golf_course_types";
 import GolfCourseQueries "../queries/golf_course_queries";
 import GolfCourseCommands "../commands/golf_course_commands";
 
@@ -16,112 +18,112 @@ actor class _GolfCoursesCanister() {
   private stable var MAX_GOLF_COURSES_PER_GROUP: Nat = 50;
   private stable var MAX_GOLF_COURSES_PER_CANISTER: Nat = 5000;
 
-  private stable var stable_golf_course_group_indexes: [(T.GolfCourseId, Nat8)] = [];
+  private stable var stable_golf_course_group_indexes: [(ID.GolfCourseId, Nat8)] = [];
   
   private stable var activeGroupIndex: Nat8 = 0;
-  private stable var nextCourseId: T.GolfCourseId = 1;
+  private stable var nextCourseId: ID.GolfCourseId = 1;
   private stable var totalGolfCourses = 0;
 
-  private stable var golfCourseGroup1: [T.GolfCourse] = [];
-  private stable var golfCourseGroup2: [T.GolfCourse] = [];
-  private stable var golfCourseGroup3: [T.GolfCourse] = [];
-  private stable var golfCourseGroup4: [T.GolfCourse] = [];
-  private stable var golfCourseGroup5: [T.GolfCourse] = [];
-  private stable var golfCourseGroup6: [T.GolfCourse] = [];
-  private stable var golfCourseGroup7: [T.GolfCourse] = [];
-  private stable var golfCourseGroup8: [T.GolfCourse] = [];
-  private stable var golfCourseGroup9: [T.GolfCourse] = [];
-  private stable var golfCourseGroup10: [T.GolfCourse] = [];
-  private stable var golfCourseGroup11: [T.GolfCourse] = [];
-  private stable var golfCourseGroup12: [T.GolfCourse] = [];
-  private stable var golfCourseGroup13: [T.GolfCourse] = [];
-  private stable var golfCourseGroup14: [T.GolfCourse] = [];
-  private stable var golfCourseGroup15: [T.GolfCourse] = [];
-  private stable var golfCourseGroup16: [T.GolfCourse] = [];
-  private stable var golfCourseGroup17: [T.GolfCourse] = [];
-  private stable var golfCourseGroup18: [T.GolfCourse] = [];
-  private stable var golfCourseGroup19: [T.GolfCourse] = [];
-  private stable var golfCourseGroup20: [T.GolfCourse] = [];
-  private stable var golfCourseGroup21: [T.GolfCourse] = [];
-  private stable var golfCourseGroup22: [T.GolfCourse] = [];
-  private stable var golfCourseGroup23: [T.GolfCourse] = [];
-  private stable var golfCourseGroup24: [T.GolfCourse] = [];
-  private stable var golfCourseGroup25: [T.GolfCourse] = [];
-  private stable var golfCourseGroup26: [T.GolfCourse] = [];
-  private stable var golfCourseGroup27: [T.GolfCourse] = [];
-  private stable var golfCourseGroup28: [T.GolfCourse] = [];
-  private stable var golfCourseGroup29: [T.GolfCourse] = [];
-  private stable var golfCourseGroup30: [T.GolfCourse] = [];
-  private stable var golfCourseGroup31: [T.GolfCourse] = [];
-  private stable var golfCourseGroup32: [T.GolfCourse] = [];
-  private stable var golfCourseGroup33: [T.GolfCourse] = [];
-  private stable var golfCourseGroup34: [T.GolfCourse] = [];
-  private stable var golfCourseGroup35: [T.GolfCourse] = [];
-  private stable var golfCourseGroup36: [T.GolfCourse] = [];
-  private stable var golfCourseGroup37: [T.GolfCourse] = [];
-  private stable var golfCourseGroup38: [T.GolfCourse] = [];
-  private stable var golfCourseGroup39: [T.GolfCourse] = [];
-  private stable var golfCourseGroup40: [T.GolfCourse] = [];
-  private stable var golfCourseGroup41: [T.GolfCourse] = [];
-  private stable var golfCourseGroup42: [T.GolfCourse] = [];
-  private stable var golfCourseGroup43: [T.GolfCourse] = [];
-  private stable var golfCourseGroup44: [T.GolfCourse] = [];
-  private stable var golfCourseGroup45: [T.GolfCourse] = [];
-  private stable var golfCourseGroup46: [T.GolfCourse] = [];
-  private stable var golfCourseGroup47: [T.GolfCourse] = [];
-  private stable var golfCourseGroup48: [T.GolfCourse] = [];
-  private stable var golfCourseGroup49: [T.GolfCourse] = [];
-  private stable var golfCourseGroup50: [T.GolfCourse] = [];
-  private stable var golfCourseGroup51: [T.GolfCourse] = [];
-  private stable var golfCourseGroup52: [T.GolfCourse] = [];
-  private stable var golfCourseGroup53: [T.GolfCourse] = [];
-  private stable var golfCourseGroup54: [T.GolfCourse] = [];
-  private stable var golfCourseGroup55: [T.GolfCourse] = [];
-  private stable var golfCourseGroup56: [T.GolfCourse] = [];
-  private stable var golfCourseGroup57: [T.GolfCourse] = [];
-  private stable var golfCourseGroup58: [T.GolfCourse] = [];
-  private stable var golfCourseGroup59: [T.GolfCourse] = [];
-  private stable var golfCourseGroup60: [T.GolfCourse] = [];
-  private stable var golfCourseGroup61: [T.GolfCourse] = [];
-  private stable var golfCourseGroup62: [T.GolfCourse] = [];
-  private stable var golfCourseGroup63: [T.GolfCourse] = [];
-  private stable var golfCourseGroup64: [T.GolfCourse] = [];
-  private stable var golfCourseGroup65: [T.GolfCourse] = [];
-  private stable var golfCourseGroup66: [T.GolfCourse] = [];
-  private stable var golfCourseGroup67: [T.GolfCourse] = [];
-  private stable var golfCourseGroup68: [T.GolfCourse] = [];
-  private stable var golfCourseGroup69: [T.GolfCourse] = [];
-  private stable var golfCourseGroup70: [T.GolfCourse] = [];
-  private stable var golfCourseGroup71: [T.GolfCourse] = [];
-  private stable var golfCourseGroup72: [T.GolfCourse] = [];
-  private stable var golfCourseGroup73: [T.GolfCourse] = [];
-  private stable var golfCourseGroup74: [T.GolfCourse] = [];
-  private stable var golfCourseGroup75: [T.GolfCourse] = [];
-  private stable var golfCourseGroup76: [T.GolfCourse] = [];
-  private stable var golfCourseGroup77: [T.GolfCourse] = [];
-  private stable var golfCourseGroup78: [T.GolfCourse] = [];
-  private stable var golfCourseGroup79: [T.GolfCourse] = [];
-  private stable var golfCourseGroup80: [T.GolfCourse] = [];
-  private stable var golfCourseGroup81: [T.GolfCourse] = [];
-  private stable var golfCourseGroup82: [T.GolfCourse] = [];
-  private stable var golfCourseGroup83: [T.GolfCourse] = [];
-  private stable var golfCourseGroup84: [T.GolfCourse] = [];
-  private stable var golfCourseGroup85: [T.GolfCourse] = [];
-  private stable var golfCourseGroup86: [T.GolfCourse] = [];
-  private stable var golfCourseGroup87: [T.GolfCourse] = [];
-  private stable var golfCourseGroup88: [T.GolfCourse] = [];
-  private stable var golfCourseGroup89: [T.GolfCourse] = [];
-  private stable var golfCourseGroup90: [T.GolfCourse] = [];
-  private stable var golfCourseGroup91: [T.GolfCourse] = [];
-  private stable var golfCourseGroup92: [T.GolfCourse] = [];
-  private stable var golfCourseGroup93: [T.GolfCourse] = [];
-  private stable var golfCourseGroup94: [T.GolfCourse] = [];
-  private stable var golfCourseGroup95: [T.GolfCourse] = [];
-  private stable var golfCourseGroup96: [T.GolfCourse] = [];
-  private stable var golfCourseGroup97: [T.GolfCourse] = [];
-  private stable var golfCourseGroup98: [T.GolfCourse] = [];
-  private stable var golfCourseGroup99: [T.GolfCourse] = [];
-  private stable var golfCourseGroup100: [T.GolfCourse] = [];
+  private stable var golfCourseGroup1: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup2: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup3: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup4: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup5: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup6: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup7: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup8: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup9: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup10: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup11: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup12: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup13: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup14: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup15: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup16: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup17: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup18: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup19: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup20: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup21: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup22: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup23: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup24: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup25: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup26: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup27: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup28: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup29: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup30: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup31: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup32: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup33: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup34: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup35: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup36: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup37: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup38: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup39: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup40: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup41: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup42: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup43: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup44: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup45: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup46: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup47: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup48: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup49: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup50: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup51: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup52: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup53: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup54: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup55: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup56: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup57: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup58: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup59: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup60: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup61: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup62: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup63: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup64: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup65: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup66: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup67: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup68: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup69: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup70: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup71: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup72: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup73: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup74: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup75: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup76: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup77: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup78: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup79: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup80: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup81: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup82: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup83: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup84: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup85: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup86: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup87: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup88: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup89: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup90: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup91: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup92: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup93: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup94: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup95: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup96: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup97: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup98: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup99: [GolfCourse.GolfCourse] = [];
+  private stable var golfCourseGroup100: [GolfCourse.GolfCourse] = [];
 
   //Public endpoints:
 
@@ -145,12 +147,12 @@ actor class _GolfCoursesCanister() {
             return #ok({
               id = foundGolfCourse.id;
               name = foundGolfCourse.name;
-              tees = Array.map<T.TeeGroup, GolfCourseQueries.GolfCourseTeeGroup>(
-                foundGolfCourse.teeGroups, func(entry: T.TeeGroup){
+              tees = Array.map<GolfCourse.TeeGroup, GolfCourseQueries.GolfCourseTeeGroup>(
+                foundGolfCourse.teeGroups, func(entry: GolfCourse.TeeGroup){
                   return {
                     added = entry.added;
                     colour = entry.colour;
-                    holes = Array.map<T.Hole, GolfCourseQueries.HoleSummary>(entry.holes, func(holeEntry: T.Hole){
+                    holes = Array.map<GolfCourse.Hole, GolfCourseQueries.HoleSummary>(entry.holes, func(holeEntry: GolfCourse.Hole){
 
                       return {
                         name = holeEntry.name; 
@@ -222,14 +224,14 @@ actor class _GolfCoursesCanister() {
     return #err(#NotFound); //TODO;
   };
 
-  public shared ({ caller }) func getLatestId() : async T.GolfCourseId{
+  public shared ({ caller }) func getLatestId() : async ID.GolfCourseId{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
     return nextCourseId - 1;
   };
 
-  public shared ({ caller }) func updateNextId(nextId: T.GolfCourseId) : async (){
+  public shared ({ caller }) func updateNextId(nextId: ID.GolfCourseId) : async (){
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -254,7 +256,7 @@ actor class _GolfCoursesCanister() {
       return #err(#CanisterFull);
     };
 
-    let newCourse: T.GolfCourse = {
+    let newCourse: GolfCourse.GolfCourse = {
       dateAdded = Time.now();
       id = nextCourseId; 
       name = dto.name;
@@ -292,7 +294,7 @@ actor class _GolfCoursesCanister() {
         let golfCourse = findGolfCourse(foundGroupIndex, dto.courseId);
         switch(golfCourse){
           case (?foundGolfCourse){    
-            let golfCourseHistoryBuffer = Buffer.fromArray<T.HistoricalGolfCourse>(foundGolfCourse.history);
+            let golfCourseHistoryBuffer = Buffer.fromArray<GolfCourse.HistoricalGolfCourse>(foundGolfCourse.history);
             golfCourseHistoryBuffer.add({
               dateAdded = foundGolfCourse.dateAdded;
               id = foundGolfCourse.id;
@@ -303,11 +305,11 @@ actor class _GolfCoursesCanister() {
             });
 
             let newVersion = foundGolfCourse.activeVersion + 1;
-            var updatedTeeGroups: [T.TeeGroup] = foundGolfCourse.teeGroups;
+            var updatedTeeGroups: [GolfCourse.TeeGroup] = foundGolfCourse.teeGroups;
             switch(dto.updatedTeeGroup){
               case (?foundUpdatedTeeGroup){
-                updatedTeeGroups := Array.map<T.TeeGroup, T.TeeGroup>(foundGolfCourse.teeGroups, 
-                  func(teeGroup: T.TeeGroup){
+                updatedTeeGroups := Array.map<GolfCourse.TeeGroup, GolfCourse.TeeGroup>(foundGolfCourse.teeGroups, 
+                  func(teeGroup: GolfCourse.TeeGroup){
                     if(teeGroup.name == foundUpdatedTeeGroup.name){
                       return foundUpdatedTeeGroup;
                     } else {
@@ -318,7 +320,7 @@ actor class _GolfCoursesCanister() {
               case (null) {};
             };
 
-            let updatedGolfCourse: T.GolfCourse = {
+            let updatedGolfCourse: GolfCourse.GolfCourse = {
               activeVersion = newVersion;
               dateAdded = foundGolfCourse.dateAdded;
               history = Buffer.toArray(golfCourseHistoryBuffer);
@@ -378,604 +380,604 @@ actor class _GolfCoursesCanister() {
 
   //Private functions:
 
-  private func findGolfCourse(golfCourseGroupIndex: Nat8, courseId: T.GolfCourseId) : ?T.GolfCourse {
+  private func findGolfCourse(golfCourseGroupIndex: Nat8, courseId: ID.GolfCourseId) : ?GolfCourse.GolfCourse {
     switch(golfCourseGroupIndex){
       case 0{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup1, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup1, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 1{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup2, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup2, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 2{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup3, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup3, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 3{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup4, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup4, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 4{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup5, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup5, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 5{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup6, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup6, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 6{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup7, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup7, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 7{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup8, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup8, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 8{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup9, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup9, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 9{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup10, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup10, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 10{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup11, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup11, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 11{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup12, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup12, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 12{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup13, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup13, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 13{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup14, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup14, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 14{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup15, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup15, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 15{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup16, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup16, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 16{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup17, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup17, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 17{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup18, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup18, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 18{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup19, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup19, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 19{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup20, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup20, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 20{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup21, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup21, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 21{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup22, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup22, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 22{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup23, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup23, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 23{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup24, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup24, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 24{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup25, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup25, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 25{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup26, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup26, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 26{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup27, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup27, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 27{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup28, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup28, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 28{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup29, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup29, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 29{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup30, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup30, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 30{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup31, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup31, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 31{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup32, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup32, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 32{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup33, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup33, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 33{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup34, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup34, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 34{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup35, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup35, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 35{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup36, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup36, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 36{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup37, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup37, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 37{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup38, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup38, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 38{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup39, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup39, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 39{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup40, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup40, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 40{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup41, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup41, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 41{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup42, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup42, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 42{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup43, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup43, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 43{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup44, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup44, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 44{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup45, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup45, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 45{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup46, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup46, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 46{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup47, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup47, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 47{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup48, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup48, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 48{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup49, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup49, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 49{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup50, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup50, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 50{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup51, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup51, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 51{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup52, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup52, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 52{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup53, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup53, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 53{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup54, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup54, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 54{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup55, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup55, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 55{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup56, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup56, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 56{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup57, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup57, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 57{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup58, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup58, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 58{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup59, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup59, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 59{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup60, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup60, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 60{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup61, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup61, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 61{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup62, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup62, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 62{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup63, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup63, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 63{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup64, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup64, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 64{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup65, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup65, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 65{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup66, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup66, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 66{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup67, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup67, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 67{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup68, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup68, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 68{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup69, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup69, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 69{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup70, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup70, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 70{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup71, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup71, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 71{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup72, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup72, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 72{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup73, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup73, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 73{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup74, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup74, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 74{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup75, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup75, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 75{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup76, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup76, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 76{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup77, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup77, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 77{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup78, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup78, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 78{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup79, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup79, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 79{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup80, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup80, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 80{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup81, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup81, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 81{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup82, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup82, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 82{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup83, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup83, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 83{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup84, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup84, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 84{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup85, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup85, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 85{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup86, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup86, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 86{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup87, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup87, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 87{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup88, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup88, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 88{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup89, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup89, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 89{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup90, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup90, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 90{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup91, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup91, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 91{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup92, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup92, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 92{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup93, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup93, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 93{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup94, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup94, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 94{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup95, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup95, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 95{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup96, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup96, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 96{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup97, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup97, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 97{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup98, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup98, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 98{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup99, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup99, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
       };
       case 99{
-        let foundGolfer = Array.find<T.GolfCourse>(golfCourseGroup100, func(golfCourse: T.GolfCourse){
+        let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup100, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id == courseId
         });
         return foundGolfer;
@@ -986,9 +988,9 @@ actor class _GolfCoursesCanister() {
     }
   };
 
-  private func addGolfCourse(golfCourseGroupIndex: Nat8, newCourse: T.GolfCourse) : Result.Result<(), T.Error> {
+  private func addGolfCourse(golfCourseGroupIndex: Nat8, newCourse: GolfCourse.GolfCourse) : Result.Result<(), T.Error> {
 
-    var golfCourseBuffer = Buffer.fromArray<T.GolfCourse>([]);
+    var golfCourseBuffer = Buffer.fromArray<GolfCourse.GolfCourse>([]);
     switch(activeGroupIndex){
       case(0){
         golfCourseBuffer := Buffer.fromArray(golfCourseGroup1);
@@ -1500,10 +1502,10 @@ actor class _GolfCoursesCanister() {
     return #ok();
   };
 
-  private func saveGolfCourse(groupIndex: Nat8, updatedGolfCourse: T.GolfCourse) : Result.Result<(), T.Error>{
+  private func saveGolfCourse(groupIndex: Nat8, updatedGolfCourse: GolfCourse.GolfCourse) : Result.Result<(), T.Error>{
     switch(groupIndex){
       case 0{
-        golfCourseGroup1 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup1, func(golfCourse: T.GolfCourse){
+        golfCourseGroup1 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup1, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1512,7 +1514,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 1{
-        golfCourseGroup2 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup2, func(golfCourse: T.GolfCourse){
+        golfCourseGroup2 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup2, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1521,7 +1523,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 2{
-        golfCourseGroup3 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup3, func(golfCourse: T.GolfCourse){
+        golfCourseGroup3 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup3, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1530,7 +1532,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 3{
-        golfCourseGroup4 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup4, func(golfCourse: T.GolfCourse){
+        golfCourseGroup4 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup4, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1539,7 +1541,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 4{
-        golfCourseGroup5 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup5, func(golfCourse: T.GolfCourse){
+        golfCourseGroup5 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup5, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1548,7 +1550,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 5{
-        golfCourseGroup6 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup6, func(golfCourse: T.GolfCourse){
+        golfCourseGroup6 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup6, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1557,7 +1559,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 6{
-        golfCourseGroup7 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup7, func(golfCourse: T.GolfCourse){
+        golfCourseGroup7 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup7, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1566,7 +1568,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 7{
-        golfCourseGroup8 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup8, func(golfCourse: T.GolfCourse){
+        golfCourseGroup8 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup8, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1575,7 +1577,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 8{
-        golfCourseGroup9 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup9, func(golfCourse: T.GolfCourse){
+        golfCourseGroup9 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup9, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1584,7 +1586,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 9{
-        golfCourseGroup10 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup10, func(golfCourse: T.GolfCourse){
+        golfCourseGroup10 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup10, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1595,7 +1597,7 @@ actor class _GolfCoursesCanister() {
 
 
       case 10{
-        golfCourseGroup10 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup10, func(golfCourse: T.GolfCourse){
+        golfCourseGroup10 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup10, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1604,7 +1606,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 11{
-        golfCourseGroup12 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup12, func(golfCourse: T.GolfCourse){
+        golfCourseGroup12 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup12, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1613,7 +1615,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 12{
-        golfCourseGroup13 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup13, func(golfCourse: T.GolfCourse){
+        golfCourseGroup13 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup13, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1622,7 +1624,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 13{
-        golfCourseGroup14 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup14, func(golfCourse: T.GolfCourse){
+        golfCourseGroup14 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup14, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1631,7 +1633,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 14{
-        golfCourseGroup15 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup15, func(golfCourse: T.GolfCourse){
+        golfCourseGroup15 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup15, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1640,7 +1642,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 15{
-        golfCourseGroup16 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup16, func(golfCourse: T.GolfCourse){
+        golfCourseGroup16 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup16, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1649,7 +1651,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 16{
-        golfCourseGroup17 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup17, func(golfCourse: T.GolfCourse){
+        golfCourseGroup17 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup17, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1658,7 +1660,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 17{
-        golfCourseGroup18 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup18, func(golfCourse: T.GolfCourse){
+        golfCourseGroup18 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup18, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1667,7 +1669,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 18{
-        golfCourseGroup19 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup19, func(golfCourse: T.GolfCourse){
+        golfCourseGroup19 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup19, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1676,7 +1678,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 19{
-        golfCourseGroup20 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup20, func(golfCourse: T.GolfCourse){
+        golfCourseGroup20 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup20, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1685,7 +1687,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 20{
-        golfCourseGroup21 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup21, func(golfCourse: T.GolfCourse){
+        golfCourseGroup21 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup21, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1694,7 +1696,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 21{
-        golfCourseGroup22 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup22, func(golfCourse: T.GolfCourse){
+        golfCourseGroup22 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup22, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1703,7 +1705,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 22{
-        golfCourseGroup23 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup23, func(golfCourse: T.GolfCourse){
+        golfCourseGroup23 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup23, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1712,7 +1714,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 23{
-        golfCourseGroup24 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup24, func(golfCourse: T.GolfCourse){
+        golfCourseGroup24 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup24, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1721,7 +1723,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 24{
-        golfCourseGroup25 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup25, func(golfCourse: T.GolfCourse){
+        golfCourseGroup25 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup25, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1730,7 +1732,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 25{
-        golfCourseGroup26 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup26, func(golfCourse: T.GolfCourse){
+        golfCourseGroup26 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup26, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1739,7 +1741,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 26{
-        golfCourseGroup27 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup27, func(golfCourse: T.GolfCourse){
+        golfCourseGroup27 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup27, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1748,7 +1750,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 27{
-        golfCourseGroup28 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup28, func(golfCourse: T.GolfCourse){
+        golfCourseGroup28 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup28, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1757,7 +1759,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 28{
-        golfCourseGroup29 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup29, func(golfCourse: T.GolfCourse){
+        golfCourseGroup29 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup29, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1766,7 +1768,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 29{
-        golfCourseGroup30 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup30, func(golfCourse: T.GolfCourse){
+        golfCourseGroup30 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup30, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1775,7 +1777,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 30{
-        golfCourseGroup31 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup31, func(golfCourse: T.GolfCourse){
+        golfCourseGroup31 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup31, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1784,7 +1786,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 31{
-        golfCourseGroup32 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup32, func(golfCourse: T.GolfCourse){
+        golfCourseGroup32 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup32, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1793,7 +1795,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 32{
-        golfCourseGroup33 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup33, func(golfCourse: T.GolfCourse){
+        golfCourseGroup33 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup33, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1802,7 +1804,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 33{
-        golfCourseGroup34 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup34, func(golfCourse: T.GolfCourse){
+        golfCourseGroup34 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup34, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1811,7 +1813,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 34{
-        golfCourseGroup35 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup35, func(golfCourse: T.GolfCourse){
+        golfCourseGroup35 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup35, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1820,7 +1822,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 35{
-        golfCourseGroup36 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup36, func(golfCourse: T.GolfCourse){
+        golfCourseGroup36 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup36, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1829,7 +1831,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 36{
-        golfCourseGroup37 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup37, func(golfCourse: T.GolfCourse){
+        golfCourseGroup37 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup37, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1838,7 +1840,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 37{
-        golfCourseGroup38 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup38, func(golfCourse: T.GolfCourse){
+        golfCourseGroup38 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup38, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1847,7 +1849,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 38{
-        golfCourseGroup39 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup39, func(golfCourse: T.GolfCourse){
+        golfCourseGroup39 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup39, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1856,7 +1858,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 39{
-        golfCourseGroup40 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup40, func(golfCourse: T.GolfCourse){
+        golfCourseGroup40 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup40, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1865,7 +1867,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 40{
-        golfCourseGroup41 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup41, func(golfCourse: T.GolfCourse){
+        golfCourseGroup41 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup41, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1874,7 +1876,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 41{
-        golfCourseGroup42 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup42, func(golfCourse: T.GolfCourse){
+        golfCourseGroup42 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup42, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1883,7 +1885,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 42{
-        golfCourseGroup43 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup43, func(golfCourse: T.GolfCourse){
+        golfCourseGroup43 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup43, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1892,7 +1894,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 43{
-        golfCourseGroup44 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup44, func(golfCourse: T.GolfCourse){
+        golfCourseGroup44 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup44, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1901,7 +1903,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 44{
-        golfCourseGroup45 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup45, func(golfCourse: T.GolfCourse){
+        golfCourseGroup45 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup45, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1910,7 +1912,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 45{
-        golfCourseGroup46 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup46, func(golfCourse: T.GolfCourse){
+        golfCourseGroup46 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup46, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1919,7 +1921,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 46{
-        golfCourseGroup47 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup47, func(golfCourse: T.GolfCourse){
+        golfCourseGroup47 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup47, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1928,7 +1930,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 47{
-        golfCourseGroup48 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup48, func(golfCourse: T.GolfCourse){
+        golfCourseGroup48 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup48, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1937,7 +1939,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 48{
-        golfCourseGroup49 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup49, func(golfCourse: T.GolfCourse){
+        golfCourseGroup49 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup49, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1946,7 +1948,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 49{
-        golfCourseGroup50 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup50, func(golfCourse: T.GolfCourse){
+        golfCourseGroup50 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup50, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1955,7 +1957,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 50{
-        golfCourseGroup51 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup51, func(golfCourse: T.GolfCourse){
+        golfCourseGroup51 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup51, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1964,7 +1966,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 51{
-        golfCourseGroup52 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup52, func(golfCourse: T.GolfCourse){
+        golfCourseGroup52 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup52, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1973,7 +1975,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 52{
-        golfCourseGroup53 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup53, func(golfCourse: T.GolfCourse){
+        golfCourseGroup53 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup53, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1982,7 +1984,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 53{
-        golfCourseGroup54 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup54, func(golfCourse: T.GolfCourse){
+        golfCourseGroup54 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup54, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -1991,7 +1993,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 54{
-        golfCourseGroup55 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup55, func(golfCourse: T.GolfCourse){
+        golfCourseGroup55 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup55, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2000,7 +2002,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 55{
-        golfCourseGroup56 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup56, func(golfCourse: T.GolfCourse){
+        golfCourseGroup56 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup56, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2009,7 +2011,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 56{
-        golfCourseGroup57 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup57, func(golfCourse: T.GolfCourse){
+        golfCourseGroup57 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup57, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2018,7 +2020,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 57{
-        golfCourseGroup58 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup58, func(golfCourse: T.GolfCourse){
+        golfCourseGroup58 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup58, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2027,7 +2029,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 58{
-        golfCourseGroup59 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup59, func(golfCourse: T.GolfCourse){
+        golfCourseGroup59 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup59, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2036,7 +2038,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 59{
-        golfCourseGroup60 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup60, func(golfCourse: T.GolfCourse){
+        golfCourseGroup60 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup60, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2045,7 +2047,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 60{
-        golfCourseGroup61 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup61, func(golfCourse: T.GolfCourse){
+        golfCourseGroup61 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup61, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2054,7 +2056,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 61{
-        golfCourseGroup62 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup62, func(golfCourse: T.GolfCourse){
+        golfCourseGroup62 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup62, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2063,7 +2065,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 62{
-        golfCourseGroup63 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup63, func(golfCourse: T.GolfCourse){
+        golfCourseGroup63 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup63, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2072,7 +2074,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 63{
-        golfCourseGroup64 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup64, func(golfCourse: T.GolfCourse){
+        golfCourseGroup64 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup64, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2081,7 +2083,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 64{
-        golfCourseGroup65 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup65, func(golfCourse: T.GolfCourse){
+        golfCourseGroup65 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup65, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2090,7 +2092,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 65{
-        golfCourseGroup66 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup66, func(golfCourse: T.GolfCourse){
+        golfCourseGroup66 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup66, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2099,7 +2101,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 66{
-        golfCourseGroup67 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup67, func(golfCourse: T.GolfCourse){
+        golfCourseGroup67 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup67, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2108,7 +2110,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 67{
-        golfCourseGroup68 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup68, func(golfCourse: T.GolfCourse){
+        golfCourseGroup68 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup68, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2117,7 +2119,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 68{
-        golfCourseGroup69 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup69, func(golfCourse: T.GolfCourse){
+        golfCourseGroup69 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup69, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2126,7 +2128,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 69{
-        golfCourseGroup70 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup70, func(golfCourse: T.GolfCourse){
+        golfCourseGroup70 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup70, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2135,7 +2137,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 70{
-        golfCourseGroup71 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup71, func(golfCourse: T.GolfCourse){
+        golfCourseGroup71 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup71, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2144,7 +2146,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 71{
-        golfCourseGroup72 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup72, func(golfCourse: T.GolfCourse){
+        golfCourseGroup72 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup72, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2153,7 +2155,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 72{
-        golfCourseGroup73 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup73, func(golfCourse: T.GolfCourse){
+        golfCourseGroup73 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup73, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2162,7 +2164,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 73{
-        golfCourseGroup74 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup74, func(golfCourse: T.GolfCourse){
+        golfCourseGroup74 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup74, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2171,7 +2173,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 74{
-        golfCourseGroup75 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup75, func(golfCourse: T.GolfCourse){
+        golfCourseGroup75 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup75, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2180,7 +2182,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 75{
-        golfCourseGroup76 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup76, func(golfCourse: T.GolfCourse){
+        golfCourseGroup76 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup76, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2189,7 +2191,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 76{
-        golfCourseGroup77 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup77, func(golfCourse: T.GolfCourse){
+        golfCourseGroup77 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup77, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2198,7 +2200,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 77{
-        golfCourseGroup78 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup78, func(golfCourse: T.GolfCourse){
+        golfCourseGroup78 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup78, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2207,7 +2209,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 78{
-        golfCourseGroup79 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup79, func(golfCourse: T.GolfCourse){
+        golfCourseGroup79 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup79, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2216,7 +2218,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 79{
-        golfCourseGroup80 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup80, func(golfCourse: T.GolfCourse){
+        golfCourseGroup80 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup80, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2225,7 +2227,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 80{
-        golfCourseGroup81 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup81, func(golfCourse: T.GolfCourse){
+        golfCourseGroup81 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup81, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2234,7 +2236,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 81{
-        golfCourseGroup82 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup82, func(golfCourse: T.GolfCourse){
+        golfCourseGroup82 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup82, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2243,7 +2245,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 82{
-        golfCourseGroup83 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup83, func(golfCourse: T.GolfCourse){
+        golfCourseGroup83 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup83, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2252,7 +2254,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 83{
-        golfCourseGroup84 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup84, func(golfCourse: T.GolfCourse){
+        golfCourseGroup84 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup84, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2261,7 +2263,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 84{
-        golfCourseGroup85 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup85, func(golfCourse: T.GolfCourse){
+        golfCourseGroup85 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup85, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2270,7 +2272,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 85{
-        golfCourseGroup86 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup86, func(golfCourse: T.GolfCourse){
+        golfCourseGroup86 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup86, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2279,7 +2281,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 86{
-        golfCourseGroup87 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup87, func(golfCourse: T.GolfCourse){
+        golfCourseGroup87 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup87, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2288,7 +2290,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 87{
-        golfCourseGroup88 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup88, func(golfCourse: T.GolfCourse){
+        golfCourseGroup88 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup88, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2297,7 +2299,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 88{
-        golfCourseGroup89 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup89, func(golfCourse: T.GolfCourse){
+        golfCourseGroup89 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup89, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2306,7 +2308,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 89{
-        golfCourseGroup90 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup90, func(golfCourse: T.GolfCourse){
+        golfCourseGroup90 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup90, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2315,7 +2317,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 90{
-        golfCourseGroup91 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup91, func(golfCourse: T.GolfCourse){
+        golfCourseGroup91 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup91, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2324,7 +2326,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 91{
-        golfCourseGroup92 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup92, func(golfCourse: T.GolfCourse){
+        golfCourseGroup92 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup92, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2333,7 +2335,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 92{
-        golfCourseGroup93 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup93, func(golfCourse: T.GolfCourse){
+        golfCourseGroup93 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup93, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2342,7 +2344,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 93{
-        golfCourseGroup94 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup94, func(golfCourse: T.GolfCourse){
+        golfCourseGroup94 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup94, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2351,7 +2353,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 94{
-        golfCourseGroup95 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup95, func(golfCourse: T.GolfCourse){
+        golfCourseGroup95 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup95, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2360,7 +2362,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 95{
-        golfCourseGroup96 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup96, func(golfCourse: T.GolfCourse){
+        golfCourseGroup96 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup96, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2369,7 +2371,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 96{
-        golfCourseGroup97 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup97, func(golfCourse: T.GolfCourse){
+        golfCourseGroup97 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup97, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2378,7 +2380,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 97{
-        golfCourseGroup98 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup98, func(golfCourse: T.GolfCourse){
+        golfCourseGroup98 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup98, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2387,7 +2389,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 98{
-        golfCourseGroup99 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup99, func(golfCourse: T.GolfCourse){
+        golfCourseGroup99 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup99, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2396,7 +2398,7 @@ actor class _GolfCoursesCanister() {
         });
       };
       case 99{
-        golfCourseGroup100 := Array.map<T.GolfCourse, T.GolfCourse>(golfCourseGroup100, func(golfCourse: T.GolfCourse){
+        golfCourseGroup100 := Array.map<GolfCourse.GolfCourse, GolfCourse.GolfCourse>(golfCourseGroup100, func(golfCourse: GolfCourse.GolfCourse){
           if(golfCourse.id == updatedGolfCourse.id){
             return updatedGolfCourse;
           } else {
@@ -2411,506 +2413,506 @@ actor class _GolfCoursesCanister() {
     return #ok();
   };
 
-  private func removeGolfCourse(groupIndex: Nat8, removeCourseId: T.GolfCourseId) : Result.Result<(), T.Error>{
+  private func removeGolfCourse(groupIndex: Nat8, removeCourseId: ID.GolfCourseId) : Result.Result<(), T.Error>{
     switch(groupIndex){
       case 0{
-        golfCourseGroup1 := Array.filter<T.GolfCourse>(golfCourseGroup1, func(golfCourse: T.GolfCourse){
+        golfCourseGroup1 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup1, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 1{
-        golfCourseGroup2 := Array.filter<T.GolfCourse>(golfCourseGroup2, func(golfCourse: T.GolfCourse){
+        golfCourseGroup2 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup2, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 2{
-        golfCourseGroup3 := Array.filter<T.GolfCourse>(golfCourseGroup3, func(golfCourse: T.GolfCourse){
+        golfCourseGroup3 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup3, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 3{
-        golfCourseGroup4 := Array.filter<T.GolfCourse>(golfCourseGroup4, func(golfCourse: T.GolfCourse){
+        golfCourseGroup4 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup4, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 4{
-        golfCourseGroup5 := Array.filter<T.GolfCourse>(golfCourseGroup5, func(golfCourse: T.GolfCourse){
+        golfCourseGroup5 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup5, func(golfCourse: GolfCourse.GolfCourse){
          golfCourse.id != removeCourseId
         });
       };
       case 5{
-        golfCourseGroup6 := Array.filter<T.GolfCourse>(golfCourseGroup6, func(golfCourse: T.GolfCourse){
+        golfCourseGroup6 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup6, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 6{
-        golfCourseGroup7 := Array.filter<T.GolfCourse>(golfCourseGroup7, func(golfCourse: T.GolfCourse){
+        golfCourseGroup7 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup7, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 7{
-        golfCourseGroup8 := Array.filter<T.GolfCourse>(golfCourseGroup8, func(golfCourse: T.GolfCourse){
+        golfCourseGroup8 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup8, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 8{
-        golfCourseGroup9 := Array.filter<T.GolfCourse>(golfCourseGroup9, func(golfCourse: T.GolfCourse){
+        golfCourseGroup9 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup9, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 9{
-        golfCourseGroup10 := Array.filter<T.GolfCourse>(golfCourseGroup10, func(golfCourse: T.GolfCourse){
+        golfCourseGroup10 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup10, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
 
       case 10{
-        golfCourseGroup10 := Array.filter<T.GolfCourse>(golfCourseGroup10, func(golfCourse: T.GolfCourse){
+        golfCourseGroup10 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup10, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 11{
-        golfCourseGroup12 := Array.filter<T.GolfCourse>(golfCourseGroup12, func(golfCourse: T.GolfCourse){
+        golfCourseGroup12 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup12, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 12{
-        golfCourseGroup13 := Array.filter<T.GolfCourse>(golfCourseGroup13, func(golfCourse: T.GolfCourse){
+        golfCourseGroup13 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup13, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 13{
-        golfCourseGroup14 := Array.filter<T.GolfCourse>(golfCourseGroup14, func(golfCourse: T.GolfCourse){
+        golfCourseGroup14 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup14, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 14{
-        golfCourseGroup15 := Array.filter<T.GolfCourse>(golfCourseGroup15, func(golfCourse: T.GolfCourse){
+        golfCourseGroup15 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup15, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 15{
-        golfCourseGroup16 := Array.filter<T.GolfCourse>(golfCourseGroup16, func(golfCourse: T.GolfCourse){
+        golfCourseGroup16 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup16, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 16{
-        golfCourseGroup17 := Array.filter<T.GolfCourse>(golfCourseGroup17, func(golfCourse: T.GolfCourse){
+        golfCourseGroup17 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup17, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 17{
-        golfCourseGroup18 := Array.filter<T.GolfCourse>(golfCourseGroup18, func(golfCourse: T.GolfCourse){
+        golfCourseGroup18 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup18, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 18{
-        golfCourseGroup19 := Array.filter<T.GolfCourse>(golfCourseGroup19, func(golfCourse: T.GolfCourse){
+        golfCourseGroup19 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup19, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 19{
-        golfCourseGroup20 := Array.filter<T.GolfCourse>(golfCourseGroup20, func(golfCourse: T.GolfCourse){
+        golfCourseGroup20 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup20, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 20{
-        golfCourseGroup21 := Array.filter<T.GolfCourse>(golfCourseGroup21, func(golfCourse: T.GolfCourse){
+        golfCourseGroup21 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup21, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 21{
-        golfCourseGroup22 := Array.filter<T.GolfCourse>(golfCourseGroup22, func(golfCourse: T.GolfCourse){
+        golfCourseGroup22 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup22, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 22{
-        golfCourseGroup23 := Array.filter<T.GolfCourse>(golfCourseGroup23, func(golfCourse: T.GolfCourse){
+        golfCourseGroup23 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup23, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 23{
-        golfCourseGroup24 := Array.filter<T.GolfCourse>(golfCourseGroup24, func(golfCourse: T.GolfCourse){
+        golfCourseGroup24 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup24, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 24{
-        golfCourseGroup25 := Array.filter<T.GolfCourse>(golfCourseGroup25, func(golfCourse: T.GolfCourse){
+        golfCourseGroup25 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup25, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 25{
-        golfCourseGroup26 := Array.filter<T.GolfCourse>(golfCourseGroup26, func(golfCourse: T.GolfCourse){
+        golfCourseGroup26 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup26, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 26{
-        golfCourseGroup27 := Array.filter<T.GolfCourse>(golfCourseGroup27, func(golfCourse: T.GolfCourse){
+        golfCourseGroup27 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup27, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 27{
-        golfCourseGroup28 := Array.filter<T.GolfCourse>(golfCourseGroup28, func(golfCourse: T.GolfCourse){
+        golfCourseGroup28 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup28, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 28{
-        golfCourseGroup29 := Array.filter<T.GolfCourse>(golfCourseGroup29, func(golfCourse: T.GolfCourse){
+        golfCourseGroup29 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup29, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 29{
-        golfCourseGroup30 := Array.filter<T.GolfCourse>(golfCourseGroup30, func(golfCourse: T.GolfCourse){
+        golfCourseGroup30 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup30, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 30{
-        golfCourseGroup31 := Array.filter<T.GolfCourse>(golfCourseGroup31, func(golfCourse: T.GolfCourse){
+        golfCourseGroup31 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup31, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 31{
-        golfCourseGroup32 := Array.filter<T.GolfCourse>(golfCourseGroup32, func(golfCourse: T.GolfCourse){
+        golfCourseGroup32 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup32, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 32{
-        golfCourseGroup33 := Array.filter<T.GolfCourse>(golfCourseGroup33, func(golfCourse: T.GolfCourse){
+        golfCourseGroup33 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup33, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 33{
-        golfCourseGroup34 := Array.filter<T.GolfCourse>(golfCourseGroup34, func(golfCourse: T.GolfCourse){
+        golfCourseGroup34 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup34, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 34{
-        golfCourseGroup35 := Array.filter<T.GolfCourse>(golfCourseGroup35, func(golfCourse: T.GolfCourse){
+        golfCourseGroup35 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup35, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 35{
-        golfCourseGroup36 := Array.filter<T.GolfCourse>(golfCourseGroup36, func(golfCourse: T.GolfCourse){
+        golfCourseGroup36 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup36, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 36{
-        golfCourseGroup37 := Array.filter<T.GolfCourse>(golfCourseGroup37, func(golfCourse: T.GolfCourse){
+        golfCourseGroup37 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup37, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 37{
-        golfCourseGroup38 := Array.filter<T.GolfCourse>(golfCourseGroup38, func(golfCourse: T.GolfCourse){
+        golfCourseGroup38 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup38, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 38{
-        golfCourseGroup39 := Array.filter<T.GolfCourse>(golfCourseGroup39, func(golfCourse: T.GolfCourse){
+        golfCourseGroup39 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup39, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 39{
-        golfCourseGroup40 := Array.filter<T.GolfCourse>(golfCourseGroup40, func(golfCourse: T.GolfCourse){
+        golfCourseGroup40 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup40, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 40{
-        golfCourseGroup41 := Array.filter<T.GolfCourse>(golfCourseGroup41, func(golfCourse: T.GolfCourse){
+        golfCourseGroup41 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup41, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 41{
-        golfCourseGroup42 := Array.filter<T.GolfCourse>(golfCourseGroup42, func(golfCourse: T.GolfCourse){
+        golfCourseGroup42 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup42, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 42{
-        golfCourseGroup43 := Array.filter<T.GolfCourse>(golfCourseGroup43, func(golfCourse: T.GolfCourse){
+        golfCourseGroup43 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup43, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 43{
-        golfCourseGroup44 := Array.filter<T.GolfCourse>(golfCourseGroup44, func(golfCourse: T.GolfCourse){
+        golfCourseGroup44 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup44, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 44{
-        golfCourseGroup45 := Array.filter<T.GolfCourse>(golfCourseGroup45, func(golfCourse: T.GolfCourse){
+        golfCourseGroup45 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup45, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 45{
-        golfCourseGroup46 := Array.filter<T.GolfCourse>(golfCourseGroup46, func(golfCourse: T.GolfCourse){
+        golfCourseGroup46 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup46, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 46{
-        golfCourseGroup47 := Array.filter<T.GolfCourse>(golfCourseGroup47, func(golfCourse: T.GolfCourse){
+        golfCourseGroup47 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup47, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 47{
-        golfCourseGroup48 := Array.filter<T.GolfCourse>(golfCourseGroup48, func(golfCourse: T.GolfCourse){
+        golfCourseGroup48 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup48, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 48{
-        golfCourseGroup49 := Array.filter<T.GolfCourse>(golfCourseGroup49, func(golfCourse: T.GolfCourse){
+        golfCourseGroup49 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup49, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 49{
-        golfCourseGroup50 := Array.filter<T.GolfCourse>(golfCourseGroup50, func(golfCourse: T.GolfCourse){
+        golfCourseGroup50 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup50, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 50{
-        golfCourseGroup51 := Array.filter<T.GolfCourse>(golfCourseGroup51, func(golfCourse: T.GolfCourse){
+        golfCourseGroup51 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup51, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 51{
-        golfCourseGroup52 := Array.filter<T.GolfCourse>(golfCourseGroup52, func(golfCourse: T.GolfCourse){
+        golfCourseGroup52 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup52, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 52{
-        golfCourseGroup53 := Array.filter<T.GolfCourse>(golfCourseGroup53, func(golfCourse: T.GolfCourse){
+        golfCourseGroup53 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup53, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 53{
-        golfCourseGroup54 := Array.filter<T.GolfCourse>(golfCourseGroup54, func(golfCourse: T.GolfCourse){
+        golfCourseGroup54 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup54, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 54{
-        golfCourseGroup55 := Array.filter<T.GolfCourse>(golfCourseGroup55, func(golfCourse: T.GolfCourse){
+        golfCourseGroup55 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup55, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 55{
-        golfCourseGroup56 := Array.filter<T.GolfCourse>(golfCourseGroup56, func(golfCourse: T.GolfCourse){
+        golfCourseGroup56 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup56, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 56{
-        golfCourseGroup57 := Array.filter<T.GolfCourse>(golfCourseGroup57, func(golfCourse: T.GolfCourse){
+        golfCourseGroup57 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup57, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 57{
-        golfCourseGroup58 := Array.filter<T.GolfCourse>(golfCourseGroup58, func(golfCourse: T.GolfCourse){
+        golfCourseGroup58 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup58, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 58{
-        golfCourseGroup59 := Array.filter<T.GolfCourse>(golfCourseGroup59, func(golfCourse: T.GolfCourse){
+        golfCourseGroup59 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup59, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 59{
-        golfCourseGroup60 := Array.filter<T.GolfCourse>(golfCourseGroup60, func(golfCourse: T.GolfCourse){
+        golfCourseGroup60 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup60, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 60{
-        golfCourseGroup61 := Array.filter<T.GolfCourse>(golfCourseGroup61, func(golfCourse: T.GolfCourse){
+        golfCourseGroup61 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup61, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 61{
-        golfCourseGroup62 := Array.filter<T.GolfCourse>(golfCourseGroup62, func(golfCourse: T.GolfCourse){
+        golfCourseGroup62 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup62, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 62{
-        golfCourseGroup63 := Array.filter<T.GolfCourse>(golfCourseGroup63, func(golfCourse: T.GolfCourse){
+        golfCourseGroup63 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup63, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 63{
-        golfCourseGroup64 := Array.filter<T.GolfCourse>(golfCourseGroup64, func(golfCourse: T.GolfCourse){
+        golfCourseGroup64 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup64, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 64{
-        golfCourseGroup65 := Array.filter<T.GolfCourse>(golfCourseGroup65, func(golfCourse: T.GolfCourse){
+        golfCourseGroup65 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup65, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 65{
-        golfCourseGroup66 := Array.filter<T.GolfCourse>(golfCourseGroup66, func(golfCourse: T.GolfCourse){
+        golfCourseGroup66 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup66, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 66{
-        golfCourseGroup67 := Array.filter<T.GolfCourse>(golfCourseGroup67, func(golfCourse: T.GolfCourse){
+        golfCourseGroup67 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup67, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 67{
-        golfCourseGroup68 := Array.filter<T.GolfCourse>(golfCourseGroup68, func(golfCourse: T.GolfCourse){
+        golfCourseGroup68 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup68, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 68{
-        golfCourseGroup69 := Array.filter<T.GolfCourse>(golfCourseGroup69, func(golfCourse: T.GolfCourse){
+        golfCourseGroup69 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup69, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 69{
-        golfCourseGroup70 := Array.filter<T.GolfCourse>(golfCourseGroup70, func(golfCourse: T.GolfCourse){
+        golfCourseGroup70 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup70, func(golfCourse: GolfCourse.GolfCourse){
          golfCourse.id != removeCourseId
         });
       };
       case 70{
-        golfCourseGroup71 := Array.filter<T.GolfCourse>(golfCourseGroup71, func(golfCourse: T.GolfCourse){
+        golfCourseGroup71 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup71, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 71{
-        golfCourseGroup72 := Array.filter<T.GolfCourse>(golfCourseGroup72, func(golfCourse: T.GolfCourse){
+        golfCourseGroup72 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup72, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 72{
-        golfCourseGroup73 := Array.filter<T.GolfCourse>(golfCourseGroup73, func(golfCourse: T.GolfCourse){
+        golfCourseGroup73 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup73, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 73{
-        golfCourseGroup74 := Array.filter<T.GolfCourse>(golfCourseGroup74, func(golfCourse: T.GolfCourse){
+        golfCourseGroup74 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup74, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 74{
-        golfCourseGroup75 := Array.filter<T.GolfCourse>(golfCourseGroup75, func(golfCourse: T.GolfCourse){
+        golfCourseGroup75 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup75, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 75{
-        golfCourseGroup76 := Array.filter<T.GolfCourse>(golfCourseGroup76, func(golfCourse: T.GolfCourse){
+        golfCourseGroup76 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup76, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 76{
-        golfCourseGroup77 := Array.filter<T.GolfCourse>(golfCourseGroup77, func(golfCourse: T.GolfCourse){
+        golfCourseGroup77 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup77, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 77{
-        golfCourseGroup78 := Array.filter<T.GolfCourse>(golfCourseGroup78, func(golfCourse: T.GolfCourse){
+        golfCourseGroup78 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup78, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 78{
-        golfCourseGroup79 := Array.filter<T.GolfCourse>(golfCourseGroup79, func(golfCourse: T.GolfCourse){
+        golfCourseGroup79 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup79, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 79{
-        golfCourseGroup80 := Array.filter<T.GolfCourse>(golfCourseGroup80, func(golfCourse: T.GolfCourse){
+        golfCourseGroup80 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup80, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 80{
-        golfCourseGroup81 := Array.filter<T.GolfCourse>(golfCourseGroup81, func(golfCourse: T.GolfCourse){
+        golfCourseGroup81 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup81, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 81{
-        golfCourseGroup82 := Array.filter<T.GolfCourse>(golfCourseGroup82, func(golfCourse: T.GolfCourse){
+        golfCourseGroup82 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup82, func(golfCourse: GolfCourse.GolfCourse){
          golfCourse.id != removeCourseId
         });
       };
       case 82{
-        golfCourseGroup83 := Array.filter<T.GolfCourse>(golfCourseGroup83, func(golfCourse: T.GolfCourse){
+        golfCourseGroup83 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup83, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 83{
-        golfCourseGroup84 := Array.filter<T.GolfCourse>(golfCourseGroup84, func(golfCourse: T.GolfCourse){
+        golfCourseGroup84 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup84, func(golfCourse: GolfCourse.GolfCourse){
          golfCourse.id != removeCourseId
         });
       };
       case 84{
-        golfCourseGroup85 := Array.filter<T.GolfCourse>(golfCourseGroup85, func(golfCourse: T.GolfCourse){
+        golfCourseGroup85 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup85, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 85{
-        golfCourseGroup86 := Array.filter<T.GolfCourse>(golfCourseGroup86, func(golfCourse: T.GolfCourse){
+        golfCourseGroup86 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup86, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 86{
-        golfCourseGroup87 := Array.filter<T.GolfCourse>(golfCourseGroup87, func(golfCourse: T.GolfCourse){
+        golfCourseGroup87 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup87, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 87{
-        golfCourseGroup88 := Array.filter<T.GolfCourse>(golfCourseGroup88, func(golfCourse: T.GolfCourse){
+        golfCourseGroup88 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup88, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 88{
-        golfCourseGroup89 := Array.filter<T.GolfCourse>(golfCourseGroup89, func(golfCourse: T.GolfCourse){
+        golfCourseGroup89 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup89, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 89{
-        golfCourseGroup90 := Array.filter<T.GolfCourse>(golfCourseGroup90, func(golfCourse: T.GolfCourse){
+        golfCourseGroup90 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup90, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 90{
-        golfCourseGroup91 := Array.filter<T.GolfCourse>(golfCourseGroup91, func(golfCourse: T.GolfCourse){
+        golfCourseGroup91 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup91, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 91{
-        golfCourseGroup92 := Array.filter<T.GolfCourse>(golfCourseGroup92, func(golfCourse: T.GolfCourse){
+        golfCourseGroup92 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup92, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 92{
-        golfCourseGroup93 := Array.filter<T.GolfCourse>(golfCourseGroup93, func(golfCourse: T.GolfCourse){
+        golfCourseGroup93 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup93, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 93{
-        golfCourseGroup94 := Array.filter<T.GolfCourse>(golfCourseGroup94, func(golfCourse: T.GolfCourse){
+        golfCourseGroup94 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup94, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 94{
-        golfCourseGroup95 := Array.filter<T.GolfCourse>(golfCourseGroup95, func(golfCourse: T.GolfCourse){
+        golfCourseGroup95 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup95, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 95{
-        golfCourseGroup96 := Array.filter<T.GolfCourse>(golfCourseGroup96, func(golfCourse: T.GolfCourse){
+        golfCourseGroup96 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup96, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 96{
-        golfCourseGroup97 := Array.filter<T.GolfCourse>(golfCourseGroup97, func(golfCourse: T.GolfCourse){
+        golfCourseGroup97 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup97, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 97{
-        golfCourseGroup98 := Array.filter<T.GolfCourse>(golfCourseGroup98, func(golfCourse: T.GolfCourse){
+        golfCourseGroup98 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup98, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 98{
-        golfCourseGroup99 := Array.filter<T.GolfCourse>(golfCourseGroup99, func(golfCourse: T.GolfCourse){
+        golfCourseGroup99 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup99, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };
       case 99{
-        golfCourseGroup100 := Array.filter<T.GolfCourse>(golfCourseGroup100, func(golfCourse: T.GolfCourse){
+        golfCourseGroup100 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup100, func(golfCourse: GolfCourse.GolfCourse){
           golfCourse.id != removeCourseId
         });
       };

@@ -10,7 +10,7 @@ import Buffer "mo:base/Buffer";
 import Iter "mo:base/Iter";
 import Result "mo:base/Result";
 import Option "mo:base/Option";
-import T "../data-types/types";
+import T "../data-types/app_types";
 
 module {
 

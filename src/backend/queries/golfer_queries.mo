@@ -1,4 +1,6 @@
-import T "../data-types/types";
+import T "../data-types/app_types";
+import ID "../data-types/id_types";
+import Game "../data-types/game_types";
 import Base "mo:waterway-mops/BaseTypes";
 import GolfCourseQueries "golf_course_queries";
 
@@ -16,7 +18,7 @@ module GolferQueries {
         golferPicture: ?Blob;
         golferPictureExtension: Text;
         handicap: ?T.Handicap;
-        homeCourseId: ?T.GolfCourseId;
+        homeCourseId: ?ID.GolfCourseId;
     };
 
     public type GetGolfers = {
@@ -55,12 +57,12 @@ module GolferQueries {
         golferPicture: ?Blob;
         golferPictureExtension: Text;
         handicap: ?T.Handicap;
-        upcomingGames: [T.GameId];
-        activeGames: [T.GameId];
-        completedGames: [T.GameId];
-        gameInvites: [T.GameInvite];
+        upcomingGames: [ID.GameId];
+        activeGames: [ID.GameId];
+        completedGames: [ID.GameId];
+        gameInvites: [Game.GameInvite];
         homeCourse: Text;
-        homeCourseId: ?T.GolfCourseId;
+        homeCourseId: ?ID.GolfCourseId;
         homeCourseImage: ?Blob;
     };
 
@@ -72,7 +74,7 @@ module GolferQueries {
     public type UsernameAvailable = Bool;
 
     public type GetGameGolferSummaries = {
-        gameId: T.GameId;
+        gameId: ID.GameId;
     };
 
 

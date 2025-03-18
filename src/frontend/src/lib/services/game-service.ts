@@ -16,7 +16,7 @@ import type {
   GetPlayerBandsResults,
   InviteGolfers,
   PlayerBandsResults,
-  PredictGame,
+  PredictGameScore,
   RejectGameInvite,
 } from "../../../../declarations/backend/backend.did";
 
@@ -117,12 +117,12 @@ export class GameService {
     return result.ok;
   }
 
-  async predictGame(dto: PredictGame): Promise<any> {
+  async predictGameScore(dto: PredictGameScore): Promise<any> {
     const identityActor = await ActorFactory.createIdentityActor(
       authStore,
       process.env.BACKEND_CANISTER_ID ?? "",
     );
-    const result: any = await identityActor.predictGame(dto);
+    const result: any = await identityActor.predictGameScore(dto);
     if (isError(result)) {
       throw new Error("Error Making Game Prediction");
     }

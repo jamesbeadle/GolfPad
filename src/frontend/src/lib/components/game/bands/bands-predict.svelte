@@ -1,13 +1,12 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { BandsScores, Game, GolfCourseTeeGroup, GolferSummary } from "../../../../../../declarations/backend/backend.did";
+    import type { BandsScores, Game, GolferSummary } from "../../../../../../declarations/backend/backend.did";
     import BandsCategoryBrowser from "./bands-category-browser.svelte";
     import LoggedInPlayersWithPlayer from "$lib/components/shared/logged-in-players-with-player.svelte";
 
     export let game: Game;
     export let players: GolferSummary[];
-    export let golfCourse: GolfCourseTeeGroup;
 
     let selectedPlayer = players[0];
     let gameResult: BandsScores | null = null;
@@ -39,5 +38,5 @@
     <LoggedInPlayersWithPlayer {players} />
     <p>PLAYER</p>
     <p>{selectedPlayer.name}<span class="name-handicap">{selectedPlayer.handicap}</span></p>
-    <BandsCategoryBrowser gameResult={gameResult!} />
+    <BandsCategoryBrowser gameId={game.id} />
 </div>

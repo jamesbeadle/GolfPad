@@ -1,11 +1,9 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { Game, GetGolfCourse, GolfCourse, GolfCourseTeeGroup, GolferSummary } from "../../../../../../declarations/backend/backend.did";
+    import type { Game, GolfCourseTeeGroup, GolferSummary } from "../../../../../../declarations/backend/backend.did";
     import GameCourseInfoSummary from "../game-course-info-summary.svelte";
-    import { golfCourseStore } from "$lib/stores/golf-course-store";
-    import { toasts } from "$lib/stores/toasts-store";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
-    import MulligansPlayerSummary from "./mulligans-player-summary.svelte";
+    import LoggedInPlayersWithPlayer from "$lib/components/shared/logged-in-players-with-player.svelte";
 
     export let game: Game;
     export let players: GolferSummary[];
@@ -13,7 +11,6 @@
 
     let isLoading = true;
     let countdown: string = "";
-    let gameStart: bigint | undefined;
 
     function updateCountdown(teeOffTime: bigint) {
         const teeOffDate = new Date(Number(teeOffTime));
@@ -37,12 +34,10 @@
         let interval: NodeJS.Timeout | undefined;
 
         const checkGameStart = setInterval(() => {
-            if (gameStart !== undefined) {
-                clearInterval(checkGameStart);
-                interval = setInterval(() => {
-                    updateCountdown(gameStart!);
-                }, 1000);
-            }
+            clearInterval(checkGameStart);
+            interval = setInterval(() => {
+                updateCountdown(game.teeOffTime);
+            }, 1000);
         }, 100);
 
         return () => {
@@ -57,7 +52,7 @@
 {:else}
     <div class="flex flex-col w-full">
         <GameCourseInfoSummary golfCourse={golfCourse!} />
-        <MulligansPlayerSummary {players} />
+        <LoggedInPlayersWithPlayer {players} />
         <p>{countdown}</p>
     </div>
 {/if}

@@ -38,10 +38,13 @@ export const idlFactory = ({ IDL }) => {
     Hit2Of3Fairways: IDL.Null,
     Hit2Of3Greens: IDL.Null,
   });
+  const HoleNumber = IDL.Nat8;
   const BandsCategoryResult__1 = IDL.Record({
     golferId: PrincipalId,
     completed: IDL.Bool,
     category: BandsCategory,
+    failed: IDL.Bool,
+    startHole: HoleNumber,
   });
   const BandsScore = IDL.Record({
     predictions: IDL.Vec(BandsCategoryResult__1),
@@ -55,7 +58,6 @@ export const idlFactory = ({ IDL }) => {
     BandsScores: BandsScore,
     MulligansScores: MulligansScore,
   });
-  const HoleNumber = IDL.Nat8;
   const AddGameScore = IDL.Record({
     submittedById: PrincipalId,
     gameId: GameId,
@@ -337,8 +339,7 @@ export const idlFactory = ({ IDL }) => {
     BandsScores: BandsScores,
     MulligansScores: MulligansScores,
   });
-  const MulligansPrediction = IDL.Record({});
-  const BandsPrediction = IDL.Record({
+  const BandsPrediction__1 = IDL.Record({
     wontHitTreeOrBunkerStartHole: HoleNumber,
     underParStartHole: HoleNumber,
     golferId: PrincipalId,
@@ -350,10 +351,10 @@ export const idlFactory = ({ IDL }) => {
     hit2Of3GreensStartHole: HoleNumber,
     wontLoseBallStartHole: HoleNumber,
   });
-  const GamePrediction = IDL.Variant({
-    Mulligans: MulligansPrediction,
+  const GamePrediction__1 = IDL.Variant({
+    Mulligans: IDL.Record({}),
     BuildIt: IDL.Record({}),
-    Bands: BandsPrediction,
+    Bands: BandsPrediction__1,
     NextUp: IDL.Record({}),
   });
   const GolfCourseSnapshot = IDL.Record({
@@ -390,7 +391,7 @@ export const idlFactory = ({ IDL }) => {
     status: GameStatus,
     scoreDetail: IDL.Opt(GameScoreDetail),
     invites: IDL.Vec(PrincipalId),
-    predictions: IDL.Vec(GamePrediction),
+    predictions: IDL.Vec(GamePrediction__1),
     winner: PrincipalId,
     teeOffTime: IDL.Int,
     courseSnapshot: GolfCourseSnapshot,
@@ -657,7 +658,29 @@ export const idlFactory = ({ IDL }) => {
   });
   const UsernameAvailable = IDL.Bool;
   const Result_1 = IDL.Variant({ ok: UsernameAvailable, err: Error });
-  const PredictGame = IDL.Record({ gameId: GameId });
+  const BandsPrediction = IDL.Record({
+    wontHitTreeOrBunkerStartHole: HoleNumber,
+    underParStartHole: HoleNumber,
+    golferId: PrincipalId,
+    wontDoubleBogeyStartHole: HoleNumber,
+    singlePutt2Of3GreensStartHole: HoleNumber,
+    wontBogeyStartHole: HoleNumber,
+    parOrUnderStartHole: HoleNumber,
+    hit2Of3FairwaysStartHole: HoleNumber,
+    hit2Of3GreensStartHole: HoleNumber,
+    wontLoseBallStartHole: HoleNumber,
+  });
+  const GamePrediction = IDL.Variant({
+    Mulligans: IDL.Record({}),
+    BuildIt: IDL.Record({}),
+    Bands: BandsPrediction,
+    NextUp: IDL.Record({}),
+  });
+  const PredictGameScore = IDL.Record({
+    submittedById: PrincipalId,
+    gameId: GameId,
+    detail: GamePrediction,
+  });
   const RejectFriendRequest = IDL.Record({
     principalId: PrincipalId,
     requestedBy: PrincipalId,
@@ -755,7 +778,7 @@ export const idlFactory = ({ IDL }) => {
     ),
     inviteGolfers: IDL.Func([InviteGolfers], [Result], []),
     isUsernameAvailable: IDL.Func([IsUsernameAvailable], [Result_1], ["query"]),
-    predictGame: IDL.Func([PredictGame], [Result], []),
+    predictGameScore: IDL.Func([PredictGameScore], [Result], []),
     rejectFriendRequest: IDL.Func([RejectFriendRequest], [Result], []),
     rejectGameInvite: IDL.Func([RejectGameInvite], [Result], []),
     removeFriend: IDL.Func([RemoveFriend], [Result], []),

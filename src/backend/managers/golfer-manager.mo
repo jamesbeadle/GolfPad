@@ -11,7 +11,7 @@ import TrieMap "mo:base/TrieMap";
 import Principal "mo:base/Principal";
 import Base "mo:waterway-mops/BaseTypes";
 
-import T "../data-types/types";
+import T "../data-types/app_types";
 import Management "../utilities/Management";
 import Utilities "../utilities/Utilities";
 import Environment "../utilities/Environment";

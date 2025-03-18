@@ -9,7 +9,9 @@ import Time "mo:base/Time";
 import List "mo:base/List";
 
 import Environment "../utilities/Environment";
-import T "../data-types/types";
+import T "../data-types/app_types";
+import ID "../data-types/id_types";
+import Golfer "../data-types/golfer_types";
 import Debug "mo:base/Debug";
 import Int "mo:base/Int";
 import Timer "mo:base/Timer";
@@ -25,18 +27,18 @@ import Utilities "../utilities/Utilities";
 actor class _GolferCanister() {
 
   private stable var stable_golfer_group_indexes : [(Base.PrincipalId, Nat8)] = [];
-  private stable var golferGroup1 : [T.Golfer] = [];
-  private stable var golferGroup2 : [T.Golfer] = [];
-  private stable var golferGroup3 : [T.Golfer] = [];
-  private stable var golferGroup4 : [T.Golfer] = [];
-  private stable var golferGroup5 : [T.Golfer] = [];
-  private stable var golferGroup6 : [T.Golfer] = [];
-  private stable var golferGroup7 : [T.Golfer] = [];
-  private stable var golferGroup8 : [T.Golfer] = [];
-  private stable var golferGroup9 : [T.Golfer] = [];
-  private stable var golferGroup10 : [T.Golfer] = [];
-  private stable var golferGroup11 : [T.Golfer] = [];
-  private stable var golferGroup12 : [T.Golfer] = [];
+  private stable var golferGroup1 : [Golfer.Golfer] = [];
+  private stable var golferGroup2 : [Golfer.Golfer] = [];
+  private stable var golferGroup3 : [Golfer.Golfer] = [];
+  private stable var golferGroup4 : [Golfer.Golfer] = [];
+  private stable var golferGroup5 : [Golfer.Golfer] = [];
+  private stable var golferGroup6 : [Golfer.Golfer] = [];
+  private stable var golferGroup7 : [Golfer.Golfer] = [];
+  private stable var golferGroup8 : [Golfer.Golfer] = [];
+  private stable var golferGroup9 : [Golfer.Golfer] = [];
+  private stable var golferGroup10 : [Golfer.Golfer] = [];
+  private stable var golferGroup11 : [Golfer.Golfer] = [];
+  private stable var golferGroup12 : [Golfer.Golfer] = [];
 
   private stable var activeGroupIndex : Nat8 = 0;
   private stable var totalGolfers = 0;
@@ -66,7 +68,7 @@ actor class _GolferCanister() {
 
             var homeCourse : Text = "";
 
-            var homeCourseId : ?T.GolfCourseId = foundGolfer.homeCourseId;
+            var homeCourseId : ?ID.GolfCourseId = foundGolfer.homeCourseId;
             var homeCourseImage : ?Blob = null;
             var homeCourseImageExtension = "";
 
@@ -157,7 +159,7 @@ actor class _GolferCanister() {
     };
     Debug.print("Canister is not full");
 
-    let newGolfer : T.Golfer = {
+    let newGolfer : Golfer.Golfer = {
       joinedOn = Time.now();
       activeGames = [];
       completedGames = [];
@@ -206,7 +208,7 @@ actor class _GolferCanister() {
         let golfer = findGolfer(foundGroupIndex, dto.principalId);
         switch (golfer) {
           case (?foundGolfer) {
-            let updatedGolfer : T.Golfer = {
+            let updatedGolfer : Golfer.Golfer = {
               joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
@@ -260,7 +262,7 @@ actor class _GolferCanister() {
         let golfer = findGolfer(foundGroupIndex, dto.principalId);
         switch (golfer) {
           case (?foundGolfer) {
-            let updatedGolfer : T.Golfer = {
+            let updatedGolfer : Golfer.Golfer = {
               joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
@@ -314,7 +316,7 @@ actor class _GolferCanister() {
         let golfer = findGolfer(foundGroupIndex, dto.principalId);
         switch (golfer) {
           case (?foundGolfer) {
-            let updatedGolfer : T.Golfer = {
+            let updatedGolfer : Golfer.Golfer = {
               joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
@@ -378,7 +380,7 @@ actor class _GolferCanister() {
             membershipClaimsBuffer.add(newClaim);
             let updatedMembershipClaims = Buffer.toArray(membershipClaimsBuffer);
 
-            let updatedProfile : T.Golfer = {
+            let updatedProfile : Golfer.Golfer = {
               joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
@@ -448,7 +450,7 @@ actor class _GolferCanister() {
         let golfer = findGolfer(foundGroupIndex, dto.principalId);
         switch (golfer) {
           case (?foundGolfer) {
-            let updatedGolfer : T.Golfer = {
+            let updatedGolfer : Golfer.Golfer = {
               joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
@@ -502,7 +504,7 @@ actor class _GolferCanister() {
         let golfer = findGolfer(foundGroupIndex, dto.principalId);
         switch (golfer) {
           case (?foundGolfer) {
-            let updatedGolfer : T.Golfer = {
+            let updatedGolfer : Golfer.Golfer = {
               joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
@@ -731,7 +733,7 @@ actor class _GolferCanister() {
         switch (golfer) {
           case (?foundGolfer) {
 
-            let updatedGolfer : T.Golfer = {
+            let updatedGolfer : Golfer.Golfer = {
               joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
@@ -832,7 +834,7 @@ actor class _GolferCanister() {
         let golfer = findGolfer(foundGroupIndex, dto.principalId);
         switch (golfer) {
           case (?foundGolfer) {
-            let updatedGolfer : T.Golfer = {
+            let updatedGolfer : Golfer.Golfer = {
               joinedOn = foundGolfer.joinedOn;
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
@@ -939,13 +941,13 @@ actor class _GolferCanister() {
           case (null) { #err(#NotFound) };
           case (?foundGolfer) {
 
-            let droppedEntries = List.drop<T.FriendRequest>(List.fromArray(foundGolfer.friendRequests), dto.offset);
-            let paginatedEntries = List.take<T.FriendRequest>(droppedEntries, dto.limit);
+            let droppedEntries = List.drop<Golfer.FriendRequest>(List.fromArray(foundGolfer.friendRequests), dto.offset);
+            let paginatedEntries = List.take<Golfer.FriendRequest>(droppedEntries, dto.limit);
 
             let friendRequests : FriendRequestQueries.FriendRequests = {
-              friendRequests = Array.map<T.FriendRequest, FriendRequestQueries.FriendRequest>(
+              friendRequests = Array.map<Golfer.FriendRequest, FriendRequestQueries.FriendRequest>(
                 List.toArray(paginatedEntries),
-                func(friendRequest : T.FriendRequest) {
+                func(friendRequest : Golfer.FriendRequest) {
                   return {
                     principalId = friendRequest.requestedBy;
                     requestTime = friendRequest.requestedOn;
@@ -980,13 +982,13 @@ actor class _GolferCanister() {
           case (null) { #err(#NotFound) };
           case (?foundGolfer) {
 
-            var updatedFriendsBuffer = Buffer.fromArray<T.Friend>(foundGolfer.friends);
+            var updatedFriendsBuffer = Buffer.fromArray<Golfer.Friend>(foundGolfer.friends);
             updatedFriendsBuffer.add({
               principalId = dto.principalId;
               addedOn = Time.now();
             });
 
-            let updatedGolfer : T.Golfer = {
+            let updatedGolfer : Golfer.Golfer = {
               joinedOn = foundGolfer.joinedOn;
               principalId = foundGolfer.principalId;
               username = foundGolfer.username;
@@ -998,9 +1000,9 @@ actor class _GolferCanister() {
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
               shots = foundGolfer.shots;
-              friendRequests = Array.filter<T.FriendRequest>(
+              friendRequests = Array.filter<Golfer.FriendRequest>(
                 foundGolfer.friendRequests,
-                func(request : T.FriendRequest) {
+                func(request : Golfer.FriendRequest) {
                   request.requestedBy != dto.requestedBy;
                 },
               );
@@ -1046,7 +1048,7 @@ actor class _GolferCanister() {
           case (null) { #err(#NotFound) };
           case (?foundGolfer) {
 
-            let updatedGolfer : T.Golfer = {
+            let updatedGolfer : Golfer.Golfer = {
               joinedOn = foundGolfer.joinedOn;
               principalId = foundGolfer.principalId;
               username = foundGolfer.username;
@@ -1058,9 +1060,9 @@ actor class _GolferCanister() {
               activeGames = foundGolfer.activeGames;
               completedGames = foundGolfer.completedGames;
               shots = foundGolfer.shots;
-              friendRequests = Array.filter<T.FriendRequest>(
+              friendRequests = Array.filter<Golfer.FriendRequest>(
                 foundGolfer.friendRequests,
-                func(request : T.FriendRequest) {
+                func(request : Golfer.FriendRequest) {
                   request.requestedBy != dto.requestedBy;
                 },
               );
@@ -1106,12 +1108,12 @@ actor class _GolferCanister() {
           case (null) { #err(#NotFound) };
           case (?foundGolfer) {
 
-            let friendRequestsBuffer = Buffer.fromArray<T.FriendRequest>(foundGolfer.friendRequests);
+            let friendRequestsBuffer = Buffer.fromArray<Golfer.FriendRequest>(foundGolfer.friendRequests);
             friendRequestsBuffer.add({
               requestedBy = dto.principalId;
               requestedOn = Time.now();
             });
-            let updatedGolfer : T.Golfer = {
+            let updatedGolfer : Golfer.Golfer = {
               joinedOn = foundGolfer.joinedOn;
               principalId = foundGolfer.principalId;
               username = foundGolfer.username;
@@ -1168,7 +1170,7 @@ actor class _GolferCanister() {
           case (?foundGolfer) {
             let friendRequest = Array.find(
               foundGolfer.friendRequests,
-              func(friendRequest : T.FriendRequest) : Bool {
+              func(friendRequest : Golfer.FriendRequest) : Bool {
                 return friendRequest.requestedBy == dto.requestedById;
               },
             );
@@ -1182,111 +1184,111 @@ actor class _GolferCanister() {
 
   //Private functions:
 
-  private func findGolfer(golferGroupIndex : Nat8, golferPrincipalId : Base.PrincipalId) : ?T.Golfer {
+  private func findGolfer(golferGroupIndex : Nat8, golferPrincipalId : Base.PrincipalId) : ?Golfer.Golfer {
     switch (golferGroupIndex) {
       case 0 {
-        let foundGolfer = Array.find<T.Golfer>(
+        let foundGolfer = Array.find<Golfer.Golfer>(
           golferGroup1,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             golfer.principalId == golferPrincipalId;
           },
         );
         return foundGolfer;
       };
       case 1 {
-        let foundGolfer = Array.find<T.Golfer>(
+        let foundGolfer = Array.find<Golfer.Golfer>(
           golferGroup2,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             golfer.principalId == golferPrincipalId;
           },
         );
         return foundGolfer;
       };
       case 2 {
-        let foundGolfer = Array.find<T.Golfer>(
+        let foundGolfer = Array.find<Golfer.Golfer>(
           golferGroup3,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             golfer.principalId == golferPrincipalId;
           },
         );
         return foundGolfer;
       };
       case 3 {
-        let foundGolfer = Array.find<T.Golfer>(
+        let foundGolfer = Array.find<Golfer.Golfer>(
           golferGroup4,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             golfer.principalId == golferPrincipalId;
           },
         );
         return foundGolfer;
       };
       case 4 {
-        let foundGolfer = Array.find<T.Golfer>(
+        let foundGolfer = Array.find<Golfer.Golfer>(
           golferGroup5,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             golfer.principalId == golferPrincipalId;
           },
         );
         return foundGolfer;
       };
       case 5 {
-        let foundGolfer = Array.find<T.Golfer>(
+        let foundGolfer = Array.find<Golfer.Golfer>(
           golferGroup6,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             golfer.principalId == golferPrincipalId;
           },
         );
         return foundGolfer;
       };
       case 6 {
-        let foundGolfer = Array.find<T.Golfer>(
+        let foundGolfer = Array.find<Golfer.Golfer>(
           golferGroup7,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             golfer.principalId == golferPrincipalId;
           },
         );
         return foundGolfer;
       };
       case 7 {
-        let foundGolfer = Array.find<T.Golfer>(
+        let foundGolfer = Array.find<Golfer.Golfer>(
           golferGroup8,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             golfer.principalId == golferPrincipalId;
           },
         );
         return foundGolfer;
       };
       case 8 {
-        let foundGolfer = Array.find<T.Golfer>(
+        let foundGolfer = Array.find<Golfer.Golfer>(
           golferGroup9,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             golfer.principalId == golferPrincipalId;
           },
         );
         return foundGolfer;
       };
       case 9 {
-        let foundGolfer = Array.find<T.Golfer>(
+        let foundGolfer = Array.find<Golfer.Golfer>(
           golferGroup10,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             golfer.principalId == golferPrincipalId;
           },
         );
         return foundGolfer;
       };
       case 10 {
-        let foundGolfer = Array.find<T.Golfer>(
+        let foundGolfer = Array.find<Golfer.Golfer>(
           golferGroup11,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             golfer.principalId == golferPrincipalId;
           },
         );
         return foundGolfer;
       };
       case 11 {
-        let foundGolfer = Array.find<T.Golfer>(
+        let foundGolfer = Array.find<Golfer.Golfer>(
           golferGroup12,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             golfer.principalId == golferPrincipalId;
           },
         );
@@ -1298,66 +1300,66 @@ actor class _GolferCanister() {
     };
   };
 
-  private func addGolfer(newGolfer : T.Golfer) : Result.Result<(), T.Error> {
+  private func addGolfer(newGolfer : Golfer.Golfer) : Result.Result<(), T.Error> {
     switch (activeGroupIndex) {
       case 0 {
-        let group1Buffer = Buffer.fromArray<T.Golfer>(golferGroup1);
+        let group1Buffer = Buffer.fromArray<Golfer.Golfer>(golferGroup1);
         group1Buffer.add(newGolfer);
         golferGroup1 := Buffer.toArray(group1Buffer);
         Debug.print("Golfer added to group 1");
       };
       case 1 {
-        let group2Buffer = Buffer.fromArray<T.Golfer>(golferGroup2);
+        let group2Buffer = Buffer.fromArray<Golfer.Golfer>(golferGroup2);
         group2Buffer.add(newGolfer);
         golferGroup2 := Buffer.toArray(group2Buffer);
       };
       case 2 {
-        let group3Buffer = Buffer.fromArray<T.Golfer>(golferGroup3);
+        let group3Buffer = Buffer.fromArray<Golfer.Golfer>(golferGroup3);
         group3Buffer.add(newGolfer);
         golferGroup3 := Buffer.toArray(group3Buffer);
       };
       case 3 {
-        let group4Buffer = Buffer.fromArray<T.Golfer>(golferGroup4);
+        let group4Buffer = Buffer.fromArray<Golfer.Golfer>(golferGroup4);
         group4Buffer.add(newGolfer);
         golferGroup4 := Buffer.toArray(group4Buffer);
       };
       case 4 {
-        let group5Buffer = Buffer.fromArray<T.Golfer>(golferGroup5);
+        let group5Buffer = Buffer.fromArray<Golfer.Golfer>(golferGroup5);
         group5Buffer.add(newGolfer);
         golferGroup5 := Buffer.toArray(group5Buffer);
       };
       case 5 {
-        let group6Buffer = Buffer.fromArray<T.Golfer>(golferGroup6);
+        let group6Buffer = Buffer.fromArray<Golfer.Golfer>(golferGroup6);
         group6Buffer.add(newGolfer);
         golferGroup6 := Buffer.toArray(group6Buffer);
       };
       case 6 {
-        let group7Buffer = Buffer.fromArray<T.Golfer>(golferGroup7);
+        let group7Buffer = Buffer.fromArray<Golfer.Golfer>(golferGroup7);
         group7Buffer.add(newGolfer);
         golferGroup7 := Buffer.toArray(group7Buffer);
       };
       case 7 {
-        let group8Buffer = Buffer.fromArray<T.Golfer>(golferGroup8);
+        let group8Buffer = Buffer.fromArray<Golfer.Golfer>(golferGroup8);
         group8Buffer.add(newGolfer);
         golferGroup8 := Buffer.toArray(group8Buffer);
       };
       case 8 {
-        let group9Buffer = Buffer.fromArray<T.Golfer>(golferGroup9);
+        let group9Buffer = Buffer.fromArray<Golfer.Golfer>(golferGroup9);
         group9Buffer.add(newGolfer);
         golferGroup9 := Buffer.toArray(group9Buffer);
       };
       case 9 {
-        let group10Buffer = Buffer.fromArray<T.Golfer>(golferGroup10);
+        let group10Buffer = Buffer.fromArray<Golfer.Golfer>(golferGroup10);
         group10Buffer.add(newGolfer);
         golferGroup10 := Buffer.toArray(group10Buffer);
       };
       case 10 {
-        let group11Buffer = Buffer.fromArray<T.Golfer>(golferGroup11);
+        let group11Buffer = Buffer.fromArray<Golfer.Golfer>(golferGroup11);
         group11Buffer.add(newGolfer);
         golferGroup11 := Buffer.toArray(group11Buffer);
       };
       case 11 {
-        let group12Buffer = Buffer.fromArray<T.Golfer>(golferGroup12);
+        let group12Buffer = Buffer.fromArray<Golfer.Golfer>(golferGroup12);
         group12Buffer.add(newGolfer);
         golferGroup12 := Buffer.toArray(group12Buffer);
       };
@@ -1373,12 +1375,12 @@ actor class _GolferCanister() {
     return #ok();
   };
 
-  private func saveGolfer(golferGroupIndex : Nat8, updatedGolfer : T.Golfer) : Result.Result<(), T.Error> {
+  private func saveGolfer(golferGroupIndex : Nat8, updatedGolfer : Golfer.Golfer) : Result.Result<(), T.Error> {
     switch (golferGroupIndex) {
       case 0 {
-        golferGroup1 := Array.map<T.Golfer, T.Golfer>(
+        golferGroup1 := Array.map<Golfer.Golfer, Golfer.Golfer>(
           golferGroup1,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             if (golfer.principalId == updatedGolfer.principalId) {
               return updatedGolfer;
             } else {
@@ -1388,9 +1390,9 @@ actor class _GolferCanister() {
         );
       };
       case 1 {
-        golferGroup2 := Array.map<T.Golfer, T.Golfer>(
+        golferGroup2 := Array.map<Golfer.Golfer, Golfer.Golfer>(
           golferGroup2,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             if (golfer.principalId == updatedGolfer.principalId) {
               return updatedGolfer;
             } else {
@@ -1400,9 +1402,9 @@ actor class _GolferCanister() {
         );
       };
       case 2 {
-        golferGroup3 := Array.map<T.Golfer, T.Golfer>(
+        golferGroup3 := Array.map<Golfer.Golfer, Golfer.Golfer>(
           golferGroup3,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             if (golfer.principalId == updatedGolfer.principalId) {
               return updatedGolfer;
             } else {
@@ -1412,9 +1414,9 @@ actor class _GolferCanister() {
         );
       };
       case 3 {
-        golferGroup4 := Array.map<T.Golfer, T.Golfer>(
+        golferGroup4 := Array.map<Golfer.Golfer, Golfer.Golfer>(
           golferGroup4,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             if (golfer.principalId == updatedGolfer.principalId) {
               return updatedGolfer;
             } else {
@@ -1424,9 +1426,9 @@ actor class _GolferCanister() {
         );
       };
       case 4 {
-        golferGroup5 := Array.map<T.Golfer, T.Golfer>(
+        golferGroup5 := Array.map<Golfer.Golfer, Golfer.Golfer>(
           golferGroup5,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             if (golfer.principalId == updatedGolfer.principalId) {
               return updatedGolfer;
             } else {
@@ -1436,9 +1438,9 @@ actor class _GolferCanister() {
         );
       };
       case 5 {
-        golferGroup6 := Array.map<T.Golfer, T.Golfer>(
+        golferGroup6 := Array.map<Golfer.Golfer, Golfer.Golfer>(
           golferGroup6,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             if (golfer.principalId == updatedGolfer.principalId) {
               return updatedGolfer;
             } else {
@@ -1448,9 +1450,9 @@ actor class _GolferCanister() {
         );
       };
       case 6 {
-        golferGroup7 := Array.map<T.Golfer, T.Golfer>(
+        golferGroup7 := Array.map<Golfer.Golfer, Golfer.Golfer>(
           golferGroup7,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             if (golfer.principalId == updatedGolfer.principalId) {
               return updatedGolfer;
             } else {
@@ -1460,9 +1462,9 @@ actor class _GolferCanister() {
         );
       };
       case 7 {
-        golferGroup8 := Array.map<T.Golfer, T.Golfer>(
+        golferGroup8 := Array.map<Golfer.Golfer, Golfer.Golfer>(
           golferGroup8,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             if (golfer.principalId == updatedGolfer.principalId) {
               return updatedGolfer;
             } else {
@@ -1472,9 +1474,9 @@ actor class _GolferCanister() {
         );
       };
       case 8 {
-        golferGroup9 := Array.map<T.Golfer, T.Golfer>(
+        golferGroup9 := Array.map<Golfer.Golfer, Golfer.Golfer>(
           golferGroup9,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             if (golfer.principalId == updatedGolfer.principalId) {
               return updatedGolfer;
             } else {
@@ -1484,9 +1486,9 @@ actor class _GolferCanister() {
         );
       };
       case 9 {
-        golferGroup10 := Array.map<T.Golfer, T.Golfer>(
+        golferGroup10 := Array.map<Golfer.Golfer, Golfer.Golfer>(
           golferGroup10,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             if (golfer.principalId == updatedGolfer.principalId) {
               return updatedGolfer;
             } else {
@@ -1496,9 +1498,9 @@ actor class _GolferCanister() {
         );
       };
       case 10 {
-        golferGroup11 := Array.map<T.Golfer, T.Golfer>(
+        golferGroup11 := Array.map<Golfer.Golfer, Golfer.Golfer>(
           golferGroup11,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             if (golfer.principalId == updatedGolfer.principalId) {
               return updatedGolfer;
             } else {
@@ -1508,9 +1510,9 @@ actor class _GolferCanister() {
         );
       };
       case 11 {
-        golferGroup12 := Array.map<T.Golfer, T.Golfer>(
+        golferGroup12 := Array.map<Golfer.Golfer, Golfer.Golfer>(
           golferGroup12,
-          func(golfer : T.Golfer) {
+          func(golfer : Golfer.Golfer) {
             if (golfer.principalId == updatedGolfer.principalId) {
               return updatedGolfer;
             } else {

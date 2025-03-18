@@ -262,7 +262,12 @@ type Profile =
    username: text;
  };
 type PrincipalId = text;
-type PredictGame = record {gameId: GameId;};
+type PredictGameScore = 
+ record {
+   detail: GamePrediction;
+   gameId: GameId;
+   submittedById: PrincipalId;
+ };
 type PlayerOpponentInfo = record {players: vec PlayerFeedSummary;};
 type PlayerFeedSummary__1 = 
  record {
@@ -328,7 +333,6 @@ type MulligansResultInfo =
    players: vec PlayerFeedSummary__1;
    score: int8;
  };
-type MulligansPrediction = record {};
 type MulligansHoleResult = 
  record {
    golfer1MulliganUsed: bool;
@@ -650,11 +654,18 @@ type GameScoreDetail =
    BandsScores: BandsScores;
    MulligansScores: MulligansScores;
  };
+type GamePrediction__1 = 
+ variant {
+   Bands: BandsPrediction__1;
+   BuildIt: record {};
+   Mulligans: record {};
+   NextUp: record {};
+ };
 type GamePrediction = 
  variant {
    Bands: BandsPrediction;
    BuildIt: record {};
-   Mulligans: MulligansPrediction;
+   Mulligans: record {};
    NextUp: record {};
  };
 type GameInvites = 
@@ -699,7 +710,7 @@ type Game =
    id: GameId;
    invites: vec PrincipalId;
    playerIds: vec PrincipalId;
-   predictions: vec GamePrediction;
+   predictions: vec GamePrediction__1;
    scoreDetail: opt GameScoreDetail;
    status: GameStatus;
    teeOffTime: int;
@@ -845,6 +856,19 @@ type BandsResultInfo =
              nat;
            };
  };
+type BandsPrediction__1 = 
+ record {
+   golferId: PrincipalId;
+   hit2Of3FairwaysStartHole: HoleNumber;
+   hit2Of3GreensStartHole: HoleNumber;
+   parOrUnderStartHole: HoleNumber;
+   singlePutt2Of3GreensStartHole: HoleNumber;
+   underParStartHole: HoleNumber;
+   wontBogeyStartHole: HoleNumber;
+   wontDoubleBogeyStartHole: HoleNumber;
+   wontHitTreeOrBunkerStartHole: HoleNumber;
+   wontLoseBallStartHole: HoleNumber;
+ };
 type BandsPrediction = 
  record {
    golferId: PrincipalId;
@@ -868,7 +892,9 @@ type BandsCategoryResult__1 =
  record {
    category: BandsCategory;
    completed: bool;
+   failed: bool;
    golferId: PrincipalId;
+   startHole: HoleNumber;
  };
 type BandsCategoryResult = 
  record {
@@ -958,7 +984,7 @@ service : {
   getUserFavouriteCourses: (GetUserFavouriteCourses) -> (Result_2);
   inviteGolfers: (InviteGolfers) -> (Result);
   isUsernameAvailable: (IsUsernameAvailable) -> (Result_1) query;
-  predictGame: (PredictGame) -> (Result);
+  predictGameScore: (PredictGameScore) -> (Result);
   rejectFriendRequest: (RejectFriendRequest) -> (Result);
   rejectGameInvite: (RejectGameInvite) -> (Result);
   removeFriend: (RemoveFriend) -> (Result);

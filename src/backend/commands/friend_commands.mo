@@ -1,4 +1,3 @@
-import T "../data-types/types";
 import Base "mo:waterway-mops/BaseTypes";
 
 module FriendCommands {

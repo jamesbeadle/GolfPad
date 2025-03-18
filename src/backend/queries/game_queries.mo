@@ -1,22 +1,24 @@
-import T "../data-types/types";
+import ID "../data-types/id_types";
+import Game "../data-types/game_types";
+import GolfCourse "../data-types/golf_course_types";
 import Base "mo:waterway-mops/BaseTypes";
 
 module GameQueries {
 
     public type GetGame = {
-        gameId: T.GameId;
+        gameId: ID.GameId;
     };
 
 
     public type Game = {
-        id: T.GameId;
-        gameType: T.GameType;
-        scoreDetail: ?T.GameScoreDetail;
-        status: T.GameStatus;
-        courseId: T.GolfCourseId;
-        predictions: [T.GamePrediction];
-        events: [T.GolferEvent];
-        courseSnapshot: T.GolfCourseSnapshot;
+        id: ID.GameId;
+        gameType: Game.GameType;
+        scoreDetail: ?Game.GameScoreDetail;
+        status: Game.GameStatus;
+        courseId: ID.GolfCourseId;
+        predictions: [Game.GamePrediction];
+        events: [Game.GolferEvent];
+        courseSnapshot: GolfCourse.GolfCourseSnapshot;
         teeOffTime: Int;
         playerIds: [Base.PrincipalId];
         invites: [Base.PrincipalId];
@@ -38,7 +40,7 @@ module GameQueries {
         sentBy: Base.PrincipalId;
         invited: Base.PrincipalId;
         sentOn: Int;
-        gameId: T.GameId;
+        gameId: ID.GameId;
     };
 
     public type GetGameSummaries = {
@@ -54,15 +56,15 @@ module GameQueries {
     };
 
     public type GameSummary = {
-        id: T.GameId;
-        gameType: T.GameType;
+        id: ID.GameId;
+        gameType: Game.GameType;
         date: Int;
         players: [Base.PrincipalId];
-        status: T.GameStatus;
+        status: Game.GameStatus;
     };
 
     public type GetPlayerBandsResults = {
-        id: T.GameId;
+        id: ID.GameId;
         principalId: Base.PrincipalId;
     };
 
@@ -72,7 +74,7 @@ module GameQueries {
 
     public type PlayerBandsResult = {
         principalId: Base.PrincipalId;
-        category: T.BandsCategory;
+        category: Game.BandsCategory;
         completed: Bool;
         points: Nat8;
     };
