@@ -5,5 +5,5 @@
     export let currentPrediction: Writable<number>;
 </script>
 <div>
-    <!-- show pips wide yellow when active and gray circle when not -->
+    <!-- //TODO show pips wide yellow when active and gray circle when not -->
 </div>

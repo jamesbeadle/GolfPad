@@ -4,6 +4,6 @@
     export let showFriendRequestSent: boolean;
 
 </script>
-<Modal showModal={showFriendRequestSent}>
-    
+<Modal showModal={showFriendRequestSent} onClose={() => showFriendRequestSent = false}>
+    <p>Friend Request Sent</p>
 </Modal> 

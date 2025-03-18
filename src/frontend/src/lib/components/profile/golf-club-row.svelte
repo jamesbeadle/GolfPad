@@ -3,3 +3,5 @@
 
     export let averageShot: AverageShot;
 </script>
+
+<!-- //TODO show profile yardage row -->

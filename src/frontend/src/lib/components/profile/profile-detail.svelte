@@ -45,7 +45,7 @@
     async function setHomeCourseName(golfCourseId: GolfCourseId){
         try{
             let dto: GetGolfCourse = {
-                golfCourseId
+                id: golfCourseId
             };
             let golfCourse = await golfCourseStore.getGolfCourse(dto);
             if(golfCourse){

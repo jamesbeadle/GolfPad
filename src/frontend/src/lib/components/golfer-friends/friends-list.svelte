@@ -1,7 +1,7 @@
 <script lang="ts">
     import FriendRequestRow from "./friend-request-row.svelte";
     import FriendRow from "./friend-row.svelte";
-
+    //TODO get friend requests
 
 </script>
 <div class="flex flex-col">

@@ -14,7 +14,7 @@
     <input />
 </div>
 
-rows with add confirm button
+<!-- //TODO rows with add confirm button -->
 
 {#if showFriendRequestSent}
     <FriendRequestSentModal {showFriendRequestSent} />

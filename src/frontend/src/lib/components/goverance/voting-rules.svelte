@@ -1,6 +1,6 @@
 <script lang="ts">
-  import ArrowUp from "$lib/icons/ArrowUp.svelte";
-  import ArrowDown from "$lib/icons/ArrowDown.svelte";
+  import ArrowUp from "$lib/icons/arrow-up-icon.svelte";
+  import ArrowDown from "$lib/icons/arrow-down-icon.svelte";
   
   export let minimumYesExercised: number;
   export let minimumYesTotal: number;

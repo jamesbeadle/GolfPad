@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="flex w-full w-1/2">
-        <!--{#if isMulligans(upcomingGame.match_result)}
+        <!-- //TODO {#if isMulligans(upcomingGame.match_result)}
             <MulligansBuzzResult result={buzzItem.match_result} />
         {/if}-->
     </div>

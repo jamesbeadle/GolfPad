@@ -51,7 +51,7 @@
                 {#if showConfirm}
                 <div class="flex items-center">
                     <p class="text-orange-400">
-                    Failed proposals will cost the proposer 10 $FPL tokens.
+                    Failed proposals will cost the proposer 10 $ICGC tokens.
                     </p>
                 </div>
                 <div class="flex items-center">
