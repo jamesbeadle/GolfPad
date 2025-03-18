@@ -471,7 +471,7 @@ module {
     public func updateProfilePicture(dto : GolferCommands.UpdateProfilePicture) : async Result.Result<(), T.Error> {
       let validProfilePicture = isProfilePictureValid(dto.profilePicture);
       if (not validProfilePicture) {
-        return #err(#InvalidProfilePicture);
+        return #err(#InvalidPicture);
       };
 
       let existingGolferCanisterId = golferCanisterIndex.get(dto.principalId);

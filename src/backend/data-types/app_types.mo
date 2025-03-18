@@ -18,8 +18,7 @@ module AppTypes {
     #TooShort;
     #NotEnoughFunds;
     #PaymentError;
-    #InvalidProfilePicture;
-    #InvalidGolfTeamPicture;
+    #InvalidPicture;
     #CanisterFull;
     #CreateGameError;
     #InEligible;
