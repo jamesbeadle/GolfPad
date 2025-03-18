@@ -46,6 +46,15 @@ type UpdateGolfCourse =
    name: text;
    updatedTeeGroup: opt TeeGroup;
  };
+type UpdateGame = 
+ record {
+   courseId: GolfCourseId;
+   courseVersion: GolfCourseVersion;
+   gameId: GameId;
+   inviteIds: vec PrincipalId;
+   teeGroupIndex: TeeGroupIndex;
+   teeOffTime: int;
+ };
 type UpdateFirstName = 
  record {
    firstName: text;
@@ -906,6 +915,7 @@ service : {
   removeUserGolfCourse: (RemoveUserGolfCourse) -> (Result);
   sendFriendRequest: (SendFriendRequest) -> (Result);
   updateFirstName: (UpdateFirstName) -> (Result);
+  updateGame: (UpdateGame) -> (Result);
   updateHandicap: (UpdateHandicap) -> (Result);
   updateHomeCourse: (UpdateHomeCourse) -> (Result);
   updateLastName: (UpdateLastName) -> (Result);

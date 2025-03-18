@@ -96,6 +96,10 @@ module {
       return await game_canister.createGame(dto);
     };
 
+    public func updateGame(dto: GameCommands.UpdateGame) : async Result.Result<(), T.Error>{
+      return #err(#NotFound); //TODO
+    };
+
     public func getGame(dto: GameQueries.GetGame) : async Result.Result<GameQueries.Game, T.Error> {
       let gameCanisterId = gameCanisterIndex.get(dto.gameId);
       switch(gameCanisterId){

@@ -22,6 +22,15 @@ module GameCommands {
         courseVersion: GolfCourse.GolfCourseVersion;
     };
 
+    public type UpdateGame = {
+        gameId: ID.GameId;
+        courseId: ID.GolfCourseId;
+        inviteIds: [Base.PrincipalId];
+        teeOffTime: Int;
+        teeGroupIndex: GolfCourse.TeeGroupIndex;
+        courseVersion: GolfCourse.GolfCourseVersion;
+    };
+
     public type DeleteGame = {
         gameId: ID.GameId;
 

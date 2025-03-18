@@ -631,6 +631,14 @@ export const idlFactory = ({ IDL }) => {
     principalId: PrincipalId,
     firstName: IDL.Text,
   });
+  const UpdateGame = IDL.Record({
+    inviteIds: IDL.Vec(PrincipalId),
+    gameId: GameId,
+    teeOffTime: IDL.Int,
+    teeGroupIndex: TeeGroupIndex,
+    courseVersion: GolfCourseVersion,
+    courseId: GolfCourseId,
+  });
   const UpdateHandicap = IDL.Record({
     handicap: IDL.Opt(Handicap),
     principalId: PrincipalId,
@@ -710,6 +718,7 @@ export const idlFactory = ({ IDL }) => {
     removeUserGolfCourse: IDL.Func([RemoveUserGolfCourse], [Result], []),
     sendFriendRequest: IDL.Func([SendFriendRequest], [Result], []),
     updateFirstName: IDL.Func([UpdateFirstName], [Result], []),
+    updateGame: IDL.Func([UpdateGame], [Result], []),
     updateHandicap: IDL.Func([UpdateHandicap], [Result], []),
     updateHomeCourse: IDL.Func([UpdateHomeCourse], [Result], []),
     updateLastName: IDL.Func([UpdateLastName], [Result], []),

@@ -11,13 +11,15 @@
   import VotingRules from "./voting-rules.svelte";
   import Modal from "../shared/modal.svelte";
   import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
-  import ArrowUp from "$lib/icons/ArrowUp.svelte";
-  import ArrowDown from "$lib/icons/ArrowDown.svelte";
+  import ArrowUp from "$lib/icons/arrow-up-icon.svelte";
+  import ArrowDown from "$lib/icons/arrow-down-icon.svelte";
   
   export let visible: boolean;
   export let closeModal: () => void;
   export let proposal: ProposalData;
   export let onVoteComplete: () => void = () => {};
+
+  //TODO: Detail needs to show a golf course proposal so it's browsable
 
   const yesVotes = Number(proposal.latest_tally[0]?.yes ?? 0n);
   const noVotes = Number(proposal.latest_tally[0]?.no ?? 0n);

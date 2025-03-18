@@ -126,6 +126,7 @@ actor Self {
   public shared ({ caller }) func getGameInvites(dto : GameQueries.GetGameInvites) : async Result.Result<GameQueries.GameInvites, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
+    assert dto.principalId == principalId;
     return await golferManager.getGameInvites(dto);
   };
 
@@ -135,6 +136,13 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     assert dto.createdById == Principal.toText(caller);
     return await gameManager.createGame(dto);
+  };
+
+  public shared ({ caller }) func updateGame(dto : GameCommands.UpdateGame) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert await gameManager.isGameOwner(dto.gameId, principalId);
+    return await gameManager.updateGame(dto);
   };
 
   public shared ({ caller }) func beginGame(dto : GameCommands.BeginGame) : async Result.Result<(), T.Error> {

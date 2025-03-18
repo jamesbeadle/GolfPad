@@ -640,6 +640,14 @@ export interface UpdateFirstName {
   principalId: PrincipalId;
   firstName: string;
 }
+export interface UpdateGame {
+  inviteIds: Array<PrincipalId>;
+  gameId: GameId;
+  teeOffTime: bigint;
+  teeGroupIndex: TeeGroupIndex;
+  courseVersion: GolfCourseVersion;
+  courseId: GolfCourseId;
+}
 export interface UpdateGolfCourse {
   name: string;
   bannerImage: [] | [Uint8Array | number[]];
@@ -723,6 +731,7 @@ export interface _SERVICE {
   removeUserGolfCourse: ActorMethod<[RemoveUserGolfCourse], Result>;
   sendFriendRequest: ActorMethod<[SendFriendRequest], Result>;
   updateFirstName: ActorMethod<[UpdateFirstName], Result>;
+  updateGame: ActorMethod<[UpdateGame], Result>;
   updateHandicap: ActorMethod<[UpdateHandicap], Result>;
   updateHomeCourse: ActorMethod<[UpdateHomeCourse], Result>;
   updateLastName: ActorMethod<[UpdateLastName], Result>;

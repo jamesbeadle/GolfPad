@@ -12,10 +12,9 @@ import type {
   GetGame,
   GetGameInvites,
   GetGameSummaries,
-  GetPlayerBandsResults,
   InviteGolfers,
-  PlayerBandsResults,
   RejectGameInvite,
+  UpdateGame,
 } from "../../../../declarations/backend/backend.did";
 
 function createGameStore() {
@@ -33,14 +32,12 @@ function createGameStore() {
     return new GameService().getGameInvites(dto);
   }
 
-  async function getPlayerBandsResults(
-    dto: GetPlayerBandsResults,
-  ): Promise<PlayerBandsResults> {
-    return new GameService().getPlayerBandsResults(dto);
-  }
-
   async function createGame(dto: CreateGame): Promise<any> {
     return new GameService().createGame(dto);
+  }
+
+  async function updateGame(dto: UpdateGame): Promise<any> {
+    return new GameService().updateGame(dto);
   }
 
   async function beginGame(dto: BeginGame): Promise<any> {
@@ -75,8 +72,8 @@ function createGameStore() {
     getGameSummaries,
     getGame,
     getGameInvites,
-    getPlayerBandsResults,
     createGame,
+    updateGame,
     beginGame,
     predictGameScore,
     addGameScore,
