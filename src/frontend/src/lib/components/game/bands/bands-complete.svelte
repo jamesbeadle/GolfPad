@@ -1,142 +1,136 @@
 <script lang="ts">
-    import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
-import SelectedUserProfile from "$lib/components/shared/selected-user-profile.svelte";
     import { onMount } from "svelte";
-    import type { Game, GetPlayerBandsResults, GolfCourseTeeGroup, GolferSummary, PlayerBandsResults, PrincipalId } from "../../../../../../declarations/backend/backend.did";
-    import { gameStore } from "$lib/stores/game-store";
-    import { authStore } from "$lib/stores/auth-store";
-    import { toasts } from "$lib/stores/toasts-store";
+    import type { Game, GolfCourseTeeGroup, GolferSummary, BandsScores, BandsCategoryResult, BandsCategory } from "../../../../../../declarations/backend/backend.did";
+    import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
+    import UserProfileHorizontal from "$lib/components/shared/user-profile-horizontal.svelte";
     import CompleteIcon from "$lib/icons/complete-icon.svelte";
     import FailedIcon from "$lib/icons/failed-icon.svelte";
 
     export let game: Game;
     export let players: GolferSummary[];
-    export let bandsResults: PlayerBandsResults | null = null;
-    let selectedPlayer: GolferSummary | null = null;
-    let selectedPlayerId: PrincipalId = ''; 
-    let selectedPlayerPositionText = "";
-    let selectedPlayerScore = 0;
+
     let isLoading = true;
+    let scores: BandsScores | null = null;
+    let winner: GolferSummary | null = null;
 
     onMount(async () => {
-        try{
-            let dto: GetPlayerBandsResults = { id: game.id, principalId: $authStore.identity?.getPrincipal().toString() ?? "" };
-            bandsResults = await gameStore.getPlayerBandsResults(dto);
-            selectedPlayer = players.find(x => x.principalId == selectedPlayerId) ?? null;
-            selectedPlayerPositionText = getSelectedPlayerPositionText();
-            selectedPlayerScore = getSelectedPlayerScore();
-        } catch {
-            toasts.addToast({ type: 'error', message: '' });
+        try {
+            setGameInfo();
+        } catch (error) {
+            console.error("Error processing game data:", error);
         } finally {
             isLoading = false;
         }
     });
 
-    function getSelectedPlayerPositionText() : string {
-        return '' //TODO
+    function setGameInfo() {
+        if (game.status && Object.keys(game.status)[0] === "Complete") {
+            if (game.scoreDetail && game.scoreDetail.length > 0) {
+                const scoreDetail = game.scoreDetail[0];
+                if(!scoreDetail) {return}
+                if ("BandsScores" in scoreDetail) {
+                    scores = scoreDetail.BandsScores as BandsScores;
+                    const winnerData = scores.players.reduce((max, player) => 
+                        (max.points > player.points) ? max : player
+                    );
+                    winner = players.find(p => p.principalId === winnerData.principalId) || null;
+                }
+            }
+        }
     }
 
-    function getSelectedPlayerScore() : number {
-        return 0 //TODO
+    function getPlayerCategoryResults(principalId: string): BandsCategoryResult[] {
+        const playerScore = scores?.players.find(p => p.principalId === principalId);
+        return playerScore?.categories || [];
     }
 
-    function selectUser(){
-
+    function isCategoryCompleted(principalId: string, category: BandsCategory): boolean {
+        return getPlayerCategoryResults(principalId).some(
+            cr => Object.keys(cr.bandsCategory)[0] === Object.keys(category)[0] && cr.completed
+        );
     }
 
+    function isCategoryFailed(principalId: string, category: BandsCategory): boolean {
+        return getPlayerCategoryResults(principalId).some(
+            cr => Object.keys(cr.bandsCategory)[0] === Object.keys(category)[0] && cr.failed
+        );
+    }
+
+    const targetCategories = [
+        { category: { NoLostBall: null }, desc: "Won't lose a ball for 3 holes", points: 50 },
+        { category: { Hit2Of3Fairways: null }, desc: "Hit 2/3 fairways", points: 25 },
+        { category: { Hit2Of3Greens: null }, desc: "Hit green in 1", points: 25 },
+        { category: { OnePutt2Of3Greens: null }, desc: "Only had one putt?", points: 25 },
+        { category: { NoDoubleBogeyOrWorse: null }, desc: "Double bogey or better?", points: 25 },
+        { category: { NoBogeyOrWorse: null }, desc: "Bogey or better?", points: 25 },
+        { category: { ParOrBetter: null }, desc: "Par or better?", points: 25 },
+        { category: { UnderPar: null }, desc: "Birdie or better?", points: 25 },
+        { category: { NoTreeOrBunker: null }, desc: "Avoided all the trees and bunkers?", points: 25 },
+    ];
+
+    function startNewGame() {
+        //TODO
+    }
 </script>
 
 {#if isLoading}
     <LocalSpinner />
-{:else}
-
-    <div class="flex flex-col w-full">
-        <p>Player Details</p>
+{:else if game.status && Object.keys(game.status)[0] === "Complete"}
+    <div class="flex flex-col w-full max-w-md mx-auto bg-white rounded-lg shadow-lg p-4">
+        <div class="bg-yellow-400 text-black p-2 flex justify-between items-center rounded-t-lg">
+            <h1 class="text-xl font-bold">PLAYER DETAILS</h1>
+        </div>
+        <div class="p-4">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-2">
+                    {#each players as player}
+                        <UserProfileHorizontal golfer={player} />
+                    {/each}
+                </div>
+                {#if winner}
+                    <div class="text-right">
+                        <p class="text-sm text-gray-500">GAME PLACE</p>
+                        <p class="text-lg font-semibold">WINNER</p>
+                        <p class="text-lg">{scores?.players.find(p => p.principalId === winner!.principalId)?.points || 0}</p>
+                    </div>
+                {/if}
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                <h2 class="text-lg font-semibold mb-2">SCORECARD</h2>
+                {#each players as player}
+                    <div class="mb-4">
+                        <h3 class="text-md font-medium mb-2">{player.name} ({player.handicap?.[0] || 'N/A'})</h3>
+                        {#each targetCategories as target}
+                            <div class="flex justify-between items-center py-2">
+                                <p class="text-sm">{target.desc}</p>
+                                <div class="flex items-center space-x-2">
+                                    {#if isCategoryCompleted(player.principalId, target.category)}
+                                        <CompleteIcon className="w-5 text-green-500" />
+                                        <span class="text-sm font-medium text-green-500">{target.points}</span>
+                                    {:else if isCategoryFailed(player.principalId, target.category)}
+                                        <FailedIcon className="w-5 text-red-500" />
+                                        <span class="text-sm font-medium text-red-500">-</span>
+                                    {:else}
+                                        <span class="w-5"></span>
+                                        <span class="text-sm font-medium">-</span>
+                                    {/if}
+                                </div>
+                            </div>
+                        {/each}
+                        <div class="flex justify-end mt-2">
+                            <p class="text-lg font-semibold">Total: {scores?.players.find(p => p.principalId === player.principalId)?.points || 0}</p>
+                        </div>
+                    </div>
+                {/each}
+            </div>
+        </div>
+        <button
+            class="w-full bg-yellow-500 text-white py-2 rounded-b-lg font-semibold"
+            on:click={startNewGame}
+        >
+            NEW GAME
+        </button>
     </div>
-
-
-    <SelectedUserProfile {selectUser} {players} {selectedPlayerId} />
-
-    {#if bandsResults && selectedPlayer}
-
-        <div class="flex flex-row">
-            <div class="w-1/3 flex flex-col">
-                <p>PLAYER</p>
-                <p>{selectedPlayer.name}</p>
-            </div>
-            <div class="w-1/3 flex flex-col">
-                <p>GAME PLACE</p>
-                <p>{selectedPlayerPositionText}</p>
-            </div>
-            <div class="w-1/3 flex flex-col">
-                <p>SCORE</p>
-                <p>{selectedPlayerScore}</p>
-            </div>
-        </div>
-
-        <div class="flex flex-row">
-            <p class="w-1/2">
-                SCORECARD
-            </p>
-            <p class="w-1/4">
-                
-            </p>
-            <p class="w-1/4">
-                POINTS
-            </p>
-        </div>
-
-        {#each bandsResults?.results as result}
-            <div class="flex flex-row">
-                <div class="col-1/2">
-                    {#if Object.keys(result.category)[0] == 'NoTreeOrBunker'}
-                        <p>Holes where you don’t hit a tree or enter a bunker.</p>
-                    {/if}
-                    {#if Object.keys(result.category)[0] == 'NoTreeOrBunker'}
-                        <p>Holes where you won’t lose a ball.</p>
-                    {/if}
-                    {#if Object.keys(result.category)[0] == 'NoLostBall'}
-                        <p>Holes where you hit 2/3 fairways.</p>
-                    {/if}
-                    {#if Object.keys(result.category)[0] == 'Hit2Of3Fairways'}
-                        <p>Holes where you hit 2/3 greens.</p>
-                    {/if}
-                    {#if Object.keys(result.category)[0] == 'Hit2Of3Greens'}
-                        <p>Holes where you will 1-putt 2/3 greens.</p>
-                    {/if}
-                    {#if Object.keys(result.category)[0] == 'OnePutt2Of3Greens'}
-                        <p>Holes where you won’t get a double bogey or worse.</p>
-                    {/if}
-                    {#if Object.keys(result.category)[0] == 'NoDoubleBogeyOrWorse'}
-                        <p>Holes where you won’t get a double bogey or worse.</p>
-                    {/if}
-                    {#if Object.keys(result.category)[0] == 'NoBogeyOrWorse'}
-                        <p>Holes where you won’t bogey or worse.</p>
-                    {/if}
-                    {#if Object.keys(result.category)[0] == 'ParOrBetter'}
-                        <p>Holes where you’ll be par or under.</p>
-                    {/if}
-                    {#if Object.keys(result.category)[0] == 'UnderPar'}
-                        <p>Holes where you’ll be under par.</p>
-                    {/if}
-                </div>
-                <div class="col-1/4">
-                    {#if result.completed}
-                        <CompleteIcon className="w-6" />
-                    {:else}
-                        <FailedIcon className="w-6" />
-                    {/if}
-                </div>
-                <div class="col-1/4">
-                    <p>{result.points}</p>
-                </div>
-            </div>
-        {/each}
-
-        <button class="w-full">NEW GAME</button>
-
-    {:else}
-            <LocalSpinner />
-    {/if}
-
+{:else}
+    <p class="text-center text-gray-500">Game is not complete yet.</p>
 {/if}
