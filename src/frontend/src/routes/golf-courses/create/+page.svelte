@@ -1,5 +1,6 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
+    import ConfirmModal from "$lib/components/shared/confirm-modal.svelte";
     import { golfCourseStore } from "$lib/stores/golf-course-store";
     import type { CreateGolfCourse, TeeGroup, Hole } from "../../../../../declarations/backend/backend.did";
     import Layout from "../../Layout.svelte";
@@ -14,6 +15,9 @@
     let teeGroups: TeeGroup[] = [];
     let activeTabIndex: number | null = null;
     let newTeeColor: string = "";
+
+    let showConfirmDeleteTee = false;
+    let teeToRemove: number | null = null; 
 
     function handleImageUpload(event: Event) {
         const input = event.target as HTMLInputElement;
@@ -146,13 +150,11 @@
         </div>
 
         <div class="form-section">
-            <!-- Course Name -->
             <label for="course-name">COURSE NAME</label>
             <input id="course-name" type="text" bind:value={courseName} placeholder="Enter Golf Course Name" />
 
-            <!-- Main Image Upload -->
             <div class="image-upload">
-                <label>COURSE IMAGE</label>
+                <p>COURSE IMAGE</p>
                 <div class="upload-box">
                     {#if mainImage}
                         <p>{mainImage.name}</p>
@@ -164,7 +166,6 @@
                 </div>
             </div>
 
-            <!-- Tee Color Input -->
             <div class="tee-color-input">
                 <label for="tee-color">ADD TEE COLOR</label>
                 <div class="tee-input-group">
@@ -178,21 +179,30 @@
                 </div>
             </div>
 
-            <!-- Tab Row -->
             <div class="tab-row">
                 {#each teeGroups as teeGroup, index}
-                    <button
-                        class="tab-btn"
-                        class:active={activeTabIndex === index}
-                        style="background-color: {teeGroup.colour.toLowerCase()};"
-                        on:click={() => switchTab(index)}
-                    >
-                        {teeGroup.name}
-                    </button>
+                    <div class="tab-container">
+                        <button
+                            class="tab-btn"
+                            class:active={activeTabIndex === index}
+                            style="background-color: {teeGroup.colour.toLowerCase()};"
+                            on:click={() => switchTab(index)}
+                        >
+                            {teeGroup.name}
+                        </button>
+                        <button
+                            class="remove-btn"
+                            on:click={() => {
+                                teeToRemove = index;
+                                showConfirmDeleteTee = true;
+                            }}
+                        >
+                            ✕
+                        </button>
+                    </div>
                 {/each}
             </div>
 
-            <!-- Active Tab Content -->
             {#if activeTabIndex !== null}
                 <div class="tee-group">
                     <h3>{teeGroups[activeTabIndex].name} Tees</h3>
@@ -250,4 +260,19 @@
             </div>
         </div>
     </div>
+    {#if showConfirmDeleteTee}
+        <ConfirmModal
+            message={`Are you sure you want to remove the ${teeGroups[teeToRemove!].name} tee group?`}
+            onConfirm={() => {
+                removeTeeGroup(teeToRemove!);
+                showConfirmDeleteTee = false;
+                teeToRemove = null;
+            }}
+            onCancel={() => {
+                showConfirmDeleteTee = false;
+                teeToRemove = null;
+            }}
+        />
+    {/if}
 </Layout>
+
