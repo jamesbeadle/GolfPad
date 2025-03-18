@@ -17,6 +17,8 @@ module GameTypes {
     username : Text;
   };
 
+  //Summary game types
+
   public type GameSummary = {
     #Mulligans : MulligansGameSummary;
     #Bands : BandsGameSummary;
@@ -52,17 +54,7 @@ module GameTypes {
     points : (Base.PrincipalId, Nat);
   };
 
-  public type BandsCategory = {
-    #NoTreeOrBunker;
-    #NoLostBall;
-    #Hit2Of3Fairways;
-    #Hit2Of3Greens;
-    #OnePutt2Of3Greens;
-    #NoDoubleBogeyOrWorse;
-    #NoBogeyOrWorse;
-    #ParOrBetter;
-    #UnderPar;
-  };
+  //Game Types
 
   public type Game = {
     id : ID.GameId;
@@ -78,10 +70,30 @@ module GameTypes {
     winner : Base.PrincipalId;
   };
 
+  public type GamePrediction = {
+    #Bands : [BandsPrediction];
+    #Mulligans : {};
+  };
+
+  public type BandsPrediction = {
+    golferId : Base.PrincipalId;
+    wontLoseBallStartHole : T.HoleNumber;
+    wontHitTreeOrBunkerStartHole : T.HoleNumber;
+    hit2Of3FairwaysStartHole : T.HoleNumber;
+    hit2Of3GreensStartHole : T.HoleNumber;
+    singlePutt2Of3GreensStartHole : T.HoleNumber;
+    wontDoubleBogeyStartHole : T.HoleNumber;
+    wontBogeyStartHole : T.HoleNumber;
+    parOrUnderStartHole : T.HoleNumber;
+    underParStartHole : T.HoleNumber;
+  };
+
   public type GameScoreDetail = {
     #MulligansScores : MulligansScores;
     #BandsScores : BandsScores;
   };
+
+  //Mulligans score detail
 
   public type MulligansScores = {
     results : [MulligansHoleResult];
@@ -104,6 +116,8 @@ module GameTypes {
     score: Int;
   };
 
+  //Bands score detail
+
   public type BandsScores = {
     players : [BandsPlayerResult];
     currentHole: Nat8;
@@ -116,26 +130,24 @@ module GameTypes {
   };
 
   public type BandsCategoryResult = {
+    startHole : T.HoleNumber;
     bandsCategory : BandsCategory;
     completed : Bool;
+    failed : Bool;
   };
 
-  public type GamePrediction = {
-    #Bands : BandsPrediction;
-    #Mulligans : {};
-  };
+  //Enums
 
-  public type BandsPrediction = {
-    golferId : Base.PrincipalId;
-    wontLoseBallStartHole : T.HoleNumber;
-    wontHitTreeOrBunkerStartHole : T.HoleNumber;
-    hit2Of3FairwaysStartHole : T.HoleNumber;
-    hit2Of3GreensStartHole : T.HoleNumber;
-    singlePutt2Of3GreensStartHole : T.HoleNumber;
-    wontDoubleBogeyStartHole : T.HoleNumber;
-    wontBogeyStartHole : T.HoleNumber;
-    parOrUnderStartHole : T.HoleNumber;
-    underParStartHole : T.HoleNumber;
+  public type BandsCategory = {
+    #NoTreeOrBunker;
+    #NoLostBall;
+    #Hit2Of3Fairways;
+    #Hit2Of3Greens;
+    #OnePutt2Of3Greens;
+    #NoDoubleBogeyOrWorse;
+    #NoBogeyOrWorse;
+    #ParOrBetter;
+    #UnderPar;
   };
 
   public type GameType = {
