@@ -177,6 +177,7 @@ actor class _GolfCoursesCanister() {
               totalHoles = foundGolfCourse.totalHoles;
               founded = foundGolfCourse.founded;
               countryId = foundGolfCourse.countryId;
+              manager = foundGolfCourse.manager;
             });
           };
           case (null){
@@ -256,6 +257,14 @@ actor class _GolfCoursesCanister() {
       return #err(#CanisterFull);
     };
 
+    var totalHoles = Array.size(dto.teeGroups[0].holes);
+
+    for(teeGroup in Iter.fromArray(dto.teeGroups)){
+      if(Array.size(teeGroup.holes) != totalHoles){
+        return #err(#NotAllowed);
+      }
+    };
+
     let newCourse: GolfCourse.GolfCourse = {
       dateAdded = Time.now();
       id = nextCourseId; 
@@ -267,9 +276,10 @@ actor class _GolfCoursesCanister() {
       mainImage = dto.mainImage;
       mainImageExtension = dto.mainImageExtension;
       bannerImage = dto.bannerImage;
+      bannerImageExtension = dto.bannerImageExtension;
       courseAlbums = [];
       courseImages =[];
-      totalHoles = dto.totalHoles;
+      totalHoles = Nat8.fromNat(totalHoles);
       founded = dto.founded;
       countryId = dto.countryId;
       manager = dto.manager;
@@ -283,6 +293,9 @@ actor class _GolfCoursesCanister() {
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
  
+    return #err(#NotFound);
+
+    /*
     var groupIndex: ?Nat8 = null;
     for (golfCourseGroupIndex in Iter.fromArray(stable_golf_course_group_indexes)) {
       if(golfCourseGroupIndex.0 == dto.courseId){
@@ -332,6 +345,7 @@ actor class _GolfCoursesCanister() {
               mainImage = foundGolfCourse.mainImage;
               mainImageExtension = foundGolfCourse.mainImageExtension;
               bannerImage = foundGolfCourse.bannerImage;
+              bannerImageExtension = foundGolfCourse.bannerImageExtension;
               courseAlbums = foundGolfCourse.courseAlbums;
               courseImages = foundGolfCourse.courseImages;
               totalHoles = foundGolfCourse.totalHoles;
@@ -348,6 +362,7 @@ actor class _GolfCoursesCanister() {
         }
       };
     };
+      */
   };
 
   public shared ({caller}) func deleteGolfCourse(dto: GolfCourseCommands.DeleteGolfCourse) : async Result.Result<(), T.Error>{

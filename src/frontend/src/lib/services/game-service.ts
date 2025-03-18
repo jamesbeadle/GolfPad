@@ -102,7 +102,6 @@ export class GameService {
     return result.ok;
   }
 
-
   async beginGame(dto: BeginGame): Promise<any> {
     const identityActor = await ActorFactory.createIdentityActor(
       authStore,

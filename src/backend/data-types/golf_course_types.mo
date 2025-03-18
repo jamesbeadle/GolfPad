@@ -20,6 +20,7 @@ module GolfCourseTypes {
     mainImage : ?Blob;
     mainImageExtension : Text;
     bannerImage : ?Blob;
+    bannerImageExtension : Text;
     courseAlbums : [GolfCourseAlbum];
     courseImages : [GolfCourseImage];
     countryId : ID.CountryId;

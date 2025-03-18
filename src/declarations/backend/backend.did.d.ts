@@ -138,10 +138,10 @@ export interface CreateGame {
 }
 export interface CreateGolfCourse {
   manager: PrincipalId;
-  totalHoles: number;
   name: string;
   countryId: CountryId;
   mainImageExtension: string;
+  bannerImageExtension: string;
   founded: bigint;
   bannerImage: [] | [Uint8Array | number[]];
   mainImage: [] | [Uint8Array | number[]];
@@ -372,6 +372,7 @@ export type GolfClub =
   | { FIVE_HYBRID: null };
 export interface GolfCourse {
   id: GolfCourseId;
+  manager: string;
   totalHoles: number;
   activeVersion: GolfCourseVersion;
   name: string;
@@ -649,10 +650,14 @@ export interface UpdateGame {
   courseId: GolfCourseId;
 }
 export interface UpdateGolfCourse {
+  manager: PrincipalId;
   name: string;
+  mainImageExtension: string;
+  bannerImageExtension: string;
   bannerImage: [] | [Uint8Array | number[]];
-  updatedTeeGroup: [] | [TeeGroup];
+  mainImage: [] | [Uint8Array | number[]];
   courseId: GolfCourseId;
+  teeGroups: Array<TeeGroup>;
 }
 export interface UpdateHandicap {
   handicap: [] | [Handicap];

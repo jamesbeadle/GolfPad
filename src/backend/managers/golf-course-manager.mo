@@ -118,10 +118,6 @@ module {
         return #Err("Golf Course name too long, max 100 characters.");
       };
 
-      if(dto.totalHoles != 18){
-        return #Err("Golf Course must have 18 holes");
-      };
-
       for(teegroup in Iter.fromArray(dto.teeGroups)){
         if(Array.size(teegroup.holes) != 18){
           return #Err("Tee group " # teegroup.name # " must have 18 holes.");
@@ -162,14 +158,11 @@ module {
       if(Text.size(dto.name) > 100){
         return #Err("Golf Course name too long, max 100 characters.");
       };
-      
-      switch(dto.updatedTeeGroup){
-        case (?foundTeeGroup){
-          if(Array.size(foundTeeGroup.holes) != 18){
-            return #Err("Golf Course must have 18 holes");
-          };
-        };
-        case null { }
+
+      for(teegroup in Iter.fromArray(dto.teeGroups)){
+        if(Array.size(teegroup.holes) != 18){
+          return #Err("Tee group " # teegroup.name # " must have 18 holes.");
+        }
       };
 
       return #Ok("Proposal Valid");

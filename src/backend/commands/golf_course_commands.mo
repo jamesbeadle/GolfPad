@@ -10,7 +10,7 @@ module GolfCourseCommands {
         mainImage: ?Blob;
         mainImageExtension: Text;
         bannerImage: ?Blob;
-        totalHoles: Nat8;
+        bannerImageExtension: Text;
         founded: Int;
         countryId: ID.CountryId;
         manager: Base.PrincipalId;
@@ -19,8 +19,12 @@ module GolfCourseCommands {
     public type UpdateGolfCourse = {
         courseId: ID.GolfCourseId;
         name: Text;
-        updatedTeeGroup: ?GolfCourse.TeeGroup;
+        teeGroups: [GolfCourse.TeeGroup];
+        mainImage: ?Blob;
+        mainImageExtension: Text;
         bannerImage: ?Blob;
+        bannerImageExtension: Text;
+        manager: Base.PrincipalId;
     };
 
     public type DeleteGolfCourse = {

@@ -18,6 +18,7 @@ module GolfCourseQueries {
         totalHoles: Nat8;
         founded: Int;
         countryId: ID.CountryId;
+        manager: Text;
     };
 
     public type GetGolfCourses = {

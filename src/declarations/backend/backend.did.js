@@ -158,20 +158,24 @@ export const idlFactory = ({ IDL }) => {
   });
   const CreateGolfCourse = IDL.Record({
     manager: PrincipalId,
-    totalHoles: IDL.Nat8,
     name: IDL.Text,
     countryId: CountryId,
     mainImageExtension: IDL.Text,
+    bannerImageExtension: IDL.Text,
     founded: IDL.Int,
     bannerImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
     mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
     teeGroups: IDL.Vec(TeeGroup),
   });
   const UpdateGolfCourse = IDL.Record({
+    manager: PrincipalId,
     name: IDL.Text,
+    mainImageExtension: IDL.Text,
+    bannerImageExtension: IDL.Text,
     bannerImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
-    updatedTeeGroup: IDL.Opt(TeeGroup),
+    mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
     courseId: GolfCourseId,
+    teeGroups: IDL.Vec(TeeGroup),
   });
   const AppStatusDTO = IDL.Record({
     version: IDL.Text,
@@ -429,6 +433,7 @@ export const idlFactory = ({ IDL }) => {
   });
   const GolfCourse = IDL.Record({
     id: GolfCourseId,
+    manager: IDL.Text,
     totalHoles: IDL.Nat8,
     activeVersion: GolfCourseVersion,
     name: IDL.Text,

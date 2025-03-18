@@ -42,9 +42,13 @@ type UpdateHandicap =
 type UpdateGolfCourse = 
  record {
    bannerImage: opt blob;
+   bannerImageExtension: text;
    courseId: GolfCourseId;
+   mainImage: opt blob;
+   mainImageExtension: text;
+   manager: PrincipalId;
    name: text;
-   updatedTeeGroup: opt TeeGroup;
+   teeGroups: vec TeeGroup;
  };
 type UpdateGame = 
  record {
@@ -458,6 +462,7 @@ type GolfCourse =
    id: GolfCourseId;
    mainImage: opt blob;
    mainImageExtension: text;
+   manager: text;
    name: text;
    tees: vec GolfCourseTeeGroup;
    totalHoles: nat8;
@@ -706,6 +711,7 @@ type CreateUser =
 type CreateGolfCourse = 
  record {
    bannerImage: opt blob;
+   bannerImageExtension: text;
    countryId: CountryId;
    founded: int;
    mainImage: opt blob;
@@ -713,7 +719,6 @@ type CreateGolfCourse =
    manager: PrincipalId;
    name: text;
    teeGroups: vec TeeGroup;
-   totalHoles: nat8;
  };
 type CreateGame = 
  record {
