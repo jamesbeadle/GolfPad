@@ -43,6 +43,8 @@ export type BandsCategory =
 export interface BandsCategoryResult {
   completed: boolean;
   bandsCategory: BandsCategory;
+  failed: boolean;
+  startHole: HoleNumber;
 }
 export interface BandsHoleResult {
   golferId: PrincipalId;
@@ -245,7 +247,7 @@ export interface GameInvites {
 export type GamePrediction = { Mulligans: {} } | { Bands: BandsPrediction };
 export type GamePrediction__1 =
   | { Mulligans: {} }
-  | { Bands: BandsPrediction__1 };
+  | { Bands: Array<BandsPrediction__1> };
 export type GameScoreDetail =
   | { BandsScores: BandsScores }
   | { MulligansScores: MulligansScores };

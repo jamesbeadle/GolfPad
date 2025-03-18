@@ -282,6 +282,8 @@ export const idlFactory = ({ IDL }) => {
   const BandsCategoryResult = IDL.Record({
     completed: IDL.Bool,
     bandsCategory: BandsCategory,
+    failed: IDL.Bool,
+    startHole: HoleNumber,
   });
   const BandsPlayerResult = IDL.Record({
     categories: IDL.Vec(BandsCategoryResult),
@@ -329,7 +331,7 @@ export const idlFactory = ({ IDL }) => {
   });
   const GamePrediction__1 = IDL.Variant({
     Mulligans: IDL.Record({}),
-    Bands: BandsPrediction__1,
+    Bands: IDL.Vec(BandsPrediction__1),
   });
   const GolfCourseSnapshot = IDL.Record({
     teeGroupIndex: TeeGroupIndex,

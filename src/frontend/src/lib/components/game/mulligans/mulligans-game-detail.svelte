@@ -2,8 +2,8 @@
     import { onMount } from "svelte";
     import type { Game, GolfCourseTeeGroup, GolferSummary, MulligansScores } from "../../../../../../declarations/backend/backend.did";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
-    import UserProfileHorizontal from "$lib/components/shared/user-profile-horizontal.svelte";
     import UserSelectCell from "$lib/components/shared/user-select-cell.svelte";
+    import HorizontalUsersProfile from "$lib/components/shared/horizontal-users-profile.svelte";
 
     export let game: Game;
     export let golfCourse: GolfCourseTeeGroup;
@@ -104,7 +104,7 @@
     
     <div class="flex flex-row">
         <div class="w-1/2">
-            <UserProfileHorizontal {players} />
+            <HorizontalUsersProfile {players} />
         </div>
         <div class="w-1/4">
             <p>{ player1MulligansAvailable }</p>
@@ -116,7 +116,7 @@
 
     <div class="flex flex-row">
         <div class="w-1/2">
-            <UserProfileHorizontal {players} />
+            <HorizontalUsersProfile {players} />
         </div>
         <div class="w-1/4">
             <p>{ player2MulligansAvailable }</p>

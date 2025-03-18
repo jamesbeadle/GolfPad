@@ -580,7 +580,7 @@ type GameScoreDetail =
  };
 type GamePrediction__1 = 
  variant {
-   Bands: BandsPrediction__1;
+   Bands: vec BandsPrediction__1;
    Mulligans: record {};
  };
 type GamePrediction = 
@@ -813,6 +813,8 @@ type BandsCategoryResult =
  record {
    bandsCategory: BandsCategory;
    completed: bool;
+   failed: bool;
+   startHole: HoleNumber;
  };
 type BandsCategory = 
  variant {
