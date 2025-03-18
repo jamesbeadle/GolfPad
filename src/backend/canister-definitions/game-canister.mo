@@ -413,7 +413,6 @@ actor class _GameCanister() {
             return #ok({
               courseId = foundGame.courseId;
               courseSnapshot = foundGame.courseSnapshot;
-              events = foundGame.events;
               gameType = foundGame.gameType;
               id = foundGame.id;
               playerIds = foundGame.playerIds;
@@ -455,7 +454,6 @@ actor class _GameCanister() {
             let updatedGame: Game.Game = {
               courseId = foundGame.courseId;
               courseSnapshot = foundGame.courseSnapshot;
-              events = foundGame.events;
               gameType = foundGame.gameType;
               id = foundGame.id;
               invites = Buffer.toArray(updatedInvitesBuffer);
@@ -506,7 +504,6 @@ actor class _GameCanister() {
             let updatedGame: Game.Game = {
               courseId = foundGame.courseId;
               courseSnapshot = foundGame.courseSnapshot;
-              events = foundGame.events;
               gameType = foundGame.gameType;
               id = foundGame.id;
               invites = updatedInvites;
@@ -590,7 +587,6 @@ actor class _GameCanister() {
             let updatedGame: Game.Game = {
               courseId = foundGame.courseId;
               courseSnapshot = foundGame.courseSnapshot;
-              events = foundGame.events;
               gameType = foundGame.gameType;
               id = foundGame.id;
               invites = foundGame.invites;
@@ -1581,6 +1577,11 @@ actor class _GameCanister() {
             var golfer1MulligansUsed: Nat8 = 0;
             var golfer2MulligansUsed: Nat8 = 0;
 
+            var difference: Int = Int8.toInt(Int8.fromNat8(golfer1HolesWon)) - Int8.toInt(Int8.fromNat8(golfer2HolesWon));
+            if(difference < 0){
+              difference := -difference;
+            };
+
             switch(dto.detail){
               case (#MulligansScores data){
 
@@ -1592,14 +1593,10 @@ actor class _GameCanister() {
                   winner = winner;
                   golfer1MulliganUsed = data.golfer1MulliganUsed;
                   golfer2MulliganUsed = data.golfer2MulliganUsed;
+                  score = difference;
                 });
               };
               case (#BandsScores _){ return game; }
-            };
-
-            var difference: Int = Int8.toInt(Int8.fromNat8(golfer1HolesWon)) - Int8.toInt(Int8.fromNat8(golfer2HolesWon));
-            if(difference < 0){
-              difference := -difference;
             };
             
             let remainingHoles: Int = 18 - Int8.toInt(Int8.fromNat8(dto.holeNumber)); 
@@ -1630,7 +1627,6 @@ actor class _GameCanister() {
             let updatedGame: Game.Game = {
               courseId = game.courseId;
               courseSnapshot = game.courseSnapshot;
-              events = game.events;
               gameType = game.gameType;
               id = game.id;
               invites = game.invites;
@@ -1674,6 +1670,10 @@ actor class _GameCanister() {
               winner := game.playerIds[1];
               difference := -1;
             };
+            
+            if(difference < 0){
+              difference := -difference;
+            };
 
             var mulliganHoleResultBuffer = Buffer.fromArray<Game.MulligansHoleResult>([]);
 
@@ -1683,11 +1683,8 @@ actor class _GameCanister() {
               winner = winner;
               golfer1MulliganUsed = data.golfer1MulliganUsed;
               golfer2MulliganUsed = data.golfer2MulliganUsed;
+              score = difference;
             });
-            
-            if(difference < 0){
-              difference := -difference;
-            };
 
             var golfer1MulligansUsed: Nat8 = 0;
             var golfer2MulligansUsed: Nat8 = 0;
@@ -1712,7 +1709,6 @@ actor class _GameCanister() {
             let updatedGame: Game.Game = {
               courseId = game.courseId;
               courseSnapshot = game.courseSnapshot;
-              events = game.events;
               gameType = game.gameType;
               id = game.id;
               invites = game.invites;

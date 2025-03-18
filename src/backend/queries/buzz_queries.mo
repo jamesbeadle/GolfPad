@@ -39,8 +39,6 @@ module BuzzQueries {
     public type MatchResultInfo = {
         #Mulligans : MulligansResultInfo;
         #Bands : BandsResultInfo;
-        #BuildIt : BuildItResultInfo;
-        #NextUp : NextUpResultInfo;
     };
 
     public type MulligansResultInfo = {
@@ -58,30 +56,10 @@ module BuzzQueries {
         holesPlayed: Nat8;  
     };
 
-    public type NextUpResultInfo = {
-        players: [PlayerFeedSummary];
-        points: (Base.PrincipalId, Nat);
-        holesPlayed: Nat8;  
-    };
-
-    public type BuildItResultInfo = {
-        teams: [TeamFeedSummary];
-        scores: (ID.GolfTeamId, Nat);
-    };
-
     public type PlayerFeedSummary = {
       principal_id: Base.PrincipalId;
       username: Text;
       profile_picture: ?Blob;
-    };
-
-    public type TeamFeedSummary = {
-        team_id: ID.GolfTeamId;
-        captain_id: Base.PrincipalId;
-        team_members: [Base.PrincipalId];
-        team_name: Text;
-        team_image: ?Blob;
-        team_image_extension: Text;
     };
 }
 

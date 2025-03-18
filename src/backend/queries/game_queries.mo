@@ -17,7 +17,6 @@ module GameQueries {
         status: Game.GameStatus;
         courseId: ID.GolfCourseId;
         predictions: [Game.GamePrediction];
-        events: [Game.GolferEvent];
         courseSnapshot: GolfCourse.GolfCourseSnapshot;
         teeOffTime: Int;
         playerIds: [Base.PrincipalId];
@@ -61,22 +60,6 @@ module GameQueries {
         date: Int;
         players: [Base.PrincipalId];
         status: Game.GameStatus;
-    };
-
-    public type GetPlayerBandsResults = {
-        id: ID.GameId;
-        principalId: Base.PrincipalId;
-    };
-
-    public type PlayerBandsResults = {
-        results: [PlayerBandsResult];
-    };
-
-    public type PlayerBandsResult = {
-        principalId: Base.PrincipalId;
-        category: Game.BandsCategory;
-        completed: Bool;
-        points: Nat8;
     };
     
 }

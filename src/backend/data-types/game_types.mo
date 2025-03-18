@@ -17,18 +17,9 @@ module GameTypes {
     username : Text;
   };
 
-  public type TeamSummary = {
-    team_id : ID.GolfTeamId;
-    captain_id : Base.PrincipalId;
-    team_members : [Base.PrincipalId];
-    team_name : Text;
-  };
-
   public type GameSummary = {
     #Mulligans : MulligansGameSummary;
     #Bands : BandsGameSummary;
-    #NextUp : NextUpGameSummary;
-    #BuildIt : BuildItGameSummary;
   };
 
   public type MulligansGameSummary = {
@@ -61,15 +52,6 @@ module GameTypes {
     points : (Base.PrincipalId, Nat);
   };
 
-  public type BuildItGameSummary = {
-    gameId : ID.GameId;
-    teams : [TeamSummary];
-    status : GameStatus;
-    date : Int;
-    courseId : ID.GolfCourseId;
-    scores : (ID.GolfTeamId, Nat);
-  };
-
   public type BandsCategory = {
     #NoTreeOrBunker;
     #NoLostBall;
@@ -89,22 +71,11 @@ module GameTypes {
     status : GameStatus;
     courseId : ID.GolfCourseId;
     predictions : [GamePrediction];
-    events : [GolferEvent];
     courseSnapshot : GolfCourses.GolfCourseSnapshot;
     teeOffTime : Int;
     playerIds : [Base.PrincipalId];
     invites : [Base.PrincipalId];
     winner : Base.PrincipalId;
-  };
-
-  public type GolferEvent = {
-    golferId : Base.PrincipalId;
-    hole : T.HoleNumber;
-    event : T.GolfEvent;
-    //the score each player gets on a hole
-    //on this hole i did this
-    //can then look up
-    //eventType:
   };
 
   public type GameScoreDetail = {
@@ -130,6 +101,7 @@ module GameTypes {
     winner : Base.PrincipalId;
     golfer1MulliganUsed : Bool;
     golfer2MulliganUsed : Bool;
+    score: Int;
   };
 
   public type BandsScores = {
@@ -151,8 +123,6 @@ module GameTypes {
   public type GamePrediction = {
     #Bands : BandsPrediction;
     #Mulligans : {};
-    #NextUp : {};
-    #BuildIt : {};
   };
 
   public type BandsPrediction = {
@@ -171,8 +141,6 @@ module GameTypes {
   public type GameType = {
     #Bands;
     #Mulligans;
-    #NextUp;
-    #BuildIt;
   };
 
   public type GameStatus = {

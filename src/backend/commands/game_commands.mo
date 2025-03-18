@@ -22,72 +22,14 @@ module GameCommands {
         courseVersion: GolfCourse.GolfCourseVersion;
     };
 
-    public type BeginGame = {
-        gameId: ID.GameId;
-    };
-
-    public type PredictGameScore = {
-        gameId: ID.GameId;
-        submittedById: Base.PrincipalId;
-        detail: GamePrediction
-    };
-
-
-
-    public type GamePrediction = {
-        #Bands : BandsPrediction;
-        #Mulligans : {};
-        #NextUp : {};
-        #BuildIt : {};
-    };
-
-    public type BandsPrediction = {
-        golferId : Base.PrincipalId;
-        wontLoseBallStartHole : T.HoleNumber;
-        wontHitTreeOrBunkerStartHole : T.HoleNumber;
-        hit2Of3FairwaysStartHole : T.HoleNumber;
-        hit2Of3GreensStartHole : T.HoleNumber;
-        singlePutt2Of3GreensStartHole : T.HoleNumber;
-        wontDoubleBogeyStartHole : T.HoleNumber;
-        wontBogeyStartHole : T.HoleNumber;
-        parOrUnderStartHole : T.HoleNumber;
-        underParStartHole : T.HoleNumber;
-    };
-
     public type DeleteGame = {
         gameId: ID.GameId;
 
     };
 
-    public type AddGameScore = {
+    public type BeginGame = {
         gameId: ID.GameId;
-        detail: GameScoreSubmission;
-        submittedById: Base.PrincipalId;
-        holeNumber: T.HoleNumber;
     };
-
-    public type GameScoreSubmission = {
-      #MulligansScores: MulligansScore;
-      #BandsScores: BandsScore;
-    };
-
-    public type MulligansScore = {
-        winner: Base.PrincipalId;
-        golfer1MulliganUsed: Bool;
-        golfer2MulliganUsed: Bool;
-    };
-
-    public type BandsScore = {
-        predictions: [BandsCategoryResult];
-    };
-
-    public type BandsCategoryResult = {
-        golferId: Base.PrincipalId;
-        category: Game.BandsCategory;
-        completed: Bool;
-        startHole: T.HoleNumber;
-        failed: Bool;
-    };  
 
     public type InviteGolfers = {
         gameId: ID.GameId;
@@ -103,6 +45,66 @@ module GameCommands {
         rejectedById: Base.PrincipalId;
         gameId: ID.GameId;
     };
+
+
+    //Prediction Commands
+
+    public type PredictGameScore = {
+        gameId: ID.GameId;
+        submittedById: Base.PrincipalId;
+        detail: GamePrediction
+    };
+
+    public type GamePrediction = {
+        #Bands : BandsPrediction;
+        #Mulligans : {};
+    };
+
+    public type BandsPrediction = {
+        golferId : Base.PrincipalId;
+        wontLoseBallStartHole : T.HoleNumber;
+        wontHitTreeOrBunkerStartHole : T.HoleNumber;
+        hit2Of3FairwaysStartHole : T.HoleNumber;
+        hit2Of3GreensStartHole : T.HoleNumber;
+        singlePutt2Of3GreensStartHole : T.HoleNumber;
+        wontDoubleBogeyStartHole : T.HoleNumber;
+        wontBogeyStartHole : T.HoleNumber;
+        parOrUnderStartHole : T.HoleNumber;
+        underParStartHole : T.HoleNumber;
+    };
+
+    //Add score commands
+
+    public type AddGameScore = {
+        gameId: ID.GameId;
+        detail: GameScoreSubmission;
+        submittedById: Base.PrincipalId;
+        holeNumber: T.HoleNumber;
+    };
+
+    public type GameScoreSubmission = {
+      #MulligansScores: MulligansScore;
+      #BandsScores: BandsScore;
+    };
+
+    public type MulligansScore = {
+        hole: T.HoleNumber;
+        winner: Base.PrincipalId;
+        golfer1MulliganUsed: Bool;
+        golfer2MulliganUsed: Bool;
+    };
+
+    public type BandsScore = {
+        hole: T.HoleNumber;
+        playerResults: [BandsHoleResult];
+    };
+
+    public type BandsHoleResult = {
+        golferId: Base.PrincipalId;
+        category: Game.BandsCategory;
+        completed: Bool;
+        failed: Bool;
+    };  
 }
 
   

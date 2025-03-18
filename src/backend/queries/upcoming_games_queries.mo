@@ -36,31 +36,16 @@ module UpcomingGamesQueries {
     public type OpponentInfo = {
         #Mulligans : PlayerOpponentInfo;
         #Bands : PlayerOpponentInfo;
-        #BuildIt : TeamOpponentInfo;
-        #NextUp : PlayerOpponentInfo;
     };
 
     public type PlayerOpponentInfo = {
         players: [PlayerFeedSummary];
-    };
-
-    public type TeamOpponentInfo = {
-        teams: [TeamFeedSummary];
     };
     
     public type PlayerFeedSummary = {
       principal_id: Base.PrincipalId;
       username: Text;
       profile_picture: ?Blob;
-    };
-
-    public type TeamFeedSummary = {
-        team_id: ID.GolfTeamId;
-        captain_id: Base.PrincipalId;
-        team_members: [Base.PrincipalId];
-        team_name: Text;
-        team_image: ?Blob;
-        team_image_extension: Text;
     };
 }
 

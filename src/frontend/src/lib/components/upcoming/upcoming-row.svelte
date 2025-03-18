@@ -1,18 +1,8 @@
 <script lang="ts">
     import { formatUnixDateToSmallReadable, getImageURL } from "$lib/utils/helpers";
-    import type { BandsResultInfo, BuildItResultInfo, BuzzEntry, MatchResultInfo, MulligansResultInfo, NextUpResultInfo, UpcomingGame } from "../../../../../declarations/backend/backend.did";
+    import type { UpcomingGame } from "../../../../../declarations/backend/backend.did";
     
     export let upcomingGame: UpcomingGame;
-
-    const isMulligans = (result: MatchResultInfo): result is { Mulligans: MulligansResultInfo } => 
-        'Mulligans' in result;
-    const isBuildIt = (result: MatchResultInfo): result is { BuildIt: BuildItResultInfo } => 
-        'BuildIt' in result;
-    const isBands = (result: MatchResultInfo): result is { Bands: BandsResultInfo } => 
-        'Bands' in result;
-    const isNextUp = (result: MatchResultInfo): result is { NextUp: NextUpResultInfo } => 
-        'NextUp' in result;
-
 
 </script>
 <div class="flex flex-col md:flex-row">

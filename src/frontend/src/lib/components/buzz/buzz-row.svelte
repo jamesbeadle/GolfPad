@@ -1,6 +1,6 @@
 <script lang="ts">
     import { formatUnixDateToSmallReadable, getImageURL } from "$lib/utils/helpers";
-    import type { BandsResultInfo, BuildItResultInfo, BuzzEntry, MatchResultInfo, MulligansResultInfo, NextUpResultInfo } from "../../../../../declarations/backend/backend.did";
+    import type { BandsResultInfo, BuzzEntry, MatchResultInfo, MulligansResultInfo } from "../../../../../declarations/backend/backend.did";
     import BandsBuzzResult from "./bands-buzz-result.svelte";
     import MulligansBuzzResult from "./mulligans-buzz-result.svelte";
 
@@ -10,10 +10,6 @@
         'Mulligans' in result;
     const isBands = (result: MatchResultInfo): result is { Bands: BandsResultInfo } => 
         'Bands' in result;
-    const isBuildIt = (result: MatchResultInfo): result is { BuildIt: BuildItResultInfo } => 
-        'BuildIt' in result;
-    const isNextUp = (result: MatchResultInfo): result is { NextUp: NextUpResultInfo } => 
-        'NextUp' in result;
 
 
 </script>

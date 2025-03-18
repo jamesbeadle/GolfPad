@@ -129,10 +129,6 @@ actor Self {
     return await golferManager.getGameInvites(dto);
   };
 
-  public shared ({ caller }) func getPlayerBandsResults(dto : GameQueries.GetPlayerBandsResults) : async Result.Result<GameQueries.PlayerBandsResults, T.Error> {
-    return #err(#NotFound); //TODO
-  };
-
   //Game Commands:
 
   public shared ({ caller }) func createGame(dto : GameCommands.CreateGame) : async Result.Result<ID.GameId, T.Error> {
