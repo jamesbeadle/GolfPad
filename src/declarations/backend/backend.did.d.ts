@@ -137,15 +137,15 @@ export interface CreateGame {
   courseId: GolfCourseId;
 }
 export interface CreateGolfCourse {
-  holes: Array<Hole>;
+  manager: PrincipalId;
   totalHoles: number;
   name: string;
   countryId: CountryId;
   mainImageExtension: string;
-  initialTeeGroup: TeeGroup;
   founded: bigint;
   bannerImage: [] | [Uint8Array | number[]];
   mainImage: [] | [Uint8Array | number[]];
+  teeGroups: Array<TeeGroup>;
 }
 export interface CreateUser {
   username: string;
@@ -642,6 +642,7 @@ export interface UpdateFirstName {
 }
 export interface UpdateGolfCourse {
   name: string;
+  bannerImage: [] | [Uint8Array | number[]];
   updatedTeeGroup: [] | [TeeGroup];
   courseId: GolfCourseId;
 }

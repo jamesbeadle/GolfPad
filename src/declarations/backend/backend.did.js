@@ -134,6 +134,7 @@ export const idlFactory = ({ IDL }) => {
     golfShotId: GolfShotId,
     principalId: PrincipalId,
   });
+  const CountryId = IDL.Nat8;
   const HoleImage = IDL.Record({
     owner: PrincipalId,
     uploaded: IDL.Int,
@@ -148,7 +149,6 @@ export const idlFactory = ({ IDL }) => {
     strokeIndex: IDL.Nat8,
     images: IDL.Vec(HoleImage),
   });
-  const CountryId = IDL.Nat8;
   const TeeGroup = IDL.Record({
     added: IDL.Int,
     holes: IDL.Vec(Hole),
@@ -157,18 +157,19 @@ export const idlFactory = ({ IDL }) => {
     colour: IDL.Text,
   });
   const CreateGolfCourse = IDL.Record({
-    holes: IDL.Vec(Hole),
+    manager: PrincipalId,
     totalHoles: IDL.Nat8,
     name: IDL.Text,
     countryId: CountryId,
     mainImageExtension: IDL.Text,
-    initialTeeGroup: TeeGroup,
     founded: IDL.Int,
     bannerImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
     mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
+    teeGroups: IDL.Vec(TeeGroup),
   });
   const UpdateGolfCourse = IDL.Record({
     name: IDL.Text,
+    bannerImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
     updatedTeeGroup: IDL.Opt(TeeGroup),
     courseId: GolfCourseId,
   });

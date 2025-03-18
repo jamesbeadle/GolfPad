@@ -261,7 +261,7 @@ actor class _GolfCoursesCanister() {
       id = nextCourseId; 
       name = dto.name;
       status = #Active;
-      teeGroups = [dto.initialTeeGroup];
+      teeGroups = dto.teeGroups;
       history = [];
       activeVersion = 1;
       mainImage = dto.mainImage;
@@ -272,6 +272,7 @@ actor class _GolfCoursesCanister() {
       totalHoles = dto.totalHoles;
       founded = dto.founded;
       countryId = dto.countryId;
+      manager = dto.manager;
     };
     
     return addGolfCourse(activeGroupIndex, newCourse);
@@ -336,6 +337,7 @@ actor class _GolfCoursesCanister() {
               totalHoles = foundGolfCourse.totalHoles;
               founded = foundGolfCourse.founded;
               countryId = foundGolfCourse.countryId;
+              manager = foundGolfCourse.manager;
             };
 
             return saveGolfCourse(foundGroupIndex, updatedGolfCourse);

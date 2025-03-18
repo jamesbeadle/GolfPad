@@ -23,6 +23,7 @@ module GolfCourseTypes {
     courseAlbums : [GolfCourseAlbum];
     courseImages : [GolfCourseImage];
     countryId : ID.CountryId;
+    manager: Base.PrincipalId;
   };
 
   public type GolfCourseImage = {
