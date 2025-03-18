@@ -126,7 +126,8 @@ module GameTypes {
   public type BandsPlayerResult = {
     principalId : Base.PrincipalId;
     points : Nat8;
-    categories : [BandsCategoryResult];
+    categoryResults : [BandsCategoryResult];
+    holeResults: [BandsHoleResult]
   };
 
   public type BandsCategoryResult = {
@@ -135,6 +136,14 @@ module GameTypes {
     completed : Bool;
     failed : Bool;
   };
+
+  public type BandsHoleResult = {
+    hole: T.HoleNumber;
+    golferId: Base.PrincipalId;
+    category: BandsCategory;
+    completed: Bool;
+    failed: Bool;
+  };  
 
   //Enums
 

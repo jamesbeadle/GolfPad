@@ -272,7 +272,7 @@ actor Self {
 
   public shared ({ caller }) func getGameGolferSummaries(dto: GolferQueries.GetGameGolferSummaries) : async Result.Result<GolferQueries.GameGolferSummaries, T.Error>{
     assert not Principal.isAnonymous(caller);
-    //assert isMember();//todo
+    assert isMember();
     return await golferManager.getGameGolferSummaries(dto);
   };
 
@@ -400,6 +400,10 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     assert dto.principalId == Principal.toText(caller);
     return await golferManager.removeUserGolfCourse(dto);
+  };
+
+  private func isMember() : Bool {
+    return false; //TODO: John - Please implement using the proof-of-stake membership
   };
 
   //Stable Storage & System Functions:

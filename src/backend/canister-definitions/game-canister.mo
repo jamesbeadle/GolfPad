@@ -1539,7 +1539,6 @@ actor class _GameCanister() {
 
   private func addMulligansScore(dto: GameCommands.AddGameScore, game: Game.Game) : Game.Game {
 
-
     var nextHole = dto.holeNumber + 1;
     if(nextHole > 18){
       nextHole := 18;
@@ -1729,7 +1728,99 @@ actor class _GameCanister() {
   };
 
   private func addBandsScore(dto: GameCommands.AddGameScore, game: Game.Game) : Game.Game {
-    return game; //TODO
+    return game;
+    /*
+    var nextHole = dto.holeNumber + 1;
+    if(nextHole > 18){
+      nextHole := 18;
+    };
+
+    var updatedScores: ?Game.GameScoreDetail = null;
+    switch(game.scoreDetail){
+      case (?foundScoreDetail){
+        switch(foundScoreDetail){
+          case (#BandsScores scores){
+
+            let updatedPlayerResults = Buffer.fromArray<Game.BandsPlayerResult>(scores.players);
+
+            switch(dto.detail){
+              case (#MulligansScores _){ return game; };
+              case (#BandsScores data){ 
+                  
+                for(result in Iter.fromArray(data.playerResults)){
+
+                  let bandsPlayerResult = Array.find<Game.BandsPlayerResult>(Buffer.toArray(updatedPlayerResults), func(entry: Game.BandsPlayerResult) : Bool{
+                    entry.principalId == result.golferId;
+                  });
+
+                  switch(bandsPlayerResult){
+                    case (?foundBandsPlayer){
+                      let filteredPlayerHoles = Array.filter<Game.BandsHoleResult>(foundBandsPlayer.holeResults, func(categoryEntry: Game.BandsHoleResult){
+                        return categoryEntry.category != result.category and categoryEntry.hole != result.hole;
+                      });
+
+                      //add the new result for this category
+
+                    };
+                    case (null){
+
+                    }
+                  };
+                };
+
+
+              }
+            };
+            
+
+            updatedScores := ?(#BandsScores{
+              currentHole = dto.holeNumber;
+              players = [];
+            });
+
+            let updatedGame: Game.Game = {
+              courseId = game.courseId;
+              courseSnapshot = game.courseSnapshot;
+              gameType = game.gameType;
+              id = game.id;
+              invites = game.invites;
+              playerIds = game.playerIds;
+              predictions = game.predictions;
+              scoreDetail = updatedScores;
+              status = game.status;
+              teeOffTime = game.teeOffTime;
+              winner = gameWinner;
+            };
+            return updatedGame;
+          };
+          case (_){
+            return game;
+          }
+        };
+      };
+      case (null){
+        switch(dto.detail){
+          case (#MulligansScores _){ return game; };
+          case (#BandsScores data){ 
+            let updatedGame: Game.Game = {
+              courseId = game.courseId;
+              courseSnapshot = game.courseSnapshot;
+              gameType = game.gameType;
+              id = game.id;
+              invites = game.invites;
+              playerIds = game.playerIds;
+              predictions = game.predictions;
+              scoreDetail = updatedScores;
+              status = gameStatus;
+              teeOffTime = game.teeOffTime;
+              winner = "";
+            };
+            return updatedGame;           
+          }
+        };
+      };
+    };
+      */
   };
   
 };

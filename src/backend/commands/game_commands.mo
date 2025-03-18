@@ -105,15 +105,8 @@ module GameCommands {
 
     public type BandsScore = {
         hole: T.HoleNumber;
-        playerResults: [BandsHoleResult];
+        playerResults: [Game.BandsHoleResult];
     };
-
-    public type BandsHoleResult = {
-        golferId: Base.PrincipalId;
-        category: Game.BandsCategory;
-        completed: Bool;
-        failed: Bool;
-    };  
 }
 
   
