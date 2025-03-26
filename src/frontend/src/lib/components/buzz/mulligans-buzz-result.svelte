@@ -5,51 +5,44 @@
     
     export let result: { Mulligans: MulligansResultInfo };
     const mulligans = result.Mulligans;
-    
 </script>
 
-<div class="flex w-full flex-row">
-    <div class="w-1/8">
-        <img class="rounded-full" src={ getImageURL(mulligans.players[0].profile_picture)} alt="profile" />
-    </div>
-    <div class="w-5/8">
-        <p>{mulligans.players[0].username}</p>
-    </div>
-    <div class="w-1/8">
-        {#if mulligans.score > 0}
-            <p>{mulligans.score} Up</p>
-        {:else if mulligans.score == 0}
-            <p>All Square</p>
-        {:else}
-            <p>{(-mulligans.score)} Down</p>
-        {/if}
-    </div>
-    <div class="w-1/8">
+<div class="flex flex-col space-y-2">
+    <div class="flex items-center">
+        <img class="w-8 h-8 rounded-full" src={getImageURL(mulligans.players[0].profile_picture)} alt="profile" />
+        <p class="flex-1 ml-4 text-sm text-BrandDarkGray">{mulligans.players[0].username}</p>
+        <p class="w-20 mr-4 text-left text-black condensed">
+            {#if mulligans.score > 0}
+                {mulligans.score} Up
+            {:else if mulligans.score == 0}
+                All Square
+            {:else}
+                {(-mulligans.score)} Down
+            {/if}
+        </p>
         {#if mulligans.player1Wins}
             <TrophyIcon className="w-6" />
-        {/if}
-    </div>
-</div>
-
-<div class="flex w-full flex-row">
-    <div class="w-1/8">
-        <img class="rounded-full" src={ getImageURL(mulligans.players[1].profile_picture)} alt="profile" />
-    </div>
-    <div class="w-5/8">
-        <p>{mulligans.players[1].username}</p>
-    </div>
-    <div class="w-1/8">
-        {#if mulligans.score < 0}
-            <p>{(-mulligans.score)} Up</p>
-        {:else if mulligans.score == 0}
-            <p>All Square</p>
         {:else}
-            <p>{(mulligans.score)} Down</p>
+            <div class="w-6"></div>
         {/if}
     </div>
-    <div class="w-1/8">
+
+    <div class="flex items-center">
+        <img class="w-8 h-8 rounded-full" src={getImageURL(mulligans.players[1].profile_picture)} alt="profile" />
+        <p class="flex-1 ml-4 text-sm text-BrandDarkGray">{mulligans.players[1].username}</p>
+        <p class="w-20 mr-4 text-left text-black condensed">
+            {#if mulligans.score < 0}
+                {(-mulligans.score)} Up
+            {:else if mulligans.score == 0}
+                All Square
+            {:else}
+                {mulligans.score} Down
+            {/if}
+        </p>
         {#if mulligans.player2Wins}
             <TrophyIcon className="w-6" />
+        {:else}
+            <div class="w-6"></div>
         {/if}
     </div>
 </div>

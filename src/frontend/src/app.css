@@ -11,7 +11,7 @@
 }
 
 .title {
-  @apply text-black condensed text-3xl md:text-4xl lg:text-5xl;
+  @apply text-4xl text-black condensed lg:text-5xl;
 }
 
 .tiny-header {
@@ -19,7 +19,7 @@
 }
 
 .strong-text {
-  @apply text-3xl condensed;
+  @apply text-2xl condensed;
 }
 
 .gray-text {
@@ -35,15 +35,15 @@
 }
 
 .brand-button-disabled {
-  @apply bg-BrandGray text-white;
+  @apply text-white bg-BrandGray;
 }
 
 .brand-button {
-  @apply px-6 py-3 rounded bg-BrandForest text-BrandYellow text-xl hover:bg-BrandYellow hover:text-BrandForest;
+  @apply px-5 py-2 text-lg rounded bg-BrandYellow text-BrandForest hover:bg-BrandForest hover:text-BrandYellow;
 }
 
 .brand-cancel-button {
-  @apply px-6 py-3 rounded text-BrandForest bg-BrandYellow text-xl hover:bg-BrandForest hover:text-BrandYellow focus:outline-none;
+  @apply px-6 py-3 text-xl rounded text-BrandForest bg-BrandYellow hover:bg-BrandForest hover:text-BrandYellow focus:outline-none;
 }
 
 .modal-backdrop {

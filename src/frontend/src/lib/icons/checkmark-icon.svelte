@@ -1,6 +1,6 @@
 <script>
     export let className = "";
-    export let color = "white";
+    export let color = "#F4C802";
 </script>
 
 <svg
