@@ -104,13 +104,13 @@
 {#await init()}
   <FullScreenSpinner />
 {:then _}
-  <div class="flex flex-col min-h-screen default-text bg-white">
+  <div class="flex flex-col min-h-screen bg-white default-text">
     {#if isLoading}
       <FullScreenSpinner />
     {:else}
       <Header {toggleNav} />  
       {#if isWhitepaper}
-        <div class="bg-white text-black flex-1 flex">
+        <div class="flex flex-1 text-black bg-white">
           <slot />
         </div>
       {:else}

@@ -43,28 +43,30 @@
     
 </script>
 
-{#each bands.players as player}
-
-    <div class="flex w-full flex-row">
-        <div class="w-1/8">
-            <img class="rounded-full" src={ getImageURL(player.profile_picture)} alt="profile" />
+<div class="flex flex-col space-y-2">
+    {#each bands.players as player}
+        <div class="flex flex-row w-full">
+            <div class="w-1/8">
+                <img class="w-8 h-8 rounded-full"  src={ getImageURL(player.profile_picture)} alt="profile" />
+            </div>
+            <div class="flex-1 ml-4 text-sm text-BrandDarkGray">
+                <p>{player.username}</p>
+            </div>
+            <div class="w-20 mr-4">
+                <p class="text-left text-black condensed">
+                    {(() => {
+                        const points = getPointsForPlayer(bands.points, player.principal_id);
+                        return points !== undefined ? points.toString() : "-";
+                    })()}
+                </p>
+            </div>
+            <div class="w-1/8">
+                {#if isWinner(player.principal_id)}
+                    <TrophyIcon className="w-6" />
+                {:else}
+                    <div class="w-6"></div>
+                {/if}
+            </div>
         </div>
-        <div class="w-5/8">
-            <p>{player.username}</p>
-        </div>
-        <div class="w-1/8">
-            <p>
-                {(() => {
-                    const points = getPointsForPlayer(bands.points, player.principal_id);
-                    return points !== undefined ? points.toString() : "-";
-                })()}
-            </p>
-        </div>
-        <div class="w-1/8">
-            {#if isWinner(player.principal_id)}
-                <TrophyIcon className="w-6" />
-            {/if}
-        </div>
-    </div>
-    
-{/each}
+    {/each}
+</div>

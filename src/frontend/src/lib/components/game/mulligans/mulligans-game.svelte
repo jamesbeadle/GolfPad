@@ -8,6 +8,8 @@
     export let players: GolferSummary[];
     export let golfCourse: GolfCourseTeeGroup;
 </script>
+
+
 {#if Object.keys(game.status)[0] == 'Unplayed'}
     <MulligansCountdown {game} {players} {golfCourse} />
 {/if}

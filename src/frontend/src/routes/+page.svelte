@@ -16,14 +16,14 @@
 </script>
 
 <Layout>
-    <div class="flex flex-col md:flex-row gap-6 p-4 md:p-6 text-black">
+    <div class="flex flex-row gap-6 p-4 text-black md:p-6">
         <div class="w-full md:w-2/3">
             <Buzz />
             
-            <div class="md:hidden mt-4">
+            <div class="mt-4 md:hidden">
                 <button 
                     on:click={openEventsModal}
-                    class="w-full bg-BrandGreen text-white py-2 px-4 rounded-md hover:bg-BrandForest transition-colors"
+                    class="w-full px-4 py-2 transition-colors rounded-md text-BrandYellow bg-BrandForest hover:bg-BrandForest/80"
                 >
                     View Events
                 </button>

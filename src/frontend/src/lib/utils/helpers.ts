@@ -21,7 +21,7 @@ export function formatUnixDateToReadable(unixNano: bigint) {
 }
 
 export function formatUnixDateToSmallReadable(unixNano: bigint) {
-  const date = new Date(Number(unixNano) / 1000000);
+  const date = new Date(Number(unixNano) * 1000);
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "short",
@@ -640,7 +640,7 @@ export function getImageURL(blob: any): string {
   if (blob && typeof blob === "object" && !Array.isArray(blob)) {
     const values = Object.values(blob);
     if (values.length === 0) {
-      return "/profile_placeholder.png";
+      return "/default-profile-picture.jpg";
     }
     byteArray = Uint8Array.from(Object.values(blob));
   } else if (Array.isArray(blob) && blob[0] instanceof Uint8Array) {
@@ -650,7 +650,7 @@ export function getImageURL(blob: any): string {
   } else if (typeof blob === "string") {
     if (blob.startsWith("data:image")) {
       return blob;
-    } else if (!blob.startsWith("/profile_placeholder.png")) {
+    } else if (!blob.startsWith("/default-profile-picture.jpg")) {
       return `data:png;base64,${blob}`;
     }
   }
@@ -659,7 +659,34 @@ export function getImageURL(blob: any): string {
     return `data:image/png;base64,${uint8ArrayToBase64(byteArray)}`;
   }
 
-  return "/profile_placeholder.png";
+  return "/default-profile-picture.jpg";
+}
+
+export function getCourseImageURL(blob: any): string {
+  let byteArray;
+  if (blob && typeof blob === "object" && !Array.isArray(blob)) {
+    const values = Object.values(blob);
+    if (values.length === 0) {
+      return "/course-placeholder.jpg";
+    }
+    byteArray = Uint8Array.from(Object.values(blob));
+  } else if (Array.isArray(blob) && blob[0] instanceof Uint8Array) {
+    byteArray = blob[0];
+  } else if (blob instanceof Uint8Array) {
+    byteArray = blob;
+  } else if (typeof blob === "string") {
+    if (blob.startsWith("data:image")) {
+      return blob;
+    } else if (!blob.startsWith("/course-placeholder.jpg")) {
+      return `data:png;base64,${blob}`;
+    }
+  }
+
+  if (byteArray) {
+    return `data:image/png;base64,${uint8ArrayToBase64(byteArray)}`;
+  }
+
+  return "/course-placeholder.jpg";
 }
 
 export function serializeData(data: any): string {

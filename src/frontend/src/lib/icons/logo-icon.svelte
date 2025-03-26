@@ -1,9 +1,10 @@
 <script>
   export let className = "";
-  export const fill = ""
+  export const fill = "";
+  export const fill2 = "white";
 </script>
 <svg class={className} width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="60" cy="60" r="60" fill="white"/>
+  <circle cx="60" cy="60" r="60" fill=fill2/>
   <circle cx="60" cy="60" r="46" fill="#101111"/>
   <path fill-rule="evenodd" clip-rule="evenodd" d="M102.483 66.689C102.824 64.5093 103 62.2753 103 60.0001C103 36.2518 83.7484 17 60.0001 17C36.2518 17 17 36.2518 17 60.0001C17 62.2753 17.1767 64.5093 17.5171 66.689H102.483Z" fill=BrandYellow/>
   <path fill-rule="evenodd" clip-rule="evenodd" d="M96.2825 66.689C96.7531 64.3647 97 61.9608 97 59.5C97 39.3416 80.4345 23 60 23C39.5655 23 23 39.3416 23 59.5C23 61.9608 23.2469 64.3647 23.7175 66.689H96.2825Z" fill=BrandYellow/>

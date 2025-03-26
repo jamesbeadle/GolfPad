@@ -13,7 +13,7 @@
 
 
 <div class="z-10 px-4 mb-20 text-center">
-    <h1 class="mb-1 font-bold text-BrandForest">WELCOME TO <span class="condensed">GOLFPAD</span></h1>
+    <h1 class="mb-1 font-bold text-BrandForest">WELCOME TO <span class="condensed">ICGC</span></h1>
     <h2 class="mx-16 mb-6 text-5xl font-black leading-tight text-black md:text-6xl condensed">THE FUTURE OF GOLF STARTS HERE</h2>
     
     <button 

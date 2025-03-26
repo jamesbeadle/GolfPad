@@ -10,9 +10,16 @@
 
 </script>
 
-<div class="flex flex-col w-full">
-    <GameCourseInfoSummary golfCourse={golfCourse!} />
-    <MulligansPlayersScores {game} {players} />
-    <MulligansGameDetail {game} {players} golfCourse={golfCourse!} />
+<div class="flex flex-col w-full md:flex-row">
+    <div class="w-full md:w-1/3">
+        <GameCourseInfoSummary golfCourse={golfCourse!} date={game.teeOffTime} />
+    </div>
+
+    <div class="w-full mt-2 md:mt-0 md:w-1/3">
+        <MulligansPlayersScores {players} />
+    </div>
+    <div class="w-full mt-4 md:mt-0 md:w-1/3">
+        <MulligansGameDetail {players} golfCourse={golfCourse!} />
+    </div>
 </div>
 
