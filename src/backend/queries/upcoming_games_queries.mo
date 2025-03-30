@@ -1,5 +1,6 @@
 import Game "../data-types/game_types";
 import Base "mo:waterway-mops/BaseTypes";
+import MopsIds "../data-types/mops_ids";
 
 module UpcomingGamesQueries {
 
@@ -21,13 +22,13 @@ module UpcomingGamesQueries {
     };
 
     public type GameInfo = {
-        game_id: ID.GameId;
+        game_id: MopsIds.GameId;
         game_type: Game.GameType;
         game_date: Int;
     };
 
     public type CourseInfo = {
-        course_id: ID.GolfCourseId;
+        course_id: MopsIds.GolfCourseId;
         course_image: Blob;
         course_name: Text;
     };

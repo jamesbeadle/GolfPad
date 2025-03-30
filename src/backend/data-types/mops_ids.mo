@@ -9,6 +9,7 @@ module IDTypes {
   public type CourseHistoryId = Nat16;
   public type CountryId = Nat8;
   public type PrincipalId = Text; //Base id
+  public type CanisterId = Text;
 };
 
 //TODO Move to mops

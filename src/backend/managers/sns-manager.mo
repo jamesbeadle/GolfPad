@@ -1,6 +1,6 @@
 import SNSGovernance "../sns-wrappers/governance";
-import Environment "../environment";
 import Principal "mo:base/Principal";
+import Environment "../utilities/Environment";
 
 module {
     public class SNSManager() {

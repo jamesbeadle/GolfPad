@@ -36,10 +36,15 @@ import GolfCourseQueries "../queries/golf_course_queries";
 import SNSGovernance "../sns-wrappers/governance";
 import SNSManager "../managers/sns-manager";
 import Membership "../data-types/membership_types";
-import StableStructure "../stable_structure";
 
 module {
-  public class GolferManager(scalableType: StableStructure.ScalableType) {
+  public class GolferManager() {
+
+    private var golferCanisterIndex : TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId> = TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId>(Text.equal, Text.hash);
+    private var activeCanisterId : Base.CanisterId = "";
+    private var usernames : TrieMap.TrieMap<Base.PrincipalId, Text> = TrieMap.TrieMap<Base.PrincipalId, Text>(Text.equal, Text.hash);
+    private var uniqueGolferCanisterIds : List.List<Base.CanisterId> = List.nil();
+    private var totalGolfers : Nat = 0;
 
     //Getters
 

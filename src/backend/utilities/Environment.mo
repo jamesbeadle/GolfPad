@@ -11,4 +11,9 @@ module Environment {
   public let SNS_GOVERNANCE_CANISTER_ID = "";
 
   public let DEFAULT_PAGE_SIZE = 10;
+
+  public let MAX_USERS_PER_CANISTER = 1000;
+  public let MAX_COURSES_PER_CANISTER = 1000;
+  public let MAX_GAMES_PER_CANISTER = 1000;
+  
 };

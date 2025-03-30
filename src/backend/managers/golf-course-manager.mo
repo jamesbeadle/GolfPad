@@ -18,33 +18,34 @@ import Utilities "../utilities/Utilities";
 
 import GolfCourseQueries "../queries/golf_course_queries";
 import GolfCourseCommands "../commands/golf_course_commands";
+import MopsIds "../data-types/mops_ids";
 
 module {
   public class GolfCourseManager() {
 
-    private var golfCourseCanisterIndex: TrieMap.TrieMap<ID.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<ID.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
+    private var golfCourseCanisterIndex: TrieMap.TrieMap<MopsIds.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<MopsIds.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
     private var activeCanisterId: Base.CanisterId = "";
-    private var golfCourseNames : TrieMap.TrieMap<ID.GolfCourseId, Text> = TrieMap.TrieMap<ID.GolfCourseId, Text>(Utilities.eqNat, Utilities.hashNat);
+    private var golfCourseNames : TrieMap.TrieMap<MopsIds.GolfCourseId, Text> = TrieMap.TrieMap<MopsIds.GolfCourseId, Text>(Utilities.eqNat, Utilities.hashNat);
     private var uniqueGolfCourseCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGolfCourses : Nat = 0;
-    private var nextGolfCourseId : ID.GolfCourseId = 1;
+    private var nextGolfCourseId : MopsIds.GolfCourseId = 1;
     
-    public func courseExists(courseId: ID.GolfCourseId) : Bool {
+    public func courseExists(courseId: MopsIds.GolfCourseId) : Bool {
       let course = golfCourseCanisterIndex.get(courseId);
       return Option.isSome(course);
     };
 
     public func getGolfCourses(dto: GolfCourseQueries.GetGolfCourses) : async Result.Result<GolfCourseQueries.GolfCourses, T.Error> {
       let searchTerm = dto.searchTerm;
-      let filteredEntries = List.filter<(ID.GolfCourseId, Text)>(
-        Iter.toList<(ID.GolfCourseId, Text)>(golfCourseNames.entries()),
-        func(entry : (ID.GolfCourseId, Text)) : Bool {
+      let filteredEntries = List.filter<(MopsIds.GolfCourseId, Text)>(
+        Iter.toList<(MopsIds.GolfCourseId, Text)>(golfCourseNames.entries()),
+        func(entry : (MopsIds.GolfCourseId, Text)) : Bool {
           Text.startsWith(entry.1, #text searchTerm);
         },
       );
       
-      let droppedEntries = List.drop<(ID.GolfCourseId, Text)>(filteredEntries, 0); //TODO 
-      let paginatedEntries = List.take<(ID.GolfCourseId, Text)>(droppedEntries, 10);
+      let droppedEntries = List.drop<(MopsIds.GolfCourseId, Text)>(filteredEntries, 0); //TODO 
+      let paginatedEntries = List.take<(MopsIds.GolfCourseId, Text)>(droppedEntries, 10);
 
       let coursesBuffer = Buffer.fromArray<GolfCourseQueries.GolfCourseSummary>([]);
 
@@ -128,7 +129,7 @@ module {
 
     public func executeAddGolfCourse(dto : GolfCourseCommands.CreateGolfCourse) : async () {
       var golf_course_canister = actor (activeCanisterId) : actor {
-        getLatestId : () -> async ID.GolfCourseId;
+        getLatestId : () -> async MopsIds.GolfCourseId;
         createGolfCourse : (dto: GolfCourseCommands.CreateGolfCourse) -> async Result.Result<(), T.Error>;
         isCanisterFull : () -> async Bool;
       };
@@ -137,12 +138,12 @@ module {
 
       if(isCanisterFull){
         let latestId = await golf_course_canister.getLatestId();
-        let nextId: ID.GameId = latestId + 1;
+        let nextId: MopsIds.GameId = latestId + 1;
         
         await createNewCanister(nextId);
 
         golf_course_canister := actor (activeCanisterId) : actor {
-          getLatestId : () -> async ID.GolfCourseId;
+          getLatestId : () -> async MopsIds.GolfCourseId;
           createGolfCourse : (dto: GolfCourseCommands.CreateGolfCourse) -> async Result.Result<(), T.Error>;
           isCanisterFull : () -> async Bool;
        };
@@ -183,12 +184,12 @@ module {
 
     //stable storage getters and setters
 
-    public func getStableCanisterIndex() : [(ID.GolfCourseId, Base.CanisterId)]{
+    public func getStableCanisterIndex() : [(MopsIds.GolfCourseId, Base.CanisterId)]{
       return Iter.toArray(golfCourseCanisterIndex.entries());
     };
 
-    public func setStableCanisterIndex(stable_golf_course_canister_index: [(ID.GolfCourseId, Base.CanisterId)]){
-      let canisterIds : TrieMap.TrieMap<ID.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<ID.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
+    public func setStableCanisterIndex(stable_golf_course_canister_index: [(MopsIds.GolfCourseId, Base.CanisterId)]){
+      let canisterIds : TrieMap.TrieMap<MopsIds.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<MopsIds.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
 
       for (canisterId in Iter.fromArray(stable_golf_course_canister_index)) {
         canisterIds.put(canisterId);
@@ -204,12 +205,12 @@ module {
       activeCanisterId := stable_active_canister_id;
     };  
 
-    public func getStableGolfCourseNames() : [(ID.GolfCourseId, Text)] {
+    public func getStableGolfCourseNames() : [(MopsIds.GolfCourseId, Text)] {
       return Iter.toArray(golfCourseNames.entries());
     };
 
-    public func setStableGolfCourseNames(stable_course_names : [(ID.GolfCourseId, Text)]) : () {
-      let golf_course_map : TrieMap.TrieMap<ID.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<ID.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
+    public func setStableGolfCourseNames(stable_course_names : [(MopsIds.GolfCourseId, Text)]) : () {
+      let golf_course_map : TrieMap.TrieMap<MopsIds.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<MopsIds.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
 
       for (courseName in Iter.fromArray(stable_course_names)) {
         golf_course_map.put(courseName);
@@ -238,15 +239,15 @@ module {
       totalGolfCourses := stable_total_golf_courses;
     };
 
-    public func getStableNextGolfCourseId() : ID.GolfCourseId {
+    public func getStableNextGolfCourseId() : MopsIds.GolfCourseId {
       return nextGolfCourseId;
     };
 
-    public func setStableNextGolfCourseId(stable_next_golf_course_id : ID.GolfCourseId) : () {
+    public func setStableNextGolfCourseId(stable_next_golf_course_id : MopsIds.GolfCourseId) : () {
       nextGolfCourseId := stable_next_golf_course_id;
     };
 
-    private func createNewCanister(nextId: ID.GolfCourseId) : async (){
+    private func createNewCanister(nextId: MopsIds.GolfCourseId) : async (){
       Cycles.add<system>(10_000_000_000_000);
       let canister = await GolfCoursesCanister._GolfCoursesCanister();
       let IC : Management.Management = actor (Environment.Default);
@@ -261,7 +262,7 @@ module {
       };
 
       var new_canister = actor (canisterId) : actor {
-        updateNextId : (nextId: ID.GameId) -> async ();
+        updateNextId : (nextId: MopsIds.GameId) -> async ();
       };
 
       await new_canister.updateNextId(nextId);
