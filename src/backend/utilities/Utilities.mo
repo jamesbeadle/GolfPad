@@ -14,8 +14,10 @@ import Int "mo:base/Int";
 import Management "Management";
 import Cycles "mo:base/ExperimentalCycles";
 import Char "mo:base/Char";
+import Array "mo:base/Array";
 import T "../data-types/app_types";
 import SNSGovernance "../sns-wrappers/governance";
+import Membership "../data-types/membership_types";
 
 module {
 
@@ -349,61 +351,137 @@ module {
 
     return result;
   };
+
   public func getMembershipExpirationDate(membershipType : T.MembershipType) : Int {
     let now = Time.now();
     switch (membershipType) {
-      case (#Monthly) { now + (30 * 24 * 60 * 60 * 1_000_000_000) };
-      case (#Seasonal) { now + (365 * 24 * 60 * 60 * 1_000_000_000) };
+      case (#Annual) { now + (365 * 24 * 60 * 60 * 1_000_000_000) };
       case (#Lifetime) {
         now + (100 * 365 * 24 * 60 * 60 * 1_000_000_000);
       };
+      case (#Founding) {
+        now + (10000 * 365 * 24 * 60 * 60 * 1_000_000_000);
+      };
+      case (#Clubhouse) { now + (365 * 24 * 60 * 60 * 1_000_000_000) };
+      case (#Society) { now + (365 * 24 * 60 * 60 * 1_000_000_000) };
       case (#NotClaimed) { now };
       case (#Expired) { now };
+      case (#NotEligible) { now };
     };
   };
+
   public func convertSecondsToYears(seconds : Int) : Float {
     let secondsInAYear = 31_536_000;
     Float.fromInt(seconds) / Float.fromInt(secondsInAYear);
   };
 
-  public func getMembershipType(neurons : [SNSGovernance.Neuron]) : ?T.MembershipType {
-    let oneK_ICFC_e8s : Nat64 = 1_000 * 100_000_000;
-    let tenK_ICFC_e8s : Nat64 = 10_000 * 100_000_000;
-    let hundredK_ICFC_e8s : Nat64 = 100_000 * 100_000_000;
+  public func getMembershipType(neurons : [SNSGovernance.Neuron]) : Membership.EligibleMembership {
 
-    var total_staked : Nat64 = 0;
+      var eligibleNeuronIds : [Blob] = [];
 
-    for (neuron in neurons.vals()) {
-      total_staked += neuron.cached_neuron_stake_e8s;
-      switch (neuron.dissolve_state) {
-        case (?dissolve_state) {
-          switch (dissolve_state) {
-            case (#DissolveDelaySeconds(dissolve_delay)) {
-              if (convertSecondsToYears(Int64.toInt(Int64.fromNat64(dissolve_delay))) > 2.0) {
-                total_staked += neuron.cached_neuron_stake_e8s;
+      let icfc_e8s : Nat64 = 100_000_000;
+      let oneK_ICFC_e8s : Nat64 = 1_000 * icfc_e8s;
+      let tenK_ICFC_e8s : Nat64 = 10_000 * icfc_e8s;
+      let hundredK_ICFC_e8s : Nat64 = 100_000 * icfc_e8s;
+      let million_ICFC_e8s : Nat64 = 1_000_000 * icfc_e8s;
+
+      let padding : Nat64 = 5_000_000;
+
+      var total_staked : Nat64 = 0;
+
+      for (neuron in neurons.vals()) {
+          switch (neuron.dissolve_state) {
+              case (?dissolve_state) {
+                  switch (dissolve_state) {
+                      case (#DissolveDelaySeconds(dissolve_delay)) {
+                          if (convertSecondsToYears(Int64.toInt(Int64.fromNat64(dissolve_delay))) > 2.0) {
+                              total_staked += neuron.cached_neuron_stake_e8s;
+                              switch (neuron.id) {
+                                  case (?neuronId) {
+                                      eligibleNeuronIds := Array.append(eligibleNeuronIds, [neuronId.id]);
+                                  };
+                                  case null {};
+                              };
+                          };
+                      };
+                      case (#WhenDissolvedTimestampSeconds(_)) {
+
+                      };
+                  };
               };
-            };
-            case (#WhenDissolvedTimestampSeconds(_)) {
 
-            };
+              case (null) {
+
+              };
           };
-        };
-
-        case (null) {
-
-        };
       };
-    };
 
-    if (total_staked + 5 >= hundredK_ICFC_e8s) {
-      return ?#Lifetime;
-    } else if (total_staked + 5 >= tenK_ICFC_e8s) {
-      return ?#Seasonal;
-    } else if (total_staked + 5 >= oneK_ICFC_e8s) {
-      return ?#Monthly;
-    } else {
-      return null;
-    };
+      //TODO Add all types
+
+      if (total_staked + padding >= million_ICFC_e8s) {
+          let dto : Membership.EligibleMembership = {
+              membershipType = #Founding;
+              eligibleNeuronIds = eligibleNeuronIds;
+          };
+          return dto;
+      } else if (total_staked + padding >= hundredK_ICFC_e8s) {
+          let dto : Membership.EligibleMembership = {
+              membershipType = #Lifetime;
+              eligibleNeuronIds = eligibleNeuronIds;
+          };
+          return dto;
+      } else {
+          let dto : Membership.EligibleMembership = {
+              membershipType = #NotEligible;
+              eligibleNeuronIds = [];
+          };
+          return dto;
+      };
+  };
+
+  public func getTotalMaxStaked(neurons : [SNSGovernance.Neuron]) : Nat64 {
+
+      var total_staked : Nat64 = 0;
+
+      for (neuron in neurons.vals()) {
+          switch (neuron.dissolve_state) {
+              case (?dissolve_state) {
+                  switch (dissolve_state) {
+                      case (#DissolveDelaySeconds(dissolve_delay)) {
+                          if (convertSecondsToYears(Int64.toInt(Int64.fromNat64(dissolve_delay))) > 2.0) {
+                              total_staked += neuron.cached_neuron_stake_e8s;
+                          };
+                      };
+                      case (#WhenDissolvedTimestampSeconds(_)) {
+
+                      };
+                  };
+              };
+
+              case (null) {
+
+              };
+          };
+      };
+
+      return total_staked;
+  };
+
+  public func canUpgradeMembership(currentMembership : T.MembershipType, newMembership : T.MembershipType) : Bool {
+      switch (currentMembership) {
+          case (#Founding) { false };
+          case (#Lifetime) {
+              newMembership == #Founding;
+          };
+          case (#Annual) {
+              newMembership == #Founding or newMembership == #Lifetime or newMembership == #Annual;
+          };
+          case (#Clubhouse) { false };
+          case (#Society) { false };
+          case (#Expired) { true };
+          case (#NotClaimed) { true };
+          case (#NotEligible) { true };
+      };
   };
 
 };

@@ -1,15 +1,15 @@
-import ID "../data-types/id_types";
 import GolfCourse "../data-types/golf_course_types";
 import Base "mo:waterway-mops/BaseTypes";
+import MopsIds "../data-types/mops_ids";
 
 module GolfCourseQueries {
     
     public type GetGolfCourse = {
-        id: ID.GolfCourseId;
+        id: MopsIds.GolfCourseId;
     };
 
     public type GolfCourse = {
-        id: ID.GolfCourseId;
+        id: MopsIds.GolfCourseId;
         name: Text;
         tees: [GolfCourseTeeGroup];
         activeVersion: GolfCourse.GolfCourseVersion;
@@ -17,7 +17,7 @@ module GolfCourseQueries {
         mainImageExtension: Text;
         totalHoles: Nat8;
         founded: Int;
-        countryId: ID.CountryId;
+        countryId: MopsIds.CountryId;
         manager: Text;
     };
 
@@ -35,21 +35,21 @@ module GolfCourseQueries {
     };
 
     public type GetGolfCourseSummary = {
-        id: ID.GolfCourseId;
+        id: MopsIds.GolfCourseId;
     };
 
     public type GolfCourseSummary = {
-        id: ID.GolfCourseId;
+        id: MopsIds.GolfCourseId;
         name: Text;
         mainImage: ?Blob;
         mainImageExtension: Text;
         founded: Int;
-        countryId: ID.CountryId;
+        countryId: MopsIds.CountryId;
         version: GolfCourse.GolfCourseVersion;
     };
 
     public type GetGolfCourseCanisterId = {
-        id: ID.GolfCourseId;
+        id: MopsIds.GolfCourseId;
     };
 
     public type GolfCourseCanisterId = {
@@ -69,28 +69,28 @@ module GolfCourseQueries {
     };
 
     public type FavouriteCourse = {
-        id: ID.GolfCourseId;
+        id: MopsIds.GolfCourseId;
         name: Text;
         mainImage: ?Blob;
         mainImageExtension: Text;
     };
     
     public type GetGolfCourseTees = {
-        golfCourseId: ID.GolfCourseId;
+        golfCourseId: MopsIds.GolfCourseId;
     };
 
     public type GolfCourseTees = {
-        id: ID.GolfCourseId;
+        id: MopsIds.GolfCourseId;
         tees: [GolfCourse.TeeGroup];
     };
 
     public type GetGolfCourseTeeGroup = {
-        id: ID.GolfCourseId;
+        id: MopsIds.GolfCourseId;
         index: GolfCourse.TeeGroupIndex;
     };
 
     public type GolfCourseTeeGroup = {
-        golfCourseId: ID.GolfCourseId;
+        golfCourseId: MopsIds.GolfCourseId;
         index: GolfCourse.TeeGroupIndex;
         name: Text;
         colour: Text;

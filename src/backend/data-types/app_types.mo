@@ -1,5 +1,5 @@
 import Base "mo:waterway-mops/BaseTypes";
-import ID "id_types";
+import MopsIds "mops_ids";
 
 module AppTypes {
 
@@ -22,6 +22,8 @@ module AppTypes {
     #CanisterFull;
     #CreateGameError;
     #InEligible;
+    #NeuronAlreadyUsed;
+    #AlreadyClaimed;
   };
 
   //Numerical Application Types
@@ -32,11 +34,14 @@ module AppTypes {
   //Application Membership Types
 
   public type MembershipType = {
-    #Monthly;
-    #Seasonal;
-    #Lifetime;
+    #Annual;
+    #Clubhouse;
     #Expired;
+    #Founding;
+    #Lifetime;
     #NotClaimed;
+    #NotEligible;
+    #Society
   };
 
   public type MembershipClaim = {
@@ -47,7 +52,7 @@ module AppTypes {
 
   public type Round = {
     playerId : Base.PrincipalId;
-    courseId : ID.GolfCourseId;
+    courseId : MopsIds.GolfCourseId;
     holeScores : [HoleScore];
   };
 

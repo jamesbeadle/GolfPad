@@ -9,6 +9,7 @@ import Result "mo:base/Result";
 import Text "mo:base/Text";
 import TrieMap "mo:base/TrieMap";
 import Principal "mo:base/Principal";
+import Time "mo:base/Time";
 import Base "mo:waterway-mops/BaseTypes";
 
 import T "../data-types/app_types";
@@ -34,15 +35,11 @@ import FriendQueries "../queries/friend_queries";
 import GolfCourseQueries "../queries/golf_course_queries";
 import SNSGovernance "../sns-wrappers/governance";
 import SNSManager "../managers/sns-manager";
+import Membership "../data-types/membership_types";
+import StableStructure "../stable_structure";
 
 module {
-  public class GolferManager() {
-
-    private var golferCanisterIndex : TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId> = TrieMap.TrieMap<Base.PrincipalId, Base.CanisterId>(Text.equal, Text.hash);
-    private var activeCanisterId : Base.CanisterId = "";
-    private var usernames : TrieMap.TrieMap<Base.PrincipalId, Text> = TrieMap.TrieMap<Base.PrincipalId, Text>(Text.equal, Text.hash);
-    private var uniqueGolferCanisterIds : List.List<Base.CanisterId> = List.nil();
-    private var totalGolfers : Nat = 0;
+  public class GolferManager(scalableType: StableStructure.ScalableType) {
 
     //Getters
 
@@ -315,50 +312,140 @@ module {
       };
     };
 
+    
+
+    public func getStableNeuronsUsedforMembership() : [(Blob, Base.PrincipalId)] {
+        return Iter.toArray(neuronsUsedforMembership.entries());
+    };
+
+    public func setStableNeuronsUsedforMembership(stable_neurons_used_for_membership : [(Blob, Base.PrincipalId)]) : () {
+        let neuronsUsedMap : TrieMap.TrieMap<Blob, Base.PrincipalId> = TrieMap.TrieMap<Blob, Base.PrincipalId>(Blob.equal, Blob.hash);
+
+        for (neuron in Iter.fromArray(stable_neurons_used_for_membership)) {
+            neuronsUsedMap.put(neuron);
+        };
+        neuronsUsedforMembership := neuronsUsedMap;
+    };
+
     public func claimMembership(dto : GolferCommands.ClaimMembership) : async Result.Result<(T.MembershipClaim), T.Error> {
-      let existingProfileCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch (existingProfileCanisterId) {
-        case (?_) {
-          let snsManager = SNSManager.SNSManager();
-          let userNeurons : [SNSGovernance.Neuron] = await snsManager.getUsersNeurons(Principal.fromText(dto.principalId));
+        let existingProfileCanisterId = golferCanisterIndex.get(dto.principalId);
+        switch (existingProfileCanisterId) {
+            case (?foundCanisterId) {
+                let profile_canister = actor (foundCanisterId) : actor {
+                    getProfile : (dto : GolferQueries.GetProfile) -> async Result.Result<GolferQueries.Profile, T.Error>;
+                };
 
-          let eligibleMembershipType : ?T.MembershipType = Utilities.getMembershipType(userNeurons);
+                let profile = await profile_canister.getProfile(dto);
+                switch (profile) {
+                    case (#ok(profileDTO)) {
+                        let profile = profileDTO;
+                        let currentMembership = profile.membershipType;
 
-          // TODO: Add temporary logic to allow whitelisted principal ids to gain access
+                        let snsManager = SNSManager.SNSManager();
+                        let userNeurons : [SNSGovernance.Neuron] = await snsManager.getUsersNeurons(Principal.fromText(dto.principalId));
+                        let eligibleMembership : Membership.EligibleMembership = Utilities.getMembershipType(userNeurons);
 
-          switch (eligibleMembershipType) {
-            case (?membershipType) {
-              let updateMembershipCommand : GolferCommands.UpdateMembership = {
-                principalId = dto.principalId;
-                membershipType = membershipType;
-              };
-              return await updateMembership(updateMembershipCommand);
+                        let isNeuronsValid = validNeurons(eligibleMembership.eligibleNeuronIds, dto.principalId);
+                        if (not isNeuronsValid) {
+                            return #err(#NeuronAlreadyUsed);
+                        };
+
+                        switch (eligibleMembership.membershipType) {
+                            case (newMembershipType) {
+                                if (newMembershipType == #NotEligible) {
+                                    return #err(#InEligible);
+                                };
+
+                                let canUpgrade : Bool = Utilities.canUpgradeMembership(currentMembership, newMembershipType);
+
+                                if (not canUpgrade) {
+                                    switch (currentMembership) {
+                                        case (#Monthly or #Seasonal) {
+                                            let currentTimestamp = Time.now();
+                                            let membershipClaim = List.last(List.fromArray(profile.membershipClaims));
+                                            switch (membershipClaim) {
+                                                case (?claim) {
+                                                    let expiresOn = claim.expiresOn;
+                                                    switch (expiresOn) {
+                                                        case (?exp) {
+                                                            if (exp > currentTimestamp) {
+                                                                return #err(#AlreadyClaimed);
+                                                            };
+                                                        };
+                                                        case (null) {};
+                                                    };
+                                                };
+                                                case (null) {};
+                                            };
+                                        };
+                                        case (_) {
+
+                                            return #err(#AlreadyClaimed);
+                                        };
+                                    };
+                                };
+
+                                let updateMembershipCommand : GolferCommands.UpdateMembership = {
+                                    principalId = dto.principalId;
+                                    membershipType = newMembershipType;
+                                };
+                                let res = await updateMembership(updateMembershipCommand);
+
+                                switch (res) {
+                                    case (#ok(claim)) {
+                                        return #ok(claim);
+                                    };
+                                    case (#err(err)) {
+                                        return #err(err);
+                                    };
+                                };
+                            };
+
+                        };
+
+                    };
+                    case (#err(_)) {
+                        return #err(#NotFound);
+                    };
+                };
             };
             case (null) {
-              return #err(#InEligible);
+                return #err(#NotFound);
             };
-          };
         };
-        case (null) {
-          return #err(#NotFound);
-        };
+    };
 
-      };
+    private func validNeurons(neurons : [Blob], newPrinciaplId : Base.PrincipalId) : Bool {
+        for (neuron in neurons.vals()) {
+            let existingPrincipalId = neuronsUsedforMembership.get(neuron);
+            switch (existingPrincipalId) {
+                case (?foundPrincipalId) {
+                    if (foundPrincipalId != newPrinciaplId) {
+                        return false;
+                    };
+                };
+                case (null) {
+                    return false;
+                };
+            };
+        };
+        return true;
     };
 
     public func updateMembership(dto : GolferCommands.UpdateMembership) : async Result.Result<(T.MembershipClaim), T.Error> {
-      let existingProfileCanisterId = golferCanisterIndex.get(dto.principalId);
-      switch (existingProfileCanisterId) {
-        case (?foundCanisterId) {
-          let profile_canister = actor (foundCanisterId) : actor {
-            updateMembership : (dto : GolferCommands.UpdateMembership) -> async Result.Result<(T.MembershipClaim), T.Error>;
-          };
-          return await profile_canister.updateMembership(dto);
+        let existingProfileCanisterId = golferCanisterIndex.get(dto.principalId);
+        switch (existingProfileCanisterId) {
+            case (?foundCanisterId) {
+                let profile_canister = actor (foundCanisterId) : actor {
+                    updateMembership : (dto : GolferCommands.UpdateMembership) -> async Result.Result<(T.MembershipClaim), T.Error>;
+                    getProfile : (dto : GolferQueries.GetProfile) -> async Result.Result<GolferQueries.Profile, T.Error>;
+                };
+                await profile_canister.updateMembership(dto);
+            };
+            case (null) {
+                return #err(#NotFound);
+            };
         };
-        case (null) {
-          return #err(#NotFound);
-        };
-      };
     };
 
     public func updateUsername(dto : GolferCommands.UpdateUsername) : async Result.Result<(), T.Error> {

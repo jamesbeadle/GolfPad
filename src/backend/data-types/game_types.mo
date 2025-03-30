@@ -1,7 +1,7 @@
 import Base "mo:waterway-mops/BaseTypes";
-import ID "id_types";
 import GolfCourses "golf_course_types";
 import T "app_types";
+import MopsIds "mops_ids";
 
 module GameTypes {
 
@@ -9,7 +9,7 @@ module GameTypes {
 
   public type GameInvite = {
     inviteFrom : Base.PrincipalId;
-    gameId : ID.GameId;
+    gameId : MopsIds.GameId;
   };
 
   public type PlayerSummary = {
@@ -25,31 +25,31 @@ module GameTypes {
   };
 
   public type MulligansGameSummary = {
-    gameId : ID.GameId;
+    gameId : MopsIds.GameId;
     players : [PlayerSummary];
     status : GameStatus;
     date : Int;
-    courseId : ID.GolfCourseId;
+    courseId : MopsIds.GolfCourseId;
     score : Int8;
     holesPlayed : Nat8;
   };
 
   public type BandsGameSummary = {
-    gameId : ID.GameId;
+    gameId : MopsIds.GameId;
     players : [PlayerSummary];
     status : GameStatus;
     date : Int;
-    courseId : ID.GolfCourseId;
+    courseId : MopsIds.GolfCourseId;
     holesPlayed : Nat8;
     points : (Base.PrincipalId, Nat);
   };
 
   public type NextUpGameSummary = {
-    gameId : ID.GameId;
+    gameId : MopsIds.GameId;
     players : [PlayerSummary];
     status : GameStatus;
     date : Int;
-    courseId : ID.GolfCourseId;
+    courseId : MopsIds.GolfCourseId;
     holesPlayed : Nat8;
     points : (Base.PrincipalId, Nat);
   };
@@ -57,11 +57,11 @@ module GameTypes {
   //Game Types
 
   public type Game = {
-    id : ID.GameId;
+    id : MopsIds.GameId;
     gameType : GameType;
     scoreDetail : ?GameScoreDetail;
     status : GameStatus;
-    courseId : ID.GolfCourseId;
+    courseId : MopsIds.GolfCourseId;
     predictions : [GamePrediction];
     courseSnapshot : GolfCourses.GolfCourseSnapshot;
     teeOffTime : Int;

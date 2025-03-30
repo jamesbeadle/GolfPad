@@ -1,6 +1,6 @@
-import ID "../data-types/id_types";
 import GolfCourse "../data-types/golf_course_types";
 import Base "mo:waterway-mops/BaseTypes";
+import MopsIds "../data-types/mops_ids";
 
 module GolfCourseCommands {
 
@@ -12,12 +12,12 @@ module GolfCourseCommands {
         bannerImage: ?Blob;
         bannerImageExtension: Text;
         founded: Int;
-        countryId: ID.CountryId;
+        countryId: MopsIds.CountryId;
         manager: Base.PrincipalId;
     };
 
     public type UpdateGolfCourse = {
-        courseId: ID.GolfCourseId;
+        courseId: MopsIds.GolfCourseId;
         name: Text;
         teeGroups: [GolfCourse.TeeGroup];
         mainImage: ?Blob;
@@ -28,7 +28,7 @@ module GolfCourseCommands {
     };
 
     public type DeleteGolfCourse = {
-        courseId: ID.GolfCourseId;
+        courseId: MopsIds.GolfCourseId;
 
     };
 }

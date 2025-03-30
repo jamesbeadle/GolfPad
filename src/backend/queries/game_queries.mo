@@ -1,21 +1,21 @@
-import ID "../data-types/id_types";
 import Game "../data-types/game_types";
 import GolfCourse "../data-types/golf_course_types";
 import Base "mo:waterway-mops/BaseTypes";
+import MopsIds "../data-types/mops_ids";
 
 module GameQueries {
 
     public type GetGame = {
-        gameId: ID.GameId;
+        gameId: MopsIds.GameId;
     };
 
 
     public type Game = {
-        id: ID.GameId;
+        id: MopsIds.GameId;
         gameType: Game.GameType;
         scoreDetail: ?Game.GameScoreDetail;
         status: Game.GameStatus;
-        courseId: ID.GolfCourseId;
+        courseId: MopsIds.GolfCourseId;
         predictions: [Game.GamePrediction];
         courseSnapshot: GolfCourse.GolfCourseSnapshot;
         teeOffTime: Int;
@@ -39,7 +39,7 @@ module GameQueries {
         sentBy: Base.PrincipalId;
         invited: Base.PrincipalId;
         sentOn: Int;
-        gameId: ID.GameId;
+        gameId: MopsIds.GameId;
     };
 
     public type GetGameSummaries = {
@@ -55,7 +55,7 @@ module GameQueries {
     };
 
     public type GameSummary = {
-        id: ID.GameId;
+        id: MopsIds.GameId;
         gameType: Game.GameType;
         date: Int;
         players: [Base.PrincipalId];

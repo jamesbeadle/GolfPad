@@ -9,7 +9,6 @@ import Cycles "mo:base/ExperimentalCycles";
 import Option "mo:base/Option";
 
 import T "../data-types/app_types";
-import ID "../data-types/id_types";
 import Game "../data-types/game_types";
 import Management "../utilities/Management";
 import GameCanister "../canister-definitions/game-canister";
@@ -21,15 +20,16 @@ import Base "mo:waterway-mops/BaseTypes";
 import GameCommands "../commands/game_commands";
 import GameQueries "../queries/game_queries";
 import BuzzQueries "../queries/buzz_queries";
+import MopsIds "../data-types/mops_ids";
 
 module {
   public class GameManager() {
 
-    private var gameCanisterIndex: TrieMap.TrieMap<ID.GameId, Base.CanisterId> = TrieMap.TrieMap<ID.GameId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
+    private var gameCanisterIndex: TrieMap.TrieMap<MopsIds.GameId, Base.CanisterId> = TrieMap.TrieMap<MopsIds.GameId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
     private var activeCanisterId: Base.CanisterId = "";
     private var uniqueGameCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGames : Nat = 0;
-    private var nextGameId: ID.GameId = 1;
+    private var nextGameId: MopsIds.GameId = 1;
 
     private var gameSummaries: [Game.GameSummary] = [];
 
@@ -42,7 +42,7 @@ module {
       return []
     };
 
-    public func createGame(dto: GameCommands.CreateGame) : async Result.Result<ID.GameId, T.Error> {
+    public func createGame(dto: GameCommands.CreateGame) : async Result.Result<MopsIds.GameId, T.Error> {
       
       assert Option.isNull(Array.find<Base.PrincipalId>(dto.inviteIds, func(playerId: Base.PrincipalId){ playerId == dto.createdById  }));
       
@@ -64,8 +64,8 @@ module {
       };
       Debug.print("Past Switch");
       var game_canister = actor (activeCanisterId) : actor {
-        createGame : (dto: GameCommands.CreateGame) -> async Result.Result<ID.GameId, T.Error>;
-        getLatestId : () -> async ID.GameId;
+        createGame : (dto: GameCommands.CreateGame) -> async Result.Result<MopsIds.GameId, T.Error>;
+        getLatestId : () -> async MopsIds.GameId;
         isCanisterFull : () -> async Bool;
       };
 
@@ -73,8 +73,8 @@ module {
         case "" {
           await createNewCanister(totalGames + 1);
           game_canister := actor (activeCanisterId) : actor {
-            createGame : (dto: GameCommands.CreateGame) -> async Result.Result<ID.GameId, T.Error>;
-            getLatestId : () -> async ID.GameId;
+            createGame : (dto: GameCommands.CreateGame) -> async Result.Result<MopsIds.GameId, T.Error>;
+            getLatestId : () -> async MopsIds.GameId;
             isCanisterFull : () -> async Bool;
           };
         };
@@ -82,11 +82,11 @@ module {
           let isCanisterFull = await game_canister.isCanisterFull(); 
           if(isCanisterFull){
             let latestId = await game_canister.getLatestId();
-            let nextId: ID.GameId = latestId + 1;
+            let nextId: MopsIds.GameId = latestId + 1;
             await createNewCanister(nextId);
             game_canister := actor (activeCanisterId) : actor {
-              createGame : (dto: GameCommands.CreateGame) -> async Result.Result<ID.GameId, T.Error>;
-              getLatestId : () -> async ID.GameId;
+              createGame : (dto: GameCommands.CreateGame) -> async Result.Result<MopsIds.GameId, T.Error>;
+              getLatestId : () -> async MopsIds.GameId;
               isCanisterFull : () -> async Bool;
             };
           };
@@ -114,12 +114,12 @@ module {
       return #err(#NotFound);
     };
 
-    public func isGameOwner(gameId: ID.GameId, principalId: Base.PrincipalId) : async Bool {
+    public func isGameOwner(gameId: MopsIds.GameId, principalId: Base.PrincipalId) : async Bool {
       let gameCanisterId = gameCanisterIndex.get(gameId);
       switch(gameCanisterId){
         case (?foundCanisterId){
           let game_canister = actor (foundCanisterId) : actor {
-            isGameOwner : (gameId: ID.GameId, principalId: Base.PrincipalId) -> async Bool;
+            isGameOwner : (gameId: MopsIds.GameId, principalId: Base.PrincipalId) -> async Bool;
           };
           return await game_canister.isGameOwner(gameId, principalId);
         };
@@ -128,12 +128,12 @@ module {
       return false;
     };
 
-    public func isGameMember(gameId: ID.GameId, principalId: Base.PrincipalId) : async Bool {
+    public func isGameMember(gameId: MopsIds.GameId, principalId: Base.PrincipalId) : async Bool {
       let gameCanisterId = gameCanisterIndex.get(gameId);
       switch(gameCanisterId){
         case (?foundCanisterId){
           let game_canister = actor (foundCanisterId) : actor {
-            isGameMember : (gameId: ID.GameId, principalId: Base.PrincipalId) -> async Bool;
+            isGameMember : (gameId: MopsIds.GameId, principalId: Base.PrincipalId) -> async Bool;
           };
           return await game_canister.isGameMember(gameId, principalId);
         };
@@ -295,7 +295,7 @@ module {
       };
     };
 
-    private func createNewCanister(nextId: ID.GameId) : async (){
+    private func createNewCanister(nextId: MopsIds.GameId) : async (){
       Cycles.add<system>(10_000_000_000_000);
       let canister = await GameCanister._GameCanister();
       let IC : Management.Management = actor (Environment.Default);
@@ -310,7 +310,7 @@ module {
       };
 
       var new_canister = actor (canisterId) : actor {
-        updateNextId : (nextId: ID.GameId) -> async ();
+        updateNextId : (nextId: MopsIds.GameId) -> async ();
       };
 
       await new_canister.updateNextId(nextId);
@@ -324,12 +324,12 @@ module {
     
     //stable storage getters and setters
 
-    public func getStableCanisterIndex() : [(ID.GameId, Base.CanisterId)]{
+    public func getStableCanisterIndex() : [(MopsIds.GameId, Base.CanisterId)]{
       return Iter.toArray(gameCanisterIndex.entries());
     };
 
-    public func setStableCanisterIndex(stable_game_canister_index: [(ID.GameId, Base.CanisterId)]){
-      let canisterIds : TrieMap.TrieMap<ID.GameId, Base.CanisterId> = TrieMap.TrieMap<ID.GameId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
+    public func setStableCanisterIndex(stable_game_canister_index: [(MopsIds.GameId, Base.CanisterId)]){
+      let canisterIds : TrieMap.TrieMap<MopsIds.GameId, Base.CanisterId> = TrieMap.TrieMap<MopsIds.GameId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
 
       for (canisterId in Iter.fromArray(stable_game_canister_index)) {
         canisterIds.put(canisterId);
@@ -375,11 +375,11 @@ module {
     };
      
 
-    public func getStableNextGameId() : ID.GameId {
+    public func getStableNextGameId() : MopsIds.GameId {
       return nextGameId;
     };
 
-    public func setStableNextGameId(stable_next_game_id : ID.GameId) : () {
+    public func setStableNextGameId(stable_next_game_id : MopsIds.GameId) : () {
       nextGameId := stable_next_game_id;
     };
 

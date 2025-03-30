@@ -8,4 +8,7 @@ module IDTypes {
   public type GolfChannelId = Nat;
   public type CourseHistoryId = Nat16;
   public type CountryId = Nat8;
+  public type PrincipalId = Text; //Base id
 };
+
+//TODO Move to mops

@@ -1,7 +1,7 @@
 import T "../data-types/app_types";
-import ID "../data-types/id_types";
 import Base "mo:waterway-mops/BaseTypes";
 import GolfEnums "../data-types/golf_enums";
+import MopsIds "../data-types/mops_ids";
 
 module ShotCommands {
 
@@ -13,14 +13,14 @@ module ShotCommands {
 
     public type UpdateShot = {
         principalId: Base.PrincipalId;
-        golfShotId: ID.GolfShotId;
+        golfShotId: MopsIds.GolfShotId;
         yardage: Nat;
         club: GolfEnums.GolfClub;
     };
 
     public type DeleteShot = {
         principalId: Base.PrincipalId;
-        golfShotId: ID.GolfShotId;
+        golfShotId: MopsIds.GolfShotId;
     };
 
 }

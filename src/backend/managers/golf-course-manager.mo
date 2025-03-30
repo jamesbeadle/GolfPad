@@ -14,7 +14,6 @@ import GolfCoursesCanister "../canister-definitions/golf-courses-canister";
 import Environment "../utilities/Environment";
 import Management "../utilities/Management";
 import T "../data-types/app_types";
-import ID "../data-types/id_types";
 import Utilities "../utilities/Utilities";
 
 import GolfCourseQueries "../queries/golf_course_queries";

@@ -10,10 +10,10 @@ import Base "mo:waterway-mops/BaseTypes";
 
 import Environment "../utilities/Environment";
 import T "../data-types/app_types";
-import ID "../data-types/id_types";
 import Game "../data-types/game_types";
 import GameCommands "../commands/game_commands";
 import GameQueries "../queries/game_queries";
+import MopsIds "../data-types/mops_ids";
 
 
 actor class _GameCanister() {
@@ -21,10 +21,10 @@ actor class _GameCanister() {
   private stable var MAX_GAMES_PER_GROUP: Nat = 250000;
   private stable var MAX_GAMES_PER_CANISTER: Nat = 12500000;
 
-  private stable var stable_game_group_indexes: [(ID.GameId, Nat8)] = [];
+  private stable var stable_game_group_indexes: [(MopsIds.GameId, Nat8)] = [];
 
   private stable var activeGroupIndex: Nat8 = 0;
-  private stable var nextGameId: ID.GameId = 1;
+  private stable var nextGameId: MopsIds.GameId = 1;
   private stable var totalGames = 0;
 
   private stable var gameGroup1 : [Game.Game] = [];
@@ -79,7 +79,7 @@ actor class _GameCanister() {
   private stable var gameGroup50 : [Game.Game] = [];
 
 
-  public shared ({ caller }) func updateNextId(nextId: ID.GameId) : async (){
+  public shared ({ caller }) func updateNextId(nextId: MopsIds.GameId) : async (){
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -87,7 +87,7 @@ actor class _GameCanister() {
     nextGameId := nextId;
   };
 
-  public shared ({ caller }) func createGame(dto: GameCommands.CreateGame) : async Result.Result<ID.GameId, T.Error>{
+  public shared ({ caller }) func createGame(dto: GameCommands.CreateGame) : async Result.Result<MopsIds.GameId, T.Error>{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -378,7 +378,7 @@ actor class _GameCanister() {
     return #ok(newGame.id);
   };
 
-  public shared ({ caller }) func getLatestId() : async ID.GameId{
+  public shared ({ caller }) func getLatestId() : async MopsIds.GameId{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -612,7 +612,7 @@ actor class _GameCanister() {
 
   //Private functions:
 
-  private func findGame(gameGroupIndex: Nat8, gameId: ID.GameId) : ?Game.Game {
+  private func findGame(gameGroupIndex: Nat8, gameId: MopsIds.GameId) : ?Game.Game {
     switch(gameGroupIndex){
       case 0{
         let foundGame = Array.find<Game.Game>(gameGroup1, func(game: Game.Game){

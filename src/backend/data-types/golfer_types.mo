@@ -1,9 +1,9 @@
 import Base "mo:waterway-mops/BaseTypes";
 import Blob "mo:base/Blob";
 import GolfEnums "golf_enums";
-import ID "id_types";
 import T "app_types";
 import Game "game_types";
+import MopsIds "mops_ids";
 
 module GolferTypes {
 
@@ -17,15 +17,15 @@ module GolferTypes {
     firstName : Text;
     lastName : Text;
     handicap : ?T.Handicap;
-    homeCourseId : ?ID.GolfCourseId;
+    homeCourseId : ?MopsIds.GolfCourseId;
     termsAgreed : Bool;
     profilePicture : ?Blob;
     profilePictureFileExtension : Text;
-    favouriteGolfCourseIds : [ID.GolfCourseId];
+    favouriteGolfCourseIds : [MopsIds.GolfCourseId];
     shots : [GolfShot];
-    upcomingGames : [ID.GameId];
-    activeGames : [ID.GameId];
-    completedGames : [ID.GameId];
+    upcomingGames : [MopsIds.GameId];
+    activeGames : [MopsIds.GameId];
+    completedGames : [MopsIds.GameId];
     gameSummaries : [Game.GameSummary];
     scheduledGames : [Game.GameSummary];
     friendRequests : [FriendRequest];
@@ -39,7 +39,7 @@ module GolferTypes {
   };
 
   public type GolfShot = {
-    id : ID.GolfShotId;
+    id : MopsIds.GolfShotId;
     golferId : Base.PrincipalId;
     club : GolfEnums.GolfClub;
     yardage : Nat;
@@ -68,7 +68,7 @@ module GolferTypes {
   public type BuzzFeedItem = {
     gameType : Game.GameType;
     date : Int;
-    course : ID.GolfCourseId;
+    course : MopsIds.GolfCourseId;
     players : [Golfer];
     feedItemType : BuzzFeedItemType;
     //TOOD: Need a property to show score based on game types

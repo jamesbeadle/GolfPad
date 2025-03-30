@@ -1,8 +1,10 @@
 import T "../data-types/app_types";
-import ID "../data-types/id_types";
 import Game "../data-types/game_types";
+import Membership "../data-types/membership_types";
 import Base "mo:waterway-mops/BaseTypes";
 import GolfCourseQueries "golf_course_queries";
+import SNSGovernance "../sns-wrappers/governance";
+import MopsIds "../data-types/mops_ids";
 
 module GolferQueries {
     
@@ -18,7 +20,9 @@ module GolferQueries {
         golferPicture: ?Blob;
         golferPictureExtension: Text;
         handicap: ?T.Handicap;
-        homeCourseId: ?ID.GolfCourseId;
+        homeCourseId: ?MopsIds.GolfCourseId;
+        membershipType : T.MembershipType;
+        membershipClaims : [T.MembershipClaim];
     };
 
     public type GetGolfers = {
@@ -57,12 +61,12 @@ module GolferQueries {
         golferPicture: ?Blob;
         golferPictureExtension: Text;
         handicap: ?T.Handicap;
-        upcomingGames: [ID.GameId];
-        activeGames: [ID.GameId];
-        completedGames: [ID.GameId];
+        upcomingGames: [MopsIds.GameId];
+        activeGames: [MopsIds.GameId];
+        completedGames: [MopsIds.GameId];
         gameInvites: [Game.GameInvite];
         homeCourse: Text;
-        homeCourseId: ?ID.GolfCourseId;
+        homeCourseId: ?MopsIds.GolfCourseId;
         homeCourseImage: ?Blob;
     };
 
@@ -74,12 +78,18 @@ module GolferQueries {
     public type UsernameAvailable = Bool;
 
     public type GetGameGolferSummaries = {
-        gameId: ID.GameId;
+        gameId: MopsIds.GameId;
     };
 
 
     public type GameGolferSummaries = {
         entries: [GolferSummary];
+    };
+
+    public type GolferNeurons = {
+        userNeurons : [SNSGovernance.Neuron];
+        totalMaxStaked : Nat64;
+        userMembershipEligibility : Membership.EligibleMembership;
     };
     
 }

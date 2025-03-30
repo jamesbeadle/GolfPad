@@ -1,6 +1,6 @@
 import T "../data-types/app_types";
-import ID "../data-types/id_types";
 import Base "mo:waterway-mops/BaseTypes";
+import MopsIds "../data-types/mops_ids";
 
 module GolferCommands {
 
@@ -9,6 +9,7 @@ module GolferCommands {
         handicap : ?T.Handicap;
         profilePicture : ?Blob;
         profilePictureExtension : ?Text;
+        accessCode: ?Text;
     };
 
     public type UpdateUsername = {
@@ -39,7 +40,7 @@ module GolferCommands {
 
     public type UpdateHomeCourse = {
         principalId : Base.PrincipalId;
-        homeCourseId : ?ID.GolfCourseId;
+        homeCourseId : ?MopsIds.GolfCourseId;
     };
 
     public type DeleteGolfer = {
@@ -49,7 +50,7 @@ module GolferCommands {
 
     public type RemoveUserGolfCourse = {
         principalId : Base.PrincipalId;
-        golfCourseId : ID.GolfCourseId;
+        golfCourseId : MopsIds.GolfCourseId;
     };
 
     public type ClaimMembership = {

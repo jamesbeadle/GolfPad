@@ -8,20 +8,20 @@ import Time "mo:base/Time";
 
 import Environment "../utilities/Environment";
 import T "../data-types/app_types";
-import ID "../data-types/id_types";
 import GolfCourse "../data-types/golf_course_types";
 import GolfCourseQueries "../queries/golf_course_queries";
 import GolfCourseCommands "../commands/golf_course_commands";
+import MopsIds "../data-types/mops_ids";
 
 actor class _GolfCoursesCanister() {
 
   private stable var MAX_GOLF_COURSES_PER_GROUP: Nat = 50;
   private stable var MAX_GOLF_COURSES_PER_CANISTER: Nat = 5000;
 
-  private stable var stable_golf_course_group_indexes: [(ID.GolfCourseId, Nat8)] = [];
+  private stable var stable_golf_course_group_indexes: [(MopsIds.GolfCourseId, Nat8)] = [];
   
   private stable var activeGroupIndex: Nat8 = 0;
-  private stable var nextCourseId: ID.GolfCourseId = 1;
+  private stable var nextCourseId: MopsIds.GolfCourseId = 1;
   private stable var totalGolfCourses = 0;
 
   private stable var golfCourseGroup1: [GolfCourse.GolfCourse] = [];
@@ -225,14 +225,14 @@ actor class _GolfCoursesCanister() {
     return #err(#NotFound); //TODO;
   };
 
-  public shared ({ caller }) func getLatestId() : async ID.GolfCourseId{
+  public shared ({ caller }) func getLatestId() : async MopsIds.GolfCourseId{
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
     return nextCourseId - 1;
   };
 
-  public shared ({ caller }) func updateNextId(nextId: ID.GolfCourseId) : async (){
+  public shared ({ caller }) func updateNextId(nextId: MopsIds.GolfCourseId) : async (){
     assert not Principal.isAnonymous(caller);
     let backendPrincipalId = Principal.toText(caller);
     assert backendPrincipalId == Environment.BACKEND_CANISTER_ID;
@@ -397,7 +397,7 @@ actor class _GolfCoursesCanister() {
 
   //Private functions:
 
-  private func findGolfCourse(golfCourseGroupIndex: Nat8, courseId: ID.GolfCourseId) : ?GolfCourse.GolfCourse {
+  private func findGolfCourse(golfCourseGroupIndex: Nat8, courseId: MopsIds.GolfCourseId) : ?GolfCourse.GolfCourse {
     switch(golfCourseGroupIndex){
       case 0{
         let foundGolfer = Array.find<GolfCourse.GolfCourse>(golfCourseGroup1, func(golfCourse: GolfCourse.GolfCourse){
@@ -2430,7 +2430,7 @@ actor class _GolfCoursesCanister() {
     return #ok();
   };
 
-  private func removeGolfCourse(groupIndex: Nat8, removeCourseId: ID.GolfCourseId) : Result.Result<(), T.Error>{
+  private func removeGolfCourse(groupIndex: Nat8, removeCourseId: MopsIds.GolfCourseId) : Result.Result<(), T.Error>{
     switch(groupIndex){
       case 0{
         golfCourseGroup1 := Array.filter<GolfCourse.GolfCourse>(golfCourseGroup1, func(golfCourse: GolfCourse.GolfCourse){

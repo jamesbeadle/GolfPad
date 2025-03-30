@@ -1,6 +1,6 @@
 import Base "mo:waterway-mops/BaseTypes";
 import Blob "mo:base/Blob";
-import ID "id_types";
+import MopsIds "mops_ids";
 
 module GolfCourseTypes {
 
@@ -23,7 +23,7 @@ module GolfCourseTypes {
     bannerImageExtension : Text;
     courseAlbums : [GolfCourseAlbum];
     courseImages : [GolfCourseImage];
-    countryId : ID.CountryId;
+    countryId : MopsIds.CountryId;
     manager: Base.PrincipalId;
   };
 
@@ -66,7 +66,7 @@ module GolfCourseTypes {
     holes : [Hole];
   };
   public type GolfCourseSnapshot = {
-    courseId : ID.GolfCourseId;
+    courseId : MopsIds.GolfCourseId;
     courseVersion : GolfCourseVersion;
     teeGroupIndex : TeeGroupIndex;
   };

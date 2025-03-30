@@ -1,20 +1,20 @@
 import T "../data-types/app_types";
-import ID "../data-types/id_types";
 import Game "../data-types/game_types";
 import GolfCourse "../data-types/golf_course_types";
 import Base "mo:waterway-mops/BaseTypes";
+import MopsIds "../data-types/mops_ids";
 
 module GameCommands {
     
     public type AddGame = {
         invitedByPrincipalId: Base.PrincipalId;
-        gameId: ID.GameId;
+        gameId: MopsIds.GameId;
         inviteIds: [Base.PrincipalId];
     };
 
     public type CreateGame = {
         createdById: Base.PrincipalId;
-        courseId: ID.GolfCourseId;
+        courseId: MopsIds.GolfCourseId;
         gameType: Game.GameType;
         inviteIds: [Base.PrincipalId];
         teeOffTime: Int;
@@ -23,8 +23,8 @@ module GameCommands {
     };
 
     public type UpdateGame = {
-        gameId: ID.GameId;
-        courseId: ID.GolfCourseId;
+        gameId: MopsIds.GameId;
+        courseId: MopsIds.GolfCourseId;
         inviteIds: [Base.PrincipalId];
         teeOffTime: Int;
         teeGroupIndex: GolfCourse.TeeGroupIndex;
@@ -32,34 +32,34 @@ module GameCommands {
     };
 
     public type DeleteGame = {
-        gameId: ID.GameId;
+        gameId: MopsIds.GameId;
 
     };
 
     public type BeginGame = {
-        gameId: ID.GameId;
+        gameId: MopsIds.GameId;
     };
 
     public type InviteGolfers = {
-        gameId: ID.GameId;
+        gameId: MopsIds.GameId;
         invitedGolferIds: [Base.PrincipalId];
     };
 
     public type AcceptGameInvite = {
-        gameId: ID.GameId;
+        gameId: MopsIds.GameId;
         acceptedById: Base.PrincipalId;
     };
 
     public type RejectGameInvite = {
         rejectedById: Base.PrincipalId;
-        gameId: ID.GameId;
+        gameId: MopsIds.GameId;
     };
 
 
     //Prediction Commands
 
     public type PredictGameScore = {
-        gameId: ID.GameId;
+        gameId: MopsIds.GameId;
         submittedById: Base.PrincipalId;
         detail: GamePrediction
     };
@@ -85,7 +85,7 @@ module GameCommands {
     //Add score commands
 
     public type AddGameScore = {
-        gameId: ID.GameId;
+        gameId: MopsIds.GameId;
         detail: GameScoreSubmission;
         submittedById: Base.PrincipalId;
         holeNumber: T.HoleNumber;

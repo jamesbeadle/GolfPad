@@ -10,7 +10,6 @@ import List "mo:base/List";
 
 import Environment "../utilities/Environment";
 import T "../data-types/app_types";
-import ID "../data-types/id_types";
 import Golfer "../data-types/golfer_types";
 import Debug "mo:base/Debug";
 import Int "mo:base/Int";
@@ -23,6 +22,7 @@ import Base "mo:waterway-mops/BaseTypes";
 import FriendQueries "../queries/friend_queries";
 import GolfCourseQueries "../queries/golf_course_queries";
 import Utilities "../utilities/Utilities";
+import MopsIds "../data-types/mops_ids";
 
 actor class _GolferCanister() {
 
@@ -68,7 +68,7 @@ actor class _GolferCanister() {
 
             var homeCourse : Text = "";
 
-            var homeCourseId : ?ID.GolfCourseId = foundGolfer.homeCourseId;
+            var homeCourseId : ?MopsIds.GolfCourseId = foundGolfer.homeCourseId;
             var homeCourseImage : ?Blob = null;
             var homeCourseImageExtension = "";
 
@@ -804,6 +804,8 @@ actor class _GolferCanister() {
               firstName = foundGolfer.firstName;
               lastName = foundGolfer.lastName;
               homeCourseId = foundGolfer.homeCourseId;
+              membershipType = foundGolfer.membershipType;
+              membershipClaims = foundGolfer.membershipClaims;
             };
             return #ok(dto);
           };
