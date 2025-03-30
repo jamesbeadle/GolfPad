@@ -51,6 +51,9 @@ persistent actor Self {
   transient var courses = StableStructure.ScalableType();
   transient var games = StableStructure.ScalableType();
 
+
+  /* ----- Manager Initialisation with Transient Canister Variables ----- */ 
+
   private let golferManager = GolferManager.GolferManager(users);
   private let courseManager = GolfCourseManager.GolfCourseManager(courses);
   private let gameManager = GameManager.GameManager(games);
