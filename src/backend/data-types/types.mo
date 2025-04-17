@@ -60,7 +60,7 @@ module FantasyGolfTypes {
         firstName: Text;
         lastName: Text;
         nationality: Ids.CountryId;
-        tournaments: [LeaderboardEntry]
+        worldRanking: Nat16;
     };  
 
     public type GolfCourse = {
@@ -83,6 +83,7 @@ module FantasyGolfTypes {
 
     public type Tournament = {
         id: TournamentId;
+        name: Text;
         tournamentResults: [TournamentResult];
     };
 
@@ -125,6 +126,18 @@ module FantasyGolfTypes {
         hole17Score: Nat8;
         hole18Score: Nat8;
         totalShots: Nat;
+    };
+
+    public type TournamentStage = {
+        #NotStarted;
+        #Round1Active;
+        #Round1Complete;
+        #Round2Active;
+        #Round2Complete;
+        #Round3Active;
+        #Round3Complete;
+        #Round4Active;
+        #Completed;
     };
 
 }

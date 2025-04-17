@@ -44,6 +44,9 @@ actor Self {
   /* ----- Stable Canister Variables ----- */ 
 
   private stable var stable_profiles: [Types.Profile] = [];
+  private stable var predictions: [Types.Prediction] = [];
+  private stable var golfers: [Types.Golfer] = [];
+  private stable var golfCourses: [Types.GolfCourse] = [];
   
   private stable var appStatus : BaseTypes.AppStatus = {
     onHold = false;
