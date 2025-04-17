@@ -1,35 +1,26 @@
 <script lang="ts">
     import { fade } from "svelte/transition";
-    import { writable } from "svelte/store";
-    import { goto, afterNavigate } from "$app/navigation";
+    import { goto } from "$app/navigation";
     import { page } from "$app/stores";
+    import { signOut } from "$lib/services/auth.services";
     import { authSignedInStore } from "$lib/derived/auth.derived";
     import { authStore } from "$lib/stores/auth-store";
     import ProfileIcon from "$lib/icons/profile-icon.svelte";
   
-    type Route = 'home' | 'whitepaper' | 'profile' | 'sign-out' | 'governance' | 'game-rules' | 'games';
-  
-    export let expanded: boolean = false;
-    export let selectedRoute: Route = 'home';
-    export let toggleNav: () => void;
-  
-    const navItems = writable<{ name: string; route: Route, auth: boolean }[]>([
-      { name: 'HOME', route: 'home', auth: false },
-      { name: 'WHITEPAPER', route: 'whitepaper', auth: false },
-      { name: 'GAME RULES', route: 'game-rules', auth: false },
-      { name: 'PROFILE', route: 'profile', auth: false },
-      { name: 'SIGN OUT', route: 'sign-out', auth: false }
-    ]);
-  
-    function selectRoute(route: Route) {
-      selectedRoute = route;
-      toggleNav();
-      if(route === 'home'){
-        goto(`/`);
-        return;
-      }
-      goto(`/${route}`);
+    interface Props{
+      expanded: boolean;
+      toggleNav: () => void;
     }
+
+    let { expanded, toggleNav }: Props = $props();
+  
+    const navItems = [
+      { name: 'HOME', route: '/', auth: false },
+      { name: 'WHITEPAPER', route: '/whitepaper', auth: false },
+      { name: 'GAME RULES', route: '/game-rules', auth: false },
+      { name: 'PROFILE', route: '/profile', auth: false },
+      { name: 'SIGN OUT', route: '/sign-out', auth: true }
+    ];
   
     function closeNav() {
       toggleNav();
@@ -40,30 +31,15 @@
         goto('/');
     }
 
-    $: {
-      switch($page.url.pathname){
-        case '/':
-          selectedRoute = 'home';
-          break;
-        case '/whitepaper':
-          selectedRoute = 'whitepaper';
-          break;
-        case '/game-rules':
-          selectedRoute = 'game-rules';
-          break;
-        case '/games':
-          selectedRoute = 'games';
-          break;
-        case '/governance':
-          selectedRoute = 'governance';
-          break;
-        case '/profile':
-          selectedRoute = 'profile';
-          break;
-        default:
-          selectedRoute = 'home';
-          break;
-      }
+    async function handleMenuItemClick(item: (typeof navItems)[number]) {
+    if (item.name === "Sign Out") {
+      await signOut();
+      await goto("/", { replaceState: true });
+      toggleNav();
+      return;
+    }
+    await goto(item.route);
+      toggleNav();
     }
 
     function handleLogout(){
@@ -86,12 +62,7 @@
       transform: translateY(0);
       opacity: 1;
     }
-  
-    .social-links a {
-      margin-right: 10px;
-      text-decoration: none;
-      color: black;
-    }
+
   
     .nav-content {
       margin-top: 100px;
@@ -100,29 +71,29 @@
   
 {#if expanded}
 
-    <div class="flex min-h-screen flex-col relative nav-overlay" in:fade={{ duration: 300 }} out:fade={{ duration: 300 }}>
+    <div class="relative flex flex-col min-h-screen nav-overlay" in:fade={{ duration: 300 }} out:fade={{ duration: 300 }}>
       
-      <div class="absolute top-4 left-4 z-10">
+      <div class="absolute z-10 top-4 left-4">
         <button
-          on:click={closeNav}
-          class="bg-black rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-white shadow-md">
+          onclick={closeNav}
+          class="flex items-center justify-center w-12 h-12 text-2xl font-bold text-white bg-black rounded-full shadow-md">
           -
         </button>
       </div>
-      <div class="absolute top-4 right-4 z-10">
-        <button on:click={goHome}>
+      <div class="absolute z-10 top-4 right-4">
+        <button onclick={goHome}>
             <span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span>
         </button>
       </div>
   
-      <div class="nav-content flex flex-col items-start pl-10">
-        {#each $navItems as item (item.route)}
+      <div class="flex flex-col items-start pl-10 nav-content">
+        {#each navItems as item}
           {#if (item.auth && $authSignedInStore || !item.auth)}
             
-            {#if item.route == 'profile'}
+            {#if item.name == 'PROFILE'}
               <button
-                on:click={() => selectRoute('profile')}
-                class="text-3xl lg:text-6xl font-bold condensed {selectedRoute === 'profile' ? 'text-white' : 'text-black'}">
+                onclick={() => handleMenuItemClick(item)}
+                class="text-3xl font-bold text-white lg:text-6xl condensed">
                   <span class="flex flex-row items-center">
                     <ProfileIcon className='w-6 lg:w-20 mr-2' fill='black' />
                     PROFILE
@@ -131,16 +102,16 @@
             {:else if item.route == 'sign-out'}
               <div class="nav-item expanded">
                 <button
-                  on:click={handleLogout}
-                  class="text-3xl lg:text-6xl font-bold condensed text-black">
+                  onclick={handleLogout}
+                  class="text-3xl font-bold text-black lg:text-6xl condensed">
                     SIGN OUT
                 </button>
               </div>
             {:else}
               <div class="nav-item expanded">
                 <button
-                  on:click={() => selectRoute(item.route)}
-                  class="text-3xl lg:text-6xl font-bold condensed {selectedRoute === item.route ? 'text-white' : 'text-black'}">
+                  onclick={() => handleMenuItemClick(item)}
+                  class="text-3xl font-bold text-white lg:text-6xl condensed">
                   {item.name}
                 </button>
               </div>

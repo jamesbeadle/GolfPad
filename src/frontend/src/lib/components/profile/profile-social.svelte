@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Layout from "../../../routes/Layout.svelte";
+    import Layout from "../../../routes/+layout.svelte";
     import FriendsList from "../golfer-friends/friends-list.svelte";
     import SearchFriends from "../golfer-friends/search-friends.svelte";
     import Modal from "$lib/components/shared/modal.svelte";

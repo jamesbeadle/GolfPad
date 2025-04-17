@@ -81,17 +81,12 @@ function createUserStore() {
 
   //User Query Functions
 
-  async function getProfile(principalId: string): Promise<Profile | null> {
+  async function getProfile(): Promise<Profile | null> {
     const identityActor: any = await ActorFactory.createIdentityActor(
       authStore,
       process.env.BACKEND_CANISTER_ID ?? "",
     );
-
-    let dto: GetProfile = {
-      principalId,
-    };
-
-    let getProfileResponse = await identityActor.getProfile(dto);
+    let getProfileResponse = await identityActor.getProfile();
     let error = isError(getProfileResponse);
     if (error) {
       console.error("Error fetching user profile");
@@ -136,7 +131,7 @@ function createUserStore() {
 
   //User Commands Functions
 
-  async function createUser(dto: CreateUser): Promise<any> {
+  async function createUser(dto: CreateProfile): Promise<any> {
     return new UserService().createUser(dto);
   }
 
