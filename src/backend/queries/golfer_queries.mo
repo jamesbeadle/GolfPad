@@ -1,5 +1,6 @@
 
 import Types "../data-types/types";
+import Ids "mo:waterway-mops/Ids";
 
 module GolferQueries {
     
@@ -15,6 +16,8 @@ module GolferQueries {
         id: Types.GolferId;
         firstName: Text;
         lastName: Text;
+        nationality: Ids.CountryId;
+        worldRanking: Nat16;
     };
     
 }

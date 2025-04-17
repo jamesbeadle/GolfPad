@@ -1,13 +1,13 @@
 
 /* ----- Mops Packages ----- */
 
+import BaseQueries "mo:waterway-mops/queries/BaseQueries";
+import BaseTypes "mo:waterway-mops/BaseTypes";
+import Enums "mo:waterway-mops/Enums";
 import Int "mo:base/Int";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Timer "mo:base/Timer";
-import Enums "mo:waterway-mops/Enums";
-import BaseTypes "mo:waterway-mops/BaseTypes";
-import BaseQueries "mo:waterway-mops/queries/BaseQueries";
 
 /* ----- Queries ----- */
 
