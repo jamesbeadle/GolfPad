@@ -320,16 +320,18 @@ module {
     
 
     public func getStableNeuronsUsedforMembership() : [(Blob, Base.PrincipalId)] {
-        return Iter.toArray(neuronsUsedforMembership.entries());
+       return [];// return Iter.toArray(neuronsUsedforMembership.entries());
     };
 
     public func setStableNeuronsUsedforMembership(stable_neurons_used_for_membership : [(Blob, Base.PrincipalId)]) : () {
+        /*
         let neuronsUsedMap : TrieMap.TrieMap<Blob, Base.PrincipalId> = TrieMap.TrieMap<Blob, Base.PrincipalId>(Blob.equal, Blob.hash);
 
         for (neuron in Iter.fromArray(stable_neurons_used_for_membership)) {
             neuronsUsedMap.put(neuron);
         };
         neuronsUsedforMembership := neuronsUsedMap;
+        */
     };
 
     public func claimMembership(dto : GolferCommands.ClaimMembership) : async Result.Result<(T.MembershipClaim), T.Error> {
@@ -421,6 +423,7 @@ module {
     };
 
     private func validNeurons(neurons : [Blob], newPrinciaplId : Base.PrincipalId) : Bool {
+      /*
         for (neuron in neurons.vals()) {
             let existingPrincipalId = neuronsUsedforMembership.get(neuron);
             switch (existingPrincipalId) {
@@ -434,6 +437,7 @@ module {
                 };
             };
         };
+        */
         return true;
     };
 

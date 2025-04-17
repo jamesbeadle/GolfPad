@@ -10,15 +10,12 @@ import TrieMap "mo:base/TrieMap";
 import Text "mo:base/Text";
 
 import Base "mo:waterway-mops/BaseTypes";
-import GolfCoursesCanister "../canister-definitions/golf-courses-canister";
 import Environment "../utilities/Environment";
 import Management "../utilities/Management";
-import T "../data-types/app_types";
 import Utilities "../utilities/Utilities";
 
 import GolfCourseQueries "../queries/golf_course_queries";
 import GolfCourseCommands "../commands/golf_course_commands";
-import MopsIds "../data-types/mops_ids";
 
 module {
   public class GolfCourseManager() {
