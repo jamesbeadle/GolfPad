@@ -7,4 +7,8 @@ module GolfCourseCommands {
     public type AddTournamentResult = {
 
     };
+
+    public type UpdateTournamentStage = {
+
+    };
 }

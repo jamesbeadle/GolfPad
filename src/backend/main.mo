@@ -14,7 +14,9 @@ import BaseQueries "mo:waterway-mops/queries/BaseQueries";
 
 import UserQueries "queries/user_queries";
 import GolfCourseQueries "queries/golf_course_queries";
+import GolferQueries "queries/golfer_queries";
 import LeaderboardQueries "queries/leaderboard_queries";
+import TournamentQueries "queries/tournament_queries";
 
 
 /* ----- Commands ----- */
@@ -22,9 +24,11 @@ import LeaderboardQueries "queries/leaderboard_queries";
 import UserCommands "commands/user_commands";
 import GolfCourseCommands "commands/golf_course_commands";
 import GolferCommands "commands/golfer_commands";
+import TournamentCommands "commands/tournament_commands";
 
 
 /* ----- Manager ----- */
+
 import UserManager "managers/user-manager";
 import GolfCourseManager "managers/golf-course-manager";
 import GolferManager "managers/golfer-manager";
@@ -33,8 +37,8 @@ import TournamentManager "managers/tournament-manager";
 
 
 /* ----- Type imports for stable variables ----- */
+
 import Types "./data-types/types";
-import TournamentCommands "commands/tournament_commands";
 
 
 actor Self {
@@ -71,6 +75,11 @@ actor Self {
     return userManager.getProfile(Principal.toText(caller));
   };
 
+  public shared query ({ caller }) func getPrediction(dto: UserQueries.GetPrediction) : async Result.Result<UserQueries.Prediction, Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    return userManager.getPrediction(dto);
+  };
+
   public shared ({ caller }) func createProfile(dto: UserCommands.CreateProfile) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
@@ -87,11 +96,6 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return userManager.updateUsername(principalId, dto);  
-  };
-
-  public shared query ({ caller }) func getPrediction(dto: TournamentQueries.GetLeaderboard) : async Result.Result<TournamentQueries.Leaderboard, Enums.Error> {
-    assert not Principal.isAnonymous(caller);
-    return golferManager.getLeaderboard(dto);
   };
 
   public shared ({ caller }) func submitPrediction(dto: UserCommands.SubmitPrediction) : async Result.Result<(), Enums.Error> {
@@ -136,14 +140,14 @@ actor Self {
     return golferManager.getGolfer(dto);
   };
 
-  public shared ({ caller }) func createGolfer(dto: GolferQueries.CreateGolfer) : async Result.Result<(), Enums.Error> {
+  public shared ({ caller }) func createGolfer(dto: GolferCommands.CreateGolfer) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert isAdmin(principalId);
     return userManager.createProfile(dto);  
   };
 
-  public shared ({ caller }) func updateGolfer(dto: GolferQueries.UpdateGolfer) : async Result.Result<(), Enums.Error> {
+  public shared ({ caller }) func updateGolfer(dto: GolferCommands.UpdateGolfer) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return userManager.updateGolfCourse(dto);  

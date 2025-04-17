@@ -7,5 +7,9 @@ module GolfCourseCommands {
         holeNumber: Nat8;
         strokeIndex: Nat8;
         yardage: Nat16;
-    }
+    };
+
+    public type UpdateGolfCourse = {
+
+    };
 }

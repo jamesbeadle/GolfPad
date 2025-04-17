@@ -1,20 +1,11 @@
-import Ids "mo:waterway-mops/Ids";
-module UserQueries {
-    public type GetProfile = {};
 
-    public type Profile = {
-        principalId: Ids.PrincipalId;
-        username: Text;
-        joinedOn: Int;
-    };
+module TournamentQueries {
 
-    public type GetPrediction = {
+    public type GetLeaderboard = {
 
     };
 
-    public type Prediction = {
-        
-    };
+    public type Leaderboard = {};
 }
 
   
