@@ -10,6 +10,10 @@ export interface AcceptGameInvite {
   gameId: GameId;
   acceptedById: PrincipalId;
 }
+export interface Account {
+  owner: [] | [Principal];
+  subaccount: [] | [Subaccount];
+}
 export interface AddGameScore {
   submittedById: PrincipalId;
   gameId: GameId;
@@ -43,18 +47,35 @@ export type BandsCategory =
 export interface BandsCategoryResult {
   completed: boolean;
   bandsCategory: BandsCategory;
+  failed: boolean;
+  startHole: HoleNumber;
 }
-export interface BandsCategoryResult__1 {
+export interface BandsHoleResult {
   golferId: PrincipalId;
+  hole: HoleNumber;
   completed: boolean;
   category: BandsCategory;
+  failed: boolean;
 }
 export interface BandsPlayerResult {
-  categories: Array<BandsCategoryResult>;
+  categoryResults: Array<BandsCategoryResult>;
+  holeResults: Array<BandsHoleResult>;
   principalId: PrincipalId;
   points: number;
 }
 export interface BandsPrediction {
+  wontHitTreeOrBunkerStartHole: HoleNumber;
+  underParStartHole: HoleNumber;
+  golferId: PrincipalId;
+  wontDoubleBogeyStartHole: HoleNumber;
+  singlePutt2Of3GreensStartHole: HoleNumber;
+  wontBogeyStartHole: HoleNumber;
+  parOrUnderStartHole: HoleNumber;
+  hit2Of3FairwaysStartHole: HoleNumber;
+  hit2Of3GreensStartHole: HoleNumber;
+  wontLoseBallStartHole: HoleNumber;
+}
+export interface BandsPrediction__1 {
   wontHitTreeOrBunkerStartHole: HoleNumber;
   underParStartHole: HoleNumber;
   golferId: PrincipalId;
@@ -72,17 +93,15 @@ export interface BandsResultInfo {
   points: [PrincipalId, bigint];
 }
 export interface BandsScore {
-  predictions: Array<BandsCategoryResult__1>;
+  hole: HoleNumber;
+  playerResults: Array<BandsHoleResult>;
 }
 export interface BandsScores {
+  currentHole: number;
   players: Array<BandsPlayerResult>;
 }
 export interface BeginGame {
   gameId: GameId;
-}
-export interface BuildItResultInfo {
-  teams: Array<TeamFeedSummary__1>;
-  scores: [GolfTeamId, bigint];
 }
 export interface Buzz {
   total: bigint;
@@ -124,18 +143,19 @@ export interface CreateGame {
   courseId: GolfCourseId;
 }
 export interface CreateGolfCourse {
-  holes: Array<Hole>;
-  totalHoles: number;
+  manager: PrincipalId;
   name: string;
   countryId: CountryId;
   mainImageExtension: string;
-  initialTeeGroup: TeeGroup;
+  bannerImageExtension: string;
   founded: bigint;
   bannerImage: [] | [Uint8Array | number[]];
   mainImage: [] | [Uint8Array | number[]];
+  teeGroups: Array<TeeGroup>;
 }
 export interface CreateUser {
   username: string;
+  accessCode: [] | [string];
   profilePictureExtension: [] | [string];
   profilePicture: [] | [Uint8Array | number[]];
   handicap: [] | [Handicap];
@@ -147,26 +167,44 @@ export interface DeleteShot {
   golfShotId: GolfShotId;
   principalId: PrincipalId;
 }
+export interface DisburseMaturityInProgress {
+  timestamp_of_disbursement_seconds: bigint;
+  amount_e8s: bigint;
+  account_to_disburse_to: [] | [Account];
+  finalize_disbursement_timestamp_seconds: [] | [bigint];
+}
+export type DissolveState =
+  | { DissolveDelaySeconds: bigint }
+  | { WhenDissolvedTimestampSeconds: bigint };
+export interface EligibleMembership {
+  eligibleNeuronIds: Array<Uint8Array | number[]>;
+  membershipType: MembershipType;
+}
 export type Error =
-  | { InvalidProfilePicture: null }
   | { DecodeError: null }
   | { TooLong: null }
   | { NotAllowed: null }
   | { NotEnoughFunds: null }
   | { TooShort: null }
-  | { InvalidGolfTeamPicture: null }
   | { NotFound: null }
+  | { AlreadyClaimed: null }
   | { NotAuthorized: null }
   | { AlreadyExists: null }
   | { CreateGameError: null }
+  | { NeuronAlreadyUsed: null }
   | { OutOfRange: null }
+  | { InvalidPicture: null }
   | { PaymentError: null }
-  | { CanisterFull: null };
+  | { CanisterFull: null }
+  | { InEligible: null };
 export interface FavouriteCourse {
   id: GolfCourseId;
   name: string;
   mainImageExtension: string;
   mainImage: [] | [Uint8Array | number[]];
+}
+export interface Followees {
+  followees: Array<NeuronId>;
 }
 export interface Friend {
   username: string;
@@ -194,13 +232,15 @@ export interface Game {
   status: GameStatus;
   scoreDetail: [] | [GameScoreDetail];
   invites: Array<PrincipalId>;
-  predictions: Array<GamePrediction>;
+  predictions: Array<GamePrediction__1>;
   winner: PrincipalId;
   teeOffTime: bigint;
   courseSnapshot: GolfCourseSnapshot;
-  events: Array<GolferEvent>;
   gameType: GameType;
   courseId: GolfCourseId;
+}
+export interface GameGolferSummaries {
+  entries: Array<GolferSummary>;
 }
 export type GameId = bigint;
 export interface GameInfo {
@@ -229,11 +269,10 @@ export interface GameInvites {
   pageSize: bigint;
   entries: Array<GameInvite__1>;
 }
-export type GamePrediction =
-  | { Mulligans: MulligansPrediction }
-  | { BuildIt: {} }
-  | { Bands: BandsPrediction }
-  | { NextUp: {} };
+export type GamePrediction = { Mulligans: {} } | { Bands: BandsPrediction };
+export type GamePrediction__1 =
+  | { Mulligans: {} }
+  | { Bands: Array<BandsPrediction__1> };
 export type GameScoreDetail =
   | { BandsScores: BandsScores }
   | { MulligansScores: MulligansScores };
@@ -257,11 +296,7 @@ export interface GameSummary {
   players: Array<PrincipalId>;
   gameType: GameType;
 }
-export type GameType =
-  | { Mulligans: null }
-  | { BuildIt: null }
-  | { Bands: null }
-  | { NextUp: null };
+export type GameType = { Mulligans: null } | { Bands: null };
 export interface GetBuzz {
   page: bigint;
   principalId: PrincipalId;
@@ -282,6 +317,9 @@ export interface GetFriends {
   principalId: PrincipalId;
 }
 export interface GetGame {
+  gameId: GameId;
+}
+export interface GetGameGolferSummaries {
   gameId: GameId;
 }
 export interface GetGameInvites {
@@ -318,10 +356,6 @@ export interface GetGolfer {
 export interface GetGolfers {
   page: bigint;
   searchTerm: string;
-  principalId: PrincipalId;
-}
-export interface GetPlayerBandsResults {
-  id: GameId;
   principalId: PrincipalId;
 }
 export interface GetProfile {
@@ -363,6 +397,7 @@ export type GolfClub =
   | { FIVE_HYBRID: null };
 export interface GolfCourse {
   id: GolfCourseId;
+  manager: string;
   totalHoles: number;
   activeVersion: GolfCourseVersion;
   name: string;
@@ -393,10 +428,12 @@ export interface GolfCourseSummary {
 export interface GolfCourseTeeGroup {
   added: bigint;
   holes: Array<HoleSummary>;
+  totalHoles: number;
   golfCourseId: GolfCourseId;
   name: string;
   index: TeeGroupIndex;
   colour: string;
+  mainImage: [] | [Uint8Array | number[]];
 }
 export interface GolfCourseTees {
   id: GolfCourseId;
@@ -409,23 +446,6 @@ export interface GolfCourses {
   pageSize: bigint;
   entries: Array<GolfCourseSummary>;
 }
-export type GolfEvent =
-  | { Par: null }
-  | { Scrub: null }
-  | { DoubleBogey: null }
-  | { Birdie: null }
-  | { BallNotLost: null }
-  | { Bogey: null }
-  | { HitFairway: null }
-  | { Albatross: null }
-  | { HitBunker: null }
-  | { HitTree: null }
-  | { HitGreen: null }
-  | { TakeMulligan: null }
-  | { HitWater: null }
-  | { LongestDrive: null }
-  | { Eagle: null }
-  | { OnePuttGreen: null };
 export interface GolfShot {
   id: GolfShotId;
   hitOn: bigint;
@@ -433,7 +453,6 @@ export interface GolfShot {
   yardage: bigint;
 }
 export type GolfShotId = bigint;
-export type GolfTeamId = bigint;
 export interface Golfer {
   username: string;
   gameInvites: Array<GameInvite>;
@@ -451,10 +470,10 @@ export interface Golfer {
   homeCourseImage: [] | [Uint8Array | number[]];
   firstName: string;
 }
-export interface GolferEvent {
-  golferId: PrincipalId;
-  hole: HoleNumber;
-  event: GolfEvent;
+export interface GolferNeurons {
+  totalMaxStaked: bigint;
+  userMembershipEligibility: EligibleMembership;
+  userNeurons: Array<Neuron>;
 }
 export interface GolferSummary {
   name: string;
@@ -505,16 +524,37 @@ export interface IsUsernameAvailable {
 }
 export type MatchResultInfo =
   | { Mulligans: MulligansResultInfo }
-  | { BuildIt: BuildItResultInfo }
-  | { Bands: BandsResultInfo }
-  | { NextUp: NextUpResultInfo };
+  | { Bands: BandsResultInfo };
+export interface MembershipClaim {
+  expiresOn: [] | [bigint];
+  claimedOn: bigint;
+  membershipType: MembershipType__1;
+}
+export type MembershipType =
+  | { Founding: null }
+  | { Society: null }
+  | { NotClaimed: null }
+  | { Lifetime: null }
+  | { Annual: null }
+  | { Clubhouse: null }
+  | { NotEligible: null }
+  | { Expired: null };
+export type MembershipType__1 =
+  | { Founding: null }
+  | { Society: null }
+  | { NotClaimed: null }
+  | { Lifetime: null }
+  | { Annual: null }
+  | { Clubhouse: null }
+  | { NotEligible: null }
+  | { Expired: null };
 export interface MulligansHoleResult {
   golfer2MulliganUsed: boolean;
   winner: PrincipalId;
+  score: bigint;
   golfer1MulliganUsed: boolean;
   holeNumber: HoleNumber;
 }
-export type MulligansPrediction = {};
 export interface MulligansResultInfo {
   holesPlayed: number;
   player2Wins: boolean;
@@ -525,6 +565,7 @@ export interface MulligansResultInfo {
 }
 export interface MulligansScore {
   golfer2MulliganUsed: boolean;
+  hole: HoleNumber;
   winner: PrincipalId;
   golfer1MulliganUsed: boolean;
 }
@@ -532,6 +573,7 @@ export interface MulligansScores {
   winner: PrincipalId;
   results: Array<MulligansHoleResult>;
   score: bigint;
+  currentHole: number;
   golfer2MulligansUsed: number;
   golfer2HolesWonCount: number;
   golfer1MulligansAvailable: number;
@@ -539,25 +581,33 @@ export interface MulligansScores {
   golfer1MulligansUsed: number;
   golfer1HolesWonCount: number;
 }
-export interface NextUpResultInfo {
-  holesPlayed: number;
-  players: Array<PlayerFeedSummary__1>;
-  points: [PrincipalId, bigint];
+export interface Neuron {
+  id: [] | [NeuronId];
+  staked_maturity_e8s_equivalent: [] | [bigint];
+  permissions: Array<NeuronPermission>;
+  maturity_e8s_equivalent: bigint;
+  cached_neuron_stake_e8s: bigint;
+  created_timestamp_seconds: bigint;
+  source_nns_neuron_id: [] | [bigint];
+  auto_stake_maturity: [] | [boolean];
+  aging_since_timestamp_seconds: bigint;
+  dissolve_state: [] | [DissolveState];
+  voting_power_percentage_multiplier: bigint;
+  vesting_period_seconds: [] | [bigint];
+  disburse_maturity_in_progress: Array<DisburseMaturityInProgress>;
+  followees: Array<[bigint, Followees]>;
+  neuron_fees_e8s: bigint;
+}
+export interface NeuronId {
+  id: Uint8Array | number[];
+}
+export interface NeuronPermission {
+  principal: [] | [Principal];
+  permission_type: Int32Array | number[];
 }
 export type OpponentInfo =
   | { Mulligans: PlayerOpponentInfo }
-  | { BuildIt: TeamOpponentInfo }
-  | { Bands: PlayerOpponentInfo }
-  | { NextUp: PlayerOpponentInfo };
-export interface PlayerBandsResult {
-  completed: boolean;
-  category: BandsCategory;
-  principalId: PrincipalId;
-  points: number;
-}
-export interface PlayerBandsResults {
-  results: Array<PlayerBandsResult>;
-}
+  | { Bands: PlayerOpponentInfo };
 export interface PlayerFeedSummary {
   username: string;
   profile_picture: [] | [Uint8Array | number[]];
@@ -571,14 +621,18 @@ export interface PlayerFeedSummary__1 {
 export interface PlayerOpponentInfo {
   players: Array<PlayerFeedSummary>;
 }
-export interface PredictGame {
+export interface PredictGameScore {
+  submittedById: PrincipalId;
   gameId: GameId;
+  detail: GamePrediction;
 }
 export type PrincipalId = string;
 export interface Profile {
   username: string;
   homeCourseId: [] | [GolfCourseId];
+  membershipClaims: Array<MembershipClaim>;
   golferPicture: [] | [Uint8Array | number[]];
+  membershipType: MembershipType__1;
   handicap: [] | [Handicap];
   lastName: string;
   golferPictureExtension: string;
@@ -610,18 +664,20 @@ export type Result_13 = { ok: GolfCourseCanisterId } | { err: Error };
 export type Result_14 = { ok: GolfCourse } | { err: Error };
 export type Result_15 = { ok: GameSummaries } | { err: Error };
 export type Result_16 = { ok: GameInvites } | { err: Error };
-export type Result_17 = { ok: Game } | { err: Error };
-export type Result_18 = { ok: Friends } | { err: Error };
-export type Result_19 = { ok: FriendRequests } | { err: Error };
-export type Result_2 = { ok: UserFavouriteCourses } | { err: Error };
-export type Result_20 = { ok: ClubShots } | { err: Error };
-export type Result_21 = { ok: Buzz } | { err: Error };
-export type Result_22 = { ok: AppStatusDTO } | { err: Error };
-export type Result_23 = { ok: GameId } | { err: Error };
-export type Result_3 = { ok: UpcomingGames } | { err: Error };
-export type Result_4 = { ok: ShotAverages } | { err: Error };
-export type Result_5 = { ok: Profile } | { err: Error };
-export type Result_6 = { ok: PlayerBandsResults } | { err: Error };
+export type Result_17 = { ok: GameGolferSummaries } | { err: Error };
+export type Result_18 = { ok: Game } | { err: Error };
+export type Result_19 = { ok: Friends } | { err: Error };
+export type Result_2 = { ok: GolferNeurons } | { err: Error };
+export type Result_20 = { ok: FriendRequests } | { err: Error };
+export type Result_21 = { ok: ClubShots } | { err: Error };
+export type Result_22 = { ok: Buzz } | { err: Error };
+export type Result_23 = { ok: AppStatusDTO } | { err: Error };
+export type Result_24 = { ok: GameId } | { err: Error };
+export type Result_25 = { ok: MembershipClaim } | { err: Error };
+export type Result_3 = { ok: UserFavouriteCourses } | { err: Error };
+export type Result_4 = { ok: UpcomingGames } | { err: Error };
+export type Result_5 = { ok: ShotAverages } | { err: Error };
+export type Result_6 = { ok: Profile } | { err: Error };
 export type Result_7 = { ok: Golfers } | { err: Error };
 export type Result_8 = { ok: Golfer } | { err: Error };
 export type Result_9 = { ok: GolfCourses } | { err: Error };
@@ -633,24 +689,8 @@ export interface SendFriendRequest {
 export interface ShotAverages {
   shots: Array<AverageShot>;
 }
-export interface TeamFeedSummary {
-  team_image_extension: string;
-  team_id: GolfTeamId;
-  team_image: [] | [Uint8Array | number[]];
-  team_name: string;
-  team_members: Array<PrincipalId>;
-  captain_id: PrincipalId;
-}
-export interface TeamFeedSummary__1 {
-  team_image_extension: string;
-  team_id: GolfTeamId;
-  team_image: [] | [Uint8Array | number[]];
-  team_name: string;
-  team_members: Array<PrincipalId>;
-  captain_id: PrincipalId;
-}
-export interface TeamOpponentInfo {
-  teams: Array<TeamFeedSummary>;
+export interface Subaccount {
+  subaccount: Uint8Array | number[];
 }
 export interface TeeGroup {
   added: bigint;
@@ -673,10 +713,23 @@ export interface UpdateFirstName {
   principalId: PrincipalId;
   firstName: string;
 }
-export interface UpdateGolfCourse {
-  name: string;
-  updatedTeeGroup: [] | [TeeGroup];
+export interface UpdateGame {
+  inviteIds: Array<PrincipalId>;
+  gameId: GameId;
+  teeOffTime: bigint;
+  teeGroupIndex: TeeGroupIndex;
+  courseVersion: GolfCourseVersion;
   courseId: GolfCourseId;
+}
+export interface UpdateGolfCourse {
+  manager: PrincipalId;
+  name: string;
+  mainImageExtension: string;
+  bannerImageExtension: string;
+  bannerImage: [] | [Uint8Array | number[]];
+  mainImage: [] | [Uint8Array | number[]];
+  courseId: GolfCourseId;
+  teeGroups: Array<TeeGroup>;
 }
 export interface UpdateHandicap {
   handicap: [] | [Handicap];
@@ -718,18 +771,20 @@ export interface _SERVICE {
   addGameScore: ActorMethod<[AddGameScore], Result>;
   addShot: ActorMethod<[AddShot], Result>;
   beginGame: ActorMethod<[BeginGame], Result>;
-  createGame: ActorMethod<[CreateGame], Result_23>;
+  claimMembership: ActorMethod<[], Result_25>;
+  createGame: ActorMethod<[CreateGame], Result_24>;
   createUser: ActorMethod<[CreateUser], Result>;
   deleteGame: ActorMethod<[DeleteGame], Result>;
   deleteShot: ActorMethod<[DeleteShot], Result>;
   executeAddGolfCourse: ActorMethod<[CreateGolfCourse], undefined>;
   executeUpdateGolfCourse: ActorMethod<[UpdateGolfCourse], undefined>;
-  getAppStatus: ActorMethod<[], Result_22>;
-  getBuzz: ActorMethod<[GetBuzz], Result_21>;
-  getClubShots: ActorMethod<[GetClubShots], Result_20>;
-  getFriendRequests: ActorMethod<[GetFriendRequests], Result_19>;
-  getFriends: ActorMethod<[GetFriends], Result_18>;
-  getGame: ActorMethod<[GetGame], Result_17>;
+  getAppStatus: ActorMethod<[], Result_23>;
+  getBuzz: ActorMethod<[GetBuzz], Result_22>;
+  getClubShots: ActorMethod<[GetClubShots], Result_21>;
+  getFriendRequests: ActorMethod<[GetFriendRequests], Result_20>;
+  getFriends: ActorMethod<[GetFriends], Result_19>;
+  getGame: ActorMethod<[GetGame], Result_18>;
+  getGameGolferSummaries: ActorMethod<[GetGameGolferSummaries], Result_17>;
   getGameInvites: ActorMethod<[GetGameInvites], Result_16>;
   getGameSummaries: ActorMethod<[GetGameSummaries], Result_15>;
   getGolfCourse: ActorMethod<[GetGolfCourse], Result_14>;
@@ -740,20 +795,21 @@ export interface _SERVICE {
   getGolfCourses: ActorMethod<[GetGolfCourses], Result_9>;
   getGolfer: ActorMethod<[GetGolfer], Result_8>;
   getGolfers: ActorMethod<[GetGolfers], Result_7>;
-  getPlayerBandsResults: ActorMethod<[GetPlayerBandsResults], Result_6>;
-  getProfile: ActorMethod<[GetProfile], Result_5>;
-  getShotAverages: ActorMethod<[GetShotAverages], Result_4>;
-  getUpcomingGames: ActorMethod<[GetUpcomingGames], Result_3>;
-  getUserFavouriteCourses: ActorMethod<[GetUserFavouriteCourses], Result_2>;
+  getProfile: ActorMethod<[GetProfile], Result_6>;
+  getShotAverages: ActorMethod<[GetShotAverages], Result_5>;
+  getUpcomingGames: ActorMethod<[GetUpcomingGames], Result_4>;
+  getUserFavouriteCourses: ActorMethod<[GetUserFavouriteCourses], Result_3>;
+  getUserNeurons: ActorMethod<[], Result_2>;
   inviteGolfers: ActorMethod<[InviteGolfers], Result>;
   isUsernameAvailable: ActorMethod<[IsUsernameAvailable], Result_1>;
-  predictGame: ActorMethod<[PredictGame], Result>;
+  predictGameScore: ActorMethod<[PredictGameScore], Result>;
   rejectFriendRequest: ActorMethod<[RejectFriendRequest], Result>;
   rejectGameInvite: ActorMethod<[RejectGameInvite], Result>;
   removeFriend: ActorMethod<[RemoveFriend], Result>;
   removeUserGolfCourse: ActorMethod<[RemoveUserGolfCourse], Result>;
   sendFriendRequest: ActorMethod<[SendFriendRequest], Result>;
   updateFirstName: ActorMethod<[UpdateFirstName], Result>;
+  updateGame: ActorMethod<[UpdateGame], Result>;
   updateHandicap: ActorMethod<[UpdateHandicap], Result>;
   updateHomeCourse: ActorMethod<[UpdateHomeCourse], Result>;
   updateLastName: ActorMethod<[UpdateLastName], Result>;

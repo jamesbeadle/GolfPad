@@ -5,20 +5,22 @@ export const idlFactory = ({ IDL }) => {
     requestedBy: PrincipalId,
   });
   const Error = IDL.Variant({
-    InvalidProfilePicture: IDL.Null,
     DecodeError: IDL.Null,
     TooLong: IDL.Null,
     NotAllowed: IDL.Null,
     NotEnoughFunds: IDL.Null,
     TooShort: IDL.Null,
-    InvalidGolfTeamPicture: IDL.Null,
     NotFound: IDL.Null,
+    AlreadyClaimed: IDL.Null,
     NotAuthorized: IDL.Null,
     AlreadyExists: IDL.Null,
     CreateGameError: IDL.Null,
+    NeuronAlreadyUsed: IDL.Null,
     OutOfRange: IDL.Null,
+    InvalidPicture: IDL.Null,
     PaymentError: IDL.Null,
     CanisterFull: IDL.Null,
+    InEligible: IDL.Null,
   });
   const Result = IDL.Variant({ ok: IDL.Null, err: Error });
   const GameId = IDL.Nat;
@@ -26,6 +28,7 @@ export const idlFactory = ({ IDL }) => {
     gameId: GameId,
     acceptedById: PrincipalId,
   });
+  const HoleNumber = IDL.Nat8;
   const BandsCategory = IDL.Variant({
     NoLostBall: IDL.Null,
     NoDoubleBogeyOrWorse: IDL.Null,
@@ -37,16 +40,20 @@ export const idlFactory = ({ IDL }) => {
     Hit2Of3Fairways: IDL.Null,
     Hit2Of3Greens: IDL.Null,
   });
-  const BandsCategoryResult__1 = IDL.Record({
+  const BandsHoleResult = IDL.Record({
     golferId: PrincipalId,
+    hole: HoleNumber,
     completed: IDL.Bool,
     category: BandsCategory,
+    failed: IDL.Bool,
   });
   const BandsScore = IDL.Record({
-    predictions: IDL.Vec(BandsCategoryResult__1),
+    hole: HoleNumber,
+    playerResults: IDL.Vec(BandsHoleResult),
   });
   const MulligansScore = IDL.Record({
     golfer2MulliganUsed: IDL.Bool,
+    hole: HoleNumber,
     winner: PrincipalId,
     golfer1MulliganUsed: IDL.Bool,
   });
@@ -54,7 +61,6 @@ export const idlFactory = ({ IDL }) => {
     BandsScores: BandsScore,
     MulligansScores: MulligansScore,
   });
-  const HoleNumber = IDL.Nat8;
   const AddGameScore = IDL.Record({
     submittedById: PrincipalId,
     gameId: GameId,
@@ -91,14 +97,25 @@ export const idlFactory = ({ IDL }) => {
     principalId: PrincipalId,
   });
   const BeginGame = IDL.Record({ gameId: GameId });
+  const MembershipType__1 = IDL.Variant({
+    Founding: IDL.Null,
+    Society: IDL.Null,
+    NotClaimed: IDL.Null,
+    Lifetime: IDL.Null,
+    Annual: IDL.Null,
+    Clubhouse: IDL.Null,
+    NotEligible: IDL.Null,
+    Expired: IDL.Null,
+  });
+  const MembershipClaim = IDL.Record({
+    expiresOn: IDL.Opt(IDL.Int),
+    claimedOn: IDL.Int,
+    membershipType: MembershipType__1,
+  });
+  const Result_25 = IDL.Variant({ ok: MembershipClaim, err: Error });
   const TeeGroupIndex = IDL.Nat8;
   const GolfCourseVersion = IDL.Nat8;
-  const GameType = IDL.Variant({
-    Mulligans: IDL.Null,
-    BuildIt: IDL.Null,
-    Bands: IDL.Null,
-    NextUp: IDL.Null,
-  });
+  const GameType = IDL.Variant({ Mulligans: IDL.Null, Bands: IDL.Null });
   const GolfCourseId = IDL.Nat;
   const CreateGame = IDL.Record({
     inviteIds: IDL.Vec(PrincipalId),
@@ -109,10 +126,11 @@ export const idlFactory = ({ IDL }) => {
     gameType: GameType,
     courseId: GolfCourseId,
   });
-  const Result_23 = IDL.Variant({ ok: GameId, err: Error });
+  const Result_24 = IDL.Variant({ ok: GameId, err: Error });
   const Handicap = IDL.Int16;
   const CreateUser = IDL.Record({
     username: IDL.Text,
+    accessCode: IDL.Opt(IDL.Text),
     profilePictureExtension: IDL.Opt(IDL.Text),
     profilePicture: IDL.Opt(IDL.Vec(IDL.Nat8)),
     handicap: IDL.Opt(Handicap),
@@ -123,6 +141,7 @@ export const idlFactory = ({ IDL }) => {
     golfShotId: GolfShotId,
     principalId: PrincipalId,
   });
+  const CountryId = IDL.Nat8;
   const HoleImage = IDL.Record({
     owner: PrincipalId,
     uploaded: IDL.Int,
@@ -137,7 +156,6 @@ export const idlFactory = ({ IDL }) => {
     strokeIndex: IDL.Nat8,
     images: IDL.Vec(HoleImage),
   });
-  const CountryId = IDL.Nat8;
   const TeeGroup = IDL.Record({
     added: IDL.Int,
     holes: IDL.Vec(Hole),
@@ -146,26 +164,31 @@ export const idlFactory = ({ IDL }) => {
     colour: IDL.Text,
   });
   const CreateGolfCourse = IDL.Record({
-    holes: IDL.Vec(Hole),
-    totalHoles: IDL.Nat8,
+    manager: PrincipalId,
     name: IDL.Text,
     countryId: CountryId,
     mainImageExtension: IDL.Text,
-    initialTeeGroup: TeeGroup,
+    bannerImageExtension: IDL.Text,
     founded: IDL.Int,
     bannerImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
     mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
+    teeGroups: IDL.Vec(TeeGroup),
   });
   const UpdateGolfCourse = IDL.Record({
+    manager: PrincipalId,
     name: IDL.Text,
-    updatedTeeGroup: IDL.Opt(TeeGroup),
+    mainImageExtension: IDL.Text,
+    bannerImageExtension: IDL.Text,
+    bannerImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
+    mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
     courseId: GolfCourseId,
+    teeGroups: IDL.Vec(TeeGroup),
   });
   const AppStatusDTO = IDL.Record({
     version: IDL.Text,
     onHold: IDL.Bool,
   });
-  const Result_22 = IDL.Variant({ ok: AppStatusDTO, err: Error });
+  const Result_23 = IDL.Variant({ ok: AppStatusDTO, err: Error });
   const GetBuzz = IDL.Record({ page: IDL.Nat, principalId: PrincipalId });
   const CourseInfo__1 = IDL.Record({
     course_name: IDL.Text,
@@ -185,34 +208,14 @@ export const idlFactory = ({ IDL }) => {
     gameOver: IDL.Bool,
     player1Wins: IDL.Bool,
   });
-  const GolfTeamId = IDL.Nat;
-  const TeamFeedSummary__1 = IDL.Record({
-    team_image_extension: IDL.Text,
-    team_id: GolfTeamId,
-    team_image: IDL.Opt(IDL.Vec(IDL.Nat8)),
-    team_name: IDL.Text,
-    team_members: IDL.Vec(PrincipalId),
-    captain_id: PrincipalId,
-  });
-  const BuildItResultInfo = IDL.Record({
-    teams: IDL.Vec(TeamFeedSummary__1),
-    scores: IDL.Tuple(GolfTeamId, IDL.Nat),
-  });
   const BandsResultInfo = IDL.Record({
-    holesPlayed: IDL.Nat8,
-    players: IDL.Vec(PlayerFeedSummary__1),
-    points: IDL.Tuple(PrincipalId, IDL.Nat),
-  });
-  const NextUpResultInfo = IDL.Record({
     holesPlayed: IDL.Nat8,
     players: IDL.Vec(PlayerFeedSummary__1),
     points: IDL.Tuple(PrincipalId, IDL.Nat),
   });
   const MatchResultInfo = IDL.Variant({
     Mulligans: MulligansResultInfo,
-    BuildIt: BuildItResultInfo,
     Bands: BandsResultInfo,
-    NextUp: NextUpResultInfo,
   });
   const GameInfo__1 = IDL.Record({
     game_id: GameId,
@@ -230,7 +233,7 @@ export const idlFactory = ({ IDL }) => {
     pageSize: IDL.Nat,
     entries: IDL.Vec(BuzzEntry),
   });
-  const Result_21 = IDL.Variant({ ok: Buzz, err: Error });
+  const Result_22 = IDL.Variant({ ok: Buzz, err: Error });
   const GetClubShots = IDL.Record({
     club: GolfClub,
     page: IDL.Nat,
@@ -249,7 +252,7 @@ export const idlFactory = ({ IDL }) => {
     pageSize: IDL.Nat,
     entries: IDL.Vec(GolfShot),
   });
-  const Result_20 = IDL.Variant({ ok: ClubShots, err: Error });
+  const Result_21 = IDL.Variant({ ok: ClubShots, err: Error });
   const GetFriendRequests = IDL.Record({
     totalEntries: IDL.Nat,
     offset: IDL.Nat,
@@ -263,7 +266,7 @@ export const idlFactory = ({ IDL }) => {
   const FriendRequests = IDL.Record({
     friendRequests: IDL.Vec(FriendRequest),
   });
-  const Result_19 = IDL.Variant({ ok: FriendRequests, err: Error });
+  const Result_20 = IDL.Variant({ ok: FriendRequests, err: Error });
   const GetFriends = IDL.Record({
     page: IDL.Nat,
     principalId: PrincipalId,
@@ -281,7 +284,7 @@ export const idlFactory = ({ IDL }) => {
     pageSize: IDL.Nat,
     friends: IDL.Vec(Friend),
   });
-  const Result_18 = IDL.Variant({ ok: Friends, err: Error });
+  const Result_19 = IDL.Variant({ ok: Friends, err: Error });
   const GetGame = IDL.Record({ gameId: GameId });
   const GameStatus = IDL.Variant({
     Unplayed: IDL.Null,
@@ -291,16 +294,23 @@ export const idlFactory = ({ IDL }) => {
   const BandsCategoryResult = IDL.Record({
     completed: IDL.Bool,
     bandsCategory: BandsCategory,
+    failed: IDL.Bool,
+    startHole: HoleNumber,
   });
   const BandsPlayerResult = IDL.Record({
-    categories: IDL.Vec(BandsCategoryResult),
+    categoryResults: IDL.Vec(BandsCategoryResult),
+    holeResults: IDL.Vec(BandsHoleResult),
     principalId: PrincipalId,
     points: IDL.Nat8,
   });
-  const BandsScores = IDL.Record({ players: IDL.Vec(BandsPlayerResult) });
+  const BandsScores = IDL.Record({
+    currentHole: IDL.Nat8,
+    players: IDL.Vec(BandsPlayerResult),
+  });
   const MulligansHoleResult = IDL.Record({
     golfer2MulliganUsed: IDL.Bool,
     winner: PrincipalId,
+    score: IDL.Int,
     golfer1MulliganUsed: IDL.Bool,
     holeNumber: HoleNumber,
   });
@@ -308,6 +318,7 @@ export const idlFactory = ({ IDL }) => {
     winner: PrincipalId,
     results: IDL.Vec(MulligansHoleResult),
     score: IDL.Int,
+    currentHole: IDL.Nat8,
     golfer2MulligansUsed: IDL.Nat8,
     golfer2HolesWonCount: IDL.Nat8,
     golfer1MulligansAvailable: IDL.Nat8,
@@ -319,8 +330,7 @@ export const idlFactory = ({ IDL }) => {
     BandsScores: BandsScores,
     MulligansScores: MulligansScores,
   });
-  const MulligansPrediction = IDL.Record({});
-  const BandsPrediction = IDL.Record({
+  const BandsPrediction__1 = IDL.Record({
     wontHitTreeOrBunkerStartHole: HoleNumber,
     underParStartHole: HoleNumber,
     golferId: PrincipalId,
@@ -332,39 +342,14 @@ export const idlFactory = ({ IDL }) => {
     hit2Of3GreensStartHole: HoleNumber,
     wontLoseBallStartHole: HoleNumber,
   });
-  const GamePrediction = IDL.Variant({
-    Mulligans: MulligansPrediction,
-    BuildIt: IDL.Record({}),
-    Bands: BandsPrediction,
-    NextUp: IDL.Record({}),
+  const GamePrediction__1 = IDL.Variant({
+    Mulligans: IDL.Record({}),
+    Bands: IDL.Vec(BandsPrediction__1),
   });
   const GolfCourseSnapshot = IDL.Record({
     teeGroupIndex: TeeGroupIndex,
     courseVersion: GolfCourseVersion,
     courseId: GolfCourseId,
-  });
-  const GolfEvent = IDL.Variant({
-    Par: IDL.Null,
-    Scrub: IDL.Null,
-    DoubleBogey: IDL.Null,
-    Birdie: IDL.Null,
-    BallNotLost: IDL.Null,
-    Bogey: IDL.Null,
-    HitFairway: IDL.Null,
-    Albatross: IDL.Null,
-    HitBunker: IDL.Null,
-    HitTree: IDL.Null,
-    HitGreen: IDL.Null,
-    TakeMulligan: IDL.Null,
-    HitWater: IDL.Null,
-    LongestDrive: IDL.Null,
-    Eagle: IDL.Null,
-    OnePuttGreen: IDL.Null,
-  });
-  const GolferEvent = IDL.Record({
-    golferId: PrincipalId,
-    hole: HoleNumber,
-    event: GolfEvent,
   });
   const Game = IDL.Record({
     id: GameId,
@@ -372,15 +357,37 @@ export const idlFactory = ({ IDL }) => {
     status: GameStatus,
     scoreDetail: IDL.Opt(GameScoreDetail),
     invites: IDL.Vec(PrincipalId),
-    predictions: IDL.Vec(GamePrediction),
+    predictions: IDL.Vec(GamePrediction__1),
     winner: PrincipalId,
     teeOffTime: IDL.Int,
     courseSnapshot: GolfCourseSnapshot,
-    events: IDL.Vec(GolferEvent),
     gameType: GameType,
     courseId: GolfCourseId,
   });
-  const Result_17 = IDL.Variant({ ok: Game, err: Error });
+  const Result_18 = IDL.Variant({ ok: Game, err: Error });
+  const GetGameGolferSummaries = IDL.Record({ gameId: GameId });
+  const GolfCourseSummary = IDL.Record({
+    id: GolfCourseId,
+    name: IDL.Text,
+    countryId: CountryId,
+    version: GolfCourseVersion,
+    mainImageExtension: IDL.Text,
+    founded: IDL.Int,
+    mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
+  });
+  const GolferSummary = IDL.Record({
+    name: IDL.Text,
+    joinedOn: IDL.Int,
+    homeCourse: IDL.Opt(GolfCourseSummary),
+    profilePictureExtension: IDL.Text,
+    profilePicture: IDL.Opt(IDL.Vec(IDL.Nat8)),
+    handicap: IDL.Opt(Handicap),
+    principalId: PrincipalId,
+  });
+  const GameGolferSummaries = IDL.Record({
+    entries: IDL.Vec(GolferSummary),
+  });
+  const Result_17 = IDL.Variant({ ok: GameGolferSummaries, err: Error });
   const GetGameInvites = IDL.Record({ principalId: PrincipalId });
   const GameInvite__1 = IDL.Record({
     invited: PrincipalId,
@@ -425,13 +432,16 @@ export const idlFactory = ({ IDL }) => {
   const GolfCourseTeeGroup = IDL.Record({
     added: IDL.Int,
     holes: IDL.Vec(HoleSummary),
+    totalHoles: IDL.Nat8,
     golfCourseId: GolfCourseId,
     name: IDL.Text,
     index: TeeGroupIndex,
     colour: IDL.Text,
+    mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
   });
   const GolfCourse = IDL.Record({
     id: GolfCourseId,
+    manager: IDL.Text,
     totalHoles: IDL.Nat8,
     activeVersion: GolfCourseVersion,
     name: IDL.Text,
@@ -447,15 +457,6 @@ export const idlFactory = ({ IDL }) => {
   const GolfCourseCanisterId = IDL.Record({ canisterId: CanisterId });
   const Result_13 = IDL.Variant({ ok: GolfCourseCanisterId, err: Error });
   const GetGolfCourseSummary = IDL.Record({ id: GolfCourseId });
-  const GolfCourseSummary = IDL.Record({
-    id: GolfCourseId,
-    name: IDL.Text,
-    countryId: CountryId,
-    version: GolfCourseVersion,
-    mainImageExtension: IDL.Text,
-    founded: IDL.Int,
-    mainImage: IDL.Opt(IDL.Vec(IDL.Nat8)),
-  });
   const Result_12 = IDL.Variant({ ok: GolfCourseSummary, err: Error });
   const GetGolfCourseTeeGroup = IDL.Record({
     id: GolfCourseId,
@@ -508,15 +509,6 @@ export const idlFactory = ({ IDL }) => {
     searchTerm: IDL.Text,
     principalId: PrincipalId,
   });
-  const GolferSummary = IDL.Record({
-    name: IDL.Text,
-    joinedOn: IDL.Int,
-    homeCourse: IDL.Opt(GolfCourseSummary),
-    profilePictureExtension: IDL.Text,
-    profilePicture: IDL.Opt(IDL.Vec(IDL.Nat8)),
-    handicap: IDL.Opt(Handicap),
-    principalId: PrincipalId,
-  });
   const Golfers = IDL.Record({
     total: IDL.Nat,
     page: IDL.Nat,
@@ -524,32 +516,20 @@ export const idlFactory = ({ IDL }) => {
     entries: IDL.Vec(GolferSummary),
   });
   const Result_7 = IDL.Variant({ ok: Golfers, err: Error });
-  const GetPlayerBandsResults = IDL.Record({
-    id: GameId,
-    principalId: PrincipalId,
-  });
-  const PlayerBandsResult = IDL.Record({
-    completed: IDL.Bool,
-    category: BandsCategory,
-    principalId: PrincipalId,
-    points: IDL.Nat8,
-  });
-  const PlayerBandsResults = IDL.Record({
-    results: IDL.Vec(PlayerBandsResult),
-  });
-  const Result_6 = IDL.Variant({ ok: PlayerBandsResults, err: Error });
   const GetProfile = IDL.Record({ principalId: PrincipalId });
   const Profile = IDL.Record({
     username: IDL.Text,
     homeCourseId: IDL.Opt(GolfCourseId),
+    membershipClaims: IDL.Vec(MembershipClaim),
     golferPicture: IDL.Opt(IDL.Vec(IDL.Nat8)),
+    membershipType: MembershipType__1,
     handicap: IDL.Opt(Handicap),
     lastName: IDL.Text,
     golferPictureExtension: IDL.Text,
     principalId: PrincipalId,
     firstName: IDL.Text,
   });
-  const Result_5 = IDL.Variant({ ok: Profile, err: Error });
+  const Result_6 = IDL.Variant({ ok: Profile, err: Error });
   const GetShotAverages = IDL.Record({ principalId: PrincipalId });
   const AverageShot = IDL.Record({
     club: GolfClub,
@@ -557,7 +537,7 @@ export const idlFactory = ({ IDL }) => {
     index: IDL.Nat8,
   });
   const ShotAverages = IDL.Record({ shots: IDL.Vec(AverageShot) });
-  const Result_4 = IDL.Variant({ ok: ShotAverages, err: Error });
+  const Result_5 = IDL.Variant({ ok: ShotAverages, err: Error });
   const GetUpcomingGames = IDL.Record({
     page: IDL.Nat,
     principalId: PrincipalId,
@@ -575,20 +555,9 @@ export const idlFactory = ({ IDL }) => {
   const PlayerOpponentInfo = IDL.Record({
     players: IDL.Vec(PlayerFeedSummary),
   });
-  const TeamFeedSummary = IDL.Record({
-    team_image_extension: IDL.Text,
-    team_id: GolfTeamId,
-    team_image: IDL.Opt(IDL.Vec(IDL.Nat8)),
-    team_name: IDL.Text,
-    team_members: IDL.Vec(PrincipalId),
-    captain_id: PrincipalId,
-  });
-  const TeamOpponentInfo = IDL.Record({ teams: IDL.Vec(TeamFeedSummary) });
   const OpponentInfo = IDL.Variant({
     Mulligans: PlayerOpponentInfo,
-    BuildIt: TeamOpponentInfo,
     Bands: PlayerOpponentInfo,
-    NextUp: PlayerOpponentInfo,
   });
   const GameInfo = IDL.Record({
     game_id: GameId,
@@ -604,7 +573,7 @@ export const idlFactory = ({ IDL }) => {
     page: IDL.Nat,
     entries: IDL.Vec(UpcomingGame),
   });
-  const Result_3 = IDL.Variant({ ok: UpcomingGames, err: Error });
+  const Result_4 = IDL.Variant({ ok: UpcomingGames, err: Error });
   const GetUserFavouriteCourses = IDL.Record({
     searchTerm: IDL.Text,
     principalId: PrincipalId,
@@ -621,7 +590,65 @@ export const idlFactory = ({ IDL }) => {
     pageSize: IDL.Nat,
     entries: IDL.Vec(FavouriteCourse),
   });
-  const Result_2 = IDL.Variant({ ok: UserFavouriteCourses, err: Error });
+  const Result_3 = IDL.Variant({ ok: UserFavouriteCourses, err: Error });
+  const MembershipType = IDL.Variant({
+    Founding: IDL.Null,
+    Society: IDL.Null,
+    NotClaimed: IDL.Null,
+    Lifetime: IDL.Null,
+    Annual: IDL.Null,
+    Clubhouse: IDL.Null,
+    NotEligible: IDL.Null,
+    Expired: IDL.Null,
+  });
+  const EligibleMembership = IDL.Record({
+    eligibleNeuronIds: IDL.Vec(IDL.Vec(IDL.Nat8)),
+    membershipType: MembershipType,
+  });
+  const NeuronId = IDL.Record({ id: IDL.Vec(IDL.Nat8) });
+  const NeuronPermission = IDL.Record({
+    principal: IDL.Opt(IDL.Principal),
+    permission_type: IDL.Vec(IDL.Int32),
+  });
+  const DissolveState = IDL.Variant({
+    DissolveDelaySeconds: IDL.Nat64,
+    WhenDissolvedTimestampSeconds: IDL.Nat64,
+  });
+  const Subaccount = IDL.Record({ subaccount: IDL.Vec(IDL.Nat8) });
+  const Account = IDL.Record({
+    owner: IDL.Opt(IDL.Principal),
+    subaccount: IDL.Opt(Subaccount),
+  });
+  const DisburseMaturityInProgress = IDL.Record({
+    timestamp_of_disbursement_seconds: IDL.Nat64,
+    amount_e8s: IDL.Nat64,
+    account_to_disburse_to: IDL.Opt(Account),
+    finalize_disbursement_timestamp_seconds: IDL.Opt(IDL.Nat64),
+  });
+  const Followees = IDL.Record({ followees: IDL.Vec(NeuronId) });
+  const Neuron = IDL.Record({
+    id: IDL.Opt(NeuronId),
+    staked_maturity_e8s_equivalent: IDL.Opt(IDL.Nat64),
+    permissions: IDL.Vec(NeuronPermission),
+    maturity_e8s_equivalent: IDL.Nat64,
+    cached_neuron_stake_e8s: IDL.Nat64,
+    created_timestamp_seconds: IDL.Nat64,
+    source_nns_neuron_id: IDL.Opt(IDL.Nat64),
+    auto_stake_maturity: IDL.Opt(IDL.Bool),
+    aging_since_timestamp_seconds: IDL.Nat64,
+    dissolve_state: IDL.Opt(DissolveState),
+    voting_power_percentage_multiplier: IDL.Nat64,
+    vesting_period_seconds: IDL.Opt(IDL.Nat64),
+    disburse_maturity_in_progress: IDL.Vec(DisburseMaturityInProgress),
+    followees: IDL.Vec(IDL.Tuple(IDL.Nat64, Followees)),
+    neuron_fees_e8s: IDL.Nat64,
+  });
+  const GolferNeurons = IDL.Record({
+    totalMaxStaked: IDL.Nat64,
+    userMembershipEligibility: EligibleMembership,
+    userNeurons: IDL.Vec(Neuron),
+  });
+  const Result_2 = IDL.Variant({ ok: GolferNeurons, err: Error });
   const InviteGolfers = IDL.Record({
     gameId: GameId,
     invitedGolferIds: IDL.Vec(PrincipalId),
@@ -632,7 +659,27 @@ export const idlFactory = ({ IDL }) => {
   });
   const UsernameAvailable = IDL.Bool;
   const Result_1 = IDL.Variant({ ok: UsernameAvailable, err: Error });
-  const PredictGame = IDL.Record({ gameId: GameId });
+  const BandsPrediction = IDL.Record({
+    wontHitTreeOrBunkerStartHole: HoleNumber,
+    underParStartHole: HoleNumber,
+    golferId: PrincipalId,
+    wontDoubleBogeyStartHole: HoleNumber,
+    singlePutt2Of3GreensStartHole: HoleNumber,
+    wontBogeyStartHole: HoleNumber,
+    parOrUnderStartHole: HoleNumber,
+    hit2Of3FairwaysStartHole: HoleNumber,
+    hit2Of3GreensStartHole: HoleNumber,
+    wontLoseBallStartHole: HoleNumber,
+  });
+  const GamePrediction = IDL.Variant({
+    Mulligans: IDL.Record({}),
+    Bands: BandsPrediction,
+  });
+  const PredictGameScore = IDL.Record({
+    submittedById: PrincipalId,
+    gameId: GameId,
+    detail: GamePrediction,
+  });
   const RejectFriendRequest = IDL.Record({
     principalId: PrincipalId,
     requestedBy: PrincipalId,
@@ -656,6 +703,14 @@ export const idlFactory = ({ IDL }) => {
   const UpdateFirstName = IDL.Record({
     principalId: PrincipalId,
     firstName: IDL.Text,
+  });
+  const UpdateGame = IDL.Record({
+    inviteIds: IDL.Vec(PrincipalId),
+    gameId: GameId,
+    teeOffTime: IDL.Int,
+    teeGroupIndex: TeeGroupIndex,
+    courseVersion: GolfCourseVersion,
+    courseId: GolfCourseId,
   });
   const UpdateHandicap = IDL.Record({
     handicap: IDL.Opt(Handicap),
@@ -691,18 +746,20 @@ export const idlFactory = ({ IDL }) => {
     addGameScore: IDL.Func([AddGameScore], [Result], []),
     addShot: IDL.Func([AddShot], [Result], []),
     beginGame: IDL.Func([BeginGame], [Result], []),
-    createGame: IDL.Func([CreateGame], [Result_23], []),
+    claimMembership: IDL.Func([], [Result_25], []),
+    createGame: IDL.Func([CreateGame], [Result_24], []),
     createUser: IDL.Func([CreateUser], [Result], []),
     deleteGame: IDL.Func([DeleteGame], [Result], []),
     deleteShot: IDL.Func([DeleteShot], [Result], []),
     executeAddGolfCourse: IDL.Func([CreateGolfCourse], [], []),
     executeUpdateGolfCourse: IDL.Func([UpdateGolfCourse], [], []),
-    getAppStatus: IDL.Func([], [Result_22], ["query"]),
-    getBuzz: IDL.Func([GetBuzz], [Result_21], []),
-    getClubShots: IDL.Func([GetClubShots], [Result_20], []),
-    getFriendRequests: IDL.Func([GetFriendRequests], [Result_19], []),
-    getFriends: IDL.Func([GetFriends], [Result_18], []),
-    getGame: IDL.Func([GetGame], [Result_17], []),
+    getAppStatus: IDL.Func([], [Result_23], ["query"]),
+    getBuzz: IDL.Func([GetBuzz], [Result_22], []),
+    getClubShots: IDL.Func([GetClubShots], [Result_21], []),
+    getFriendRequests: IDL.Func([GetFriendRequests], [Result_20], []),
+    getFriends: IDL.Func([GetFriends], [Result_19], []),
+    getGame: IDL.Func([GetGame], [Result_18], []),
+    getGameGolferSummaries: IDL.Func([GetGameGolferSummaries], [Result_17], []),
     getGameInvites: IDL.Func([GetGameInvites], [Result_16], []),
     getGameSummaries: IDL.Func([GetGameSummaries], [Result_15], []),
     getGolfCourse: IDL.Func([GetGolfCourse], [Result_14], []),
@@ -717,24 +774,25 @@ export const idlFactory = ({ IDL }) => {
     getGolfCourses: IDL.Func([GetGolfCourses], [Result_9], []),
     getGolfer: IDL.Func([GetGolfer], [Result_8], []),
     getGolfers: IDL.Func([GetGolfers], [Result_7], []),
-    getPlayerBandsResults: IDL.Func([GetPlayerBandsResults], [Result_6], []),
-    getProfile: IDL.Func([GetProfile], [Result_5], []),
-    getShotAverages: IDL.Func([GetShotAverages], [Result_4], []),
-    getUpcomingGames: IDL.Func([GetUpcomingGames], [Result_3], []),
+    getProfile: IDL.Func([GetProfile], [Result_6], []),
+    getShotAverages: IDL.Func([GetShotAverages], [Result_5], []),
+    getUpcomingGames: IDL.Func([GetUpcomingGames], [Result_4], []),
     getUserFavouriteCourses: IDL.Func(
       [GetUserFavouriteCourses],
-      [Result_2],
+      [Result_3],
       [],
     ),
+    getUserNeurons: IDL.Func([], [Result_2], []),
     inviteGolfers: IDL.Func([InviteGolfers], [Result], []),
     isUsernameAvailable: IDL.Func([IsUsernameAvailable], [Result_1], ["query"]),
-    predictGame: IDL.Func([PredictGame], [Result], []),
+    predictGameScore: IDL.Func([PredictGameScore], [Result], []),
     rejectFriendRequest: IDL.Func([RejectFriendRequest], [Result], []),
     rejectGameInvite: IDL.Func([RejectGameInvite], [Result], []),
     removeFriend: IDL.Func([RemoveFriend], [Result], []),
     removeUserGolfCourse: IDL.Func([RemoveUserGolfCourse], [Result], []),
     sendFriendRequest: IDL.Func([SendFriendRequest], [Result], []),
     updateFirstName: IDL.Func([UpdateFirstName], [Result], []),
+    updateGame: IDL.Func([UpdateGame], [Result], []),
     updateHandicap: IDL.Func([UpdateHandicap], [Result], []),
     updateHomeCourse: IDL.Func([UpdateHomeCourse], [Result], []),
     updateLastName: IDL.Func([UpdateLastName], [Result], []),

@@ -4,11 +4,11 @@
 </script>
 
 
-<div class="rounded-lg p-4 max-h-[80vh] overflow-y-auto">
+<div class="rounded-lg p-0 lg:p-4 max-h-[80vh] overflow-y-auto">
     <header class="bg-white">
-        <div class="flex flex-col md:flex-row justify-between items-center py-4">
+        <div class="flex flex-row items-center justify-between py-3 md:items-baseline">
             <h1 class="title">{title}</h1>
-            <h2 class="text-BrandDarkGray text-sm md:text-base">{subTitle}</h2>
+            <h2 class="text-sm text-BrandDarkGray">{subTitle}</h2>
         </div>
     </header>
     <slot></slot>

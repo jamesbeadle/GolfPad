@@ -13,11 +13,10 @@ import type {
   GetGame,
   GetGameInvites,
   GetGameSummaries,
-  GetPlayerBandsResults,
   InviteGolfers,
-  PlayerBandsResults,
-  PredictGame,
+  PredictGameScore,
   RejectGameInvite,
+  UpdateGame,
 } from "../../../../declarations/backend/backend.did";
 
 export class GameService {
@@ -77,20 +76,6 @@ export class GameService {
     return result.ok;
   }
 
-  async getPlayerBandsResults(
-    dto: GetPlayerBandsResults,
-  ): Promise<PlayerBandsResults> {
-    const identityActor = await ActorFactory.createIdentityActor(
-      authStore,
-      process.env.BACKEND_CANISTER_ID ?? "",
-    );
-    const result: any = await identityActor.getPlayerBandsResults(dto);
-    if (isError(result)) {
-      throw new Error("Error Getting Bands Game Result");
-    }
-    return result.ok;
-  }
-
   //Commands
 
   async createGame(dto: CreateGame): Promise<any> {
@@ -101,6 +86,18 @@ export class GameService {
     const result: any = await identityActor.createGame(dto);
     if (isError(result)) {
       throw new Error("Error Creating Game");
+    }
+    return result.ok;
+  }
+
+  async updateGame(dto: UpdateGame): Promise<any> {
+    const identityActor = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+    const result: any = await identityActor.updateGame(dto);
+    if (isError(result)) {
+      throw new Error("Error Updating Game");
     }
     return result.ok;
   }
@@ -117,12 +114,12 @@ export class GameService {
     return result.ok;
   }
 
-  async predictGame(dto: PredictGame): Promise<any> {
+  async predictGameScore(dto: PredictGameScore): Promise<any> {
     const identityActor = await ActorFactory.createIdentityActor(
       authStore,
       process.env.BACKEND_CANISTER_ID ?? "",
     );
-    const result: any = await identityActor.predictGame(dto);
+    const result: any = await identityActor.predictGameScore(dto);
     if (isError(result)) {
       throw new Error("Error Making Game Prediction");
     }

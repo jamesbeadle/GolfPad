@@ -14,6 +14,7 @@
     let currentPage = 1n;
     let hasMore = true;
 
+
     onMount(async () => {
         await loadBuzzEntries(currentPage);
     });
@@ -49,7 +50,7 @@
     }
 
 </script>
-<BrandPanel title="The Buzz" subTitle="The latest Matches">
+<BrandPanel title="THE BUZZ" subTitle="THE LATEST MATCHES">
     {#if isLoading}
         <LocalSpinner />
     {:else}
@@ -59,11 +60,11 @@
             {/each}
 
             {#if buzz.entries.length > 0}
-                <div class="load-more-container">
+                <div class="flex justify-center mt-4">
                     {#if isLoadingMore}
                         <LocalSpinner />
                     {:else if hasMore}
-                        <button on:click={loadMore} class="more-button">
+                        <button on:click={loadMore} class="px-6 py-2 text-base font-bold rounded-lg text-BrandYellow bg-BrandForest hover:bg-BrandForest/80">
                             More
                         </button>
                     {:else}

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import LikeButton from "$lib/icons/LikeButton.svelte";
-  import DislikeButton from "$lib/icons/DislikeButton.svelte";
+  import LikeButton from "$lib/icons/like-icon.svelte";
+  import DislikeButton from "$lib/icons/dislike-icon.svelte";
   import type { ProposalData } from "@dfinity/sns/dist/candid/sns_governance";
   
   export let yesVotes: number = 0;

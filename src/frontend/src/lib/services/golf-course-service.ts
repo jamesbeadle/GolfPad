@@ -150,7 +150,7 @@ export class GolfCoursesService {
     const command: Command = {
       MakeProposal: {
         title,
-        url: "openfpl.xyz/governance",
+        url: "icgc.io/governance",
         summary,
         action: [{ ExecuteGenericNervousSystemFunction: fn }],
       },

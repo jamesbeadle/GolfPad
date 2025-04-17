@@ -10,10 +10,8 @@ import TrieMap "mo:base/TrieMap";
 import Text "mo:base/Text";
 
 import Base "mo:waterway-mops/BaseTypes";
-import GolfCoursesCanister "../canister-definitions/golf-courses-canister";
 import Environment "../utilities/Environment";
 import Management "../utilities/Management";
-import T "../data-types/types";
 import Utilities "../utilities/Utilities";
 
 import GolfCourseQueries "../queries/golf_course_queries";
@@ -22,29 +20,29 @@ import GolfCourseCommands "../commands/golf_course_commands";
 module {
   public class GolfCourseManager() {
 
-    private var golfCourseCanisterIndex: TrieMap.TrieMap<T.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<T.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
+    private var golfCourseCanisterIndex: TrieMap.TrieMap<MopsIds.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<MopsIds.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
     private var activeCanisterId: Base.CanisterId = "";
-    private var golfCourseNames : TrieMap.TrieMap<T.GolfCourseId, Text> = TrieMap.TrieMap<T.GolfCourseId, Text>(Utilities.eqNat, Utilities.hashNat);
+    private var golfCourseNames : TrieMap.TrieMap<MopsIds.GolfCourseId, Text> = TrieMap.TrieMap<MopsIds.GolfCourseId, Text>(Utilities.eqNat, Utilities.hashNat);
     private var uniqueGolfCourseCanisterIds : List.List<Base.CanisterId> = List.nil();
     private var totalGolfCourses : Nat = 0;
-    private var nextGolfCourseId : T.GolfCourseId = 1;
+    private var nextGolfCourseId : MopsIds.GolfCourseId = 1;
     
-    public func courseExists(courseId: T.GolfCourseId) : Bool {
+    public func courseExists(courseId: MopsIds.GolfCourseId) : Bool {
       let course = golfCourseCanisterIndex.get(courseId);
       return Option.isSome(course);
     };
 
     public func getGolfCourses(dto: GolfCourseQueries.GetGolfCourses) : async Result.Result<GolfCourseQueries.GolfCourses, T.Error> {
       let searchTerm = dto.searchTerm;
-      let filteredEntries = List.filter<(T.GolfCourseId, Text)>(
-        Iter.toList<(T.GolfCourseId, Text)>(golfCourseNames.entries()),
-        func(entry : (T.GolfCourseId, Text)) : Bool {
+      let filteredEntries = List.filter<(MopsIds.GolfCourseId, Text)>(
+        Iter.toList<(MopsIds.GolfCourseId, Text)>(golfCourseNames.entries()),
+        func(entry : (MopsIds.GolfCourseId, Text)) : Bool {
           Text.startsWith(entry.1, #text searchTerm);
         },
       );
       
-      let droppedEntries = List.drop<(T.GolfCourseId, Text)>(filteredEntries, 0); //TODO 
-      let paginatedEntries = List.take<(T.GolfCourseId, Text)>(droppedEntries, 10);
+      let droppedEntries = List.drop<(MopsIds.GolfCourseId, Text)>(filteredEntries, 0); //TODO 
+      let paginatedEntries = List.take<(MopsIds.GolfCourseId, Text)>(droppedEntries, 10);
 
       let coursesBuffer = Buffer.fromArray<GolfCourseQueries.GolfCourseSummary>([]);
 
@@ -117,8 +115,10 @@ module {
         return #Err("Golf Course name too long, max 100 characters.");
       };
 
-      if(Array.size(dto.holes) != 18){
-        return #Err("Golf Course must have 18 holes");
+      for(teegroup in Iter.fromArray(dto.teeGroups)){
+        if(Array.size(teegroup.holes) != 18){
+          return #Err("Tee group " # teegroup.name # " must have 18 holes.");
+        }
       };
 
       return #Ok("Proposal Valid");
@@ -126,7 +126,7 @@ module {
 
     public func executeAddGolfCourse(dto : GolfCourseCommands.CreateGolfCourse) : async () {
       var golf_course_canister = actor (activeCanisterId) : actor {
-        getLatestId : () -> async T.GolfCourseId;
+        getLatestId : () -> async MopsIds.GolfCourseId;
         createGolfCourse : (dto: GolfCourseCommands.CreateGolfCourse) -> async Result.Result<(), T.Error>;
         isCanisterFull : () -> async Bool;
       };
@@ -135,12 +135,12 @@ module {
 
       if(isCanisterFull){
         let latestId = await golf_course_canister.getLatestId();
-        let nextId: T.GameId = latestId + 1;
+        let nextId: MopsIds.GameId = latestId + 1;
         
         await createNewCanister(nextId);
 
         golf_course_canister := actor (activeCanisterId) : actor {
-          getLatestId : () -> async T.GolfCourseId;
+          getLatestId : () -> async MopsIds.GolfCourseId;
           createGolfCourse : (dto: GolfCourseCommands.CreateGolfCourse) -> async Result.Result<(), T.Error>;
           isCanisterFull : () -> async Bool;
        };
@@ -155,14 +155,11 @@ module {
       if(Text.size(dto.name) > 100){
         return #Err("Golf Course name too long, max 100 characters.");
       };
-      
-      switch(dto.updatedTeeGroup){
-        case (?foundTeeGroup){
-          if(Array.size(foundTeeGroup.holes) != 18){
-            return #Err("Golf Course must have 18 holes");
-          };
-        };
-        case null { }
+
+      for(teegroup in Iter.fromArray(dto.teeGroups)){
+        if(Array.size(teegroup.holes) != 18){
+          return #Err("Tee group " # teegroup.name # " must have 18 holes.");
+        }
       };
 
       return #Ok("Proposal Valid");
@@ -184,12 +181,12 @@ module {
 
     //stable storage getters and setters
 
-    public func getStableCanisterIndex() : [(T.GolfCourseId, Base.CanisterId)]{
+    public func getStableCanisterIndex() : [(MopsIds.GolfCourseId, Base.CanisterId)]{
       return Iter.toArray(golfCourseCanisterIndex.entries());
     };
 
-    public func setStableCanisterIndex(stable_golf_course_canister_index: [(T.GolfCourseId, Base.CanisterId)]){
-      let canisterIds : TrieMap.TrieMap<T.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<T.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
+    public func setStableCanisterIndex(stable_golf_course_canister_index: [(MopsIds.GolfCourseId, Base.CanisterId)]){
+      let canisterIds : TrieMap.TrieMap<MopsIds.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<MopsIds.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
 
       for (canisterId in Iter.fromArray(stable_golf_course_canister_index)) {
         canisterIds.put(canisterId);
@@ -205,12 +202,12 @@ module {
       activeCanisterId := stable_active_canister_id;
     };  
 
-    public func getStableGolfCourseNames() : [(T.GolfCourseId, Text)] {
+    public func getStableGolfCourseNames() : [(MopsIds.GolfCourseId, Text)] {
       return Iter.toArray(golfCourseNames.entries());
     };
 
-    public func setStableGolfCourseNames(stable_course_names : [(T.GolfCourseId, Text)]) : () {
-      let golf_course_map : TrieMap.TrieMap<T.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<T.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
+    public func setStableGolfCourseNames(stable_course_names : [(MopsIds.GolfCourseId, Text)]) : () {
+      let golf_course_map : TrieMap.TrieMap<MopsIds.GolfCourseId, Base.CanisterId> = TrieMap.TrieMap<MopsIds.GolfCourseId, Base.CanisterId>(Utilities.eqNat, Utilities.hashNat);
 
       for (courseName in Iter.fromArray(stable_course_names)) {
         golf_course_map.put(courseName);
@@ -239,15 +236,15 @@ module {
       totalGolfCourses := stable_total_golf_courses;
     };
 
-    public func getStableNextGolfCourseId() : T.GolfCourseId {
+    public func getStableNextGolfCourseId() : MopsIds.GolfCourseId {
       return nextGolfCourseId;
     };
 
-    public func setStableNextGolfCourseId(stable_next_golf_course_id : T.GolfCourseId) : () {
+    public func setStableNextGolfCourseId(stable_next_golf_course_id : MopsIds.GolfCourseId) : () {
       nextGolfCourseId := stable_next_golf_course_id;
     };
 
-    private func createNewCanister(nextId: T.GolfCourseId) : async (){
+    private func createNewCanister(nextId: MopsIds.GolfCourseId) : async (){
       Cycles.add<system>(10_000_000_000_000);
       let canister = await GolfCoursesCanister._GolfCoursesCanister();
       let IC : Management.Management = actor (Environment.Default);
@@ -262,7 +259,7 @@ module {
       };
 
       var new_canister = actor (canisterId) : actor {
-        updateNextId : (nextId: T.GameId) -> async ();
+        updateNextId : (nextId: MopsIds.GameId) -> async ();
       };
 
       await new_canister.updateNextId(nextId);
