@@ -2,7 +2,6 @@
 /* ----- Mops Packages ----- */
 
 import Int "mo:base/Int";
-import Iter "mo:base/Iter";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Timer "mo:base/Timer";
@@ -16,7 +15,6 @@ import UserQueries "queries/user_queries";
 import GolfCourseQueries "queries/golf_course_queries";
 import GolferQueries "queries/golfer_queries";
 import LeaderboardQueries "queries/leaderboard_queries";
-import TournamentQueries "queries/tournament_queries";
 
 
 /* ----- Commands ----- */
@@ -82,7 +80,7 @@ actor Self {
     return userManager.getPrediction(principalId, dto);
   };
 
-  public shared query ({ caller }) func getScorecard(dto: UserQueries.GetScorecard) : async Result.Result<TournamentQueries.Leaderboard, Enums.Error> {
+  public shared query ({ caller }) func getScorecard(dto: UserQueries.GetScorecard) : async Result.Result<LeaderboardQueries.Leaderboard, Enums.Error> {
     assert not Principal.isAnonymous(caller);
     return userManager.getScorecard(dto);
   };
@@ -163,7 +161,7 @@ actor Self {
 
   /* ----- Leaderboard Queries ----- */
 
-  public shared query ({ caller }) func getLeaderboard(dto: TournamentQueries.GetLeaderboard) : async Result.Result<TournamentQueries.Leaderboard, Enums.Error> {
+  public shared query ({ caller }) func getLeaderboard(dto: LeaderboardQueries.GetLeaderboard) : async Result.Result<LeaderboardQueries.Leaderboard, Enums.Error> {
     assert not Principal.isAnonymous(caller);
     return leaderboardManager.getLeaderboard(dto);
   };

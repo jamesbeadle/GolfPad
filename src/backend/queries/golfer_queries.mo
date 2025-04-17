@@ -1,5 +1,4 @@
 
-import GolfCourseQueries "golf_course_queries";
 import Types "../data-types/types";
 
 module GolferQueries {
