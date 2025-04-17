@@ -95,10 +95,10 @@ module FantasyGolfTypes {
 
     public type TournamentLeaderboard = {
         totalEntries: Nat;
-        entries: [LeaderboardEntry];
+        entries: [TournamentLeaderboardEntry];
     };
 
-    public type LeaderboardEntry = {
+    public type TournamentLeaderboardEntry = {
         golferId: GolferId;
         tournamentId: TournamentId;
         rounds: [GolfRound];
@@ -138,6 +138,25 @@ module FantasyGolfTypes {
         #Round3Complete;
         #Round4Active;
         #Completed;
+    };
+
+    public type FantasyLeaderboard = {
+        principalId: Ids.PrincipalId;
+        nationalityId: Ids.CountryId;
+        score: Int8;
+        shots: Nat8;
+        entries: [FantasyLeaderboardEntry];
+    };
+
+    public type FantasyLeaderboardEntry = {
+        holes: [FantasyPredictionHole];
+    };
+
+    public type FantasyPredictionHole = {
+        golferId: GolferId;
+        shotCount: Nat8;
+        par: Nat8;
+        score: Int8;
     };
 
 }

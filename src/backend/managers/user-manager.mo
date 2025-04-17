@@ -10,6 +10,7 @@ module {
   public class UserManager() {
 
     private var profiles: [Types.Profile] = [];
+    private var predictions: [Types.Prediction] = [];
 
     public func getProfile(principalId: Ids.PrincipalId) : Result.Result<UserQueries.Profile, Enums.Error> {
       return #err(#NotFound);
@@ -47,8 +48,16 @@ module {
       return profiles;
     };
 
-    public func setStableNextGameId(stable_profiles : [Types.Profile]) : () {
+    public func getStablePredictions() : [Types.Prediction] {
+      return predictions;
+    };
+
+    public func setStableProfiles(stable_profiles: [Types.Profile]){
       profiles := stable_profiles;
+    };
+
+    public func setStablePredictions(stable_predictions: [Types.Prediction]){
+      predictions := stable_predictions;
     };
 
   };

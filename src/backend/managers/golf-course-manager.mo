@@ -22,8 +22,13 @@ module {
       return #err(#NotFound);
     };
 
-    //stable storage getters and setters
+    public func getStableGolfCourses() : [Types.GolfCourse] {
+      return golfCourses;
+    };
 
+    public func setStableGolfCourses(stable_golf_courses: [Types.GolfCourse]) {
+      golfCourses := stable_golf_courses;
+    }
 
 
   };

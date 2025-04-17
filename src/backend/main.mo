@@ -30,7 +30,7 @@ import TournamentCommands "commands/tournament_commands";
 import UserManager "managers/user-manager";
 import GolfCourseManager "managers/golf-course-manager";
 import GolferManager "managers/golfer-manager";
-import LeaderboardManager "managers/leaderboard-manager";
+import FantasyLeaderboardManager "managers/fantasy-leaderboard-manager";
 import TournamentManager "managers/tournament-manager";
 
 
@@ -44,6 +44,7 @@ actor Self {
   /* ----- Stable Canister Variables ----- */ 
 
   private stable var stable_profiles: [Types.Profile] = [];
+  private stable var stable_fantasy_leaderboards: [Types.FantasyLeaderboard] = [];
   private stable var predictions: [Types.Prediction] = [];
   private stable var golfers: [Types.Golfer] = [];
   private stable var golfCourses: [Types.GolfCourse] = [];
@@ -56,7 +57,7 @@ actor Self {
   /* ----- Manager Initialisation with Transient Canister Variables ----- */ 
 
   private let userManager = UserManager.UserManager();
-  private let leaderboardManager = LeaderboardManager.LeaderboardManager();
+  private let fantasyLeaderboardManager = FantasyLeaderboardManager.FantasyLeaderboardManager();
   private let golferManager = GolferManager.GolferManager();
   private let golfCourseManager = GolfCourseManager.GolfCourseManager();
   private let tournamentManager = TournamentManager.TournamentManager();
@@ -166,7 +167,7 @@ actor Self {
 
   public shared query ({ caller }) func getLeaderboard(dto: LeaderboardQueries.GetLeaderboard) : async Result.Result<LeaderboardQueries.Leaderboard, Enums.Error> {
     assert not Principal.isAnonymous(caller);
-    return leaderboardManager.getLeaderboard(dto);
+    return fantasyLeaderboardManager.getLeaderboard(dto);
   };
 
 
@@ -188,6 +189,11 @@ actor Self {
   
 
   system func preupgrade() {
+    stable_profiles := userManager.getStableProfiles();
+    predictions := userManager.getStablePredictions();
+    golfers := golferManager.getStableGolfers();
+    golfCourses := golfCourseManager.getStableGolfCourses();
+    stable_fantasy_leaderboards := fantasyLeaderboardManager.getStableLeaderboards();
   };
 
   system func postupgrade() {
@@ -196,7 +202,11 @@ actor Self {
   
 
   private func postUpgradeCallback() : async () {
-  
+    userManager.setStableProfiles(stable_profiles);
+    userManager.setStablePredictions(predictions);
+    golferManager.setStableGolfers(golfers);
+    golfCourseManager.setStableGolfCourses(golfCourses);
+    fantasyLeaderboardManager.setStableLeaderboards(stable_fantasy_leaderboards);
   };
 
 
