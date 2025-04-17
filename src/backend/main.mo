@@ -7,52 +7,42 @@ import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Timer "mo:base/Timer";
 import Enums "mo:waterway-mops/Enums";
+import BaseTypes "mo:waterway-mops/BaseTypes";
+import BaseQueries "mo:waterway-mops/queries/BaseQueries";
 
 /* ----- Queries ----- */
 
 import UserQueries "queries/user_queries";
+import GolfCourseQueries "queries/golf_course_queries";
 import LeaderboardQueries "queries/leaderboard_queries";
-import GolfCourseCommands "commands/golf_course_commands";
-import GolferCommands "commands/golfer_commands";
 
 
 /* ----- Commands ----- */
 
 import UserCommands "commands/user_commands";
-import LeaderboardCommands "commands/leaderboard_commands";
 import GolfCourseCommands "commands/golf_course_commands";
 import GolferCommands "commands/golfer_commands";
 
-import Environment "utilities/Environment";
-import Management "utilities/Management";
-import Utilities "utilities/Utilities";
-
 
 /* ----- Manager ----- */
-
-import UserManager "managers/game-manager";
+import UserManager "managers/user-manager";
 import GolfCourseManager "managers/golf-course-manager";
 import GolferManager "managers/golfer-manager";
-import GolfCourseQueries "queries/golf_course_queries";
+import LeaderboardManager "managers/leaderboard-manager";
+import TournamentManager "managers/tournament-manager";
+
+
+/* ----- Type imports for stable variables ----- */
+import Types "./data-types/types";
+import TournamentCommands "commands/tournament_commands";
 
 
 actor Self {
 
   /* ----- Stable Canister Variables ----- */ 
 
-  private stable var profiles: [AppTypes.User] = [];
-  private stable var predictions: [AppTypes.Prediction] = [];
-  private stable var leaderboards: [AppTypes.Leaderboard] = [];
-  private stable var courses: [AppTypes.GolfCourse] = [];
-  private stable var golfers: [AppTypes.Golfers] = [];
-  private stable var tournaments: [AppTypes.Tournament] = [];
-  private stable var tournamentResults: [AppTypes.TournamentResult] = [];
-
-  private stable var stable_usernames : [(MopsIds.PrincipalId, Text)] = [];
-  private stable var stable_next_golf_course_id : Nat = 0;
-  private stable var stable_next_golfer_course_id : Nat = 0;
-  private stable var stable_next_tournament_course_id : Nat = 0;
-  private stable var stable_next_game_id : Nat = 0;
+  private stable var stable_profiles: [Types.Profile] = [];
+  
   private stable var appStatus : BaseTypes.AppStatus = {
     onHold = false;
     version = "0.0.1";
@@ -61,18 +51,18 @@ actor Self {
   /* ----- Manager Initialisation with Transient Canister Variables ----- */ 
 
   private let userManager = UserManager.UserManager();
-  private let predictionManager = PredictionManager.PredictionManager();
   private let leaderboardManager = LeaderboardManager.LeaderboardManager();
   private let golferManager = GolferManager.GolferManager();
   private let golfCourseManager = GolfCourseManager.GolfCourseManager();
+  private let tournamentManager = TournamentManager.TournamentManager();
 
 
   /* ----- App Queries and Commands ----- */
 
-  public shared query func getAppStatus() : async Result.Result<BaseQueries.AppStatusDTO, AppTypes.Error> {
+  public shared query func getAppStatus() : async Result.Result<BaseQueries.AppStatus, Enums.Error> {
     return #ok(appStatus);
   };
-
+  
 
   /* ----- User Queries and Commands ----- */
 
@@ -97,6 +87,11 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     return userManager.updateUsername(principalId, dto);  
+  };
+
+  public shared query ({ caller }) func getPrediction(dto: TournamentQueries.GetLeaderboard) : async Result.Result<TournamentQueries.Leaderboard, Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    return golferManager.getLeaderboard(dto);
   };
 
   public shared ({ caller }) func submitPrediction(dto: UserCommands.SubmitPrediction) : async Result.Result<(), Enums.Error> {
@@ -154,11 +149,26 @@ actor Self {
     return userManager.updateGolfCourse(dto);  
   };
 
-  /* ----- Prediction Commands and Queries ----- */
+  /* ----- Leaderboard Queries ----- */
 
-  //get leaderboard
-  //get prediction
-  //get scorecard
+  public shared query ({ caller }) func getLeaderboard(dto: TournamentQueries.GetLeaderboard) : async Result.Result<TournamentQueries.Leaderboard, Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    return golferManager.getLeaderboard(dto);
+  };
+
+  public shared query ({ caller }) func getScorecard(dto: TournamentQueries.GetLeaderboard) : async Result.Result<TournamentQueries.Leaderboard, Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    return golferManager.getLeaderboard(dto);
+  };
+
+
+  /* ----- Tournament Queries and Commands ----- */
+
+  public shared ({ caller }) func updateTournamentStage(dto: TournamentCommands.UpdateTournamentStage) : async Result.Result<(), Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return userManager.createProfile(principalId, dto);  
+  };
   
 
   system func preupgrade() {
