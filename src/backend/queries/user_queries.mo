@@ -16,6 +16,14 @@ module UserQueries {
     public type Prediction = {
         
     };
+
+    public type GetScorecard = {
+        principalId: Ids.PrincipalId;
+    };
+
+    public type Scorecard = {
+        
+    };
 }
 
   

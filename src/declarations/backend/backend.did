@@ -1,517 +1,103 @@
-type UsernameAvailable = bool;
-type UserFavouriteCourses = 
- record {
-   entries: vec FavouriteCourse;
-   page: nat;
-   pageSize: nat;
-   total: nat;
- };
-type UpdateUsername = 
- record {
-   principalId: PrincipalId;
-   username: text;
- };
-type UpdateShot = 
- record {
-   club: GolfClub;
-   golfShotId: GolfShotId;
-   principalId: PrincipalId;
-   yardage: nat;
- };
-type UpdateProfilePicture = 
- record {
-   principalId: PrincipalId;
-   profilePicture: opt blob;
-   profilePictureExtension: text;
- };
-type UpdateLastName = 
- record {
-   lastName: text;
-   principalId: PrincipalId;
- };
-type UpdateHomeCourse = 
- record {
-   homeCourseId: opt GolfCourseId;
-   principalId: PrincipalId;
- };
-type UpdateHandicap = 
- record {
-   handicap: opt Handicap;
-   principalId: PrincipalId;
- };
-type UpdateGolfCourse = 
- record {
-   bannerImage: opt blob;
-   bannerImageExtension: text;
-   courseId: GolfCourseId;
-   mainImage: opt blob;
-   mainImageExtension: text;
-   manager: PrincipalId;
-   name: text;
-   teeGroups: vec TeeGroup;
- };
-type UpdateGame = 
- record {
-   courseId: GolfCourseId;
-   courseVersion: GolfCourseVersion;
-   gameId: GameId;
-   inviteIds: vec PrincipalId;
-   teeGroupIndex: TeeGroupIndex;
-   teeOffTime: int;
- };
-type UpdateFirstName = 
+type UpdateUsername = record {username: text;};
+type UpdateTournamentStage = record {};
+type UpdateProfilePicture = record {profilePicture: opt blob;};
+type UpdateGolfer = 
  record {
    firstName: text;
-   principalId: PrincipalId;
+   lastName: text;
  };
-type UpcomingGames = 
+type UpdateGolfCourse = record {};
+type TournamentId = nat16;
+type SwapGolfer = 
  record {
-   entries: vec UpcomingGame;
-   page: nat;
+   newGolferHole: nat8;
+   newGolferId: GolferId;
+   removedGolferHole: nat8;
+   removedGolferId: GolferId;
+   tournamentId: TournamentId;
  };
-type UpcomingGame = 
+type SubmitPrediction = 
  record {
-   course_info: CourseInfo;
-   game_info: GameInfo;
-   opponent_info: OpponentInfo;
- };
-type TeeGroupIndex = nat8;
-type TeeGroup = 
- record {
-   added: int;
-   colour: text;
-   holes: vec Hole;
-   index: TeeGroupIndex;
-   name: text;
- };
-type Subaccount = record {subaccount: blob;};
-type ShotAverages = record {shots: vec AverageShot;};
-type SendFriendRequest = 
- record {
-   principalId: PrincipalId;
-   requestedFriend: PrincipalId;
- };
-type RustResult = 
- variant {
-   Err: text;
-   Ok: text;
- };
-type Result_9 = 
- variant {
-   err: Error;
-   ok: GolfCourses;
- };
-type Result_8 = 
- variant {
-   err: Error;
-   ok: Golfer;
- };
-type Result_7 = 
- variant {
-   err: Error;
-   ok: Golfers;
+   hole10GolferId: GolferId;
+   hole11GolferId: GolferId;
+   hole12GolferId: GolferId;
+   hole13GolferId: GolferId;
+   hole14GolferId: GolferId;
+   hole15GolferId: GolferId;
+   hole16GolferId: GolferId;
+   hole17GolferId: GolferId;
+   hole18GolferId: GolferId;
+   hole1GolferId: GolferId;
+   hole2GolferId: GolferId;
+   hole3GolferId: GolferId;
+   hole4GolferId: GolferId;
+   hole5GolferId: GolferId;
+   hole6GolferId: GolferId;
+   hole7GolferId: GolferId;
+   hole8GolferId: GolferId;
+   hole9GolferId: GolferId;
+   tournamentId: TournamentId;
  };
 type Result_6 = 
  variant {
    err: Error;
-   ok: Profile;
+   ok: AppStatus;
  };
 type Result_5 = 
  variant {
    err: Error;
-   ok: ShotAverages;
+   ok: GolfCourse;
  };
 type Result_4 = 
  variant {
    err: Error;
-   ok: UpcomingGames;
+   ok: Golfer;
  };
 type Result_3 = 
  variant {
    err: Error;
-   ok: UserFavouriteCourses;
- };
-type Result_25 = 
- variant {
-   err: Error;
-   ok: MembershipClaim;
- };
-type Result_24 = 
- variant {
-   err: Error;
-   ok: GameId;
- };
-type Result_23 = 
- variant {
-   err: Error;
-   ok: AppStatusDTO;
- };
-type Result_22 = 
- variant {
-   err: Error;
-   ok: Buzz;
- };
-type Result_21 = 
- variant {
-   err: Error;
-   ok: ClubShots;
- };
-type Result_20 = 
- variant {
-   err: Error;
-   ok: FriendRequests;
+   ok: Prediction;
  };
 type Result_2 = 
  variant {
    err: Error;
-   ok: GolferNeurons;
- };
-type Result_19 = 
- variant {
-   err: Error;
-   ok: Friends;
- };
-type Result_18 = 
- variant {
-   err: Error;
-   ok: Game;
- };
-type Result_17 = 
- variant {
-   err: Error;
-   ok: GameGolferSummaries;
- };
-type Result_16 = 
- variant {
-   err: Error;
-   ok: GameInvites;
- };
-type Result_15 = 
- variant {
-   err: Error;
-   ok: GameSummaries;
- };
-type Result_14 = 
- variant {
-   err: Error;
-   ok: GolfCourse;
- };
-type Result_13 = 
- variant {
-   err: Error;
-   ok: GolfCourseCanisterId;
- };
-type Result_12 = 
- variant {
-   err: Error;
-   ok: GolfCourseSummary;
- };
-type Result_11 = 
- variant {
-   err: Error;
-   ok: GolfCourseTeeGroup;
- };
-type Result_10 = 
- variant {
-   err: Error;
-   ok: GolfCourseTees;
+   ok: Profile;
  };
 type Result_1 = 
  variant {
    err: Error;
-   ok: UsernameAvailable;
+   ok: Leaderboard;
  };
 type Result = 
  variant {
    err: Error;
    ok;
  };
-type RemoveUserGolfCourse = 
- record {
-   golfCourseId: GolfCourseId;
-   principalId: PrincipalId;
- };
-type RemoveFriend = 
- record {
-   principalId: PrincipalId;
-   requestedBy: PrincipalId;
- };
-type RejectGameInvite = 
- record {
-   gameId: GameId;
-   rejectedById: PrincipalId;
- };
-type RejectFriendRequest = 
- record {
-   principalId: PrincipalId;
-   requestedBy: PrincipalId;
- };
 type Profile = 
  record {
-   firstName: text;
-   golferPicture: opt blob;
-   golferPictureExtension: text;
-   handicap: opt Handicap;
-   homeCourseId: opt GolfCourseId;
-   lastName: text;
-   membershipClaims: vec MembershipClaim;
-   membershipType: MembershipType__1;
+   joinedOn: int;
    principalId: PrincipalId;
    username: text;
  };
 type PrincipalId = text;
-type PredictGameScore = 
- record {
-   detail: GamePrediction;
-   gameId: GameId;
-   submittedById: PrincipalId;
- };
-type PlayerOpponentInfo = record {players: vec PlayerFeedSummary;};
-type PlayerFeedSummary__1 = 
- record {
-   principal_id: PrincipalId;
-   profile_picture: opt blob;
-   username: text;
- };
-type PlayerFeedSummary = 
- record {
-   principal_id: PrincipalId;
-   profile_picture: opt blob;
-   username: text;
- };
-type OpponentInfo = 
- variant {
-   Bands: PlayerOpponentInfo;
-   Mulligans: PlayerOpponentInfo;
- };
-type NeuronPermission = 
- record {
-   permission_type: vec int32;
-   "principal": opt principal;
- };
-type NeuronId = record {id: blob;};
-type Neuron = 
- record {
-   aging_since_timestamp_seconds: nat64;
-   auto_stake_maturity: opt bool;
-   cached_neuron_stake_e8s: nat64;
-   created_timestamp_seconds: nat64;
-   disburse_maturity_in_progress: vec DisburseMaturityInProgress;
-   dissolve_state: opt DissolveState;
-   followees: vec record {
-                    nat64;
-                    Followees;
-                  };
-   id: opt NeuronId;
-   maturity_e8s_equivalent: nat64;
-   neuron_fees_e8s: nat64;
-   permissions: vec NeuronPermission;
-   source_nns_neuron_id: opt nat64;
-   staked_maturity_e8s_equivalent: opt nat64;
-   vesting_period_seconds: opt nat64;
-   voting_power_percentage_multiplier: nat64;
- };
-type MulligansScores = 
- record {
-   currentHole: nat8;
-   golfer1HolesWonCount: nat8;
-   golfer1MulligansAvailable: nat8;
-   golfer1MulligansUsed: nat8;
-   golfer2HolesWonCount: nat8;
-   golfer2MulligansAvailable: nat8;
-   golfer2MulligansUsed: nat8;
-   results: vec MulligansHoleResult;
-   score: int;
-   winner: PrincipalId;
- };
-type MulligansScore = 
- record {
-   golfer1MulliganUsed: bool;
-   golfer2MulliganUsed: bool;
-   hole: HoleNumber;
-   winner: PrincipalId;
- };
-type MulligansResultInfo = 
- record {
-   gameOver: bool;
-   holesPlayed: nat8;
-   player1Wins: bool;
-   player2Wins: bool;
-   players: vec PlayerFeedSummary__1;
-   score: int8;
- };
-type MulligansHoleResult = 
- record {
-   golfer1MulliganUsed: bool;
-   golfer2MulliganUsed: bool;
-   holeNumber: HoleNumber;
-   score: int;
-   winner: PrincipalId;
- };
-type MembershipType__1 = 
- variant {
-   Annual;
-   Clubhouse;
-   Expired;
-   Founding;
-   Lifetime;
-   NotClaimed;
-   NotEligible;
-   Society;
- };
-type MembershipType = 
- variant {
-   Annual;
-   Clubhouse;
-   Expired;
-   Founding;
-   Lifetime;
-   NotClaimed;
-   NotEligible;
-   Society;
- };
-type MembershipClaim = 
- record {
-   claimedOn: int;
-   expiresOn: opt int;
-   membershipType: MembershipType__1;
- };
-type MatchResultInfo = 
- variant {
-   Bands: BandsResultInfo;
-   Mulligans: MulligansResultInfo;
- };
-type IsUsernameAvailable = 
- record {
-   principalId: PrincipalId;
-   username: text;
- };
-type InviteGolfers = 
- record {
-   gameId: GameId;
-   invitedGolferIds: vec PrincipalId;
- };
-type HoleSummary = 
- record {
-   colour: text;
-   name: text;
-   number: nat8;
-   par: nat8;
-   strokeIndex: nat8;
-   yardage: nat;
- };
-type HoleNumber = nat8;
-type HoleImage = 
- record {
-   image: blob;
-   owner: PrincipalId;
-   uploaded: int;
- };
-type Hole = 
- record {
-   colour: text;
-   images: vec HoleImage;
-   name: text;
-   number: nat8;
-   par: nat8;
-   strokeIndex: nat8;
-   yardage: nat;
- };
-type Handicap = int16;
-type Golfers = 
- record {
-   entries: vec GolferSummary;
-   page: nat;
-   pageSize: nat;
-   total: nat;
- };
-type GolferSummary = 
- record {
-   handicap: opt Handicap;
-   homeCourse: opt GolfCourseSummary;
-   joinedOn: int;
-   name: text;
-   principalId: PrincipalId;
-   profilePicture: opt blob;
-   profilePictureExtension: text;
- };
-type GolferNeurons = 
- record {
-   totalMaxStaked: nat64;
-   userMembershipEligibility: EligibleMembership;
-   userNeurons: vec Neuron;
- };
+type Prediction = record {};
+type Leaderboard = record {};
+type GolferId = nat16;
 type Golfer = 
  record {
-   activeGames: vec GameId;
-   completedGames: vec GameId;
    firstName: text;
-   gameInvites: vec GameInvite;
-   golferPicture: opt blob;
-   golferPictureExtension: text;
-   handicap: opt Handicap;
-   homeCourse: text;
-   homeCourseId: opt GolfCourseId;
-   homeCourseImage: opt blob;
-   joinedOn: int;
+   id: GolferId;
    lastName: text;
-   principalId: PrincipalId;
-   upcomingGames: vec GameId;
-   username: text;
  };
-type GolfShotId = nat;
-type GolfShot = 
+type GolfHole = 
  record {
-   club: GolfClub;
-   hitOn: int;
-   id: GolfShotId;
-   yardage: nat;
+   holeNumber: nat8;
+   strokeIndex: nat8;
+   yardage: nat16;
  };
-type GolfCourses = 
- record {
-   entries: vec GolfCourseSummary;
-   page: nat;
-   pageSize: nat;
-   total: nat;
- };
-type GolfCourseVersion = nat8;
-type GolfCourseTees = 
- record {
-   id: GolfCourseId;
-   tees: vec TeeGroup;
- };
-type GolfCourseTeeGroup = 
- record {
-   added: int;
-   colour: text;
-   golfCourseId: GolfCourseId;
-   holes: vec HoleSummary;
-   index: TeeGroupIndex;
-   mainImage: opt blob;
-   name: text;
-   totalHoles: nat8;
- };
-type GolfCourseSummary = 
- record {
-   countryId: CountryId;
-   founded: int;
-   id: GolfCourseId;
-   mainImage: opt blob;
-   mainImageExtension: text;
-   name: text;
-   version: GolfCourseVersion;
- };
-type GolfCourseSnapshot = 
- record {
-   courseId: GolfCourseId;
-   courseVersion: GolfCourseVersion;
-   teeGroupIndex: TeeGroupIndex;
- };
-type GolfCourseId = nat;
-type GolfCourseCanisterId = record {canisterId: CanisterId;};
+type GolfCourseId = nat16;
 type GolfCourse = 
  record {
-   activeVersion: GolfCourseVersion;
    countryId: CountryId;
    founded: int;
    id: GolfCourseId;
@@ -519,498 +105,72 @@ type GolfCourse =
    mainImageExtension: text;
    manager: text;
    name: text;
-   tees: vec GolfCourseTeeGroup;
    totalHoles: nat8;
  };
-type GolfClub = 
- variant {
-   AW;
-   DRIVER;
-   EIGHT_IRON;
-   FIVE_HYBRID;
-   FIVE_IRON;
-   FIVE_WOOD;
-   FOUR_HYBRID;
-   FOUR_IRON;
-   GW;
-   LW;
-   NINE_IRON;
-   NINE_WOOD;
-   PW;
-   SEVEN_IRON;
-   SEVEN_WOOD;
-   SIX_IRON;
-   SW;
-   THREE_HYBRID;
-   THREE_IRON;
-   THREE_WOOD;
-   TWO_HYBRID;
-   TWO_IRON;
- };
-type GetUserFavouriteCourses = 
- record {
-   principalId: PrincipalId;
-   searchTerm: text;
- };
-type GetUpcomingGames = 
- record {
-   page: nat;
-   principalId: PrincipalId;
- };
-type GetShotAverages = record {principalId: PrincipalId;};
-type GetProfile = record {principalId: PrincipalId;};
-type GetGolfers = 
- record {
-   page: nat;
-   principalId: PrincipalId;
-   searchTerm: text;
- };
-type GetGolfer = record {principalId: PrincipalId;};
-type GetGolfCourses = 
- record {
-   page: nat;
-   principalId: PrincipalId;
-   searchTerm: text;
- };
-type GetGolfCourseTees = record {golfCourseId: GolfCourseId;};
-type GetGolfCourseTeeGroup = 
- record {
-   id: GolfCourseId;
-   index: TeeGroupIndex;
- };
-type GetGolfCourseSummary = record {id: GolfCourseId;};
-type GetGolfCourseCanisterId = record {id: GolfCourseId;};
+type GetScorecard = record {principalId: PrincipalId;};
+type GetProfile = record {};
+type GetPrediction = record {};
+type GetLeaderboard = record {};
+type GetGolfer = record {golferId: GolferId;};
 type GetGolfCourse = record {id: GolfCourseId;};
-type GetGameSummaries = 
- record {
-   page: nat;
-   principalId: PrincipalId;
- };
-type GetGameInvites = record {principalId: PrincipalId;};
-type GetGameGolferSummaries = record {gameId: GameId;};
-type GetGame = record {gameId: GameId;};
-type GetFriends = 
- record {
-   page: nat;
-   principalId: PrincipalId;
- };
-type GetFriendRequests = 
- record {
-   limit: nat;
-   offset: nat;
-   principalId: PrincipalId;
-   totalEntries: nat;
- };
-type GetClubShots = 
- record {
-   club: GolfClub;
-   page: nat;
-   principalId: PrincipalId;
- };
-type GetBuzz = 
- record {
-   page: nat;
-   principalId: PrincipalId;
- };
-type GameType = 
- variant {
-   Bands;
-   Mulligans;
- };
-type GameSummary = 
- record {
-   date: int;
-   gameType: GameType;
-   id: GameId;
-   players: vec PrincipalId;
-   status: GameStatus;
- };
-type GameSummaries = 
- record {
-   entries: vec GameSummary;
-   page: nat;
-   pageSize: nat;
-   total: nat;
- };
-type GameStatus = 
- variant {
-   Active;
-   Complete;
-   Unplayed;
- };
-type GameScoreSubmission = 
- variant {
-   BandsScores: BandsScore;
-   MulligansScores: MulligansScore;
- };
-type GameScoreDetail = 
- variant {
-   BandsScores: BandsScores;
-   MulligansScores: MulligansScores;
- };
-type GamePrediction__1 = 
- variant {
-   Bands: vec BandsPrediction__1;
-   Mulligans: record {};
- };
-type GamePrediction = 
- variant {
-   Bands: BandsPrediction;
-   Mulligans: record {};
- };
-type GameInvites = 
- record {
-   entries: vec GameInvite__1;
-   page: nat;
-   pageSize: nat;
-   total: nat;
- };
-type GameInvite__1 = 
- record {
-   gameId: GameId;
-   invited: PrincipalId;
-   sentBy: PrincipalId;
-   sentOn: int;
- };
-type GameInvite = 
- record {
-   gameId: GameId;
-   inviteFrom: PrincipalId;
- };
-type GameInfo__1 = 
- record {
-   game_date: int;
-   game_id: GameId;
-   game_type: GameType;
- };
-type GameInfo = 
- record {
-   game_date: int;
-   game_id: GameId;
-   game_type: GameType;
- };
-type GameId = nat;
-type GameGolferSummaries = record {entries: vec GolferSummary;};
-type Game = 
- record {
-   courseId: GolfCourseId;
-   courseSnapshot: GolfCourseSnapshot;
-   gameType: GameType;
-   id: GameId;
-   invites: vec PrincipalId;
-   playerIds: vec PrincipalId;
-   predictions: vec GamePrediction__1;
-   scoreDetail: opt GameScoreDetail;
-   status: GameStatus;
-   teeOffTime: int;
-   winner: PrincipalId;
- };
-type Friends = 
- record {
-   friends: vec Friend;
-   page: nat;
-   pageSize: nat;
-   total: nat;
- };
-type FriendRequests = record {friendRequests: vec FriendRequest;};
-type FriendRequest = 
- record {
-   principalId: PrincipalId;
-   requestTime: int;
- };
-type Friend = 
- record {
-   firstName: text;
-   lastName: text;
-   principalId: PrincipalId;
-   profilePicture: opt blob;
-   username: text;
- };
-type Followees = record {followees: vec NeuronId;};
-type FavouriteCourse = 
- record {
-   id: GolfCourseId;
-   mainImage: opt blob;
-   mainImageExtension: text;
-   name: text;
- };
 type Error = 
  variant {
    AlreadyClaimed;
    AlreadyExists;
-   CanisterFull;
-   CreateGameError;
+   CanisterCreateError;
    DecodeError;
+   DuplicateData;
+   FailedInterCanisterCall;
    InEligible;
-   InvalidPicture;
+   IncorrectSetup;
+   InsufficientFunds;
+   InsufficientPacketsRemaining;
+   InvalidData;
+   InvalidProfilePicture;
+   InvalidProperty;
+   MaxDataExceeded;
    NeuronAlreadyUsed;
+   NoPacketsRemaining;
    NotAllowed;
    NotAuthorized;
-   NotEnoughFunds;
    NotFound;
-   OutOfRange;
-   PaymentError;
+   SystemOnHold;
    TooLong;
-   TooShort;
+   UpdateFailed;
  };
-type EligibleMembership = 
+type CreateProfile = 
  record {
-   eligibleNeuronIds: vec blob;
-   membershipType: MembershipType;
- };
-type DissolveState = 
- variant {
-   DissolveDelaySeconds: nat64;
-   WhenDissolvedTimestampSeconds: nat64;
- };
-type DisburseMaturityInProgress = 
- record {
-   account_to_disburse_to: opt Account;
-   amount_e8s: nat64;
-   finalize_disbursement_timestamp_seconds: opt nat64;
-   timestamp_of_disbursement_seconds: nat64;
- };
-type DeleteShot = 
- record {
-   golfShotId: GolfShotId;
-   principalId: PrincipalId;
- };
-type DeleteGame = record {gameId: GameId;};
-type CreateUser = 
- record {
-   accessCode: opt text;
-   handicap: opt Handicap;
    profilePicture: opt blob;
-   profilePictureExtension: opt text;
    username: text;
  };
-type CreateGolfCourse = 
+type CreateGolfer = 
  record {
-   bannerImage: opt blob;
-   bannerImageExtension: text;
-   countryId: CountryId;
-   founded: int;
-   mainImage: opt blob;
-   mainImageExtension: text;
-   manager: PrincipalId;
-   name: text;
-   teeGroups: vec TeeGroup;
+   lastName: text;
+   username: text;
  };
-type CreateGame = 
- record {
-   courseId: GolfCourseId;
-   courseVersion: GolfCourseVersion;
-   createdById: PrincipalId;
-   gameType: GameType;
-   inviteIds: vec PrincipalId;
-   teeGroupIndex: TeeGroupIndex;
-   teeOffTime: int;
- };
-type CourseInfo__1 = 
- record {
-   course_id: GolfCourseId;
-   course_image: blob;
-   course_name: text;
- };
-type CourseInfo = 
- record {
-   course_id: GolfCourseId;
-   course_image: blob;
-   course_name: text;
- };
-type CountryId = nat8;
-type ClubShots = 
- record {
-   club: GolfClub;
-   entries: vec GolfShot;
-   page: nat;
-   pageSize: nat;
-   total: nat;
- };
-type CanisterId = text;
-type BuzzEntry = 
- record {
-   course_info: CourseInfo__1;
-   game_info: GameInfo__1;
-   match_result: MatchResultInfo;
- };
-type Buzz = 
- record {
-   entries: vec BuzzEntry;
-   page: nat;
-   pageSize: nat;
-   total: nat;
- };
-type BeginGame = record {gameId: GameId;};
-type BandsScores = 
- record {
-   currentHole: nat8;
-   players: vec BandsPlayerResult;
- };
-type BandsScore = 
- record {
-   hole: HoleNumber;
-   playerResults: vec BandsHoleResult;
- };
-type BandsResultInfo = 
- record {
-   holesPlayed: nat8;
-   players: vec PlayerFeedSummary__1;
-   points: record {
-             PrincipalId;
-             nat;
-           };
- };
-type BandsPrediction__1 = 
- record {
-   golferId: PrincipalId;
-   hit2Of3FairwaysStartHole: HoleNumber;
-   hit2Of3GreensStartHole: HoleNumber;
-   parOrUnderStartHole: HoleNumber;
-   singlePutt2Of3GreensStartHole: HoleNumber;
-   underParStartHole: HoleNumber;
-   wontBogeyStartHole: HoleNumber;
-   wontDoubleBogeyStartHole: HoleNumber;
-   wontHitTreeOrBunkerStartHole: HoleNumber;
-   wontLoseBallStartHole: HoleNumber;
- };
-type BandsPrediction = 
- record {
-   golferId: PrincipalId;
-   hit2Of3FairwaysStartHole: HoleNumber;
-   hit2Of3GreensStartHole: HoleNumber;
-   parOrUnderStartHole: HoleNumber;
-   singlePutt2Of3GreensStartHole: HoleNumber;
-   underParStartHole: HoleNumber;
-   wontBogeyStartHole: HoleNumber;
-   wontDoubleBogeyStartHole: HoleNumber;
-   wontHitTreeOrBunkerStartHole: HoleNumber;
-   wontLoseBallStartHole: HoleNumber;
- };
-type BandsPlayerResult = 
- record {
-   categoryResults: vec BandsCategoryResult;
-   holeResults: vec BandsHoleResult;
-   points: nat8;
-   principalId: PrincipalId;
- };
-type BandsHoleResult = 
- record {
-   category: BandsCategory;
-   completed: bool;
-   failed: bool;
-   golferId: PrincipalId;
-   hole: HoleNumber;
- };
-type BandsCategoryResult = 
- record {
-   bandsCategory: BandsCategory;
-   completed: bool;
-   failed: bool;
-   startHole: HoleNumber;
- };
-type BandsCategory = 
- variant {
-   Hit2Of3Fairways;
-   Hit2Of3Greens;
-   NoBogeyOrWorse;
-   NoDoubleBogeyOrWorse;
-   NoLostBall;
-   NoTreeOrBunker;
-   OnePutt2Of3Greens;
-   ParOrBetter;
-   UnderPar;
- };
-type AverageShot = 
- record {
-   club: GolfClub;
-   index: nat8;
-   yardage: nat;
- };
-type AppStatusDTO = 
+type CreateGolfCourse = record {holes: vec GolfHole;};
+type CountryId = nat16;
+type AppStatus = 
  record {
    onHold: bool;
    version: text;
  };
-type AddShot = 
- record {
-   club: GolfClub;
-   principalId: PrincipalId;
-   yardage: nat;
- };
-type AddGameScore = 
- record {
-   detail: GameScoreSubmission;
-   gameId: GameId;
-   holeNumber: HoleNumber;
-   submittedById: PrincipalId;
- };
-type Account = 
- record {
-   owner: opt principal;
-   subaccount: opt Subaccount;
- };
-type AcceptGameInvite = 
- record {
-   acceptedById: PrincipalId;
-   gameId: GameId;
- };
-type AcceptFriendRequest = 
- record {
-   principalId: PrincipalId;
-   requestedBy: PrincipalId;
- };
 service : {
-  acceptFriendRequest: (AcceptFriendRequest) -> (Result);
-  acceptGameInvite: (AcceptGameInvite) -> (Result);
-  addGameScore: (AddGameScore) -> (Result);
-  addShot: (AddShot) -> (Result);
-  beginGame: (BeginGame) -> (Result);
-  claimMembership: () -> (Result_25);
-  createGame: (CreateGame) -> (Result_24);
-  createUser: (CreateUser) -> (Result);
-  deleteGame: (DeleteGame) -> (Result);
-  deleteShot: (DeleteShot) -> (Result);
-  executeAddGolfCourse: (CreateGolfCourse) -> ();
-  executeUpdateGolfCourse: (UpdateGolfCourse) -> ();
-  getAppStatus: () -> (Result_23) query;
-  getBuzz: (GetBuzz) -> (Result_22);
-  getClubShots: (GetClubShots) -> (Result_21);
-  getFriendRequests: (GetFriendRequests) -> (Result_20);
-  getFriends: (GetFriends) -> (Result_19);
-  getGame: (GetGame) -> (Result_18);
-  getGameGolferSummaries: (GetGameGolferSummaries) -> (Result_17);
-  getGameInvites: (GetGameInvites) -> (Result_16);
-  getGameSummaries: (GetGameSummaries) -> (Result_15);
-  getGolfCourse: (GetGolfCourse) -> (Result_14);
-  getGolfCourseCanisterId: (GetGolfCourseCanisterId) -> (Result_13);
-  getGolfCourseSummary: (GetGolfCourseSummary) -> (Result_12);
-  getGolfCourseTeeGroup: (GetGolfCourseTeeGroup) -> (Result_11);
-  getGolfCourseTees: (GetGolfCourseTees) -> (Result_10);
-  getGolfCourses: (GetGolfCourses) -> (Result_9);
-  getGolfer: (GetGolfer) -> (Result_8);
-  getGolfers: (GetGolfers) -> (Result_7);
-  getProfile: (GetProfile) -> (Result_6);
-  getShotAverages: (GetShotAverages) -> (Result_5);
-  getUpcomingGames: (GetUpcomingGames) -> (Result_4);
-  getUserFavouriteCourses: (GetUserFavouriteCourses) -> (Result_3);
-  getUserNeurons: () -> (Result_2);
-  inviteGolfers: (InviteGolfers) -> (Result);
-  isUsernameAvailable: (IsUsernameAvailable) -> (Result_1) query;
-  predictGameScore: (PredictGameScore) -> (Result);
-  rejectFriendRequest: (RejectFriendRequest) -> (Result);
-  rejectGameInvite: (RejectGameInvite) -> (Result);
-  removeFriend: (RemoveFriend) -> (Result);
-  removeUserGolfCourse: (RemoveUserGolfCourse) -> (Result);
-  sendFriendRequest: (SendFriendRequest) -> (Result);
-  updateFirstName: (UpdateFirstName) -> (Result);
-  updateGame: (UpdateGame) -> (Result);
-  updateHandicap: (UpdateHandicap) -> (Result);
-  updateHomeCourse: (UpdateHomeCourse) -> (Result);
-  updateLastName: (UpdateLastName) -> (Result);
+  createGolfCourse: (CreateGolfCourse) -> (Result);
+  createGolfer: (CreateGolfer) -> (Result);
+  createProfile: (CreateProfile) -> (Result);
+  getAppStatus: () -> (Result_6) query;
+  getGolfCourse: (GetGolfCourse) -> (Result_5) query;
+  getGolfer: (GetGolfer) -> (Result_4) query;
+  getLeaderboard: (GetLeaderboard) -> (Result_1) query;
+  getPrediction: (GetPrediction) -> (Result_3) query;
+  getProfile: (GetProfile) -> (Result_2) query;
+  getScorecard: (GetScorecard) -> (Result_1) query;
+  submitPrediction: (SubmitPrediction) -> (Result);
+  swapGolfer: (SwapGolfer) -> (Result);
+  updateGolfCourse: (UpdateGolfCourse) -> (Result);
+  updateGolfer: (UpdateGolfer) -> (Result);
   updateProfilePicture: (UpdateProfilePicture) -> (Result);
-  updateShot: (UpdateShot) -> (Result);
+  updateTournamentStage: (UpdateTournamentStage) -> (Result);
   updateUsername: (UpdateUsername) -> (Result);
-  validateAddGolfCourse: (CreateGolfCourse) -> (RustResult) query;
-  validateUpdateGolfCourse: (UpdateGolfCourse) -> (RustResult) query;
 }

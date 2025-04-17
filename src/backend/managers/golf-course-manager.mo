@@ -10,15 +10,15 @@ module {
 
     private var golfCourses: [Types.GolfCourse] = [];
     
-    public func getGolfCourse(dto: GolfCourseQueries.GetGolfCourse) : async Result.Result<GolfCourseQueries.GolfCourse, Enums.Error> {
+    public func getGolfCourse(dto: GolfCourseQueries.GetGolfCourse) : Result.Result<GolfCourseQueries.GolfCourse, Enums.Error> {
       return #err(#NotFound);
     };
 
-    public func createGolfCourse(dto: GolfCourseCommands.CreateGolfCourse) : async Result.Result<(), Enums.Error> {
+    public func createGolfCourse(dto: GolfCourseCommands.CreateGolfCourse) : Result.Result<(), Enums.Error> {
       return #err(#NotFound);
     };
 
-    public func updateGolfCourse(dto: GolfCourseCommands.CreateGolfCourse) : async Result.Result<(), Enums.Error> {
+    public func updateGolfCourse(dto: GolfCourseCommands.UpdateGolfCourse) : Result.Result<(), Enums.Error> {
       return #err(#NotFound);
     };
 
