@@ -1,20 +1,29 @@
-import Ids "mo:waterway-mops/Ids";
-module UserQueries {
-    public type GetProfile = {};
-
-    public type Profile = {
-        principalId: Ids.PrincipalId;
-        username: Text;
-        joinedOn: Int;
+import Types "../data-types/types";
+module TournamentQueries {
+    
+    public type GetTournament = {
+        tournamentId: Types.TournamentId;
     };
 
-    public type GetPrediction = {
-
+    public type Tournament = {
+        tournamentId: Types.TournamentId;
     };
 
-    public type Prediction = {
-        
+    public type ListTournaments = {
+        page: Nat;
     };
+
+    public type Tournaments = {
+        entries: [TournamentSummary];
+        totalEntries: Nat;
+        page: Nat;
+    };
+
+    public type TournamentSummary = {
+        tournamentId: Types.TournamentId;
+        name: Text;
+    };
+    
 }
 
   

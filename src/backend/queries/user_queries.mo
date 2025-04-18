@@ -1,5 +1,6 @@
 import Ids "mo:waterway-mops/Ids";
 module UserQueries {
+   
     public type GetProfile = {};
 
     public type Profile = {
@@ -13,6 +14,28 @@ module UserQueries {
     };
 
     public type Prediction = {
+        
+    };
+
+    public type ListPredictions = {
+        page: Nat;
+    };
+
+    public type Predictions = {
+        entries: [PredictionSummary];
+        totalEntries: Nat;
+        page: Nat;
+    };
+
+    public type PredictionSummary = {
+
+    };
+
+    public type GetScorecard = {
+        principalId: Ids.PrincipalId;
+    };
+
+    public type Scorecard = {
         
     };
 }

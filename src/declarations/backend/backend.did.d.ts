@@ -2,822 +2,274 @@ import type { Principal } from "@dfinity/principal";
 import type { ActorMethod } from "@dfinity/agent";
 import type { IDL } from "@dfinity/candid";
 
-export interface AcceptFriendRequest {
-  principalId: PrincipalId;
-  requestedBy: PrincipalId;
-}
-export interface AcceptGameInvite {
-  gameId: GameId;
-  acceptedById: PrincipalId;
-}
-export interface Account {
-  owner: [] | [Principal];
-  subaccount: [] | [Subaccount];
-}
-export interface AddGameScore {
-  submittedById: PrincipalId;
-  gameId: GameId;
-  detail: GameScoreSubmission;
-  holeNumber: HoleNumber;
-}
-export interface AddShot {
-  club: GolfClub;
-  yardage: bigint;
-  principalId: PrincipalId;
-}
-export interface AppStatusDTO {
+export interface AppStatus {
   version: string;
   onHold: boolean;
 }
-export interface AverageShot {
-  club: GolfClub;
-  yardage: bigint;
-  index: number;
-}
-export type BandsCategory =
-  | { NoLostBall: null }
-  | { NoDoubleBogeyOrWorse: null }
-  | { ParOrBetter: null }
-  | { UnderPar: null }
-  | { OnePutt2Of3Greens: null }
-  | { NoBogeyOrWorse: null }
-  | { NoTreeOrBunker: null }
-  | { Hit2Of3Fairways: null }
-  | { Hit2Of3Greens: null };
-export interface BandsCategoryResult {
-  completed: boolean;
-  bandsCategory: BandsCategory;
-  failed: boolean;
-  startHole: HoleNumber;
-}
-export interface BandsHoleResult {
-  golferId: PrincipalId;
-  hole: HoleNumber;
-  completed: boolean;
-  category: BandsCategory;
-  failed: boolean;
-}
-export interface BandsPlayerResult {
-  categoryResults: Array<BandsCategoryResult>;
-  holeResults: Array<BandsHoleResult>;
-  principalId: PrincipalId;
-  points: number;
-}
-export interface BandsPrediction {
-  wontHitTreeOrBunkerStartHole: HoleNumber;
-  underParStartHole: HoleNumber;
-  golferId: PrincipalId;
-  wontDoubleBogeyStartHole: HoleNumber;
-  singlePutt2Of3GreensStartHole: HoleNumber;
-  wontBogeyStartHole: HoleNumber;
-  parOrUnderStartHole: HoleNumber;
-  hit2Of3FairwaysStartHole: HoleNumber;
-  hit2Of3GreensStartHole: HoleNumber;
-  wontLoseBallStartHole: HoleNumber;
-}
-export interface BandsPrediction__1 {
-  wontHitTreeOrBunkerStartHole: HoleNumber;
-  underParStartHole: HoleNumber;
-  golferId: PrincipalId;
-  wontDoubleBogeyStartHole: HoleNumber;
-  singlePutt2Of3GreensStartHole: HoleNumber;
-  wontBogeyStartHole: HoleNumber;
-  parOrUnderStartHole: HoleNumber;
-  hit2Of3FairwaysStartHole: HoleNumber;
-  hit2Of3GreensStartHole: HoleNumber;
-  wontLoseBallStartHole: HoleNumber;
-}
-export interface BandsResultInfo {
-  holesPlayed: number;
-  players: Array<PlayerFeedSummary__1>;
-  points: [PrincipalId, bigint];
-}
-export interface BandsScore {
-  hole: HoleNumber;
-  playerResults: Array<BandsHoleResult>;
-}
-export interface BandsScores {
-  currentHole: number;
-  players: Array<BandsPlayerResult>;
-}
-export interface BeginGame {
-  gameId: GameId;
-}
-export interface Buzz {
-  total: bigint;
-  page: bigint;
-  pageSize: bigint;
-  entries: Array<BuzzEntry>;
-}
-export interface BuzzEntry {
-  course_info: CourseInfo__1;
-  match_result: MatchResultInfo;
-  game_info: GameInfo__1;
-}
-export type CanisterId = string;
-export interface ClubShots {
-  total: bigint;
-  club: GolfClub;
-  page: bigint;
-  pageSize: bigint;
-  entries: Array<GolfShot>;
+export interface CalculateLeaderboard {
+  tournamentId: TournamentId;
 }
 export type CountryId = number;
-export interface CourseInfo {
-  course_name: string;
-  course_id: GolfCourseId;
-  course_image: Uint8Array | number[];
-}
-export interface CourseInfo__1 {
-  course_name: string;
-  course_id: GolfCourseId;
-  course_image: Uint8Array | number[];
-}
-export interface CreateGame {
-  inviteIds: Array<PrincipalId>;
-  createdById: PrincipalId;
-  teeOffTime: bigint;
-  teeGroupIndex: TeeGroupIndex;
-  courseVersion: GolfCourseVersion;
-  gameType: GameType;
-  courseId: GolfCourseId;
-}
 export interface CreateGolfCourse {
-  manager: PrincipalId;
+  holes: Array<GolfHole>;
   name: string;
-  countryId: CountryId;
-  mainImageExtension: string;
-  bannerImageExtension: string;
-  founded: bigint;
-  bannerImage: [] | [Uint8Array | number[]];
-  mainImage: [] | [Uint8Array | number[]];
-  teeGroups: Array<TeeGroup>;
+  yardage: number;
+  coursePar: number;
 }
-export interface CreateUser {
+export interface CreateGolfer {
+  worldRanking: number;
+  nationality: CountryId;
+  lastName: string;
+  firstName: string;
+}
+export interface CreateProfile {
   username: string;
-  accessCode: [] | [string];
-  profilePictureExtension: [] | [string];
   profilePicture: [] | [Uint8Array | number[]];
-  handicap: [] | [Handicap];
 }
-export interface DeleteGame {
-  gameId: GameId;
-}
-export interface DeleteShot {
-  golfShotId: GolfShotId;
-  principalId: PrincipalId;
-}
-export interface DisburseMaturityInProgress {
-  timestamp_of_disbursement_seconds: bigint;
-  amount_e8s: bigint;
-  account_to_disburse_to: [] | [Account];
-  finalize_disbursement_timestamp_seconds: [] | [bigint];
-}
-export type DissolveState =
-  | { DissolveDelaySeconds: bigint }
-  | { WhenDissolvedTimestampSeconds: bigint };
-export interface EligibleMembership {
-  eligibleNeuronIds: Array<Uint8Array | number[]>;
-  membershipType: MembershipType;
+export interface CreateTournament {
+  endDate: bigint;
+  golfCourseId: bigint;
+  name: string;
+  startDate: bigint;
 }
 export type Error =
+  | { InvalidProfilePicture: null }
   | { DecodeError: null }
   | { TooLong: null }
   | { NotAllowed: null }
-  | { NotEnoughFunds: null }
-  | { TooShort: null }
+  | { DuplicateData: null }
+  | { InvalidProperty: null }
   | { NotFound: null }
+  | { IncorrectSetup: null }
   | { AlreadyClaimed: null }
   | { NotAuthorized: null }
+  | { MaxDataExceeded: null }
+  | { InvalidData: null }
+  | { SystemOnHold: null }
   | { AlreadyExists: null }
-  | { CreateGameError: null }
+  | { NoPacketsRemaining: null }
+  | { UpdateFailed: null }
+  | { CanisterCreateError: null }
   | { NeuronAlreadyUsed: null }
-  | { OutOfRange: null }
-  | { InvalidPicture: null }
-  | { PaymentError: null }
-  | { CanisterFull: null }
+  | { FailedInterCanisterCall: null }
+  | { InsufficientPacketsRemaining: null }
+  | { InsufficientFunds: null }
   | { InEligible: null };
-export interface FavouriteCourse {
-  id: GolfCourseId;
-  name: string;
-  mainImageExtension: string;
-  mainImage: [] | [Uint8Array | number[]];
-}
-export interface Followees {
-  followees: Array<NeuronId>;
-}
-export interface Friend {
-  username: string;
-  profilePicture: [] | [Uint8Array | number[]];
-  lastName: string;
-  principalId: PrincipalId;
-  firstName: string;
-}
-export interface FriendRequest {
-  requestTime: bigint;
-  principalId: PrincipalId;
-}
-export interface FriendRequests {
-  friendRequests: Array<FriendRequest>;
-}
-export interface Friends {
-  total: bigint;
-  page: bigint;
-  pageSize: bigint;
-  friends: Array<Friend>;
-}
-export interface Game {
-  id: GameId;
-  playerIds: Array<PrincipalId>;
-  status: GameStatus;
-  scoreDetail: [] | [GameScoreDetail];
-  invites: Array<PrincipalId>;
-  predictions: Array<GamePrediction__1>;
-  winner: PrincipalId;
-  teeOffTime: bigint;
-  courseSnapshot: GolfCourseSnapshot;
-  gameType: GameType;
-  courseId: GolfCourseId;
-}
-export interface GameGolferSummaries {
-  entries: Array<GolferSummary>;
-}
-export type GameId = bigint;
-export interface GameInfo {
-  game_id: GameId;
-  game_date: bigint;
-  game_type: GameType;
-}
-export interface GameInfo__1 {
-  game_id: GameId;
-  game_date: bigint;
-  game_type: GameType;
-}
-export interface GameInvite {
-  gameId: GameId;
-  inviteFrom: PrincipalId;
-}
-export interface GameInvite__1 {
-  invited: PrincipalId;
-  gameId: GameId;
-  sentBy: PrincipalId;
-  sentOn: bigint;
-}
-export interface GameInvites {
-  total: bigint;
-  page: bigint;
-  pageSize: bigint;
-  entries: Array<GameInvite__1>;
-}
-export type GamePrediction = { Mulligans: {} } | { Bands: BandsPrediction };
-export type GamePrediction__1 =
-  | { Mulligans: {} }
-  | { Bands: Array<BandsPrediction__1> };
-export type GameScoreDetail =
-  | { BandsScores: BandsScores }
-  | { MulligansScores: MulligansScores };
-export type GameScoreSubmission =
-  | { BandsScores: BandsScore }
-  | { MulligansScores: MulligansScore };
-export type GameStatus =
-  | { Unplayed: null }
-  | { Active: null }
-  | { Complete: null };
-export interface GameSummaries {
-  total: bigint;
-  page: bigint;
-  pageSize: bigint;
-  entries: Array<GameSummary>;
-}
-export interface GameSummary {
-  id: GameId;
-  status: GameStatus;
-  date: bigint;
-  players: Array<PrincipalId>;
-  gameType: GameType;
-}
-export type GameType = { Mulligans: null } | { Bands: null };
-export interface GetBuzz {
-  page: bigint;
-  principalId: PrincipalId;
-}
-export interface GetClubShots {
-  club: GolfClub;
-  page: bigint;
-  principalId: PrincipalId;
-}
-export interface GetFriendRequests {
+export interface FantasyLeaderboard {
   totalEntries: bigint;
-  offset: bigint;
-  limit: bigint;
-  principalId: PrincipalId;
-}
-export interface GetFriends {
   page: bigint;
+  entries: Array<FantasyLeaderboardEntry>;
+  tournamentId: TournamentId;
+}
+export interface FantasyLeaderboardEntry {
+  holes: Array<FantasyPredictionHole>;
+  score: number;
+  shots: number;
+  nationalityId: CountryId;
   principalId: PrincipalId;
 }
-export interface GetGame {
-  gameId: GameId;
+export interface FantasyPredictionHole {
+  par: number;
+  golferId: GolferId;
+  shotCount: number;
+  score: number;
 }
-export interface GetGameGolferSummaries {
-  gameId: GameId;
-}
-export interface GetGameInvites {
-  principalId: PrincipalId;
-}
-export interface GetGameSummaries {
+export interface GetFantasyLeaderboard {
   page: bigint;
-  principalId: PrincipalId;
+  tournamentId: TournamentId;
 }
 export interface GetGolfCourse {
   id: GolfCourseId;
 }
-export interface GetGolfCourseCanisterId {
-  id: GolfCourseId;
-}
-export interface GetGolfCourseSummary {
-  id: GolfCourseId;
-}
-export interface GetGolfCourseTeeGroup {
-  id: GolfCourseId;
-  index: TeeGroupIndex;
-}
-export interface GetGolfCourseTees {
-  golfCourseId: GolfCourseId;
-}
-export interface GetGolfCourses {
-  page: bigint;
-  searchTerm: string;
-  principalId: PrincipalId;
-}
 export interface GetGolfer {
+  golferId: GolferId;
+}
+export type GetPrediction = {};
+export type GetProfile = {};
+export interface GetScorecard {
   principalId: PrincipalId;
 }
-export interface GetGolfers {
-  page: bigint;
-  searchTerm: string;
-  principalId: PrincipalId;
+export interface GetTournament {
+  id: TournamentId;
 }
-export interface GetProfile {
-  principalId: PrincipalId;
-}
-export interface GetShotAverages {
-  principalId: PrincipalId;
-}
-export interface GetUpcomingGames {
-  page: bigint;
-  principalId: PrincipalId;
-}
-export interface GetUserFavouriteCourses {
-  searchTerm: string;
-  principalId: PrincipalId;
-}
-export type GolfClub =
-  | { AW: null }
-  | { GW: null }
-  | { LW: null }
-  | { PW: null }
-  | { SW: null }
-  | { EIGHT_IRON: null }
-  | { TWO_HYBRID: null }
-  | { THREE_HYBRID: null }
-  | { TWO_IRON: null }
-  | { THREE_IRON: null }
-  | { FIVE_IRON: null }
-  | { THREE_WOOD: null }
-  | { FIVE_WOOD: null }
-  | { SIX_IRON: null }
-  | { FOUR_HYBRID: null }
-  | { DRIVER: null }
-  | { SEVEN_IRON: null }
-  | { NINE_IRON: null }
-  | { SEVEN_WOOD: null }
-  | { NINE_WOOD: null }
-  | { FOUR_IRON: null }
-  | { FIVE_HYBRID: null };
 export interface GolfCourse {
   id: GolfCourseId;
   manager: string;
   totalHoles: number;
-  activeVersion: GolfCourseVersion;
   name: string;
-  tees: Array<GolfCourseTeeGroup>;
   countryId: CountryId;
   mainImageExtension: string;
   founded: bigint;
   mainImage: [] | [Uint8Array | number[]];
 }
-export interface GolfCourseCanisterId {
-  canisterId: CanisterId;
-}
-export type GolfCourseId = bigint;
-export interface GolfCourseSnapshot {
-  teeGroupIndex: TeeGroupIndex;
-  courseVersion: GolfCourseVersion;
-  courseId: GolfCourseId;
-}
-export interface GolfCourseSummary {
-  id: GolfCourseId;
-  name: string;
-  countryId: CountryId;
-  version: GolfCourseVersion;
-  mainImageExtension: string;
-  founded: bigint;
-  mainImage: [] | [Uint8Array | number[]];
-}
-export interface GolfCourseTeeGroup {
-  added: bigint;
-  holes: Array<HoleSummary>;
-  totalHoles: number;
-  golfCourseId: GolfCourseId;
-  name: string;
-  index: TeeGroupIndex;
-  colour: string;
-  mainImage: [] | [Uint8Array | number[]];
-}
-export interface GolfCourseTees {
-  id: GolfCourseId;
-  tees: Array<TeeGroup>;
-}
-export type GolfCourseVersion = number;
+export type GolfCourseId = number;
+export type GolfCourseSummary = {};
 export interface GolfCourses {
-  total: bigint;
+  totalEntries: bigint;
   page: bigint;
-  pageSize: bigint;
   entries: Array<GolfCourseSummary>;
 }
-export interface GolfShot {
-  id: GolfShotId;
-  hitOn: bigint;
-  club: GolfClub;
-  yardage: bigint;
+export interface GolfHole {
+  par: number;
+  yardage: number;
+  strokeIndex: number;
+  holeNumber: number;
 }
-export type GolfShotId = bigint;
 export interface Golfer {
-  username: string;
-  gameInvites: Array<GameInvite>;
-  joinedOn: bigint;
-  upcomingGames: Array<GameId>;
-  homeCourse: string;
-  homeCourseId: [] | [GolfCourseId];
-  golferPicture: [] | [Uint8Array | number[]];
-  completedGames: Array<GameId>;
-  handicap: [] | [Handicap];
+  id: GolferId;
+  worldRanking: number;
+  nationality: CountryId;
   lastName: string;
-  golferPictureExtension: string;
-  principalId: PrincipalId;
-  activeGames: Array<GameId>;
-  homeCourseImage: [] | [Uint8Array | number[]];
   firstName: string;
 }
-export interface GolferNeurons {
-  totalMaxStaked: bigint;
-  userMembershipEligibility: EligibleMembership;
-  userNeurons: Array<Neuron>;
-}
-export interface GolferSummary {
-  name: string;
-  joinedOn: bigint;
-  homeCourse: [] | [GolfCourseSummary];
-  profilePictureExtension: string;
-  profilePicture: [] | [Uint8Array | number[]];
-  handicap: [] | [Handicap];
-  principalId: PrincipalId;
-}
+export type GolferId = number;
+export type GolferSummary = {};
 export interface Golfers {
-  total: bigint;
+  totalEntries: bigint;
   page: bigint;
-  pageSize: bigint;
   entries: Array<GolferSummary>;
 }
-export type Handicap = number;
-export interface Hole {
-  par: number;
-  name: string;
-  yardage: bigint;
-  number: number;
-  colour: string;
-  strokeIndex: number;
-  images: Array<HoleImage>;
+export interface ListGolfCourses {
+  page: bigint;
 }
-export interface HoleImage {
-  owner: PrincipalId;
-  uploaded: bigint;
-  image: Uint8Array | number[];
+export interface ListGolfers {
+  page: bigint;
 }
-export type HoleNumber = number;
-export interface HoleSummary {
-  par: number;
-  name: string;
-  yardage: bigint;
-  number: number;
-  colour: string;
-  strokeIndex: number;
+export interface ListPredictions {
+  page: bigint;
 }
-export interface InviteGolfers {
-  gameId: GameId;
-  invitedGolferIds: Array<PrincipalId>;
+export interface ListTournaments {
+  page: bigint;
 }
-export interface IsUsernameAvailable {
-  username: string;
-  principalId: PrincipalId;
-}
-export type MatchResultInfo =
-  | { Mulligans: MulligansResultInfo }
-  | { Bands: BandsResultInfo };
-export interface MembershipClaim {
-  expiresOn: [] | [bigint];
-  claimedOn: bigint;
-  membershipType: MembershipType__1;
-}
-export type MembershipType =
-  | { Founding: null }
-  | { Society: null }
-  | { NotClaimed: null }
-  | { Lifetime: null }
-  | { Annual: null }
-  | { Clubhouse: null }
-  | { NotEligible: null }
-  | { Expired: null };
-export type MembershipType__1 =
-  | { Founding: null }
-  | { Society: null }
-  | { NotClaimed: null }
-  | { Lifetime: null }
-  | { Annual: null }
-  | { Clubhouse: null }
-  | { NotEligible: null }
-  | { Expired: null };
-export interface MulligansHoleResult {
-  golfer2MulliganUsed: boolean;
-  winner: PrincipalId;
-  score: bigint;
-  golfer1MulliganUsed: boolean;
-  holeNumber: HoleNumber;
-}
-export interface MulligansResultInfo {
-  holesPlayed: number;
-  player2Wins: boolean;
-  score: number;
-  players: Array<PlayerFeedSummary__1>;
-  gameOver: boolean;
-  player1Wins: boolean;
-}
-export interface MulligansScore {
-  golfer2MulliganUsed: boolean;
-  hole: HoleNumber;
-  winner: PrincipalId;
-  golfer1MulliganUsed: boolean;
-}
-export interface MulligansScores {
-  winner: PrincipalId;
-  results: Array<MulligansHoleResult>;
-  score: bigint;
-  currentHole: number;
-  golfer2MulligansUsed: number;
-  golfer2HolesWonCount: number;
-  golfer1MulligansAvailable: number;
-  golfer2MulligansAvailable: number;
-  golfer1MulligansUsed: number;
-  golfer1HolesWonCount: number;
-}
-export interface Neuron {
-  id: [] | [NeuronId];
-  staked_maturity_e8s_equivalent: [] | [bigint];
-  permissions: Array<NeuronPermission>;
-  maturity_e8s_equivalent: bigint;
-  cached_neuron_stake_e8s: bigint;
-  created_timestamp_seconds: bigint;
-  source_nns_neuron_id: [] | [bigint];
-  auto_stake_maturity: [] | [boolean];
-  aging_since_timestamp_seconds: bigint;
-  dissolve_state: [] | [DissolveState];
-  voting_power_percentage_multiplier: bigint;
-  vesting_period_seconds: [] | [bigint];
-  disburse_maturity_in_progress: Array<DisburseMaturityInProgress>;
-  followees: Array<[bigint, Followees]>;
-  neuron_fees_e8s: bigint;
-}
-export interface NeuronId {
-  id: Uint8Array | number[];
-}
-export interface NeuronPermission {
-  principal: [] | [Principal];
-  permission_type: Int32Array | number[];
-}
-export type OpponentInfo =
-  | { Mulligans: PlayerOpponentInfo }
-  | { Bands: PlayerOpponentInfo };
-export interface PlayerFeedSummary {
-  username: string;
-  profile_picture: [] | [Uint8Array | number[]];
-  principal_id: PrincipalId;
-}
-export interface PlayerFeedSummary__1 {
-  username: string;
-  profile_picture: [] | [Uint8Array | number[]];
-  principal_id: PrincipalId;
-}
-export interface PlayerOpponentInfo {
-  players: Array<PlayerFeedSummary>;
-}
-export interface PredictGameScore {
-  submittedById: PrincipalId;
-  gameId: GameId;
-  detail: GamePrediction;
+export type Prediction = {};
+export type PredictionSummary = {};
+export interface Predictions {
+  totalEntries: bigint;
+  page: bigint;
+  entries: Array<PredictionSummary>;
 }
 export type PrincipalId = string;
 export interface Profile {
   username: string;
-  homeCourseId: [] | [GolfCourseId];
-  membershipClaims: Array<MembershipClaim>;
-  golferPicture: [] | [Uint8Array | number[]];
-  membershipType: MembershipType__1;
-  handicap: [] | [Handicap];
-  lastName: string;
-  golferPictureExtension: string;
-  principalId: PrincipalId;
-  firstName: string;
-}
-export interface RejectFriendRequest {
-  principalId: PrincipalId;
-  requestedBy: PrincipalId;
-}
-export interface RejectGameInvite {
-  rejectedById: PrincipalId;
-  gameId: GameId;
-}
-export interface RemoveFriend {
-  principalId: PrincipalId;
-  requestedBy: PrincipalId;
-}
-export interface RemoveUserGolfCourse {
-  golfCourseId: GolfCourseId;
+  joinedOn: bigint;
   principalId: PrincipalId;
 }
 export type Result = { ok: null } | { err: Error };
-export type Result_1 = { ok: UsernameAvailable } | { err: Error };
-export type Result_10 = { ok: GolfCourseTees } | { err: Error };
-export type Result_11 = { ok: GolfCourseTeeGroup } | { err: Error };
-export type Result_12 = { ok: GolfCourseSummary } | { err: Error };
-export type Result_13 = { ok: GolfCourseCanisterId } | { err: Error };
-export type Result_14 = { ok: GolfCourse } | { err: Error };
-export type Result_15 = { ok: GameSummaries } | { err: Error };
-export type Result_16 = { ok: GameInvites } | { err: Error };
-export type Result_17 = { ok: GameGolferSummaries } | { err: Error };
-export type Result_18 = { ok: Game } | { err: Error };
-export type Result_19 = { ok: Friends } | { err: Error };
-export type Result_2 = { ok: GolferNeurons } | { err: Error };
-export type Result_20 = { ok: FriendRequests } | { err: Error };
-export type Result_21 = { ok: ClubShots } | { err: Error };
-export type Result_22 = { ok: Buzz } | { err: Error };
-export type Result_23 = { ok: AppStatusDTO } | { err: Error };
-export type Result_24 = { ok: GameId } | { err: Error };
-export type Result_25 = { ok: MembershipClaim } | { err: Error };
-export type Result_3 = { ok: UserFavouriteCourses } | { err: Error };
-export type Result_4 = { ok: UpcomingGames } | { err: Error };
-export type Result_5 = { ok: ShotAverages } | { err: Error };
-export type Result_6 = { ok: Profile } | { err: Error };
-export type Result_7 = { ok: Golfers } | { err: Error };
-export type Result_8 = { ok: Golfer } | { err: Error };
-export type Result_9 = { ok: GolfCourses } | { err: Error };
-export type RustResult = { Ok: string } | { Err: string };
-export interface SendFriendRequest {
-  requestedFriend: PrincipalId;
-  principalId: PrincipalId;
+export type Result_1 = { ok: Tournaments } | { err: Error };
+export type Result_10 = { ok: Golfer } | { err: Error };
+export type Result_11 = { ok: GolfCourse } | { err: Error };
+export type Result_12 = { ok: AppStatus } | { err: Error };
+export type Result_2 = { ok: Predictions } | { err: Error };
+export type Result_3 = { ok: Golfers } | { err: Error };
+export type Result_4 = { ok: GolfCourses } | { err: Error };
+export type Result_5 = { ok: Tournament } | { err: Error };
+export type Result_6 = { ok: Scorecard } | { err: Error };
+export type Result_7 = { ok: Profile } | { err: Error };
+export type Result_8 = { ok: Prediction } | { err: Error };
+export type Result_9 = { ok: FantasyLeaderboard } | { err: Error };
+export type Scorecard = {};
+export interface SubmitPrediction {
+  hole17GolferId: GolferId;
+  hole9GolferId: GolferId;
+  hole11GolferId: GolferId;
+  hole3GolferId: GolferId;
+  hole16GolferId: GolferId;
+  hole8GolferId: GolferId;
+  hole10GolferId: GolferId;
+  hole2GolferId: GolferId;
+  hole15GolferId: GolferId;
+  hole7GolferId: GolferId;
+  hole1GolferId: GolferId;
+  hole14GolferId: GolferId;
+  hole6GolferId: GolferId;
+  hole13GolferId: GolferId;
+  hole5GolferId: GolferId;
+  tournamentId: TournamentId;
+  hole18GolferId: GolferId;
+  hole12GolferId: GolferId;
+  hole4GolferId: GolferId;
 }
-export interface ShotAverages {
-  shots: Array<AverageShot>;
+export interface SwapGolfer {
+  removedGolferId: GolferId;
+  newGolferId: GolferId;
+  newGolferHole: number;
+  tournamentId: TournamentId;
+  removedGolferHole: number;
 }
-export interface Subaccount {
-  subaccount: Uint8Array | number[];
+export interface Tournament {
+  id: TournamentId;
 }
-export interface TeeGroup {
-  added: bigint;
-  holes: Array<Hole>;
-  name: string;
-  index: TeeGroupIndex;
-  colour: string;
-}
-export type TeeGroupIndex = number;
-export interface UpcomingGame {
-  course_info: CourseInfo;
-  opponent_info: OpponentInfo;
-  game_info: GameInfo;
-}
-export interface UpcomingGames {
+export type TournamentId = number;
+export type TournamentStage =
+  | { Round1Active: null }
+  | { Round2Active: null }
+  | { Round3Active: null }
+  | { Round3Complete: null }
+  | { Round4Active: null }
+  | { Round2Complete: null }
+  | { Round1Complete: null }
+  | { Completed: null }
+  | { NotStarted: null };
+export type TournamentSummary = {};
+export interface Tournaments {
+  totalEntries: bigint;
   page: bigint;
-  entries: Array<UpcomingGame>;
+  entries: Array<TournamentSummary>;
 }
-export interface UpdateFirstName {
-  principalId: PrincipalId;
-  firstName: string;
-}
-export interface UpdateGame {
-  inviteIds: Array<PrincipalId>;
-  gameId: GameId;
-  teeOffTime: bigint;
-  teeGroupIndex: TeeGroupIndex;
-  courseVersion: GolfCourseVersion;
-  courseId: GolfCourseId;
+export interface UpdateAppStatus {
+  version: string;
+  onHold: boolean;
 }
 export interface UpdateGolfCourse {
-  manager: PrincipalId;
+  id: GolfCourseId;
+  holes: Array<GolfHole>;
   name: string;
-  mainImageExtension: string;
-  bannerImageExtension: string;
-  bannerImage: [] | [Uint8Array | number[]];
-  mainImage: [] | [Uint8Array | number[]];
-  courseId: GolfCourseId;
-  teeGroups: Array<TeeGroup>;
+  yardage: number;
+  coursePar: number;
 }
-export interface UpdateHandicap {
-  handicap: [] | [Handicap];
-  principalId: PrincipalId;
-}
-export interface UpdateHomeCourse {
-  homeCourseId: [] | [GolfCourseId];
-  principalId: PrincipalId;
-}
-export interface UpdateLastName {
+export interface UpdateGolfer {
+  id: GolferId;
+  worldRanking: number;
+  nationality: CountryId;
   lastName: string;
-  principalId: PrincipalId;
+  firstName: string;
 }
 export interface UpdateProfilePicture {
-  profilePictureExtension: string;
   profilePicture: [] | [Uint8Array | number[]];
-  principalId: PrincipalId;
 }
-export interface UpdateShot {
-  club: GolfClub;
-  yardage: bigint;
-  golfShotId: GolfShotId;
-  principalId: PrincipalId;
+export interface UpdateTournamentStage {
+  stage: TournamentStage;
+  tournamentId: TournamentId;
 }
 export interface UpdateUsername {
   username: string;
-  principalId: PrincipalId;
 }
-export interface UserFavouriteCourses {
-  total: bigint;
-  page: bigint;
-  pageSize: bigint;
-  entries: Array<FavouriteCourse>;
-}
-export type UsernameAvailable = boolean;
 export interface _SERVICE {
-  acceptFriendRequest: ActorMethod<[AcceptFriendRequest], Result>;
-  acceptGameInvite: ActorMethod<[AcceptGameInvite], Result>;
-  addGameScore: ActorMethod<[AddGameScore], Result>;
-  addShot: ActorMethod<[AddShot], Result>;
-  beginGame: ActorMethod<[BeginGame], Result>;
-  claimMembership: ActorMethod<[], Result_25>;
-  createGame: ActorMethod<[CreateGame], Result_24>;
-  createUser: ActorMethod<[CreateUser], Result>;
-  deleteGame: ActorMethod<[DeleteGame], Result>;
-  deleteShot: ActorMethod<[DeleteShot], Result>;
-  executeAddGolfCourse: ActorMethod<[CreateGolfCourse], undefined>;
-  executeUpdateGolfCourse: ActorMethod<[UpdateGolfCourse], undefined>;
-  getAppStatus: ActorMethod<[], Result_23>;
-  getBuzz: ActorMethod<[GetBuzz], Result_22>;
-  getClubShots: ActorMethod<[GetClubShots], Result_21>;
-  getFriendRequests: ActorMethod<[GetFriendRequests], Result_20>;
-  getFriends: ActorMethod<[GetFriends], Result_19>;
-  getGame: ActorMethod<[GetGame], Result_18>;
-  getGameGolferSummaries: ActorMethod<[GetGameGolferSummaries], Result_17>;
-  getGameInvites: ActorMethod<[GetGameInvites], Result_16>;
-  getGameSummaries: ActorMethod<[GetGameSummaries], Result_15>;
-  getGolfCourse: ActorMethod<[GetGolfCourse], Result_14>;
-  getGolfCourseCanisterId: ActorMethod<[GetGolfCourseCanisterId], Result_13>;
-  getGolfCourseSummary: ActorMethod<[GetGolfCourseSummary], Result_12>;
-  getGolfCourseTeeGroup: ActorMethod<[GetGolfCourseTeeGroup], Result_11>;
-  getGolfCourseTees: ActorMethod<[GetGolfCourseTees], Result_10>;
-  getGolfCourses: ActorMethod<[GetGolfCourses], Result_9>;
-  getGolfer: ActorMethod<[GetGolfer], Result_8>;
-  getGolfers: ActorMethod<[GetGolfers], Result_7>;
-  getProfile: ActorMethod<[GetProfile], Result_6>;
-  getShotAverages: ActorMethod<[GetShotAverages], Result_5>;
-  getUpcomingGames: ActorMethod<[GetUpcomingGames], Result_4>;
-  getUserFavouriteCourses: ActorMethod<[GetUserFavouriteCourses], Result_3>;
-  getUserNeurons: ActorMethod<[], Result_2>;
-  inviteGolfers: ActorMethod<[InviteGolfers], Result>;
-  isUsernameAvailable: ActorMethod<[IsUsernameAvailable], Result_1>;
-  predictGameScore: ActorMethod<[PredictGameScore], Result>;
-  rejectFriendRequest: ActorMethod<[RejectFriendRequest], Result>;
-  rejectGameInvite: ActorMethod<[RejectGameInvite], Result>;
-  removeFriend: ActorMethod<[RemoveFriend], Result>;
-  removeUserGolfCourse: ActorMethod<[RemoveUserGolfCourse], Result>;
-  sendFriendRequest: ActorMethod<[SendFriendRequest], Result>;
-  updateFirstName: ActorMethod<[UpdateFirstName], Result>;
-  updateGame: ActorMethod<[UpdateGame], Result>;
-  updateHandicap: ActorMethod<[UpdateHandicap], Result>;
-  updateHomeCourse: ActorMethod<[UpdateHomeCourse], Result>;
-  updateLastName: ActorMethod<[UpdateLastName], Result>;
+  calculateLeaderboard: ActorMethod<[CalculateLeaderboard], Result>;
+  createGolfCourse: ActorMethod<[CreateGolfCourse], Result>;
+  createGolfer: ActorMethod<[CreateGolfer], Result>;
+  createProfile: ActorMethod<[CreateProfile], Result>;
+  createTournament: ActorMethod<[CreateTournament], Result>;
+  getAppStatus: ActorMethod<[], Result_12>;
+  getGolfCourse: ActorMethod<[GetGolfCourse], Result_11>;
+  getGolfer: ActorMethod<[GetGolfer], Result_10>;
+  getLeaderboard: ActorMethod<[GetFantasyLeaderboard], Result_9>;
+  getPrediction: ActorMethod<[GetPrediction], Result_8>;
+  getProfile: ActorMethod<[GetProfile], Result_7>;
+  getScorecard: ActorMethod<[GetScorecard], Result_6>;
+  getTournament: ActorMethod<[GetTournament], Result_5>;
+  listGolfCourses: ActorMethod<[ListGolfCourses], Result_4>;
+  listGolfers: ActorMethod<[ListGolfers], Result_3>;
+  listPredictions: ActorMethod<[ListPredictions], Result_2>;
+  listTournaments: ActorMethod<[ListTournaments], Result_1>;
+  submitPrediction: ActorMethod<[SubmitPrediction], Result>;
+  swapGolfer: ActorMethod<[SwapGolfer], Result>;
+  updateAppStatus: ActorMethod<[UpdateAppStatus], Result>;
+  updateGolfCourse: ActorMethod<[UpdateGolfCourse], Result>;
+  updateGolfer: ActorMethod<[UpdateGolfer], Result>;
   updateProfilePicture: ActorMethod<[UpdateProfilePicture], Result>;
-  updateShot: ActorMethod<[UpdateShot], Result>;
+  updateTournamentStage: ActorMethod<[UpdateTournamentStage], Result>;
   updateUsername: ActorMethod<[UpdateUsername], Result>;
-  validateAddGolfCourse: ActorMethod<[CreateGolfCourse], RustResult>;
-  validateUpdateGolfCourse: ActorMethod<[UpdateGolfCourse], RustResult>;
 }
 export declare const idlFactory: IDL.InterfaceFactory;
 export declare const init: (args: { IDL: typeof IDL }) => IDL.Type[];

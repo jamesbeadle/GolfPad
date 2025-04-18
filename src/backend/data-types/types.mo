@@ -60,7 +60,7 @@ module FantasyGolfTypes {
         firstName: Text;
         lastName: Text;
         nationality: Ids.CountryId;
-        tournaments: [LeaderboardEntry]
+        worldRanking: Nat16;
     };  
 
     public type GolfCourse = {
@@ -83,21 +83,26 @@ module FantasyGolfTypes {
 
     public type Tournament = {
         id: TournamentId;
-        tournamentResults: [TournamentResult];
+        name: Text;
+        instances: [TournamentInstance];
     };
 
-    public type TournamentResult = {
+    public type TournamentInstance = {
         courseId: GolfCourseId;
         year: Nat16;
+        startDate: Int;
+        endDate: Int;
         leaderboard: TournamentLeaderboard;
+        stage: TournamentStage;
+        populated: Bool;
     };
 
     public type TournamentLeaderboard = {
         totalEntries: Nat;
-        entries: [LeaderboardEntry];
+        entries: [TournamentLeaderboardEntry];
     };
 
-    public type LeaderboardEntry = {
+    public type TournamentLeaderboardEntry = {
         golferId: GolferId;
         tournamentId: TournamentId;
         rounds: [GolfRound];
@@ -125,6 +130,38 @@ module FantasyGolfTypes {
         hole17Score: Nat8;
         hole18Score: Nat8;
         totalShots: Nat;
+    };
+
+    public type TournamentStage = {
+        #NotStarted;
+        #Round1Active;
+        #Round1Complete;
+        #Round2Active;
+        #Round2Complete;
+        #Round3Active;
+        #Round3Complete;
+        #Round4Active;
+        #Completed;
+    };
+
+    public type FantasyLeaderboard = {
+        tournamentId: TournamentId;
+        entries: [FantasyLeaderboardEntry];
+    };
+
+    public type FantasyLeaderboardEntry = {
+        principalId: Ids.PrincipalId;
+        score: Int8;
+        shots: Nat8;
+        holes: [FantasyPredictionHole];
+    };
+
+    public type FantasyPredictionHole = {
+        hole: Nat8;
+        golferId: GolferId;
+        shotCount: Nat8;
+        par: Nat8;
+        score: Int8;
     };
 
 }

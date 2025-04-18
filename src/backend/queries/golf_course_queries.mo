@@ -1,22 +1,41 @@
-import GolfCourse "../data-types/golf_course_types";
-import Base "mo:waterway-mops/BaseTypes";
-import MopsIds "../data-types/mops_ids";
-
+import Types "../data-types/types";
+import Ids "mo:waterway-mops/Ids";
 module GolfCourseQueries {
     
     public type GetGolfCourse = {
-        id: MopsIds.GolfCourseId;
+        id: Types.GolfCourseId;
     };
 
     public type GolfCourse = {
-        id: MopsIds.GolfCourseId;
+        id: Types.GolfCourseId;
         name: Text;
         mainImage: ?Blob;
         mainImageExtension: Text;
         totalHoles: Nat8;
         founded: Int;
-        countryId: MopsIds.CountryId;
+        countryId: Ids.CountryId;
         manager: Text;
+        holes: [GolfHole];
+    };
+
+    public type GolfHole = {
+        number: Nat8;
+        par: Nat8;
+        yardage: Nat16;
+    };
+
+    public type ListGolfCourses = {
+        page: Nat;
+    };
+
+    public type GolfCourses = {
+        entries: [GolfCourseSummary];
+        totalEntries: Nat;
+        page: Nat;
+    };
+
+    public type GolfCourseSummary = {
+        
     };
     
 }
