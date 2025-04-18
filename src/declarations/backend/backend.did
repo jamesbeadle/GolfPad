@@ -3,6 +3,7 @@ type UpdateTournamentStage =
  record {
    stage: TournamentStage;
    tournamentId: TournamentId;
+   year: nat16;
  };
 type UpdateProfilePicture = record {profilePicture: opt blob;};
 type UpdateGolfer = 
@@ -32,7 +33,11 @@ type Tournaments =
    page: nat;
    totalEntries: nat;
  };
-type TournamentSummary = record {};
+type TournamentSummary = 
+ record {
+   name: text;
+   tournamentId: TournamentId;
+ };
 type TournamentStage = 
  variant {
    Completed;
@@ -46,7 +51,7 @@ type TournamentStage =
    Round4Active;
  };
 type TournamentId = nat16;
-type Tournament = record {id: TournamentId;};
+type Tournament = record {tournamentId: TournamentId;};
 type SwapGolfer = 
  record {
    newGolferHole: nat8;
@@ -178,6 +183,13 @@ type Golfer =
    nationality: CountryId;
    worldRanking: nat16;
  };
+type GolfHole__1 = 
+ record {
+   holeNumber: nat8;
+   par: nat8;
+   strokeIndex: nat8;
+   yardage: nat16;
+ };
 type GolfHole = 
  record {
    holeNumber: nat8;
@@ -197,6 +209,7 @@ type GolfCourse =
  record {
    countryId: CountryId;
    founded: int;
+   holes: vec GolfHole__1;
    id: GolfCourseId;
    mainImage: opt blob;
    mainImageExtension: text;
@@ -204,7 +217,7 @@ type GolfCourse =
    name: text;
    totalHoles: nat8;
  };
-type GetTournament = record {id: TournamentId;};
+type GetTournament = record {tournamentId: TournamentId;};
 type GetScorecard = record {principalId: PrincipalId;};
 type GetProfile = record {};
 type GetPrediction = record {};
@@ -225,10 +238,10 @@ type FantasyPredictionHole =
 type FantasyLeaderboardEntry = 
  record {
    holes: vec FantasyPredictionHole;
-   nationalityId: CountryId;
    principalId: PrincipalId;
    score: int8;
    shots: nat8;
+   username: text;
  };
 type FantasyLeaderboard = 
  record {
@@ -262,13 +275,7 @@ type Error =
    TooLong;
    UpdateFailed;
  };
-type CreateTournament = 
- record {
-   endDate: int;
-   golfCourseId: int;
-   name: text;
-   startDate: int;
- };
+type CreateTournament = record {name: text;};
 type CreateProfile = 
  record {
    profilePicture: opt blob;
@@ -289,7 +296,11 @@ type CreateGolfCourse =
    yardage: nat16;
  };
 type CountryId = nat16;
-type CalculateLeaderboard = record {tournamentId: TournamentId;};
+type CalculateLeaderboard = 
+ record {
+   tournamentId: TournamentId;
+   year: nat16;
+ };
 type AppStatus = 
  record {
    onHold: bool;

@@ -243,6 +243,7 @@ module {
                                 };
                             });
                             principalId = entry.principalId;
+                            username = entry.username;
                             score = 0;
                             shots = 0;
                         }
@@ -455,6 +456,7 @@ module {
                                     };
                                 });
                                 principalId = entry.principalId;
+                                username = entry.username;
                                 score = 0;
                                 shots = 0;
                             }
