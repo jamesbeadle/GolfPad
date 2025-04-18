@@ -38,6 +38,14 @@ module {
             };
         };
 
+        public func addChunkToLeaderboard(tournamentId: Types.TournamentId, chunk: [Types.Prediction]) {
+            //Based on a batch number transfer the data into here
+        };
+
+        public func calculateLeaderboard(tournamentId: Types.TournamentId) {
+            //using all the player information calculate the leaderboard
+        };
+
         public func getStableLeaderboards() : [Types.FantasyLeaderboard] {
             return leaderboards;
         };

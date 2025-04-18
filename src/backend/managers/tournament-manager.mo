@@ -13,6 +13,11 @@ module {
       return #err(#NotFound);
     };
 
+    public func getTournamentStatus() : Result.Result<Types.TournamentStage, Enums.Error> {
+      //find and get status
+      return #err(#NotFound);
+    };
+
     public func getStableTournaments() : [Types.Tournament] {
       return tournaments;
     };

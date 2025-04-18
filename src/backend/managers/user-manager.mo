@@ -2,6 +2,7 @@ import Types "../data-types/types";
 import UserQueries "../queries/user_queries";
 import UserCommands "../commands/user_commands";
 import Result "mo:base/Result";
+import Array "mo:base/Array";
 import Enums "mo:waterway-mops/Enums";
 import Ids "mo:waterway-mops/Ids";
 
@@ -42,6 +43,17 @@ module {
 
     public func swapGolfer(principalId: Ids.PrincipalId, dto: UserCommands.SwapGolfer) : Result.Result<(), Enums.Error> {
       return #err(#NotFound);
+    };
+
+    public func getTotalLeaderboardEntries(tournamentId: Types.TournamentId) : Nat {
+      let leaderboardEntries = Array.filter<Types.Prediction>(predictions, func(entry: Types.Prediction){
+        entry.tournamentId == tournamentId
+      });
+      return Array.size(leaderboardEntries);
+    };
+
+    public func getLeaderboardChunk(tournamentId: Types.TournamentId, chunkIndex: Nat) : [Types.Prediction]{
+      return [];
     };
 
     public func getStableProfiles() : [Types.Profile] {

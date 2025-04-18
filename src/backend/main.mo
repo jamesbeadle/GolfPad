@@ -10,6 +10,7 @@ import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Timer "mo:base/Timer";
 import Array "mo:base/Array";
+import Iter "mo:base/Iter";
 
 /* ----- Queries ----- */
 
@@ -24,6 +25,7 @@ import UserCommands "commands/user_commands";
 import GolfCourseCommands "commands/golf_course_commands";
 import GolferCommands "commands/golfer_commands";
 import TournamentCommands "commands/tournament_commands";
+import FantasyLeaderboardCommands "commands/fantasy_leaderboard_commands";
 
 
 /* ----- Manager ----- */
@@ -183,6 +185,39 @@ actor Self {
     assert isAdmin(principalId);
     return tournamentManager.updateTournamentStage(dto);  
   };
+
+  public shared ({ caller }) func calculateLeaderboard(dto: FantasyLeaderboardCommands.CalculateLeaderboard) : async Result.Result<(), Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert isAdmin(principalId);
+
+    let tournamentStatus = tournamentManager.getTournamentStatus();
+    switch(tournamentStatus){
+      case (#ok foundTournamentStatus){
+        if(foundTournamentStatus == #Completed){
+          
+          let totalEntries: Nat = userManager.getTotalLeaderboardEntries(dto.tournamentId);
+          var totalChunks = totalEntries / Environment.ENTRY_TRANSFER_LIMIT;
+          let remainder = totalEntries % Environment.ENTRY_TRANSFER_LIMIT; 
+          
+          if (remainder > 0) { totalChunks += 1 };
+
+          for(chunk in Iter.range(0, totalChunks - 1)){
+            let leaderboardChunk = userManager.getLeaderboardChunk(dto.tournamentId, chunk);
+            fantasyLeaderboardManager.addChunkToLeaderboard(dto.tournamentId, leaderboardChunk);
+          };  
+
+          fantasyLeaderboardManager.calculateLeaderboard(dto.tournamentId);
+          return #ok();
+        };
+        return #err(#NotAllowed);
+      };
+      case (#err error){
+        return #err(error);
+      }
+    };
+  };
+
 
   
   /* ----- Private Functions ----- */
