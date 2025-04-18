@@ -141,14 +141,15 @@ module FantasyGolfTypes {
     };
 
     public type FantasyLeaderboard = {
-        principalId: Ids.PrincipalId;
-        nationalityId: Ids.CountryId;
-        score: Int8;
-        shots: Nat8;
+        tournamentId: TournamentId;
         entries: [FantasyLeaderboardEntry];
     };
 
     public type FantasyLeaderboardEntry = {
+        principalId: Ids.PrincipalId;
+        nationalityId: Ids.CountryId;
+        score: Int8;
+        shots: Nat8;
         holes: [FantasyPredictionHole];
     };
 

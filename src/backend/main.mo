@@ -4,17 +4,18 @@
 import BaseQueries "mo:waterway-mops/queries/BaseQueries";
 import BaseTypes "mo:waterway-mops/BaseTypes";
 import Enums "mo:waterway-mops/Enums";
+import Ids "mo:waterway-mops/Ids";
 import Int "mo:base/Int";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Timer "mo:base/Timer";
+import Array "mo:base/Array";
 
 /* ----- Queries ----- */
 
 import UserQueries "queries/user_queries";
 import GolfCourseQueries "queries/golf_course_queries";
 import GolferQueries "queries/golfer_queries";
-import LeaderboardQueries "queries/leaderboard_queries";
 
 
 /* ----- Commands ----- */
@@ -37,6 +38,8 @@ import TournamentManager "managers/tournament-manager";
 /* ----- Type imports for stable variables ----- */
 
 import Types "./data-types/types";
+import Environment "environment";
+import FantasyLeaderboardQueries "queries/fantasy_leaderboard_queries";
 
 
 actor Self {
@@ -84,7 +87,7 @@ actor Self {
     return userManager.getPrediction(principalId, dto);
   };
 
-  public shared query ({ caller }) func getScorecard(dto: UserQueries.GetScorecard) : async Result.Result<LeaderboardQueries.Leaderboard, Enums.Error> {
+  public shared query ({ caller }) func getScorecard(dto: UserQueries.GetScorecard) : async Result.Result<UserQueries.Scorecard, Enums.Error> {
     assert not Principal.isAnonymous(caller);
     return userManager.getScorecard(dto);
   };
@@ -162,10 +165,11 @@ actor Self {
     assert isAdmin(principalId);
     return golferManager.updateGolfer(dto);  
   };
+  
 
   /* ----- Leaderboard Queries ----- */
 
-  public shared query ({ caller }) func getLeaderboard(dto: LeaderboardQueries.GetLeaderboard) : async Result.Result<LeaderboardQueries.Leaderboard, Enums.Error> {
+  public shared query ({ caller }) func getLeaderboard(dto: FantasyLeaderboardQueries.GetFantasyLeaderboard) : async Result.Result<FantasyLeaderboardQueries.FantasyLeaderboard, Enums.Error> {
     assert not Principal.isAnonymous(caller);
     return fantasyLeaderboardManager.getLeaderboard(dto);
   };
@@ -184,7 +188,17 @@ actor Self {
   /* ----- Private Functions ----- */
 
   private func isAdmin(principalId: Text) : Bool {
-    return false;
+    let foundPrincipalId = Array.find(Environment.ADMIN_PRINCIPAL_IDS, func(entry: Ids.PrincipalId) : Bool {
+      entry == principalId
+    });
+    switch(foundPrincipalId){
+      case (?foundPrincipalId){
+        return true;
+      };
+      case (null){
+        return false; 
+      }
+    };
   };
   
 
