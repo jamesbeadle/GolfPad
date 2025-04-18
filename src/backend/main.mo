@@ -108,7 +108,7 @@ actor Self {
   public shared query ({ caller }) func listPredictions(dto: UserQueries.ListPredictions) : async Result.Result<UserQueries.Predictions, Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    return userManager.listPredictions(dto);
+    return userManager.listPredictions(principalId, dto);
   };
 
   public shared query ({ caller }) func getScorecard(dto: UserQueries.GetScorecard) : async Result.Result<UserQueries.Scorecard, Enums.Error> {
@@ -162,7 +162,6 @@ actor Self {
 
   public shared query ({ caller }) func listGolfCourses(dto: GolfCourseQueries.ListGolfCourses) : async Result.Result<GolfCourseQueries.GolfCourses, Enums.Error> {
     assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
     return golfCourseManager.listGolfCourses(dto);
   };
 
@@ -188,9 +187,8 @@ actor Self {
     return golferManager.getGolfer(dto);
   };
 
-  public shared query ({ caller }) func listGolfers(dto: GolferQueries.ListGolfers) : async Result.Result<GolferQueries.GolfCourses, Enums.Error> {
+  public shared query ({ caller }) func listGolfers(dto: GolferQueries.ListGolfers) : async Result.Result<GolferQueries.Golfers, Enums.Error> {
     assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
     return golferManager.listGolfers(dto);
   };
 

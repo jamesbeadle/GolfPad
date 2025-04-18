@@ -8,16 +8,26 @@ module GolferQueries {
         golferId: Types.GolferId;
     };
 
-    public type Golfers = {
-        golfers: [Golfer];
-    };
-
     public type Golfer = {
         id: Types.GolferId;
         firstName: Text;
         lastName: Text;
         nationality: Ids.CountryId;
         worldRanking: Nat16;
+    };
+
+    public type ListGolfers = {
+        page: Nat;
+    };
+
+    public type Golfers = {
+        entries: [GolferSummary];
+        totalEntries: Nat;
+        page: Nat;
+    };
+
+    public type GolferSummary = {
+        
     };
     
 }

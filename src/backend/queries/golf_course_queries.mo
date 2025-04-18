@@ -16,6 +16,20 @@ module GolfCourseQueries {
         countryId: Ids.CountryId;
         manager: Text;
     };
+
+    public type ListGolfCourses = {
+        page: Nat;
+    };
+
+    public type GolfCourses = {
+        entries: [GolfCourseSummary];
+        totalEntries: Nat;
+        page: Nat;
+    };
+
+    public type GolfCourseSummary = {
+        
+    };
     
 }
 

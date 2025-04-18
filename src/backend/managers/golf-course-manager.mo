@@ -14,6 +14,14 @@ module {
       return #err(#NotFound);
     };
 
+    public func listGolfCourses(dto: GolfCourseQueries.ListGolfCourses) : Result.Result<GolfCourseQueries.GolfCourses, Enums.Error> {
+      return #ok({
+        entries = [];
+        page = 0;
+        totalEntries = 0;
+      });
+    };
+
     public func createGolfCourse(dto: GolfCourseCommands.CreateGolfCourse) : Result.Result<(), Enums.Error> {
       return #err(#NotFound);
     };

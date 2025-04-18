@@ -25,6 +25,14 @@ module {
       return #err(#NotFound);
     };
 
+    public func listPredictions(principalId: Ids.PrincipalId, dto: UserQueries.ListPredictions) : Result.Result<UserQueries.Predictions, Enums.Error> {
+      return #ok({
+        entries = [];
+        page = 0;
+        totalEntries = 0;
+      });
+    };
+
     public func createProfile(principalId: Ids.PrincipalId, dto: UserCommands.CreateProfile) : Result.Result<(), Enums.Error> {
       return #err(#NotFound);  
     };

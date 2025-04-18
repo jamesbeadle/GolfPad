@@ -17,6 +17,20 @@ module UserQueries {
         
     };
 
+    public type ListPredictions = {
+        page: Nat;
+    };
+
+    public type Predictions = {
+        entries: [PredictionSummary];
+        totalEntries: Nat;
+        page: Nat;
+    };
+
+    public type PredictionSummary = {
+
+    };
+
     public type GetScorecard = {
         principalId: Ids.PrincipalId;
     };

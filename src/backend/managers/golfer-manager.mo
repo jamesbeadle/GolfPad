@@ -24,6 +24,14 @@ module {
       };
     };
 
+    public func listGolfers(dto: GolferQueries.ListGolfers) : Result.Result<GolferQueries.Golfers, Enums.Error> {
+      return #ok({
+        entries = [];
+        page = 0;
+        totalEntries = 0;
+      });
+    };
+
     public func createGolfer(dto: GolferCommands.CreateGolfer) : Result.Result<(), Enums.Error> {
 
       //validate
