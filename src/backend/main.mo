@@ -82,7 +82,7 @@ actor Self {
   public shared ({ caller }) func updateAppStatus(dto: MopsBaseCommands.UpdateAppStatus) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert isAdmin(principalId);
+    assert await isAdmin(principalId);
 
     appStatus := {
       onHold = dto.onHold;
@@ -171,14 +171,14 @@ actor Self {
   public shared ({ caller }) func createGolfCourse(dto: GolfCourseCommands.CreateGolfCourse) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert isAdmin(principalId);
+    assert await isAdmin(principalId);
     return golfCourseManager.createGolfCourse(dto);  
   };
 
   public shared ({ caller }) func updateGolfCourse(dto: GolfCourseCommands.UpdateGolfCourse) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert isAdmin(principalId);
+    assert await isAdmin(principalId);
     return golfCourseManager.updateGolfCourse(dto);  
   };
 
@@ -198,14 +198,14 @@ actor Self {
   public shared ({ caller }) func createGolfer(dto: GolferCommands.CreateGolfer) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert isAdmin(principalId);
+    assert await isAdmin(principalId);
     return golferManager.createGolfer(dto);  
   };
 
   public shared ({ caller }) func updateGolfer(dto: GolferCommands.UpdateGolfer) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert isAdmin(principalId);
+    assert await isAdmin(principalId);
     return golferManager.updateGolfer(dto);  
   };
   
@@ -233,21 +233,21 @@ actor Self {
   public shared ({ caller }) func createTournament(dto: TournamentCommands.CreateTournament) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert isAdmin(principalId);
+    assert await isAdmin(principalId);
     return tournamentManager.createTournament(dto);  
   };
 
   public shared ({ caller }) func updateTournamentStage(dto: TournamentCommands.UpdateTournamentStage) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert isAdmin(principalId);
+    assert await isAdmin(principalId);
     return tournamentManager.updateTournamentStage(dto);  
   };
 
   public shared ({ caller }) func calculateLeaderboard(dto: FantasyLeaderboardCommands.CalculateLeaderboard) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    assert isAdmin(principalId);
+    assert await isAdmin(principalId);
 
     userManager.calculateScorecards();
 
@@ -284,7 +284,7 @@ actor Self {
   
   /* ----- Private Functions ----- */
 
-  public func isAdmin(principalId: Text) : Bool {
+  public func isAdmin(principalId: Text) : async Bool {
     let foundPrincipalId = Array.find(Environment.ADMIN_PRINCIPAL_IDS, func(entry: Ids.PrincipalId) : Bool {
       entry == principalId
     });

@@ -5,6 +5,8 @@ import Result "mo:base/Result";
 import Array "mo:base/Array";
 import List "mo:base/List";
 import Order "mo:base/Order";
+import Time "mo:base/Time";
+import Buffer "mo:base/Buffer";
 import Enums "mo:waterway-mops/Enums";
 import Ids "mo:waterway-mops/Ids";
 import Environment "../environment";
@@ -142,11 +144,15 @@ module {
         case(null) {
           
           let newProfile: Types.Profile = {
-            joinedOn = dto.joinedOn;
-            principalId : PrincipalId;
-            profilePicture : ?Blob;
-            username : Text
+            joinedOn = Time.now();
+            principalId;
+            profilePicture = dto.profilePicture;
+            username = dto.username;
           };
+
+          let profileBuffer = Buffer.fromArray<Types.Profile>(profiles);
+          profileBuffer.add(newProfile);
+          profiles := Buffer.toArray(profileBuffer);
 
           return #ok();
         };
@@ -154,7 +160,37 @@ module {
     };
 
     public func updateProfilePicture(principalId: Ids.PrincipalId, dto: UserCommands.UpdateProfilePicture) : Result.Result<(), Enums.Error> {
-      return #err(#NotFound);
+      let existingProfile = Array.find(profiles, func(profile: Types.Profile) : Bool {
+        profile.principalId == principalId;
+      });
+      switch(existingProfile) {
+        case(?foundProfile) { 
+          
+          let updatedProfile: Types.Profile = {
+            joinedOn = foundProfile.joinedOn;
+            principalId = foundProfile.principalId;
+            profilePicture = dto.profilePicture;
+            username = foundProfile.username;
+          };
+
+          profiles := Array.map<Types.Profile, Types.Profile>(profiles, func(entry: Types.Profile){
+            if(entry.principalId == principalId){
+              return updatedProfile;
+            };
+            return {
+              joinedOn = entry.joinedOn;
+              principalId = entry.principalId;
+              profilePicture = entry.profilePicture;
+              username = entry.username;
+            };
+          });
+
+          return #ok();
+        };
+        case(null) {
+          return #err(#NotFound);   
+        };
+      };
     };
 
     public func updateUsername(principalId: Ids.PrincipalId, dto: UserCommands.UpdateUsername) : Result.Result<(), Enums.Error> {
