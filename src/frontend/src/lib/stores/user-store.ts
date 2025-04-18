@@ -4,32 +4,11 @@ import { writable } from "svelte/store";
 import { ActorFactory } from "$lib/utils/actor.factory";
 import { UserService } from "$lib/services/user-service";
 import type {
-  AddShot,
-  Buzz,
-  ClubShots,
-  CreateUser,
-  DeleteShot,
-  GetBuzz,
-  GetClubShots,
-  GetFriends,
   GetProfile,
-  GetShotAverages,
-  GetUpcomingGames,
-  GetUserFavouriteCourses,
-  IsUsernameAvailable,
   Profile,
-  RemoveUserGolfCourse,
-  ShotAverages,
-  UpcomingGames,
-  UpdateFirstName,
-  UpdateHandicap,
-  UpdateHomeCourse,
-  UpdateLastName,
   UpdateProfilePicture,
-  UpdateShot,
   UpdateUsername,
-  UserFavouriteCourses,
-  UsernameAvailable,
+  CreateProfile,
 } from "../../../../declarations/backend/backend.did";
 
 function createUserStore() {
@@ -95,65 +74,32 @@ function createUserStore() {
     return getProfileResponse.ok;
   }
 
-  async function getBuzz(dto: GetBuzz): Promise<Buzz> {
-    return new UserService().getBuzz(dto);
-  }
 
-  async function getUpcomingGames(
+/*   async function getUpcomingGames(
     dto: GetUpcomingGames,
   ): Promise<UpcomingGames> {
     return new UserService().getUpcomingGames(dto);
-  }
+  } */
 
-  async function getFriends(dto: GetFriends) {
-    return new UserService().getFriends(dto);
-  }
 
-  async function isUsernameAvailable(
+/*   async function isUsernameAvailable(
     dto: IsUsernameAvailable,
   ): Promise<UsernameAvailable> {
     return new UserService().isUsernameAvailable(dto);
-  }
+  } */
 
-  async function getClubShots(dto: GetClubShots): Promise<ClubShots> {
-    return new UserService().getClubShots(dto);
-  }
 
-  async function getShotAverages(dto: GetShotAverages): Promise<ShotAverages> {
-    return new UserService().getShotAverages(dto);
-  }
-
-  async function getUserFavouriteCourses(
-    dto: GetUserFavouriteCourses,
-  ): Promise<UserFavouriteCourses> {
-    return new UserService().getUserFavouriteCourses(dto);
-  }
 
   //User Commands Functions
 
   async function createUser(dto: CreateProfile): Promise<any> {
-    return new UserService().createUser(dto);
+    return new UserService().createProfile(dto);
   }
 
   async function updateUsername(dto: UpdateUsername): Promise<any> {
     return new UserService().updateUsername(dto);
   }
 
-  async function updateHandicap(dto: UpdateHandicap): Promise<any> {
-    return new UserService().updateHandicap(dto);
-  }
-
-  async function updateFirstName(dto: UpdateFirstName): Promise<any> {
-    return new UserService().updateFirstName(dto);
-  }
-
-  async function updateLastName(dto: UpdateLastName): Promise<any> {
-    return new UserService().updateLastName(dto);
-  }
-
-  async function updateHomeCourse(dto: UpdateHomeCourse): Promise<any> {
-    return new UserService().updateHomeCourse(dto);
-  }
 
   async function updateProfilePicture(
     principalId: string,
@@ -178,7 +124,6 @@ function createUserStore() {
           );
 
           let dto: UpdateProfilePicture = {
-            principalId: principalId,
             profilePicture: [uint8Array],
             profilePictureExtension: extension,
           };
@@ -200,47 +145,20 @@ function createUserStore() {
     }
   }
 
-  async function addShot(dto: AddShot): Promise<void> {
-    return new UserService().addShot(dto);
+  async function isAdmin(): Promise<boolean> {
+    return new UserService().isAdmin();
   }
 
-  async function updateShot(dto: UpdateShot): Promise<void> {
-    return new UserService().updateShot(dto);
-  }
-
-  async function deleteShot(dto: DeleteShot): Promise<void> {
-    return new UserService().deleteShot(dto);
-  }
-
-  async function removeUserGolfCourse(
-    dto: RemoveUserGolfCourse,
-  ): Promise<void> {
-    return new UserService().removeUserGolfCourse(dto);
-  }
 
   return {
     subscribe,
     sync,
     cacheProfile,
     getProfile,
-    getBuzz,
-    getUpcomingGames,
-    getFriends,
-    isUsernameAvailable,
-    getShotAverages,
-    getUserFavouriteCourses,
-    getClubShots,
     createUser,
     updateUsername,
-    updateHandicap,
-    updateFirstName,
-    updateLastName,
-    updateHomeCourse,
     updateProfilePicture,
-    addShot,
-    updateShot,
-    deleteShot,
-    removeUserGolfCourse,
+    isAdmin,
   };
 }
 

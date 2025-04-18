@@ -2,9 +2,7 @@
     import FullScreenSpinner from '$lib/components/shared/full-screen-spinner.svelte';
     
     import {onMount, type  Snippet } from 'svelte';
-    import { authStore } from '$lib/stores/auth-store';
-    import { displayAndCleanLogoutMsg } from '$lib/services/auth.services';
-    import { get } from 'svelte/store';
+    import { userStore } from '$lib/stores/user-store';
     import { goto } from '$app/navigation';
 
     let isLoading = $state(false);
@@ -18,7 +16,10 @@
     onMount(async () => {
         isLoading = true;
         try{
-            //TODO: check if user is admin
+            const isAdmin = await userStore.isAdmin();
+            if (!isAdmin) {
+                goto('/');
+            }
         } catch (error) {
             console.error(error);
         } finally {
