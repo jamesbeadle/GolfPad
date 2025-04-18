@@ -114,7 +114,7 @@ actor Self {
     return userManager.listPredictions(principalId, dto);
   };
 
-  public shared query ({ caller }) func getScorecard(dto: UserQueries.GetScorecard) : async Result.Result<UserQueries.Scorecard, Enums.Error> {
+  public shared query ({ caller }) func getScorecard(dto: UserQueries.GetScorecard) : async Result.Result<UserQueries.Prediction, Enums.Error> {
     assert not Principal.isAnonymous(caller);
     return userManager.getScorecard(dto);
   };
@@ -249,6 +249,8 @@ actor Self {
     let principalId = Principal.toText(caller);
     assert isAdmin(principalId);
 
+    userManager.calculateScorecards();
+
     let tournament = tournamentManager.getTournamentInstance({tournamentId = dto.tournamentId; year = dto.year});
 
 
@@ -282,7 +284,7 @@ actor Self {
   
   /* ----- Private Functions ----- */
 
-  private func isAdmin(principalId: Text) : Bool {
+  public func isAdmin(principalId: Text) : Bool {
     let foundPrincipalId = Array.find(Environment.ADMIN_PRINCIPAL_IDS, func(entry: Ids.PrincipalId) : Bool {
       entry == principalId
     });

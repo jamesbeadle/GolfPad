@@ -266,7 +266,6 @@ module {
                     let newLeaderboard: Types.FantasyLeaderboard = {
                         entries = Array.map<Types.Prediction, Types.FantasyLeaderboardEntry>(chunk, func(entry: Types.Prediction){
                             return {
-
                                 holes = Array.tabulate<Types.FantasyPredictionHole>(18, func(i: Nat) {
                                     
                                     let holeNumber = i + 1;
@@ -475,7 +474,7 @@ module {
             //populate all the golfer scores and shot count
             //sort all the chunks
             //using all the player information calculate the leaderboard
-            //add in leaderbaord positions and position text
+            //add in leaderboard positions and position text
         };
 
         public func getStableLeaderboards() : [Types.FantasyLeaderboard] {

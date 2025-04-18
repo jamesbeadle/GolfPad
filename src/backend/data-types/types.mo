@@ -16,8 +16,10 @@ module FantasyGolfTypes {
 
     public type Prediction = {
         principalId: Ids.PrincipalId;
+        createdOn: Int;
         username: Text;
         tournamentId: TournamentId;
+        year: Nat16;
         hole1GolferId: GolferId;
         hole2GolferId: GolferId;
         hole3GolferId: GolferId;
@@ -54,6 +56,8 @@ module FantasyGolfTypes {
         hole16Score: Nat8;
         hole17Score: Nat8;
         hole18Score: Nat8;
+        totalShots: Nat8;
+        totalScore: Int8;
     };
 
     public type Golfer = {
