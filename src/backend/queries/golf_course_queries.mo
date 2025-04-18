@@ -15,6 +15,13 @@ module GolfCourseQueries {
         founded: Int;
         countryId: Ids.CountryId;
         manager: Text;
+        holes: [GolfHole];
+    };
+
+    public type GolfHole = {
+        number: Nat8;
+        par: Nat8;
+        yardage: Nat16;
     };
 
     public type ListGolfCourses = {

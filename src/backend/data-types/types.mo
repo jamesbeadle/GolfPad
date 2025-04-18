@@ -157,6 +157,7 @@ module FantasyGolfTypes {
     };
 
     public type FantasyPredictionHole = {
+        hole: Nat8;
         golferId: GolferId;
         shotCount: Nat8;
         par: Nat8;
