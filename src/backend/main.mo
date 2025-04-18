@@ -50,9 +50,10 @@ actor Self {
 
   private stable var stable_profiles: [Types.Profile] = [];
   private stable var stable_fantasy_leaderboards: [Types.FantasyLeaderboard] = [];
-  private stable var predictions: [Types.Prediction] = [];
-  private stable var golfers: [Types.Golfer] = [];
-  private stable var golfCourses: [Types.GolfCourse] = [];
+  private stable var stable_predictions: [Types.Prediction] = [];
+  private stable var stable_golfers: [Types.Golfer] = [];
+  private stable var stable_golf_courses: [Types.GolfCourse] = [];
+  private stable var stable_tournaments: [Types.Tournament] = [];
   
   private stable var appStatus : BaseTypes.AppStatus = {
     onHold = false;
@@ -179,6 +180,12 @@ actor Self {
 
   /* ----- Tournament Queries and Commands ----- */
 
+  //GET TOURNAMENT
+
+  //LIST TOURNAMENTS
+
+  //CREATE TOURNAMENT
+
   public shared ({ caller }) func updateTournamentStage(dto: TournamentCommands.UpdateTournamentStage) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
@@ -239,10 +246,11 @@ actor Self {
 
   system func preupgrade() {
     stable_profiles := userManager.getStableProfiles();
-    predictions := userManager.getStablePredictions();
-    golfers := golferManager.getStableGolfers();
-    golfCourses := golfCourseManager.getStableGolfCourses();
+    stable_predictions := userManager.getStablePredictions();
+    stable_golfers := golferManager.getStableGolfers();
+    stable_golf_courses := golfCourseManager.getStableGolfCourses();
     stable_fantasy_leaderboards := fantasyLeaderboardManager.getStableLeaderboards();
+    stable_tournaments := tournamentManager.getStableTournaments();
   };
 
   system func postupgrade() {
@@ -252,10 +260,11 @@ actor Self {
 
   private func postUpgradeCallback() : async () {
     userManager.setStableProfiles(stable_profiles);
-    userManager.setStablePredictions(predictions);
-    golferManager.setStableGolfers(golfers);
-    golfCourseManager.setStableGolfCourses(golfCourses);
+    userManager.setStablePredictions(stable_predictions);
+    golferManager.setStableGolfers(stable_golfers);
+    golfCourseManager.setStableGolfCourses();
     fantasyLeaderboardManager.setStableLeaderboards(stable_fantasy_leaderboards);
+    tournamentManager.setStableTournaments(stable_tournaments);
   };
 
 

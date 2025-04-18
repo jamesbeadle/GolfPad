@@ -22,7 +22,7 @@ module {
       return tournaments;
     };
 
-    public func setStableTournaments(stable_tournaments : [Types.Tournament]) : () {
+    public func setStableTournaments(stable_tournaments : [Types.Tournament]) {
       tournaments := stable_tournaments;
     };
 
