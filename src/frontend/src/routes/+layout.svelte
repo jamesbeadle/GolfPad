@@ -13,6 +13,7 @@
   import LayoutController from "$lib/components/shared/layout-controller.svelte";
   import FullScreenSpinner from "../lib/components/shared/full-screen-spinner.svelte";
   import Toasts from "$lib/components/toasts/toasts.svelte";
+  import PortalHost from 'svelte-portal';
   import "../app.css";
 
   interface Props { children: Snippet }
@@ -68,5 +69,6 @@
       </div>
     </LayoutController>
     <Toasts />
+    <PortalHost />
   </div>
 {/if}
