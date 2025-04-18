@@ -84,13 +84,15 @@ module FantasyGolfTypes {
     public type Tournament = {
         id: TournamentId;
         name: Text;
-        tournamentResults: [TournamentResult];
+        tournamentResults: [TournamentInstance];
         populated: Bool;
     };
 
-    public type TournamentResult = {
+    public type TournamentInstance = {
         courseId: GolfCourseId;
         year: Nat16;
+        startDate: Int;
+        endDate: Int;
         leaderboard: TournamentLeaderboard;
     };
 

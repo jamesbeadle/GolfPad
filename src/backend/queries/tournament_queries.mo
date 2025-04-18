@@ -2,11 +2,11 @@ import Types "../data-types/types";
 module TournamentQueries {
     
     public type GetTournament = {
-        id: Types.TournamentId;
+        tournamentId: Types.TournamentId;
     };
 
     public type Tournament = {
-        id: Types.TournamentId;
+        tournamentId: Types.TournamentId;
     };
 
     public type ListTournaments = {
@@ -20,7 +20,8 @@ module TournamentQueries {
     };
 
     public type TournamentSummary = {
-        
+        tournamentId: Types.TournamentId;
+        name: Text;
     };
     
 }
