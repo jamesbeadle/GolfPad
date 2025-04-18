@@ -12,6 +12,7 @@ import Timer "mo:base/Timer";
 import Array "mo:base/Array";
 import Iter "mo:base/Iter";
 
+
 /* ----- Queries ----- */
 
 import UserQueries "queries/user_queries";
@@ -61,6 +62,7 @@ actor Self {
     onHold = false;
     version = "0.0.1";
   };
+  
 
   /* ----- Manager Initialisation with Transient Canister Variables ----- */ 
 
