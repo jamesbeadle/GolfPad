@@ -141,9 +141,17 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
-    //validate if the prediction can go in
+    //validate if the prediction can go in 
 
-    return userManager.submitPrediction(principalId, dto);  
+    let user = userManager.getProfile(principalId);
+    switch(user){
+      case (#ok foundUser){
+        return userManager.submitPrediction(principalId, foundUser.username, dto);  
+      };
+      case (#err error){
+        return #err(error);
+      }
+    }
   };
 
   public shared ({ caller }) func swapGolfer(dto: UserCommands.SwapGolfer) : async Result.Result<(), Enums.Error> {
@@ -329,7 +337,6 @@ actor Self {
     ignore Timer.setTimer<system>(#nanoseconds(Int.abs(1)), postUpgradeCallback);
   };
   
-
   private func postUpgradeCallback() : async () {
     userManager.setStableProfiles(stable_profiles);
     userManager.setStablePredictions(stable_predictions);

@@ -16,6 +16,7 @@ module UserCommands {
 
     public type SubmitPrediction = {
         tournamentId: Types.TournamentId;
+        year: Nat16;
         hole1GolferId: Types.GolferId;
         hole2GolferId: Types.GolferId;
         hole3GolferId: Types.GolferId;

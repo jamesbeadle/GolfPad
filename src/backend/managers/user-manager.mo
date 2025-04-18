@@ -177,12 +177,7 @@ module {
             if(entry.principalId == principalId){
               return updatedProfile;
             };
-            return {
-              joinedOn = entry.joinedOn;
-              principalId = entry.principalId;
-              profilePicture = entry.profilePicture;
-              username = entry.username;
-            };
+            return entry;
           });
 
           return #ok();
@@ -194,11 +189,143 @@ module {
     };
 
     public func updateUsername(principalId: Ids.PrincipalId, dto: UserCommands.UpdateUsername) : Result.Result<(), Enums.Error> {
-      return #err(#NotFound);
+      let existingProfile = Array.find(profiles, func(profile: Types.Profile) : Bool {
+        profile.principalId == principalId;
+      });
+      switch(existingProfile) {
+        case(?foundProfile) { 
+          
+          let updatedProfile: Types.Profile = {
+            joinedOn = foundProfile.joinedOn;
+            principalId = foundProfile.principalId;
+            profilePicture = foundProfile.profilePicture;
+            username = dto.username;
+          };
+
+          profiles := Array.map<Types.Profile, Types.Profile>(profiles, func(entry: Types.Profile){
+            if(entry.principalId == principalId){
+              return updatedProfile;
+            };
+            return entry;
+          });
+
+          return #ok();
+        };
+        case(null) {
+          return #err(#NotFound);   
+        };
+      };
     };
 
-    public func submitPrediction(principalId: Ids.PrincipalId, dto: UserCommands.SubmitPrediction) : Result.Result<(), Enums.Error> {
-      return #err(#NotFound);
+    public func submitPrediction(principalId: Ids.PrincipalId, username: Text, dto: UserCommands.SubmitPrediction) : Result.Result<(), Enums.Error> {
+      let existingPrediction = Array.find(predictions, func(entry: Types.Prediction) : Bool {
+        entry.principalId == principalId
+      });
+      
+      switch(existingPrediction){
+        case (?foundPrediction){
+          predictions := Array.map<Types.Prediction, Types.Prediction>(predictions, func(entry: Types.Prediction){
+            if(entry.principalId == principalId){
+              return {
+                createdOn = foundPrediction.createdOn;
+                hole10GolferId = dto.hole10GolferId;
+                hole10Score = foundPrediction.hole10Score;
+                hole11GolferId = dto.hole11GolferId;
+                hole11Score = foundPrediction.hole11Score;
+                hole12GolferId = dto.hole12GolferId;
+                hole12Score = foundPrediction.hole12Score;
+                hole13GolferId = dto.hole13GolferId;
+                hole13Score = foundPrediction.hole13Score;
+                hole14GolferId = dto.hole14GolferId;
+                hole14Score = foundPrediction.hole14Score;
+                hole15GolferId = dto.hole15GolferId;
+                hole15Score = foundPrediction.hole15Score;
+                hole16GolferId = dto.hole16GolferId;
+                hole16Score = foundPrediction.hole16Score;
+                hole17GolferId = dto.hole17GolferId;
+                hole17Score = foundPrediction.hole17Score;
+                hole18GolferId = dto.hole18GolferId;
+                hole18Score = foundPrediction.hole18Score;
+                hole1GolferId = dto.hole1GolferId;
+                hole1Score = foundPrediction.hole1Score;
+                hole2GolferId = dto.hole2GolferId;
+                hole2Score = foundPrediction.hole2Score;
+                hole3GolferId = dto.hole3GolferId;
+                hole3Score = foundPrediction.hole3Score;
+                hole4GolferId = dto.hole4GolferId;
+                hole4Score = foundPrediction.hole4Score;
+                hole5GolferId = dto.hole5GolferId;
+                hole5Score = foundPrediction.hole5Score;
+                hole6GolferId = dto.hole6GolferId;
+                hole6Score = foundPrediction.hole6Score;
+                hole7GolferId = dto.hole7GolferId;
+                hole7Score = foundPrediction.hole7Score;
+                hole8GolferId = dto.hole8GolferId;
+                hole8Score = foundPrediction.hole8Score;
+                hole9GolferId = dto.hole9GolferId;
+                hole9Score = foundPrediction.hole9Score;
+                principalId = foundPrediction.principalId;
+                totalScore = foundPrediction.totalScore;
+                totalShots = foundPrediction.totalShots;
+                tournamentId = foundPrediction.tournamentId;
+                username = foundPrediction.username;
+                year = foundPrediction.year;
+              }
+            };
+            return entry;
+          });
+          //replace existing
+        };
+        case (null){
+          let newPrediction: Types.Prediction = {
+            createdOn = Time.now();
+            hole10GolferId = dto.hole10GolferId;
+            hole10Score = 0;
+            hole11GolferId = dto.hole11GolferId;
+            hole11Score = 0;
+            hole12GolferId = dto.hole12GolferId;
+            hole12Score = 0;
+            hole13GolferId = dto.hole13GolferId;
+            hole13Score = 0;
+            hole14GolferId = dto.hole14GolferId;
+            hole14Score = 0;
+            hole15GolferId = dto.hole15GolferId;
+            hole15Score = 0;
+            hole16GolferId = dto.hole16GolferId;
+            hole16Score = 0;
+            hole17GolferId = dto.hole17GolferId;
+            hole17Score = 0;
+            hole18GolferId = dto.hole18GolferId;
+            hole18Score = 0;
+            hole1GolferId = dto.hole1GolferId;
+            hole1Score = 0;
+            hole2GolferId = dto.hole2GolferId;
+            hole2Score = 0;
+            hole3GolferId = dto.hole3GolferId;
+            hole3Score = 0;
+            hole4GolferId = dto.hole4GolferId;
+            hole4Score = 0;
+            hole5GolferId = dto.hole5GolferId;
+            hole5Score = 0;
+            hole6GolferId = dto.hole6GolferId;
+            hole6Score = 0;
+            hole7GolferId = dto.hole7GolferId;
+            hole7Score = 0;
+            hole8GolferId = dto.hole8GolferId;
+            hole8Score = 0;
+            hole9GolferId = dto.hole9GolferId;
+            hole9Score = 0;
+            principalId = principalId;
+            totalScore = 0;
+            totalShots = 0;
+            tournamentId = dto.tournamentId;
+            username = username;
+            year = dto.year;
+          };
+        }
+      };
+
+      return #ok();
     };
 
     public func swapGolfer(principalId: Ids.PrincipalId, dto: UserCommands.SwapGolfer) : Result.Result<(), Enums.Error> {
