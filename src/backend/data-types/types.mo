@@ -16,6 +16,7 @@ module FantasyGolfTypes {
 
     public type Prediction = {
         principalId: Ids.PrincipalId;
+        username: Text;
         tournamentId: TournamentId;
         hole1GolferId: GolferId;
         hole2GolferId: GolferId;
@@ -77,6 +78,7 @@ module FantasyGolfTypes {
 
     public type GolfHole = {
         holeNumber: Nat8;
+        par: Nat8;
         strokeIndex: Nat8;
         yardage: Nat16;
     };
@@ -88,7 +90,7 @@ module FantasyGolfTypes {
     };
 
     public type TournamentInstance = {
-        courseId: GolfCourseId;
+        golfCourseId: GolfCourseId;
         year: Nat16;
         startDate: Int;
         endDate: Int;
@@ -151,6 +153,7 @@ module FantasyGolfTypes {
 
     public type FantasyLeaderboardEntry = {
         principalId: Ids.PrincipalId;
+        username: Text;
         score: Int8;
         shots: Nat8;
         holes: [FantasyPredictionHole];

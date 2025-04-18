@@ -249,13 +249,34 @@ actor Self {
     let principalId = Principal.toText(caller);
     assert isAdmin(principalId);
 
-    let isPopulated = tournamentManager.isPopulated(dto.tournamentId);
-    if(not isPopulated){
-      transferLeaderboardChunks(dto.tournamentId, dto.year);
-    };
+    let tournament = tournamentManager.getTournamentInstance({tournamentId = dto.tournamentId; year = dto.year});
 
-    fantasyLeaderboardManager.calculateLeaderboard(dto.tournamentId);
-    return #ok();
+
+    switch(tournament){
+      case (#ok foundTournament){
+
+        let golfCourse = golfCourseManager.getGolfCourse({id = foundTournament.golfCourseId});
+
+        switch(golfCourse) {
+          case(#ok foundGolfCourse) { 
+            if(not foundTournament.populated){
+              transferLeaderboardChunks(dto.tournamentId, dto.year, foundGolfCourse);
+            };
+
+            fantasyLeaderboardManager.calculateLeaderboard(dto.tournamentId);
+            return #ok();
+           };
+          case(_) {
+            return #err(#NotFound);
+          };
+        };
+        
+        
+      };
+      case (_){
+        return #err(#NotFound);
+      }
+    };
   };
 
   
@@ -275,7 +296,7 @@ actor Self {
     };
   };
 
-  private func transferLeaderboardChunks(tournamentId: Types.TournamentId, year: Nat16) {
+  private func transferLeaderboardChunks(tournamentId: Types.TournamentId, year: Nat16, golfCourse: GolfCourseQueries.GolfCourse) {
     let totalEntries: Nat = userManager.getTotalLeaderboardEntries(tournamentId);
     var totalChunks = totalEntries / Environment.ENTRY_TRANSFER_LIMIT;
     let remainder = totalEntries % Environment.ENTRY_TRANSFER_LIMIT; 
@@ -284,7 +305,7 @@ actor Self {
 
     for(chunk in Iter.range(0, totalChunks - 1)){
       let leaderboardChunk = userManager.getLeaderboardChunk(tournamentId, chunk);
-      fantasyLeaderboardManager.addChunkToLeaderboard(tournamentId, leaderboardChunk);
+      fantasyLeaderboardManager.addChunkToLeaderboard(tournamentId, leaderboardChunk, golfCourse);
     };  
     
     tournamentManager.setPopulated(tournamentId, year);

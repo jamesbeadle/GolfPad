@@ -1,6 +1,9 @@
 export const idlFactory = ({ IDL }) => {
   const TournamentId = IDL.Nat16;
-  const CalculateLeaderboard = IDL.Record({ tournamentId: TournamentId });
+  const CalculateLeaderboard = IDL.Record({
+    year: IDL.Nat16,
+    tournamentId: TournamentId,
+  });
   const Error = IDL.Variant({
     InvalidProfilePicture: IDL.Null,
     DecodeError: IDL.Null,
@@ -49,19 +52,21 @@ export const idlFactory = ({ IDL }) => {
     username: IDL.Text,
     profilePicture: IDL.Opt(IDL.Vec(IDL.Nat8)),
   });
-  const CreateTournament = IDL.Record({
-    endDate: IDL.Int,
-    golfCourseId: IDL.Int,
-    name: IDL.Text,
-    startDate: IDL.Int,
-  });
+  const CreateTournament = IDL.Record({ name: IDL.Text });
   const AppStatus = IDL.Record({ version: IDL.Text, onHold: IDL.Bool });
   const Result_12 = IDL.Variant({ ok: AppStatus, err: Error });
   const GolfCourseId = IDL.Nat16;
   const GetGolfCourse = IDL.Record({ id: GolfCourseId });
+  const GolfHole__1 = IDL.Record({
+    par: IDL.Nat8,
+    yardage: IDL.Nat16,
+    strokeIndex: IDL.Nat8,
+    holeNumber: IDL.Nat8,
+  });
   const GolfCourse = IDL.Record({
     id: GolfCourseId,
     manager: IDL.Text,
+    holes: IDL.Vec(GolfHole__1),
     totalHoles: IDL.Nat8,
     name: IDL.Text,
     countryId: CountryId,
@@ -92,10 +97,10 @@ export const idlFactory = ({ IDL }) => {
   });
   const PrincipalId = IDL.Text;
   const FantasyLeaderboardEntry = IDL.Record({
+    username: IDL.Text,
     holes: IDL.Vec(FantasyPredictionHole),
     score: IDL.Int8,
     shots: IDL.Nat8,
-    nationalityId: CountryId,
     principalId: PrincipalId,
   });
   const FantasyLeaderboard = IDL.Record({
@@ -118,8 +123,8 @@ export const idlFactory = ({ IDL }) => {
   const GetScorecard = IDL.Record({ principalId: PrincipalId });
   const Scorecard = IDL.Record({});
   const Result_6 = IDL.Variant({ ok: Scorecard, err: Error });
-  const GetTournament = IDL.Record({ id: TournamentId });
-  const Tournament = IDL.Record({ id: TournamentId });
+  const GetTournament = IDL.Record({ tournamentId: TournamentId });
+  const Tournament = IDL.Record({ tournamentId: TournamentId });
   const Result_5 = IDL.Variant({ ok: Tournament, err: Error });
   const ListGolfCourses = IDL.Record({ page: IDL.Nat });
   const GolfCourseSummary = IDL.Record({});
@@ -146,7 +151,10 @@ export const idlFactory = ({ IDL }) => {
   });
   const Result_2 = IDL.Variant({ ok: Predictions, err: Error });
   const ListTournaments = IDL.Record({ page: IDL.Nat });
-  const TournamentSummary = IDL.Record({});
+  const TournamentSummary = IDL.Record({
+    name: IDL.Text,
+    tournamentId: TournamentId,
+  });
   const Tournaments = IDL.Record({
     totalEntries: IDL.Nat,
     page: IDL.Nat,
@@ -214,6 +222,7 @@ export const idlFactory = ({ IDL }) => {
     NotStarted: IDL.Null,
   });
   const UpdateTournamentStage = IDL.Record({
+    year: IDL.Nat16,
     stage: TournamentStage,
     tournamentId: TournamentId,
   });

@@ -7,6 +7,7 @@ export interface AppStatus {
   onHold: boolean;
 }
 export interface CalculateLeaderboard {
+  year: number;
   tournamentId: TournamentId;
 }
 export type CountryId = number;
@@ -27,10 +28,7 @@ export interface CreateProfile {
   profilePicture: [] | [Uint8Array | number[]];
 }
 export interface CreateTournament {
-  endDate: bigint;
-  golfCourseId: bigint;
   name: string;
-  startDate: bigint;
 }
 export type Error =
   | { InvalidProfilePicture: null }
@@ -62,10 +60,10 @@ export interface FantasyLeaderboard {
   tournamentId: TournamentId;
 }
 export interface FantasyLeaderboardEntry {
+  username: string;
   holes: Array<FantasyPredictionHole>;
   score: number;
   shots: number;
-  nationalityId: CountryId;
   principalId: PrincipalId;
 }
 export interface FantasyPredictionHole {
@@ -90,11 +88,12 @@ export interface GetScorecard {
   principalId: PrincipalId;
 }
 export interface GetTournament {
-  id: TournamentId;
+  tournamentId: TournamentId;
 }
 export interface GolfCourse {
   id: GolfCourseId;
   manager: string;
+  holes: Array<GolfHole__1>;
   totalHoles: number;
   name: string;
   countryId: CountryId;
@@ -110,6 +109,12 @@ export interface GolfCourses {
   entries: Array<GolfCourseSummary>;
 }
 export interface GolfHole {
+  par: number;
+  yardage: number;
+  strokeIndex: number;
+  holeNumber: number;
+}
+export interface GolfHole__1 {
   par: number;
   yardage: number;
   strokeIndex: number;
@@ -197,7 +202,7 @@ export interface SwapGolfer {
   removedGolferHole: number;
 }
 export interface Tournament {
-  id: TournamentId;
+  tournamentId: TournamentId;
 }
 export type TournamentId = number;
 export type TournamentStage =
@@ -210,7 +215,10 @@ export type TournamentStage =
   | { Round1Complete: null }
   | { Completed: null }
   | { NotStarted: null };
-export type TournamentSummary = {};
+export interface TournamentSummary {
+  name: string;
+  tournamentId: TournamentId;
+}
 export interface Tournaments {
   totalEntries: bigint;
   page: bigint;
@@ -238,6 +246,7 @@ export interface UpdateProfilePicture {
   profilePicture: [] | [Uint8Array | number[]];
 }
 export interface UpdateTournamentStage {
+  year: number;
   stage: TournamentStage;
   tournamentId: TournamentId;
 }

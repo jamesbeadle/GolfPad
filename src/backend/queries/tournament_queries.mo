@@ -7,6 +7,20 @@ module TournamentQueries {
 
     public type Tournament = {
         tournamentId: Types.TournamentId;
+
+
+    };
+    
+    public type GetTournamentInstance = {
+        tournamentId: Types.TournamentId;
+        year: Nat16;
+    };
+
+    public type TournamentInstance = {
+        tournamentId: Types.TournamentId;
+        year: Nat16;
+        populated: Bool;
+        golfCourseId: Types.GolfCourseId;
     };
 
     public type ListTournaments = {
