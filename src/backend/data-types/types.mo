@@ -77,6 +77,7 @@ module FantasyGolfTypes {
 
     public type GolfHole = {
         holeNumber: Nat8;
+        par: Nat8;
         strokeIndex: Nat8;
         yardage: Nat16;
     };
@@ -88,7 +89,7 @@ module FantasyGolfTypes {
     };
 
     public type TournamentInstance = {
-        courseId: GolfCourseId;
+        golfCourseId: GolfCourseId;
         year: Nat16;
         startDate: Int;
         endDate: Int;

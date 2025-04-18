@@ -19,8 +19,9 @@ module GolfCourseQueries {
     };
 
     public type GolfHole = {
-        number: Nat8;
+        holeNumber: Nat8;
         par: Nat8;
+        strokeIndex: Nat8;
         yardage: Nat16;
     };
 

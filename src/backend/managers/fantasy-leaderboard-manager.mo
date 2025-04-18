@@ -59,7 +59,7 @@ module {
                                 let holeNumber = i + 1;
                                 
                                 let hole = Array.find(golfCourse.holes, func(holeEntry: GolfCourseQueries.GolfHole) : Bool { 
-                                    return holeEntry.number == Nat8.fromNat(holeNumber); 
+                                    return holeEntry.holeNumber == Nat8.fromNat(holeNumber); 
                                 });
                                 
                                 let holePar: Nat8 = switch (hole) {
@@ -271,7 +271,7 @@ module {
                                     let holeNumber = i + 1;
                                     
                                     let hole = Array.find(golfCourse.holes, func(holeEntry: GolfCourseQueries.GolfHole) : Bool { 
-                                        return holeEntry.number == Nat8.fromNat(holeNumber); 
+                                        return holeEntry.holeNumber == Nat8.fromNat(holeNumber); 
                                     });
                                     
                                     let holePar: Nat8 = switch (hole) {
