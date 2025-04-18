@@ -85,6 +85,7 @@ module FantasyGolfTypes {
         id: TournamentId;
         name: Text;
         tournamentResults: [TournamentResult];
+        populated: Bool;
     };
 
     public type TournamentResult = {
@@ -147,7 +148,6 @@ module FantasyGolfTypes {
 
     public type FantasyLeaderboardEntry = {
         principalId: Ids.PrincipalId;
-        nationalityId: Ids.CountryId;
         score: Int8;
         shots: Nat8;
         holes: [FantasyPredictionHole];

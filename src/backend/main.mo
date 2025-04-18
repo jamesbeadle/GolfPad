@@ -249,31 +249,13 @@ actor Self {
     let principalId = Principal.toText(caller);
     assert isAdmin(principalId);
 
-    let tournamentStatus = tournamentManager.getTournamentStatus();
-    switch(tournamentStatus){
-      case (#ok foundTournamentStatus){
-        if(foundTournamentStatus == #Completed){
-          
-          let totalEntries: Nat = userManager.getTotalLeaderboardEntries(dto.tournamentId);
-          var totalChunks = totalEntries / Environment.ENTRY_TRANSFER_LIMIT;
-          let remainder = totalEntries % Environment.ENTRY_TRANSFER_LIMIT; 
-          
-          if (remainder > 0) { totalChunks += 1 };
-
-          for(chunk in Iter.range(0, totalChunks - 1)){
-            let leaderboardChunk = userManager.getLeaderboardChunk(dto.tournamentId, chunk);
-            fantasyLeaderboardManager.addChunkToLeaderboard(dto.tournamentId, leaderboardChunk);
-          };  
-
-          fantasyLeaderboardManager.calculateLeaderboard(dto.tournamentId);
-          return #ok();
-        };
-        return #err(#NotAllowed);
-      };
-      case (#err error){
-        return #err(error);
-      }
+    let isPopulated = tournamentManager.isPopulated(dto.tournamentId);
+    if(not isPopulated){
+      transferLeaderboardChunks(dto.tournamentId);
     };
+
+    fantasyLeaderboardManager.calculateLeaderboard(dto.tournamentId);
+    return #ok();
   };
 
   
@@ -291,6 +273,21 @@ actor Self {
         return false; 
       }
     };
+  };
+
+  private func transferLeaderboardChunks(tournamentId: Types.TournamentId) {
+    let totalEntries: Nat = userManager.getTotalLeaderboardEntries(tournamentId);
+    var totalChunks = totalEntries / Environment.ENTRY_TRANSFER_LIMIT;
+    let remainder = totalEntries % Environment.ENTRY_TRANSFER_LIMIT; 
+    
+    if (remainder > 0) { totalChunks += 1 };
+
+    for(chunk in Iter.range(0, totalChunks - 1)){
+      let leaderboardChunk = userManager.getLeaderboardChunk(tournamentId, chunk);
+      fantasyLeaderboardManager.addChunkToLeaderboard(tournamentId, leaderboardChunk);
+    };  
+    
+    tournamentManager.setPopulated(tournamentId);
   };
   
 

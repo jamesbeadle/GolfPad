@@ -17,7 +17,6 @@ module FantasyLeaderboardQueries {
 
     public type FantasyLeaderboardEntry = {
         principalId: Ids.PrincipalId;
-        nationalityId: Ids.CountryId;
         score: Int8;
         shots: Nat8;
         holes: [FantasyPredictionHole];

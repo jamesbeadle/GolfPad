@@ -2,6 +2,7 @@
 import Result "mo:base/Result";
 import Array "mo:base/Array";
 import List "mo:base/List";
+import Buffer "mo:base/Buffer";
 import Enums "mo:waterway-mops/Enums";
 import Types "../data-types/types";
 import FantasyLeaderboardQueries "../queries/fantasy_leaderboard_queries";
@@ -39,10 +40,40 @@ module {
         };
 
         public func addChunkToLeaderboard(tournamentId: Types.TournamentId, chunk: [Types.Prediction]) {
+            
+            let existingLeaderboard = Array.find<Types.FantasyLeaderboard>(leaderboards, func(entry: Types.FantasyLeaderboard) : Bool {
+                entry.tournamentId == tournamentId;
+            });
+
+            switch(existingLeaderboard){
+                case(?foundLeaderboard){
+                    let entriesBuffer = Buffer.fromArray<Types.FantasyLeaderboardEntry>(foundLeaderboard.entries);
+                    /*
+                    let mappedEntries = Array.map<Types.Prediction, Types.FantasyLeaderboardEntry>(chunk, func(entry: Types.Prediction){
+                        return {
+                            holes = [
+                                {
+                                    
+                                }
+                            ];
+                            principalId = entry.principalId;
+                            score : Int8;
+                            shots : Nat8
+
+                        };
+                    });
+                    */
+                };
+                case (null){
+                    //create new
+                }
+            };
+            
             //Based on a batch number transfer the data into here
         };
 
         public func calculateLeaderboard(tournamentId: Types.TournamentId) {
+            //sort all the chunks
             //using all the player information calculate the leaderboard
         };
 

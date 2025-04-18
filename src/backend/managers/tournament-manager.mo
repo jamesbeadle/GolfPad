@@ -27,9 +27,12 @@ module {
       return #err(#NotFound);
     };
 
-    public func getTournamentStatus() : Result.Result<Types.TournamentStage, Enums.Error> {
-      //find and get status
-      return #err(#NotFound);
+    public func setPopulated(tournamentId: Types.TournamentId) {
+      //TODO
+    };
+
+    public func isPopulated(tournamentId: Types.TournamentId) : Bool {
+      return false;
     };
 
     public func getStableTournaments() : [Types.Tournament] {
