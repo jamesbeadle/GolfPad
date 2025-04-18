@@ -191,7 +191,7 @@
     </div>
 
 
-    <button onclick={createProfile} disabled={!agreedToTerms} class="brand-button">
+    <button onclick={createProfile} disabled={isSubmitDisabled} class="brand-button">
       Create Profile
     </button>
     {/if}
