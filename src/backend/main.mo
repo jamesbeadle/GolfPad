@@ -262,7 +262,7 @@ actor Self {
     userManager.setStableProfiles(stable_profiles);
     userManager.setStablePredictions(stable_predictions);
     golferManager.setStableGolfers(stable_golfers);
-    golfCourseManager.setStableGolfCourses();
+    golfCourseManager.setStableGolfCourses(stable_golf_courses);
     fantasyLeaderboardManager.setStableLeaderboards(stable_fantasy_leaderboards);
     tournamentManager.setStableTournaments(stable_tournaments);
   };
