@@ -75,6 +75,7 @@ module {
         public func calculateLeaderboard(tournamentId: Types.TournamentId) {
             //sort all the chunks
             //using all the player information calculate the leaderboard
+            //add in leaderbaord positions and position text
         };
 
         public func getStableLeaderboards() : [Types.FantasyLeaderboard] {

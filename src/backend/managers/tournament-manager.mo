@@ -69,23 +69,155 @@ module {
       tournamentBuffer.add({
         id = nextId;
         name = dto.name;
-        populated = false;
-        tournamentResults = [];
+        instances = [];
       });
 
-      return #err(#NotFound);
+      return #ok();
+    };
+
+    public func createTournamentInstance(dto: TournamentCommands.CreateTournamentInstance) : Result.Result<(), Enums.Error> {
+      
+      let tournament = Array.find(tournaments, func(entry: Types.Tournament) : Bool {
+        entry.id == dto.tournamentId
+      });
+      switch(tournament){
+        case (?foundTournament){
+          
+          let existingInstance = Array.find<Types.TournamentInstance>(foundTournament.instances, func(entry: Types.TournamentInstance) : Bool {
+            entry.year == dto.year;
+          });
+
+          switch(existingInstance){
+            case (?_){
+              return #err(#AlreadyExists);
+            };
+            case (null){
+              let instancesBuffer = Buffer.fromArray<Types.TournamentInstance>(foundTournament.instances);
+              instancesBuffer.add({
+                courseId = dto.golfCourseId;
+                startDate = dto.startDate;
+                endDate = dto.endDate;
+                leaderboard = {
+                  entries = [];
+                  totalEntries = 0;
+                };
+                populated = false;
+                stage = #NotStarted;
+                year = dto.year;
+              });
+              //set the tournament instance
+
+              return #ok();
+            }
+          }
+        };
+        case (null){
+          return #err(#NotFound); 
+        }
+      };
     };
 
     public func updateTournamentStage(dto: TournamentCommands.UpdateTournamentStage) : Result.Result<(), Enums.Error> {
-      return #err(#NotFound);
+      let tournament = Array.find(tournaments, func(entry: Types.Tournament) : Bool {
+        entry.id == dto.tournamentId
+      });
+      switch(tournament){
+        case (?_){
+          
+          tournaments := Array.map<Types.Tournament, Types.Tournament>(tournaments, func(entry: Types.Tournament){
+            if(entry.id == dto.tournamentId){
+              return {
+                id = entry.id;
+                name = entry.name;
+                instances = Array.map<Types.TournamentInstance, Types.TournamentInstance>(entry.instances, func(instanceEntry: Types.TournamentInstance){
+                  if(instanceEntry.year == dto.year){
+                  
+                    return {
+                      courseId = instanceEntry.courseId;
+                      endDate = instanceEntry.endDate;
+                      leaderboard = instanceEntry.leaderboard;
+                      stage = dto.stage;
+                      startDate = instanceEntry.startDate;
+                      year = instanceEntry.year;
+                      populated = instanceEntry.populated;
+                    }
+                    
+                  };
+                  return instanceEntry;
+                });
+              }
+
+            };
+            return entry;
+          });
+          return #ok();
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
     };
 
-    public func setPopulated(tournamentId: Types.TournamentId) {
-      //TODO
+    public func setPopulated(tournamentId: Types.TournamentId, year: Nat16) {
+      let tournament = Array.find(tournaments, func(entry: Types.Tournament) : Bool {
+        entry.id == tournamentId
+      });
+      switch(tournament){
+        case (?_){
+          
+          tournaments := Array.map<Types.Tournament, Types.Tournament>(tournaments, func(entry: Types.Tournament){
+            if(entry.id == tournamentId){
+              return {
+                id = entry.id;
+                name = entry.name;
+                instances = Array.map<Types.TournamentInstance, Types.TournamentInstance>(entry.instances, func(instanceEntry: Types.TournamentInstance){
+                  if(instanceEntry.year == year){
+                  
+                    return {
+                      courseId = instanceEntry.courseId;
+                      endDate = instanceEntry.endDate;
+                      leaderboard = instanceEntry.leaderboard;
+                      stage = instanceEntry.stage;
+                      startDate = instanceEntry.startDate;
+                      year = instanceEntry.year;
+                      populated = true;
+                    }
+                    
+                  };
+                  return instanceEntry;
+                });
+              }
+
+            };
+            return entry;
+          });
+        };
+        case (null){};
+      }
     };
 
     public func isPopulated(tournamentId: Types.TournamentId) : Bool {
-      return false;
+      let tournament = Array.find(tournaments, func(entry: Types.Tournament) : Bool {
+        entry.id == tournamentId
+      });
+      switch(tournament){
+        case (?foundTournament){
+          let instance = Array.find(foundTournament.instances, func(entry: Types.TournamentInstance) : Bool {
+            entry.year == tournamentId
+          });
+          switch(instance){
+            case (?foundInstance){
+              return foundInstance.populated;
+            };
+            case(null){
+              return false;
+            }
+          }
+        };
+        case(null){
+          return false;
+        };
+      };
     };
 
     public func getStableTournaments() : [Types.Tournament] {

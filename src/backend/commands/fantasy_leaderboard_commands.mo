@@ -3,5 +3,6 @@ module GolfCourseCommands {
 
     public type CalculateLeaderboard = {
         tournamentId: Types.TournamentId;
+        year: Nat16;
     };
 }

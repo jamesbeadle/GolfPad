@@ -84,8 +84,7 @@ module FantasyGolfTypes {
     public type Tournament = {
         id: TournamentId;
         name: Text;
-        tournamentResults: [TournamentInstance];
-        populated: Bool;
+        instances: [TournamentInstance];
     };
 
     public type TournamentInstance = {
@@ -94,6 +93,8 @@ module FantasyGolfTypes {
         startDate: Int;
         endDate: Int;
         leaderboard: TournamentLeaderboard;
+        stage: TournamentStage;
+        populated: Bool;
     };
 
     public type TournamentLeaderboard = {

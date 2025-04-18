@@ -251,7 +251,7 @@ actor Self {
 
     let isPopulated = tournamentManager.isPopulated(dto.tournamentId);
     if(not isPopulated){
-      transferLeaderboardChunks(dto.tournamentId);
+      transferLeaderboardChunks(dto.tournamentId, dto.year);
     };
 
     fantasyLeaderboardManager.calculateLeaderboard(dto.tournamentId);
@@ -275,7 +275,7 @@ actor Self {
     };
   };
 
-  private func transferLeaderboardChunks(tournamentId: Types.TournamentId) {
+  private func transferLeaderboardChunks(tournamentId: Types.TournamentId, year: Nat16) {
     let totalEntries: Nat = userManager.getTotalLeaderboardEntries(tournamentId);
     var totalChunks = totalEntries / Environment.ENTRY_TRANSFER_LIMIT;
     let remainder = totalEntries % Environment.ENTRY_TRANSFER_LIMIT; 
@@ -287,7 +287,7 @@ actor Self {
       fantasyLeaderboardManager.addChunkToLeaderboard(tournamentId, leaderboardChunk);
     };  
     
-    tournamentManager.setPopulated(tournamentId);
+    tournamentManager.setPopulated(tournamentId, year);
   };
   
 
