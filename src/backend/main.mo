@@ -43,6 +43,7 @@ import Types "./data-types/types";
 import Environment "environment";
 import FantasyLeaderboardQueries "queries/fantasy_leaderboard_queries";
 import MopsBaseCommands "mops_base_commands";
+import TournamentQueries "queries/tournament_queries";
 
 
 actor Self {
@@ -217,11 +218,22 @@ actor Self {
 
   /* ----- Tournament Queries and Commands ----- */
 
-  //GET TOURNAMENT
+  public shared query ({ caller }) func getTournament(dto: TournamentQueries.GetTournament) : async Result.Result<TournamentQueries.Tournament, Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    return tournamentManager.getTournament(dto);
+  };
+  
+  public shared query ({ caller }) func listTournaments(dto: TournamentQueries.ListTournaments) : async Result.Result<TournamentQueries.Tournaments, Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    return tournamentManager.listTournaments(dto);
+  };
 
-  //LIST TOURNAMENTS
-
-  //CREATE TOURNAMENT
+  public shared ({ caller }) func createTournament(dto: TournamentCommands.CreateTournament) : async Result.Result<(), Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert isAdmin(principalId);
+    return tournamentManager.createTournament(dto);  
+  };
 
   public shared ({ caller }) func updateTournamentStage(dto: TournamentCommands.UpdateTournamentStage) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
@@ -262,7 +274,6 @@ actor Self {
     };
   };
 
-
   
   /* ----- Private Functions ----- */
 
@@ -280,6 +291,8 @@ actor Self {
     };
   };
   
+
+  /* ----- Canister Lifecycle ----- */
 
   system func preupgrade() {
     stable_profiles := userManager.getStableProfiles();
