@@ -90,7 +90,6 @@ actor Self {
     };
 
     return #ok();
-
   };
 
 
@@ -158,9 +157,16 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
-    //validate if the swap can go ahead
+    //get the tournament
+
+    //get the round the change would be for
+
+    //check its a round a change can be made
+
+    //check that the user hasn't already done the swap for this round
+    var round: Nat8 = 0;
     
-    return userManager.swapGolfer(principalId, dto);  
+    return userManager.swapGolfer(principalId, dto, round);  
   };
   
 
@@ -260,7 +266,6 @@ actor Self {
     userManager.calculateScorecards();
 
     let tournament = tournamentManager.getTournamentInstance({tournamentId = dto.tournamentId; year = dto.year});
-
 
     switch(tournament){
       case (#ok foundTournament){

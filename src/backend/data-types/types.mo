@@ -58,6 +58,9 @@ module FantasyGolfTypes {
         hole18Score: Nat8;
         totalShots: Nat8;
         totalScore: Int8;
+        swap1Used: Bool;
+        swap2Used: Bool;
+        swap3Used: Bool;
     };
 
     public type Golfer = {
@@ -73,7 +76,7 @@ module FantasyGolfTypes {
         name: Text;
         holes: [GolfHole];
         par: Nat8;
-        yardages: Nat16; 
+        totalYardage: Nat16; 
         founded : Int;
         mainImage : ?Blob;
         bannerImage : ?Blob;

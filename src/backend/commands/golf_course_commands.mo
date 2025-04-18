@@ -1,10 +1,15 @@
 import Types "../data-types/types";
+import Ids "mo:waterway-mops/Ids";
 module GolfCourseCommands {
     public type CreateGolfCourse = {
         name: Text;
         holes: [GolfHole];
         yardage: Nat16;
         coursePar: Nat8;
+        countryId: Ids.CountryId;
+        founded: Int;
+        par: Nat8;
+        totalYardage: Nat16;
     };
 
     public type GolfHole = {

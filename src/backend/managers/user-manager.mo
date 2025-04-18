@@ -91,6 +91,9 @@ module {
             tournamentId = foundPrediction.tournamentId;
             username = foundPrediction.username;
             year = foundPrediction.year;
+            swap1Used = foundPrediction.swap1Used;
+            swap2Used = foundPrediction.swap2Used;
+            swap3Used = foundPrediction.swap3Used;
           })
         };
         case (null){ 
@@ -98,7 +101,6 @@ module {
         }
       };
     };
-
 
     public func listPredictions(principalId: Ids.PrincipalId, dto: UserQueries.ListPredictions) : Result.Result<UserQueries.Predictions, Enums.Error> {
 
@@ -270,11 +272,13 @@ module {
                 tournamentId = foundPrediction.tournamentId;
                 username = foundPrediction.username;
                 year = foundPrediction.year;
+                swap1Used = false;
+                swap2Used = false;
+                swap3Used = false;
               }
             };
             return entry;
           });
-          //replace existing
         };
         case (null){
           let newPrediction: Types.Prediction = {
@@ -321,15 +325,124 @@ module {
             tournamentId = dto.tournamentId;
             username = username;
             year = dto.year;
+            swap1Used = false;
+            swap2Used = false;
+            swap3Used = false;
           };
+          
+          let predictionBuffer = Buffer.fromArray<Types.Prediction>(predictions);
+          predictionBuffer.add(newPrediction);
+          predictions := Buffer.toArray<Types.Prediction>(predictionBuffer);
         }
       };
 
       return #ok();
     };
 
-    public func swapGolfer(principalId: Ids.PrincipalId, dto: UserCommands.SwapGolfer) : Result.Result<(), Enums.Error> {
-      return #err(#NotFound);
+    public func swapGolfer(principalId: Ids.PrincipalId, dto: UserCommands.SwapGolfer, round: Nat8) : Result.Result<(), Enums.Error> {
+      let existingPrediction = Array.find(predictions, func(entry: Types.Prediction) : Bool {
+        entry.principalId == principalId
+      });
+      
+      switch(existingPrediction){
+        case (?foundPrediction){
+          predictions := Array.map<Types.Prediction, Types.Prediction>(predictions, func(entry: Types.Prediction){
+            if(entry.principalId == principalId){
+
+              var swap1Used = entry.swap1Used;
+              var swap2Used = entry.swap2Used;
+              var swap3Used = entry.swap3Used;
+
+              switch(round){
+                case (1){
+                  swap1Used := true;
+                };
+                case (2){
+                  swap2Used := true;
+                };
+                case (3){
+                  swap3Used := true;
+                };
+                case _{}
+              };
+
+              var hole1GolferId = entry.hole1GolferId;
+              var hole2GolferId = entry.hole1GolferId;
+              var hole3GolferId = entry.hole1GolferId;
+              var hole4GolferId = entry.hole1GolferId;
+              var hole5GolferId = entry.hole1GolferId;
+              var hole6GolferId = entry.hole1GolferId;
+              var hole7GolferId = entry.hole1GolferId;
+              var hole8GolferId = entry.hole1GolferId;
+              var hole9GolferId = entry.hole1GolferId;
+              var hole10GolferId = entry.hole1GolferId;
+              var hole11GolferId = entry.hole1GolferId;
+              var hole12GolferId = entry.hole1GolferId;
+              var hole13GolferId = entry.hole1GolferId;
+              var hole14GolferId = entry.hole1GolferId;
+              var hole15GolferId = entry.hole1GolferId;
+              var hole16GolferId = entry.hole1GolferId;
+              var hole17GolferId = entry.hole1GolferId;
+              var hole18GolferId = entry.hole1GolferId;
+              
+              return {
+                createdOn = foundPrediction.createdOn;
+                hole10GolferId = hole10GolferId;
+                hole10Score = foundPrediction.hole10Score;
+                hole11GolferId = hole11GolferId;
+                hole11Score = foundPrediction.hole11Score;
+                hole12GolferId = hole12GolferId;
+                hole12Score = foundPrediction.hole12Score;
+                hole13GolferId = hole13GolferId;
+                hole13Score = foundPrediction.hole13Score;
+                hole14GolferId = hole14GolferId;
+                hole14Score = foundPrediction.hole14Score;
+                hole15GolferId = hole15GolferId;
+                hole15Score = foundPrediction.hole15Score;
+                hole16GolferId = hole16GolferId;
+                hole16Score = foundPrediction.hole16Score;
+                hole17GolferId = hole17GolferId;
+                hole17Score = foundPrediction.hole17Score;
+                hole18GolferId = hole18GolferId;
+                hole18Score = foundPrediction.hole18Score;
+                hole1GolferId = hole1GolferId;
+                hole1Score = foundPrediction.hole1Score;
+                hole2GolferId = hole2GolferId;
+                hole2Score = foundPrediction.hole2Score;
+                hole3GolferId = hole3GolferId;
+                hole3Score = foundPrediction.hole3Score;
+                hole4GolferId = hole4GolferId;
+                hole4Score = foundPrediction.hole4Score;
+                hole5GolferId = hole5GolferId;
+                hole5Score = foundPrediction.hole5Score;
+                hole6GolferId = hole6GolferId;
+                hole6Score = foundPrediction.hole6Score;
+                hole7GolferId = hole7GolferId;
+                hole7Score = foundPrediction.hole7Score;
+                hole8GolferId = hole8GolferId;
+                hole8Score = foundPrediction.hole8Score;
+                hole9GolferId = hole9GolferId;
+                hole9Score = foundPrediction.hole9Score;
+                principalId = foundPrediction.principalId;
+                totalScore = foundPrediction.totalScore;
+                totalShots = foundPrediction.totalShots;
+                tournamentId = foundPrediction.tournamentId;
+                username = foundPrediction.username;
+                year = foundPrediction.year;
+                swap1Used;
+                swap2Used;
+                swap3Used;
+              }
+            };
+            return entry;
+          });
+
+          return #ok();
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
     };
 
     public func calculateScorecards(){
@@ -344,6 +457,7 @@ module {
     };
 
     public func getLeaderboardChunk(tournamentId: Types.TournamentId, chunkIndex: Nat) : [Types.Prediction]{
+      // TODO
       return [];
     };
 

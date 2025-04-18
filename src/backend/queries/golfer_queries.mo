@@ -27,7 +27,11 @@ module GolferQueries {
     };
 
     public type GolferSummary = {
-        
+        id: Types.GolferId;
+        firstName: Text;
+        lastName: Text;
+        nationality: Ids.CountryId;
+        worldRanking: Nat16;
     };
     
 }

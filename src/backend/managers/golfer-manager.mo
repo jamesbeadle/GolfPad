@@ -1,10 +1,14 @@
 import Enums "mo:waterway-mops/Enums";
 import Result "mo:base/Result";
 import Array "mo:base/Array";
+import List "mo:base/List";
+import Order "mo:base/Order";
+import Buffer "mo:base/Buffer";
 import GolferQueries "../queries/golfer_queries";
 import GolferCommands "../commands/golfer_commands";
 
 import Types "../data-types/types";
+import Environment "../environment";
 module {
   public class GolferManager() {
 
@@ -25,20 +29,45 @@ module {
     };
 
     public func listGolfers(dto: GolferQueries.ListGolfers) : Result.Result<GolferQueries.Golfers, Enums.Error> {
+      let allEntries = List.fromArray(golfers);
+      let startIndex = dto.page * Environment.PAGINATION_ROW_COUNT;
+      let droppedEntries = List.drop<Types.Golfer>(allEntries, startIndex);
+      let paginatedEntires = List.take<Types.Golfer>(droppedEntries, Environment.PAGINATION_ROW_COUNT);
+      let mappedEntries = List.map<Types.Golfer, GolferQueries.GolferSummary>(paginatedEntires, func(entry: Types.Golfer){
+        return entry;
+      });
+
       return #ok({
-        entries = [];
-        page = 0;
-        totalEntries = 0;
+        entries = List.toArray<GolferQueries.GolferSummary>(mappedEntries);
+        page = dto.page;
+        totalEntries = List.size(allEntries);
       });
     };
 
     public func createGolfer(dto: GolferCommands.CreateGolfer) : Result.Result<(), Enums.Error> {
 
-      //validate
+      let sortedGolfers = Array.sort(golfers, func(a: Types.Golfer, b: Types.Golfer) : Order.Order {
+        if (a.id > b.id) { #less } 
+        else if (a.id < b.id) { #greater }
+        else { #equal }
+      });
 
-      //add
+      var nextId: Nat16 = 1;
 
-      return #err(#NotFound);
+      if(Array.size(sortedGolfers) > 0){
+        nextId := sortedGolfers[0].id + 1;
+      };
+
+      let golferBuffer = Buffer.fromArray<Types.Golfer>(sortedGolfers);
+      golferBuffer.add({
+        firstName = dto.firstName;
+        id = nextId;
+        lastName = dto.lastName;
+        nationality = dto.nationality;
+        worldRanking = dto.worldRanking;
+      });
+
+      return #ok();
     };  
 
     public func updateGolfer(dto: GolferCommands.UpdateGolfer) : Result.Result<(), Enums.Error> {
