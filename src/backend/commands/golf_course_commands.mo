@@ -20,10 +20,8 @@ module GolfCourseCommands {
     };
 
     public type UpdateGolfCourse = {
-        id: Types.GolfCourseId;
+        golfCourseId: Types.GolfCourseId;
         name: Text;
         holes: [GolfHole];
-        yardage: Nat16;
-        coursePar: Nat8;
     };
 }

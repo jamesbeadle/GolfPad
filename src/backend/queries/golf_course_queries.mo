@@ -9,12 +9,9 @@ module GolfCourseQueries {
     public type GolfCourse = {
         golfCourseId: Types.GolfCourseId;
         name: Text;
-        mainImage: ?Blob;
-        mainImageExtension: Text;
         totalHoles: Nat8;
         founded: Int;
         countryId: Ids.CountryId;
-        manager: Text;
         holes: [GolfHole];
     };
 
@@ -37,7 +34,10 @@ module GolfCourseQueries {
 
     public type GolfCourseSummary = {
         golfCourseId: Types.GolfCourseId;
-        
+        name: Text;
+        totalHoles: Nat8;
+        founded: Int;
+        countryId: Ids.CountryId;
     };
     
 }
