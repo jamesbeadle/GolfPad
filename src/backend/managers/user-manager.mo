@@ -10,6 +10,8 @@ import Buffer "mo:base/Buffer";
 import Iter "mo:base/Iter";
 import Nat8 "mo:base/Nat8";
 import Int8 "mo:base/Int8";
+import Nat "mo:base/Nat";
+import Int "mo:base/Int";
 import Enums "mo:waterway-mops/Enums";
 import Ids "mo:waterway-mops/Ids";
 import Environment "../environment";
@@ -613,9 +615,24 @@ module {
       return Array.size(leaderboardEntries);
     };
 
-    public func getLeaderboardChunk(tournamentId: Types.TournamentId, chunkIndex: Nat) : [Types.Prediction]{
-      // TODO
-      return [];
+    public func getLeaderboardChunk(tournamentId: Types.TournamentId, year: Nat16, chunkIndex: Nat) : [Types.Prediction] {
+      let tournamentPredictions = Array.filter<Types.Prediction>(predictions, func(entry: Types.Prediction) : Bool {
+        entry.tournamentId == tournamentId and entry.year == year
+      });
+      
+      let startIndex = chunkIndex * Environment.ENTRY_TRANSFER_LIMIT;
+      let endIndex = Nat.min(startIndex + Environment.ENTRY_TRANSFER_LIMIT, Array.size(tournamentPredictions));
+      
+      if (startIndex >= Array.size(tournamentPredictions)) {
+        return [];
+      };
+      
+      let chunkSizeInt = Int.sub(endIndex, startIndex);
+      let chunkSize = if (chunkSizeInt >= 0) { Int.abs(chunkSizeInt) } else { 0 };
+      
+      let chunk = Array.subArray(tournamentPredictions, startIndex, chunkSize);
+      
+      return chunk;
     };
 
     public func getStableProfiles() : [Types.Profile] {

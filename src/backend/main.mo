@@ -316,7 +316,7 @@ actor Self {
     if (remainder > 0) { totalChunks += 1 };
 
     for(chunk in Iter.range(0, totalChunks - 1)){
-      let leaderboardChunk = userManager.getLeaderboardChunk(tournamentId, chunk);
+      let leaderboardChunk = userManager.getLeaderboardChunk(tournamentId, year, chunk);
       fantasyLeaderboardManager.addChunkToLeaderboard(tournamentId, year, leaderboardChunk, golfCourse);
     };  
     

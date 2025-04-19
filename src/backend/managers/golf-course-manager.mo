@@ -79,11 +79,9 @@ module {
       let golfCourseBuffer = Buffer.fromArray<Types.GolfCourse>(golfCourses);
       golfCourseBuffer.add({
         id = nextId;
-        bannerImage = null;
         countryId = dto.countryId;
         founded = dto.founded;
         holes = dto.holes;
-        mainImage = null;
         name = dto.name;
         par = dto.par;
         totalYardage = dto.totalYardage;
