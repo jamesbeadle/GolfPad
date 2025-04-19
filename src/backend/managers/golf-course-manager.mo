@@ -16,7 +16,19 @@ module {
     private var golfCourses: [Types.GolfCourse] = [];
     
     public func getGolfCourse(dto: GolfCourseQueries.GetGolfCourse) : Result.Result<GolfCourseQueries.GolfCourse, Enums.Error> {
-      return #err(#NotFound);
+      let golfCourse = Array.find(golfCourses, func(entry: Types.GolfCourse) : Bool {
+        entry.id == dto.golfCourseId
+      });
+      switch(golfCourse){
+        case (?foundGolfCourse){
+          return #ok({
+            golfCourseId = foundGolfCourse.id;
+          });
+        };
+        case (null){
+          return #err(#NotFound); 
+        }
+      }
     };
 
     public func listGolfCourses(dto: GolfCourseQueries.ListGolfCourses) : Result.Result<GolfCourseQueries.GolfCourses, Enums.Error> {

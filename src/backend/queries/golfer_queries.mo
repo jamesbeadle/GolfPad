@@ -9,7 +9,7 @@ module GolferQueries {
     };
 
     public type Golfer = {
-        id: Types.GolferId;
+        golferId: Types.GolferId;
         firstName: Text;
         lastName: Text;
         nationality: Ids.CountryId;

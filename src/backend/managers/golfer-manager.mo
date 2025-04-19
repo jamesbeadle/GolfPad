@@ -20,7 +20,13 @@ module {
       });
       switch(golfer) {
         case(?foundGolfer) { 
-          return #ok(foundGolfer);
+          return #ok({
+            firstName = foundGolfer.firstName;
+            golferId = foundGolfer.id;
+            lastName = foundGolfer.lastName;
+            nationality = foundGolfer.nationality;
+            worldRanking = foundGolfer.worldRanking
+          });
         };
         case(null) {
           return #err(#NotFound);
@@ -74,9 +80,31 @@ module {
 
       //validate
 
-      //update
+      let golfer = Array.find(golfers, func(entry: Types.Golfer) : Bool {
+        entry.id == dto.golferId
+      });
+      switch(golfer){
+        case (?_){
+          
+          golfers := Array.map<Types.Golfer, Types.Golfer>(golfers, func(entry: Types.Golfer){
+            if(entry.id == dto.golferId){
+              return {
+                id = entry.id;
+                firstName = dto.firstName;
+                lastName = dto.lastName;
+                nationality = dto.nationality;
+                worldRanking = dto.worldRanking;
+              }
 
-      return #err(#NotFound);
+            };
+            return entry;
+          });
+          return #ok();
+        };
+        case (null){
+          return #err(#NotFound);
+        }
+      };
     };  
 
     public func getStableGolfers() : [Types.Golfer] {

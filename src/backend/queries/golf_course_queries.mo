@@ -3,11 +3,11 @@ import Ids "mo:waterway-mops/Ids";
 module GolfCourseQueries {
     
     public type GetGolfCourse = {
-        id: Types.GolfCourseId;
+        golfCourseId: Types.GolfCourseId;
     };
 
     public type GolfCourse = {
-        id: Types.GolfCourseId;
+        golfCourseId: Types.GolfCourseId;
         name: Text;
         mainImage: ?Blob;
         mainImageExtension: Text;
@@ -36,6 +36,7 @@ module GolfCourseQueries {
     };
 
     public type GolfCourseSummary = {
+        golfCourseId: Types.GolfCourseId;
         
     };
     
