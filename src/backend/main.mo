@@ -11,6 +11,7 @@ import Result "mo:base/Result";
 import Timer "mo:base/Timer";
 import Array "mo:base/Array";
 import Iter "mo:base/Iter";
+import Nat8 "mo:base/Nat8";
 
 
 /* ----- Queries ----- */
@@ -168,16 +169,47 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
-    //get the tournament
+    let tournamentInstance = tournamentManager.getTournamentInstance({ tournamentId = dto.tournamentId; year = dto.year });
+    switch(tournamentInstance){
+      case (#ok foundTournament){
+        let (isValidStage, round) = switch (foundTournament.stage) {
+          case (#Round1Complete) (true, 1);
+          case (#Round2Complete) (true, 2);
+          case (#Round3Complete) (true, 3);
+          case (_) (false, 0);
+        };
 
-    //get the round the change would be for
+        if (not isValidStage) {
+          return #err(#NotAllowed);
+        };
+        
+        let predictionResult = userManager.getPrediction(principalId, { tournamentId = dto.tournamentId; year = dto.year });
+        switch (predictionResult) {
+            case (#ok prediction) {
+              let swapUsed = switch (round) {
+                case (1) prediction.swap1Used;
+                case (2) prediction.swap2Used;
+                case (3) prediction.swap3Used;
+                case (_) false;
+              };
 
-    //check its a round a change can be made
+              if (swapUsed) {
+                return #err(#NotAllowed);
+              };
+              return userManager.swapGolfer(principalId, dto, Nat8.fromNat(round));  
+            };
+            case (#err error) {
+              return #err(error);
+            };
+        };
 
-    //check that the user hasn't already done the swap for this round
-    var round: Nat8 = 0;
+        return #err(#NotAllowed);
+      };
+      case (#err error){
+        return #err(error);
+      }
+    };
     
-    return userManager.swapGolfer(principalId, dto, round);  
   };
   
 

@@ -39,6 +39,7 @@ module UserCommands {
 
     public type SwapGolfer = {
         tournamentId: Types.TournamentId;
+        year: Nat16;
         removedGolferId: Types.GolferId;
         removedGolferHole: Nat8;
         newGolferId: Types.GolferId;
