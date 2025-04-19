@@ -6,6 +6,8 @@ import Array "mo:base/Array";
 import List "mo:base/List";
 import Buffer "mo:base/Buffer";
 import Order "mo:base/Order";
+import Int "mo:base/Int";
+import Nat8 "mo:base/Nat8";
 import Enums "mo:waterway-mops/Enums";
 import Environment "../environment";
 
@@ -230,6 +232,78 @@ module {
         case (null){};
       }
     };
+
+    public func getGolferHolePerformance(dto: {
+    tournamentId: Types.TournamentId;
+    year: Nat16;
+    golferId: Types.GolferId;
+    holeNumber: Nat8;
+    par: Nat8;
+}) : Result.Result<{ score: Int }, Enums.Error> {
+    let tournament = Array.find(tournaments, func(entry: Types.Tournament) : Bool {
+        entry.id == dto.tournamentId
+    });
+    switch(tournament){
+        case (?foundTournament){
+            let instance = Array.find<Types.TournamentInstance>(foundTournament.instances, func(entry: Types.TournamentInstance) : Bool {
+                entry.year == dto.year
+            });
+            switch(instance){
+                case (?foundInstance){
+                    let entry = Array.find(foundInstance.leaderboard.entries, func(e: Types.TournamentLeaderboardEntry) : Bool {
+                        e.golferId == dto.golferId
+                    });
+                    switch(entry){
+                        case (?foundEntry){
+                            if (dto.holeNumber < 1 or dto.holeNumber > 18) {
+                                return #err(#InvalidProperty);
+                            };
+                            if (Array.size(foundEntry.rounds) == 0) {
+                                return #err(#NotFound);
+                            };
+                            let round = foundEntry.rounds[Array.size(foundEntry.rounds) - 1];
+                            let shotCount: Nat8 = switch (dto.holeNumber) {
+                                case (1) round.hole1Score;
+                                case (2) round.hole2Score;
+                                case (3) round.hole3Score;
+                                case (4) round.hole4Score;
+                                case (5) round.hole5Score;
+                                case (6) round.hole6Score;
+                                case (7) round.hole7Score;
+                                case (8) round.hole8Score;
+                                case (9) round.hole9Score;
+                                case (10) round.hole10Score;
+                                case (11) round.hole11Score;
+                                case (12) round.hole12Score;
+                                case (13) round.hole13Score;
+                                case (14) round.hole14Score;
+                                case (15) round.hole15Score;
+                                case (16) round.hole16Score;
+                                case (17) round.hole17Score;
+                                case (18) round.hole18Score;
+                                case (_) 0;
+                            };
+                            let score = Int.sub(Nat8.toNat(shotCount), Nat8.toNat(dto.par));
+                            return #ok({ score = score });
+                        };
+                        case (null){
+                            return #err(#NotFound);
+                        };
+                    };
+                };
+                case (null){
+                    return #err(#NotFound);
+                };
+            };
+        };
+        case (null){
+            return #err(#NotFound);
+        };
+    };
+};
+
+    
+    
 
     public func getStableTournaments() : [Types.Tournament] {
       return tournaments;

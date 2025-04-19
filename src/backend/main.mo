@@ -159,7 +159,35 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
-    //TODO Ensure the scorecard contains no duplicate golfer ids
+    let golferIds = [
+        dto.hole1GolferId,
+        dto.hole2GolferId,
+        dto.hole3GolferId,
+        dto.hole4GolferId,
+        dto.hole5GolferId,
+        dto.hole6GolferId,
+        dto.hole7GolferId,
+        dto.hole8GolferId,
+        dto.hole9GolferId,
+        dto.hole10GolferId,
+        dto.hole11GolferId,
+        dto.hole12GolferId,
+        dto.hole13GolferId,
+        dto.hole14GolferId,
+        dto.hole15GolferId,
+        dto.hole16GolferId,
+        dto.hole17GolferId,
+        dto.hole18GolferId
+    ];
+    let uniqueGolferIds = Array.sort(golferIds, func(a: Types.GolferId, b: Types.GolferId) : { #less; #equal; #greater } {
+        if (a < b) { #less } else if (a > b) { #greater } else { #equal }
+    });
+    for (i in Iter.range(1, Array.size(uniqueGolferIds) - 1)) {
+        if (uniqueGolferIds[i] == uniqueGolferIds[i - 1]) {
+            return #err(#InvalidProperty);
+        };
+    };
+
 
     let tournamentInstance = tournamentManager.getTournamentInstance({ tournamentId = dto.tournamentId; year = dto.year; });
 
@@ -189,10 +217,6 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
-    //TODO ensure that the player selected is not already in your golf scorecard
-    
-    //TODO ensure the golfer has not already had an existing birdie or better on the hole being selected
-
     let tournamentInstance = tournamentManager.getTournamentInstance({ tournamentId = dto.tournamentId; year = dto.year });
     switch(tournamentInstance){
       case (#ok foundTournament){
@@ -220,6 +244,68 @@ actor Self {
               if (swapUsed) {
                 return #err(#NotAllowed);
               };
+
+              let golferIds = [
+                prediction.hole1GolferId,
+                prediction.hole2GolferId,
+                prediction.hole3GolferId,
+                prediction.hole4GolferId,
+                prediction.hole5GolferId,
+                prediction.hole6GolferId,
+                prediction.hole7GolferId,
+                prediction.hole8GolferId,
+                prediction.hole9GolferId,
+                prediction.hole10GolferId,
+                prediction.hole11GolferId,
+                prediction.hole12GolferId,
+                prediction.hole13GolferId,
+                prediction.hole14GolferId,
+                prediction.hole15GolferId,
+                prediction.hole16GolferId,
+                prediction.hole17GolferId,
+                prediction.hole18GolferId
+              ];
+              if (Array.find(golferIds, func(id: Types.GolferId) : Bool { id == dto.newGolferId }) != null) {
+                  return #err(#InvalidProperty);
+              };
+
+              let golfCourseResult = golfCourseManager.getGolfCourse({ golfCourseId = foundTournament.golfCourseId });
+              switch (golfCourseResult) {
+                  case (#ok golfCourse) {
+                      let hole = Array.find(golfCourse.holes, func(h: Types.GolfHole) : Bool {
+                          h.holeNumber == dto.newGolferHole
+                      });
+                      switch (hole) {
+                          case (?foundHole) {
+                              let golferPerformance = tournamentManager.getGolferHolePerformance({
+                                  tournamentId = dto.tournamentId;
+                                  year = dto.year;
+                                  golferId = dto.newGolferId;
+                                  holeNumber = dto.newGolferHole;
+                                  par = foundHole.par;
+                              });
+                              switch (golferPerformance) {
+                                  case (#ok performance) {
+                                      if (performance.score <= -1) {
+                                          return #err(#NotAllowed);
+                                      };
+                                  };
+                                  case (#err error) {
+                                      return #err(error);
+                                  };
+                              };
+                          };
+                          case (null) {
+                              return #err(#NotFound);
+                          };
+                      };
+                  };
+                  case (#err error) {
+                      return #err(error);
+                  };
+              };
+
+
               return userManager.swapGolfer(principalId, dto, Nat8.fromNat(round));  
             };
             case (#err error) {
