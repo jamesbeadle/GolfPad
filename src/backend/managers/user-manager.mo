@@ -12,6 +12,8 @@ import Nat8 "mo:base/Nat8";
 import Int8 "mo:base/Int8";
 import Nat "mo:base/Nat";
 import Int "mo:base/Int";
+import Text "mo:base/Text";
+import Char "mo:base/Char";
 import Enums "mo:waterway-mops/Enums";
 import Ids "mo:waterway-mops/Ids";
 import Environment "../environment";
@@ -23,6 +25,31 @@ module {
 
     private var profiles: [Types.Profile] = [];
     private var predictions: [Types.Prediction] = [];
+
+    public func isUsernameTaken(username : Text, principalId : Text) : Bool {
+      for (profile in Iter.fromArray(profiles)) {
+
+        let lowerCaseUsername = toLowercase(username);
+        let existingUsername = toLowercase(profile.username);
+
+        if (lowerCaseUsername == existingUsername and profile.username != principalId) {
+          return true;
+        };
+      };
+
+      return false;
+    };
+
+    private func toLowercase(t : Text.Text) : Text.Text {
+        func charToLower(c : Char) : Char {
+            if (Char.isUppercase(c)) {
+                Char.fromNat32(Char.toNat32(c) + 32);
+            } else {
+                c;
+            };
+        };
+        Text.map(t, charToLower);
+    };
 
     public func getProfile(principalId: Ids.PrincipalId) : Result.Result<UserQueries.Profile, Enums.Error> {
       let profile = Array.find(profiles, func(entry: Types.Profile) : Bool {

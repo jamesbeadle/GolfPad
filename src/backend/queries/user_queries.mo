@@ -85,6 +85,10 @@ module UserQueries {
         tournamentId: Types.TournamentId;
         year: Nat16;
     };
+    
+    public type IsUsernameValid = {
+        username : Text;
+    };
 }
 
   

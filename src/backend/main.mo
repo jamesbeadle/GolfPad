@@ -12,6 +12,7 @@ import Timer "mo:base/Timer";
 import Array "mo:base/Array";
 import Iter "mo:base/Iter";
 import Nat8 "mo:base/Nat8";
+import Text "mo:base/Text";
 
 
 /* ----- Queries ----- */
@@ -96,6 +97,13 @@ actor Self {
 
   /* ----- User Queries and Commands ----- */
 
+  public shared query ({ caller }) func isUsernameValid(dto : UserQueries.IsUsernameValid) : async Bool {
+    assert not Principal.isAnonymous(caller);
+    let usernameValid = validateUsernameFormat(dto.username);
+    let usernameTaken = userManager.isUsernameTaken(dto.username, Principal.toText(caller));
+    return usernameValid and not usernameTaken;
+  };
+
   public shared query ({ caller }) func getProfile(_: UserQueries.GetProfile) : async Result.Result<UserQueries.Profile, Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
@@ -122,6 +130,16 @@ actor Self {
   public shared ({ caller }) func createProfile(dto: UserCommands.CreateProfile) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
+
+    if (Text.size(dto.username) < 3 or Text.size(dto.username) > 20) {
+        return #err(#InvalidProperty);
+    };
+
+    let invalidUsername = userManager.isUsernameTaken(dto.username, principalId);
+    if (invalidUsername) {
+        return #err(#AlreadyExists);
+    };
+
     return userManager.createProfile(principalId, dto);  
   };
 
@@ -355,6 +373,27 @@ actor Self {
         return false; 
       }
     };
+  };
+
+  private func validateUsernameFormat(username : Text) : Bool {
+      if (Text.size(username) < 3 or Text.size(username) > 20) {
+          return false;
+      };
+
+      let isAlphanumeric = func(s : Text) : Bool {
+          let chars = Text.toIter(s);
+          for (c in chars) {
+              if (not ((c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') or (c >= '0' and c <= '9') or (c == ' '))) {
+                  return false;
+              };
+          };
+          return true;
+      };
+
+      if (not isAlphanumeric(username)) {
+          return false;
+      };
+      return true;
   };
 
   private func transferLeaderboardChunks(tournamentId: Types.TournamentId, year: Nat16, golfCourse: GolfCourseQueries.GolfCourse) {
