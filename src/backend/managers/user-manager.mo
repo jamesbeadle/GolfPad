@@ -7,6 +7,9 @@ import List "mo:base/List";
 import Order "mo:base/Order";
 import Time "mo:base/Time";
 import Buffer "mo:base/Buffer";
+import Iter "mo:base/Iter";
+import Nat8 "mo:base/Nat8";
+import Int8 "mo:base/Int8";
 import Enums "mo:waterway-mops/Enums";
 import Ids "mo:waterway-mops/Ids";
 import Environment "../environment";
@@ -353,6 +356,8 @@ module {
               var swap2Used = entry.swap2Used;
               var swap3Used = entry.swap3Used;
 
+              //TODO actually swap the golfer 
+
               switch(round){
                 case (1){
                   swap1Used := true;
@@ -445,8 +450,159 @@ module {
       };
     };
 
-    public func calculateScorecards(){
-      // TODO
+    public func calculateScorecards(leaderboard: Types.TournamentLeaderboard, golfCourse: Types.GolfCourse) {
+    
+      let predictionBuffer = Buffer.fromArray<Types.Prediction>(predictions);
+    
+      for (i in Iter.range(0, predictions.size() - 1)) {
+        let prediction = predictions[i];
+        
+        let (hole1Score, hole2Score, hole3Score, hole4Score, hole5Score, hole6Score, hole7Score, hole8Score, hole9Score,
+             hole10Score, hole11Score, hole12Score, hole13Score, hole14Score, hole15Score, hole16Score, hole17Score, hole18Score) = do {
+          let hole1Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole1GolferId, 1);
+          let hole2Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole2GolferId, 2);
+          let hole3Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole3GolferId, 3);
+          let hole4Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole4GolferId, 4);
+          let hole5Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole5GolferId, 5);
+          let hole6Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole6GolferId, 6);
+          let hole7Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole7GolferId, 7);
+          let hole8Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole8GolferId, 8);
+          let hole9Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole9GolferId, 9);
+          let hole10Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole10GolferId, 10);
+          let hole11Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole11GolferId, 11);
+          let hole12Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole12GolferId, 12);
+          let hole13Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole13GolferId, 13);
+          let hole14Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole14GolferId, 14);
+          let hole15Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole15GolferId, 15);
+          let hole16Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole16GolferId, 16);
+          let hole17Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole17GolferId, 17);
+          let hole18Score : Nat8 = getBestHoleScore(leaderboard, prediction.hole18GolferId, 18);
+          (hole1Score, hole2Score, hole3Score, hole4Score, hole5Score, hole6Score, hole7Score, hole8Score, hole9Score,
+          hole10Score, hole11Score, hole12Score, hole13Score, hole14Score, hole15Score, hole16Score, hole17Score, hole18Score)
+        };
+        
+        let totalShots : Nat8 = do {
+            let shots : [Nat8] = [
+                hole1Score,
+                hole2Score,
+                hole3Score,
+                hole4Score,
+                hole5Score,
+                hole6Score,
+                hole7Score,
+                hole8Score,
+                hole9Score,
+                hole10Score,
+                hole11Score,
+                hole12Score,
+                hole13Score,
+                hole14Score,
+                hole15Score,
+                hole16Score,
+                hole17Score,
+                hole18Score
+            ];
+            Array.foldLeft<Nat8, Nat8>(shots, 0, func(sum, shot) { sum + shot })
+        };
+        
+        let totalScore : Int8 = do {
+            Int8.fromInt(Nat8.toNat(totalShots) - Nat8.toNat(golfCourse.par))
+        };
+        
+        let updatedPrediction : Types.Prediction = {
+            createdOn = prediction.createdOn;
+            principalId = prediction.principalId;
+            tournamentId = prediction.tournamentId;
+            username = prediction.username;
+            year = prediction.year;
+            swap1Used = prediction.swap1Used;
+            swap2Used = prediction.swap2Used;
+            swap3Used = prediction.swap3Used;
+            hole1GolferId = prediction.hole1GolferId;
+            hole1Score = hole1Score;
+            hole2GolferId = prediction.hole2GolferId;
+            hole2Score = hole2Score;
+            hole3GolferId = prediction.hole3GolferId;
+            hole3Score = hole3Score;
+            hole4GolferId = prediction.hole4GolferId;
+            hole4Score = hole4Score;
+            hole5GolferId = prediction.hole5GolferId;
+            hole5Score = hole5Score;
+            hole6GolferId = prediction.hole6GolferId;
+            hole6Score = hole6Score;
+            hole7GolferId = prediction.hole7GolferId;
+            hole7Score = hole7Score;
+            hole8GolferId = prediction.hole8GolferId;
+            hole8Score = hole8Score;
+            hole9GolferId = prediction.hole9GolferId;
+            hole9Score = hole9Score;
+            hole10GolferId = prediction.hole10GolferId;
+            hole10Score = hole10Score;
+            hole11GolferId = prediction.hole11GolferId;
+            hole11Score = hole11Score;
+            hole12GolferId = prediction.hole12GolferId;
+            hole12Score = hole12Score;
+            hole13GolferId = prediction.hole13GolferId;
+            hole13Score = hole13Score;
+            hole14GolferId = prediction.hole14GolferId;
+            hole14Score = hole14Score;
+            hole15GolferId = prediction.hole15GolferId;
+            hole15Score = hole15Score;
+            hole16GolferId = prediction.hole16GolferId;
+            hole16Score = hole16Score;
+            hole17GolferId = prediction.hole17GolferId;
+            hole17Score = hole17Score;
+            hole18GolferId = prediction.hole18GolferId;
+            hole18Score = hole18Score;
+            
+            totalShots = totalShots;
+            totalScore = totalScore;
+        };
+        
+        predictionBuffer.put(i, updatedPrediction);
+      };
+    
+      predictions := Buffer.toArray(predictionBuffer);
+    };
+
+    private func getBestHoleScore(leaderboard: Types.TournamentLeaderboard, golferId: Types.GolferId, holeNumber: Nat) : Nat8 {
+        let golferEntry = Array.find(leaderboard.entries, func(entry: Types.TournamentLeaderboardEntry) : Bool {
+            entry.golferId == golferId
+        });
+        
+        switch (golferEntry) {
+            case (?entry) {
+                let scores = Buffer.Buffer<Nat8>(4);
+                for (round in Iter.fromArray(entry.rounds)) {
+                    let score: Nat8 = switch (holeNumber) {
+                        case (1) round.hole1Score;
+                        case (2) round.hole2Score;
+                        case (3) round.hole3Score;
+                        case (4) round.hole4Score;
+                        case (5) round.hole5Score;
+                        case (6) round.hole6Score;
+                        case (7) round.hole7Score;
+                        case (8) round.hole8Score;
+                        case (9) round.hole9Score;
+                        case (10) round.hole10Score;
+                        case (11) round.hole11Score;
+                        case (12) round.hole12Score;
+                        case (13) round.hole13Score;
+                        case (14) round.hole14Score;
+                        case (15) round.hole15Score;
+                        case (16) round.hole16Score;
+                        case (17) round.hole17Score;
+                        case (18) round.hole18Score;
+                        case (_) 0;
+                    };
+                    scores.add(score);
+                };
+                let validScores = Array.filter<Nat8>(Buffer.toArray(scores), func(score: Nat8) : Bool { score > 0 });
+                if (validScores.size() == 0) { return 0 };
+                return Array.foldLeft<Nat8, Nat8>(validScores, validScores[0], func(min, score) { if (score < min) { score } else { min } });
+            };
+            case (null) { 0 };
+        };
     };
 
     public func getTotalLeaderboardEntries(tournamentId: Types.TournamentId) : Nat {

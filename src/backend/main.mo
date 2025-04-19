@@ -263,17 +263,15 @@ actor Self {
     let principalId = Principal.toText(caller);
     assert await isAdmin(principalId);
 
-    userManager.calculateScorecards();
-
     let tournament = tournamentManager.getTournamentInstance({tournamentId = dto.tournamentId; year = dto.year});
 
     switch(tournament){
       case (#ok foundTournament){
 
-        let golfCourse = golfCourseManager.getGolfCourse({id = foundTournament.golfCourseId});
-
+        let golfCourse = golfCourseManager.getGolfCourse({golfCourseId = foundTournament.golfCourseId});
         switch(golfCourse) {
           case(#ok foundGolfCourse) { 
+            userManager.calculateScorecards(foundTournament.entries, foundGolfCourse);
             if(not foundTournament.populated){
               transferLeaderboardChunks(dto.tournamentId, dto.year, foundGolfCourse);
             };
@@ -285,7 +283,6 @@ actor Self {
             return #err(#NotFound);
           };
         };
-        
         
       };
       case (_){
