@@ -13,6 +13,7 @@ import Int8 "mo:base/Int8";
 import Enums "mo:waterway-mops/Enums";
 import Ids "mo:waterway-mops/Ids";
 import Environment "../environment";
+import GolfCourseQueries "../queries/golf_course_queries";
 
 
 module {
@@ -450,7 +451,7 @@ module {
       };
     };
 
-    public func calculateScorecards(leaderboard: Types.TournamentLeaderboard, golfCourse: Types.GolfCourse) {
+    public func calculateScorecards(leaderboard: Types.TournamentLeaderboard, golfCourse: GolfCourseQueries.GolfCourse) {
     
       let predictionBuffer = Buffer.fromArray<Types.Prediction>(predictions);
     

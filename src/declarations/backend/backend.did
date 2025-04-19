@@ -9,18 +9,16 @@ type UpdateProfilePicture = record {profilePicture: opt blob;};
 type UpdateGolfer = 
  record {
    firstName: text;
-   id: GolferId;
+   golferId: GolferId;
    lastName: text;
    nationality: CountryId;
    worldRanking: nat16;
  };
 type UpdateGolfCourse = 
  record {
-   coursePar: nat8;
+   golfCourseId: GolfCourseId;
    holes: vec GolfHole;
-   id: GolfCourseId;
    name: text;
-   yardage: nat16;
  };
 type UpdateAppStatus = 
  record {
@@ -81,17 +79,17 @@ type SubmitPrediction =
    hole8GolferId: GolferId;
    hole9GolferId: GolferId;
    tournamentId: TournamentId;
+   year: nat16;
  };
-type Scorecard = record {};
 type Result_9 = 
  variant {
    err: Error;
-   ok: FantasyLeaderboard;
+   ok: Golfer;
  };
 type Result_8 = 
  variant {
    err: Error;
-   ok: Prediction;
+   ok: FantasyLeaderboard;
  };
 type Result_7 = 
  variant {
@@ -101,7 +99,7 @@ type Result_7 =
 type Result_6 = 
  variant {
    err: Error;
-   ok: Scorecard;
+   ok: Prediction;
  };
 type Result_5 = 
  variant {
@@ -123,20 +121,15 @@ type Result_2 =
    err: Error;
    ok: Predictions;
  };
-type Result_12 = 
+type Result_11 = 
  variant {
    err: Error;
    ok: AppStatus;
  };
-type Result_11 = 
- variant {
-   err: Error;
-   ok: GolfCourse;
- };
 type Result_10 = 
  variant {
    err: Error;
-   ok: Golfer;
+   ok: GolfCourse;
  };
 type Result_1 = 
  variant {
@@ -161,8 +154,61 @@ type Predictions =
    page: nat;
    totalEntries: nat;
  };
-type PredictionSummary = record {};
-type Prediction = record {};
+type PredictionSummary = 
+ record {
+   createdOn: int;
+   principalId: PrincipalId;
+   totalScore: int8;
+   totalShots: nat8;
+   tournamentId: TournamentId;
+   year: nat16;
+ };
+type Prediction = 
+ record {
+   hole10GolferId: GolferId;
+   hole10Score: nat8;
+   hole11GolferId: GolferId;
+   hole11Score: nat8;
+   hole12GolferId: GolferId;
+   hole12Score: nat8;
+   hole13GolferId: GolferId;
+   hole13Score: nat8;
+   hole14GolferId: GolferId;
+   hole14Score: nat8;
+   hole15GolferId: GolferId;
+   hole15Score: nat8;
+   hole16GolferId: GolferId;
+   hole16Score: nat8;
+   hole17GolferId: GolferId;
+   hole17Score: nat8;
+   hole18GolferId: GolferId;
+   hole18Score: nat8;
+   hole1GolferId: GolferId;
+   hole1Score: nat8;
+   hole2GolferId: GolferId;
+   hole2Score: nat8;
+   hole3GolferId: GolferId;
+   hole3Score: nat8;
+   hole4GolferId: GolferId;
+   hole4Score: nat8;
+   hole5GolferId: GolferId;
+   hole5Score: nat8;
+   hole6GolferId: GolferId;
+   hole6Score: nat8;
+   hole7GolferId: GolferId;
+   hole7Score: nat8;
+   hole8GolferId: GolferId;
+   hole8Score: nat8;
+   hole9GolferId: GolferId;
+   hole9Score: nat8;
+   principalId: PrincipalId;
+   swap1Used: bool;
+   swap2Used: bool;
+   swap3Used: bool;
+   tournamentId: TournamentId;
+   username: text;
+   year: nat16;
+ };
 type ListTournaments = record {page: nat;};
 type ListPredictions = record {page: nat;};
 type ListGolfers = record {page: nat;};
@@ -173,12 +219,19 @@ type Golfers =
    page: nat;
    totalEntries: nat;
  };
-type GolferSummary = record {};
+type GolferSummary = 
+ record {
+   firstName: text;
+   id: GolferId;
+   lastName: text;
+   nationality: CountryId;
+   worldRanking: nat16;
+ };
 type GolferId = nat16;
 type Golfer = 
  record {
    firstName: text;
-   id: GolferId;
+   golferId: GolferId;
    lastName: text;
    nationality: CountryId;
    worldRanking: nat16;
@@ -203,26 +256,41 @@ type GolfCourses =
    page: nat;
    totalEntries: nat;
  };
-type GolfCourseSummary = record {};
+type GolfCourseSummary = 
+ record {
+   countryId: CountryId;
+   founded: int;
+   golfCourseId: GolfCourseId;
+   name: text;
+   par: nat8;
+   totalHoles: nat8;
+ };
 type GolfCourseId = nat16;
 type GolfCourse = 
  record {
    countryId: CountryId;
    founded: int;
+   golfCourseId: GolfCourseId;
    holes: vec GolfHole__1;
-   id: GolfCourseId;
-   mainImage: opt blob;
-   mainImageExtension: text;
-   manager: text;
    name: text;
+   par: nat8;
    totalHoles: nat8;
  };
 type GetTournament = record {tournamentId: TournamentId;};
-type GetScorecard = record {principalId: PrincipalId;};
+type GetScorecard = 
+ record {
+   principalId: PrincipalId;
+   tournamentId: TournamentId;
+   year: nat16;
+ };
 type GetProfile = record {};
-type GetPrediction = record {};
+type GetPrediction = 
+ record {
+   tournamentId: TournamentId;
+   year: nat16;
+ };
 type GetGolfer = record {golferId: GolferId;};
-type GetGolfCourse = record {id: GolfCourseId;};
+type GetGolfCourse = record {golfCourseId: GolfCourseId;};
 type GetFantasyLeaderboard = 
  record {
    page: nat;
@@ -290,9 +358,13 @@ type CreateGolfer =
  };
 type CreateGolfCourse = 
  record {
+   countryId: CountryId;
    coursePar: nat8;
+   founded: int;
    holes: vec GolfHole;
    name: text;
+   par: nat8;
+   totalYardage: nat16;
    yardage: nat16;
  };
 type CountryId = nat16;
@@ -312,14 +384,15 @@ service : {
   createGolfer: (CreateGolfer) -> (Result);
   createProfile: (CreateProfile) -> (Result);
   createTournament: (CreateTournament) -> (Result);
-  getAppStatus: () -> (Result_12) query;
-  getGolfCourse: (GetGolfCourse) -> (Result_11) query;
-  getGolfer: (GetGolfer) -> (Result_10) query;
-  getLeaderboard: (GetFantasyLeaderboard) -> (Result_9) query;
-  getPrediction: (GetPrediction) -> (Result_8) query;
+  getAppStatus: () -> (Result_11) query;
+  getGolfCourse: (GetGolfCourse) -> (Result_10) query;
+  getGolfer: (GetGolfer) -> (Result_9) query;
+  getLeaderboard: (GetFantasyLeaderboard) -> (Result_8) query;
+  getPrediction: (GetPrediction) -> (Result_6) query;
   getProfile: (GetProfile) -> (Result_7) query;
   getScorecard: (GetScorecard) -> (Result_6) query;
   getTournament: (GetTournament) -> (Result_5) query;
+  isAdmin: (text) -> (bool);
   listGolfCourses: (ListGolfCourses) -> (Result_4) query;
   listGolfers: (ListGolfers) -> (Result_3) query;
   listPredictions: (ListPredictions) -> (Result_2) query;

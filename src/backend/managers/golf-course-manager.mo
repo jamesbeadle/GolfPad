@@ -30,6 +30,7 @@ module {
             totalHoles = Nat8.fromNat(Array.size(foundGolfCourse.holes));
             name = foundGolfCourse.name;
             holes = foundGolfCourse.holes;
+            par = foundGolfCourse.par;
           });
         };
         case (null){
@@ -50,6 +51,7 @@ module {
           golfCourseId = entry.id;
           name = entry.name;
           totalHoles = Nat8.fromNat(Array.size(entry.holes));
+          par = entry.par;
         };
       });
 
@@ -108,12 +110,10 @@ module {
           golfCourses := Array.map<Types.GolfCourse, Types.GolfCourse>(golfCourses, func(entry: Types.GolfCourse){
             if(entry.id == dto.golfCourseId){
               return {
-                bannerImage = entry.bannerImage;
                 countryId = entry.countryId;
                 founded = entry.founded;
                 holes = dto.holes;
                 id = entry.id;
-                mainImage = entry.mainImage;
                 name = dto.name;
                 par = par;
                 totalYardage = totalYardage;

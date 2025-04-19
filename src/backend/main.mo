@@ -271,12 +271,12 @@ actor Self {
         let golfCourse = golfCourseManager.getGolfCourse({golfCourseId = foundTournament.golfCourseId});
         switch(golfCourse) {
           case(#ok foundGolfCourse) { 
-            userManager.calculateScorecards(foundTournament.entries, foundGolfCourse);
+            userManager.calculateScorecards(foundTournament.leaderboard, foundGolfCourse);
             if(not foundTournament.populated){
               transferLeaderboardChunks(dto.tournamentId, dto.year, foundGolfCourse);
             };
 
-            fantasyLeaderboardManager.calculateLeaderboard(dto.tournamentId);
+            fantasyLeaderboardManager.calculateLeaderboard(dto.tournamentId, dto.year);
             return #ok();
            };
           case(_) {
@@ -317,7 +317,7 @@ actor Self {
 
     for(chunk in Iter.range(0, totalChunks - 1)){
       let leaderboardChunk = userManager.getLeaderboardChunk(tournamentId, chunk);
-      fantasyLeaderboardManager.addChunkToLeaderboard(tournamentId, leaderboardChunk, golfCourse);
+      fantasyLeaderboardManager.addChunkToLeaderboard(tournamentId, year, leaderboardChunk, golfCourse);
     };  
     
     tournamentManager.setPopulated(tournamentId, year);

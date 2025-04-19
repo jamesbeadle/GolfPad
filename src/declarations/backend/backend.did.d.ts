@@ -12,10 +12,14 @@ export interface CalculateLeaderboard {
 }
 export type CountryId = number;
 export interface CreateGolfCourse {
+  par: number;
   holes: Array<GolfHole>;
   name: string;
   yardage: number;
   coursePar: number;
+  countryId: CountryId;
+  founded: bigint;
+  totalYardage: number;
 }
 export interface CreateGolfer {
   worldRanking: number;
@@ -77,32 +81,42 @@ export interface GetFantasyLeaderboard {
   tournamentId: TournamentId;
 }
 export interface GetGolfCourse {
-  id: GolfCourseId;
+  golfCourseId: GolfCourseId;
 }
 export interface GetGolfer {
   golferId: GolferId;
 }
-export type GetPrediction = {};
+export interface GetPrediction {
+  year: number;
+  tournamentId: TournamentId;
+}
 export type GetProfile = {};
 export interface GetScorecard {
+  year: number;
+  tournamentId: TournamentId;
   principalId: PrincipalId;
 }
 export interface GetTournament {
   tournamentId: TournamentId;
 }
 export interface GolfCourse {
-  id: GolfCourseId;
-  manager: string;
+  par: number;
   holes: Array<GolfHole__1>;
   totalHoles: number;
+  golfCourseId: GolfCourseId;
   name: string;
   countryId: CountryId;
-  mainImageExtension: string;
   founded: bigint;
-  mainImage: [] | [Uint8Array | number[]];
 }
 export type GolfCourseId = number;
-export type GolfCourseSummary = {};
+export interface GolfCourseSummary {
+  par: number;
+  totalHoles: number;
+  golfCourseId: GolfCourseId;
+  name: string;
+  countryId: CountryId;
+  founded: bigint;
+}
 export interface GolfCourses {
   totalEntries: bigint;
   page: bigint;
@@ -121,14 +135,20 @@ export interface GolfHole__1 {
   holeNumber: number;
 }
 export interface Golfer {
+  worldRanking: number;
+  golferId: GolferId;
+  nationality: CountryId;
+  lastName: string;
+  firstName: string;
+}
+export type GolferId = number;
+export interface GolferSummary {
   id: GolferId;
   worldRanking: number;
   nationality: CountryId;
   lastName: string;
   firstName: string;
 }
-export type GolferId = number;
-export type GolferSummary = {};
 export interface Golfers {
   totalEntries: bigint;
   page: bigint;
@@ -146,8 +166,59 @@ export interface ListPredictions {
 export interface ListTournaments {
   page: bigint;
 }
-export type Prediction = {};
-export type PredictionSummary = {};
+export interface Prediction {
+  hole14Score: number;
+  hole17GolferId: GolferId;
+  hole9GolferId: GolferId;
+  username: string;
+  hole7Score: number;
+  hole2Score: number;
+  hole11GolferId: GolferId;
+  hole3GolferId: GolferId;
+  hole16GolferId: GolferId;
+  hole17Score: number;
+  hole12Score: number;
+  hole8GolferId: GolferId;
+  year: number;
+  swap1Used: boolean;
+  hole10GolferId: GolferId;
+  hole2GolferId: GolferId;
+  hole5Score: number;
+  hole15GolferId: GolferId;
+  hole7GolferId: GolferId;
+  swap3Used: boolean;
+  hole15Score: number;
+  hole10Score: number;
+  hole1GolferId: GolferId;
+  hole8Score: number;
+  hole3Score: number;
+  hole14GolferId: GolferId;
+  hole6GolferId: GolferId;
+  hole18Score: number;
+  hole13Score: number;
+  hole6Score: number;
+  hole1Score: number;
+  hole13GolferId: GolferId;
+  hole5GolferId: GolferId;
+  tournamentId: TournamentId;
+  hole16Score: number;
+  hole11Score: number;
+  swap2Used: boolean;
+  principalId: PrincipalId;
+  hole18GolferId: GolferId;
+  hole9Score: number;
+  hole4Score: number;
+  hole12GolferId: GolferId;
+  hole4GolferId: GolferId;
+}
+export interface PredictionSummary {
+  createdOn: bigint;
+  year: number;
+  totalScore: number;
+  totalShots: number;
+  tournamentId: TournamentId;
+  principalId: PrincipalId;
+}
 export interface Predictions {
   totalEntries: bigint;
   page: bigint;
@@ -161,18 +232,16 @@ export interface Profile {
 }
 export type Result = { ok: null } | { err: Error };
 export type Result_1 = { ok: Tournaments } | { err: Error };
-export type Result_10 = { ok: Golfer } | { err: Error };
-export type Result_11 = { ok: GolfCourse } | { err: Error };
-export type Result_12 = { ok: AppStatus } | { err: Error };
+export type Result_10 = { ok: GolfCourse } | { err: Error };
+export type Result_11 = { ok: AppStatus } | { err: Error };
 export type Result_2 = { ok: Predictions } | { err: Error };
 export type Result_3 = { ok: Golfers } | { err: Error };
 export type Result_4 = { ok: GolfCourses } | { err: Error };
 export type Result_5 = { ok: Tournament } | { err: Error };
-export type Result_6 = { ok: Scorecard } | { err: Error };
+export type Result_6 = { ok: Prediction } | { err: Error };
 export type Result_7 = { ok: Profile } | { err: Error };
-export type Result_8 = { ok: Prediction } | { err: Error };
-export type Result_9 = { ok: FantasyLeaderboard } | { err: Error };
-export type Scorecard = {};
+export type Result_8 = { ok: FantasyLeaderboard } | { err: Error };
+export type Result_9 = { ok: Golfer } | { err: Error };
 export interface SubmitPrediction {
   hole17GolferId: GolferId;
   hole9GolferId: GolferId;
@@ -180,6 +249,7 @@ export interface SubmitPrediction {
   hole3GolferId: GolferId;
   hole16GolferId: GolferId;
   hole8GolferId: GolferId;
+  year: number;
   hole10GolferId: GolferId;
   hole2GolferId: GolferId;
   hole15GolferId: GolferId;
@@ -229,15 +299,13 @@ export interface UpdateAppStatus {
   onHold: boolean;
 }
 export interface UpdateGolfCourse {
-  id: GolfCourseId;
   holes: Array<GolfHole>;
+  golfCourseId: GolfCourseId;
   name: string;
-  yardage: number;
-  coursePar: number;
 }
 export interface UpdateGolfer {
-  id: GolferId;
   worldRanking: number;
+  golferId: GolferId;
   nationality: CountryId;
   lastName: string;
   firstName: string;
@@ -259,14 +327,15 @@ export interface _SERVICE {
   createGolfer: ActorMethod<[CreateGolfer], Result>;
   createProfile: ActorMethod<[CreateProfile], Result>;
   createTournament: ActorMethod<[CreateTournament], Result>;
-  getAppStatus: ActorMethod<[], Result_12>;
-  getGolfCourse: ActorMethod<[GetGolfCourse], Result_11>;
-  getGolfer: ActorMethod<[GetGolfer], Result_10>;
-  getLeaderboard: ActorMethod<[GetFantasyLeaderboard], Result_9>;
-  getPrediction: ActorMethod<[GetPrediction], Result_8>;
+  getAppStatus: ActorMethod<[], Result_11>;
+  getGolfCourse: ActorMethod<[GetGolfCourse], Result_10>;
+  getGolfer: ActorMethod<[GetGolfer], Result_9>;
+  getLeaderboard: ActorMethod<[GetFantasyLeaderboard], Result_8>;
+  getPrediction: ActorMethod<[GetPrediction], Result_6>;
   getProfile: ActorMethod<[GetProfile], Result_7>;
   getScorecard: ActorMethod<[GetScorecard], Result_6>;
   getTournament: ActorMethod<[GetTournament], Result_5>;
+  isAdmin: ActorMethod<[string], boolean>;
   listGolfCourses: ActorMethod<[ListGolfCourses], Result_4>;
   listGolfers: ActorMethod<[ListGolfers], Result_3>;
   listPredictions: ActorMethod<[ListPredictions], Result_2>;

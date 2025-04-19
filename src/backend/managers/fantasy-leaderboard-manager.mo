@@ -4,6 +4,8 @@ import Array "mo:base/Array";
 import List "mo:base/List";
 import Buffer "mo:base/Buffer";
 import Nat8 "mo:base/Nat8";
+import Order "mo:base/Order";
+import Int "mo:base/Int";
 import Enums "mo:waterway-mops/Enums";
 import Types "../data-types/types";
 import FantasyLeaderboardQueries "../queries/fantasy_leaderboard_queries";
@@ -41,7 +43,7 @@ module {
             };
         };
 
-        public func addChunkToLeaderboard(tournamentId: Types.TournamentId, chunk: [Types.Prediction], golfCourse: GolfCourseQueries.GolfCourse) {
+        public func addChunkToLeaderboard(tournamentId: Types.TournamentId, year: Nat16, chunk: [Types.Prediction], golfCourse: GolfCourseQueries.GolfCourse) {
             
             let existingLeaderboard = Array.find<Types.FantasyLeaderboard>(leaderboards, func(entry: Types.FantasyLeaderboard) : Bool {
                 entry.tournamentId == tournamentId;
@@ -246,6 +248,8 @@ module {
                             username = entry.username;
                             score = 0;
                             shots = 0;
+                            position = 0;
+                            positionText = "";
                         }
                     });
 
@@ -254,6 +258,8 @@ module {
                     let updatedLeaderboard: Types.FantasyLeaderboard = {
                         entries = Buffer.toArray(entriesBuffer);
                         tournamentId = foundLeaderboard.tournamentId;
+                        totalEntries = foundLeaderboard.totalEntries;
+                        year = foundLeaderboard.year;
                     };
 
                     let leaderboardBuffer = Buffer.fromArray<Types.FantasyLeaderboard>(leaderboards);
@@ -458,9 +464,13 @@ module {
                                 username = entry.username;
                                 score = 0;
                                 shots = 0;
+                                position = 0;
+                                positionText = "";
                             }
                         });
                         tournamentId = tournamentId;
+                        totalEntries = 0;
+                        year = year;
                     };
                     
                     let leaderboardBuffer = Buffer.fromArray<Types.FantasyLeaderboard>(leaderboards);
@@ -470,12 +480,83 @@ module {
             };
         };
 
-        public func calculateLeaderboard(tournamentId: Types.TournamentId) {
-            //populate all the golfer scores and shot count
-            //sort all the chunks
-            //using all the player information calculate the leaderboard
-            //add in leaderboard positions and position text
+        public func calculateLeaderboard(tournamentId: Types.TournamentId, year: Nat16) {
+
+            let tournamentLeaderboard = Array.find<Types.FantasyLeaderboard>(leaderboards, func(entry: Types.FantasyLeaderboard) : Bool {
+                entry.tournamentId == tournamentId and entry.year == year
+            });
+
+            switch(tournamentLeaderboard){
+                case (?foundLeaderboard){
+                    
+
+                    let sortedEntries = Array.sort(
+                        foundLeaderboard.entries,
+                        func(entry1 : Types.FantasyLeaderboardEntry, entry2 : Types.FantasyLeaderboardEntry) : Order.Order {
+                            if (entry1.score < entry2.score) { return #greater };
+                            if (entry1.score == entry2.score) { return #equal };
+                            return #less;
+                        },
+                    );
+
+                    let positionedEntries = assignPositionText(List.fromArray<Types.FantasyLeaderboardEntry>(sortedEntries));
+
+                    var updatedLeaderboard : Types.FantasyLeaderboard = {
+
+                        tournamentId = foundLeaderboard.tournamentId;
+                        year = foundLeaderboard.year;
+                        entries = List.toArray(positionedEntries);
+                        totalEntries = List.size(positionedEntries);
+                    };
+
+                    let leaderboardBuffer = Buffer.fromArray<Types.FantasyLeaderboard>(
+                    Array.filter<Types.FantasyLeaderboard>(
+                        leaderboards,
+                        func(leaderboard : Types.FantasyLeaderboard) {
+                        return not (leaderboard.tournamentId == tournamentId and leaderboard.year == year);
+                        },
+                    )
+                    );
+
+                    leaderboardBuffer.add(updatedLeaderboard);
+                    leaderboards := Buffer.toArray(leaderboardBuffer);
+
+                };
+                case (null){};
+            };
         };
+
+        private func assignPositionText(sortedEntries : List.List<Types.FantasyLeaderboardEntry>) : List.List<Types.FantasyLeaderboardEntry> {
+            var position = 1;
+            var previousScore : ?Int8 = null;
+            var currentPosition = 1;
+
+            func updatePosition(entry : Types.FantasyLeaderboardEntry) : Types.FantasyLeaderboardEntry {
+            if (previousScore == null) {
+                previousScore := ?entry.score;
+                let updatedEntry = {
+                entry with position = position;
+                positionText = Int.toText(position);
+                };
+                currentPosition += 1;
+                return updatedEntry;
+            } else if (previousScore == ?entry.score) {
+                currentPosition += 1;
+                return { entry with position = position; positionText = "-" };
+            } else {
+                position := currentPosition;
+                previousScore := ?entry.score;
+                let updatedEntry = {
+                entry with position = position;
+                positionText = Int.toText(position);
+                };
+                currentPosition += 1;
+                return updatedEntry;
+            };
+            };
+
+            return List.map(sortedEntries, updatePosition);
+        };  
 
         public func getStableLeaderboards() : [Types.FantasyLeaderboard] {
             return leaderboards;

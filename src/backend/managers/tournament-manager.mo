@@ -48,7 +48,11 @@ module {
                   tournamentId = dto.tournamentId; 
                   year = foundInstance.year; 
                   populated = foundInstance.populated; 
-                  golfCourseId = foundInstance.golfCourseId
+                  golfCourseId = foundInstance.golfCourseId;
+                  startDate = foundInstance.startDate;
+                  endDate = foundInstance.endDate;
+                  leaderboard = foundInstance.leaderboard;
+                  stage = foundInstance.stage;
                 });
             };
             case (null){

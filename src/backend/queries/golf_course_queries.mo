@@ -13,6 +13,7 @@ module GolfCourseQueries {
         founded: Int;
         countryId: Ids.CountryId;
         holes: [GolfHole];
+        par: Nat8;
     };
 
     public type GolfHole = {
@@ -38,6 +39,7 @@ module GolfCourseQueries {
         totalHoles: Nat8;
         founded: Int;
         countryId: Ids.CountryId;
+        par: Nat8;
     };
     
 }
