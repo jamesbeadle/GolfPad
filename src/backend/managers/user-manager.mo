@@ -359,8 +359,6 @@ module {
               var swap2Used = entry.swap2Used;
               var swap3Used = entry.swap3Used;
 
-              //TODO actually swap the golfer 
-
               switch(round){
                 case (1){
                   swap1Used := true;
@@ -375,24 +373,46 @@ module {
               };
 
               var hole1GolferId = entry.hole1GolferId;
-              var hole2GolferId = entry.hole1GolferId;
-              var hole3GolferId = entry.hole1GolferId;
-              var hole4GolferId = entry.hole1GolferId;
-              var hole5GolferId = entry.hole1GolferId;
-              var hole6GolferId = entry.hole1GolferId;
-              var hole7GolferId = entry.hole1GolferId;
-              var hole8GolferId = entry.hole1GolferId;
-              var hole9GolferId = entry.hole1GolferId;
-              var hole10GolferId = entry.hole1GolferId;
-              var hole11GolferId = entry.hole1GolferId;
-              var hole12GolferId = entry.hole1GolferId;
-              var hole13GolferId = entry.hole1GolferId;
-              var hole14GolferId = entry.hole1GolferId;
-              var hole15GolferId = entry.hole1GolferId;
-              var hole16GolferId = entry.hole1GolferId;
-              var hole17GolferId = entry.hole1GolferId;
-              var hole18GolferId = entry.hole1GolferId;
-              
+              var hole2GolferId = entry.hole2GolferId;
+              var hole3GolferId = entry.hole3GolferId;
+              var hole4GolferId = entry.hole4GolferId;
+              var hole5GolferId = entry.hole5GolferId;
+              var hole6GolferId = entry.hole6GolferId;
+              var hole7GolferId = entry.hole7GolferId;
+              var hole8GolferId = entry.hole8GolferId;
+              var hole9GolferId = entry.hole9GolferId;
+              var hole10GolferId = entry.hole10GolferId;
+              var hole11GolferId = entry.hole11GolferId;
+              var hole12GolferId = entry.hole12GolferId;
+              var hole13GolferId = entry.hole13GolferId;
+              var hole14GolferId = entry.hole14GolferId;
+              var hole15GolferId = entry.hole15GolferId;
+              var hole16GolferId = entry.hole16GolferId;
+              var hole17GolferId = entry.hole17GolferId;
+              var hole18GolferId = entry.hole18GolferId;
+
+              switch (dto.newGolferHole) {
+                  case (1) { hole1GolferId := dto.newGolferId; };
+                  case (2) { hole2GolferId := dto.newGolferId; };
+                  case (3) { hole3GolferId := dto.newGolferId; };
+                  case (4) { hole4GolferId := dto.newGolferId; };
+                  case (5) { hole5GolferId := dto.newGolferId; };
+                  case (6) { hole6GolferId := dto.newGolferId; };
+                  case (7) { hole7GolferId := dto.newGolferId; };
+                  case (8) { hole8GolferId := dto.newGolferId; };
+                  case (9) { hole9GolferId := dto.newGolferId; };
+                  case (10) { hole10GolferId := dto.newGolferId; };
+                  case (11) { hole11GolferId := dto.newGolferId; };
+                  case (12) { hole12GolferId := dto.newGolferId; };
+                  case (13) { hole13GolferId := dto.newGolferId; };
+                  case (14) { hole14GolferId := dto.newGolferId; };
+                  case (15) { hole15GolferId := dto.newGolferId; };
+                  case (16) { hole16GolferId := dto.newGolferId; };
+                  case (17) { hole17GolferId := dto.newGolferId; };
+                  case (18) { hole18GolferId := dto.newGolferId; };
+                  case (_) {};
+              };
+
               return {
                 createdOn = foundPrediction.createdOn;
                 hole10GolferId = hole10GolferId;
