@@ -140,7 +140,18 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
-    //validate if the prediction can go in 
+    let tournamentInstance = tournamentManager.getTournamentInstance({ tournamentId = dto.tournamentId; year = dto.year; });
+
+    switch(tournamentInstance){
+      case (#ok foundTournament){
+        if(foundTournament.stage != #NotStarted){
+          return #err(#NotAllowed);
+        }
+      };
+      case (#err error){
+        return #err(error)
+      }
+    };
 
     let user = userManager.getProfile(principalId);
     switch(user){
@@ -150,7 +161,7 @@ actor Self {
       case (#err error){
         return #err(error);
       }
-    }
+    };
   };
 
   public shared ({ caller }) func swapGolfer(dto: UserCommands.SwapGolfer) : async Result.Result<(), Enums.Error> {
