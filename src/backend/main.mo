@@ -141,6 +141,8 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
+    //TODO Ensure the scorecard contains no duplicate golfer ids
+
     let tournamentInstance = tournamentManager.getTournamentInstance({ tournamentId = dto.tournamentId; year = dto.year; });
 
     switch(tournamentInstance){
@@ -168,6 +170,10 @@ actor Self {
   public shared ({ caller }) func swapGolfer(dto: UserCommands.SwapGolfer) : async Result.Result<(), Enums.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
+
+    //TODO ensure that the player selected is not already in your golf scorecard
+    
+    //TODO ensure the golfer has not already had an existing birdie or better on the hole being selected
 
     let tournamentInstance = tournamentManager.getTournamentInstance({ tournamentId = dto.tournamentId; year = dto.year });
     switch(tournamentInstance){
