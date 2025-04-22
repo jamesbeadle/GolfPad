@@ -26,14 +26,19 @@
 {#if isLoading}
     <FullScreenSpinner message="Loading..." />
 {:else if $authSignedInStore}
-    {#if $userIdCreatedStore?.data}
-        <Navigation expanded={isMenuOpen} {toggleNav}/>
-        <Header {toggleNav} />
-        {@render children()}
-    {:else}
+<div class="bg-white">
+    <Navigation expanded={isMenuOpen} {toggleNav}/>
+    <Header {toggleNav} />
+    <!-- {#if $userIdCreatedStore?.data} -->
+        
+            {@render children()}
+    <!-- {:else}
         <NewUser />
-    {/if}
+    {/if} -->
+    </div>
 {:else}
+    <Navigation expanded={isMenuOpen} {toggleNav}/>
+    <Header {toggleNav} />
     <Landing />
 {/if}
 

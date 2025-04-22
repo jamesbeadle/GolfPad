@@ -1,7 +1,7 @@
 <script lang="ts">
   import LoadingDots from "./loading-dots.svelte";
   interface Props {
-    message: string;
+    message?: string;
   }
   let { message }: Props = $props();
 </script>

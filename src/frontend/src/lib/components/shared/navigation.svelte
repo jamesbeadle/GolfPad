@@ -18,8 +18,8 @@
       { name: 'HOME', route: '/', auth: false },
       { name: 'WHITEPAPER', route: '/whitepaper', auth: false },
       { name: 'GAME RULES', route: '/game-rules', auth: false },
-      { name: 'PROFILE', route: '/profile', auth: false },
-      { name: 'SIGN OUT', route: '/sign-out', auth: true }
+      { name: 'PROFILE', route: '/profile', auth: true },
+      { name: 'SIGN OUT', route: '/', auth: true }
     ];
   
     function closeNav() {
@@ -32,19 +32,17 @@
     }
 
     async function handleMenuItemClick(item: (typeof navItems)[number]) {
-    if (item.name === "Sign Out") {
+    if (item.name === "SIGN OUT") {
       await signOut();
       await goto("/", { replaceState: true });
       toggleNav();
+      console.log("signing out");
       return;
     }
     await goto(item.route);
       toggleNav();
     }
 
-    function handleLogout(){
-      authStore.signOut();
-    }
 </script>
   
 <style>
@@ -89,11 +87,10 @@
       <div class="flex flex-col items-start pl-10 nav-content">
         {#each navItems as item}
           {#if (item.auth && $authSignedInStore || !item.auth)}
-            
             {#if item.name == 'PROFILE'}
               <button
                 onclick={() => handleMenuItemClick(item)}
-                class="text-3xl font-bold text-white lg:text-6xl condensed">
+                class="text-3xl font-bold text-white hover:text-black lg:text-6xl condensed">
                   <span class="flex flex-row items-center">
                     <ProfileIcon className='w-6 lg:w-20 mr-2' fill='black' />
                     PROFILE
@@ -102,7 +99,7 @@
             {:else if item.route == 'sign-out'}
               <div class="nav-item expanded">
                 <button
-                  onclick={handleLogout}
+                  onclick={() => handleMenuItemClick(item)}
                   class="text-3xl font-bold text-black lg:text-6xl condensed">
                     SIGN OUT
                 </button>
@@ -111,7 +108,7 @@
               <div class="nav-item expanded">
                 <button
                   onclick={() => handleMenuItemClick(item)}
-                  class="text-3xl font-bold text-white lg:text-6xl condensed">
+                  class="text-3xl font-bold text-white hover:text-black lg:text-6xl condensed">
                   {item.name}
                 </button>
               </div>

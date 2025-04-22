@@ -39,7 +39,7 @@
 
   .widget-spinner {
     border: 5px solid rgba(255, 255, 255, 0.3);
-    border-top: 5px solid white;
+    border-top: 5px solid var(--BrandYellow);
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -54,13 +54,13 @@
   }
 
   .loading-text {
-    color: white;
+    color: black;
     font-size: 1.125rem;
     text-align: center;
   }
 
   .dots-container { 
-    color: white;
+    color: black;
     font-size: 1.125rem;
     display: flex;
     align-items: center;

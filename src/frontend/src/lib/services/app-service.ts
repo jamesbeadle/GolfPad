@@ -6,7 +6,7 @@ import type { AppStatus } from "../../../../declarations/backend/backend.did";
 export class AppService {
   constructor() {}
 
-  async getAppStatus(): Promise<AppStatus| undefined> {
+  async getAppStatus(): Promise<AppStatus | undefined> {
     const identityActor = await ActorFactory.createIdentityActor(
       authStore,
       process.env.BACKEND_CANISTER_ID ?? "",

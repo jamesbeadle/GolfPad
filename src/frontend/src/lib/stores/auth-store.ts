@@ -54,7 +54,6 @@ const initAuthStore = (): AuthStore => {
       // eslint-disable-next-line no-async-promise-executor
       new Promise<void>(async (resolve, reject) => {
         authClient = authClient ?? (await createAuthClient());
-        console.log(domain);
         const identityProvider = domain;
         await authClient?.login({
           maxTimeToLive: AUTH_MAX_TIME_TO_LIVE,

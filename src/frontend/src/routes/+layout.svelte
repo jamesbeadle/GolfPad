@@ -59,12 +59,12 @@
 
 {#if browser && isLoading}
   <div in:fade>
-    <FullScreenSpinner  message='Loading Football God' />
+    <FullScreenSpinner  message='Loading GolfPad' />
   </div>
 {:else}
-  <div class="flex flex-col min-h-screen bg-white default-text">
+  <div class="flex flex-col min-h-screen default-text">
     <LayoutController>
-      <div class="mx-4 mt-6">
+      <div class="mx-4 mt-2">
         {@render children()}
       </div>
     </LayoutController>

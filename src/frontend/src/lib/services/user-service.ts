@@ -7,6 +7,7 @@ import type {
   Profile,
   UpdateProfilePicture,
   UpdateUsername,
+  IsUsernameValid
 } from "../../../../declarations/backend/backend.did";
 import { isError } from "$lib/utils/helpers";
 
@@ -35,11 +36,19 @@ export class UserService {
     return result.ok;
   } */
 
-  // async isUsernameAvailable(
-  //   dto: IsUsernameAvailable,
-  // ): Promise<UsernameAvailable> {
-  //   return false; //TODO
-  // }
+  async isUsernameValid(dto: IsUsernameValid): Promise<boolean> {
+    try{
+      const identityActor: any = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? "",
+      );
+      const result = await identityActor.isUsernameValid(dto);
+      return result.ok;
+    } catch (error) {
+      console.error("Error checking if username is valid:", error);
+      return false;
+    }
+  }
 
   //Golfer Profile Commands:
 
@@ -91,11 +100,12 @@ export class UserService {
       process.env.BACKEND_CANISTER_ID ?? "",
     );
     const identity = get(authStore).identity;
-    if (identity){
-      try{
+    if (identity) {
+      try {
         const principalId = identity.getPrincipal().toString();
         const result = await identityActor.isAdmin(principalId);
-        if (isError(result)) throw new Error("Failed to check if user is admin");
+        if (isError(result))
+          throw new Error("Failed to check if user is admin");
         return result.ok;
       } catch (error) {
         console.error("Error checking if user is admin:", error);

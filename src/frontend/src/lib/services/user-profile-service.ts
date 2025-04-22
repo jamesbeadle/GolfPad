@@ -17,7 +17,7 @@ export const initUserProfile = async ({
 
   try {
     if (!get(authSignedInStore)) return { result: "skip" };
-    
+
     const profile = await userStore.getProfile();
     console.log("profile in initUserProfile", profile);
     if (profile) {

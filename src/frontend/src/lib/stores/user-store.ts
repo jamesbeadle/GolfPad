@@ -3,12 +3,14 @@ import { getFileExtensionFromFile, isError } from "$lib/utils/helpers";
 import { writable } from "svelte/store";
 import { ActorFactory } from "$lib/utils/actor.factory";
 import { UserService } from "$lib/services/user-service";
+import { userIdCreatedStore } from "$lib/stores/user-control-store";
 import type {
   GetProfile,
   Profile,
   UpdateProfilePicture,
   UpdateUsername,
   CreateProfile,
+  IsUsernameValid
 } from "../../../../declarations/backend/backend.did";
 
 function createUserStore() {
@@ -37,25 +39,16 @@ function createUserStore() {
       process.env.BACKEND_CANISTER_ID ?? "",
     );
 
-    authStore.subscribe(async (user) => {
-      let principalId = user.identity?.getPrincipal().toString();
-      if (!principalId) {
-        return;
-      }
-
-      let dto: GetProfile = {
-        principalId,
-      };
-
-      let getProfileResponse = await identityActor.getProfile(dto);
-      let error = isError(getProfileResponse);
-      if (error) {
-        console.error("Error fetching user profile");
-        return;
-      }
-      let profileData = getProfileResponse.ok;
-      set(profileData);
-    });
+    let getProfileResponse = await identityActor.getProfile({});
+    let error = isError(getProfileResponse);
+    if (error) {
+      console.error("Error fetching user profile");
+      throw new Error("Failed to fetch user profile");
+      return;
+    }
+    let profileData = getProfileResponse.ok;
+    set(profileData);
+    userIdCreatedStore.set({ data: profileData.principalId, certified: true });
   }
 
   //User Query Functions
@@ -74,21 +67,15 @@ function createUserStore() {
     return getProfileResponse.ok;
   }
 
-
-/*   async function getUpcomingGames(
+  /*   async function getUpcomingGames(
     dto: GetUpcomingGames,
   ): Promise<UpcomingGames> {
     return new UserService().getUpcomingGames(dto);
   } */
 
-
-/*   async function isUsernameAvailable(
-    dto: IsUsernameAvailable,
-  ): Promise<UsernameAvailable> {
-    return new UserService().isUsernameAvailable(dto);
-  } */
-
-
+  async function isUsernameValid(dto: IsUsernameValid): Promise<boolean> {
+    return new UserService().isUsernameValid(dto);
+  }
 
   //User Commands Functions
 
@@ -99,7 +86,6 @@ function createUserStore() {
   async function updateUsername(dto: UpdateUsername): Promise<any> {
     return new UserService().updateUsername(dto);
   }
-
 
   async function updateProfilePicture(
     principalId: string,
@@ -149,7 +135,6 @@ function createUserStore() {
     return new UserService().isAdmin();
   }
 
-
   return {
     subscribe,
     sync,
@@ -159,6 +144,7 @@ function createUserStore() {
     updateUsername,
     updateProfilePicture,
     isAdmin,
+    isUsernameValid,
   };
 }
 

@@ -1,5 +1,4 @@
 import * as FlagIcons from "svelte-flag-icons";
-import type { Neuron } from "../../../../declarations/backend/backend.did";
 
 export function uint8ArrayToBase64(bytes: Uint8Array): string {
   const binary = Array.from(bytes)
@@ -750,6 +749,3 @@ export function isUsernameValid(username: string): boolean {
   return /^[a-zA-Z0-9]+$/.test(username);
 }
 
-export function sortByHighestNeuron(a: Neuron, b: Neuron): number {
-  return Number(b.cached_neuron_stake_e8s) - Number(a.cached_neuron_stake_e8s);
-}
