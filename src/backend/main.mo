@@ -396,6 +396,11 @@ actor Self {
     return tournamentManager.getTournament(dto);
   };
 
+  public shared query ({ caller }) func getTournamentInstance(dto: TournamentQueries.GetTournamentInstance) : async Result.Result<TournamentQueries.TournamentInstance, Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    return tournamentManager.getTournamentInstance(dto);
+  };
+
   public shared query ({ caller }) func listTournaments(dto : TournamentQueries.ListTournaments) : async Result.Result<TournamentQueries.Tournaments, Enums.Error> {
     assert not Principal.isAnonymous(caller);
     return tournamentManager.listTournaments(dto);
