@@ -21,6 +21,22 @@ module TournamentQueries {
         year: Nat16;
         populated: Bool;
         golfCourseId: Types.GolfCourseId;
+        startDate: Int;
+        endDate: Int;
+        leaderboard: TournamentLeaderboard;
+        stage: Types.TournamentStage;
+    };
+
+    public type TournamentLeaderboard = {
+        totalEntries: Nat;
+        entries: [TournamentLeaderboardEntry];
+    };
+
+    public type TournamentLeaderboardEntry = {
+        golferId: Types.GolferId;
+        tournamentId: Types.TournamentId;
+        rounds: [Types.GolfRound];
+        totalShots: Nat;
     };
 
     public type ListTournaments = {

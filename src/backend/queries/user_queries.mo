@@ -56,6 +56,9 @@ module UserQueries {
         hole16Score: Nat8;
         hole17Score: Nat8;
         hole18Score: Nat8;
+        swap1Used: Bool;
+        swap2Used: Bool;
+        swap3Used: Bool;
     };
 
     public type ListPredictions = {
@@ -81,6 +84,10 @@ module UserQueries {
         principalId: Ids.PrincipalId;
         tournamentId: Types.TournamentId;
         year: Nat16;
+    };
+    
+    public type IsUsernameValid = {
+        username : Text;
     };
 }
 

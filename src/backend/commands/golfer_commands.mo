@@ -11,7 +11,7 @@ module GolferCommands {
     };
 
     public type UpdateGolfer = {
-        id: Types.GolferId;
+        golferId: Types.GolferId;
         firstName: Text;
         lastName: Text;
         nationality: Ids.CountryId;

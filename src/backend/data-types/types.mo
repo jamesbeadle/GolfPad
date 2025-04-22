@@ -58,6 +58,9 @@ module FantasyGolfTypes {
         hole18Score: Nat8;
         totalShots: Nat8;
         totalScore: Int8;
+        swap1Used: Bool;
+        swap2Used: Bool;
+        swap3Used: Bool;
     };
 
     public type Golfer = {
@@ -73,10 +76,8 @@ module FantasyGolfTypes {
         name: Text;
         holes: [GolfHole];
         par: Nat8;
-        yardages: Nat16; 
+        totalYardage: Nat16; 
         founded : Int;
-        mainImage : ?Blob;
-        bannerImage : ?Blob;
         countryId : Ids.CountryId;
     };
 
@@ -152,7 +153,9 @@ module FantasyGolfTypes {
 
     public type FantasyLeaderboard = {
         tournamentId: TournamentId;
+        year: Nat16;
         entries: [FantasyLeaderboardEntry];
+        totalEntries : Nat;
     };
 
     public type FantasyLeaderboardEntry = {
@@ -161,6 +164,8 @@ module FantasyGolfTypes {
         score: Int8;
         shots: Nat8;
         holes: [FantasyPredictionHole];
+        position : Nat;
+        positionText : Text;
     };
 
     public type FantasyPredictionHole = {
