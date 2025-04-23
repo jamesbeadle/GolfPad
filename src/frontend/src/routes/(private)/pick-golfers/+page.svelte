@@ -1,23 +1,81 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { predictionStore } from "$lib/stores/prediction-store";
+    import type { GolferSummary, SubmitPrediction } from "../../../../../declarations/backend/backend.did";
+    import { toasts } from "$lib/stores/toasts-store";
 
     import FullScreenSpinner from "$lib/components/shared/full-screen-spinner.svelte";
     import BrandPanel from "$lib/components/shared/brand-panel.svelte";
+    import HolesGird from "$lib/components/pick-golfers/holes-gird.svelte";
 
     let loading = $state(false);
+    let selectedGolfers = $state<Record<number, GolferSummary | null>>({});
 
     async function getPrediction() {
-        let dto = {
-            tournamentId: 0,
-            year: 2025
+        loading = true;
+        try {
+            let dto = {
+                tournamentId: 0,
+                year: 2025
+            }
+            let prediction = await predictionStore.getPrediction(dto);
+            console.log(prediction);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            loading = false;
         }
-        let prediction = await predictionStore.getPrediction(dto);
-        console.log(prediction);
     }
 
     async function submitPredictions() {
-        console.log("submitPredictions");
+        loading = true;
+        try {
+            let dto: SubmitPrediction = {
+                year: 2025,
+                tournamentId: 0,
+                hole1GolferId: selectedGolfers[1]!.id,
+                hole2GolferId: selectedGolfers[2]!.id,
+                hole3GolferId: selectedGolfers[3]!.id,
+                hole4GolferId: selectedGolfers[4]!.id,
+                hole5GolferId: selectedGolfers[5]!.id,
+                hole6GolferId: selectedGolfers[6]!.id,
+                hole7GolferId: selectedGolfers[7]!.id,
+                hole8GolferId: selectedGolfers[8]!.id,
+                hole9GolferId: selectedGolfers[9]!.id,
+                hole10GolferId: selectedGolfers[10]!.id,
+                hole11GolferId: selectedGolfers[11]!.id,
+                hole12GolferId: selectedGolfers[12]!.id,
+                hole13GolferId: selectedGolfers[13]!.id,
+                hole14GolferId: selectedGolfers[14]!.id,
+                hole15GolferId: selectedGolfers[15]!.id,
+                hole16GolferId: selectedGolfers[16]!.id,
+                hole17GolferId: selectedGolfers[17]!.id,
+                hole18GolferId: selectedGolfers[18]!.id,
+            }
+            let result = await predictionStore.submitPrediction(dto);
+
+            console.log("submitPredictions", result);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            loading = false;
+        }
+    }
+
+    function handleGolferSelected(holeNumber: number, golfer: GolferSummary | null) {
+        const isDuplicate = Object.values(selectedGolfers).some(
+            selectedGolfer => selectedGolfer?.id === golfer?.id
+        );
+        if (isDuplicate) {
+            toasts.addToast({
+                message: "You cannot select the same golfer twice",
+                type: "info",
+                duration: 5000
+            });
+        }
+        else {
+            selectedGolfers[holeNumber] = golfer;
+        }
     }
 
     onMount(async () => {
@@ -30,28 +88,13 @@
 {:else}
     <BrandPanel title="PICK GOLFERS" subTitle="Choose your golfers for the next tournament">
         <div class="space-y-8">
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-                {#each Array.from({ length: 18 }, (_, i) => i + 1) as holeNumber}
-                    <div class="overflow-hidden bg-white rounded-lg shadow">
-                        <div class="px-4 py-5 sm:p-6">
-                            <h3 class="text-lg font-medium leading-6 text-gray-900">Hole {holeNumber}</h3>
-                            <div class="mt-4">
-                                <button
-                                    type="button"
-                                    class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md shadow-sm bg-BrandYellow hover:border-BrandForest focus:outline-none"
-                                >
-                                    Select Golfer
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                {/each}
-            </div>
+            <HolesGird holes={Array.from({ length: 18 }, (_, i) => i + 1)} selectedGolfers={selectedGolfers} onGolferSelected={handleGolferSelected}  />
 
             <div class="flex justify-center">
                 <button
                     class="brand-button-forest"
                     onclick={submitPredictions}
+                    disabled={Object.keys(selectedGolfers).length !== 18}
                 >
                     Submit Predictions
                 </button>

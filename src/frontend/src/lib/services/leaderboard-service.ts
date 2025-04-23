@@ -9,7 +9,9 @@ import type {
 export class LeaderboardService {
   constructor() {}
 
-  async getLeaderboard(dto: GetFantasyLeaderboard): Promise<FantasyLeaderboard> {
+  async getLeaderboard(
+    dto: GetFantasyLeaderboard,
+  ): Promise<FantasyLeaderboard> {
     try {
       const identityActor: any = await ActorFactory.createIdentityActor(
         authStore,

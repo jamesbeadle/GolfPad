@@ -1,32 +1,24 @@
 import type {
-  GameGolferSummaries,
-  GetGameGolferSummaries,
   GetGolfer,
-  GetGolfers,
   Golfer,
   Golfers,
+  ListGolfers,
+  GolferSummary,
 } from "../../../../declarations/backend/backend.did";
 import { GolferService } from "$lib/services/golfer-service";
 
 function createGolferStore() {
-  async function getGolfers(dto: GetGolfers): Promise<Golfers> {
-    return new GolferService().getGolfers(dto);
+  async function listGolfers(dto: ListGolfers): Promise<Golfers> {
+    return new GolferService().listGolfers(dto);
   }
 
   async function getGolfer(dto: GetGolfer): Promise<Golfer> {
     return new GolferService().getGolfer(dto);
   }
 
-  async function getGameGolferSummaries(
-    dto: GetGameGolferSummaries,
-  ): Promise<GameGolferSummaries> {
-    return new GolferService().getGameGolferSummaries(dto);
-  }
-
   return {
-    getGolfers,
+    listGolfers,
     getGolfer,
-    getGameGolferSummaries,
   };
 }
 

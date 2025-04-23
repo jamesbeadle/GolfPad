@@ -7,7 +7,7 @@ import type {
   Profile,
   UpdateProfilePicture,
   UpdateUsername,
-  IsUsernameValid
+  IsUsernameValid,
 } from "../../../../declarations/backend/backend.did";
 import { isError } from "$lib/utils/helpers";
 
@@ -37,7 +37,7 @@ export class UserService {
   } */
 
   async isUsernameValid(dto: IsUsernameValid): Promise<boolean> {
-    try{
+    try {
       const identityActor: any = await ActorFactory.createIdentityActor(
         authStore,
         process.env.BACKEND_CANISTER_ID ?? "",

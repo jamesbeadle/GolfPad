@@ -10,7 +10,7 @@ import type {
   UpdateProfilePicture,
   UpdateUsername,
   CreateProfile,
-  IsUsernameValid
+  IsUsernameValid,
 } from "../../../../declarations/backend/backend.did";
 
 function createUserStore() {
