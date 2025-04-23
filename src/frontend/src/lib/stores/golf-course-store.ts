@@ -2,43 +2,34 @@ import { GolfCoursesService } from "$lib/services/golf-course-service";
 import type {
   CreateGolfCourse,
   GetGolfCourse,
-  GetGolfCourses,
-  GetGolfCourseTees,
+  ListGolfCourses,
   GolfCourse,
   GolfCourses,
-  GolfCourseTees,
   UpdateGolfCourse,
 } from "../../../../declarations/backend/backend.did";
 
 function createGolfCourseStore() {
-  async function getGolfCourses(dto: GetGolfCourses): Promise<GolfCourses> {
-    return await new GolfCoursesService().getGolfCourses(dto);
+  async function listGolfCourses(dto: ListGolfCourses): Promise<GolfCourses | undefined> {
+    return await new GolfCoursesService().listGolfCourses(dto);
   }
 
-  async function getGolfCourse(dto: GetGolfCourse): Promise<GolfCourse> {
+  async function getGolfCourse(dto: GetGolfCourse): Promise<GolfCourse | undefined> {
     return await new GolfCoursesService().getGolfCourse(dto);
   }
 
-  async function getGolfCourseTees(
-    dto: GetGolfCourseTees,
-  ): Promise<GolfCourseTees> {
-    return await new GolfCoursesService().getGolfCourseTees(dto);
+  async function createGolfCourse(dto: CreateGolfCourse): Promise<any> {
+    return await new GolfCoursesService().createGolfCourse(dto);
   }
 
-  async function addGolfCourse(dto: CreateGolfCourse): Promise<void> {
-    return await new GolfCoursesService().addGolfCourse(dto);
-  }
-
-  async function updateGolfCourse(dto: UpdateGolfCourse): Promise<void> {
+  async function updateGolfCourse(dto: UpdateGolfCourse): Promise<any> {
     return await new GolfCoursesService().updateGolfCourse(dto);
   }
 
   return {
     getGolfCourse,
-    getGolfCourses,
-    addGolfCourse,
+    listGolfCourses,
+    createGolfCourse,
     updateGolfCourse,
-    getGolfCourseTees,
   };
 }
 export const golfCourseStore = createGolfCourseStore();

@@ -1,62 +1,41 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { goto } from "$app/navigation";
-    import { authStore } from "$lib/stores/auth-store";
     import { golferStore } from "$lib/stores/golfer-store";
     import { toasts } from "$lib/stores/toasts-store";
-    import type { Golfers, GetGolfers } from "../../../../declarations/backend/backend.did";
+    import type { ListGolfers, Golfers } from './../../../../../../declarations/backend/backend.did.d.ts';
     
-    import Layout from "../+layout.svelte";
-    import BrandPanel from "$lib/components/shared/brand-panel.svelte";
+    import ListViewPanel from "$lib/components/shared/list-view-panel.svelte";
     import PaginationRow from "$lib/components/shared/pagination-row.svelte";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import GolfersSummaryRow from "$lib/components/golfer/golfers-summary-row.svelte";
 
-    let isLoading = true;
-    let golfers: Golfers | null = null;
-    let page = 1n;
-    let totalPages = 1n; 
-    let searchTerm = "";
+    let isLoading = $state(true);
+    let golfers: Golfers | null = $state(null);
+    let page = $state(1n);
+    let totalPages = $state(1n); 
 
     onMount( async () => {
-        loadGolfers();
+        loadGolfers(1n);
     });
-
-    async function handleSearch() {
-        page = 1n;
-        await loadGolfers();
-    }
 
     async function changePage(delta: bigint) {
         const newPage = page + delta;
         if (newPage >= 1 && newPage <= Number(totalPages)) {
             page = BigInt(newPage);
-            await loadGolfers();
+            await loadGolfers(page);
         }
     }
 
-    async function loadGolfers() {
+    async function loadGolfers(page: bigint) {
         isLoading = true;
         try {
-            const store = $authStore;
-            const principalId = store.identity?.getPrincipal();
 
-            if (!principalId) {
-                goto('/');
-                return;
-            }
-
-            let dto: GetGolfers = {
-                page,
-                principalId: principalId.toString(),
-                searchTerm
+            let dto: ListGolfers = {
+                page
             };
 
-            golfers = await golferStore.getGolfers(dto);
-            
-            if (golfers?.total && golfers?.pageSize) {
-                totalPages = BigInt(Math.ceil(Number(golfers.total) / Number(golfers.pageSize)));
-            }
+            golfers = await golferStore.listGolfers(dto);
         } catch {
             toasts.addToast({type: 'error', message: 'Error loading golfers.'});
             golfers = null;
@@ -65,35 +44,26 @@
         }
     }
 
+    function createNew() {
+        goto('/golfers/create');
+    }
+
 </script>
-<Layout>
     {#if isLoading}
         <LocalSpinner />
     {:else}
-        <BrandPanel title="GOLFERS" subTitle="FIND PLAYERS">
-            <div class="flex flex-col">
-                <label for="search" class="input-title">SEARCH FOR GOLFER</label>
-                <input
-                    id="search"
-                    placeholder="Search for a golfer..."
-                    type="text"
-                    class="text-input"
-                    bind:value={searchTerm}
-                    on:input={handleSearch}
-                />
-            </div>
+        <ListViewPanel title="GOLFERS" buttonTitle="ADD GOLFER" buttonCallback={createNew}>
             {#if golfers}
                 {#if golfers.entries.length > 0}
                     {#each golfers?.entries! as golfer}
                         <GolfersSummaryRow {golfer} />
                     {/each}
-                    <PaginationRow {changePage} {page} total={golfers.total} typeName='golfers' pageSize={golfers.pageSize} />
+                    <PaginationRow {changePage} {page} total={golfers.totalEntries} typeName='golfers' pageSize={golfers.page} />
                 {:else}
                     <p>No golfers found.</p>
                 {/if}                
             {:else}
                 <p>Error loading golfers.</p>
             {/if}
-        </BrandPanel>
+        </ListViewPanel>
     {/if}
-</Layout>

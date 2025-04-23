@@ -16,10 +16,10 @@
     onMount(async () => {
         isLoading = true;
         try{
-            const isAdmin = await userStore.isAdmin();
-            if (!isAdmin) {
-                goto('/');
-            }
+            // const isAdmin = await userStore.isAdmin();
+            // if (!isAdmin) {
+            //     goto('/');
+            // }
         } catch (error) {
             console.error(error);
         } finally {

@@ -4,15 +4,14 @@
     import { authStore } from "$lib/stores/auth-store";
     import { golfCourseStore } from "$lib/stores/golf-course-store";
     import { toasts } from "$lib/stores/toasts-store";
-    import type { GolfCourses, GetGolfCourses } from "../../../../declarations/backend/backend.did";
+    import { writable } from "svelte/store";
+    import type { ListGolfCourses, GolfCourses } from './../../../../../../declarations/backend/backend.did.d.ts';
     
-    import Layout from "../+layout.svelte";
     import GolfCourseSummaryRow from "$lib/components/golf-course/golf-course-summary-row.svelte";
     import ListViewPanel from "$lib/components/shared/list-view-panel.svelte";
     import PaginationRow from "$lib/components/shared/pagination-row.svelte";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import GolfCourseSearchFilters from "$lib/components/golf-course/golf-course-search-filters.svelte";
-    import { writable } from "svelte/store";
 
     let isLoading = true;
     let golfCourses: GolfCourses | null = null;
@@ -31,7 +30,7 @@
     async function changePage(newPage: bigint) {
         if (!golfCourses) return;
 
-        const totalPages = golfCourses.total / pageSize + (golfCourses.total % pageSize > 0n ? 1n : 0n);
+        const totalPages = golfCourses.totalEntries / pageSize + (golfCourses.totalEntries % pageSize > 0n ? 1n : 0n);
         if (newPage < 1n || newPage > totalPages) {
             return;
         }
@@ -42,21 +41,14 @@
     async function loadGolfCourses() {
         isLoading = true;
         try {
-            const store = $authStore;
-            const principalId = store.identity?.getPrincipal();
-
-            if (!principalId) {
-                goto('/');
-                return;
-            }
-
-            let dto: GetGolfCourses = {
-                page: page,
-                principalId: principalId.toString(),
-                searchTerm: $searchTerm
+            let dto: ListGolfCourses = {
+                page: page
             };
 
-            golfCourses = await golfCourseStore.getGolfCourses(dto);
+            const result = await golfCourseStore.listGolfCourses(dto);
+            if (result) {
+                golfCourses = result;
+            }
         } catch {
             toasts.addToast({type: 'error', message: 'Error loading golf courses.'});
             golfCourses = null;
@@ -66,7 +58,7 @@
     }
 
 </script>
-<Layout>
+
     {#if isLoading}
         <LocalSpinner />
     {:else}
@@ -79,13 +71,12 @@
                         <GolfCourseSummaryRow {golfCourse} {searchTerm} />
                     {/each}
                 {:else}
-                    <p>No golf courses found.</p>
+                    <p class="text-center text-black">No golf courses found.</p>
                 {/if}                
 
-                <PaginationRow {changePage} {page} {pageSize} typeName="courses" total={golfCourses.total} />
+                <PaginationRow {changePage} {page} {pageSize} typeName="courses" total={golfCourses.totalEntries} />
             {:else}
-                <p>Error loading golf courses.</p>
+                <p class="text-center text-black">Error loading golf courses.</p>
             {/if}
         </ListViewPanel>
     {/if}
-</Layout>
