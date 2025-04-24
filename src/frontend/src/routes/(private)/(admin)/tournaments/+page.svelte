@@ -3,10 +3,9 @@
     import { goto } from "$app/navigation";
     import { tournamentStore } from "$lib/stores/tournament-store";
     import { toasts } from "$lib/stores/toasts-store";
-    import { writable } from "svelte/store";
     import type { ListTournaments, Tournaments } from '../../../../../../declarations/backend/backend.did.js';
     
-    import GolfCourseSummaryRow from "$lib/components/golf-course/golf-course-summary-row.svelte";
+    import TournamentSummaryRow from "$lib/components/tournaments/tournament-summary-row.svelte";
     import ListViewPanel from "$lib/components/shared/list-view-panel.svelte";
     import PaginationRow from "$lib/components/shared/pagination-row.svelte";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
@@ -15,7 +14,6 @@
     let tournaments: Tournaments | null = $state(null);
     let page = $state(1n); 
     let pageSize = $state(10n); 
-    let searchTerm = $state('');
 
     onMount( async () => {
         loadTournaments();
@@ -54,7 +52,6 @@
             isLoading = false;
         }
     }
-
 </script>
 
     {#if isLoading}
@@ -62,10 +59,9 @@
     {:else}
         <ListViewPanel title="TOURNAMENTS" buttonTitle="ADD TOURNAMENT" buttonCallback={createNew}>
             {#if tournaments}
-
                 {#if tournaments.entries.length > 0}
                     {#each tournaments?.entries! as tournament}
-                        <GolfCourseSummaryRow {tournament} {searchTerm} />
+                        <TournamentSummaryRow {tournament} />
                     {/each}
                 {:else}
                     <p class="text-center text-black">No tournaments found.</p>

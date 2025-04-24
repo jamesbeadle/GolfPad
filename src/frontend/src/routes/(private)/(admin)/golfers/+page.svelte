@@ -36,11 +36,18 @@
             };
 
             golfers = await golferStore.listGolfers(dto);
+            sortGolfers();
         } catch {
             toasts.addToast({type: 'error', message: 'Error loading golfers.'});
             golfers = null;
         } finally {
             isLoading = false;
+        }
+    }
+
+    async function sortGolfers() {
+        if (golfers) {
+            golfers.entries.sort((a, b) => Number(a.worldRanking) - Number(b.worldRanking));
         }
     }
 
@@ -60,10 +67,10 @@
                     {/each}
                     <PaginationRow {changePage} {page} total={golfers.totalEntries} typeName='golfers' pageSize={golfers.page} />
                 {:else}
-                    <p>No golfers found.</p>
+                    <p class="text-center text-black">No golfers found.</p>
                 {/if}                
             {:else}
-                <p>Error loading golfers.</p>
+                <p class="text-center text-black">Error loading golfers.</p>
             {/if}
         </ListViewPanel>
     {/if}

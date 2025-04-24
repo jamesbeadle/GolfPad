@@ -1,10 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { goto } from "$app/navigation";
-    import { authStore } from "$lib/stores/auth-store";
     import { golfCourseStore } from "$lib/stores/golf-course-store";
     import { toasts } from "$lib/stores/toasts-store";
-    import { writable } from "svelte/store";
     import type { ListGolfCourses, GolfCourses } from './../../../../../../declarations/backend/backend.did.d.ts';
     
     import GolfCourseSummaryRow from "$lib/components/golf-course/golf-course-summary-row.svelte";
@@ -17,7 +15,6 @@
     let golfCourses: GolfCourses | null = $state(null);
     let page = $state(1n); 
     let pageSize = $state(10n); 
-    let searchTerm = writable('');
 
     onMount( async () => {
         loadGolfCourses();
@@ -65,15 +62,13 @@
         <GolfCourseSearchFilters />
         <ListViewPanel title="GOLF COURSES" buttonTitle="ADD GOLF COURSE" buttonCallback={createNew}>
             {#if golfCourses}
-
                 {#if golfCourses.entries.length > 0}
                     {#each golfCourses?.entries! as golfCourse}
-                        <GolfCourseSummaryRow {golfCourse} {searchTerm} />
+                        <GolfCourseSummaryRow {golfCourse} />
                     {/each}
                 {:else}
                     <p class="text-center text-black">No golf courses found.</p>
                 {/if}                
-
                 <PaginationRow {changePage} {page} {pageSize} typeName="courses" total={golfCourses.totalEntries} />
             {:else}
                 <p class="text-center text-black">Error loading golf courses.</p>

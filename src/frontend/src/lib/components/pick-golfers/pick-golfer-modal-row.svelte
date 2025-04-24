@@ -2,7 +2,6 @@
     import { getFlagComponent } from "$lib/utils/helpers";
     import type { GolferSummary } from "../../../../../declarations/backend/backend.did";
     import ArrowUpIcon from "$lib/icons/arrow-up-icon.svelte";
-    import CheckmarkIcon from "$lib/icons/checkmark-icon.svelte";
     
     interface Props {
         golfer: GolferSummary;
