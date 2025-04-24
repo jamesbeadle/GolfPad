@@ -125,7 +125,7 @@
 
             <div class="flex justify-center">
                 <button
-                    class="brand-button-forest"
+                    class="brand-button-forest disabled:opacity-50"
                     onclick={submitPredictions}
                     disabled={Object.keys(selectedGolfers).length !== 18}
                 >
