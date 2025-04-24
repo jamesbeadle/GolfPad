@@ -9,7 +9,6 @@
     import PickGolferModalRow from "./pick-golfer-modal-row.svelte";
     import Modal from "$lib/components/shared/modal.svelte";
     import ModalPagination from "./modal-pagination.svelte";
-    import { mockGolfers } from "$lib/mock/mock-golfers";
     
     interface Props {
         onClose: () => void;
@@ -52,21 +51,18 @@
     });
 
     onMount(async () => {
-        //await getGolfers(page);
-        setTimeout(() => {
-            golfers = mockGolfers;
-            totalEntries = BigInt(mockGolfers.length);
-            isLoading = false;
-        }, 1000);
+        await getGolfers(page);
     });
 
     async function getGolfers(page: bigint) {
         try {
             isLoading = true;
-            // const result = await golferStore.listGolfers({ page });
-            // totalEntries = result.totalEntries;
-            // golfers = result.entries;
-            golfers = mockGolfers;
+            let result = await golferStore.listGolfers({ page });
+            console.log(result);
+            if (result) {
+                totalEntries = result.totalEntries;
+                golfers = result.entries;
+            }
             sortGolfers();
         } catch (error) {
             console.error("Error fetching golfers", error);

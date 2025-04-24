@@ -20,7 +20,7 @@ export class GolferService {
         process.env.BACKEND_CANISTER_ID ?? "",
       );
 
-      let result = await identityActor.getGolfers(dto);
+      let result = await identityActor.listGolfers(dto);
 
       if (isError(result)) {
         console.error("Error Fetching Golfers", result);

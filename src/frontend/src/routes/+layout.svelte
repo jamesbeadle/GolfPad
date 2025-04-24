@@ -31,7 +31,7 @@
     const identity = get(authStore).identity;
     if (identity) {
       try {
-        //await initUserProfile({ identity });
+        await initUserProfile({ identity });
       } catch (err) {
         console.error('Error mounting Football God:', err);
       }

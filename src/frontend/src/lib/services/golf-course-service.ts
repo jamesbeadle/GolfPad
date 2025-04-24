@@ -26,7 +26,7 @@ export class GolfCoursesService {
       return result.ok;
     } catch (error) {
       console.error("Error Getting Golf Courses", error);
-      return undefined;
+      throw error;
     }
   }
 
@@ -41,7 +41,7 @@ export class GolfCoursesService {
     return result.ok;
     } catch (error) {
       console.error("Error Getting Golf Course", error);
-      return undefined;
+      throw error;
     }
   }
 
@@ -58,7 +58,7 @@ export class GolfCoursesService {
     return result.ok;
     } catch (error) {
       console.error("Error Creating Golf Course", error);
-      return undefined;
+      throw error;
     }
   }
 
@@ -73,7 +73,7 @@ export class GolfCoursesService {
     return result.ok;
     } catch (error) {
       console.error("Error Updating Golf Course", error);
-      return undefined;
+      throw error;
     }
   }
 }

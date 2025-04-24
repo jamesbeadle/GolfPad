@@ -29,6 +29,7 @@
             }
             loadingMessage = 'Loading';
         } catch (error) {
+            console.error('Error loading layout:', error);
             goto('/', { replaceState: true });
         } finally {
             isLoading = false;

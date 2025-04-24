@@ -1,16 +1,15 @@
 import { TournamentService } from "$lib/services/tournament-service";
-import type { CreateTournament, UpdateTournamentStage, GetTournament, GetTournamentInstance, Tournament, TournamentInstance } from "../../../../declarations/backend/backend.did";
+import type { CreateTournament, UpdateTournamentStage, GetTournament, GetTournamentInstance, Tournament, TournamentInstance, ListTournaments, Tournaments } from "../../../../declarations/backend/backend.did";
 import { writable } from "svelte/store";
-
 
 function createTournamentStore() {
     const { subscribe, set } = writable<TournamentInstance[]>([]);
     
-    async function createTournament(dto: CreateTournament) {
+    async function createTournament(dto: CreateTournament) : Promise<any> {
         return new TournamentService().createTournament(dto);
     }
 
-    async function updateTournamentStage(dto: UpdateTournamentStage) {
+    async function updateTournamentStage(dto: UpdateTournamentStage) : Promise<any> {
         return new TournamentService().updateTournamentStage(dto);
     }
 
@@ -22,6 +21,10 @@ function createTournamentStore() {
         return new TournamentService().getTournamentInstance(dto);
     }
 
+    async function listTournaments(dto: ListTournaments) : Promise<Tournaments | undefined> {
+        return new TournamentService().listTournaments(dto);
+    }
+
     return {
         subscribe,
         set,
@@ -29,6 +32,7 @@ function createTournamentStore() {
         updateTournamentStage,
         getTournament,
         getTournamentInstance,
+        listTournaments
     };
 }
 

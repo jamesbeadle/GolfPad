@@ -2,9 +2,9 @@
     import { goto } from "$app/navigation";
     import { golfCourseStore } from "$lib/stores/golf-course-store";
     import { countries } from "$lib/types/countries";
+    import { toasts } from "$lib/stores/toasts-store";
     import type { CreateGolfCourse, GolfHole } from "../../../../../../../declarations/backend/backend.did";
 
-    import ConfirmModal from "$lib/components/shared/confirm-modal.svelte";
     import BrandPanel from "$lib/components/shared/brand-panel.svelte";
     import CourseInfo from "$lib/components/golf-course/create-course/course-info.svelte";
     import HolesGrid from "$lib/components/golf-course/create-course/holes-grid.svelte";
@@ -51,11 +51,11 @@
 
         try {
             await golfCourseStore.createGolfCourse(dto);
-            alert("Golf course created successfully!");
+            toasts.addToast({type: 'success', message: 'Golf course created successfully!', duration: 5000});
             goto("/golf-courses");
         } catch (error) {
             console.error("Failed to create course:", error);
-            alert("Failed to create golf course");
+            toasts.addToast({type: 'error', message: 'Failed to create golf course', duration: 5000});
         }
     }
 </script>

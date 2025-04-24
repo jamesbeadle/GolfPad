@@ -29,12 +29,11 @@
 <div class="bg-white">
     <Navigation expanded={isMenuOpen} {toggleNav}/>
     <Header {toggleNav} />
-    <!-- {#if $userIdCreatedStore?.data} -->
-        
-            {@render children()}
-    <!-- {:else}
+    {#if $userIdCreatedStore?.data}
+        {@render children()}
+     {:else}
         <NewUser />
-    {/if} -->
+    {/if}
     </div>
 {:else}
     <Navigation expanded={isMenuOpen} {toggleNav}/>

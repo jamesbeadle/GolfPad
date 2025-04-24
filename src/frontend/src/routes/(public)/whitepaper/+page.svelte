@@ -1,6 +1,4 @@
 <script lang="ts">
-  import Layout from "../../+layout.svelte";
-
   import Vision from "$lib/components/whitepaper/vision.svelte";
   import Merve from "$lib/components/whitepaper/merve.svelte";
   import SideGames from "$lib/components/whitepaper/side-games.svelte";
@@ -43,7 +41,6 @@
   }
 </script>
 
-<Layout>
   <div class="w-full h-full p-2 px-4 text-black">
     <h2 class="mt-3 mb-4 text-3xl font-black text-black md:text-5xl condensed">
       GOLFPAD WHITEPAPER
@@ -100,4 +97,3 @@
       </div>
     </div>
   </div>
-</Layout>

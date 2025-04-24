@@ -13,10 +13,10 @@
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import GolfCourseSearchFilters from "$lib/components/golf-course/golf-course-search-filters.svelte";
 
-    let isLoading = true;
-    let golfCourses: GolfCourses | null = null;
-    let page = 1n; 
-    let pageSize = 10n; 
+    let isLoading = $state(true);
+    let golfCourses: GolfCourses | null = $state(null);
+    let page = $state(1n); 
+    let pageSize = $state(10n); 
     let searchTerm = writable('');
 
     onMount( async () => {

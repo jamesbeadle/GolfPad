@@ -58,7 +58,7 @@ function createUserStore() {
       authStore,
       process.env.BACKEND_CANISTER_ID ?? "",
     );
-    let getProfileResponse = await identityActor.getProfile();
+    let getProfileResponse = await identityActor.getProfile({});
     let error = isError(getProfileResponse);
     if (error) {
       console.error("Error fetching user profile");
@@ -111,7 +111,6 @@ function createUserStore() {
 
           let dto: UpdateProfilePicture = {
             profilePicture: [uint8Array],
-            profilePictureExtension: extension,
           };
           const result = await identityActor.updateUserPicture(dto);
           if (isError(result)) {
