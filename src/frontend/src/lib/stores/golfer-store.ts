@@ -12,7 +12,7 @@ import { GolferService } from "$lib/services/golfer-service";
 
 function createGolferStore() {
   const { subscribe, set } = writable<GolferSummary[]>([]);
-  
+
   async function listGolfers(dto: ListGolfers): Promise<Golfers> {
     return new GolferService().listGolfers(dto);
   }

@@ -12,7 +12,7 @@ import { authStore } from "$lib/stores/auth-store";
 
 export class GolferService {
   constructor() {}
-  
+
   async listGolfers(dto: ListGolfers): Promise<Golfers> {
     try {
       const identityActor: any = await ActorFactory.createIdentityActor(

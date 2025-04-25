@@ -6,18 +6,22 @@ import type {
   GolfCourse,
   GolfCourses,
   UpdateGolfCourse,
-  GolfCourseSummary
+  GolfCourseSummary,
 } from "../../../../declarations/backend/backend.did";
 import { writable } from "svelte/store";
 
 function createGolfCourseStore() {
   const { subscribe, set } = writable<GolfCourseSummary[]>([]);
 
-  async function listGolfCourses(dto: ListGolfCourses): Promise<GolfCourses | undefined> {
+  async function listGolfCourses(
+    dto: ListGolfCourses,
+  ): Promise<GolfCourses | undefined> {
     return await new GolfCoursesService().listGolfCourses(dto);
   }
 
-  async function getGolfCourse(dto: GetGolfCourse): Promise<GolfCourse | undefined> {
+  async function getGolfCourse(
+    dto: GetGolfCourse,
+  ): Promise<GolfCourse | undefined> {
     return await new GolfCoursesService().getGolfCourse(dto);
   }
 
