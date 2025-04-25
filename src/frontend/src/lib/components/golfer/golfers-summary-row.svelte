@@ -1,48 +1,40 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { formatUnixDateToReadable, getImageURL } from "$lib/utils/helpers";
-    import { onMount } from "svelte";
-    import type { GolfCourseSummary, GolferSummary } from "../../../../../declarations/backend/backend.did";
+    import type { GolferSummary } from "../../../../../declarations/backend/backend.did";
+    import { getFlagComponent } from "$lib/utils/helpers";
 
-    export let golfer: GolferSummary;
-
-    let homeCourse: GolfCourseSummary | null = null
-
-    onMount(() => {
-        if(golfer.homeCourse && golfer.homeCourse[0]){
-            homeCourse = golfer.homeCourse[0]!;
-        }
-    });
-
-    function selectGolfer(){
-        goto(`/golfer/${golfer.principalId}`)
+    interface Props {
+        golfer: GolferSummary;
     }
 
+    const { golfer }: Props = $props();
+    const Flag = getFlagComponent(golfer.nationality);
+
+    function selectGolfer() {
+        goto(`/golfer/${golfer.id}`);
+    }
 </script>
 
-<div class="flew flex-row">
-    <button class="w-full" onclick={selectGolfer}>
-        <div class="w-1/4">
-            <div class="flex flex-row items-center">
-                <img src={getImageURL(golfer.profilePicture)} class="w-6 mr-2" alt={`profile-${golfer.principalId}`} />
-                <div class="flex flex-col">
-                    <p>{golfer.name}</p>
-                    <p>{formatUnixDateToReadable(golfer.joinedOn)}</p>
-                </div>
-            </div>
-        </div>
-        <div class="w-1/4">
-            <div class="flex flex-row items-center">
-                {#if homeCourse}
-                    <div class="flex flex-row items-center">
-                        <img src={getImageURL(homeCourse.mainImage)} class="w-6 mr-2" alt={`course-${homeCourse.id}`} />
-                        <div class="flex flex-col">
-                            <p>{homeCourse.name}</p>
-                        </div>
-                    </div>
+<button 
+    onclick={selectGolfer}
+    class="w-full p-4 text-left transition-colors duration-200 border-b hover:bg-gray-50"
+>
+    <div class="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+                <h3 class="text-lg font-medium truncate text-BrandForest">
+                    {golfer.firstName} {golfer.lastName}
+                </h3>
+                {#if Flag}
+                    <Flag class="w-5 h-5" />
                 {/if}
             </div>
         </div>
-
-    </button>
-</div>
+        <div class="flex items-center space-x-6">
+            <div class="flex items-center space-x-2 sm:flex-col sm:items-center sm:space-x-0">
+                <span class="text-sm font-semibold text-BrandDarkGray">World Ranking</span>
+                <p class="text-lg condensed text-BrandForest sm:mt-1">#{golfer.worldRanking}</p>
+            </div>
+        </div>
+    </div>
+</button>

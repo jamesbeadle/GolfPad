@@ -1,97 +1,89 @@
 <script lang="ts">
-  import { onDestroy } from "svelte";
-  import { fade, scale } from "svelte/transition";
-
-  export let showModal: boolean;
-  export let onClose: () => void;
-  export let useFixedPosition = false;
-
-  let scrollY: number;
-  let isMobile: boolean;
-  let isDragging = false;
-
-  $: if (typeof window !== 'undefined' && showModal) {
-    scrollY = window.scrollY;
-    isMobile = window.innerWidth < 768;
+  import Portal from 'svelte-portal';
+  import type { Snippet } from 'svelte';
+  import { quintOut } from 'svelte/easing';
+  import { fade, scale } from 'svelte/transition';
+  import { isBusy } from '$lib/stores/busy-store';
+  import { handleKeyPress } from '$lib/utils/keyboard.utils';
+  import { onMount, onDestroy } from 'svelte';
+  import CloseIcon from '$lib/icons/close-icon.svelte';
+  
+  interface Props {
+    onClose: () => void;
+    title?: string;
+    children: Snippet;
   }
 
-  $: modalTop = isMobile 
-    ? scrollY + (window.innerHeight * 0.45) 
-    : scrollY + (window.innerHeight / 2);
+  let { children, onClose, title }: Props = $props();
+  let visible = $state(true);
 
-  $: if (typeof window !== 'undefined') {
-    if (showModal) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
+  const close = () => {
+    if ($isBusy) return;
+    visible = false;
+    onClose(); 
   }
 
-  const handleKeydown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && showModal) {
-      onClose();
-    }
+  const onCloseHandler = ($event: MouseEvent | TouchEvent) => {
+    $event.stopPropagation();
+    close();
   };
 
-  if (typeof window !== "undefined") {
-    window.addEventListener("keydown", handleKeydown);
-  }
-
-  onDestroy(() => {
-    if (typeof window !== "undefined") {
-      window.removeEventListener("keydown", handleKeydown);
-      document.body.style.overflow = 'auto';
-    }
+  onMount(() => {
+    document.body.style.overflow = 'hidden';
   });
 
-  const handleBackdropClick = (e: MouseEvent) => {
-    const modalContent = document.querySelector('[role="dialog"]');
-    const target = e.target as HTMLElement;
-    if (!modalContent?.contains(target) && !isDragging) {
-      onClose();
-    }
-  };
-
-  const handleMouseDown = () => {
-    isDragging = false;
-  };
-
-  const handleMouseMove = () => {
-    isDragging = true;
-  };
-
-  const handleMouseUp = () => {
-    setTimeout(() => {
-      isDragging = false;
-    }, 0);
-  };
+  onDestroy(() => {
+    document.body.style.overflow = '';
+  });
 </script>
 
-{#if showModal}
-<div
-  class="fixed inset-0 z-50 overflow-visible bg-black bg-opacity-50 shadow-lg modal-backdrop"
-  aria-hidden="true"
-  on:click={handleBackdropClick}
-  on:mousedown={handleMouseDown}
-  on:mousemove={handleMouseMove}
-  on:mouseup={handleMouseUp}
-  in:fade={{ duration: 2000 }}
-  out:fade={{ duration: 2000 }}
->
-  <div 
-    class="border-2 shadow-md rounded-lg border-BrandPurple/50 {!useFixedPosition ? 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' : 'absolute'} 
-           w-full max-w-lg px-4 md:px-0"
-    style={useFixedPosition ? `top: ${modalTop}px; transform: translate(-50%, -50%); left: 50%;` : ''}
-  >
+{#if visible}
+  <Portal>
     <div
-      class="bg-BrandLightGray rounded-lg w-full overflow-y-auto max-h-[90vh] px-4 py-4 md:px-6"
+      class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 backdrop-blur-sm perspective"
+      out:fade
       role="dialog"
-      aria-modal="true"
-      in:scale={{ duration: 2000 }}
-      out:scale={{ duration: 2000 }}
+      aria-labelledby="modalTitle"
+      aria-describedby="modalContent"
     >
-      <slot />
+      <div
+        class="absolute inset-0 bg-black bg-opacity-50 cursor-pointer"
+        onclick={onCloseHandler}
+        onkeypress={($event) => handleKeyPress({ $event, callback: close })}
+        role="button"
+        tabindex="-1"
+      ></div>
+      <div 
+        transition:scale={{ delay: 25, duration: 150, easing: quintOut }} 
+        class="relative w-[95%] sm:w-[90%] md:w-[85%] lg:w-[80%] max-w-[1400px] mx-auto p-4 sm:p-6"
+      >
+        <div class="bg-white border border-ModalBorder rounded-lg relative h-[80vh] drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] transform-style-preserve-3d flex flex-col">
+          <div class="flex-none px-6 py-6 border-b rounded-t-lg sm:px-8 sm:py-6 bg-BrandYellow border-white/10">
+            <div class="flex items-center justify-between">
+              <h3 class="text-2xl text-black condensed md:text-4xl">{title}</h3>
+              <button 
+                onclick={onClose}
+                class="p-2 transition-colors duration-300 rounded-lg hover:bg-white/10"
+              >
+                <CloseIcon className="w-6 h-6" fill="black" />
+              </button>
+            </div>
+          </div>
+          <div class="flex-1 px-6 py-6 overflow-y-auto sm:px-8 sm:py-6">
+            {@render children()}
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  </Portal>
 {/if}
+
+<style>
+  .perspective {
+    perspective: 2000px;
+  }
+  
+  .transform-style-preserve-3d {
+    transform-style: preserve-3d;
+  }
+</style>

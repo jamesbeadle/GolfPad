@@ -12,17 +12,18 @@
     
     onMount(async () => {
         try {
-            await userStore.sync();
+            /* await userStore.sync();
             userStore.subscribe((user) => {
                 if(!user){ return }
                 let golferPictureResult = user.golferPicture;
                 if(golferPictureResult[0]){
                     golferPicture = getImageURL(golferPictureResult[0]);
                 }
-                isLoading = false;
-            });
+            }); */
         } catch (err) {
             console.error('Creating loading golfer picture:', err);
+        } finally {
+            isLoading = false;
         }
     });
 
@@ -32,7 +33,7 @@
     <LocalSpinner />
 {:else}
 
-    <div class="relative flex items-center justify-center w-full aspect-[16/9] lg:aspect-square bg-yellow-400 rounded-lg">
+    <!-- <div class="relative flex items-center justify-center w-full aspect-[16/9] lg:aspect-square bg-yellow-400 rounded-lg">
         {#if golferPicture}
             <div class="relative w-full h-full">
                 <img src={golferPicture} alt="Profile" class="object-cover w-full h-full rounded-lg"/>
@@ -52,11 +53,13 @@
                 <EditIcon className="w-20 h-20" fill="white"/>
             </button>
         {/if}
-    </div>
+    </div> -->
+    <p class="text-2xl text-black condensed">Coming Soon</p>
+{/if}
 
-    {#if showUpdateProfilePicture}
-        <UpdateProfilePictureModal
-            showModal={showUpdateProfilePicture} 
-            on:close={() => showUpdateProfilePicture = false} />
-    {/if}
+{#if showUpdateProfilePicture}
+    <UpdateProfilePictureModal
+        showModal={showUpdateProfilePicture} 
+        on:close={() => showUpdateProfilePicture = false} 
+    />
 {/if}

@@ -1,1 +1,0 @@
-<!-- //TODO friend detail row -->

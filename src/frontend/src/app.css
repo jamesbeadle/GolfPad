@@ -38,12 +38,24 @@
   @apply text-white bg-BrandGray;
 }
 
-.brand-button {
+.brand-button-yellow {
   @apply px-5 py-2 text-lg rounded bg-BrandYellow text-BrandForest hover:bg-BrandForest hover:text-BrandYellow;
+}
+
+.brand-button-forest {
+  @apply px-5 py-2 text-lg rounded bg-BrandForest text-BrandYellow hover:bg-BrandForest/80 hover:text-BrandYellow/80;
 }
 
 .brand-cancel-button {
   @apply px-6 py-3 text-xl rounded text-BrandForest bg-BrandYellow hover:bg-BrandForest hover:text-BrandYellow focus:outline-none;
+}
+
+.form-title {
+  @apply mb-3 text-lg text-BrandDarkGray;
+}
+
+.form-hint {
+  @apply mb-4 text-sm leading-tight text-BrandDarkGray;
 }
 
 .modal-backdrop {
@@ -118,9 +130,8 @@ input[type="file"] {
   --dialog-border-radius: 1px !important;
 }
 
-input {
-  background-color: #194b63;
-  color: white;
+.brand-input {
+  @apply p-3 text-black bg-white border rounded-lg placeholder:text-BrandDarkGray border-BrandDarkGray hover:border-BrandYellow focus:border-BrandYellow focus:ring-1 focus:ring-BrandYellow/30 focus-visible:outline-none;
 }
 
 @media (min-width: 480px) {

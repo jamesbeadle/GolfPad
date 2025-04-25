@@ -1,34 +1,23 @@
 export type PostMessageRequest =
-  | "nnsStartIdleTimer"
-  | "nnsStopIdleTimer"
-  | "nnsStartMetricsTimer"
-  | "nnsStopMetricsTimer"
-  | "nnsStartCyclesTimer"
-  | "nnsStopCyclesTimer"
-  | "nnsStartTransactionsTimer"
-  | "nnsStopTransactionsTimer"
-  | "nnsStartBalancesTimer"
-  | "nnsStopBalancesTimer";
+  | "startIdleTimer"
+  | "stopIdleTimer"
+  | "startCodeTimer"
+  | "stopCodeTimer";
+
+export type PostMessageDataRequest = never;
+export type PostMessageDataResponse = object;
 
 export type PostMessageResponse =
-  | "nnsSignOut"
-  | "nnsSyncMetrics"
-  | "nnsSyncCanister"
-  | "nnsDelegationRemainingTime"
-  | "nnsSyncTransactions"
-  | "nnsSyncErrorTransactions"
-  | "nnsSyncBalances"
-  | "nnsSyncErrorBalances"
-  | "nnsSyncStatus";
+  | "signOutIdleTimer"
+  | "delegationRemainingTime";
 
-export type PostMessageData = object;
-
-export interface PostMessageDataActor extends PostMessageData {
-  host: string;
-  fetchRootKey: boolean;
+export interface PostMessageDataResponseAuth extends PostMessageDataResponse {
+  authRemainingTime: number;
 }
 
-export interface PostMessage<T extends PostMessageData> {
+export interface PostMessage<
+  T extends PostMessageDataRequest | PostMessageDataResponse,
+> {
   msg: PostMessageRequest | PostMessageResponse;
-  data: T;
+  data?: T;
 }

@@ -1,32 +1,41 @@
 import type {
-  GameGolferSummaries,
-  GetGameGolferSummaries,
   GetGolfer,
-  GetGolfers,
   Golfer,
   Golfers,
+  ListGolfers,
+  GolferSummary,
+  CreateGolfer,
+  UpdateGolfer,
 } from "../../../../declarations/backend/backend.did";
+import { writable } from "svelte/store";
 import { GolferService } from "$lib/services/golfer-service";
 
 function createGolferStore() {
-  async function getGolfers(dto: GetGolfers): Promise<Golfers> {
-    return new GolferService().getGolfers(dto);
+  const { subscribe, set } = writable<GolferSummary[]>([]);
+  
+  async function listGolfers(dto: ListGolfers): Promise<Golfers> {
+    return new GolferService().listGolfers(dto);
   }
 
   async function getGolfer(dto: GetGolfer): Promise<Golfer> {
     return new GolferService().getGolfer(dto);
   }
 
-  async function getGameGolferSummaries(
-    dto: GetGameGolferSummaries,
-  ): Promise<GameGolferSummaries> {
-    return new GolferService().getGameGolferSummaries(dto);
+  async function createGolfer(dto: CreateGolfer): Promise<any> {
+    return new GolferService().createGolfer(dto);
+  }
+
+  async function updateGolfer(dto: UpdateGolfer): Promise<any> {
+    return new GolferService().updateGolfer(dto);
   }
 
   return {
-    getGolfers,
+    subscribe,
+    set,
+    listGolfers,
     getGolfer,
-    getGameGolferSummaries,
+    createGolfer,
+    updateGolfer,
   };
 }
 

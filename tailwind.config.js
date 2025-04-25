@@ -53,6 +53,8 @@ export default {
         BrandSuccess: "#66E094",
         BrandError: "#FF403C",
         BrandInfo: "#3CA1FF",
+        ModalBackground: "#222327",
+        ModalBorder: "#323232",
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],

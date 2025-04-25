@@ -3,33 +3,14 @@ import { getFileExtensionFromFile, isError } from "$lib/utils/helpers";
 import { writable } from "svelte/store";
 import { ActorFactory } from "$lib/utils/actor.factory";
 import { UserService } from "$lib/services/user-service";
+import { userIdCreatedStore } from "$lib/stores/user-control-store";
 import type {
-  AddShot,
-  Buzz,
-  ClubShots,
-  CreateUser,
-  DeleteShot,
-  GetBuzz,
-  GetClubShots,
-  GetFriends,
   GetProfile,
-  GetShotAverages,
-  GetUpcomingGames,
-  GetUserFavouriteCourses,
-  IsUsernameAvailable,
   Profile,
-  RemoveUserGolfCourse,
-  ShotAverages,
-  UpcomingGames,
-  UpdateFirstName,
-  UpdateHandicap,
-  UpdateHomeCourse,
-  UpdateLastName,
   UpdateProfilePicture,
-  UpdateShot,
   UpdateUsername,
-  UserFavouriteCourses,
-  UsernameAvailable,
+  CreateProfile,
+  IsUsernameValid,
 } from "../../../../declarations/backend/backend.did";
 
 function createUserStore() {
@@ -58,40 +39,26 @@ function createUserStore() {
       process.env.BACKEND_CANISTER_ID ?? "",
     );
 
-    authStore.subscribe(async (user) => {
-      let principalId = user.identity?.getPrincipal().toString();
-      if (!principalId) {
-        return;
-      }
-
-      let dto: GetProfile = {
-        principalId,
-      };
-
-      let getProfileResponse = await identityActor.getProfile(dto);
-      let error = isError(getProfileResponse);
-      if (error) {
-        console.error("Error fetching user profile");
-        return;
-      }
-      let profileData = getProfileResponse.ok;
-      set(profileData);
-    });
+    let getProfileResponse = await identityActor.getProfile({});
+    let error = isError(getProfileResponse);
+    if (error) {
+      console.error("Error fetching user profile");
+      throw new Error("Failed to fetch user profile");
+      return;
+    }
+    let profileData = getProfileResponse.ok;
+    set(profileData);
+    userIdCreatedStore.set({ data: profileData.principalId, certified: true });
   }
 
   //User Query Functions
 
-  async function getProfile(principalId: string): Promise<Profile | null> {
+  async function getProfile(): Promise<Profile | null> {
     const identityActor: any = await ActorFactory.createIdentityActor(
       authStore,
       process.env.BACKEND_CANISTER_ID ?? "",
     );
-
-    let dto: GetProfile = {
-      principalId,
-    };
-
-    let getProfileResponse = await identityActor.getProfile(dto);
+    let getProfileResponse = await identityActor.getProfile({});
     let error = isError(getProfileResponse);
     if (error) {
       console.error("Error fetching user profile");
@@ -100,64 +67,24 @@ function createUserStore() {
     return getProfileResponse.ok;
   }
 
-  async function getBuzz(dto: GetBuzz): Promise<Buzz> {
-    return new UserService().getBuzz(dto);
-  }
-
-  async function getUpcomingGames(
+  /*   async function getUpcomingGames(
     dto: GetUpcomingGames,
   ): Promise<UpcomingGames> {
     return new UserService().getUpcomingGames(dto);
-  }
+  } */
 
-  async function getFriends(dto: GetFriends) {
-    return new UserService().getFriends(dto);
-  }
-
-  async function isUsernameAvailable(
-    dto: IsUsernameAvailable,
-  ): Promise<UsernameAvailable> {
-    return new UserService().isUsernameAvailable(dto);
-  }
-
-  async function getClubShots(dto: GetClubShots): Promise<ClubShots> {
-    return new UserService().getClubShots(dto);
-  }
-
-  async function getShotAverages(dto: GetShotAverages): Promise<ShotAverages> {
-    return new UserService().getShotAverages(dto);
-  }
-
-  async function getUserFavouriteCourses(
-    dto: GetUserFavouriteCourses,
-  ): Promise<UserFavouriteCourses> {
-    return new UserService().getUserFavouriteCourses(dto);
+  async function isUsernameValid(dto: IsUsernameValid): Promise<boolean> {
+    return new UserService().isUsernameValid(dto);
   }
 
   //User Commands Functions
 
-  async function createUser(dto: CreateUser): Promise<any> {
-    return new UserService().createUser(dto);
+  async function createUser(dto: CreateProfile): Promise<any> {
+    return new UserService().createProfile(dto);
   }
 
   async function updateUsername(dto: UpdateUsername): Promise<any> {
     return new UserService().updateUsername(dto);
-  }
-
-  async function updateHandicap(dto: UpdateHandicap): Promise<any> {
-    return new UserService().updateHandicap(dto);
-  }
-
-  async function updateFirstName(dto: UpdateFirstName): Promise<any> {
-    return new UserService().updateFirstName(dto);
-  }
-
-  async function updateLastName(dto: UpdateLastName): Promise<any> {
-    return new UserService().updateLastName(dto);
-  }
-
-  async function updateHomeCourse(dto: UpdateHomeCourse): Promise<any> {
-    return new UserService().updateHomeCourse(dto);
   }
 
   async function updateProfilePicture(
@@ -183,9 +110,7 @@ function createUserStore() {
           );
 
           let dto: UpdateProfilePicture = {
-            principalId: principalId,
             profilePicture: [uint8Array],
-            profilePictureExtension: extension,
           };
           const result = await identityActor.updateUserPicture(dto);
           if (isError(result)) {
@@ -205,22 +130,8 @@ function createUserStore() {
     }
   }
 
-  async function addShot(dto: AddShot): Promise<void> {
-    return new UserService().addShot(dto);
-  }
-
-  async function updateShot(dto: UpdateShot): Promise<void> {
-    return new UserService().updateShot(dto);
-  }
-
-  async function deleteShot(dto: DeleteShot): Promise<void> {
-    return new UserService().deleteShot(dto);
-  }
-
-  async function removeUserGolfCourse(
-    dto: RemoveUserGolfCourse,
-  ): Promise<void> {
-    return new UserService().removeUserGolfCourse(dto);
+  async function isAdmin(): Promise<boolean> {
+    return new UserService().isAdmin();
   }
 
   return {
@@ -228,24 +139,11 @@ function createUserStore() {
     sync,
     cacheProfile,
     getProfile,
-    getBuzz,
-    getUpcomingGames,
-    getFriends,
-    isUsernameAvailable,
-    getShotAverages,
-    getUserFavouriteCourses,
-    getClubShots,
     createUser,
     updateUsername,
-    updateHandicap,
-    updateFirstName,
-    updateLastName,
-    updateHomeCourse,
     updateProfilePicture,
-    addShot,
-    updateShot,
-    deleteShot,
-    removeUserGolfCourse,
+    isAdmin,
+    isUsernameValid,
   };
 }
 

@@ -7,9 +7,9 @@
 
 <div class="rounded-lg p-4 max-h-[80vh] overflow-y-auto">
     <header class="bg-white">
-        <div class="flex flex-col md:flex-row justify-between items-center py-4">
+        <div class="flex flex-col items-center justify-between py-4 md:flex-row">
             <h1 class="title">{title}</h1>
-            <button on:click={buttonCallback} class="brand-button">{buttonTitle}</button>
+            <button on:click={buttonCallback} class="brand-button-yellow">{buttonTitle}</button>
         </div>
     </header>
     <slot></slot>

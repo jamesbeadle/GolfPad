@@ -11,7 +11,7 @@
     </div>
     <div class="absolute z-10 top-4 right-4">
       <a href="/">
-        <span class="text-3xl font-extrabold text-black condensed">ICGC</span>
+        <span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span>
       </a>
     </div>
   </div>
