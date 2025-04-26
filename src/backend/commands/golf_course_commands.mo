@@ -1,5 +1,5 @@
-import Types "../data-types/types";
 import Ids "mo:waterway-mops/Ids";
+import MopsGolfIds "../mops_golf_ids";
 module GolfCourseCommands {
     public type CreateGolfCourse = {
         name: Text;
@@ -20,7 +20,7 @@ module GolfCourseCommands {
     };
 
     public type UpdateGolfCourse = {
-        golfCourseId: Types.GolfCourseId;
+        golfCourseId: MopsGolfIds.GolfCourseId;
         name: Text;
         holes: [GolfHole];
     };

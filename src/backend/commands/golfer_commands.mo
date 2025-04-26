@@ -1,6 +1,6 @@
 
 import Ids "mo:waterway-mops/Ids";
-import Types "../data-types/types";
+import MopsGolfIds "../mops_golf_ids";
 
 module GolferCommands {
     public type CreateGolfer = {
@@ -11,7 +11,7 @@ module GolferCommands {
     };
 
     public type UpdateGolfer = {
-        golferId: Types.GolferId;
+        golferId: MopsGolfIds.GolferId;
         firstName: Text;
         lastName: Text;
         nationality: Ids.CountryId;

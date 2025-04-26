@@ -1,10 +1,8 @@
 import Ids "mo:waterway-mops/Ids";
+import MopsGolfIds "../mops_golf_ids";
 
 module FantasyGolfTypes {
 
-    public type GolferId = Nat16;
-    public type GolfCourseId = Nat16;
-    public type TournamentId = Nat16;
     public type PredictionId = Nat16;
 
     public type Profile = {
@@ -18,26 +16,26 @@ module FantasyGolfTypes {
         principalId: Ids.PrincipalId;
         createdOn: Int;
         username: Text;
-        tournamentId: TournamentId;
+        tournamentId: MopsGolfIds.TournamentId;
         year: Nat16;
-        hole1GolferId: GolferId;
-        hole2GolferId: GolferId;
-        hole3GolferId: GolferId;
-        hole4GolferId: GolferId;
-        hole5GolferId: GolferId;
-        hole6GolferId: GolferId;
-        hole7GolferId: GolferId;
-        hole8GolferId: GolferId;
-        hole9GolferId: GolferId;
-        hole10GolferId: GolferId;
-        hole11GolferId: GolferId;
-        hole12GolferId: GolferId;
-        hole13GolferId: GolferId;
-        hole14GolferId: GolferId;
-        hole15GolferId: GolferId;
-        hole16GolferId: GolferId;
-        hole17GolferId: GolferId;
-        hole18GolferId: GolferId;
+        hole1GolferId: MopsGolfIds.GolferId;
+        hole2GolferId: MopsGolfIds.GolferId;
+        hole3GolferId: MopsGolfIds.GolferId;
+        hole4GolferId: MopsGolfIds.GolferId;
+        hole5GolferId: MopsGolfIds.GolferId;
+        hole6GolferId: MopsGolfIds.GolferId;
+        hole7GolferId: MopsGolfIds.GolferId;
+        hole8GolferId: MopsGolfIds.GolferId;
+        hole9GolferId: MopsGolfIds.GolferId;
+        hole10GolferId: MopsGolfIds.GolferId;
+        hole11GolferId: MopsGolfIds.GolferId;
+        hole12GolferId: MopsGolfIds.GolferId;
+        hole13GolferId: MopsGolfIds.GolferId;
+        hole14GolferId: MopsGolfIds.GolferId;
+        hole15GolferId: MopsGolfIds.GolferId;
+        hole16GolferId: MopsGolfIds.GolferId;
+        hole17GolferId: MopsGolfIds.GolferId;
+        hole18GolferId: MopsGolfIds.GolferId;
         hole1Score: Nat8;
         hole2Score: Nat8;
         hole3Score: Nat8;
@@ -63,96 +61,8 @@ module FantasyGolfTypes {
         swap3Used: Bool;
     };
 
-    public type Golfer = {
-        id: GolferId;
-        firstName: Text;
-        lastName: Text;
-        nationality: Ids.CountryId;
-        worldRanking: Nat16;
-    };  
-
-    public type GolfCourse = {
-        id: GolfCourseId;
-        name: Text;
-        holes: [GolfHole];
-        par: Nat8;
-        totalYardage: Nat16; 
-        founded : Int;
-        countryId : Ids.CountryId;
-    };
-
-    public type GolfHole = {
-        holeNumber: Nat8;
-        par: Nat8;
-        strokeIndex: Nat8;
-        yardage: Nat16;
-    };
-
-    public type Tournament = {
-        id: TournamentId;
-        name: Text;
-        instances: [TournamentInstance];
-    };
-
-    public type TournamentInstance = {
-        golfCourseId: GolfCourseId;
-        year: Nat16;
-        startDate: Int;
-        endDate: Int;
-        leaderboard: TournamentLeaderboard;
-        stage: TournamentStage;
-        populated: Bool;
-    };
-
-    public type TournamentLeaderboard = {
-        totalEntries: Nat;
-        entries: [TournamentLeaderboardEntry];
-    };
-
-    public type TournamentLeaderboardEntry = {
-        golferId: GolferId;
-        tournamentId: TournamentId;
-        rounds: [GolfRound];
-        totalShots: Nat;
-    };
-
-    public type GolfRound = {
-        teeTime: Int;
-        hole1Score: Nat8;
-        hole2Score: Nat8;
-        hole3Score: Nat8;
-        hole4Score: Nat8;
-        hole5Score: Nat8;
-        hole6Score: Nat8;
-        hole7Score: Nat8;
-        hole8Score: Nat8;
-        hole9Score: Nat8;
-        hole10Score: Nat8;
-        hole11Score: Nat8;
-        hole12Score: Nat8;
-        hole13Score: Nat8;
-        hole14Score: Nat8;
-        hole15Score: Nat8;
-        hole16Score: Nat8;
-        hole17Score: Nat8;
-        hole18Score: Nat8;
-        totalShots: Nat;
-    };
-
-    public type TournamentStage = {
-        #NotStarted;
-        #Round1Active;
-        #Round1Complete;
-        #Round2Active;
-        #Round2Complete;
-        #Round3Active;
-        #Round3Complete;
-        #Round4Active;
-        #Completed;
-    };
-
     public type FantasyLeaderboard = {
-        tournamentId: TournamentId;
+        tournamentId: MopsGolfIds.TournamentId;
         year: Nat16;
         entries: [FantasyLeaderboardEntry];
         totalEntries : Nat;
@@ -170,7 +80,7 @@ module FantasyGolfTypes {
 
     public type FantasyPredictionHole = {
         hole: Nat8;
-        golferId: GolferId;
+        golferId: MopsGolfIds.GolferId;
         shotCount: Nat8;
         par: Nat8;
         score: Int8;

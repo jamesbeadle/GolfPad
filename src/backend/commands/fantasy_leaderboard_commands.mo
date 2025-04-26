@@ -1,8 +1,8 @@
-import Types "../data-types/types";
+import MopsGolfIds "../mops_golf_ids";
 module GolfCourseCommands {
 
     public type CalculateLeaderboard = {
-        tournamentId: Types.TournamentId;
+        tournamentId: MopsGolfIds.TournamentId;
         year: Nat16;
     };
 }

@@ -1,26 +1,27 @@
-import Types "../data-types/types";
+import MopsGolfIds "../mops_golf_ids";
+import MopsGolfEnums "../mops_golf_enums";
 module GolfCourseCommands {
     public type CreateTournament = {
         name: Text;
     };
 
     public type CreateTournamentInstance = {
-        tournamentId: Types.TournamentId;
-        golfCourseId: Types.GolfCourseId;
+        tournamentId: MopsGolfIds.TournamentId;
+        golfCourseId: MopsGolfIds.GolfCourseId;
         year: Nat16;
         startDate: Int;
         endDate: Int;
     };
 
     public type AddTournamentResult = {
-        tournamentId: Types.TournamentId;
+        tournamentId: MopsGolfIds.TournamentId;
         year: Nat16;
-        golferId: Types.GolferId;
+        golferId: MopsGolfIds.GolferId;
     };
 
     public type UpdateTournamentStage = {
-        tournamentId: Types.TournamentId;
+        tournamentId: MopsGolfIds.TournamentId;
         year: Nat16;
-        stage: Types.TournamentStage;
+        stage: MopsGolfEnums.TournamentStage;
     };
 }
