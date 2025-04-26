@@ -1,5 +1,5 @@
 import Ids "mo:waterway-mops/Ids";
-import Types "../data-types/types";
+import MopsGolfIds "../mops_golf_ids";
 module UserQueries {
    
     public type GetProfile = {};
@@ -11,33 +11,33 @@ module UserQueries {
     };
 
     public type GetPrediction = {
-        tournamentId: Types.TournamentId;
+        tournamentId: MopsGolfIds.TournamentId;
         year: Nat16;
     };
 
     public type Prediction = {
         principalId: Ids.PrincipalId;
         username: Text;
-        tournamentId: Types.TournamentId;
+        tournamentId: MopsGolfIds.TournamentId;
         year: Nat16;
-        hole1GolferId: Types.GolferId;
-        hole2GolferId: Types.GolferId;
-        hole3GolferId: Types.GolferId;
-        hole4GolferId: Types.GolferId;
-        hole5GolferId: Types.GolferId;
-        hole6GolferId: Types.GolferId;
-        hole7GolferId: Types.GolferId;
-        hole8GolferId: Types.GolferId;
-        hole9GolferId: Types.GolferId;
-        hole10GolferId: Types.GolferId;
-        hole11GolferId: Types.GolferId;
-        hole12GolferId: Types.GolferId;
-        hole13GolferId: Types.GolferId;
-        hole14GolferId: Types.GolferId;
-        hole15GolferId: Types.GolferId;
-        hole16GolferId: Types.GolferId;
-        hole17GolferId: Types.GolferId;
-        hole18GolferId: Types.GolferId;
+        hole1GolferId: MopsGolfIds.GolferId;
+        hole2GolferId: MopsGolfIds.GolferId;
+        hole3GolferId: MopsGolfIds.GolferId;
+        hole4GolferId: MopsGolfIds.GolferId;
+        hole5GolferId: MopsGolfIds.GolferId;
+        hole6GolferId: MopsGolfIds.GolferId;
+        hole7GolferId: MopsGolfIds.GolferId;
+        hole8GolferId: MopsGolfIds.GolferId;
+        hole9GolferId: MopsGolfIds.GolferId;
+        hole10GolferId: MopsGolfIds.GolferId;
+        hole11GolferId: MopsGolfIds.GolferId;
+        hole12GolferId: MopsGolfIds.GolferId;
+        hole13GolferId: MopsGolfIds.GolferId;
+        hole14GolferId: MopsGolfIds.GolferId;
+        hole15GolferId: MopsGolfIds.GolferId;
+        hole16GolferId: MopsGolfIds.GolferId;
+        hole17GolferId: MopsGolfIds.GolferId;
+        hole18GolferId: MopsGolfIds.GolferId;
         hole1Score: Nat8;
         hole2Score: Nat8;
         hole3Score: Nat8;
@@ -73,7 +73,7 @@ module UserQueries {
 
     public type PredictionSummary = {
         principalId: Ids.PrincipalId;
-        tournamentId: Types.TournamentId;
+        tournamentId: MopsGolfIds.TournamentId;
         year: Nat16;
         totalShots: Nat8;
         totalScore: Int8;
@@ -82,7 +82,7 @@ module UserQueries {
 
     public type GetScorecard = {
         principalId: Ids.PrincipalId;
-        tournamentId: Types.TournamentId;
+        tournamentId: MopsGolfIds.TournamentId;
         year: Nat16;
     };
     

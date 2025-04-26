@@ -17,7 +17,9 @@ import Char "mo:base/Char";
 import Enums "mo:waterway-mops/Enums";
 import Ids "mo:waterway-mops/Ids";
 import Environment "../environment";
-import GolfCourseQueries "../queries/golf_course_queries";
+import MopsGolfIds "../mops_golf_ids";
+import MopsTournamentQueries "../mops_tournament_queries";
+import MopsGolfCourseQueries "../mops_golf_course_queries";
 
 
 module {
@@ -77,7 +79,7 @@ module {
       return getPredictionScorecard(dto.principalId, dto.tournamentId, dto.year);
     };
 
-    private func getPredictionScorecard(principalId: Ids.PrincipalId, tournamentId: Types.TournamentId, year: Nat16) : Result.Result<UserQueries.Prediction, Enums.Error> {
+    private func getPredictionScorecard(principalId: Ids.PrincipalId, tournamentId: MopsGolfIds.TournamentId, year: Nat16) : Result.Result<UserQueries.Prediction, Enums.Error> {
       let prediction = Array.find(predictions, func(entry: Types.Prediction) : Bool {
         entry.principalId == principalId and entry.tournamentId == tournamentId and entry.year == year;
       });
@@ -500,7 +502,7 @@ module {
       };
     };
 
-    public func calculateScorecards(leaderboard: Types.TournamentLeaderboard, golfCourse: GolfCourseQueries.GolfCourse) {
+    public func calculateScorecards(leaderboard: MopsTournamentQueries.TournamentLeaderboard, golfCourse: MopsGolfCourseQueries.GolfCourse) {
     
       let predictionBuffer = Buffer.fromArray<Types.Prediction>(predictions);
     
@@ -615,8 +617,8 @@ module {
       predictions := Buffer.toArray(predictionBuffer);
     };
 
-    private func getBestHoleScore(leaderboard: Types.TournamentLeaderboard, golferId: Types.GolferId, holeNumber: Nat) : Nat8 {
-        let golferEntry = Array.find(leaderboard.entries, func(entry: Types.TournamentLeaderboardEntry) : Bool {
+    private func getBestHoleScore(leaderboard: MopsTournamentQueries.TournamentLeaderboard, golferId: MopsGolfIds.GolferId, holeNumber: Nat) : Nat8 {
+        let golferEntry = Array.find(leaderboard.entries, func(entry: MopsTournamentQueries.TournamentLeaderboardEntry) : Bool {
             entry.golferId == golferId
         });
         
@@ -655,14 +657,14 @@ module {
         };
     };
 
-    public func getTotalLeaderboardEntries(tournamentId: Types.TournamentId) : Nat {
+    public func getTotalLeaderboardEntries(tournamentId: MopsGolfIds.TournamentId) : Nat {
       let leaderboardEntries = Array.filter<Types.Prediction>(predictions, func(entry: Types.Prediction){
         entry.tournamentId == tournamentId
       });
       return Array.size(leaderboardEntries);
     };
 
-    public func getLeaderboardChunk(tournamentId: Types.TournamentId, year: Nat16, chunkIndex: Nat) : [Types.Prediction] {
+    public func getLeaderboardChunk(tournamentId: MopsGolfIds.TournamentId, year: Nat16, chunkIndex: Nat) : [Types.Prediction] {
       let tournamentPredictions = Array.filter<Types.Prediction>(predictions, func(entry: Types.Prediction) : Bool {
         entry.tournamentId == tournamentId and entry.year == year
       });

@@ -1,13 +1,13 @@
-import Types "../data-types/types";
 import Ids "mo:waterway-mops/Ids";
+import MopsGolfIds "mops_golf_ids";
 module GolfCourseQueries {
     
     public type GetGolfCourse = {
-        golfCourseId: Types.GolfCourseId;
+        golfCourseId: MopsGolfIds.GolfCourseId;
     };
 
     public type GolfCourse = {
-        golfCourseId: Types.GolfCourseId;
+        golfCourseId: MopsGolfIds.GolfCourseId;
         name: Text;
         totalHoles: Nat8;
         founded: Int;
@@ -34,7 +34,7 @@ module GolfCourseQueries {
     };
 
     public type GolfCourseSummary = {
-        golfCourseId: Types.GolfCourseId;
+        golfCourseId: MopsGolfIds.GolfCourseId;
         name: Text;
         totalHoles: Nat8;
         founded: Int;

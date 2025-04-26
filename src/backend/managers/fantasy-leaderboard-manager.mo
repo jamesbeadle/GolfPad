@@ -10,7 +10,8 @@ import Enums "mo:waterway-mops/Enums";
 import Types "../data-types/types";
 import FantasyLeaderboardQueries "../queries/fantasy_leaderboard_queries";
 import Environment "../environment";
-import GolfCourseQueries "../queries/golf_course_queries";
+import MopsGolfIds "../mops_golf_ids";
+import MopsGolfCourseQueries "../mops_golf_course_queries";
 
 module {
     public class FantasyLeaderboardManager() {
@@ -43,7 +44,7 @@ module {
             };
         };
 
-        public func addChunkToLeaderboard(tournamentId: Types.TournamentId, year: Nat16, chunk: [Types.Prediction], golfCourse: GolfCourseQueries.GolfCourse) {
+        public func addChunkToLeaderboard(tournamentId: MopsGolfIds.TournamentId, year: Nat16, chunk: [Types.Prediction], golfCourse: MopsGolfCourseQueries.GolfCourse) {
             
             let existingLeaderboard = Array.find<Types.FantasyLeaderboard>(leaderboards, func(entry: Types.FantasyLeaderboard) : Bool {
                 entry.tournamentId == tournamentId;
@@ -60,7 +61,7 @@ module {
                                 
                                 let holeNumber = i + 1;
                                 
-                                let hole = Array.find(golfCourse.holes, func(holeEntry: GolfCourseQueries.GolfHole) : Bool { 
+                                let hole = Array.find(golfCourse.holes, func(holeEntry: MopsGolfCourseQueries.GolfHole) : Bool { 
                                     return holeEntry.holeNumber == Nat8.fromNat(holeNumber); 
                                 });
                                 
@@ -276,7 +277,7 @@ module {
                                     
                                     let holeNumber = i + 1;
                                     
-                                    let hole = Array.find(golfCourse.holes, func(holeEntry: GolfCourseQueries.GolfHole) : Bool { 
+                                    let hole = Array.find(golfCourse.holes, func(holeEntry: MopsGolfCourseQueries.GolfHole) : Bool { 
                                         return holeEntry.holeNumber == Nat8.fromNat(holeNumber); 
                                     });
                                     
@@ -480,7 +481,7 @@ module {
             };
         };
 
-        public func calculateLeaderboard(tournamentId: Types.TournamentId, year: Nat16) {
+        public func calculateLeaderboard(tournamentId: MopsGolfIds.TournamentId, year: Nat16) {
 
             let tournamentLeaderboard = Array.find<Types.FantasyLeaderboard>(leaderboards, func(entry: Types.FantasyLeaderboard) : Bool {
                 entry.tournamentId == tournamentId and entry.year == year

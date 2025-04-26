@@ -1,15 +1,14 @@
-
-import Types "../data-types/types";
 import Ids "mo:waterway-mops/Ids";
+import MopsGolfIds "mops_golf_ids";
 
 module GolferQueries {
     
     public type GetGolfer = {
-        golferId: Types.GolferId;
+        golferId: MopsGolfIds.GolferId;
     };
 
     public type Golfer = {
-        golferId: Types.GolferId;
+        golferId: MopsGolfIds.GolferId;
         firstName: Text;
         lastName: Text;
         nationality: Ids.CountryId;
@@ -27,7 +26,7 @@ module GolferQueries {
     };
 
     public type GolferSummary = {
-        id: Types.GolferId;
+        id: MopsGolfIds.GolferId;
         firstName: Text;
         lastName: Text;
         nationality: Ids.CountryId;
