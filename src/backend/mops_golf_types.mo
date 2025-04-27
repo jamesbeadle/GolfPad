@@ -1,10 +1,9 @@
 import MopsGolfIds "mops_golf_ids";
 import Ids "mo:waterway-mops/Ids";
-import MopsGolfEnums "mops_golf_enums";
 
 module GolfTypes {
 
-    public type Golfer = {
+    public type ProGolfer = {
         id: MopsGolfIds.GolferId;
         firstName: Text;
         lastName: Text;
