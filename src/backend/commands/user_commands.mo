@@ -1,4 +1,4 @@
-import MopsGolfIds "../mops_golf_ids";
+import GolfIds "mo:waterway-mops/golf/GolfIds";
 
 module UserCommands {
     public type CreateProfile = {
@@ -15,34 +15,34 @@ module UserCommands {
     };
 
     public type SubmitPrediction = {
-        tournamentId: MopsGolfIds.TournamentId;
+        tournamentId: GolfIds.TournamentId;
         year: Nat16;
-        hole1GolferId: MopsGolfIds.GolferId;
-        hole2GolferId: MopsGolfIds.GolferId;
-        hole3GolferId: MopsGolfIds.GolferId;
-        hole4GolferId: MopsGolfIds.GolferId;
-        hole5GolferId: MopsGolfIds.GolferId;
-        hole6GolferId: MopsGolfIds.GolferId;
-        hole7GolferId: MopsGolfIds.GolferId;
-        hole8GolferId: MopsGolfIds.GolferId;
-        hole9GolferId: MopsGolfIds.GolferId;
-        hole10GolferId: MopsGolfIds.GolferId;
-        hole11GolferId: MopsGolfIds.GolferId;
-        hole12GolferId: MopsGolfIds.GolferId;
-        hole13GolferId: MopsGolfIds.GolferId;
-        hole14GolferId: MopsGolfIds.GolferId;
-        hole15GolferId: MopsGolfIds.GolferId;
-        hole16GolferId: MopsGolfIds.GolferId;
-        hole17GolferId: MopsGolfIds.GolferId;
-        hole18GolferId: MopsGolfIds.GolferId;
+        hole1GolferId: GolfIds.ProGolferId;
+        hole2GolferId: GolfIds.ProGolferId;
+        hole3GolferId: GolfIds.ProGolferId;
+        hole4GolferId: GolfIds.ProGolferId;
+        hole5GolferId: GolfIds.ProGolferId;
+        hole6GolferId: GolfIds.ProGolferId;
+        hole7GolferId: GolfIds.ProGolferId;
+        hole8GolferId: GolfIds.ProGolferId;
+        hole9GolferId: GolfIds.ProGolferId;
+        hole10GolferId: GolfIds.ProGolferId;
+        hole11GolferId: GolfIds.ProGolferId;
+        hole12GolferId: GolfIds.ProGolferId;
+        hole13GolferId: GolfIds.ProGolferId;
+        hole14GolferId: GolfIds.ProGolferId;
+        hole15GolferId: GolfIds.ProGolferId;
+        hole16GolferId: GolfIds.ProGolferId;
+        hole17GolferId: GolfIds.ProGolferId;
+        hole18GolferId: GolfIds.ProGolferId;
     };
 
     public type SwapGolfer = {
-        tournamentId: MopsGolfIds.TournamentId;
+        tournamentId: GolfIds.TournamentId;
         year: Nat16;
-        removedGolferId: MopsGolfIds.GolferId;
+        removedGolferId: GolfIds.ProGolferId;
         removedGolferHole: Nat8;
-        newGolferId: MopsGolfIds.GolferId;
+        newGolferId: GolfIds.ProGolferId;
         newGolferHole: Nat8;
     };
 }

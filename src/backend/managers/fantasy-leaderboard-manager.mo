@@ -7,10 +7,10 @@ import Nat8 "mo:base/Nat8";
 import Order "mo:base/Order";
 import Int "mo:base/Int";
 import Enums "mo:waterway-mops/Enums";
+import GolfIds "mo:waterway-mops/golf/GolfIds";
 import Types "../data-types/types";
 import FantasyLeaderboardQueries "../queries/fantasy_leaderboard_queries";
 import Environment "../environment";
-import MopsGolfIds "../mops_golf_ids";
 import MopsGolfCourseQueries "../mops_golf_course_queries";
 
 module {
@@ -44,7 +44,7 @@ module {
             };
         };
 
-        public func addChunkToLeaderboard(tournamentId: MopsGolfIds.TournamentId, year: Nat16, chunk: [Types.Prediction], golfCourse: MopsGolfCourseQueries.GolfCourse) {
+        public func addChunkToLeaderboard(tournamentId: GolfIds.TournamentId, year: Nat16, chunk: [Types.Prediction], golfCourse: MopsGolfCourseQueries.GolfCourse) {
             
             let existingLeaderboard = Array.find<Types.FantasyLeaderboard>(leaderboards, func(entry: Types.FantasyLeaderboard) : Bool {
                 entry.tournamentId == tournamentId;
@@ -481,7 +481,7 @@ module {
             };
         };
 
-        public func calculateLeaderboard(tournamentId: MopsGolfIds.TournamentId, year: Nat16) {
+        public func calculateLeaderboard(tournamentId: GolfIds.TournamentId, year: Nat16) {
 
             let tournamentLeaderboard = Array.find<Types.FantasyLeaderboard>(leaderboards, func(entry: Types.FantasyLeaderboard) : Bool {
                 entry.tournamentId == tournamentId and entry.year == year

@@ -36,9 +36,6 @@ import FantasyLeaderboardManager "managers/fantasy-leaderboard-manager";
 import Types "./data-types/types";
 import Environment "environment";
 import FantasyLeaderboardQueries "queries/fantasy_leaderboard_queries";
-import MopsBaseCommands "mops_base_commands";
-import MopsGolfIds "mops_golf_ids";
-import MopsGolfCourseQueries "mops_golf_course_queries";
 
 actor Self {
 

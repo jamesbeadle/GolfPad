@@ -1,8 +1,8 @@
-import MopsGolfIds "../mops_golf_ids";
+import GolfIds "mo:waterway-mops/golf/GolfIds";
 module GolfCourseCommands {
 
     public type CalculateLeaderboard = {
-        tournamentId: MopsGolfIds.TournamentId;
+        tournamentId: GolfIds.TournamentId;
         year: Nat16;
     };
 }

@@ -1,15 +1,15 @@
 import Ids "mo:waterway-mops/Ids";
-import MopsGolfIds "../mops_golf_ids";
+import GolfIds "mo:waterway-mops/golf/GolfIds";
 
 module FantasyLeaderboardQueries {
 
     public type GetFantasyLeaderboard = {
-        tournamentId: MopsGolfIds.TournamentId;
+        tournamentId: GolfIds.TournamentId;
         page: Nat;
     };
 
     public type FantasyLeaderboard = {
-        tournamentId: MopsGolfIds.TournamentId;
+        tournamentId: GolfIds.TournamentId;
         entries: [FantasyLeaderboardEntry];
         totalEntries: Nat;
         page: Nat;
@@ -24,7 +24,7 @@ module FantasyLeaderboardQueries {
     };
 
     public type FantasyPredictionHole = {
-        golferId: MopsGolfIds.GolferId;
+        golferId: GolfIds.ProGolferId;
         shotCount: Nat8;
         par: Nat8;
         score: Int8;

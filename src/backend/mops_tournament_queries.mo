@@ -1,31 +1,32 @@
-import MopsGolfIds "mops_golf_ids";
-import MopsGolfEnums "mops_golf_enums";
+import GolfIds "mo:waterway-mops/golf/GolfIds";
+import GolfEnums "mo:waterway-mops/golf/GolfEnums";
+
 module TournamentQueries {
     
     public type GetTournament = {
-        tournamentId: MopsGolfIds.TournamentId;
+        tournamentId: GolfIds.TournamentId;
     };
 
     public type Tournament = {
-        tournamentId: MopsGolfIds.TournamentId;
+        tournamentId: GolfIds.TournamentId;
 
 
     };
     
     public type GetTournamentInstance = {
-        tournamentId: MopsGolfIds.TournamentId;
+        tournamentId: GolfIds.TournamentId;
         year: Nat16;
     };
 
     public type TournamentInstance = {
-        tournamentId: MopsGolfIds.TournamentId;
+        tournamentId: GolfIds.TournamentId;
         year: Nat16;
         populated: Bool;
-        golfCourseId: MopsGolfIds.GolfCourseId;
+        golfCourseId: GolfIds.GolfCourseId;
         startDate: Int;
         endDate: Int;
         leaderboard: TournamentLeaderboard;
-        stage: MopsGolfEnums.TournamentStage;
+        stage: GolfEnums.TournamentStage;
     };
 
     public type TournamentLeaderboard = {
@@ -34,8 +35,8 @@ module TournamentQueries {
     };
 
     public type TournamentLeaderboardEntry = {
-        golferId: MopsGolfIds.GolferId;
-        tournamentId: MopsGolfIds.TournamentId;
+        golferId: GolfIds.ProGolferId;
+        tournamentId: GolfIds.TournamentId;
         rounds: [GolfRound];
         totalShots: Nat;
     };
@@ -74,7 +75,7 @@ module TournamentQueries {
     };
 
     public type TournamentSummary = {
-        tournamentId: MopsGolfIds.TournamentId;
+        tournamentId: GolfIds.TournamentId;
         name: Text;
     };
     
