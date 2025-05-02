@@ -8,7 +8,13 @@
     import type { GetShotAverages, ShotAverages } from "../../../../../declarations/backend/backend.did";
     import AddShotModal from "./modals/add-shot-modal.svelte";
 
-    export let shotAverages: ShotAverages | null = null;
+
+    interface Props {
+        shotAverages: ShotAverages;
+    }
+    
+    let { shotAverages } : Props = $props();
+    
     let isLoading = true;
     let showAddShotModal = true;
 

@@ -1,8 +1,13 @@
 <script lang="ts">
     import { getImageURL } from "$lib/utils/helpers";
-import type { GolferSummary } from "../../../../../declarations/backend/backend.did";
+    import type { GolferSummary } from "../../../../../declarations/backend/backend.did";
 
-    export let golfer: GolferSummary;
+    interface Props {
+        golfer: GolferSummary;
+    }
+
+    let { golfer } : Props = $props();
+    
 </script>
 
 <div class="flex flex-row">

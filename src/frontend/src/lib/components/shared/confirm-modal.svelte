@@ -1,8 +1,12 @@
 <script lang="ts">
-    export let isOpen = false;
-    export let onConfirm: () => void;
-    export let onCancel: () => void;
-    export let message: string;
+    interface Props {
+        isOpen: boolean;
+        onConfirm: () => void;
+        onCancel: () => void;
+        message: string;
+    }
+    
+    let { isOpen, onConfirm, onCancel, message } : Props = $props();
 </script>
 
 {#if isOpen}

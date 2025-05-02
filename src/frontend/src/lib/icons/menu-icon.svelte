@@ -1,7 +1,12 @@
-<script>
-    export let className = 'w-6';
-    export const fill = '#FFFFFF';
-  </script>
+<script lang="ts">
+  interface Props {
+      className: string;
+      fill: string;
+  }
+
+  let { className, fill } : Props = $props();
+  
+</script>
 
 <svg class={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect y="4" width="24" height="2" fill={fill}/>

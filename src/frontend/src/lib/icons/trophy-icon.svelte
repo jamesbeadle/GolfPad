@@ -1,6 +1,10 @@
-<script>
-  export let className = '';
-  export const fill = '';
+<script lang="ts">
+  interface Props {
+      className: string;
+  }
+
+  let { className } : Props = $props();
+  
 </script>
 
 <svg

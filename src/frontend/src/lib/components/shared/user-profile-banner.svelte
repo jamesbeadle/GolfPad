@@ -2,9 +2,12 @@
     import { onMount } from "svelte";
     import type { GolferSummary } from "../../../../../declarations/backend/backend.did";
 
-    
-    export let players: GolferSummary[];
-    export let selectPlayer: (playerId: string) => void;
+    interface Props {
+        players: GolferSummary[];
+        selectPlayer: (playerId: string) => void;
+    }
+
+    let { players, selectPlayer } : Props = $props();
 
     onMount(() => {
         

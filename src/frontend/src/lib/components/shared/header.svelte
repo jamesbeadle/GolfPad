@@ -1,5 +1,9 @@
 <script lang="ts">
-  export let toggleNav: () => void;
+  interface Props {
+    toggleNav: () => void;
+  }
+    
+  let { toggleNav } : Props = $props();
 </script>
 <div class="flex-none h-[80px] bg-BrandYellow relative m-[0.2rem] rounded-lg">
     <div class="absolute z-10 top-4 left-4">

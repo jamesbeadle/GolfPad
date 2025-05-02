@@ -2,7 +2,12 @@
     import type { GolferSummary } from "../../../../../declarations/backend/backend.did";
     import { getImageURL } from "$lib/utils/helpers";
 
-    export let player: GolferSummary;
+    interface Props {
+        player: GolferSummary;
+    }
+
+    let { player } : Props = $props();
+    
 </script>
 
 <div class="flex flex-row items-center gap-3">

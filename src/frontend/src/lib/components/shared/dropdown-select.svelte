@@ -6,14 +6,18 @@
     import ArrowDownIcon from "$lib/icons/arrow-down-icon.svelte";
     import SearchIcon from "$lib/icons/search-icon.svelte";
 
-    export let value: string | number | bigint;
-    export let options: { id: string | number | bigint; label: string }[];
-    export let placeholder = "Select...";
-    export let compact = false;
-    export let onChange: (value: string | number | bigint) => void;
-    export let allOptionText: string | undefined = undefined;
-    export let scrollOnOpen = false;
-    export let searchOn = false;
+    interface Props {
+        value: string | number | bigint;
+        options: { id: string | number | bigint; label: string }[]
+        placeholder: string;
+        compact: boolean;
+        onChange: (value: string | number | bigint) => void;
+        allOptionText: string | undefined;
+        scrollOnOpen: boolean;
+        searchOn: boolean;
+    }
+    
+    let { value, options, placeholder, compact, onChange, allOptionText, scrollOnOpen, searchOn } : Props = $props();
 
     const dropdownId = Math.random().toString(36).substring(7);
     let isDropdownOpen = false;

@@ -1,8 +1,11 @@
 <script lang="ts">
     import type { GolferSummary } from "../../../../../declarations/backend/backend.did";
 
+    interface Props {
+        players: GolferSummary[];
+    }
 
-    export let players: GolferSummary[];
+    let { players } : Props = $props();
 </script>
 <div>
     

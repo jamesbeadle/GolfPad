@@ -1,7 +1,12 @@
 <script lang="ts">
-    export let title: string;
-    export let buttonTitle: string;
-    export let buttonCallback: () => void;
+    interface Props {
+        title: string;
+        buttonTitle: string;
+        buttonCallback: () => void;
+    }
+
+    let { title, buttonTitle, buttonCallback } : Props = $props();
+
 </script>
 
 

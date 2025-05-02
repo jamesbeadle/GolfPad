@@ -1,6 +1,12 @@
 <script lang="ts">
-    export let src: string;
-    export let selected: boolean;
+
+    interface Props {
+        src: string;
+        selected: boolean;
+    }
+
+    let { src, selected } : Props = $props();
+    
 </script>
 
 <div class={`${selected ? 'profile-circle-selected' : 'profile-circle' } w-12 rounded-full`}>

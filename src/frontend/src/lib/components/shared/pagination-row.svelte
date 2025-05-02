@@ -1,9 +1,15 @@
 <script lang="ts">
-    export let changePage: (delta: bigint) => void;
-    export let page: bigint;
-    export let pageSize: bigint;
-    export let total: bigint;
-    export let typeName: string;
+
+    interface Props {
+        changePage: (delta: bigint) => void;
+        page: bigint;
+        pageSize: bigint;
+        total: bigint;
+        typeName: string;
+    }
+
+    let { changePage, page, pageSize, total, typeName } : Props = $props();
+
 </script>
 
 

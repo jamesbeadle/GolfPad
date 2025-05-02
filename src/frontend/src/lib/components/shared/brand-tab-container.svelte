@@ -1,9 +1,11 @@
 <script lang="ts">
-    import type { Readable } from 'svelte/store';
-
-    export let activeTab: string;
-    export let tabs: string[];
-    export let title: string;
+    interface Props {
+        title: string;
+        activeTab: string;
+        tabs: string[];
+    }
+    
+    let { title, activeTab, tabs } : Props = $props();
 
     function handleTabClick(tab: string) {
         activeTab = tab;

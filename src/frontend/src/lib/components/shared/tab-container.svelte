@@ -1,10 +1,14 @@
 <script lang="ts">
     import DropdownSelect from "./dropdown-select.svelte";
+    
+    interface Props {
+        filterType: string;
+        setActiveTab: (tabName: string) => Promise<void>;
+        tabs: { id: string; label: string }[];
+        compact: boolean;
+    }
 
-    export let filterType: string;
-    export let setActiveTab: (tabName: string) => Promise<void>;
-    export let tabs: { id: string; label: string }[];
-    export let compact = false;
+    let { filterType, setActiveTab, tabs, compact } : Props = $props();
 
     function handleTabChange(value: string | number) {
         setActiveTab(value.toString());

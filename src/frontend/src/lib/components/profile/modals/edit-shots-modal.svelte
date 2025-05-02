@@ -9,7 +9,12 @@
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import { golfClubs } from "$lib/types";
     
-    export let club: GolfClub;
+    interface Props {
+        club: GolfClub;
+    }
+    
+    let { club } : Props = $props();
+
     let clubs = golfClubs;
     let showModal = false;
     let isLoading = true;

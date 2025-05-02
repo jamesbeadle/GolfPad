@@ -3,10 +3,14 @@
     import type { GolferSummary, PrincipalId } from "../../../../../declarations/backend/backend.did";
     import UserProfileCircle from "./user-profile-circle.svelte";
 
-    export let selectUser: () => void;
+    interface Props {
+        selectUser: () => void;
+        selectedPlayerId: PrincipalId;
+        players: GolferSummary[];
+    }
 
-    export let selectedPlayerId: PrincipalId;
-    export let players: GolferSummary[];
+    let { selectUser, selectedPlayerId, players } : Props = $props();
+
 </script>
 
 <div class="flex w-full flex-row">

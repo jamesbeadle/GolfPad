@@ -9,8 +9,6 @@
     import PictureIcon from "$lib/icons/picture-icon.svelte";
     import type { UpdateProfilePicture } from "../../../../../../declarations/backend/backend.did";
 
-    export let showModal = false;
-
     let isLoading = false;
     let hasFile = false;
     let selectedFile: File | null = null;

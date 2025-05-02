@@ -2,9 +2,14 @@
     import type { GolferSummary } from "../../../../../declarations/backend/backend.did";
     import { getImageURL } from "$lib/utils/helpers";
 
-    export let player: GolferSummary;
-    export let isSelected: boolean = false;
-    export let onClick: () => void = () => {};
+    interface Props {
+        player: GolferSummary;
+        isSelected: boolean;
+        onClick: () => void;
+    }
+
+    let { player, isSelected, onClick } : Props = $props();
+
 </script>
 
 <button 
