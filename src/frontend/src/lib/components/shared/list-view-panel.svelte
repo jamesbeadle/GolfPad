@@ -1,11 +1,13 @@
 <script lang="ts">
+  import { type Snippet } from "svelte"; 
     interface Props {
         title: string;
         buttonTitle: string;
         buttonCallback: () => void;
+        children: Snippet
     }
 
-    let { title, buttonTitle, buttonCallback } : Props = $props();
+    let { title, buttonTitle, buttonCallback, children } : Props = $props();
 
 </script>
 
@@ -14,8 +16,8 @@
     <header class="bg-white">
         <div class="flex flex-col items-center justify-between py-4 md:flex-row">
             <h1 class="title">{title}</h1>
-            <button on:click={buttonCallback} class="brand-button-yellow">{buttonTitle}</button>
+            <button onclick={buttonCallback} class="brand-button-yellow">{buttonTitle}</button>
         </div>
     </header>
-    <slot></slot>
+    {@render children()}
 </div>

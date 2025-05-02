@@ -22,25 +22,25 @@
             <div class="flex flex-wrap space-x-2 overflow-x-auto md:space-x-4">
                 <button
                     class="text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 {($selectedGame === 'Mulligans') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-blue-500'}"
-                    on:click={() => selectedGame.set('Mulligans')}
+                    onclick={() => selectedGame.set('Mulligans')}
                 >
                 <span class="condensed">MULLIGANS</span>
                 </button>
                 <button
                     class="text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 {($selectedGame === 'Bands') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-blue-500'}"
-                    on:click={() => selectedGame.set('Bands')}
+                    onclick={() => selectedGame.set('Bands')}
                 >
                 <span class="condensed">BANDS</span>
                 </button>
                 <button
                     class="text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 {($selectedGame === 'Build It') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-blue-500'}"
-                    on:click={() => selectedGame.set('Build It')}
+                    onclick={() => selectedGame.set('Build It')}
                 >
                 <span class="condensed">BUILD IT</span>
                 </button>
                 <button
                     class="text-sm md:text-lg pb-2 focus:outline-none transition-colors duration-300 {($selectedGame === 'Next Up') ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-blue-500'}"
-                    on:click={() => selectedGame.set('Next Up')}
+                    onclick={() => selectedGame.set('Next Up')}
                 >
                 <span class="condensed">NEXT UP</span>
                 </button>

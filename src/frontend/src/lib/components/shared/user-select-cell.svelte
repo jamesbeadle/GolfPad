@@ -14,7 +14,7 @@
 
 <button 
     class="flex flex-row items-center w-full gap-3 px-5 py-3 transition-colors duration-200 rounded cursor-pointer {isSelected ? 'bg-BrandForest' : 'bg-BrandLightGray hover:bg-BrandLightGray/80'}"
-    on:click={onClick}
+    onclick={onClick}
 >
     <div class="relative">
         <img 

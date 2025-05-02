@@ -17,7 +17,7 @@
     
     <button 
         class="brand-button-forest"
-        on:click={handleLogin}
+        onclick={handleLogin}
     >
         CONNECT
     </button>

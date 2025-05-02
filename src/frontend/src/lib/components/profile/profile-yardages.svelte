@@ -57,7 +57,7 @@
             <p>No club yardages found.</p>
         {/if}
     {/if}
-    <button on:click={() => showAddShotModal = true} class="w-full brand-button">Add Shot</button>
+    <button onclick={() => showAddShotModal = true} class="w-full brand-button">Add Shot</button>
 </BrandPanel>
 
 {#if showAddShotModal}

@@ -1,11 +1,13 @@
 <script lang="ts"> 
+  import { type Snippet } from "svelte"; 
 
     interface Props {
         text: string;
         href: string;
+        children: Snippet
     }
 
-    let { text, href } : Props = $props();
+    let { text, href, children } : Props = $props();
 
     let isHovered = false;
     
@@ -17,7 +19,8 @@
     role="tooltip"
 >
     <a href={href} target="_blank" rel="noopener noreferrer" class="block">
-        <slot {isHovered} />
+       
+      {@render children()}
     </a>
     
     {#if isHovered}

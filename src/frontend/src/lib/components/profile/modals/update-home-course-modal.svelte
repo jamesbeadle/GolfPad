@@ -6,7 +6,7 @@
     import { golfCourseStore } from "$lib/stores/golf-course-store";
     import { getImageURL } from "$lib/utils/helpers";
     import type { GetGolfCourses, GolfCourseId, GolfCourses, UpdateHomeCourse } from "../../../../../../declarations/backend/backend.did";
-    import Modal from "$lib/components/shared/modal.svelte";
+    import Modal from "$lib/components/shared/global/modal.svelte";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import PictureIcon from "$lib/icons/picture-icon.svelte";
     
@@ -135,7 +135,7 @@
                         <div class="w-1/4">
                             <button
                                 class="brand-button"
-                                on:click={() => updateHomeCourse(course.id)}
+                                onclick={() => updateHomeCourse(course.id)}
                             >
                                 Select
                             </button>
@@ -154,14 +154,14 @@
                         <button
                             class="brand-button"
                             disabled={page === 1n}
-                            on:click={() => changePage(page - 1n)}
+                            onclick={() => changePage(page - 1n)}
                         >
                             Previous
                         </button>
                         <button
                             class="brand-button"
                             disabled={page === BigInt(Math.ceil(Number(courses?.total! / pageSize)))}
-                            on:click={() => changePage(page + 1n)}
+                            onclick={() => changePage(page + 1n)}
                         >
                             Next
                         </button>
@@ -170,7 +170,7 @@
             {/if}
 
             <div class="flex w-full justify-end">
-                <button class="brand-cancel-button" on:click={closeModal}>Cancel</button>
+                <button class="brand-cancel-button" onclick={closeModal}>Cancel</button>
             </div>
         </div>
     {/if}

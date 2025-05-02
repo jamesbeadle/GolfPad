@@ -51,7 +51,7 @@
       </div>
       <p class="text-3xl text-center condensed md:text-lg">BOMBS</p>
       <button
-        on:click={() => { showBombs = true; }}
+        onclick={() => { showBombs = true; }}
         class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow"
       >
         More Info
@@ -68,7 +68,7 @@
       </div>
       <p class="text-3xl text-center condensed md:text-lg">PIN HIGH</p>
       <button
-      on:click={() => { showPinHigh = true; }}
+      onclick={() => { showPinHigh = true; }}
         class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow"
       >
         More Info
@@ -85,7 +85,7 @@
       </div>
       <p class="text-3xl text-center condensed md:text-lg">BULLSEYE</p>
       <button
-      on:click={() => { showBullseye = true; }}
+      onclick={() => { showBullseye = true; }}
         class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow"
       >
         More Info

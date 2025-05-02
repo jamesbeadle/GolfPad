@@ -2,7 +2,7 @@
     import Layout from "../../../routes/+layout.svelte";
     import FriendsList from "../golfer-friends/friends-list.svelte";
     import SearchFriends from "../golfer-friends/search-friends.svelte";
-    import Modal from "$lib/components/shared/modal.svelte";
+    import Modal from "$lib/components/shared/global/modal.svelte";
 
     let showSearchFriendsModal = false;
 
@@ -22,7 +22,7 @@
             
             <div class="md:hidden mt-4">
                 <button 
-                    on:click={openSearchFriendsModal}
+                    onclick={openSearchFriendsModal}
                     class="w-full bg-BrandGreen text-white py-2 px-4 rounded-md hover:bg-BrandForest transition-colors"
                 >
                     Search Friends
@@ -36,7 +36,7 @@
     </div>
 
     {#if showSearchFriendsModal}
-        <Modal showModal={showSearchFriendsModal} onClose={closeSearchFriendsModal}>
+        <Modal onClose={closeSearchFriendsModal} title="Find Friends">
             <SearchFriends />
         </Modal>
     {/if}

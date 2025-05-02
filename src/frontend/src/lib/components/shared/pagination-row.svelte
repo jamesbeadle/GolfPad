@@ -23,14 +23,14 @@
         <button
             class="brand-button"
             disabled={page === 1n}
-            on:click={() => changePage(page - 1n)}
+            onclick={() => changePage(page - 1n)}
         >
             Previous
         </button>
         <button
             class="brand-button"
             disabled={page === BigInt(Math.ceil(Number(total / pageSize)))}
-            on:click={() => changePage(page + 1n)}
+            onclick={() => changePage(page + 1n)}
         >
             Next
         </button>

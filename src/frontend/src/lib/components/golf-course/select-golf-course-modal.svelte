@@ -4,7 +4,7 @@
     import { userStore } from "$lib/stores/user-store";
     import { countries } from "$lib/types/countries";
     import type { CountryId, GolfCourseId, GolfCourseSummary, GolfCourseVersion, RemoveUserGolfCourse } from "../../../../../declarations/backend/backend.did";
-    import Modal from "../shared/modal.svelte";
+    import Modal from "../shared/global/modal.svelte";
     import SelectCourseRow from "./select-course-row.svelte";
 
     interface Props {
@@ -50,12 +50,14 @@
         }
     }
 
-    $: if (selectedCountryId) {
-        updateFilteredCourses();
-    }
+    $effect(() => {
+        if (selectedCountryId) {
+            updateFilteredCourses();
+        }
+    });
 </script>
 
-<Modal {showModal} {onClose}>
+<Modal title="" {onClose}>
     <div class="container">
         <p class="title">SELECT COURSE</p>
         
@@ -91,7 +93,7 @@
                     <div class="course-item">
                         {course.name}
                         <button 
-                            on:click={() => selectCourse(course.id, course.version)}
+                            onclick={() => selectCourse(course.id, course.version)}
                             class="ml-2 bg-blue-500 text-white px-2 py-1 rounded"
                         >
                             Add
@@ -109,7 +111,7 @@
                 <div class="flex items-center">
                     <SelectCourseRow {golfCourse} {selectCourse}/>
                     <button 
-                        on:click={() => removeFavourite(golfCourse.id)}
+                        onclick={() => removeFavourite(golfCourse.id)}
                         class="ml-2 bg-red-500 text-white px-2 py-1 rounded"
                     >
                         Remove

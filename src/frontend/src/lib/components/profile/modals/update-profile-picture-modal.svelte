@@ -4,7 +4,7 @@
     import { authStore } from "$lib/stores/auth-store";
     import { toasts } from "$lib/stores/toasts-store";
     import { getImageURL } from "$lib/utils/helpers";
-    import Modal from "$lib/components/shared/modal.svelte";
+    import Modal from "$lib/components/shared/global/modal.svelte";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import PictureIcon from "$lib/icons/picture-icon.svelte";
     import type { UpdateProfilePicture } from "../../../../../../declarations/backend/backend.did";
@@ -102,7 +102,7 @@
                     
                     <button
                         class="brand-button"
-                        on:click={triggerFileInput}
+                        onclick={triggerFileInput}
                     >
                         {previewUrl ? "Change Image" : "Select Image"}
                     </button>
@@ -112,19 +112,19 @@
                         accept="image/*"
                         class="hidden"
                         bind:this={fileInputRef}
-                        on:change={handleFileChange}
+                        onchange={handleFileChange}
                     />
                 </div>
             </div>
 
             <div class="flex w-full justify-end gap-4">
-                <button class="brand-cancel-button" on:click={closeModal}>
+                <button class="brand-cancel-button" onclick={closeModal}>
                     Cancel
                 </button>
                 <button
                     class="brand-button"
                     disabled={!hasFile}
-                    on:click={handleSave}
+                    onclick={handleSave}
                 >
                     Save
                 </button>

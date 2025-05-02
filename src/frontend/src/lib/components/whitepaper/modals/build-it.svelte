@@ -1,6 +1,6 @@
 
 <script lang="ts">
-  import Modal from "$lib/components/shared/modal.svelte";
+  import Modal from "$lib/components/shared/global/modal.svelte";
   let showModal = false;
 
   let currentImageIndex = 0;
@@ -24,7 +24,7 @@
         />
         <button 
           class="w-full brand-button"
-          on:click={toggleImage}
+          onclick={toggleImage}
         >
           { images[currentImageIndex].nextLabel }
         </button>

@@ -215,7 +215,7 @@
             <div class="modal-header">
                 <h1>EDIT COURSE DETAILS</h1>
                 <p>Update your golf course details and submit a proposal for changes.</p>
-                <button class="close-btn" on:click={() => goto("/governance")}>✕</button>
+                <button class="close-btn" onclick={() => goto("/governance")}>✕</button>
             </div>
 
             <div class="form-section">
@@ -232,7 +232,7 @@
                         {:else}
                             <p>800px x 800px min</p>
                         {/if}
-                        <input type="file" accept="image/*" on:change={handleImageUpload} />
+                        <input type="file" accept="image/*" onchange={handleImageUpload} />
                         <button>UPLOAD</button>
                     </div>
                 </div>
@@ -246,7 +246,7 @@
                             bind:value={newTeeColor}
                             placeholder="Enter Tee Color (e.g., Pink)"
                         />
-                        <button class="tab-btn add-tab" on:click={addTeeGroup}>+</button>
+                        <button class="tab-btn add-tab" onclick={addTeeGroup}>+</button>
                     </div>
                 </div>
 
@@ -257,13 +257,13 @@
                                 class="tab-btn"
                                 class:active={activeTabIndex === index}
                                 style="background-color: {teeGroup.colour.toLowerCase()};"
-                                on:click={() => switchTab(index)}
+                                onclick={() => switchTab(index)}
                             >
                                 {teeGroup.name}
                             </button>
                             <button
                                 class="remove-btn"
-                                on:click={() => {
+                                onclick={() => {
                                     teeToRemove = index;
                                     showConfirmDeleteTee = true;
                                 }}
@@ -277,7 +277,7 @@
                 {#if activeTabIndex !== null}
                     <div class="tee-group">
                         <h3>{teeGroups[activeTabIndex].name} Tees</h3>
-                        <button class="copy-btn" on:click={copyToOtherTees}>Copy To Other Tees</button>
+                        <button class="copy-btn" onclick={copyToOtherTees}>Copy To Other Tees</button>
                         <table>
                             <thead>
                                 <tr>
@@ -296,7 +296,7 @@
                                                 type="number"
                                                 min="0"
                                                 value={Number(hole.par)}
-                                                on:change={(e) =>
+                                                onchange={(e) =>
                                                     updateHole(activeTabIndex!, holeIndex, "par", (e.target as HTMLInputElement).value)}
                                             />
                                         </td>
@@ -305,7 +305,7 @@
                                                 type="number"
                                                 min="0"
                                                 value={Number(hole.strokeIndex)}
-                                                on:change={(e) =>
+                                                onchange={(e) =>
                                                     updateHole(activeTabIndex!, holeIndex, "strokeIndex", (e.target as HTMLInputElement).value)}
                                             />
                                         </td>
@@ -314,7 +314,7 @@
                                                 type="number"
                                                 min="0"
                                                 value={Number(hole.yardage)}
-                                                on:change={(e) =>
+                                                onchange={(e) =>
                                                     updateHole(activeTabIndex!, holeIndex, "yardage", (e.target as HTMLInputElement).value)}
                                             />
                                         </td>
@@ -326,8 +326,8 @@
                 {/if}
 
                 <div class="form-actions">
-                    <button class="cancel-btn" on:click={resetForm}>RESET</button>
-                    <button class="update-btn" on:click={submitGolfCourse}>UPDATE</button>
+                    <button class="cancel-btn" onclick={resetForm}>RESET</button>
+                    <button class="update-btn" onclick={submitGolfCourse}>UPDATE</button>
                 </div>
             </div>
         </div>

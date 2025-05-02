@@ -59,7 +59,7 @@
       </div>
       <p class="text-3xl text-center condensed md:text-lg">MULLIGANS</p>
       <button
-        on:click={() => { showMulligans = true; }}
+        onclick={() => { showMulligans = true; }}
         class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow"
       >
         More Info
@@ -76,7 +76,7 @@
       </div>
       <p class="text-3xl text-center condensed md:text-lg">BANDS</p>
       <button
-          on:click={() => { showBands = true; }}
+          onclick={() => { showBands = true; }}
         class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow"
       >
         More Info
@@ -93,7 +93,7 @@
       </div>
       <p class="text-3xl text-center condensed md:text-lg">NEXT UP</p>
       <button
-      on:click={() => { showNextUp = true; }}
+      onclick={() => { showNextUp = true; }}
         class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow"
       >
         More Info
@@ -110,7 +110,7 @@
       </div>
       <p class="text-3xl text-center condensed md:text-lg">BUILD IT</p>
       <button
-      on:click={() => { showBuildIt = true; }}
+      onclick={() => { showBuildIt = true; }}
         class="px-4 py-2 text-xs rounded bg-BrandForest text-BrandYellow"
       >
         More Info

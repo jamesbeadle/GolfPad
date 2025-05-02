@@ -16,13 +16,13 @@
             <div class="flex justify-end space-x-3">
                 <button 
                     class="px-4 py-2 text-sm rounded bg-BrandLightGray text-BrandDarkGray hover:bg-BrandLightGray/80"
-                    on:click={onCancel}
+                    onclick={onCancel}
                 >
                     Cancel
                 </button>
                 <button 
                     class="px-4 py-2 text-sm rounded bg-BrandForest text-BrandYellow hover:bg-BrandYellow hover:text-BrandForest"
-                    on:click={onConfirm}
+                    onclick={onConfirm}
                 >
                     Confirm
                 </button>

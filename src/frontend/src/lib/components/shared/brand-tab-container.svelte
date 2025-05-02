@@ -1,11 +1,13 @@
 <script lang="ts">
+  import { type Snippet } from "svelte"; 
     interface Props {
         title: string;
         activeTab: string;
         tabs: string[];
+        children: Snippet
     }
     
-    let { title, activeTab, tabs } : Props = $props();
+    let { title, activeTab, tabs, children } : Props = $props();
 
     function handleTabClick(tab: string) {
         activeTab = tab;
@@ -19,19 +21,19 @@
             {#each tabs as tab}
                 <button
                     class="px-10 py-3 text-xl text-BrandYellow condensed rounded-l-md {tab === tabs[0] ? 'rounded-r-none' : ''} {activeTab === tab ? 'bg-BrandForest' : 'bg-[#F9F9F9] text-[#C0C0C0]'}"
-                    on:click={() => handleTabClick(tab)}
+                    onclick={() => handleTabClick(tab)}
                 >
                     {tab}
                 </button>
             {/each}
         </div>
     </div>
-    <slot></slot>
+    {@render children()}
     <div class="sticky bottom-0 left-0 right-0 z-10 flex w-full bg-white md:hidden">
         {#each tabs as tab}
             <button
                 class="flex-1 py-2 text-xl condensed {activeTab === tab ? 'bg-BrandForest text-BrandYellow' : 'bg-[#F9F9F9] text-[#C0C0C0]'}"
-                on:click={() => handleTabClick(tab)}
+                onclick={() => handleTabClick(tab)}
             >
                 {tab}
             </button>

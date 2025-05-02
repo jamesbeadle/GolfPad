@@ -4,7 +4,7 @@
     import { authStore } from "$lib/stores/auth-store";
     import { toasts } from "$lib/stores/toasts-store";
     import type { AddShot, GolfClub } from "../../../../../../declarations/backend/backend.did";
-    import Modal from "$lib/components/shared/modal.svelte";
+    import Modal from "$lib/components/shared/global/modal.svelte";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import { golfClubs } from "$lib/types";
     import { clubDisplayNames } from "$lib/types/golf-clubs";
@@ -65,7 +65,7 @@
     }
 </script>
 
-<button class="brand-button" on:click={openModal}>Add Golf Shot</button>
+<button class="brand-button" onclick={openModal}>Add Golf Shot</button>
 
 <Modal {showModal} onClose={closeModal}>
     {#if isLoading}
@@ -104,14 +104,14 @@
             <div class="flex w-full justify-end gap-2">
                 <button 
                     class="brand-button" 
-                    on:click={addShot}
+                    onclick={addShot}
                     disabled={!yardage || isLoading}
                 >
                     Add Shot
                 </button>
                 <button 
                     class="brand-cancel-button" 
-                    on:click={closeModal}
+                    onclick={closeModal}
                     disabled={isLoading}
                 >
                     Cancel

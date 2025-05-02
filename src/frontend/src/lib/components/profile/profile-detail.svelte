@@ -37,7 +37,7 @@
         <div class="relative w-full p-4 text-black">
             <div class="text-sm text-BrandGray">USERNAME</div>
             <div class="text-4xl condensed">{golfer.username}</div>
-            <button on:click={() => showUpdateUsernameModal = true } class="absolute top-4 right-4">
+            <button onclick={() => showUpdateUsernameModal = true } class="absolute top-4 right-4">
                 <EditIcon className="w-4" />
             </button>
             <div class="text-sm text-BrandGray">JOINED ON</div>

@@ -4,7 +4,7 @@
     import { authStore } from "$lib/stores/auth-store";
     import { toasts } from "$lib/stores/toasts-store";
     import type { UpdateFirstName } from "../../../../../../declarations/backend/backend.did";
-    import Modal from "$lib/components/shared/modal.svelte";
+    import Modal from "$lib/components/shared/global/modal.svelte";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     
     let showModal = false;
@@ -76,7 +76,7 @@
                 type="text" 
                 class="text-input" 
                 bind:value={firstName}
-                on:input={handleInput}
+                oninput={handleInput}
             />
             {#if errors.firstName}
                 <p class="error-text">{errors.firstName}</p>
@@ -84,13 +84,13 @@
         </div>
         <div class="flex w-full flex-col">
             <button 
-                on:click={closeModal}
+                onclick={closeModal}
                 class="brand-cancel-button"
             >
                 Cancel
             </button>
             <button 
-                on:click={updateFirstName}
+                onclick={updateFirstName}
                 disabled={!isFormValid}
                 class:disabled={!isFormValid}
                 class="{!isFormValid ? 'brand-button-disabled' : 'brand-button'}"

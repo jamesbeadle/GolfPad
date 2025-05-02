@@ -21,7 +21,7 @@
             <li class={`mr-3 ${filterType === tab.id ? "active-tab" : ""}`}>
                 <button 
                     class={`p-2 ${filterType === tab.id ? "text-white" : "text-gray-400"}`}
-                    on:click={() => setActiveTab(tab.id)}
+                    onclick={() => setActiveTab(tab.id)}
                 >
                     {tab.label}
                 </button>

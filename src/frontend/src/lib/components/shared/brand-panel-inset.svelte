@@ -1,11 +1,13 @@
 <script lang="ts">
+  import { type Snippet } from "svelte"; 
 
     interface Props {
         title: string;
         subTitle: string;
+        children: Snippet;
     }
     
-    let { title, subTitle } : Props = $props();
+    let { title, subTitle, children } : Props = $props();
     
 </script>
 
@@ -17,5 +19,5 @@
             <h2 class="text-sm text-BrandDarkGray">{subTitle}</h2>
         </div>
     </header>
-    <slot></slot>
+    {@render children()}
 </div>

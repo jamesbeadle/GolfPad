@@ -5,7 +5,7 @@
     import { toasts } from "$lib/stores/toasts-store";
     import { formatUnixTimeToTime } from "$lib/utils/helpers";
     import type { ClubShots, GetClubShots, GolfClub, GolfShotId, UpdateShot } from "../../../../../../declarations/backend/backend.did";
-    import Modal from "$lib/components/shared/modal.svelte";
+    import Modal from "$lib/components/shared/global/modal.svelte";
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import { golfClubs } from "$lib/types";
     
@@ -142,7 +142,7 @@
                                 <select 
                                     id="club-{golfShot.id}"
                                     value={editingShots.get(golfShot.id)?.clubName}
-                                    on:change={(e) => handleInputChange(golfShot.id, 'clubName', e.currentTarget.value)}
+                                    onchange={(e) => handleInputChange(golfShot.id, 'clubName', e.currentTarget.value)}
                                     class="w-full p-1 border rounded"
                                 >
                                     <option value="">Select Club</option>
@@ -157,20 +157,20 @@
                                 type="number" 
                                 class="w-full p-1 border rounded"
                                 value={editingShots.get(golfShot.id)?.yardage}
-                                on:input={(e) => handleInputChange(golfShot.id, 'yardage', BigInt(e.currentTarget.value))}
+                                oninput={(e) => handleInputChange(golfShot.id, 'yardage', BigInt(e.currentTarget.value))}
                             >
                         </div>
                         {#if deletingShot === golfShot.id}
                             <div class="w-2/5 flex gap-2">
                                 <button 
                                     class="brand-button bg-red-500" 
-                                    on:click={() => deleteClubShot(golfShot.id)}
+                                    onclick={() => deleteClubShot(golfShot.id)}
                                 >
                                     Confirm Delete
                                 </button>
                                 <button 
                                     class="brand-button" 
-                                    on:click={() => deletingShot = null}
+                                    onclick={() => deletingShot = null}
                                 >
                                     Cancel
                                 </button>
@@ -180,7 +180,7 @@
                                 <button 
                                     class="brand-button" 
                                     disabled={!editingShots.get(golfShot.id)?.modified}
-                                    on:click={() => updateClubShot(golfShot.id)}
+                                    onclick={() => updateClubShot(golfShot.id)}
                                 >
                                     Update
                                 </button>
@@ -188,7 +188,7 @@
                             <div class="w-1/5">
                                 <button 
                                     class="brand-button bg-red-500" 
-                                    on:click={() => deletingShot = golfShot.id}
+                                    onclick={() => deletingShot = golfShot.id}
                                 >
                                     Delete
                                 </button>
@@ -208,14 +208,14 @@
                         <button
                             class="brand-button"
                             disabled={page === 1n}
-                            on:click={() => changePage(page - 1n)}
+                            onclick={() => changePage(page - 1n)}
                         >
                             Previous
                         </button>
                         <button
                             class="brand-button"
                             disabled={page === BigInt(Math.ceil(Number(clubShots?.total! / pageSize)))}
-                            on:click={() => changePage(page + 1n)}
+                            onclick={() => changePage(page + 1n)}
                         >
                             Next
                         </button>
@@ -224,7 +224,7 @@
             {/if}
 
             <div class="flex w-full justify-end">
-                <button class="brand-cancel-button" on:click={closeModal}>Cancel</button>
+                <button class="brand-cancel-button" onclick={closeModal}>Cancel</button>
             </div>
         </div>
     {/if}

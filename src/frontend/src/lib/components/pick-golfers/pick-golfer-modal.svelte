@@ -7,7 +7,7 @@
     import LocalSpinner from "$lib/components/shared/local-spinner.svelte";
     import SearchIcon from "$lib/icons/search-icon.svelte";
     import PickGolferModalRow from "./pick-golfer-modal-row.svelte";
-    import Modal from "$lib/components/shared/modal.svelte";
+    import Modal from "$lib/components/shared/global/modal.svelte";
     import ModalPagination from "./modal-pagination.svelte";
     
     interface Props {

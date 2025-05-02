@@ -65,14 +65,14 @@
                 <div class="flex flex-row space-x-2">
                   <button
                     class="w-1/2 px-4 py-2 text-black rounded bg-BrandYellow disabled:bg-BrandDarkGreen disabled:text-white"
-                    on:click={prevTab}
+                    onclick={prevTab}
                     disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
                   >
                     Previous Section
                   </button>
                   <button
                     class="w-1/2 px-4 py-2 text-black rounded bg-BrandYellow disabled:bg-BrandDarkGreen disabled:text-white"
-                    on:click={nextTab}
+                    onclick={nextTab}
                     disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
                   >
                     Next Section
@@ -85,7 +85,7 @@
                       w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full mx-0.5 cursor-pointer border-none
                       ${isActiveTab(index) ? 'bg-BrandBlue' : 'bg-gray-500 hover:bg-gray-600'}
                     `} 
-                      on:click={() => setActiveTab(index)}
+                      onclick={() => setActiveTab(index)}
                       aria-label={`Go to ${tabs[index].name} section`}
                     ></button>
                   {/each}

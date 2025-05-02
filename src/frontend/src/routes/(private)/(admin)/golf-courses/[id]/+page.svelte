@@ -89,7 +89,7 @@
                             class="tee-tab"
                             class:active={selectedTeeIndex === index}
                             style="background-color: {tee.colour.toLowerCase()}"
-                            on:click={() => changeTee(index)}
+                            onclick={() => changeTee(index)}
                         >
                             {tee.name}
                         </button>

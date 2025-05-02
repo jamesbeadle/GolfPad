@@ -15,7 +15,7 @@
 
 <div class="flex w-full flex-row">
     {#each players as user}
-        <button on:click={selectUser}>
+        <button onclick={selectUser}>
             <UserProfileCircle src={getImageURL(user.profilePicture)} selected={user.principalId == selectedPlayerId} />
         </button>
     {/each}

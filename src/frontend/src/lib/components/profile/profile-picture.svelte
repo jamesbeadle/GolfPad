@@ -39,7 +39,7 @@
                 <img src={golferPicture} alt="Profile" class="object-cover w-full h-full rounded-lg"/>
                 <button 
                     class="absolute p-2 transition-all duration-200 bg-black bg-opacity-50 rounded-full top-4 right-4 hover:bg-opacity-70"
-                    on:click={() => showUpdateProfilePicture = true}
+                    onclick={() => showUpdateProfilePicture = true}
                     >
                     <EditIcon className="w-4 h-4" fill="white"/>
                 </button>
@@ -48,7 +48,7 @@
             <img src="default-profile-picture.jpg" alt="Default Profile" class="object-cover w-full h-full rounded-lg"/>
             <button 
                 class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                on:click={() => showUpdateProfilePicture = true}
+                onclick={() => showUpdateProfilePicture = true}
             >
                 <EditIcon className="w-20 h-20" fill="white"/>
             </button>
@@ -60,6 +60,6 @@
 {#if showUpdateProfilePicture}
     <UpdateProfilePictureModal
         showModal={showUpdateProfilePicture} 
-        on:close={() => showUpdateProfilePicture = false} 
+        onclose={() => showUpdateProfilePicture = false} 
     />
 {/if}
