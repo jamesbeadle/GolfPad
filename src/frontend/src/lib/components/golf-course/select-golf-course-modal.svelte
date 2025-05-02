@@ -7,9 +7,13 @@
     import Modal from "../shared/modal.svelte";
     import SelectCourseRow from "./select-course-row.svelte";
 
-    export let selectCourse: (courseId: GolfCourseId, courseVersion: GolfCourseVersion) => void;
-    export let onClose: () => void;
-    export let showModal: boolean;
+    interface Props {
+        selectCourse: (courseId: GolfCourseId, courseVersion: GolfCourseVersion) => void;
+        onClose: () => void;
+        showModal: boolean;
+    }
+    
+    let { onClose, selectCourse, showModal } : Props = $props();
     
     let favouriteCourses: GolfCourseSummary[] = [];
 

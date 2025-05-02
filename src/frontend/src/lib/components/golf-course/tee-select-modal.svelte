@@ -6,13 +6,17 @@
     import { toasts } from "$lib/stores/toasts-store";
     import LocalSpinner from "../shared/local-spinner.svelte";
 
-    export let golfCourseId: GolfCourseId;
-    export let selectTee: (teeGroup: TeeGroupIndex) => void;
-    export let onClose: () => void;
-    export let showModal: boolean;
+    interface Props {
+        golfCourseId: GolfCourseId;
+        selectTee: (teeGroup: TeeGroupIndex) => void;
+        onClose: () => void;
+        showModal: boolean;
+    }
+    
+    let { golfCourseId, selectTee, onClose, showModal } : Props = $props();
 
-    let isLoading = true;
-    let golfCouseTees: GolfCourseTees | null =  null;
+    let isLoading = $state(true);
+    let golfCouseTees: GolfCourseTees | null =  $state(null);
 
     onMount(async () => {
         try{
@@ -43,7 +47,7 @@
                         <div class="course-item">
                             {teeGroup.name}
                             <button 
-                                on:click={() => selectTee(teeGroup.index)}
+                                onclick={() => selectTee(teeGroup.index)}
                                 class="ml-2 bg-blue-500 text-white px-2 py-1 rounded"
                             >
                                 Use
