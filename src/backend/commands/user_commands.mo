@@ -1,4 +1,4 @@
-import GolfIds "mo:waterway-mops/golf/GolfIds";
+import GolfIds "mo:waterway-mops/domain/golf/ids";
 
 module UserCommands {
     public type CreateProfile = {
