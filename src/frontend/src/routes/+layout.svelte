@@ -1,44 +1,34 @@
 <script lang="ts">
-  import { onMount, type Snippet } from "svelte";
-  import { get } from "svelte/store";
-  import { fade } from "svelte/transition";
-
+  import { onMount, type Snippet } from "svelte";   
   import { browser } from "$app/environment";
+  import { fade } from "svelte/transition";
+  
   import { initAuthWorker } from "$lib/services/worker.auth.services";
-  import { displayAndCleanLogoutMsg } from "$lib/services/auth.services";
   import { authStore, type AuthStoreData } from "$lib/stores/auth-store";
   import { authSignedInStore } from "$lib/derived/auth.derived";
-  import { initUserProfile } from "$lib/services/user-profile-service";
-  
-  import LayoutController from "$lib/components/shared/layout-controller.svelte";
-  import FullScreenSpinner from "../lib/components/shared/full-screen-spinner.svelte";
-  import Toasts from "$lib/components/toasts/toasts.svelte";
-  import PortalHost from 'svelte-portal';
-  import "../app.css";
+  import { displayAndCleanLogoutMsg } from "$lib/services/auth-services";
 
-  interface Props { children: Snippet }
-  let { children }: Props = $props();
+  import FullScreenSpinner from "$lib/components/shared/global/full-screen-spinner.svelte";
+  import Header from "$lib/components/shared/header.svelte";
+  import Navigation from "$lib/components/shared/navigation.svelte";
+  import Toasts from "$lib/components/toasts/toasts.svelte";
+  import Landing from "$lib/components/landing/landing.svelte";
+  import InvalidMembershipPage from "$lib/components/profile/membership/invalid-membership-page.svelte";
+  
+  import { userStore } from "$lib/stores/user-store";
+  import { checkValidMembership } from "$lib/utils/Helpers";
+  import "../app.css";
   
   let worker: { syncAuthIdle: (auth: AuthStoreData) => void } | undefined;
-  let expanded = $state(false);
+  
+  interface Props { children: Snippet }
+  let { children }: Props = $props();
+    
   let isLoading = $state(true);
-
-  onMount(async () => {
-    if (browser) {
-      document.querySelector('#app-spinner')?.remove();
-    }
-    await init();
-    const identity = get(authStore).identity;
-    if (identity) {
-      try {
-        await initUserProfile({ identity });
-      } catch (err) {
-        console.error('Error mounting Football God:', err);
-      }
-    }
-    worker = await initAuthWorker();
-    isLoading = false;
-  });
+  let isMenuOpen = $state(false);
+  
+  let loadingMessage = $state("");
+  let hasValidMembership = $state(false);
 
   const init = async () => {
     if (!browser) return;
@@ -46,22 +36,74 @@
     displayAndCleanLogoutMsg();
   };
 
+  onMount(async () => {
+    if (browser) {
+      document.querySelector('#app-spinner')?.remove();
+    }
+    await init();
+    const identity = $authStore.identity;
+    worker = await initAuthWorker();
+    if (identity) {
+      try {
+        await checkProfile();
+      } catch (err) {
+        console.error('initUserProfile error:', err);
+      }
+    }
+    isLoading = false;
+  });
+
+  async function checkProfile() {
+      let i = 1;
+      isLoading = true;
+      try {
+          if (!$authSignedInStore) return;
+          loadingMessage = "Searching for Profile";
+          await userStore.sync();
+          hasValidMembership = checkValidMembership($userStore.membershipType);
+      } catch (error) {
+          loadingMessage = "Profile not found";
+          console.error('Error fetching user profile:', error);
+          hasValidMembership = false;
+      } finally {
+          isLoading = false;
+      }
+      i++;
+  }
+
+  function toggleMenu() {
+      isMenuOpen = !isMenuOpen;
+  }
 </script>
 
 <svelte:window on:storage={authStore.sync} />
 
-{#if browser && isLoading}
+{#if isLoading}
   <div in:fade>
-    <FullScreenSpinner  message='Loading GolfPad' />
-  </div>
-{:else}
-  <div class="flex flex-col min-h-screen default-text">
-    <LayoutController>
-      <div class="mx-4 mt-2">
-        {@render children()}
-      </div>
-    </LayoutController>
-    <Toasts />
-    <PortalHost />
+    <FullScreenSpinner message={loadingMessage} />
   </div>
 {/if}
+
+{#if !isLoading && !$authSignedInStore}
+  <LandingPage />
+{/if}
+
+{#if !isLoading && $authSignedInStore}
+    <Header {toggleMenu} />  
+    <Sidebar {isMenuOpen} {toggleMenu} />
+{/if}
+
+{#if !isLoading && $authSignedInStore && hasValidMembership}
+  <div class="flex flex-col min-h-screen">
+    <main class="flex-grow page-wrapper">
+        {@render children()}
+    </main>
+    <Footer />
+  </div>
+{/if}
+
+{#if !isLoading && $authSignedInStore && !hasValidMembership}
+  <InvalidMembershipPage />
+{/if}
+
+<Toasts />

@@ -1,5 +1,5 @@
-import Ids "mo:waterway-mops/Ids";
-import GolfIds "mo:waterway-mops/golf/GolfIds";
+import Ids "mo:waterway-mops/base/ids";
+import GolfIds "mo:waterway-mops/domain/golf/ids";
 
 module UserQueries {
    

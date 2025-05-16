@@ -1,7 +1,7 @@
 import { userStore } from "$lib/stores/user-store";
 import { toasts } from "$lib/stores/toasts-store";
 import { userIdCreatedStore } from "$lib/stores/user-control-store";
-import { initErrorSignOut } from "./auth.services";
+import { initErrorSignOut } from "./auth-services";
 import { authSignedInStore } from "$lib/derived/auth.derived";
 import type { OptionIdentity } from "$lib/types/identity";
 import { get } from "svelte/store";

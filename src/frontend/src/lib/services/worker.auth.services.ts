@@ -1,4 +1,4 @@
-import { idleSignOut } from "./auth.services";
+import { idleSignOut } from "./auth-services";
 import type { AuthStoreData } from "../stores/auth-store";
 import { authRemainingTimeStore } from "../stores/auth-store";
 

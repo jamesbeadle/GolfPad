@@ -1,10 +1,8 @@
 <script lang="ts">
     import { fade } from "svelte/transition";
     import { goto } from "$app/navigation";
-    import { page } from "$app/stores";
-    import { signOut } from "$lib/services/auth.services";
+    import { signOut } from "$lib/services/auth-services";
     import { authSignedInStore } from "$lib/derived/auth.derived";
-    import { authStore } from "$lib/stores/auth-store";
     import ProfileIcon from "$lib/icons/profile-icon.svelte";
   
     interface Props{

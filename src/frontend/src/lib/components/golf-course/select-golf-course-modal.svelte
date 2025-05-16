@@ -3,12 +3,12 @@
     import { toasts } from "$lib/stores/toasts-store";
     import { userStore } from "$lib/stores/user-store";
     import { countries } from "$lib/types/countries";
-    import type { CountryId, GolfCourseId, GolfCourseSummary, GolfCourseVersion, RemoveUserGolfCourse } from "../../../../../declarations/backend/backend.did";
+    import type { CountryId, GolfCourseId, GolfCourseSummary } from "../../../../../declarations/backend/backend.did";
     import Modal from "../shared/global/modal.svelte";
     import SelectCourseRow from "./select-course-row.svelte";
 
     interface Props {
-        selectCourse: (courseId: GolfCourseId, courseVersion: GolfCourseVersion) => void;
+        selectCourse: (courseId: GolfCourseId) => void;
         onClose: () => void;
         showModal: boolean;
     }
@@ -66,7 +66,7 @@
                 <p class="label">COURSE NAME:</p>
                 <input 
                     type="text" 
-                    on:keypress={searchCourse}
+                    onkeypress={searchCourse}
                     placeholder="Search courses..."
                     class="border p-2 rounded"
                 />

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { signIn } from "$lib/services/auth.services";
+    import { signIn } from "$lib/services/auth-services";
     import { type AuthSignInParams } from "$lib/stores/auth-store";
 
     async function handleLogin() {

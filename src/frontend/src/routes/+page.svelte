@@ -1,7 +1,7 @@
 <script lang="ts">
    import { onMount } from "svelte";
 
-   import FullScreenSpinner from "$lib/components/shared/full-screen-spinner.svelte";
+   import FullScreenSpinner from "$lib/components/shared/global/full-screen-spinner.svelte";
    import Leaderboard from "$lib/components/leaderboard/leaderboard.svelte";
 
    let isLoading = $state(true);

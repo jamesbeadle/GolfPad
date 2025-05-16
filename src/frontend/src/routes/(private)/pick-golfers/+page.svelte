@@ -5,7 +5,7 @@
     import type { GolferSummary, SubmitPrediction, Prediction } from "../../../../../declarations/backend/backend.did";
     import { toasts } from "$lib/stores/toasts-store";
 
-    import FullScreenSpinner from "$lib/components/shared/full-screen-spinner.svelte";
+    import FullScreenSpinner from "$lib/components/shared/global/full-screen-spinner.svelte";
     import BrandPanel from "$lib/components/shared/brand-panel.svelte";
     import HolesGird from "$lib/components/pick-golfers/holes-gird.svelte";
 

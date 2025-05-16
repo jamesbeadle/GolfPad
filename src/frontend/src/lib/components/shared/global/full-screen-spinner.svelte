@@ -1,5 +1,5 @@
 <script lang="ts">
-  import LoadingDots from "./loading-dots.svelte";
+  import LoadingDots from "../loading-dots.svelte";
   interface Props {
     message?: string;
   }

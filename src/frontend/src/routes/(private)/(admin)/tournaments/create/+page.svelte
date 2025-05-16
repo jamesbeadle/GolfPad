@@ -8,7 +8,7 @@
     import BrandPanel from "$lib/components/shared/brand-panel.svelte";
     import BasicInfo from "$lib/components/tournaments/create/basic-info.svelte";
     import TournamentInstance from "$lib/components/tournaments/create/tournament-instance.svelte";
-    import FullScreenSpinner from "$lib/components/shared/full-screen-spinner.svelte";
+    import FullScreenSpinner from "$lib/components/shared/global/full-screen-spinner.svelte";
     
     interface CreateTournamentInstance {
         tournamentId: number;

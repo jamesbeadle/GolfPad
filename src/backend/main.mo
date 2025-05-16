@@ -1,13 +1,14 @@
 /* ----- Mops Packages ----- */
 
-import BaseQueries "mo:waterway-mops/queries/BaseQueries";
-import BaseTypes "mo:waterway-mops/BaseTypes";
-import Enums "mo:waterway-mops/Enums";
-import Ids "mo:waterway-mops/Ids";
-import CanisterQueries "mo:waterway-mops/canister-management/CanisterQueries";
-import CanisterCommands "mo:waterway-mops/canister-management/CanisterCommands";
-import CanisterManager "mo:waterway-mops/canister-management/CanisterManager";
-import CanisterIds "mo:waterway-mops/CanisterIds";
+import BaseQueries "mo:waterway-mops/base/queries";
+import BaseTypes "mo:waterway-mops/base/types";
+import Enums "mo:waterway-mops/base/enums";
+import Ids "mo:waterway-mops/base/ids";
+import CanisterQueries "mo:waterway-mops/product/wwl/canister-management/queries";
+import CanisterCommands "mo:waterway-mops/product/wwl/canister-management/commands";
+import CanisterManager "mo:waterway-mops/product/wwl/canister-management/manager";
+import CanisterIds "mo:waterway-mops/product/wwl/ids";
+import GolfIds "mo:waterway-mops/domain/golf/ids";
 import Int "mo:base/Int";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
@@ -30,6 +31,7 @@ import FantasyLeaderboardCommands "commands/fantasy_leaderboard_commands";
 
 import UserManager "managers/user-manager";
 import FantasyLeaderboardManager "managers/fantasy-leaderboard-manager";
+import TournamentManager "managers/tournament-manager";
 
 /* ----- Type imports for stable variables ----- */
 
@@ -55,6 +57,7 @@ actor Self {
   private let userManager = UserManager.UserManager();
   private let fantasyLeaderboardManager = FantasyLeaderboardManager.FantasyLeaderboardManager();
   private let canisterManager = CanisterManager.CanisterManager();
+  private let tournamentManager = TournamentManager.TournamentManager();
 
   /* ----- App Queries and Commands ----- */
 
@@ -62,27 +65,7 @@ actor Self {
     return #ok(appStatus);
   };
 
-  public shared ({ caller }) func updateAppStatus(dto : MopsBaseCommands.UpdateAppStatus) : async Result.Result<(), Enums.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert await isAdmin(principalId);
-
-    appStatus := {
-      onHold = dto.onHold;
-      version = dto.version;
-    };
-
-    return #ok();
-  };
-
   /* ----- User Queries and Commands ----- */
-
-  public shared query ({ caller }) func isUsernameValid(dto : UserQueries.IsUsernameValid) : async Bool {
-    assert not Principal.isAnonymous(caller);
-    let usernameValid = validateUsernameFormat(dto.username);
-    let usernameTaken = userManager.isUsernameTaken(dto.username, Principal.toText(caller));
-    return usernameValid and not usernameTaken;
-  };
 
   public shared query ({ caller }) func getProfile(_ : UserQueries.GetProfile) : async Result.Result<UserQueries.Profile, Enums.Error> {
     assert not Principal.isAnonymous(caller);
@@ -149,7 +132,7 @@ actor Self {
     ];
     let uniqueGolferIds = Array.sort(
       golferIds,
-      func(a : Types.GolferId, b : Types.GolferId) : { #less; #equal; #greater } {
+      func(a : GolfIds.ProGolferId, b : GolfIds.ProGolferId) : { #less; #equal; #greater } {
         if (a < b) { #less } else if (a > b) { #greater } else { #equal };
       },
     );
@@ -328,7 +311,7 @@ actor Self {
     };
   };
 
-  private func transferLeaderboardChunks(tournamentId : MopsGolfIds.TournamentId, year : Nat16, golfCourse : MopsGolfCourseQueries.GolfCourse) {
+  private func transferLeaderboardChunks(tournamentId : GolfIds.TournamentId, year : Nat16, golfCourse : MopsGolfCourseQueries.GolfCourse) {
     let totalEntries : Nat = userManager.getTotalLeaderboardEntries(tournamentId);
     var totalChunks = totalEntries / Environment.ENTRY_TRANSFER_LIMIT;
     let remainder = totalEntries % Environment.ENTRY_TRANSFER_LIMIT;

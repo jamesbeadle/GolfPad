@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { GetGolfCourseTees, GolfCourseId, GolfCourseTees, TeeGroupIndex } from "../../../../../declarations/backend/backend.did";
+    import type { GolfCourseId } from "../../../../../declarations/backend/backend.did";
     import Modal from "../shared/global/modal.svelte";
     import { golfCourseStore } from "$lib/stores/golf-course-store";
     import { toasts } from "$lib/stores/toasts-store";
